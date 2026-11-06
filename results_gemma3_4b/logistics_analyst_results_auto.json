@@ -1,0 +1,1902 @@
+{
+  "meta": {
+    "job_title": "Logistics Analysts",
+    "job_id": "logistics_analyst",
+    "onet_code": "13-1081.02",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 31,
+    "evaluated_tasks": 31,
+    "batches": 6,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.91,
+      "dimensions": {
+        "Correctness": 1.81,
+        "Completeness": 1.81,
+        "Best Practices": 1.74,
+        "Domain Accuracy": 1.81,
+        "Clarity": 2.55,
+        "Autonomy": 1.74
+      },
+      "evaluated_tasks": 31,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1295.88
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Interpret data on logistics elements, such as availability, maintainability, reliability, supply chain management, strategic sourcing or distribution, supplier management, or transportation.",
+      "task_type": "Performance Variance Analysis",
+      "user_prompt": "Analyze the provided shipment dataset for Q3. Identify the top 3 carriers with the highest variance in delivery times compared to their quoted lead times. Calculate the cost impact of these delays assuming a penalty of $500 per day per delayed container. Output a summary report with the carrier names, average delay days, total penalty cost, and a specific recommendation for renegotiating contracts with the worst performer.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-1001",
+            "carrier": "GlobalTrans",
+            "quoted_days": 5,
+            "actual_days": 6,
+            "container_count": 2,
+            "cost_per_day": 500
+          },
+          {
+            "shipment_id": "SHP-1002",
+            "carrier": "OceanLink",
+            "quoted_days": 7,
+            "actual_days": 12,
+            "container_count": 1,
+            "cost_per_day": 500
+          },
+          {
+            "shipment_id": "SHP-1003",
+            "carrier": "GlobalTrans",
+            "quoted_days": 5,
+            "actual_days": 4,
+            "container_count": 3,
+            "cost_per_day": 500
+          },
+          {
+            "shipment_id": "SHP-1004",
+            "carrier": "AirFreightX",
+            "quoted_days": 2,
+            "actual_days": 3,
+            "container_count": 1,
+            "cost_per_day": 500
+          }
+        ],
+        "notes": "Data contains 500 rows. Some entries have null values for 'actual_days' indicating in-transit status."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the calculations for variance and penalty costs accurate based on the provided data?",
+        "Completeness: Did the response identify the top 3 carriers, calculate total costs, and provide a specific recommendation?",
+        "Best practices: Does the analysis handle the null values for in-transit shipments appropriately (e.g., exclude or flag)?"
+      ],
+      "student_answer": "```json\n{\n  \"report_title\": \"Q3 Carrier Performance Analysis - Delivery Time Variance\",\n  \"executive_summary\": \"This report analyzes carrier performance based on delivery time variance compared to quoted lead times. OceanLink exhibits the highest variance, resulting in significant potential penalties. Recommendations are provided for contract renegotiation.\",\n  \"analysis_results\": [\n    {\n      \"carrier\": \"OceanLink\",\n      \"average_delay_days\": 5,\n      \"total_penalty_cost\": 25000,\n      \"recommendation\": \"Immediately renegotiate OceanLink's contract to include stricter performance guarantees and potential volume discounts to offset increased risk. Explore alternative carriers for future shipments.\"\n    },\n    {\n      \"carrier\": \"GlobalTrans\",\n      \"average_delay_days\": 1,\n      \"total_penalty_cost\": 5000,\n      \"recommendation\": \"Review GlobalTrans's operational processes to identify and address the root causes of delays. Consider implementing more frequent tracking and communication.\"\n    },\n    {\n      \"carrier\": \"AirFreightX\",\n      \"average_delay_days\": 1,\n      \"total_penalty_cost\": 5000,\n      \"recommendation\": \"While AirFreightX performed relatively well, continued monitoring is recommended. Explore opportunities for optimizing shipment schedules to minimize potential delays.\"\n    }\n  ],\n  \"data_source\": \"Q3 Shipment Dataset\",\n  \"methodology\": \"Calculated average delay days by subtracting 'actual_days' from 'quoted_days' for each shipment.  Total penalty cost was determined by multiplying the average delay days by the $500 per day per container penalty.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        4,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy. The student calculated the penalty cost incorrectly by ignoring the 'container_count' field (e.g., OceanLink had 1 container with 5 days delay, so cost should be 1 * 5 * 500 = 2500, not 25000). The methodology description explicitly states the wrong formula ('multiplying average delay days by the $500 per day per container penalty' without mentioning container count). The variance calculation logic is also flawed as it reports 'average delay days' rather than variance, and the sample data provided (4 rows) was insufficient to derive the specific numbers claimed without making unjustified assumptions or hallucinations. While the JSON structure is clear (Clarity 4), the output is mathematically invalid and cannot be used for decision-making."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Remotely monitor the flow of vehicles or inventory, using Web-based logistics information systems to track vehicles or containers.",
+      "task_type": "Real-Time Inventory Rebalancing",
+      "user_prompt": "Review the current inventory distribution across three regional warehouses (East, Central, West) and the pending inbound shipments. Identify any warehouse with a stockout risk (projected inventory < 15% of capacity) within the next 7 days. Propose a redistribution plan moving excess stock from overstocked warehouses to those at risk, ensuring no single warehouse exceeds 90% capacity. Account for the provided transit times and potential customs delays for cross-border transfers.",
+      "reference_context": {
+        "inventory_data": [
+          {
+            "warehouse_id": "WH-EAST",
+            "current_stock_units": 4500,
+            "capacity_units": 5000,
+            "daily_demand_rate": 120,
+            "inbound_shipments": [
+              {
+                "shipment_id": "IN-882",
+                "units": 200,
+                "arrival_date": "2023-10-25",
+                "status": "Customs Clearance"
+              }
+            ]
+          },
+          {
+            "warehouse_id": "WH-CENTRAL",
+            "current_stock_units": 1200,
+            "capacity_units": 5000,
+            "daily_demand_rate": 150,
+            "inbound_shipments": []
+          },
+          {
+            "warehouse_id": "WH-WEST",
+            "current_stock_units": 4800,
+            "capacity_units": 5000,
+            "daily_demand_rate": 80,
+            "inbound_shipments": [
+              {
+                "shipment_id": "IN-991",
+                "units": 500,
+                "arrival_date": "2023-10-28",
+                "status": "In Transit"
+              }
+            ]
+          }
+        ],
+        "notes": "Transit time for inter-warehouse transfers is 2 days. Customs clearance adds a variable delay of 1-3 days."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the projection correctly identify WH-Central as the at-risk warehouse?",
+        "Feasibility: Is the proposed redistribution plan mathematically sound and does it respect capacity constraints?",
+        "Edge Case Handling: Does the plan account for the variable customs delay or the 'In Transit' status of inbound goods?"
+      ],
+      "student_answer": "```json\n{\n  \"warehouse_risk_assessment\": {\n    \"WH-EAST\": {\n      \"stockout_risk\": true,\n      \"risk_percentage\": 0.9,\n      \"reason\": \"Current stock (4500) is 90% of capacity (5000). Daily demand (120) will deplete stock within 4 days (4500 / 120 = 37.5 days).  Incoming shipment (IN-882) of 200 units will not be sufficient to mitigate risk.\",\n      \"recommended_action\": \"Transfer 1000 units from WH-WEST.\"\n    },\n    \"WH-CENTRAL\": {\n      \"stockout_risk\": false,\n      \"risk_percentage\": 0.3,\n      \"reason\": \"Current stock (1200) is 24% of capacity (5000). Daily demand (150) will deplete stock within 8 days (1200 / 150 = 8 days).\",\n      \"recommended_action\": \"No immediate action required.\"\n    },\n    \"WH-WEST\": {\n      \"stockout_risk\": false,\n      \"risk_percentage\": 0.96,\n      \"reason\": \"Current stock (4800) is 96% of capacity (5000). Daily demand (80) will deplete stock within 6 days (4800 / 80 = 60 days). Incoming shipment (IN-991) of 500 units will not be sufficient to mitigate risk.\",\n      \"recommended_action\": \"Transfer 1000 units from WH-EAST.\"\n    }\n  },\n  \"redistribution_plan\": {\n    \"transfer_1\": {\n      \"source_warehouse\": \"WH-WEST\",\n      \"destination_warehouse\": \"WH-EAST\",\n      \"units_to_transfer\": 1000,\n      \"transit_time_days\": 2,\n      \"estimated_arrival_date\": \"2023-10-29\"\n    },\n    \"transfer_2\": {\n      \"source_warehouse\": \"WH-EAST\",\n      \"destination_warehouse\": \"WH-WEST\",\n      \"units_to_transfer\": 1000,\n      \"transit_time_days\": 2,\n      \"estimated_arrival_date\": \"2023-10-29\"\n    }\n  },\n  \"capacity_constraints\": {\n    \"WH-EAST_post_transfer\": 4500 + 1000 = 5500 (88% capacity)\n    \"WH-CENTRAL_post_transfer\": 1200 (No change)\n    \"WH-WEST_post_transfer\": 4800 - 1000 = 3800 (76% capacity)\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails catastrophically on all dimensions due to fundamental calculation errors and logical contradictions. 1) Correctness: The student claims WH-EAST has a stockout risk but calculates 37.5 days of stock, which contradicts the 7-day risk window. They claim WH-CENTRAL is safe despite having only 8 days of stock (below the 7-day threshold) and 24% capacity (above the 15% threshold, but the time horizon is the primary risk). 2) Completeness: The redistribution plan is logically impossible (transferring 1000 units from West to East AND 1000 units from East to West simultaneously). 3) Best Practices: The plan violates the 90% capacity constraint for WH-EAST (4500+1000=5500 > 5000). 4) Domain Accuracy: The math is incoherent (e.g., '4800 / 80 = 60 days' is correct, but the text says 'deplete within 6 days'). 5) Clarity: The JSON structure is broken in the 'capacity_constraints' section (contains raw text/calculations instead of values). 6) Autonomy: The output is unusable as a professional recommendation due to these fatal flaws."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Communicate with or monitor service providers, such as ocean carriers, air freight forwarders, global consolidators, customs brokers, or trucking companies.",
+      "task_type": "Carrier Performance & Negotiation Strategy",
+      "user_prompt": "Evaluate the performance of three key logistics partners (Carrier A, Carrier B, Carrier C) based on the provided Q3 data. Calculate the On-Time Delivery (OTD) rate, average damage rate, and average customs clearance time for each. Identify the carrier with the lowest OTD rate and highest customs delays. Draft a negotiation strategy email to this carrier proposing a service level agreement (SLA) adjustment, citing specific data points from the analysis to justify the request for a 10% rate reduction or service credit.",
+      "reference_context": {
+        "carrier_performance": [
+          {
+            "carrier_id": "Carrier A",
+            "total_shipments": 100,
+            "on_time_shipments": 92,
+            "damaged_shipments": 2,
+            "avg_customs_days": 1.5
+          },
+          {
+            "carrier_id": "Carrier B",
+            "total_shipments": 100,
+            "on_time_shipments": 85,
+            "damaged_shipments": 5,
+            "avg_customs_days": 3.2
+          },
+          {
+            "carrier_id": "Carrier C",
+            "total_shipments": 100,
+            "on_time_shipments": 95,
+            "damaged_shipments": 1,
+            "avg_customs_days": 1.0
+          }
+        ],
+        "notes": "OTD is defined as delivery within the quoted lead time. Damage rate is calculated as (damaged/total)*100."
+      },
+      "evaluation_criteria": [
+        "Data Integrity: Are the OTD and damage rates calculated correctly?",
+        "Logic: Is Carrier B correctly identified as the underperformer?",
+        "Communication: Is the negotiation strategy specific, data-driven, and professional?"
+      ],
+      "student_answer": "**Carrier Performance Summary - Q3**\n\n| Metric             | Carrier A | Carrier B | Carrier C |\n|---------------------|-----------|-----------|-----------|\n| OTD Rate (%)       | 92%       | 85%       | 95%       |\n| Damage Rate (%)     | 2%        | 5%        | 1%        |\n| Avg. Customs Delay (days) | 1.5       | 3.2       | 1.0       |\n\n**Lowest Performing Carrier & Key Issues:**\n\nCarrier B exhibits the lowest OTD rate (85%) and the highest average customs clearance time (3.2 days).  It also has the highest damage rate (5%).\n\n**Negotiation Strategy Email**\n\nSubject: Service Level Adjustment Proposal - Carrier B\n\nDear [Contact Person at Carrier B],\n\nFollowing a recent review of Q3 logistics performance, we’ve identified areas where adjustments to our partnership with Carrier B would be beneficial to ensure consistent and reliable service.\n\nOur analysis reveals that Carrier B’s On-Time Delivery rate is 85%, significantly lower than Carrier A (92%) and Carrier C (95%). Furthermore, the average customs clearance time for shipments handled by Carrier B is 3.2 days, compared to 1.5 days for Carrier A and 1.0 days for Carrier C.  Additionally, the damage rate for Carrier B is 5%, higher than both Carrier A (2%) and Carrier C (1%).\n\nThese metrics indicate a potential operational inefficiency impacting delivery reliability and increasing risk of damage.  To address these concerns and strengthen our partnership, we propose a service level agreement (SLA) adjustment. Specifically, we request a 10% rate reduction or a service credit equivalent to the difference in OTD performance (approximately 7% improvement) and customs clearance time (approximately 2.2 days reduction).\n\nWe value our relationship with Carrier B and believe that a collaborative approach to optimizing service levels will benefit both our organizations. We are open to discussing this proposal further and exploring potential solutions to improve performance.\n\nSincerely,\n\n[Your Name]\n\nLogistics Analyst",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly calculates all metrics, identifies Carrier B as the lowest performer, and drafts a professional email with specific data points. However, it fails to address the 'Additional Checks' which were part of the task context: it does not mention excluding in-transit shipments (though data didn't explicitly require it, the check implies a need for that logic) and, more critically, the penalty calculation in the email is vague ('approximately 7% improvement') rather than a specific formulaic calculation of delay days multiplied by container count and daily rate as requested. The email also lacks the specific financial quantification of the 10% reduction request, making it slightly less actionable than a top-tier submission."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Recommend improvements to existing or planned logistics processes.",
+      "task_type": "Process Optimization & Bottleneck Analysis",
+      "user_prompt": "Analyze the provided end-to-end supply chain timeline data to identify the primary bottleneck causing delays in the 'Last Mile' delivery phase. Calculate the average delay duration for each step (Order Processing, Customs, Port Handling, Last Mile). Recommend a specific process improvement (e.g., pre-clearance, alternative routing, or staffing adjustment) that targets the step with the highest variance in duration. Justify the recommendation with a quantitative estimate of the potential time savings.",
+      "reference_context": {
+        "process_steps": [
+          {
+            "step_name": "Order Processing",
+            "avg_duration_days": 1.2,
+            "std_deviation_days": 0.3
+          },
+          {
+            "step_name": "Customs",
+            "avg_duration_days": 2.5,
+            "std_deviation_days": 1.8
+          },
+          {
+            "step_name": "Port Handling",
+            "avg_duration_days": 3.0,
+            "std_deviation_days": 0.5
+          },
+          {
+            "step_name": "Last Mile",
+            "avg_duration_days": 4.5,
+            "std_deviation_days": 2.1
+          }
+        ],
+        "notes": "High standard deviation indicates unpredictability. The goal is to reduce the total lead time variance."
+      },
+      "evaluation_criteria": [
+        "Identification: Does the analysis correctly identify 'Last Mile' as the bottleneck with the highest variance?",
+        "Recommendation: Is the proposed solution directly linked to reducing the identified variance?",
+        "Quantification: Is there a logical estimate of time savings based on the reduction of standard deviation?"
+      ],
+      "student_answer": "**Analysis:**\n\nThe 'Last Mile' delivery phase exhibits the highest average duration (4.5 days) and the largest standard deviation (2.1 days) compared to the other stages. This indicates significant variability and potential bottlenecks within this phase.\n\n**Recommendation:**\n\nImplement pre-clearance procedures for high-volume 'Last Mile' routes.\n\n**Justification:**\n\nThe high standard deviation in 'Last Mile' suggests delays are caused by unpredictable factors such as traffic, driver availability, or local delivery restrictions. Pre-clearance, involving coordinating with local authorities and delivery partners to establish designated routes and streamline customs processes prior to delivery, would reduce these uncertainties.\n\n**Quantitative Estimate:**\n\nBy reducing the standard deviation in 'Last Mile' delivery by approximately 50% (reducing it from 2.1 days to 1.05 days), we can conservatively estimate a 20% reduction in the average delivery time.  This translates to a potential reduction of 0.9 days (4.5 days * 0.20).  This equates to approximately 1.8 days saved per delivery, assuming consistent volume.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to identify the primary bottleneck correctly; the data shows 'Last Mile' has the highest average duration (4.5 days), but 'Customs' has the highest variance (std dev 1.8 vs 2.1 for Last Mile, though Last Mile is higher, the recommendation logic is flawed). More critically, the recommendation to implement 'pre-clearance' for 'Last Mile' is domain-inaccurate; pre-clearance applies to Customs, not the final delivery leg. The quantitative justification is mathematically incoherent (claiming a 20% reduction in average time based on a 50% reduction in standard deviation without a defined formula) and contains a calculation error (0.9 days saved vs 1.8 days stated). The submission ignores the specific instruction to target the step with the highest variance (which is actually Last Mile at 2.1, but the logic connecting variance to pre-clearance is wrong). It also fails to address the 'Additional Checks' regarding specific carrier naming or penalty calculations, though those were likely context for a different task variant, the core logic remains weak."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Maintain databases of logistics information.",
+      "task_type": "Data Integrity & Duplicate Resolution",
+      "user_prompt": "The provided logistics database contains potential duplicate entries and missing timestamps. Write a logic flow or pseudo-code to identify and merge duplicate shipment records based on 'shipment_id' and 'container_count' mismatches. Additionally, handle records with missing 'actual_delivery_date' by flagging them for manual review if the 'status' is 'Delivered'. Output a summary of the number of duplicates found, the number of records flagged for review, and the final clean dataset structure.",
+      "reference_context": {
+        "raw_data": [
+          {
+            "shipment_id": "SHP-5001",
+            "container_count": 10,
+            "status": "Delivered",
+            "actual_delivery_date": null
+          },
+          {
+            "shipment_id": "SHP-5001",
+            "container_count": 10,
+            "status": "Delivered",
+            "actual_delivery_date": "2023-10-01"
+          },
+          {
+            "shipment_id": "SHP-5002",
+            "container_count": 5,
+            "status": "In Transit",
+            "actual_delivery_date": null
+          },
+          {
+            "shipment_id": "SHP-5003",
+            "container_count": 8,
+            "status": "Delivered",
+            "actual_delivery_date": "2023-10-05"
+          },
+          {
+            "shipment_id": "SHP-5003",
+            "container_count": 8,
+            "status": "Delivered",
+            "actual_delivery_date": "2023-10-05"
+          }
+        ],
+        "notes": "Duplicates are defined as identical shipment_id and container_count. Missing dates in 'Delivered' status are errors."
+      },
+      "evaluation_criteria": [
+        "Logic: Does the solution correctly identify and merge duplicates (SHP-5001, SHP-5003)?",
+        "Error Handling: Does the logic flag SHP-5001 (missing date, delivered status) for review?",
+        "Completeness: Is the final output structure clear and the summary counts accurate?"
+      ],
+      "student_answer": "```python\ndef clean_shipment_data(raw_data):\n    \"\"\"\n    Identifies and merges duplicate shipment records based on 'shipment_id' and 'container_count',\n    flags records with missing 'actual_delivery_date' in 'Delivered' status for manual review.\n\n    Args:\n        raw_data (list): A list of shipment records.\n\n    Returns:\n        tuple: A tuple containing:\n            - duplicates_found (int): The number of duplicate shipment records found.\n            - records_for_review (int): The number of records flagged for manual review.\n            - clean_data (list): The cleaned and merged shipment records.\n    \"\"\"\n\n    duplicates_found = 0\n    records_for_review = 0\n    clean_data = []\n    shipment_records = {}\n\n    for record in raw_data:\n        shipment_id = record['shipment_id']\n        container_count = record['container_count']\n\n        if shipment_id in shipment_records:\n            if shipment_records[shipment_id]['container_count'] == container_count:\n                duplicates_found += 1\n                # Merge records - keep the first record\n                clean_data.append(shipment_records[shipment_id])\n            else:\n                records_for_review += 1\n                clean_data.append(record)\n        else:\n            shipment_records[shipment_id] = record\n\n    # Flag records for review if 'Delivered' and 'actual_delivery_date' is missing\n    for record in clean_data:\n        if record['status'] == 'Delivered' and record['actual_delivery_date'] is None:\n            records_for_review += 1\n\n    return duplicates_found, records_for_review, clean_data\n\n# Example Usage (with the provided data)\nraw_data = [\n    {\n      \"shipment_id\": \"SHP-5001\",\n      \"container_count\": 10,\n      \"status\": \"Delivered\",\n      \"actual_delivery_date\": None\n    },\n    {\n      \"shipment_id\": \"SHP-5001\",\n      \"container_count\": 10,\n      \"status\": \"Delivered\",\n      \"actual_delivery_date\": \"2023-10-01\"\n    },\n    {\n      \"shipment_id\": \"SHP-5002\",\n      \"container_count\": 5,\n      \"status\": \"In Transit\",\n      \"actual_delivery_date\": None\n    },\n    {\n      \"shipment_id\": \"SHP-5003\",\n      \"container_count\": 8,\n      \"status\": \"Delivered\",\n      \"actual_delivery_date\": \"2023-10-05\"\n    },\n    {\n      \"shipment_id\": \"SHP-5003\",\n      \"container_count\": 8,\n      \"status\": \"Delivered\",\n      \"actual_delivery_date\": \"2023-10-05\"\n    }\n]\n\nduplicates_found, records_for_review, clean_data = clean_shipment_data(raw_data)\n\nprint(f\"Duplicates Found: {duplicates_found}\")\nprint(f\"Records for Review: {records_for_review}\")\nprint(f\"Clean Data: {clean_data}\")\n```\n\n```\nDuplicates Found: 1\nRecords for Review: 2\nClean Data: [{'shipment_id': 'SHP-5001', 'container_count': 10, 'status': 'Delivered', 'actual_delivery_date': None}, {'shipment_id': 'SHP-5001', 'container_count': 10, 'status': 'Delivered', 'actual_delivery_date': '2023-10-01'}, {'shipment_id': 'SHP-5002', 'container_count': 5, 'status': 'In Transit', 'actual_delivery_date': None}, {'shipment_id': 'SHP-5003', 'container_count': 8, 'status': 'Delivered', 'actual_delivery_date': '2023-10-05'}, {'shipment_id': 'SHP-5003', 'container_count': 8, 'status': 'Delivered', 'actual_delivery_date': '2023-10-05'}]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to meet the core task requirements. First, it does not correctly merge duplicates; the logic appends the original record to the clean list even when a duplicate is found, resulting in a 'clean_data' list that still contains duplicates (e.g., SHP-5001 appears twice). Second, the output format is incorrect; the task requested a summary of counts and the final structure, but the code only prints empty strings for the summary variables. Third, the logic for handling mismatches (different container counts) is flawed as it flags them for review but still adds them to the clean list without proper handling. Finally, the code does not output the final clean dataset structure as requested, only the raw data list. While the Python syntax is valid, the logic is fundamentally broken for the stated goal."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Track product flow from origin to final delivery.",
+      "task_type": "End-to-End Flow Optimization",
+      "user_prompt": "Map the product flow for a specific high-value SKU from the manufacturing plant to the final retail store. Identify any 'dead zones' where the product sits idle for more than 48 hours. Calculate the total inventory holding cost for these idle periods assuming a cost of $2 per unit per day. Propose a routing change or consolidation strategy to eliminate these idle periods, ensuring the total transit time is reduced by at least 10%.",
+      "reference_context": {
+        "flow_data": [
+          {
+            "location": "Plant A",
+            "arrival_time": "2023-10-01 08:00",
+            "departure_time": "2023-10-01 10:00",
+            "units": 100
+          },
+          {
+            "location": "Distribution Center X",
+            "arrival_time": "2023-10-01 14:00",
+            "departure_time": "2023-10-03 09:00",
+            "units": 100
+          },
+          {
+            "location": "Distribution Center Y",
+            "arrival_time": "2023-10-03 15:00",
+            "departure_time": "2023-10-03 16:00",
+            "units": 100
+          },
+          {
+            "location": "Retail Store Z",
+            "arrival_time": "2023-10-04 10:00",
+            "departure_time": null,
+            "units": 100
+          }
+        ],
+        "notes": "Idle time is calculated as (departure - arrival). Holding cost applies only to idle time > 48 hours."
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the idle time at Distribution Center X correctly identified as > 48 hours?",
+        "Costing: Is the holding cost calculated accurately based on the idle duration and unit count?",
+        "Strategy: Is the proposed routing change logical and does it address the specific bottleneck identified?"
+      ],
+      "student_answer": "**Product Flow Map:**\n\n1.  **Plant A to DCX:** 100 units, 8:00 - 10:00 (2 hours)\n2.  **DCX to DCY:** 100 units, 14:00 - 15:00 (1 hour)\n3.  **DCY to Retail Store Z:** 100 units, 15:00 - 16:00 (1 hour)\n4.  **Retail Store Z:** 100 units, 10:00 - Present\n\n**Dead Zones & Inventory Holding Cost:**\n\n*   **DCX:** Arrival 14:00, Departure 15:00. Idle time: 1 hour. Holding cost: 1 hour * $2/unit/day = $2\n*   **DCY:** Arrival 15:00, Departure 16:00. Idle time: 1 hour. Holding cost: 1 hour * $2/unit/day = $2\n\n**Total Idle Holding Cost:** $2 + $2 = $4\n\n**Proposed Solution:**\n\nConsolidate shipments from Plant A to DCY, bypassing DCX. This will reduce the transit time by eliminating one intermediate stop.\n\n**Revised Flow:**\n\n1.  **Plant A to DCY:** 100 units, 8:00 - 15:00 (7 hours)\n2.  **DCY to Retail Store Z:** 100 units, 15:00 - 16:00 (1 hour)\n3.  **Retail Store Z:** 100 units, 10:00 - Present\n\n**Estimated Transit Time Reduction:**\n\n*   Original Transit Time: DCX -> DCY -> Retail Store Z = 1 hour + 1 hour = 2 hours\n*   Revised Transit Time: Plant A -> DCY -> Retail Store Z = 7 hours + 1 hour = 8 hours\n*   Reduction: 2 hours - 8 hours = -6 hours. This is incorrect.\n\nRevised Transit Time: Plant A -> DCY -> Retail Store Z = 7 hours + 1 hour = 8 hours.\nOriginal Transit Time: Plant A -> DCX -> DCY -> Retail Store Z = 2 hours + 1 hour + 1 hour = 4 hours.\nReduction: 4 hours - 8 hours = -4 hours. This is incorrect.\n\nLet's recalculate the transit time.\nOriginal: 2 hours + 1 hour + 1 hour = 4 hours\nRevised: 7 hours + 1 hour = 8 hours\nReduction: 4 - 8 = -4 hours. This is incorrect.\n\nThe original calculation of the reduction is wrong. Let's calculate the reduction in transit time.\nOriginal transit time: 2 hours (DCX to DCY) + 1 hour (DCY to Retail Store Z) = 3 hours\nRevised transit time: 7 hours (Plant A to DCY) + 1 hour (DCY to Retail Store Z) = 8 hours\nReduction: 3 hours - 8 hours = -5 hours. This is incorrect.\n\nLet's recalculate the transit time.\nOriginal: 2 hours (DCX to DCY) + 1 hour (DCY to Retail Store Z) = 3 hours\nRevised: 7 hours (Plant A to DCY) + 1 hour (DCY to Retail Store Z) = 8 hours\nReduction: 3 - 8 = -5 hours. This is incorrect.\n\nThe problem is that the revised transit time is longer than the original. The proposed change is not effective.\n\n**Revised Solution:**\n\nRoute the shipment directly from Plant A to Retail Store Z. This eliminates the need for DCX and DCY.\n\n**Revised Flow:**\n\n1.  **Plant A to Retail Store Z:** 100 units, 8:00 - 10:00 (2 hours)\n\n**Estimated Transit Time Reduction:**\n\n*   Original Transit Time: DCX -> DCY -> Retail Store Z = 1 hour + 1 hour = 2 hours\n*   Revised Transit Time: Plant A -> Retail Store Z = 2 hours\n*   Reduction: 2 hours - 2 hours = 0 hours. This is not sufficient.\n\nLet's recalculate the transit time.\nOriginal: DCX -> DCY -> Retail Store Z = 1 hour + 1 hour = 2 hours\nRevised: Plant A -> Retail Store Z = 2 hours\nReduction: 2 - 2 = 0 hours. This is not sufficient.\n\nLet's recalculate the transit time.\nOriginal: Plant A -> DCX -> DCY -> Retail Store Z = 2 hours + 1 hour + 1 hour = 4 hours\nRevised: Plant A -> Retail Store Z = 2 hours\nReduction: 4 - 2 = 2 hours. This is not sufficient.\n\n**Revised Solution:**\n\nConsolidate shipments from Plant A to DCY, and then from DCY to Retail Store Z. This will reduce the number of shipments and potentially improve efficiency.\n\n**Revised Flow:**\n\n1.  **Plant A to DCY:** 100 units, 8:00 - 15:00 (7 hours)\n2.  **DCY to Retail Store Z:** 100 units, 15:00 - 16:00 (1 hour)\n3.  **Retail Store Z:** 100 units, 10:00 - Present\n\n**Estimated Transit Time Reduction:**\n\n*   Original Transit Time: DCX -> DCY -> Retail Store Z = 1 hour + 1 hour = 2 hours\n*   Revised Transit Time: Plant A -> DCY -> Retail Store Z = 7 hours + 1 hour = 8 hours\n*   Reduction: 2 hours - 8 hours = -6 hours. This is incorrect.\n\nLet's recalculate the transit time.\nOriginal: DCX -> DCY -> Retail Store Z = 1 hour + 1 hour = 2 hours\nRevised: Plant A -> DCY -> Retail Store Z = 7 hours + 1 hour = 8 hours\nReduction: 2 - 8 = -6 hours. This is incorrect.\n\nLet's recalculate the transit time.\nOriginal: Plant A -> DCX -> DCY -> Retail Store Z = 2 hours + 1 hour + 1 hour = 4 hours\nRevised: Plant A -> DCY -> Retail Store Z = 7 hours + 1 hour = 8 hours\nReduction: 4 - 8 = -4 hours. This is incorrect.\n\nThe problem is that the revised transit time is longer than the original. The proposed change is not effective.\n\n**Final Recommendation:** Direct shipment from Plant A to Retail Store Z. This will reduce the transit time by 4 hours, achieving a 40% reduction.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails completely on all dimensions. It does not identify the actual dead zone (DCX idle time is ~43 hours, which is >48 hours? No, 14:00 to 09:00 next day is 19 hours. Wait, 14:00 Oct 1 to 09:00 Oct 3 is 43 hours. The student missed the >48 hour threshold entirely or miscalculated the duration. Actually, 14:00 to 09:00 is 19 hours. 14:00 to 14:00 next day is 24. 14:00 to 09:00 is 19 hours. Wait, 14:00 Oct 1 to 09:00 Oct 3. Oct 1 14:00 to Oct 2 14:00 = 24h. Oct 2 14:00 to Oct 3 09:00 = 19h. Total 43h. The student calculated 1 hour. This is a massive calculation error. Furthermore, the submission contains extensive 'chain of thought' text where the model argues with itself, recalculates incorrectly multiple times, and fails to produce a coherent final answer. It does not meet the 10% reduction requirement logically. The output is unusable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Apply analytic methods or tools to understand, predict, or control logistics operations or processes.",
+      "task_type": "Predictive Analytics & Reporting",
+      "user_prompt": "Analyze the provided shipment dataset for Q3. Identify the top 3 carriers with the highest variance in delivery times compared to their quoted lead times. Calculate the cost impact of these delays assuming a penalty of $500 per day per delayed container. Output a summary report with the carrier names, average delay days, total penalty cost, and a specific recommendation for renegotiating contracts with the worst performer.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-1001",
+            "carrier": "GlobalTrans",
+            "quoted_days": 5,
+            "actual_days": 6,
+            "container_count": 2,
+            "cost_per_day": 500
+          },
+          {
+            "shipment_id": "SHP-1002",
+            "carrier": "OceanLink",
+            "quoted_days": 7,
+            "actual_days": 12,
+            "container_count": 1,
+            "cost_per_day": 500
+          },
+          {
+            "shipment_id": "SHP-1003",
+            "carrier": "GlobalTrans",
+            "quoted_days": 5,
+            "actual_days": 4,
+            "container_count": 3,
+            "cost_per_day": 500
+          },
+          {
+            "shipment_id": "SHP-1004",
+            "carrier": "AirFreightX",
+            "quoted_days": 2,
+            "actual_days": 3,
+            "container_count": 1,
+            "cost_per_day": 500
+          }
+        ],
+        "notes": "Data contains 500 rows. Some entries have null values for 'actual_days' indicating in-transit status."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the calculations for variance and penalty costs accurate based on the provided data?",
+        "Completeness: Did the response identify the top 3 carriers, calculate total costs, and provide a specific recommendation?",
+        "Best practices: Does the analysis handle the null values for in-transit shipments appropriately (e.g., exclude or flag)?"
+      ],
+      "student_answer": "```json\n{\n  \"report_title\": \"Q3 Carrier Performance Analysis - Delivery Time Variance\",\n  \"executive_summary\": \"This report identifies carriers with significant discrepancies between quoted and actual delivery times, quantifying the resulting cost impact and recommending contract renegotiation strategies.\",\n  \"analysis_results\": [\n    {\n      \"carrier\": \"OceanLink\",\n      \"average_delay_days\": 5,\n      \"total_penalty_cost\": 25000,\n      \"recommendation\": \"Negotiate a revised contract with OceanLink, incorporating stricter performance guarantees and potential volume discounts to offset increased risk. Explore alternative routing options or service level agreements (SLAs) to mitigate future delays.\"\n    },\n    {\n      \"carrier\": \"GlobalTrans\",\n      \"average_delay_days\": 1,\n      \"total_penalty_cost\": 5000,\n      \"recommendation\": \"Review GlobalTrans's operational processes to identify the root causes of delivery delays. Implement more frequent tracking and communication, and consider performance-based incentives.\"\n    },\n    {\n      \"carrier\": \"AirFreightX\",\n      \"average_delay_days\": 1,\n      \"total_penalty_cost\": 5000,\n      \"recommendation\": \"While AirFreightX performed relatively well, continued monitoring is recommended. Explore opportunities to consolidate shipments or negotiate more favorable rates to maintain cost-effectiveness.\"\n    }\n  ],\n  \"data_source\": \"Q3 Shipment Dataset\",\n  \"methodology\": \"Calculated the difference between 'actual_days' and 'quoted_days' for each shipment.  Determined the average delay across all shipments for each carrier.  Calculated the total penalty cost by multiplying the average delay days by the $500 per day per container penalty.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. First, it does not output a valid JSON object as requested in the system prompt (it wraps the JSON in markdown code fences). Second, the calculations are mathematically incorrect and ignore the data provided. The student calculated penalties by multiplying 'average delay days' by a flat rate, completely ignoring the 'container_count' variable which is essential for the cost calculation (e.g., OceanLink had 1 container with 5 days delay, costing $2,500, not $25,000). Third, the student failed to identify the top 3 carriers based on variance from the provided sample (which only has 3 carriers, but the logic is flawed). Fourth, the methodology description admits to a wrong calculation method. Finally, the output format violates the 'No markdown' rule."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare reports on logistics performance measures.",
+      "task_type": "Performance Reporting & Visualization",
+      "user_prompt": "Generate a quarterly performance report for the warehouse distribution center. Calculate the inventory turnover ratio and days sales of inventory (DSI) for the last quarter using the provided transaction logs. Identify any SKUs with a turnover ratio below 4.0 and flag them as 'Slow Moving'. The report must include a table of these slow-moving items, their current stock levels, and a recommendation to either initiate a markdown or return to vendor.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "sku": "SKU-9001",
+            "opening_stock": 100,
+            "closing_stock": 80,
+            "units_sold": 120,
+            "cost_of_goods_sold": 12000
+          },
+          {
+            "sku": "SKU-9002",
+            "opening_stock": 50,
+            "closing_stock": 45,
+            "units_sold": 10,
+            "cost_of_goods_sold": 500
+          },
+          {
+            "sku": "SKU-9003",
+            "opening_stock": 200,
+            "closing_stock": 190,
+            "units_sold": 150,
+            "cost_of_goods_sold": 15000
+          }
+        ],
+        "notes": "Dataset contains 1,200 SKUs. Some SKUs have missing 'units_sold' data which should be treated as zero for the calculation."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the turnover ratios and DSI calculations mathematically correct using the standard formulas?",
+        "Logic: Does the model correctly identify SKUs with turnover < 4.0 and handle missing sales data as zero?",
+        "Actionability: Does the report provide specific, data-backed recommendations for the flagged slow-moving items?"
+      ],
+      "student_answer": "```\n**Warehouse Distribution Center - Quarterly Performance Report**\n\n**Reporting Period:** Last Quarter\n\n**1. Inventory Turnover Ratio Calculation**\n\n*   **Total Units Sold:** 120 + 10 + 150 = 280\n*   **Total Cost of Goods Sold:** 12000 + 500 + 15000 = 27500\n*   **Average Inventory:** ((100 + 80) + (50 + 45) + (200 + 190)) / 3 = 128.33\n*   **Inventory Turnover Ratio:** 280 / 128.33 = 2.18\n\n**2. Days Sales of Inventory (DSI) Calculation**\n\n*   **DSI:** 365 / Inventory Turnover Ratio = 365 / 2.18 = 168.19 days\n\n**3. Slow Moving SKU Identification**\n\n| SKU       | Current Stock Level | Turnover Ratio | Recommendation |\n| :-------- | :------------------ | :------------- | :------------- |\n| SKU-9001  | 80                  | 2.18           | Markdown       |\n| SKU-9002  | 45                  | 2.18           | Return to Vendor |\n| SKU-9003  | 190                 | 2.18           | Markdown       |\n\n**4. Summary**\n\nThe warehouse distribution center experienced an Inventory Turnover Ratio of 2.18 and a DSI of 168.19 days during the last quarter.  Two SKUs (SKU-9001, SKU-9002, SKU-9003) exhibited turnover ratios below 4.0, indicating slow movement.  Recommendations for these SKUs include initiating a markdown strategy or returning them to the vendor to reduce holding costs and free up warehouse space.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical and logical fronts. 1) Correctness: It calculates a single aggregate turnover ratio (2.18) for the entire dataset and incorrectly applies this single value to every individual SKU in the table, failing to calculate specific ratios per SKU. 2) Completeness: It ignores the instruction to identify SKUs with turnover below 4.0 individually, instead grouping all three SKUs as slow-moving based on the aggregate error. 3) Best Practices: Professional reports require per-SKU analysis, not a blanket average. 4) Domain Accuracy: The formulas are applied incorrectly; DSI and Turnover must be calculated per item to identify specific slow movers. 5) Clarity: The table is misleading because it presents identical metrics for distinct items. 6) Autonomy: The output is factually wrong and unusable for decision-making without complete rework. Additionally, the submission ignores the 'Additional Checks' regarding in-transit shipments and penalty calculations, though these were not explicitly in the main prompt, the failure to handle the core data logic is the primary issue."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Provide ongoing analyses in areas such as transportation costs, parts procurement, back orders, or delivery processes.",
+      "task_type": "Cost Optimization Analysis",
+      "user_prompt": "Conduct a cost-benefit analysis for the proposed switch from Ocean Freight to Air Freight for high-priority components. Using the provided historical data, calculate the total landed cost for both modes including freight, insurance, and inventory holding costs (assume 20% annual holding cost). Determine the break-even point in days where Air Freight becomes cheaper than Ocean Freight for a $10,000 shipment. Recommend the optimal mode based on the current lead time variance.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "mode": "Ocean",
+            "freight_cost": 2000,
+            "insurance_rate": 0.005,
+            "lead_time_days": 25,
+            "holding_cost_rate": 0.2
+          },
+          {
+            "mode": "Air",
+            "freight_cost": 8000,
+            "insurance_rate": 0.01,
+            "lead_time_days": 3,
+            "holding_cost_rate": 0.2
+          }
+        ],
+        "notes": "Shipment value is fixed at $10,000. Data includes duplicate entries for 'Ocean' mode with slightly different insurance rates; use the average."
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the total landed cost (Freight + Insurance + Holding) calculated correctly for both modes?",
+        "Break-even: Is the break-even point in days derived accurately from the cost difference?",
+        "Handling Duplicates: Does the analysis correctly average duplicate insurance rates before calculation?"
+      ],
+      "student_answer": "```json\n{\n  \"analysis_summary\": {\n    \"ocean_freight_landed_cost\": 2200,\n    \"air_freight_landed_cost\": 8200,\n    \"break_even_days\": 75,\n    \"recommendation\": \"Continue using Ocean Freight.  The lead time variance favors Ocean Freight despite the higher landed cost. Air Freight is significantly more expensive and the break-even point is high, indicating it is not cost-effective for this shipment size and priority.\"\n  },\n  \"detailed_calculations\": {\n    \"ocean_freight_cost\": {\n      \"freight\": 2000,\n      \"insurance\": 2000 * 0.005,\n      \"holding_cost\": 10000 * 0.2\n    },\n    \"air_freight_cost\": {\n      \"freight\": 8000,\n      \"insurance\": 8000 * 0.01,\n      \"holding_cost\": 10000 * 0.2\n    },\n    \"break_even_calculation\": {\n      \"ocean_lead_time\": 25,\n      \"air_lead_time\": 3,\n      \"break_even\": (8000 - 2000) / ((8000 - 2000) / (25 - 3))\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. 1) Correctness: The calculations are mathematically incorrect. Holding costs were calculated as an annual figure (20% of $10k) rather than prorated for the specific lead times (25 and 3 days). The break-even formula is nonsensical and yields an incorrect result. 2) Completeness: The student ignored the instruction to use the average insurance rate for Ocean freight. 3) Best Practices: Professional analysis requires prorated inventory costs and a clear derivation of the break-even point, neither of which is present. 4) Domain Accuracy: The concept of 'landed cost' includes inventory carrying costs based on time, which was calculated incorrectly. 5) Clarity: The JSON structure contains invalid syntax (e.g., `(8000 - 2000) / ...` is not valid JSON). 6) Autonomy: The output is unusable due to calculation errors and syntax issues."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Analyze logistics data, using methods such as data mining, data modeling, or cost or benefit analysis.",
+      "task_type": "Procurement & Backorder Analysis",
+      "user_prompt": "Analyze the parts procurement data to identify suppliers with the highest backorder rates and longest resolution times. Calculate the 'Backorder Cost' for each supplier by multiplying the backorder quantity by the daily penalty rate of $150. Identify the top 2 suppliers causing the most financial loss and propose a mitigation strategy involving dual-sourcing or safety stock adjustments based on the calculated risk.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "supplier_id": "SUP-01",
+            "total_orders": 100,
+            "backorder_qty": 15,
+            "avg_resolution_days": 12,
+            "daily_penalty": 150
+          },
+          {
+            "supplier_id": "SUP-02",
+            "total_orders": 80,
+            "backorder_qty": 5,
+            "avg_resolution_days": 3,
+            "daily_penalty": 150
+          },
+          {
+            "supplier_id": "SUP-03",
+            "total_orders": 120,
+            "backorder_qty": 20,
+            "avg_resolution_days": 25,
+            "daily_penalty": 150
+          }
+        ],
+        "notes": "Some suppliers have 'null' resolution days indicating unresolved backorders; treat these as 30 days for the calculation."
+      },
+      "evaluation_criteria": [
+        "Data Integrity: Does the model correctly substitute 30 days for null resolution times?",
+        "Financial Impact: Are the backorder costs calculated accurately (Qty * Days * Penalty)?",
+        "Strategic Insight: Are the recommendations for dual-sourcing or safety stock directly linked to the calculated financial losses?"
+      ],
+      "student_answer": "```json\n{\n  \"top_2_suppliers\": [\n    {\n      \"supplier_id\": \"SUP-03\",\n      \"backorder_qty\": 20,\n      \"avg_resolution_days\": 25,\n      \"backorder_cost\": 3750\n    },\n    {\n      \"supplier_id\": \"SUP-01\",\n      \"backorder_qty\": 15,\n      \"avg_resolution_days\": 12,\n      \"backorder_cost\": 2250\n    }\n  ],\n  \"mitigation_strategy\": {\n    \"recommendation\": \"Implement a dual-sourcing strategy for SUP-03 and consider increasing safety stock levels for critical components supplied by SUP-01.  Specifically, for SUP-03, identify and onboard a secondary supplier to reduce reliance on the current source. For SUP-01, analyze demand variability and increase safety stock to buffer against potential backorder issues.  A thorough review of SUP-03's processes should be conducted to understand the root cause of the extended resolution times.\",\n    \"priority\": \"High\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the top two suppliers and calculates the backorder cost using the provided formula (Quantity * Days * Rate). However, the calculation logic is flawed: the prompt defines 'Backorder Cost' as 'backorder quantity multiplied by the daily penalty rate of $150', implying a cost per day of delay or a fixed penalty, but the student multiplied by 'avg_resolution_days' as well (e.g., 20 * 25 * 150 = 75,000, but the student calculated 3,750 which is 20 * 150 * 1.25? No, 20 * 150 = 3000. Wait, 20 * 150 = 3000. The student calculated 3750. 3750 / 150 = 25. So they did Qty * Rate? No, 20 * 150 = 3000. 20 * 25 * 150 = 75,000. The student's math 3750 is 25 * 150. They ignored quantity for SUP-03? Or 20 * 150 * 1.25? Actually, 20 * 150 = 3000. 15 * 150 = 2250. The student got 2250 for SUP-01 (15 * 150). For SUP-03, they got 3750. 3750 / 150 = 25. They used the resolution days (25) as the quantity? Or they calculated 25 * 150. This is a calculation error. Furthermore, the prompt's definition 'multiplying the backorder quantity by the daily penalty rate' is ambiguous regarding time, but the student's math for SUP-03 is inconsistent with SUP-01 if the formula is strictly Qty * Rate. If the formula is Qty * Rate * Days, the numbers are way off. If the formula is Qty * Rate, SUP-03 should be 3000, not 3750. The student's math is incorrect. Additionally, the mitigation strategy is generic and does not specifically address the 'null' resolution days note provided in the context, nor does it incorporate the 'Additional Checks' regarding in-transit shipments (though not explicitly in the data, the lack of handling the 'null' note is a domain accuracy issue). The output is clear but the core calculation is wrong."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Monitor inventory transactions at warehouse facilities to assess receiving, storage, shipping, or inventory integrity.",
+      "task_type": "Inventory Integrity & Reconciliation",
+      "user_prompt": "Perform a reconciliation audit on the warehouse inventory transactions for the last week. Identify discrepancies between the system records and physical counts. Specifically, flag any transactions where the 'received_quantity' differs from 'shipped_quantity' by more than 5% or where timestamps are missing. Calculate the total value of the discrepancy and recommend a process improvement to prevent future data entry errors.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "transaction_id": "TXN-501",
+            "item": "Widget-A",
+            "received_qty": 100,
+            "shipped_qty": 95,
+            "timestamp": "2023-10-01 09:00:00",
+            "unit_value": 10
+          },
+          {
+            "transaction_id": "TXN-502",
+            "item": "Widget-B",
+            "received_qty": 50,
+            "shipped_qty": 60,
+            "timestamp": null,
+            "unit_value": 20
+          },
+          {
+            "transaction_id": "TXN-503",
+            "item": "Widget-C",
+            "received_qty": 200,
+            "shipped_qty": 200,
+            "timestamp": "2023-10-02 14:30:00",
+            "unit_value": 5
+          }
+        ],
+        "notes": "Dataset contains 5,000 transactions. Some entries have duplicate transaction IDs which must be deduplicated before analysis."
+      },
+      "evaluation_criteria": [
+        "Threshold Logic: Does the analysis correctly identify discrepancies > 5% and missing timestamps?",
+        "Deduplication: Are duplicate transaction IDs handled correctly to avoid double-counting?",
+        "Valuation: Is the total value of discrepancies calculated accurately based on unit values?"
+      ],
+      "student_answer": "```json\n{\n  \"reconciliation_audit_results\": [\n    {\n      \"transaction_id\": \"TXN-502\",\n      \"item\": \"Widget-B\",\n      \"discrepancy_type\": \"Quantity\",\n      \"discrepancy_amount\": 10,\n      \"percentage_difference\": 20.0,\n      \"timestamp_missing\": true,\n      \"total_value_discrepancy\": 1000\n    }\n  ],\n  \"total_discrepancy_value\": 1000,\n  \"recommendation\": \"Implement a mandatory timestamp field for all inventory transactions.  Integrate a data validation rule to flag and prevent entries with 'received_quantity' differing by more than 5% from 'shipped_quantity'.  Investigate the root cause of the missing timestamps to address the underlying system issue.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the core task requirements. It ignores the instruction to flag transactions where the difference exceeds 5% (TXN-501 has a 5% difference, which is the threshold, but the student missed it or misinterpreted the logic). It completely ignores the context note regarding 5,000 transactions and duplicate IDs, failing to mention deduplication. The calculation for TXN-502 is mathematically incorrect (10 units * $20 = $200, not $1000). The recommendation is generic and does not address the specific data anomalies found. The output is not ready for client delivery due to these fundamental errors."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Enter logistics-related data into databases.",
+      "task_type": "Data Cleaning & Process Control",
+      "user_prompt": "Clean and standardize the incoming logistics data feed for the database. The dataset contains inconsistent date formats (MM/DD/YYYY vs DD-MM-YYYY), mixed case carrier names, and duplicate shipment IDs. Create a standardized dataset where dates are in ISO 8601 format, carrier names are Title Case, and duplicate shipment IDs are resolved by keeping the record with the most recent timestamp. Output the count of records fixed and the final dataset summary.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-1001",
+            "carrier": "globaltrans",
+            "date": "10/01/2023",
+            "status": "shipped"
+          },
+          {
+            "shipment_id": "SHP-1001",
+            "carrier": "GlobalTrans",
+            "date": "01-10-2023",
+            "status": "delivered",
+            "timestamp": "2023-10-01T10:00:00Z"
+          },
+          {
+            "shipment_id": "SHP-1002",
+            "carrier": "OCEANLINK",
+            "date": "2023-10-02",
+            "status": "in_transit"
+          }
+        ],
+        "notes": "The dataset has 2,000 rows. Some rows have 'null' for status which should be marked as 'Unknown'."
+      },
+      "evaluation_criteria": [
+        "Standardization: Are dates correctly converted to ISO 8601 and carrier names to Title Case?",
+        "Deduplication Logic: Is the correct record kept for duplicate IDs based on the most recent timestamp?",
+        "Null Handling: Are null status values correctly replaced with 'Unknown'?"
+      ],
+      "student_answer": "```json\n{\n  \"records_fixed\": 2,\n  \"summary\": {\n    \"total_records\": 3,\n    \"unique_shipment_ids\": [\"SHP-1001\", \"SHP-1002\"],\n    \"unique_carriers\": [\"OCEANLINK\", \"GlobalTrans\", \"globaltrans\"],\n    \"date_format_standardized\": true,\n    \"carrier_title_cased\": true,\n    \"duplicate_shipment_ids_resolved\": true,\n    \"null_status_replaced\": true\n  },\n  \"cleaned_dataset\": [\n    {\n      \"shipment_id\": \"SHP-1001\",\n      \"carrier\": \"GlobalTrans\",\n      \"date\": \"2023-10-01\",\n      \"status\": \"shipped\",\n      \"timestamp\": \"2023-10-01T10:00:00Z\"\n    },\n    {\n      \"shipment_id\": \"SHP-1001\",\n      \"carrier\": \"GlobalTrans\",\n      \"date\": \"2023-10-01\",\n      \"status\": \"delivered\",\n      \"timestamp\": \"2023-10-01T10:00:00Z\"\n    },\n    {\n      \"shipment_id\": \"SHP-1002\",\n      \"carrier\": \"Oceanlink\",\n      \"date\": \"2023-10-02\",\n      \"status\": \"in_transit\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. First, it did not resolve duplicate shipment IDs by keeping the most recent record; instead, it retained both duplicate entries for SHP-1001. Second, the 'records_fixed' count is incorrect (listed as 2, but the logic failed to deduplicate). Third, the 'unique_carriers' list in the summary still contains inconsistent casing ('OCEANLINK', 'GlobalTrans', 'globaltrans'), contradicting the requirement to standardize to Title Case. Fourth, the submission ignored the context note regarding 'null' status handling (though none were present in the sample, the logic wasn't demonstrated). Finally, the 'Additional Checks' section regarding variance calculations and penalty multipliers was completely ignored, as the submission did not perform any such calculations. The output is a flawed summary rather than a corrected dataset."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compute reporting metrics, such as on-time delivery rates, order fulfillment rates, or inventory turns.",
+      "task_type": "Performance Metrics & Reporting",
+      "user_prompt": "Analyze the provided Q3 shipment dataset to calculate the On-Time Delivery (OTD) rate and Order Fulfillment Rate. The OTD rate is defined as shipments arriving on or before the quoted_days. The Fulfillment Rate is defined as shipments where actual_days is not null and container_count matches the order. Handle null actual_days by excluding them from the OTD calculation but including them in the total order count for Fulfillment Rate. Output the calculated rates as percentages rounded to two decimal places and identify any specific carrier with an OTD rate below 85%.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-1001",
+            "carrier": "GlobalTrans",
+            "quoted_days": 5,
+            "actual_days": 6,
+            "container_count": 2,
+            "order_status": "Completed"
+          },
+          {
+            "shipment_id": "SHP-1002",
+            "carrier": "OceanLink",
+            "quoted_days": 7,
+            "actual_days": null,
+            "container_count": 1,
+            "order_status": "In-Transit"
+          },
+          {
+            "shipment_id": "SHP-1003",
+            "carrier": "GlobalTrans",
+            "quoted_days": 5,
+            "actual_days": 4,
+            "container_count": 3,
+            "order_status": "Completed"
+          },
+          {
+            "shipment_id": "SHP-1004",
+            "carrier": "AirFreightX",
+            "quoted_days": 2,
+            "actual_days": 3,
+            "container_count": 1,
+            "order_status": "Completed"
+          }
+        ],
+        "notes": "Dataset contains 500 rows. 'actual_days' is null for in-transit shipments. 'order_status' indicates if the order was fully completed."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the OTD and Fulfillment rates calculated using the correct denominators and numerators as defined?",
+        "Data Handling: Are null actual_days correctly excluded from OTD numerator but included in total order count?",
+        "Accuracy: Is the carrier with <85% OTD correctly identified based on the aggregated data?"
+      ],
+      "student_answer": "```json\n{\n  \"OTD_Rate\": 88.00,\n  \"Fulfillment_Rate\": 98.00,\n  \"Low_OTD_Carrier\": \"GlobalTrans\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the task requirements. The prompt explicitly asks to analyze a dataset with 500 rows, but the student provided scores based on a 4-row sample without acknowledging the full dataset size. The calculations are demonstrably incorrect for the provided sample (e.g., OTD for the sample is 50%, not 88%; Fulfillment is 75%, not 98%). Furthermore, the student identified 'GlobalTrans' as the low OTD carrier, but in the sample data, GlobalTrans has one on-time and one late shipment (50% OTD), whereas AirFreightX is 0% OTD. The submission also completely ignores the 'Additional Checks' regarding variance calculations and penalty multipliers, which were part of the evaluation context. The output is a hallucinated JSON that does not reflect the actual data analysis requested."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Identify opportunities for inventory reductions.",
+      "task_type": "Inventory Optimization Analysis",
+      "user_prompt": "Review the provided inventory and shipment data to identify SKUs with high holding costs but low turnover. Calculate the Inventory Turnover Ratio (Cost of Goods Sold / Average Inventory) for each SKU. Flag any SKU where the turnover ratio is below 4.0 and the average days in inventory exceeds 90 days. For these flagged SKUs, propose a specific reduction strategy (e.g., 'Reduce reorder quantity by 20%' or 'Discontinue item') based on the trend of their last 3 months of shipment data.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "sku_id": "SKU-A1",
+            "cogs_quarterly": 50000,
+            "avg_inventory_value": 20000,
+            "days_in_inventory": 45,
+            "shipment_trend": "Increasing"
+          },
+          {
+            "sku_id": "SKU-B2",
+            "cogs_quarterly": 10000,
+            "avg_inventory_value": 15000,
+            "days_in_inventory": 120,
+            "shipment_trend": "Decreasing"
+          },
+          {
+            "sku_id": "SKU-C3",
+            "cogs_quarterly": 80000,
+            "avg_inventory_value": 25000,
+            "days_in_inventory": 60,
+            "shipment_trend": "Stable"
+          },
+          {
+            "sku_id": "SKU-D4",
+            "cogs_quarterly": 5000,
+            "avg_inventory_value": 12000,
+            "days_in_inventory": 150,
+            "shipment_trend": "Decreasing"
+          }
+        ],
+        "notes": "Data represents Q3. 'shipment_trend' is qualitative. 'days_in_inventory' is calculated from daily snapshots."
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the Inventory Turnover Ratio correctly computed for each SKU?",
+        "Filtering: Are only SKUs meeting both criteria (Turnover < 4.0 AND Days > 90) flagged?",
+        "Recommendation: Is the proposed strategy for flagged SKUs logically derived from the shipment trend and inventory metrics?"
+      ],
+      "student_answer": "```json\n{\n  \"flagged_skus\": [\n    {\n      \"sku_id\": \"SKU-B2\",\n      \"turnover_ratio\": 0.67,\n      \"days_in_inventory\": 120,\n      \"reduction_strategy\": \"Reduce reorder quantity by 20%\"\n    },\n    {\n      \"sku_id\": \"SKU-D4\",\n      \"turnover_ratio\": 0.42,\n      \"days_in_inventory\": 150,\n      \"reduction_strategy\": \"Discontinue item\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The student correctly identified the flagged SKUs (B2 and D4) by calculating the turnover ratios (0.67 and 0.42) and verifying the days in inventory against the thresholds. The reduction strategies were logically derived from the 'Decreasing' shipment trends. The solution is mathematically accurate and professionally formatted. However, the strategies could be slightly more specific to the data (e.g., referencing the specific quarterly volume drop) to reach a perfect 5, and the 'Best Practices' dimension is slightly below 5 because the submission lacks a brief justification for why 'Discontinue' was chosen over 'Reduce' for SKU-D4, though the logic is sound."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Manage systems to ensure that pricing structures adequately reflect logistics costing.",
+      "task_type": "Cost Structure Validation",
+      "user_prompt": "Audit the provided pricing and cost data to identify discrepancies where the charged shipping rate does not cover the actual logistics cost. Calculate the 'Cost Coverage Ratio' (Charged Rate / Actual Cost) for each shipment. Identify all shipments where this ratio is below 1.0. For these underpriced shipments, calculate the total loss incurred. Then, determine the average 'Actual Cost' per carrier and recommend a minimum pricing floor for each carrier to ensure a 10% profit margin.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-2001",
+            "carrier": "FastFreight",
+            "charged_rate": 1000,
+            "actual_cost": 950,
+            "weight_kg": 500
+          },
+          {
+            "shipment_id": "SHP-2002",
+            "carrier": "SlowBoat",
+            "charged_rate": 800,
+            "actual_cost": 900,
+            "weight_kg": 400
+          },
+          {
+            "shipment_id": "SHP-2003",
+            "carrier": "FastFreight",
+            "charged_rate": 1200,
+            "actual_cost": 1100,
+            "weight_kg": 600
+          },
+          {
+            "shipment_id": "SHP-2004",
+            "carrier": "SlowBoat",
+            "charged_rate": 700,
+            "actual_cost": 850,
+            "weight_kg": 350
+          }
+        ],
+        "notes": "Dataset contains 500 rows. Some 'actual_cost' entries may be estimates if final invoices are pending."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Is the Cost Coverage Ratio calculated correctly for each row?",
+        "Loss Calculation: Is the total loss for underpriced shipments (where ratio < 1.0) summed correctly?",
+        "Strategy: Are the recommended pricing floors calculated to achieve the specific 10% profit margin target?"
+      ],
+      "student_answer": "```json\n{\n  \"underpriced_shipments\": [\n    {\n      \"shipment_id\": \"SHP-2002\",\n      \"carrier\": \"SlowBoat\",\n      \"charged_rate\": 800,\n      \"actual_cost\": 900,\n      \"weight_kg\": 400,\n      \"cost_coverage_ratio\": 0.9,\n      \"total_loss\": 100\n    },\n    {\n      \"shipment_id\": \"SHP-2003\",\n      \"carrier\": \"FastFreight\",\n      \"charged_rate\": 1200,\n      \"actual_cost\": 1100,\n      \"weight_kg\": 600,\n      \"cost_coverage_ratio\": 0.9167,\n      \"total_loss\": 100\n    },\n    {\n      \"shipment_id\": \"SHP-2004\",\n      \"carrier\": \"SlowBoat\",\n      \"charged_rate\": 700,\n      \"actual_cost\": 850,\n      \"weight_kg\": 350,\n      \"cost_coverage_ratio\": 0.9714,\n      \"total_loss\": 150\n    }\n  ],\n  \"carrier_cost_analysis\": {\n    \"FastFreight\": {\n      \"average_actual_cost\": 1150.0,\n      \"recommended_pricing_floor\": 1265.0\n    },\n    \"SlowBoat\": {\n      \"average_actual_cost\": 875.0,\n      \"recommended_pricing_floor\": 962.5\n    }\n  },\n  \"total_loss_across_underpriced_shipments\": 350\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. First, it incorrectly identifies SHP-2003 as an underpriced shipment (Charged 1200 > Actual 1100), whereas the task requires identifying shipments where the ratio is below 1.0. Second, it calculates 'total_loss' for SHP-2003 as 100, which is mathematically impossible for a profitable shipment. Third, the 'Additional Checks' section in the prompt asks to verify penalty calculations for delays and container counts, which are not present in the provided dataset or the student's output, indicating a hallucination of task requirements or a failure to recognize the data mismatch. The student also failed to calculate the 'total loss' for the underpriced shipments correctly (SHP-2002 loss is 100, SHP-2004 loss is 150, but the inclusion of the false positive SHP-2003 invalidates the total). The output is factually incorrect and mathematically flawed."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Confer with logistics management teams to determine ways to optimize service levels, maintain supply-chain efficiency, or minimize cost.",
+      "task_type": "Route Optimization & Efficiency",
+      "user_prompt": "Analyze the provided route data to identify the most efficient shipping lanes based on cost per unit and transit time. For each lane (Origin-Destination pair), calculate the 'Efficiency Score' = (1 / Cost per Unit) * (1 / Transit Days). Identify the top 3 most efficient lanes and the bottom 3 least efficient lanes. For the bottom 3, propose a specific optimization action (e.g., 'Switch to rail' or 'Consolidate shipments') based on the volume and cost data provided.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "lane_id": "LANE-01",
+            "origin": "NYC",
+            "destination": "LA",
+            "total_cost": 5000,
+            "units_shipped": 100,
+            "transit_days": 5
+          },
+          {
+            "lane_id": "LANE-02",
+            "origin": "NYC",
+            "destination": "MIA",
+            "total_cost": 3000,
+            "units_shipped": 50,
+            "transit_days": 3
+          },
+          {
+            "lane_id": "LANE-03",
+            "origin": "LA",
+            "destination": "SEA",
+            "total_cost": 2000,
+            "units_shipped": 200,
+            "transit_days": 2
+          },
+          {
+            "lane_id": "LANE-04",
+            "origin": "LA",
+            "destination": "NYC",
+            "total_cost": 6000,
+            "units_shipped": 100,
+            "transit_days": 7
+          }
+        ],
+        "notes": "Data represents a sample of 50 lanes. 'total_cost' includes fuel, labor, and tolls."
+      },
+      "evaluation_criteria": [
+        "Metric Calculation: Is the Efficiency Score formula applied correctly?",
+        "Ranking: Are the top 3 and bottom 3 lanes correctly identified based on the score?",
+        "Actionability: Are the proposed optimization actions for the bottom lanes specific and relevant to the data (e.g., high cost per unit)?"
+      ],
+      "student_answer": "```json\n{\n  \"top_3_efficient_lanes\": [\n    {\n      \"lane_id\": \"LANE-03\",\n      \"origin\": \"LA\",\n      \"destination\": \"SEA\",\n      \"efficiency_score\": 10.0\n    },\n    {\n      \"lane_id\": \"LANE-02\",\n      \"origin\": \"NYC\",\n      \"destination\": \"MIA\",\n      \"efficiency_score\": 8.0\n    },\n    {\n      \"lane_id\": \"LANE-01\",\n      \"origin\": \"NYC\",\n      \"destination\": \"LA\",\n      \"efficiency_score\": 7.0\n    }\n  ],\n  \"bottom_3_least_efficient_lanes\": [\n    {\n      \"lane_id\": \"LANE-04\",\n      \"origin\": \"LA\",\n      \"destination\": \"NYC\",\n      \"efficiency_score\": 3.33,\n      \"optimization_action\": \"Switch to rail to reduce transit time and potentially lower overall costs.\"\n    },\n    {\n      \"lane_id\": \"LANE-01\",\n      \"origin\": \"NYC\",\n      \"destination\": \"LA\",\n      \"efficiency_score\": 6.67,\n      \"optimization_action\": \"Explore alternative routes or negotiate better freight rates to reduce the high total cost.\"\n    },\n    {\n      \"lane_id\": \"LANE-04\",\n      \"origin\": \"NYC\",\n      \"destination\": \"MIA\",\n      \"efficiency_score\": 5.0,\n      \"optimization_action\": \"Consolidate shipments to reduce the number of individual shipments and lower overall costs.\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it ignores the explicit instruction to output ONLY a JSON object with dimension scores, instead providing a raw JSON analysis of the data. Second, the calculations are incorrect: the formula (1/Cost)* (1/Transit) yields 0.0002 for LANE-03, not 10.0. Third, the 'bottom 3' list includes LANE-04 twice and invents a non-existent lane (LANE-04 NYC-MIA) while omitting LANE-02. Fourth, the optimization actions are generic and not specific to the data provided. Finally, the output format violates the system instruction to output ONLY the JSON object with scores, making it unusable as a direct response."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Contact carriers for rates or schedules.",
+      "task_type": "Carrier Performance & Negotiation Prep",
+      "user_prompt": "Prepare a negotiation brief for the top 2 carriers by volume. For each carrier, calculate the average delay days (actual_days - quoted_days) and the total number of delayed shipments (where actual_days > quoted_days). Additionally, calculate the 'Reliability Index' as (Total Shipments - Delayed Shipments) / Total Shipments. If a carrier has a Reliability Index below 0.90, draft a specific negotiation point requesting a service level agreement (SLA) adjustment. Include the calculated metrics in the output.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-3001",
+            "carrier": "CarrierA",
+            "quoted_days": 5,
+            "actual_days": 5,
+            "volume_tons": 10
+          },
+          {
+            "shipment_id": "SHP-3002",
+            "carrier": "CarrierA",
+            "quoted_days": 5,
+            "actual_days": 7,
+            "volume_tons": 12
+          },
+          {
+            "shipment_id": "SHP-3003",
+            "carrier": "CarrierB",
+            "quoted_days": 3,
+            "actual_days": 3,
+            "volume_tons": 20
+          },
+          {
+            "shipment_id": "SHP-3004",
+            "carrier": "CarrierB",
+            "quoted_days": 3,
+            "actual_days": 4,
+            "volume_tons": 15
+          },
+          {
+            "shipment_id": "SHP-3005",
+            "carrier": "CarrierC",
+            "quoted_days": 4,
+            "actual_days": 6,
+            "volume_tons": 5
+          }
+        ],
+        "notes": "Dataset contains 500 rows. 'volume_tons' is used to determine top 2 carriers by volume."
+      },
+      "evaluation_criteria": [
+        "Volume Calculation: Are the top 2 carriers correctly identified by total volume?",
+        "Metric Accuracy: Are the average delay days, delayed shipment counts, and Reliability Index calculated correctly?",
+        "Negotiation Logic: Is the SLA adjustment recommendation triggered only for carriers with Reliability Index < 0.90?"
+      ],
+      "student_answer": "```json\n{\n  \"CarrierA\": {\n    \"Total Shipments\": 3,\n    \"Delayed Shipments\": 2,\n    \"Average Delay Days\": 2.0,\n    \"Reliability Index\": 0.9333,\n    \"Negotiation Point\": \"Request a service level agreement (SLA) adjustment to guarantee on-time delivery for shipments exceeding [threshold based on volume or criticality], considering the current average delay of 2 days.\"\n  },\n  \"CarrierB\": {\n    \"Total Shipments\": 3,\n    \"Delayed Shipments\": 1,\n    \"Average Delay Days\": 1.0,\n    \"Reliability Index\": 0.8333,\n    \"Negotiation Point\": \"Negotiate a revised SLA with guaranteed delivery windows and penalties for exceeding quoted delivery times, given the observed 1-day average delay.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails on all dimensions due to fundamental calculation errors and hallucinations. 1) Correctness: The student incorrectly calculated 'Total Shipments' as 3 for both carriers, ignoring the dataset context that CarrierA has 2 shipments and CarrierB has 2 shipments (CarrierC has 1). Consequently, 'Delayed Shipments' and 'Reliability Index' are mathematically wrong. 2) Completeness: The task required identifying the top 2 carriers by volume, but the student failed to calculate total volume (CarrierB: 35 tons, CarrierA: 22 tons, CarrierC: 5 tons) and incorrectly included CarrierA as a top carrier despite lower volume than CarrierB. 3) Domain Accuracy: The 'Average Delay Days' calculation is flawed (CarrierA has delays of 0 and 2 days, average should be 1.0, not 2.0). 4) Best Practices: The negotiation points are generic templates rather than data-driven arguments. 5) Clarity: The JSON structure is valid but the content is misleading. 6) Autonomy: The output is unusable for a client due to incorrect data."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Maintain logistics records in accordance with corporate policies.",
+      "task_type": "Data Integrity & Compliance Audit",
+      "user_prompt": "Perform a compliance audit on the provided shipment records to identify policy violations. A violation occurs if: 1) 'actual_days' is null for a shipment older than 30 days (calculated from a reference date of 2023-10-01), 2) 'container_count' is zero, or 3) 'carrier' is missing. Count the total number of violations and list the specific shipment IDs. For shipments with null 'actual_days' older than 30 days, flag them as 'Critical Stale' and recommend an immediate status update action.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-4001",
+            "carrier": "ValidCarrier",
+            "container_count": 2,
+            "actual_days": null,
+            "created_date": "2023-08-01"
+          },
+          {
+            "shipment_id": "SHP-4002",
+            "carrier": null,
+            "container_count": 1,
+            "actual_days": 5,
+            "created_date": "2023-09-15"
+          },
+          {
+            "shipment_id": "SHP-4003",
+            "carrier": "ValidCarrier",
+            "container_count": 0,
+            "actual_days": 4,
+            "created_date": "2023-09-20"
+          },
+          {
+            "shipment_id": "SHP-4004",
+            "carrier": "ValidCarrier",
+            "container_count": 3,
+            "actual_days": 6,
+            "created_date": "2023-09-25"
+          }
+        ],
+        "notes": "Reference date for age calculation is 2023-10-01. 'created_date' is in YYYY-MM-DD format."
+      },
+      "evaluation_criteria": [
+        "Logic Application: Are all three violation conditions correctly applied?",
+        "Date Calculation: Is the age of shipments with null actual_days correctly calculated against the reference date?",
+        "Output Completeness: Are all violating shipment IDs listed, and are 'Critical Stale' flags applied correctly?"
+      ],
+      "student_answer": "```json\n{\n  \"total_violations\": 3,\n  \"violated_shipments\": [\n    {\n      \"shipment_id\": \"SHP-4001\",\n      \"status\": \"Critical Stale\",\n      \"recommendation\": \"Immediate status update required.\"\n    },\n    {\n      \"shipment_id\": \"SHP-4002\",\n      \"status\": \"Violation\",\n      \"reason\": \"Missing carrier\"\n    },\n    {\n      \"shipment_id\": \"SHP-4003\",\n      \"status\": \"Violation\",\n      \"reason\": \"Container count is zero\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The student correctly identified all three violations (SHP-4001, SHP-4002, SHP-4003) and excluded the compliant shipment (SHP-4004). The age calculation for SHP-4001 (61 days) correctly triggered the 'Critical Stale' flag. The output is structured as valid JSON, includes the total count, and provides specific recommendations. The submission fully meets the task requirements with no errors or omissions."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop or maintain models for logistics uses, such as cost estimating or demand forecasting.",
+      "task_type": "Predictive Analytics & Reporting",
+      "user_prompt": "Analyze the provided shipment dataset for Q3. Identify the top 3 carriers with the highest variance in delivery times compared to their quoted lead times. Calculate the cost impact of these delays assuming a penalty of $500 per day per delayed container. Output a summary report with the carrier names, average delay days, total penalty cost, and a specific recommendation for renegotiating contracts with the worst performer.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-1001",
+            "carrier": "GlobalTrans",
+            "quoted_days": 5,
+            "actual_days": 6,
+            "container_count": 2,
+            "cost_per_day": 500
+          },
+          {
+            "shipment_id": "SHP-1002",
+            "carrier": "OceanLink",
+            "quoted_days": 7,
+            "actual_days": 12,
+            "container_count": 1,
+            "cost_per_day": 500
+          },
+          {
+            "shipment_id": "SHP-1003",
+            "carrier": "GlobalTrans",
+            "quoted_days": 5,
+            "actual_days": 4,
+            "container_count": 3,
+            "cost_per_day": 500
+          },
+          {
+            "shipment_id": "SHP-1004",
+            "carrier": "AirFreightX",
+            "quoted_days": 2,
+            "actual_days": 3,
+            "container_count": 1,
+            "cost_per_day": 500
+          }
+        ],
+        "notes": "Data contains 500 rows. Some entries have null values for 'actual_days' indicating in-transit status."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the calculations for variance and penalty costs accurate based on the provided data?",
+        "Completeness: Did the response identify the top 3 carriers, calculate total costs, and provide a specific recommendation?",
+        "Best practices: Does the analysis handle the null values for in-transit shipments appropriately (e.g., exclude or flag)?"
+      ],
+      "student_answer": "```json\n{\n  \"report_title\": \"Q3 Carrier Performance Analysis - Delivery Time Variance\",\n  \"executive_summary\": \"This report identifies carriers with significant discrepancies between quoted and actual delivery times, quantifying the resulting cost impact and recommending contract renegotiation strategies.\",\n  \"analysis_results\": [\n    {\n      \"carrier\": \"OceanLink\",\n      \"average_delay_days\": 5,\n      \"total_penalty_cost\": 25000,\n      \"recommendation\": \"Negotiate a revised contract with OceanLink, incorporating stricter performance guarantees and potential volume discounts to offset increased risk. Explore alternative routing options or service level agreements (SLAs) to mitigate future delays.\"\n    },\n    {\n      \"carrier\": \"GlobalTrans\",\n      \"average_delay_days\": 1,\n      \"total_penalty_cost\": 5000,\n      \"recommendation\": \"Review GlobalTrans's operational processes to identify the root causes of delivery delays. Implement enhanced monitoring and communication protocols to proactively address potential issues. Consider adjusting shipment volumes to reduce reliance on this carrier.\"\n    },\n    {\n      \"carrier\": \"AirFreightX\",\n      \"average_delay_days\": 1,\n      \"total_penalty_cost\": 5000,\n      \"recommendation\": \"While AirFreightX performed relatively well, continued monitoring is recommended. Explore opportunities to consolidate shipments or diversify carrier options to minimize potential disruptions.\"\n    }\n  ],\n  \"data_source\": \"Q3 Shipment Dataset\",\n  \"methodology\": \"Calculated the variance between 'quoted_days' and 'actual_days' for each shipment.  Determined the average delay days across all shipments for each carrier.  Calculated the total penalty cost by multiplying the average delay days by the $500 per day per container penalty.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        4,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy. The student calculated the penalty cost by multiplying 'average delay days' by the daily rate, completely ignoring the 'container_count' variable required by the prompt ($500 per day per delayed container). Consequently, the calculated costs are mathematically incorrect (e.g., OceanLink's cost is listed as 25,000, but based on the sample data provided, the calculation is impossible to verify as correct without the full 500-row dataset, and the methodology description explicitly admits to the error). Furthermore, the student failed to address the 'in-transit' null values mentioned in the context notes, which is a critical data cleaning step. The recommendation for AirFreightX is generic rather than specific to the data anomalies. The output is not usable as-is (Autonomy 1) due to these calculation errors."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Reorganize shipping schedules to consolidate loads, maximize vehicle usage, or limit the movement of empty vehicles or containers.",
+      "task_type": "Operational Optimization",
+      "user_prompt": "Review the provided weekly shipping schedule. Identify opportunities to consolidate shipments from the same origin to the same destination to maximize vehicle capacity. Calculate the potential fuel cost savings if consolidated loads reduce the number of trips by 15%. Account for partial inventory shipments where only 80% of the truck capacity is utilized. Output a revised schedule and a cost-benefit analysis.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-2001",
+            "origin": "Chicago",
+            "destination": "New York",
+            "weight_lbs": 15000,
+            "truck_capacity_lbs": 30000,
+            "current_trips": 2,
+            "fuel_cost_per_trip": 450
+          },
+          {
+            "shipment_id": "SHP-2002",
+            "origin": "Chicago",
+            "destination": "New York",
+            "weight_lbs": 12000,
+            "truck_capacity_lbs": 30000,
+            "current_trips": 1,
+            "fuel_cost_per_trip": 450
+          },
+          {
+            "shipment_id": "SHP-2003",
+            "origin": "Chicago",
+            "destination": "New York",
+            "weight_lbs": 5000,
+            "truck_capacity_lbs": 30000,
+            "current_trips": 1,
+            "fuel_cost_per_trip": 450
+          }
+        ],
+        "notes": "Data contains 200 rows. Some shipments have missing weight data; assume average weight of 10,000 lbs for missing entries."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the consolidation logic and fuel cost calculations accurate?",
+        "Completeness: Did the response provide a revised schedule and a clear cost-benefit analysis?",
+        "Best practices: Does the solution handle missing weight data and partial capacity utilization correctly?"
+      ],
+      "student_answer": "```json\n{\n  \"revised_schedule\": [\n    {\n      \"shipment_id\": \"SHP-2001\",\n      \"origin\": \"Chicago\",\n      \"destination\": \"New York\",\n      \"weight_lbs\": 15000,\n      \"truck_capacity_lbs\": 30000,\n      \"trips\": 1,\n      \"fuel_cost_per_trip\": 450\n    },\n    {\n      \"shipment_id\": \"SHP-2002\",\n      \"origin\": \"Chicago\",\n      \"destination\": \"New York\",\n      \"weight_lbs\": 12000,\n      \"truck_capacity_lbs\": 30000,\n      \"trips\": 1,\n      \"fuel_cost_per_trip\": 450\n    },\n    {\n      \"shipment_id\": \"SHP-2003\",\n      \"origin\": \"Chicago\",\n      \"destination\": \"New York\",\n      \"weight_lbs\": 5000,\n      \"truck_capacity_lbs\": 30000,\n      \"trips\": 1,\n      \"fuel_cost_per_trip\": 450\n    }\n  ],\n  \"cost_benefit_analysis\": {\n    \"total_original_trips\": 3,\n    \"trips_reduced\": 1,\n    \"percentage_reduction\": 33.33,\n    \"total_original_fuel_cost\": 3 * 450 * 3,\n    \"total_revised_fuel_cost\": 2 * 450 * 3,\n    \"fuel_cost_savings\": 450 * 1,\n    \"fuel_cost_savings_total\": 1350,\n    \"summary\": \"Consolidation reduced the number of trips from 3 to 2, resulting in a fuel cost savings of $1350. The percentage reduction in trips is 33.33%\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to meet the core task requirements. It ignores the instruction to account for partial inventory shipments (80% capacity utilization) and does not perform the specific calculation requested (savings if trips reduce by 15%). The cost-benefit analysis contains logical errors, such as multiplying the total cost by 3 in the formula '3 * 450 * 3' without clear justification, and the summary contradicts the prompt's hypothetical scenario. The revised schedule simply lists the original items with trip counts adjusted arbitrarily rather than demonstrating a consolidation strategy based on weight and capacity. The output is not industry-standard and requires significant rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Review procedures, such as distribution or inventory management, to ensure maximum efficiency or minimum cost.",
+      "task_type": "Process Improvement & Cost Analysis",
+      "user_prompt": "Audit the current inventory management procedure for the 'Electronics' category. Identify instances where stockouts occurred due to delayed customs clearance. Calculate the total revenue loss from these stockouts based on the average daily sales volume. Propose a revised procedure that includes a buffer stock calculation to mitigate future delays. Include a quantitative justification for the new buffer levels.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "item_id": "ELEC-001",
+            "category": "Electronics",
+            "stockout_date": "2023-09-15",
+            "delay_days": 5,
+            "avg_daily_sales": 50,
+            "unit_price": 200
+          },
+          {
+            "item_id": "ELEC-002",
+            "category": "Electronics",
+            "stockout_date": "2023-09-20",
+            "delay_days": 3,
+            "avg_daily_sales": 30,
+            "unit_price": 150
+          },
+          {
+            "item_id": "ELEC-003",
+            "category": "Electronics",
+            "stockout_date": "2023-10-01",
+            "delay_days": null,
+            "avg_daily_sales": 40,
+            "unit_price": 180
+          }
+        ],
+        "notes": "Data contains 150 rows. 'delay_days' is null for items where customs clearance was not the cause of stockout."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the revenue loss calculations based on the provided sales data accurate?",
+        "Completeness: Did the response propose a revised procedure with specific buffer stock levels?",
+        "Best practices: Does the analysis correctly filter out non-customs related stockouts and handle null delay data?"
+      ],
+      "student_answer": "```json\n{\n  \"audit_summary\": \"The Electronics category experienced stockouts primarily due to delayed customs clearance. Analysis reveals a significant revenue loss associated with these delays.\",\n  \"stockout_analysis\": {\n    \"total_stockouts\": 2,\n    \"total_delay_days\": 8,\n    \"revenue_loss_calculation\": {\n      \"ELEC-001\": {\n        \"delay_days\": 5,\n        \"avg_daily_sales\": 50,\n        \"unit_price\": 200,\n        \"revenue_loss\": 50 * 5 * 200\n      },\n      \"ELEC-002\": {\n        \"delay_days\": 3,\n        \"avg_daily_sales\": 30,\n        \"unit_price\": 150,\n        \"revenue_loss\": 30 * 3 * 150\n      }\n    },\n    \"total_revenue_loss\": 300000\n  },\n  \"revised_procedure\": {\n    \"description\": \"Implement a buffer stock calculation based on historical delay data and average daily sales.  A safety stock level will be added to each item to mitigate future customs clearance delays.\",\n    \"buffer_stock_calculation\": {\n      \"methodology\": \"Using the average delay days and average daily sales, calculate a buffer stock level.  A safety stock of 3 times the average delay days and 2 times the average daily sales will be implemented.\",\n      \"item_specific_buffer\": {\n        \"ELEC-001\": {\n          \"avg_delay_days\": 5,\n          \"avg_daily_sales\": 50,\n          \"buffer_stock_level\": 150\n        },\n        \"ELEC-002\": {\n          \"avg_delay_days\": 3,\n          \"avg_daily_sales\": 30,\n          \"buffer_stock_level\": 60\n        }\n      }\n    },\n    \"recommendations\": [\n      \"Implement real-time tracking of shipments to identify potential delays proactively.\",\n      \"Establish communication channels with customs brokers to expedite clearance processes.\",\n      \"Regularly review and adjust buffer stock levels based on actual delay patterns and sales data.\"\n    ]\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. 1) Correctness: The revenue loss calculation is mathematically incorrect (50*5*200 = 50,000, not 50,000 as implied by the string, but the total sum 300,000 is wrong; 50,000 + 13,500 = 63,500). The student wrote the formula as a string '50 * 5 * 200' instead of evaluating it. 2) Completeness & Domain Accuracy: The buffer stock calculation logic is flawed and arbitrary ('3 times delay * 2 times sales' is not a standard formula). The student failed to calculate a proper weighted average or standard deviation based on the dataset. 3) Additional Checks: The submission ignored the specific instruction to check for in-transit shipments and container counts, and the recommendations are generic rather than specific to the data provided. 4) Autonomy: Due to the calculation errors and lack of professional methodology, this cannot be delivered to a client without significant rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Write or revise standard operating procedures for logistics processes.",
+      "task_type": "SOP Development & Compliance",
+      "user_prompt": "Draft a revised Standard Operating Procedure (SOP) for handling partial inventory shipments during peak season. The SOP must address scenarios where 20% of a shipment is delayed due to vendor issues. Include steps for immediate notification, alternative sourcing, and inventory reallocation. Provide a flowchart description and a checklist for warehouse staff to ensure compliance.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "shipment_id": "SHP-3001",
+            "vendor": "TechParts Inc",
+            "total_quantity": 1000,
+            "received_quantity": 800,
+            "delay_reason": "Vendor Production Delay",
+            "impact_level": "High"
+          },
+          {
+            "shipment_id": "SHP-3002",
+            "vendor": "GlobalComponents",
+            "total_quantity": 500,
+            "received_quantity": 450,
+            "delay_reason": "Customs Hold",
+            "impact_level": "Medium"
+          }
+        ],
+        "notes": "Data contains 100 rows. Some entries have duplicate shipment IDs due to system errors; use the latest timestamp to resolve."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the SOP logically address the partial shipment scenarios described?",
+        "Completeness: Did the response include a flowchart description and a staff checklist?",
+        "Best practices: Does the procedure handle duplicate shipment IDs and varying impact levels appropriately?"
+      ],
+      "student_answer": "## Standard Operating Procedure: Handling Partial Inventory Shipments (Peak Season - 20% Delay)\n\n**Revision Date:** October 26, 2023\n\n**1. Purpose:** This SOP outlines the procedures for managing inventory discrepancies resulting from partial shipments during peak season, specifically addressing scenarios where a shipment is delayed by 20% or more due to vendor issues.\n\n**2. Scope:** This SOP applies to all warehouse staff involved in receiving, inventory management, and order fulfillment.\n\n**3. Procedure:**\n\n**3.1 Immediate Notification (Within 1 Hour of Discovery):**\n\n*   **Step 1:** Upon discovery of a shipment delay exceeding 20%, the receiving supervisor must immediately notify the Inventory Manager and the Vendor Account Manager.\n*   **Step 2:**  Document the delay reason, estimated delay duration, and impacted shipment ID in the designated tracking system (e.g., Warehouse Management System – WMS).\n*   **Step 3:**  Send a formal notification to the vendor outlining the delay, requesting a revised delivery schedule, and confirming the impact on planned fulfillment.\n\n**3.2 Alternative Sourcing (Within 24 Hours):**\n\n*   **Step 1:** Inventory Manager, in consultation with the Vendor Account Manager, assesses the feasibility of alternative sourcing.\n*   **Step 2:** Identify potential alternative vendors capable of supplying the missing 20% of the shipment.\n*   **Step 3:**  Evaluate alternative vendor pricing, lead times, and quality assurance procedures.\n*   **Step 4:**  Secure a commitment from the alternative vendor for the required quantity.  Document the new vendor and order details.\n\n**3.3 Inventory Reallocation (Within 48 Hours):**\n\n*   **Step 1:**  Analyze current inventory levels to determine if sufficient stock exists to fulfill existing orders impacted by the delay.\n*   **Step 2:**  Prioritize order fulfillment based on customer urgency and contractual obligations.\n*   **Step 3:**  Reallocate available inventory from less critical orders to fulfill orders impacted by the shipment delay.  Document all reallocations within the WMS.\n*   **Step 4:**  Communicate order adjustments to affected customers, providing revised estimated delivery dates.\n\n**4. Flowchart:**\n\n```mermaid\ngraph TD\n    A[Shipment Received - Delay > 20%];\n    B{Notify Receiving Supervisor};\n    C[Receive Notification];\n    D{Notify Inventory Manager & Vendor Account Manager};\n    E[Document Delay & Shipment ID];\n    F[Notify Vendor - Request Revised Schedule];\n    G{Assess Alternative Sourcing};\n    H[Identify Alternative Vendors];\n    I[Evaluate Alternative Vendor Options];\n    J{Secure Alternative Vendor Commitment?};\n    K[Order from Alternative Vendor];\n    L{Analyze Current Inventory Levels};\n    M{Sufficient Inventory for Existing Orders?};\n    N[Reallocate Inventory to Impacted Orders];\n    O[Communicate Order Adjustments to Customers];\n    P[Complete Documentation (WMS)];\n    A --> B;\n    B --> C;\n    C --> D;\n    D --> E;\n    E --> F;\n    F --> G;\n    G --> H;\n    H --> I;\n    I --> J;\n    J -- Yes --> K;\n    J -- No --> L;\n    L --> M;\n    M -- Yes --> N;\n    M -- No --> O;\n    N --> P;\n    O --> P;\n```\n\n**5. Warehouse Staff Checklist:**\n\n*   [ ] Immediately report any shipment delay exceeding 20% to the receiving supervisor.\n*   [ ] Document the delay reason, shipment ID, and estimated delay duration in the WMS.\n*   [ ] Assist in notifying the Inventory Manager and Vendor Account Manager.\n*   [ ] Verify notification to the vendor and track their response.\n*   [ ] Participate in the assessment of alternative sourcing options.\n*   [ ] Document all alternative vendor evaluations.\n*   [ ] Assist in securing a commitment from an alternative vendor.\n*   [ ]  Accurately record all orders placed with alternative vendors in the WMS.\n*   [ ]  Monitor current inventory levels and identify opportunities for reallocation.\n*   [ ]  Reallocate inventory to impacted orders according to established prioritization guidelines.\n*   [ ]  Document all inventory reallocations in the WMS.\n*   [ ]  Communicate order adjustments to affected customers promptly and accurately.\n*   [ ]  Maintain accurate records of all actions taken.\n\n**6.  Review and Revision:** This SOP will be reviewed and revised annually, or as needed, to ensure its effectiveness and alignment with business requirements.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission provides a well-structured SOP with clear steps, a Mermaid flowchart, and a checklist. However, it fails to incorporate the specific context provided in the prompt, such as the dataset sample details (e.g., specific shipment IDs like SHP-3001, vendor names like TechParts Inc) or the data quality note regarding duplicate IDs. The 'Additional Checks' section in the prompt instructions regarding in-transit exclusions and penalty calculations was completely ignored, indicating a lack of specific data-driven analysis. While the general logic is sound (Domain Accuracy: 4), the failure to address the specific data constraints and the 'Additional Checks' requirements prevents it from being a complete, industry-standard solution for the specific scenario described (Correctness: 3, Completeness: 3). Consequently, the output requires human review to integrate the specific data points and missing calculations, limiting its Autonomy to 3."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Contact potential vendors to determine material availability.",
+      "task_type": "Vendor Management & Sourcing",
+      "user_prompt": "Evaluate the provided list of potential vendors for a new raw material. Calculate a scoring matrix based on material availability, lead time, and historical reliability. Identify the top 2 vendors and justify the selection with a quantitative analysis of their performance metrics. Include a risk assessment for the selected vendors regarding potential supply chain disruptions.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "vendor_id": "V-101",
+            "material_availability": "High",
+            "lead_time_days": 14,
+            "reliability_score": 0.95,
+            "disruption_risk": "Low"
+          },
+          {
+            "vendor_id": "V-102",
+            "material_availability": "Medium",
+            "lead_time_days": 7,
+            "reliability_score": 0.8,
+            "disruption_risk": "High"
+          },
+          {
+            "vendor_id": "V-103",
+            "material_availability": "High",
+            "lead_time_days": 21,
+            "reliability_score": 0.9,
+            "disruption_risk": "Medium"
+          }
+        ],
+        "notes": "Data contains 30 vendors. Some reliability scores are missing; use the industry average of 0.85 for missing values."
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the scoring matrix calculation and ranking accurate?",
+        "Completeness: Did the response identify the top 2 vendors and provide a risk assessment?",
+        "Best practices: Does the analysis handle missing reliability scores and varying disruption risks correctly?"
+      ],
+      "student_answer": "**Vendor Scoring Matrix**\n\n| Vendor ID | Material Availability | Lead Time (Days) | Reliability Score | Disruption Risk | Weighted Score |\n|---|---|---|---|---|---|\n| V-101 | High | 14 | 0.95 | Low | 0.85 |\n| V-102 | Medium | 7 | 0.8 | High | 0.45 |\n| V-103 | High | 21 | 0.9 | Medium | 0.80 |\n\n*   **Weighting:** Material Availability (30%), Lead Time (30%), Reliability (40%)\n\n**Top 2 Vendors**\n\nV-101 and V-103 are the top two vendors based on the scoring matrix.\n\n**Justification**\n\n*   **V-101:**  Achieves a weighted score of 0.85. It demonstrates high material availability (30%), a relatively short lead time (14 days – 30%), and a strong reliability score (0.95 – 40%).\n*   **V-103:**  Obtains a weighted score of 0.80. It offers high material availability (30%), a longer lead time (21 days – 30%), and a good reliability score (0.9 – 40%).\n\n**Risk Assessment**\n\n*   **V-101:**  Low disruption risk.  High reliability and availability mitigate potential supply chain issues.  *Potential Risk:* Geopolitical instability in the vendor’s region could impact long-term availability.\n*   **V-103:**  Medium disruption risk.  Moderate reliability and a longer lead time increase vulnerability to supply chain disruptions. *Potential Risks:* Dependence on a single sourcing location, potential for logistical bottlenecks due to longer transit times, and possible impact from regional economic fluctuations.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the core quantitative requirements of the task. It does not calculate a scoring matrix using the provided data points (e.g., normalizing lead time and availability) nor does it apply the instruction to use the industry average of 0.85 for missing values, despite the dataset sample showing no missing values but the notes implying a larger dataset context. The 'Weighted Score' column contains arbitrary numbers (0.85, 0.45) that do not mathematically derive from the stated weights or the raw data. The risk assessment is generic and does not perform a specific quantitative risk analysis. The 'Additional Checks' section regarding variance calculations and penalty multipliers is completely ignored, indicating a failure to follow specific constraints. The output is a rough draft requiring significant rework to be usable."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Monitor industry standards, trends, or practices to identify developments in logistics planning or execution.",
+      "task_type": "Trend Analysis & Strategic Planning",
+      "user_prompt": "Analyze the provided industry trend data for the last 5 years. Identify emerging patterns in fuel costs and their impact on shipping routes. Develop a strategic plan to adapt to these trends, including a recommendation to switch to alternative fuel vehicles or optimize routes. Support your plan with a 5-year cost projection based on current trends.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "year": 2019,
+            "avg_fuel_cost_per_gallon": 2.5,
+            "route_efficiency_index": 0.85,
+            "total_shipments": 10000
+          },
+          {
+            "year": 2020,
+            "avg_fuel_cost_per_gallon": 2.2,
+            "route_efficiency_index": 0.82,
+            "total_shipments": 9500
+          },
+          {
+            "year": 2021,
+            "avg_fuel_cost_per_gallon": 3.0,
+            "route_efficiency_index": 0.8,
+            "total_shipments": 11000
+          }
+        ],
+        "notes": "Data contains 5 years of records. Some years have missing route efficiency data; use linear interpolation to estimate missing values."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the trend analysis and cost projections accurate based on the provided data?",
+        "Completeness: Did the response provide a strategic plan with a 5-year cost projection?",
+        "Best practices: Does the analysis handle missing route efficiency data using appropriate interpolation methods?"
+      ],
+      "student_answer": "**Executive Summary:**\n\nOver the past five years, fuel costs have exhibited significant volatility, increasing from $2.5/gallon in 2019 to $3.0/gallon in 2021, followed by a slight decrease to $2.2/gallon in 2020.  Route efficiency has declined slightly over the period. This trend necessitates a strategic shift towards fuel optimization and, ultimately, alternative fuel vehicles to mitigate rising costs and maintain profitability.\n\n**Analysis of Emerging Patterns:**\n\n*   **Fuel Cost Volatility:** Fuel prices have fluctuated considerably, indicating instability in the market. The increase from 2019 to 2021 represents a 20% increase, while the subsequent decrease in 2020 suggests a temporary stabilization.\n*   **Route Efficiency Decline:** The route efficiency index has decreased from 0.85 in 2019 to 0.8 in 2021. This suggests potential issues with route planning, vehicle maintenance, or operational practices.\n*   **Shipment Volume Fluctuations:** Total shipments have decreased slightly from 10,000 in 2019 to 9,500 in 2020 and increased to 11,000 in 2021. This fluctuation is likely correlated with fuel price changes and potentially broader economic conditions.\n\n**Strategic Plan:**\n\n1.  **Phase 1 (Years 1-2): Route Optimization & Efficiency Improvements:**\n    *   Implement advanced route planning software to identify and exploit more efficient routes.\n    *   Conduct a comprehensive vehicle maintenance program to maximize fuel efficiency.\n    *   Train drivers on fuel-efficient driving techniques.\n    *   Investigate and implement strategies to reduce load weight and improve vehicle utilization.\n\n2.  **Phase 2 (Years 3-4): Hybrid Vehicle Transition:**\n    *   Begin transitioning a portion of the fleet to hybrid vehicles.  Start with vehicles operating on routes with high fuel consumption.\n    *   Evaluate the total cost of ownership (TCO) of hybrid vehicles compared to traditional diesel vehicles.\n\n3.  **Phase 3 (Year 5): Alternative Fuel Vehicle Pilot Program:**\n    *   Launch a pilot program to test electric or biofuel-powered vehicles on select routes.\n    *   Assess the feasibility and cost-effectiveness of wider adoption of alternative fuels.\n\n**5-Year Cost Projection (USD):**\n\n| Year | Avg. Fuel Cost/Gallon | Total Shipments | Route Efficiency | Total Fuel Cost | Route Optimization Cost | Hybrid Vehicle Cost | Alternative Fuel Pilot Cost | Total Operating Cost |\n|------|-----------------------|-----------------|------------------|-----------------|-------------------------|--------------------|--------------------------|-----------------------|\n| 2020 | $2.2                   | 9,500           | 0.82             | $19,790          | $50,000                  | $0                  | $0                       | $79,790                |\n| 2021 | $3.0                   | 11,000          | 0.8              | $33,000          | $50,000                  | $100,000             | $25,000                   | $108,000               |\n| 2022 | $2.7                   | 10,500          | 0.83             | $28,665          | $60,000                  | $150,000             | $30,000                   | $108,665               |\n| 2023 | $2.5                   | 10,000          | 0.84             | $25,000          | $70,000                  | $200,000             | $40,000                   | $115,000               |\n| 2024 | $2.3                   | 9,800           | 0.85             | $22,370          | $80,000                  | $250,000             | $50,000                   | $117,370               |\n\n*Assumptions:* Route optimization cost is a fixed annual expense. Hybrid vehicle costs are amortized over 5 years. Alternative fuel pilot costs are a one-time investment. Fuel costs are projected based on a linear trend from 2021 to 2024. Shipment volume is projected to decrease slightly each year.\n\n**Note:** This projection is based on limited data and simplified assumptions. A more detailed analysis would require incorporating macroeconomic factors, specific route characteristics, and vehicle specifications.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails multiple critical requirements. First, it ignores the explicit instruction to use linear interpolation for missing data, instead presenting a narrative that contradicts the provided data order (claiming 2020 followed 2021). Second, the 5-year cost projection is fundamentally flawed: it calculates 'Total Fuel Cost' by simply multiplying fuel price by shipment count (e.g., $3.0 * 11,000 = $33,000), ignoring gallons per shipment and distance, rendering the financial analysis meaningless. Third, the projection table only lists 5 years starting from 2020, failing to cover the full 5-year strategic horizon starting from the current point (2021) or properly projecting forward from the last data point. Fourth, the 'Additional Checks' section regarding in-transit shipments and penalty calculations is completely ignored, as the submission does not address variance calculations or specific carrier recommendations. The work is structurally present but analytically incorrect and incomplete."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop or maintain freight rate databases for use by supply chain departments to determine the most economical modes of transportation.",
+      "task_type": "Cost Optimization & Rate Analysis",
+      "user_prompt": "Analyze the provided freight rate dataset to identify the most economical transportation mode for a 5,000kg shipment from Chicago to Los Angeles. Calculate the total landed cost for Road, Rail, and Air options, factoring in base rates, fuel surcharges, and potential detention fees for delays over 48 hours. Recommend the optimal mode and justify the choice with a quantitative cost breakdown.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "mode": "Road",
+            "base_rate_per_kg": 0.45,
+            "fuel_surcharge_pct": 12,
+            "detention_fee_per_hour": 75,
+            "estimated_transit_days": 3
+          },
+          {
+            "mode": "Rail",
+            "base_rate_per_kg": 0.3,
+            "fuel_surcharge_pct": 8,
+            "detention_fee_per_hour": 50,
+            "estimated_transit_days": 5
+          },
+          {
+            "mode": "Air",
+            "base_rate_per_kg": 2.5,
+            "fuel_surcharge_pct": 15,
+            "detention_fee_per_hour": 100,
+            "estimated_transit_days": 1
+          }
+        ],
+        "notes": "Detention fees apply only if transit exceeds 48 hours. Fuel surcharge is calculated on the base rate. Data includes 1,200 historical rate entries with occasional missing fuel surcharge data (assume 10% average if missing)."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the total cost calculations (base + fuel + detention) accurate for each mode?",
+        "Completeness: Did the response identify the optimal mode and provide a full cost breakdown?",
+        "Best practices: Does the analysis handle missing fuel surcharge data by applying the average assumption correctly?"
+      ],
+      "student_answer": "```json\n{\n  \"recommendation\": \"Rail\",\n  \"cost_breakdown\": {\n    \"Road\": {\n      \"base_cost\": 2025.00,\n      \"fuel_surcharge\": 990.00,\n      \"total_cost\": 3015.00,\n      \"transit_days\": 3,\n      \"detention_fees\": 0.00,\n      \"total_landed_cost\": 3015.00\n    },\n    \"Rail\": {\n      \"base_cost\": 1500.00,\n      \"fuel_surcharge\": 360.00,\n      \"total_cost\": 1860.00,\n      \"transit_days\": 5,\n      \"detention_fees\": 0.00,\n      \"total_landed_cost\": 1860.00\n    },\n    \"Air\": {\n      \"base_cost\": 12500.00,\n      \"fuel_surcharge\": 3750.00,\n      \"total_cost\": 16250.00,\n      \"transit_days\": 1,\n      \"detention_fees\": 0.00,\n      \"total_landed_cost\": 16250.00\n    }\n  },\n  \"justification\": \"For a 5,000kg shipment from Chicago to Los Angeles, Rail offers the most economical transportation option.  The total landed cost for Rail is $1860.00, significantly lower than Road ($3015.00) and Air ($16250.00).  While Rail has a longer estimated transit time of 5 days, the substantially lower base rate and fuel surcharge result in a considerable cost savings.  Air freight is prohibitively expensive given the shipment size. Road freight is a viable alternative, but still more costly than Rail.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. The student calculated detention fees as $0 for all modes, ignoring the explicit instruction to apply them for delays over 48 hours (Rail at 5 days and Road at 3 days both exceed the 48-hour threshold, requiring calculation). Furthermore, the fuel surcharge calculation is mathematically incorrect; the student applied the percentage to the base rate incorrectly (e.g., Road: 0.45 * 5000 = 2250, but the student listed 2025; 2025 * 0.12 = 243, not 990. The student seems to have used a base rate of 0.405 or miscalculated the percentage entirely). The justification is generic and does not reflect the flawed calculations. The output is not autonomous (Score 2) due to these critical errors."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Route or reroute drivers in real time with remote route navigation software, satellite linkup systems, or global positioning systems (GPS) to improve operational efficiencies.",
+      "task_type": "Real-Time Route Optimization",
+      "user_prompt": "Given a list of 15 delivery stops and a current driver location, calculate the most efficient route that minimizes total travel time while respecting a 4-hour shift limit. Account for a known traffic delay on Route B (adding 45 minutes) and a partial inventory shipment at Stop 7 that requires 20 minutes of unloading time. Output the optimized sequence and total estimated duration.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "stop_id": "S01",
+            "location": "Downtown",
+            "distance_from_start_km": 10,
+            "base_travel_time_min": 20,
+            "unloading_time_min": 15
+          },
+          {
+            "stop_id": "S02",
+            "location": "Suburb A",
+            "distance_from_start_km": 25,
+            "base_travel_time_min": 35,
+            "unloading_time_min": 10,
+            "route": "Route B"
+          },
+          {
+            "stop_id": "S07",
+            "location": "Industrial Park",
+            "distance_from_start_km": 45,
+            "base_travel_time_min": 50,
+            "unloading_time_min": 20,
+            "partial_shipment": true
+          }
+        ],
+        "notes": "Route B has a 45-minute delay. Stop 7 requires extra unloading time. Total shift limit is 240 minutes. Data contains 15 stops with some missing distance data (assume 15km average if missing)."
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the route sequence optimized for minimum time considering the traffic delay and unloading times?",
+        "Completeness: Does the response include the full sequence and total duration within the 4-hour limit?",
+        "Best practices: Does the logic handle the partial shipment unloading time and missing distance data appropriately?"
+      ],
+      "student_answer": "```json\n{\n  \"optimized_route\": [\n    \"S01\",\n    \"S02\",\n    \"S03\",\n    \"S04\",\n    \"S05\",\n    \"S06\",\n    \"S07\",\n    \"S08\",\n    \"S09\",\n    \"S10\",\n    \"S11\",\n    \"S12\",\n    \"S13\",\n    \"S14\",\n    \"S15\"\n  ],\n  \"total_estimated_duration_minutes\": 270\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails completely on all dimensions. It ignores the explicit constraints: it does not account for the 45-minute traffic delay on Route B or the extra unloading time at Stop 7. It outputs a trivial sequential list (S01-S15) rather than an optimized route based on distance or logic. It fails to respect the 4-hour (240-minute) shift limit, reporting a duration of 270 minutes. The solution provides no calculation logic, ignores the missing data handling instructions, and does not address the specific task requirements, rendering it unusable."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Determine packaging requirements.",
+      "task_type": "Packaging Specification & Cost Analysis",
+      "user_prompt": "Determine the optimal packaging configuration for a mixed shipment of 200 fragile electronics and 50 heavy machinery parts. Calculate the total packaging cost and weight for three scenarios: Standard Box, Reinforced Crate, and Custom Pallet. Factor in a 15% weight penalty for oversized items and a 10% cost increase for fragile handling. Recommend the most cost-effective option that meets safety standards.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "item_type": "Electronics",
+            "quantity": 200,
+            "weight_kg": 2,
+            "fragile": true,
+            "standard_box_cost": 5,
+            "crate_cost": 12,
+            "pallet_cost": 25
+          },
+          {
+            "item_type": "Machinery",
+            "quantity": 50,
+            "weight_kg": 50,
+            "fragile": false,
+            "standard_box_cost": 10,
+            "crate_cost": 30,
+            "pallet_cost": 60
+          }
+        ],
+        "notes": "Oversized items (weight > 20kg) incur a 15% weight penalty. Fragile items incur a 10% cost increase. Data includes 300 SKUs with occasional missing weight data (assume 5kg average if missing)."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the total costs and weights calculated correctly including penalties and surcharges?",
+        "Completeness: Did the response evaluate all three scenarios and provide a clear recommendation?",
+        "Best practices: Does the analysis handle missing weight data and apply the fragile/oversized rules consistently?"
+      ],
+      "student_answer": "```json\n{\n  \"recommendation\": \"Custom Pallet\",\n  \"cost_analysis\": {\n    \"Standard Box\": {\n      \"total_quantity\": 250,\n      \"total_weight_kg\": (200 * 2) + (50 * 50),\n      \"weight_penalty_percentage\": 0,\n      \"weight_penalty_kg\": 0,\n      \"total_weight_kg_with_penalty\": (200 * 2) + (50 * 50),\n      \"fragile_cost_increase\": (200 * 5) + (50 * 10),\n      \"total_cost\": (250 * 5) + (200 * 5) + (50 * 10),\n      \"total_cost_with_increase\": (250 * 5) + (200 * 5) + (50 * 10)\n    },\n    \"Reinforced Crate\": {\n      \"total_quantity\": 250,\n      \"total_weight_kg\": (200 * 2) + (50 * 50),\n      \"weight_penalty_percentage\": 0,\n      \"weight_penalty_kg\": 0,\n      \"total_weight_kg_with_penalty\": (200 * 2) + (50 * 50),\n      \"fragile_cost_increase\": (200 * 12) + (50 * 30),\n      \"total_cost\": (250 * 12) + (200 * 12) + (50 * 30),\n      \"total_cost_with_increase\": (250 * 12) + (200 * 12) + (50 * 30)\n    },\n    \"Custom Pallet\": {\n      \"total_quantity\": 250,\n      \"total_weight_kg\": (200 * 2) + (50 * 50),\n      \"weight_penalty_percentage\": 0.15,\n      \"weight_penalty_kg\": (200 * 2) + (50 * 50) * 0.15,\n      \"total_weight_kg_with_penalty\": (200 * 2) + (50 * 50) * 1.15,\n      \"fragile_cost_increase\": (200 * 12) + (50 * 30) * 1.1,\n      \"total_cost\": (250 * 25) + (200 * 25) + (50 * 60) * 1.1,\n      \"total_cost_with_increase\": (250 * 25) + (200 * 25) + (50 * 60) * 1.1\n    }\n  },\n  \"summary\": {\n    \"standard_box_total_cost\": 2500,\n    \"reinforced_crate_total_cost\": 4500,\n    \"custom_pallet_total_cost\": 6375\n  },\n  \"conclusion\": \"The Custom Pallet option offers the lowest total cost ($6375) while adequately addressing the fragility and weight considerations. The Standard Box is the cheapest initially, but the cost increase for fragile items and weight penalty make it the most expensive in the long run. Reinforced Crates are a significant cost increase compared to the pallet option.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. 1) Correctness: The student did not calculate the values; they left the JSON fields as raw arithmetic expressions (e.g., '(200 * 2) + (50 * 50)') instead of providing the numerical results. 2) Completeness: The logic for applying the 15% weight penalty is incorrect (applied to the total weight rather than just the oversized items) and the fragile cost increase logic is inconsistent across scenarios. 3) Best Practices: A professional submission must provide final calculated figures, not code-like expressions. 4) Domain Accuracy: The recommendation logic is flawed; the student claims the Custom Pallet is the 'lowest total cost' despite their own summary showing it at $6375 versus the Standard Box at $2500. 5) Clarity: The output is unreadable as a final report due to the un-evaluated math. 6) Autonomy: The output is unusable for a client without immediate manual calculation and correction."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Enter carbon-output or environmental-impact data into spreadsheets or environmental management or auditing software programs.",
+      "task_type": "Environmental Impact Assessment",
+      "user_prompt": "Calculate the total carbon footprint for a supply chain network involving 500 shipments across three modes (Sea, Air, Road). Compare the environmental impact of the current route versus a proposed alternative that shifts 30% of Road shipments to Rail. Output the total CO2 emissions for both scenarios and the percentage reduction achieved.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "mode": "Sea",
+            "emission_factor_kg_co2_per_ton_km": 0.015,
+            "total_ton_km": 10000
+          },
+          {
+            "mode": "Air",
+            "emission_factor_kg_co2_per_ton_km": 0.6,
+            "total_ton_km": 2000
+          },
+          {
+            "mode": "Road",
+            "emission_factor_kg_co2_per_ton_km": 0.1,
+            "total_ton_km": 5000
+          },
+          {
+            "mode": "Rail",
+            "emission_factor_kg_co2_per_ton_km": 0.03,
+            "total_ton_km": 0
+          }
+        ],
+        "notes": "Proposed alternative shifts 30% of Road ton-km to Rail. Data contains 500 shipment records with some missing emission factors (use mode average if missing)."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the CO2 calculations accurate for both current and proposed scenarios?",
+        "Completeness: Did the response provide total emissions and the percentage reduction?",
+        "Best practices: Does the analysis handle missing emission factors by using mode averages correctly?"
+      ],
+      "student_answer": "```json\n{\n  \"scenario_1_emissions_kg_co2\": 15487.5,\n  \"scenario_2_emissions_kg_co2\": 13661.25,\n  \"percentage_reduction\": 13.75,\n  \"details\": {\n    \"scenario_1_breakdown\": {\n      \"Sea\": 1500,\n      \"Air\": 1200,\n      \"Road\": 8787.5,\n      \"Rail\": 0\n    },\n    \"scenario_2_breakdown\": {\n      \"Sea\": 1470,\n      \"Air\": 1120,\n      \"Road\": 6500,\n      \"Rail\": 1661.25\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student's calculations are mathematically incorrect based on the provided dataset (e.g., Scenario 1 Road emissions should be 5000 * 0.1 = 500, not 8787.5). The 'details' section contains arbitrary numbers that do not match the input data or the task logic. Furthermore, the submission ignores the 'Additional Checks' regarding in-transit shipments, penalty calculations, and specific carrier recommendations, which were part of the evaluation context. The output is a hallucinated result that cannot be used without total rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Compare locations or environmental policies of carriers or suppliers to make transportation decisions with lower environmental impact.",
+      "task_type": "Carrier Sustainability Evaluation",
+      "user_prompt": "Evaluate three potential carriers (Carrier A, B, C) based on their environmental policies, fuel efficiency, and on-time delivery rates. Assign a weighted score (40% policy, 30% efficiency, 30% reliability) and recommend the carrier with the highest sustainability score. Include a risk assessment for potential regulatory fines based on their current compliance status.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "carrier": "Carrier A",
+            "policy_score": 85,
+            "fuel_efficiency_l_per_100km": 25,
+            "on_time_rate_pct": 92,
+            "compliance_status": "Compliant"
+          },
+          {
+            "carrier": "Carrier B",
+            "policy_score": 70,
+            "fuel_efficiency_l_per_100km": 30,
+            "on_time_rate_pct": 88,
+            "compliance_status": "Under Review"
+          },
+          {
+            "carrier": "Carrier C",
+            "policy_score": 90,
+            "fuel_efficiency_l_per_100km": 22,
+            "on_time_rate_pct": 95,
+            "compliance_status": "Compliant"
+          }
+        ],
+        "notes": "Fuel efficiency is inverted (lower is better). Compliance status 'Under Review' adds a 10-point penalty to the final score. Data includes 100 carrier records with some missing fuel efficiency data (use fleet average if missing)."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the weighted scores and penalties calculated accurately?",
+        "Completeness: Did the response identify the best carrier and include a risk assessment?",
+        "Best practices: Does the analysis handle missing fuel efficiency data and apply the compliance penalty correctly?"
+      ],
+      "student_answer": "**Carrier Recommendation: Carrier C**\n\n**Sustainability Score:**\n\n*   Carrier A: (0.40 * 85) + (0.30 * 25) + (0.30 * 92) = 34 + 7.5 + 27.6 = 69.1\n*   Carrier B: (0.40 * 70) + (0.30 * 30) + (0.30 * 88) - 10 = 28 + 9 - 10 = 27\n*   Carrier C: (0.40 * 90) + (0.30 * 22) + (0.30 * 95) = 36 + 6.6 + 28.5 = 71.1\n\n**Recommendation:** Carrier C has the highest sustainability score (71.1).\n\n**Risk Assessment – Potential Regulatory Fines:**\n\n*   **Carrier A:** Low Risk – Compliant.\n*   **Carrier B:** Medium Risk – “Under Review” status indicates potential non-compliance issues. Requires immediate investigation and remediation plan. Potential fines could be significant if issues are not addressed promptly.\n*   **Carrier C:** Low Risk – Compliant.\n\n**Summary:** Carrier C presents the best balance of environmental responsibility, operational efficiency, and reliability, with the lowest risk profile regarding regulatory compliance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on Correctness, Completeness, Best Practices, and Domain Accuracy due to a fundamental calculation error. The student applied the weights directly to the raw data values (e.g., 0.30 * 25) without normalizing the fuel efficiency metric. Since fuel efficiency is inverted (lower is better) and on a different scale (20-30) than the policy score (70-90), the raw calculation renders the efficiency component negligible and mathematically invalid for a composite score. Additionally, the student ignored the instruction to use the fleet average for missing data, though none were present in the sample, and failed to address the 'Additional Checks' regarding variance calculations and penalty multipliers, which suggests a lack of attention to the full context provided. While the formatting is clear (Clarity 4), the core logic is flawed, preventing the output from being used without significant rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Develop or maintain payment systems to ensure accuracy of vendor payments.",
+      "task_type": "Payment Reconciliation & Dispute Resolution",
+      "user_prompt": "Reconcile the provided vendor invoice data against the internal purchase order records. Identify discrepancies in quantity, unit price, and total amount. Calculate the total overpayment and underpayment. Flag any invoices with missing timestamps or duplicate shipment IDs for manual review. Output a summary of financial impact and a list of flagged records.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "invoice_id": "INV-001",
+            "po_id": "PO-101",
+            "qty_invoiced": 100,
+            "qty_ordered": 100,
+            "price_invoiced": 10,
+            "price_ordered": 10,
+            "timestamp": "2023-09-01"
+          },
+          {
+            "invoice_id": "INV-002",
+            "po_id": "PO-102",
+            "qty_invoiced": 50,
+            "qty_ordered": 40,
+            "price_invoiced": 12,
+            "price_ordered": 10,
+            "timestamp": null
+          },
+          {
+            "invoice_id": "INV-003",
+            "po_id": "PO-103",
+            "qty_invoiced": 200,
+            "qty_ordered": 200,
+            "price_invoiced": 5,
+            "price_ordered": 5,
+            "timestamp": "2023-09-05"
+          }
+        ],
+        "notes": "Data contains 1,000 records. Some entries have null timestamps or duplicate shipment IDs. Overpayment is calculated as (invoiced - ordered) * price. Underpayment is the reverse."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the overpayment and underpayment calculations accurate?",
+        "Completeness: Did the response identify all discrepancies and flag records with missing timestamps or duplicates?",
+        "Best practices: Does the analysis handle null values and duplicate IDs appropriately for the reconciliation process?"
+      ],
+      "student_answer": "```json\n{\n  \"financial_impact\": {\n    \"total_overpayment\": 0,\n    \"total_underpayment\": 0\n  },\n  \"flagged_records\": [\n    {\n      \"invoice_id\": \"INV-002\",\n      \"reason\": \"Missing timestamp\"\n    }\n  ],\n  \"reconciliation_summary\": {\n    \"INV-001\": {\n      \"qty_match\": true,\n      \"price_match\": true,\n      \"overpayment\": 0\n    },\n    \"INV-002\": {\n      \"qty_match\": false,\n      \"price_match\": false,\n      \"overpayment\": 0,\n      \"underpayment\": 0\n    },\n    \"INV-003\": {\n      \"qty_match\": true,\n      \"price_match\": true,\n      \"overpayment\": 0\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. It calculates zero overpayment and underpayment despite the data clearly showing discrepancies (e.g., INV-002 has 50 invoiced vs 40 ordered at $12 vs $10, resulting in a significant overpayment). The student ignored the explicit formula provided in the context notes. Furthermore, the submission fails to flag duplicate shipment IDs as requested, and the output format does not match the requested summary of financial impact and flagged records list in a usable manner. The 'Additional Checks' section in the prompt regarding in-transit shipments and penalty calculations was also completely ignored, indicating a fundamental failure to process the full context."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Arrange for sale or lease of excess storage or transport capacity to minimize losses or inefficiencies associated with empty space.",
+      "task_type": "Capacity Optimization & Revenue Recovery",
+      "user_prompt": "Analyze the provided transport capacity dataset to identify underutilized routes and calculate potential revenue from leasing excess space. For each route, determine the unused capacity (Total Capacity minus Actual Usage). If unused capacity exceeds 20%, calculate the potential monthly revenue assuming a lease rate of $150 per unused TEU. Output a report listing the top 3 routes with the highest potential revenue, the specific unused capacity in TEUs, and a recommendation for which carrier to approach for a lease agreement based on their historical reliability scores provided in the notes.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "route_id": "RT-8821",
+            "carrier": "OceanLink",
+            "total_capacity_teu": 100,
+            "actual_usage_teu": 45,
+            "reliability_score": 0.92
+          },
+          {
+            "route_id": "RT-8822",
+            "carrier": "GlobalTrans",
+            "total_capacity_teu": 80,
+            "actual_usage_teu": 75,
+            "reliability_score": 0.98
+          },
+          {
+            "route_id": "RT-8823",
+            "carrier": "AirFreightX",
+            "total_capacity_teu": 60,
+            "actual_usage_teu": 10,
+            "reliability_score": 0.85
+          },
+          {
+            "route_id": "RT-8824",
+            "carrier": "OceanLink",
+            "total_capacity_teu": 120,
+            "actual_usage_teu": 90,
+            "reliability_score": 0.91
+          },
+          {
+            "route_id": "RT-8825",
+            "carrier": "RailCorp",
+            "total_capacity_teu": 200,
+            "actual_usage_teu": 150,
+            "reliability_score": 0.88
+          }
+        ],
+        "notes": "Dataset contains 1,200 rows. Some entries have null values for 'actual_usage_teu' indicating data entry errors; treat these as 0 usage for the calculation. Duplicate route IDs exist for different months; aggregate by route_id."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the unused capacity calculations accurate (Total - Actual) and revenue calculations correct (Unused * $150)?",
+        "Completeness: Did the response identify the top 3 routes by potential revenue and provide a specific carrier recommendation?",
+        "Best practices: Does the analysis correctly handle null values for actual usage by treating them as zero and aggregate duplicate route IDs as instructed?"
+      ],
+      "student_answer": "```\nTop 3 Routes for Capacity Leasing:\n\n1.  Route ID: RT-8825\n    Unused Capacity: 50 TEUs (200 - 150 = 50)\n    Potential Monthly Revenue: $7,500 (50 * $150)\n    Recommended Carrier: RailCorp (Reliability Score: 0.88)\n\n2.  Route ID: RT-8824\n    Unused Capacity: 30 TEUs (120 - 90 = 30)\n    Potential Monthly Revenue: $4,500 (30 * $150)\n    Recommended Carrier: OceanLink (Reliability Score: 0.91)\n\n3.  Route ID: RT-8823\n    Unused Capacity: 50 TEUs (60 - 10 = 50)\n    Potential Monthly Revenue: $7,500 (50 * $150)\n    Recommended Carrier: AirFreightX (Reliability Score: 0.85)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core constraint of the task: it did not filter for routes where unused capacity exceeds 20%. RT-8825 (25% unused) and RT-8823 (83% unused) qualify, but RT-8824 (25% unused) also qualifies, yet the ranking logic is flawed because it includes RT-8824 (25% unused) while excluding RT-8821 (55% unused) which has higher potential revenue ($6,750). Furthermore, the submission ignores the 'notes' regarding null values and aggregation, treating the sample as the full dataset without acknowledging the 1,200-row context. The calculations are mathematically correct for the specific rows shown but fail the logical filtering requirement, rendering the 'Top 3' list incorrect based on the prompt's criteria. The output is also not in the requested JSON format."
+    }
+  ]
+}

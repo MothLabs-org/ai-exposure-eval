@@ -1,0 +1,1990 @@
+{
+  "meta": {
+    "job_title": "Bookkeeping, Accounting, and Auditing Clerks",
+    "job_id": "bookkeeping_clerk",
+    "onet_code": "43-3031.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 30,
+    "evaluated_tasks": 30,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.32,
+      "dimensions": {
+        "Correctness": 2.2,
+        "Completeness": 2.27,
+        "Best Practices": 2.07,
+        "Domain Accuracy": 2.17,
+        "Clarity": 3.13,
+        "Autonomy": 2.1
+      },
+      "evaluated_tasks": 30,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1520.99
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Check figures, postings, and documents for correct entry, mathematical accuracy, and proper codes.",
+      "task_type": "Transaction Accuracy & Coding Audit",
+      "user_prompt": "You are a compliance auditor for 'Summit Retail'. Review the provided list of vendor invoices and the corresponding general ledger entries for the month of November. Identify any discrepancies in mathematical accuracy, incorrect account coding, or missing supporting documentation. For each error found, calculate the correct amount, identify the proper GAAP-compliant account code, and draft a correction journal entry. Ensure all calculations are precise to the cent.",
+      "reference_context": {
+        "vendor_invoices": [
+          {
+            "invoice_id": "INV-2023-001",
+            "date": "2023-11-05",
+            "vendor": "Office Supplies Co",
+            "amount": 1250.0,
+            "description": "Office Supplies"
+          },
+          {
+            "invoice_id": "INV-2023-002",
+            "date": "2023-11-12",
+            "vendor": "Tech Solutions",
+            "amount": 3450.75,
+            "description": "Software License"
+          },
+          {
+            "invoice_id": "INV-2023-003",
+            "date": "2023-11-18",
+            "vendor": "City Utilities",
+            "amount": 890.25,
+            "description": "Electric Bill"
+          }
+        ],
+        "ledger_entries": [
+          {
+            "entry_id": "JE-101",
+            "date": "2023-11-05",
+            "account_code": "6000",
+            "description": "Office Supplies",
+            "amount": 1250.0
+          },
+          {
+            "entry_id": "JE-102",
+            "date": "2023-11-12",
+            "account_code": "5000",
+            "description": "Software License",
+            "amount": 3450.0
+          },
+          {
+            "entry_id": "JE-103",
+            "date": "2023-11-18",
+            "account_code": "6000",
+            "description": "Electric Bill",
+            "amount": 890.25
+          }
+        ],
+        "account_mapping": {
+          "5000": "Cost of Goods Sold",
+          "6000": "Operating Expenses",
+          "7000": "Utilities Expense"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all mathematical discrepancies identified and corrected to the cent?",
+        "Accuracy: Did the AI correctly identify the misclassified account codes based on the description and account mapping?",
+        "Compliance: Are the proposed correction journal entries formatted according to standard accounting practices?"
+      ],
+      "student_answer": "**Discrepancy Report - Summit Retail - November**\n\n**Invoice INV-2023-002**\n\n*   **Error:** Incorrect Account Coding\n*   **Original Amount:** 3450.75\n*   **Correct Amount:** 3450.75\n*   **Correct Account Code:** 7000\n*   **Correction Journal Entry:**\n\n    | Account Code | Debit   | Credit  | Description           |\n    | :----------- | :------ | :------ | :-------------------- |\n    | 7000         | 3450.75 |         | Software License       |\n    | 5000         |         | 3450.75 | Software License       |\n\n**Invoice INV-2023-003**\n\n*   **Error:** Incorrect Account Coding\n*   **Original Amount:** 890.25\n*   **Correct Amount:** 890.25\n*   **Correct Account Code:** 7000\n*   **Correction Journal Entry:**\n\n    | Account Code | Debit   | Credit  | Description           |\n    | :----------- | :------ | :------ | :-------------------- |\n    | 7000         | 890.25 |         | Electric Bill          |\n    | 6000         |         | 890.25 | Electric Bill          |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness and Domain Accuracy. It incorrectly identifies the account coding error for INV-2023-002 (Software License) by suggesting code 7000 (Utilities Expense) instead of the correct code 5000 (Cost of Goods Sold) or a specific asset account, while incorrectly flagging INV-2023-003 (Electric Bill) as an error when it was coded to 6000 (Operating Expenses) but should be 7000 (Utilities Expense) based on the mapping. More critically, the student missed the mathematical discrepancy in INV-2023-002 where the ledger amount (3450.00) does not match the invoice amount (3450.75). The correction journal entries provided are also logically flawed as they debit the expense account again rather than reversing the original incorrect entry and recording the correct one. The response is incomplete and contains fundamental accounting errors."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Comply with federal, state, and company policies, procedures, and regulations.",
+      "task_type": "Regulatory Compliance & Tax Calculation",
+      "user_prompt": "You are a payroll accountant for 'Green Energy Corp'. Calculate the total payroll tax liability for the week ending December 15, 2023, based on the provided employee earnings. Apply the current federal income tax withholding tables (assume 12% flat rate for simplicity), FICA (Social Security 6.2% and Medicare 1.45%), and a state unemployment tax rate of 2.7% on the first $7,000 of earnings per employee. Ensure all calculations adhere to federal tax regulations and are precise to the cent. Summarize the total liability by tax type.",
+      "reference_context": {
+        "employee_earnings": [
+          {
+            "employee_id": "EMP-001",
+            "gross_pay": 1200.0,
+            "year_to_date_pay": 5000.0
+          },
+          {
+            "employee_id": "EMP-002",
+            "gross_pay": 950.0,
+            "year_to_date_pay": 8500.0
+          },
+          {
+            "employee_id": "EMP-003",
+            "gross_pay": 1500.0,
+            "year_to_date_pay": 6000.0
+          }
+        ],
+        "tax_rates": {
+          "federal_income_tax": 0.12,
+          "social_security": 0.062,
+          "medicare": 0.0145,
+          "state_unemployment": 0.027,
+          "sui_cap": 7000.0
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all tax calculations (FICA, Federal, SUI) mathematically accurate to the cent?",
+        "Regulatory Compliance: Did the AI correctly apply the SUI cap for EMP-002 who exceeded the $7,000 limit?",
+        "Clarity: Is the final summary of total liability clear and categorized by tax type?"
+      ],
+      "student_answer": "**Green Energy Corp - Payroll Tax Liability Report**\n**Week Ending December 15, 2023**\n\n**Federal Income Tax Withholding:**\n\n*   Employee EMP-001: $1200.00 * 0.12 = $144.00\n*   Employee EMP-002: $950.00 * 0.12 = $114.00\n*   Employee EMP-003: $1500.00 * 0.12 = $180.00\n*   **Total Federal Income Tax:** $438.00\n\n**FICA Taxes:**\n\n*   Social Security:\n    *   Employee EMP-001: $1200.00 * 0.062 = $74.40\n    *   Employee EMP-002: $950.00 * 0.062 = $58.90\n    *   Employee EMP-003: $1500.00 * 0.062 = $93.00\n    *   **Total Social Security:** $226.30\n*   Medicare:\n    *   Employee EMP-001: $1200.00 * 0.0145 = $17.40\n    *   Employee EMP-002: $950.00 * 0.0145 = $13.58\n    *   Employee EMP-003: $1500.00 * 0.0145 = $21.75\n    *   **Total Medicare:** $52.73\n\n**State Unemployment Tax:**\n\n*   Employee EMP-001: $1200.00 * 0.027 = $32.40\n*   Employee EMP-002: $950.00 * 0.027 = $25.65\n*   Employee EMP-003: $1500.00 * 0.027 = $40.50\n*   **Total State Unemployment Tax:** $98.55\n\n**Total Payroll Tax Liability:**\n\n*   Total: $438.00 (Federal Income Tax) + $226.30 (Social Security) + $52.73 (Medicare) + $98.55 (State Unemployment Tax) = **$815.58**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        3
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission fails on domain accuracy and correctness due to a critical error in the State Unemployment Tax (SUTA) calculation. The prompt explicitly states the tax applies only to the first $7,000 of earnings. Employee EMP-002 has a Year-to-Date (YTD) pay of $8,500, which exceeds the $7,000 cap; therefore, their SUTA liability for this week should be $0. The student incorrectly calculated tax on the full $950 gross pay for this employee. Additionally, the submission ignores the FICA Social Security wage base limit (which is $160,200 for 2023, so no cap issue here, but the logic for SUTA was flawed). The student also failed to address the 'Additional Checks' section provided in the prompt context regarding bank reconciliations, which, while likely a distractor or separate task, indicates a lack of attention to the full prompt scope. The calculations for Federal and FICA taxes are correct, but the SUTA error significantly impacts the total liability and demonstrates a lack of professional judgment regarding tax caps."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Operate computers programmed with accounting software to record, store, and analyze information.",
+      "task_type": "Financial Data Analysis & Reporting",
+      "user_prompt": "You are a financial analyst for 'Metro Construction'. Analyze the provided quarterly expense data for Q3 2023. Calculate the total expenses, the percentage of total expenses for each category, and the month-over-month growth rate for 'Materials' and 'Labor'. Identify the category with the highest variance from the budgeted amount (provided in context) and draft a brief executive summary explaining the variance and recommending a corrective action based on GAAP principles for expense recognition.",
+      "reference_context": {
+        "budgeted_expenses": {
+          "Materials": 50000.0,
+          "Labor": 75000.0,
+          "Overhead": 20000.0
+        },
+        "actual_expenses": [
+          {
+            "month": "July",
+            "Materials": 16000.0,
+            "Labor": 24000.0,
+            "Overhead": 6500.0
+          },
+          {
+            "month": "August",
+            "Materials": 17500.0,
+            "Labor": 25500.0,
+            "Overhead": 6800.0
+          },
+          {
+            "month": "September",
+            "Materials": 18000.0,
+            "Labor": 26000.0,
+            "Overhead": 7000.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the total expenses, percentages, and growth rates calculated accurately?",
+        "Analysis: Did the AI correctly identify the category with the highest variance from the budget?",
+        "Reasoning: Is the executive summary logically sound and does it reference appropriate expense recognition principles?"
+      ],
+      "student_answer": "**Metro Construction - Q3 2023 Expense Analysis**\n\n**1. Total Expenses:**\n\n*   Total Actual Expenses = Materials + Labor + Overhead\n*   Total Actual Expenses = (16000 + 24000 + 6500) + (17500 + 25500 + 6800) + (18000 + 26000 + 7000)\n*   Total Actual Expenses = 36500 + 50000 + 51000 = $137,500.00\n\n**2. Percentage of Total Expenses by Category:**\n\n*   Materials: (16000 + 17500 + 18000) / 137500 * 100% = 51.54%\n*   Labor: (24000 + 25500 + 26000) / 137500 * 100% = 30.44%\n*   Overhead: (6500 + 6800 + 7000) / 137500 * 100% = 18.02%\n\n**3. Month-over-Month Growth Rates:**\n\n*   **Materials:**\n    *   July to August: ((17500 - 16000) / 16000) * 100% = 7.81%\n    *   August to September: ((18000 - 17500) / 17500) * 100% = 2.29%\n    *   Overall Materials Growth: 7.81% + 2.29% = 10.10%\n*   **Labor:**\n    *   July to August: ((25500 - 24000) / 24000) * 100% = 9.58%\n    *   August to September: ((26000 - 25500) / 25500) * 100% = 1.94%\n    *   Overall Labor Growth: 9.58% + 1.94% = 11.52%\n\n**4. Variance Analysis:**\n\n*   Materials Variance: $18000 (Actual) - $50000 (Budgeted) = -$32000\n*   Labor Variance: $26000 (Actual) - $75000 (Budgeted) = -$49000\n*   Overhead Variance: $7000 (Actual) - $20000 (Budgeted) = -$13000\n\n**Highest Variance:** Labor ($49,000)\n\n**5. Executive Summary:**\n\nMetro Construction experienced significant budget variances in Q3 2023. Labor expenses exceeded budgeted amounts by $49,000, while Materials expenses were $32,000 below budget. Overhead expenses were also significantly under budget. These variances are concerning and require immediate investigation.\n\n**Recommendation (GAAP Compliance):**\n\nBased on GAAP principles, the overspending on Labor should be investigated to determine the root cause. Potential causes include increased project demands, overtime, or inefficient staffing.  The under-spending on Materials may indicate proactive cost management or a reduction in project scope.  All expenses should be properly documented and supported by invoices and contracts.  Any overtime should be reviewed to ensure it aligns with project timelines and is appropriately authorized.  The company should implement a robust cost control system to monitor and manage expenses effectively, including regular budget reviews and variance analysis.  Further investigation is needed to determine if the variances are due to legitimate business activities or require corrective action to prevent future overspending.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission contains critical calculation errors and logical flaws. First, the Total Expenses calculation is incorrect; the student summed the monthly totals (36,500 + 50,000 + 51,000) but the middle term (50,000) is wrong (24k+25.5k+26k = 75,500), leading to a wrong total of $137,500 instead of $163,000. Second, the Variance Analysis is fundamentally flawed: the student compared the actual expense for a single month (September) against the total quarterly budget, rather than comparing the total actual quarterly expenses against the total quarterly budget. This renders the variance figures ($49,000 vs $137,500 total) meaningless. Third, the 'Overall Growth' calculation incorrectly sums month-over-month percentages, which is mathematically invalid for growth rates. While the formatting is clear (Clarity 4), the domain accuracy and correctness are poor due to these fundamental errors."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Receive, record, and bank cash, checks, and vouchers.",
+      "task_type": "Cash Handling & Deposit Reconciliation",
+      "user_prompt": "You are a cashier supervisor for 'City Market'. You have a batch of cash, checks, and vouchers received today. Record the total cash received, verify the mathematical accuracy of the check amounts, and prepare a deposit slip. The total cash on hand must match the sum of the individual bills and coins provided. If there is a cash over/short variance, calculate the exact amount and record the necessary adjusting entry. Ensure the final deposit total is precise to the cent.",
+      "reference_context": {
+        "cash_bills": [
+          {
+            "denomination": 100,
+            "count": 5
+          },
+          {
+            "denomination": 50,
+            "count": 10
+          },
+          {
+            "denomination": 20,
+            "count": 25
+          },
+          {
+            "denomination": 10,
+            "count": 40
+          },
+          {
+            "denomination": 5,
+            "count": 50
+          },
+          {
+            "denomination": 1,
+            "count": 100
+          }
+        ],
+        "cash_coins": [
+          {
+            "denomination": 0.25,
+            "count": 200
+          },
+          {
+            "denomination": 0.1,
+            "count": 150
+          },
+          {
+            "denomination": 0.05,
+            "count": 100
+          },
+          {
+            "denomination": 0.01,
+            "count": 50
+          }
+        ],
+        "checks": [
+          {
+            "check_number": "1001",
+            "amount": 250.0
+          },
+          {
+            "check_number": "1002",
+            "amount": 175.5
+          },
+          {
+            "check_number": "1003",
+            "amount": 320.25
+          }
+        ],
+        "expected_total": 4500.0
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the total cash and check amount calculated correctly to the cent?",
+        "Accuracy: Did the AI correctly identify if the calculated total matches the expected total and calculate any variance?",
+        "Procedure: Is the deposit slip preparation and adjusting entry for variance handled according to standard cash handling procedures?"
+      ],
+      "student_answer": "```\nDeposit Slip\n\nDate: 2024-02-29\nLocation: City Market - Main Branch\nCashier: (To be filled in)\nDepartment: (To be filled in)\n\nCash Received:\n$100 Bills: 5 * $100 = $500.00\n$50 Bills: 10 * $50 = $500.00\n$20 Bills: 25 * $20 = $500.00\n$10 Bills: 40 * $10 = $400.00\n$5 Bills: 50 * $5 = $250.00\n$1 Bills: 100 * $1 = $100.00\n$0.25 Coins: 200 * $0.25 = $50.00\n$0.10 Coins: 150 * $0.10 = $15.00\n$0.05 Coins: 100 * $0.05 = $5.00\n$0.01 Coins: 50 * $0.01 = $0.50\n\nTotal Cash Received: $500.00 + $500.00 + $500.00 + $400.00 + $250.00 + $100.00 + $50.00 + $15.00 + $5.00 + $0.50 = $2220.50\n\nCheck Totals:\nCheck 1001: $250.00\nCheck 1002: $175.50\nCheck 1003: $320.25\nTotal Check Totals: $250.00 + $175.50 + $320.25 = $745.75\n\nVariance: $2220.50 - $745.75 = $1474.75\n\nAdjusting Entry:\nDebit: Cash $1474.75\nCredit: Accounts Payable $1474.75\n\nDeposit Total: $2220.50\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, the arithmetic is incorrect: the sum of the provided cash bills and coins is $2,220.50, and checks total $745.75, making the total expected $2,966.25, not the $4,500.00 stated in the context. The student calculated a 'variance' of $1,474.75 by subtracting checks from cash, which is logically invalid for a deposit slip (variance is Cash on Hand vs. System Records). Second, the adjusting entry is nonsensical: debiting cash for the variance and crediting Accounts Payable is incorrect; a cash over/short variance should be recorded in a 'Cash Over and Short' expense or revenue account, not Accounts Payable. Third, the student ignored the 'expected total' of $4,500.00 provided in the context, failing to identify the massive discrepancy between the calculated physical count ($2,966.25) and the expected amount. The output is a rough draft with critical accounting errors and logical flaws, requiring a complete redo."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Code documents according to company procedures.",
+      "task_type": "Document Coding & Classification",
+      "user_prompt": "You are a data entry specialist for 'Global Imports'. You have received a stack of 10 mixed invoices and receipts. Code each document according to the provided company coding scheme (e.g., 1000 for Inventory, 2000 for Fixed Assets, 3000 for Expenses). For each document, determine the correct code based on the description and amount, and verify that the coding aligns with the company's policy on capitalization vs. expensing. Output a coded list of all documents.",
+      "reference_context": {
+        "documents": [
+          {
+            "id": "DOC-01",
+            "description": "Purchase of Delivery Truck",
+            "amount": 35000.0
+          },
+          {
+            "id": "DOC-02",
+            "description": "Office Paper Replenishment",
+            "amount": 150.0
+          },
+          {
+            "id": "DOC-03",
+            "description": "Raw Materials for Production",
+            "amount": 5000.0
+          },
+          {
+            "id": "DOC-04",
+            "description": "Repair of Delivery Truck",
+            "amount": 450.0
+          },
+          {
+            "id": "DOC-05",
+            "description": "Purchase of New Server",
+            "amount": 2500.0
+          }
+        ],
+        "coding_scheme": {
+          "1000": "Inventory",
+          "2000": "Fixed Assets",
+          "3000": "Operating Expenses",
+          "4000": "Cost of Goods Sold"
+        },
+        "capitalization_policy": "Items with a useful life > 1 year and cost > $1000 must be capitalized as Fixed Assets."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all documents assigned the correct code based on the policy?",
+        "Policy Adherence: Did the AI correctly distinguish between capitalizing the truck purchase vs. expensing the repair?",
+        "Completeness: Are all 5 documents coded and listed?"
+      ],
+      "student_answer": "1. DOC-01: 2000 - Purchase of Delivery Truck (Useful life > 1 year, cost $35000.0)\n2. DOC-02: 3000 - Office Paper Replenishment (Minor expense)\n3. DOC-03: 4000 - Raw Materials for Production (Cost of Goods Sold)\n4. DOC-04: 3000 - Repair of Delivery Truck (Minor expense)\n5. DOC-05: 2000 - Purchase of New Server (Useful life > 1 year, cost $2500.0)",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        4,
+        4
+      ],
+      "score": 4.5,
+      "grade_reason": "The student correctly applied the coding scheme and capitalization policy to all five documents, demonstrating strong domain accuracy and correctness. The reasoning provided for capitalization (citing useful life and cost thresholds) was accurate. However, the output format was a simple numbered list rather than a structured coded list or table as implied by the task's professional context, which slightly impacts Clarity and Best Practices. Additionally, the justification for DOC-02 and DOC-04 was brief ('Minor expense') compared to the explicit policy citation used for others, showing minor inconsistency in professional rigor. The solution is accurate and usable but lacks the polished formatting expected of an industry-standard deliverable."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Operate 10-key calculators, typewriters, and copy machines to perform calculations and produce documents.",
+      "task_type": "Multi-Step Financial Reconciliation & Report Generation",
+      "user_prompt": "You are an accounts payable clerk for 'Tech Innovations'. Reconcile the accounts payable ledger against the vendor statements for 'Vendor A' and 'Vendor B'. Identify any outstanding invoices, unrecorded credits, and duplicate payments. Calculate the total amount owed to each vendor after adjustments. Produce a formal report detailing the reconciliation process, the specific transactions causing discrepancies, and the final adjusted balance. Ensure all calculations are precise to the cent and the report follows a professional audit trail format.",
+      "reference_context": {
+        "vendor_a_ledger": [
+          {
+            "invoice_id": "VA-001",
+            "date": "2023-10-01",
+            "amount": 1200.0,
+            "status": "Paid"
+          },
+          {
+            "invoice_id": "VA-002",
+            "date": "2023-10-15",
+            "amount": 850.0,
+            "status": "Outstanding"
+          },
+          {
+            "invoice_id": "VA-003",
+            "date": "2023-10-20",
+            "amount": 300.0,
+            "status": "Outstanding"
+          }
+        ],
+        "vendor_a_statement": [
+          {
+            "invoice_id": "VA-001",
+            "date": "2023-10-01",
+            "amount": 1200.0,
+            "status": "Paid"
+          },
+          {
+            "invoice_id": "VA-002",
+            "date": "2023-10-15",
+            "amount": 850.0,
+            "status": "Outstanding"
+          },
+          {
+            "invoice_id": "VA-004",
+            "date": "2023-10-25",
+            "amount": 500.0,
+            "status": "Outstanding"
+          }
+        ],
+        "vendor_b_ledger": [
+          {
+            "invoice_id": "VB-001",
+            "date": "2023-10-05",
+            "amount": 2000.0,
+            "status": "Outstanding"
+          },
+          {
+            "invoice_id": "VB-002",
+            "date": "2023-10-10",
+            "amount": 1500.0,
+            "status": "Paid"
+          }
+        ],
+        "vendor_b_statement": [
+          {
+            "invoice_id": "VB-001",
+            "date": "2023-10-05",
+            "amount": 2000.0,
+            "status": "Outstanding"
+          },
+          {
+            "invoice_id": "VB-002",
+            "date": "2023-10-10",
+            "amount": 1500.0,
+            "status": "Paid"
+          },
+          {
+            "invoice_id": "VB-003",
+            "date": "2023-10-12",
+            "amount": 750.0,
+            "status": "Outstanding"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the final adjusted balances for Vendor A and Vendor B calculated accurately?",
+        "Completeness: Did the AI identify all missing invoices (VA-004, VB-003) and any other discrepancies?",
+        "Audit Trail: Is the generated report structured with a clear explanation of findings and supporting calculations?"
+      ],
+      "student_answer": "**Accounts Payable Reconciliation Report – Tech Innovations**\n\n**Date:** 2023-11-03\n\n**Prepared By:** AI Assistant\n\n**Subject:** Reconciliation of Accounts Payable Ledger with Vendor Statements – Vendor A & Vendor B\n\n**1.0 Executive Summary**\n\nThis report details the reconciliation of accounts payable balances for Tech Innovations with vendor statements for Vendor A and Vendor B as of November 3, 2023. The reconciliation process identified outstanding invoices, unrecorded credits, and a duplicate payment.  Adjustments have been made to reflect accurate balances.\n\n**2.0 Vendor A Reconciliation**\n\n**2.1 Ledger Details:**\n\n| Invoice ID | Date       | Amount   | Status    |\n|------------|------------|----------|-----------|\n| VA-001     | 2023-10-01 | 1200.00  | Paid      |\n| VA-002     | 2023-10-15 | 850.00   | Outstanding|\n| VA-003     | 2023-10-20 | 300.00   | Outstanding|\n\n**2.2 Statement Details:**\n\n| Invoice ID | Date       | Amount   | Status    |\n|------------|------------|----------|-----------|\n| VA-001     | 2023-10-01 | 1200.00  | Paid      |\n| VA-002     | 2023-10-15 | 850.00   | Outstanding|\n| VA-004     | 2023-10-25 | 500.00   | Outstanding|\n\n**2.3 Discrepancies & Adjustments:**\n\n*   **Invoice VA-004:**  Invoice VA-004 was not recorded in the ledger but appears on Vendor A’s statement with an amount of $500.00. This invoice has been added to the ledger.\n*   **Duplicate Payment:**  A review of payment records revealed no record of payment for VA-004.\n\n**2.4 Adjusted Balance:**\n\n*   Outstanding Amount: (VA-002) $850.00 + (VA-003) $300.00 + (VA-004) $500.00 = $1650.00\n\n**3.0 Vendor B Reconciliation**\n\n**3.1 Ledger Details:**\n\n| Invoice ID | Date       | Amount   | Status    |\n|------------|------------|----------|-----------|\n| VB-001     | 2023-10-05 | 2000.00  | Outstanding|\n| VB-002     | 2023-10-10 | 1500.00  | Paid      |\n\n**3.2 Statement Details:**\n\n| Invoice ID | Date       | Amount   | Status    |\n|------------|------------|----------|-----------|\n| VB-001     | 2023-10-05 | 2000.00  | Outstanding|\n| VB-002     | 2023-10-10 | 1500.00  | Paid      |\n| VB-003     | 2023-10-12 | 750.00   | Outstanding|\n\n**3.3 Discrepancies & Adjustments:**\n\n*   **Invoice VB-003:** Invoice VB-003 was not recorded in the ledger but appears on Vendor B’s statement with an amount of $750.00. This invoice has been added to the ledger.\n\n**3.4 Adjusted Balance:**\n\n*   Outstanding Amount: (VB-001) $2000.00 + (VB-003) $750.00 = $2750.00\n\n**4.0 Summary of Adjusted Balances**\n\n| Vendor     | Adjusted Balance |\n|------------|-----------------|\n| Vendor A   | $1650.00         |\n| Vendor B   | $2750.00         |\n| **Total**  | **$4400.00**     |\n\n**5.0 Conclusion**\n\nThe reconciliation process has identified and corrected discrepancies between the accounts payable ledger and vendor statements. The adjusted balances reflect accurate outstanding amounts for both Vendor A and Vendor B.  Further investigation into the duplicate payment for VA-004 is recommended.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails significantly on Correctness, Domain Accuracy, and Best Practices. First, it hallucinates a 'duplicate payment' for VA-004, which is actually an unrecorded invoice (a missing liability), not a duplicate payment. Second, it fails to identify the unrecorded invoice VB-003 as a discrepancy requiring an adjustment to the ledger balance in the narrative, though it calculates it correctly in the final sum. Third, the conclusion recommends investigating a 'duplicate payment' for VA-004, which is factually incorrect based on the data provided (VA-004 is missing from the ledger entirely). The calculations are arithmetically correct, but the professional judgment and terminology are flawed, making the report unreliable for a stakeholder without significant rework."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Reconcile or note and report discrepancies found in records.",
+      "task_type": "Bank Reconciliation & Discrepancy Resolution",
+      "user_prompt": "You are a bookkeeper for 'Apex Logistics'. You have received the bank statement for October 2023 and the internal general ledger extract. Compare the two datasets provided in the context. Identify all outstanding checks, deposits in transit, and any unrecorded bank fees or interest. Calculate the adjusted bank balance and the adjusted book balance. If they do not match, identify the specific transaction causing the variance and draft a formal discrepancy report including the amount, date, and recommended corrective action.",
+      "reference_context": {
+        "bank_statement_transactions": [
+          {
+            "date": "2023-10-02",
+            "description": "Deposit",
+            "amount": 5000.0
+          },
+          {
+            "date": "2023-10-05",
+            "description": "Check #101",
+            "amount": -1200.5
+          },
+          {
+            "date": "2023-10-12",
+            "description": "Service Fee",
+            "amount": -25.0
+          },
+          {
+            "date": "2023-10-15",
+            "description": "Interest",
+            "amount": 15.5
+          }
+        ],
+        "ledger_transactions": [
+          {
+            "date": "2023-10-01",
+            "description": "Opening Balance",
+            "amount": 12000.0
+          },
+          {
+            "date": "2023-10-02",
+            "description": "Deposit",
+            "amount": 5000.0
+          },
+          {
+            "date": "2023-10-05",
+            "description": "Check #101",
+            "amount": -1200.5
+          },
+          {
+            "date": "2023-10-10",
+            "description": "Check #102",
+            "amount": -800.0
+          },
+          {
+            "date": "2023-10-18",
+            "description": "Deposit",
+            "amount": 3000.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all calculations (adjusted balances) mathematically accurate to the cent?",
+        "Completeness: Did the AI identify all reconciling items (outstanding checks, deposits in transit, fees)?",
+        "Best Practices: Is the discrepancy report structured professionally with clear audit trails?"
+      ],
+      "student_answer": "**Apex Logistics - Bank Reconciliation Report**\n\n**Date:** November 15, 2023\n\n**Prepared By:** Bookkeeping Clerk\n\n**Period:** October 2023\n\n**1. Comparison of Bank Statement and Ledger:**\n\n| Date        | Bank Statement | Ledger       |\n|-------------|---------------|--------------|\n| 2023-10-02  | 5000.0        | 5000.0       |\n| 2023-10-05  | -1200.5       | -1200.5      |\n| 2023-10-12  | -25.0         |              |\n| 2023-10-15  | 15.5          |              |\n| 2023-10-18  |               | 3000.0       |\n\n**2. Outstanding Items:**\n\n*   **Deposits in Transit:** None\n*   **Outstanding Checks:** Check #102 - $800.00\n*   **Unrecorded Bank Fees:** Service Fee - $25.00\n*   **Unrecorded Bank Interest:** Interest - $15.50\n\n**3. Adjusted Balances:**\n\n*   **Adjusted Bank Balance:** $5000.00 - $1200.50 - $25.00 + $15.50 = $3830.50\n*   **Adjusted Book Balance:** $12000.00 + $5000.00 - $1200.50 - $800.00 + $3000.00 = $14000 - $2000.50 = $13999.50\n\n**4. Discrepancy Analysis:**\n\n*   **Variance:** Adjusted Book Balance ($13999.50) - Adjusted Bank Balance ($3830.50) = $10169.00\n\n*   **Cause of Variance:** The ledger recorded a deposit of $3000.00 on 2023-10-18, which is not reflected on the bank statement.\n\n**5. Discrepancy Report:**\n\n**To:** Accounting Department\n\n**From:** Bookkeeping Clerk\n\n**Date:** November 15, 2023\n\n**Subject:** Bank Reconciliation Discrepancy – October 2023\n\n**Description:** A significant discrepancy exists between the adjusted bank balance and the adjusted book balance for October 2023.\n\n**Amount:** $10169.00\n\n**Date:** October 18, 2023\n\n**Transaction:** Deposit of $3000.00\n\n**Recommended Corrective Action:** Investigate the deposit recorded in the ledger on October 18, 2023. Confirm the deposit was actually made to Apex Logistics’ account and reconcile the transaction with the bank statement.  Adjust the book balance accordingly.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student incorrectly calculated the Adjusted Bank Balance by subtracting bank fees and adding interest to the bank balance (which is already adjusted in the statement) rather than adjusting the book balance. Consequently, the Adjusted Book Balance calculation was also flawed as it failed to include the unrecorded fees and interest. The resulting variance of $10,169.00 is mathematically incorrect; the actual variance is $0.00 (the balances should match after proper reconciliation). The student misidentified the cause of the variance, blaming the deposit in transit ($3,000) when the real issue was the failure to apply the $25 fee and $15.50 interest to the book side. The report recommends investigating a valid deposit in transit as a discrepancy, which is poor professional judgment. The output is unusable without complete rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Perform financial calculations, such as amounts due, interest charges, balances, discounts, equity, and principal.",
+      "task_type": "Interest and Discount Calculation",
+      "user_prompt": "You are an accounting clerk for 'Summit Retail'. Calculate the total interest expense and the net amount due for a $15,000 invoice dated September 1, 2023, with terms 2/10, n/30. The invoice was paid on September 12, 2023. Additionally, calculate the accrued interest on a separate short-term loan of $5,000 taken on August 15, 2023, at an annual rate of 6.5%, to be paid on September 30, 2023. Provide the journal entries required to record the payment of the invoice and the accrual of the loan interest, citing the relevant GAAP principle for revenue recognition and expense matching.",
+      "reference_context": {
+        "invoice_details": {
+          "invoice_number": "INV-2023-089",
+          "date": "2023-09-01",
+          "amount": 15000.0,
+          "terms": "2/10, n/30",
+          "payment_date": "2023-09-12"
+        },
+        "loan_details": {
+          "principal": 5000.0,
+          "start_date": "2023-08-15",
+          "end_date": "2023-09-30",
+          "annual_rate": 0.065,
+          "interest_method": "Simple Interest"
+        }
+      },
+      "evaluation_criteria": [
+        "Mathematical Precision: Are the discount amount, net payment, and accrued interest calculated correctly to the cent?",
+        "Accuracy: Is the day count for interest calculation correct (360 vs 365 days)?",
+        "Compliance: Do the journal entries correctly reflect the discount taken and interest accrual per GAAP?"
+      ],
+      "student_answer": "**Invoice Interest Expense & Net Amount Due:**\n\n*   **Interest Rate:** 2%\n*   **Days Discount Available:** 10 days\n*   **Days in Discount Period:** 10 days\n*   **Interest Expense:** $15,000 * 0.02 * (10/360) = $37.50\n*   **Net Amount Due:** $15,000 - $37.50 = $14,962.50\n\n**Journal Entries:**\n\n**1. Invoice Payment:**\n\n| Date       | Account                               | Debit   | Credit  |\n| :--------- | :------------------------------------ | :------ | :------ |\n| 2023-09-12 | Accounts Payable                       | $15,000 |         |\n| 2023-09-12 | Cash                                  |         | $14,962.50 |\n| 2023-09-12 | *Sales Discounts*                      |         | $37.50  |\n|            | *To record payment of invoice INV-2023-089* |         |         |\n\n*GAAP Principle: Revenue Recognition -  The revenue is recognized when the goods or services are delivered, and payment is received. Sales discounts reflect a reduction in revenue to accurately represent the cash received.*\n\n**2. Loan Interest Accrual:**\n\n| Date       | Account                               | Debit   | Credit  |\n| :--------- | :------------------------------------ | :------ | :------ |\n| 2023-08-31 | Interest Expense                       | $162.50 |         |\n| 2023-08-31 | Accrued Interest Payable               |         | $162.50 |\n|            | *To accrue interest expense on short-term loan* |         |         |\n\n*GAAP Principle: Expense Matching - Interest expense is recognized in the period it is incurred, regardless of when cash is paid.*\n\n**Calculations for Loan Interest:**\n\n*   **Interest Amount:** $5,000 * 0.065 * (30/360) = $162.50",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. First, it misinterprets '2/10' terms as an interest expense calculation rather than a sales discount, leading to a completely incorrect calculation ($37.50) and a wrong net amount due ($14,962.50 instead of $14,700). Second, the journal entries are structurally invalid: the student debits Accounts Payable and credits Cash and Sales Discounts, which violates the double-entry rule (Debits must equal Credits; here $15,000 != $14,962.50 + $37.50). Third, the loan interest calculation uses an incorrect accrual period (30 days instead of 46 days from Aug 15 to Sep 30) and applies it to the wrong date (Aug 31 instead of the required period end or payment date context). Fourth, the GAAP citations are misapplied to the erroneous calculations. The output is not usable for a client due to these critical accounting errors."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Classify, record, and summarize numerical and financial data to compile and keep financial records, using journals and ledgers or computers.",
+      "task_type": "General Ledger Classification & Posting",
+      "user_prompt": "You are a senior bookkeeper for 'TechFlow Solutions'. Review the following list of 10 mixed transactions from October 2023. Classify each transaction into the correct account category (Asset, Liability, Equity, Revenue, or Expense) and determine the appropriate debit or credit entry. Then, summarize the total impact on the Net Income for the month. Ensure that prepaid expenses are correctly amortized over their useful life if applicable. Reference the specific GAAP principle regarding the matching principle in your explanation.",
+      "reference_context": {
+        "transactions": [
+          {
+            "date": "2023-10-03",
+            "description": "Paid $1,200 for 12-month office rent in advance",
+            "amount": -1200.0
+          },
+          {
+            "date": "2023-10-05",
+            "description": "Sold services to client on account",
+            "amount": 4500.0
+          },
+          {
+            "date": "2023-10-08",
+            "description": "Received payment for previous sale",
+            "amount": 4500.0
+          },
+          {
+            "date": "2023-10-10",
+            "description": "Purchased office equipment for cash",
+            "amount": -3000.0
+          },
+          {
+            "date": "2023-10-12",
+            "description": "Paid utility bill for October",
+            "amount": -250.0
+          },
+          {
+            "date": "2023-10-15",
+            "description": "Owner invested additional capital",
+            "amount": 5000.0
+          },
+          {
+            "date": "2023-10-18",
+            "description": "Paid employee salaries",
+            "amount": -2800.0
+          },
+          {
+            "date": "2023-10-20",
+            "description": "Borrowed $10,000 from bank",
+            "amount": 10000.0
+          },
+          {
+            "date": "2023-10-22",
+            "description": "Paid $600 for insurance policy covering next year",
+            "amount": -600.0
+          },
+          {
+            "date": "2023-10-25",
+            "description": "Received cash for services rendered",
+            "amount": 1200.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Classification Accuracy: Are all accounts correctly categorized?",
+        "Debit/Credit Logic: Is the double-entry bookkeeping applied correctly?",
+        "Amortization: Is the prepaid rent and insurance correctly adjusted for the current month?",
+        "Net Income Calculation: Is the final net income figure accurate?"
+      ],
+      "student_answer": "Here's the breakdown of the transactions, account classifications, debit/credit entries, and net income summary:\n\n| Date       | Description                 | Account Category | Debit   | Credit  |\n|------------|-----------------------------|------------------|---------|---------|\n| 2023-10-03 | Paid rent in advance        | Prepaid Expenses  | -1200.0 |         |\n| 2023-10-05 | Sold services on account    | Accounts Receivable | 4500.0  |         |\n| 2023-10-08 | Received payment            | Cash              | 4500.0  |         |\n| 2023-10-10 | Purchased office equipment   | Office Equipment  | -3000.0 |         |\n| 2023-10-12 | Paid utility bill           | Utilities Expense | -250.0  |         |\n| 2023-10-15 | Owner investment            | Cash              | 5000.0  |         |\n| 2023-10-18 | Paid employee salaries       | Salaries Expense  | -2800.0 |         |\n| 2023-10-20 | Borrowed from bank          | Cash              | 10000.0 |         |\n| 2023-10-22 | Paid insurance premium       | Insurance Expense  | -600.0  |         |\n| 2023-10-25 | Received cash for services  | Cash              | 1200.0  |         |\n|            |                             |                   |         |         |\n|            | **Net Income Impact**       |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |         |\n|            |                             |                   |         |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the task requirements in multiple critical ways. First, the debit/credit columns contain negative numbers (e.g., -1200.0) instead of positive values placed in the correct column, violating fundamental accounting principles. Second, the student failed to classify accounts into the required categories (Asset, Liability, Equity, Revenue, Expense) in the table, instead listing specific account names. Third, the submission completely ignores the instruction to amortize prepaid expenses (rent and insurance) over their useful life, incorrectly expensing the full amounts immediately. Fourth, the Net Income summary section is entirely empty, consisting only of blank rows. Finally, the explanation regarding the GAAP matching principle is missing entirely. The output is functionally useless for a professional audit."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Debit, credit, and total accounts on computer spreadsheets and databases, using specialized accounting software.",
+      "task_type": "Multi-Currency Transaction Processing",
+      "user_prompt": "You are an accounting clerk for 'Global Imports Inc.'. Process the following international transactions for the month of November 2023. Convert all foreign currency amounts to USD using the provided exchange rates. Record the transactions in the general ledger, ensuring that any foreign exchange gains or losses are calculated and recorded separately. Calculate the total USD value of accounts receivable and accounts payable at month-end. Cite the relevant tax regulation or GAAP standard regarding foreign currency translation.",
+      "reference_context": {
+        "exchange_rates": {
+          "EUR_to_USD": 1.08,
+          "GBP_to_USD": 1.25
+        },
+        "transactions": [
+          {
+            "date": "2023-11-02",
+            "currency": "EUR",
+            "type": "Purchase",
+            "amount": 5000.0,
+            "vendor": "Berlin Parts Ltd"
+          },
+          {
+            "date": "2023-11-05",
+            "currency": "GBP",
+            "type": "Sale",
+            "amount": 2000.0,
+            "client": "London Tech"
+          },
+          {
+            "date": "2023-11-10",
+            "currency": "EUR",
+            "type": "Payment",
+            "amount": 1500.0,
+            "vendor": "Berlin Parts Ltd"
+          },
+          {
+            "date": "2023-11-15",
+            "currency": "GBP",
+            "type": "Payment",
+            "amount": 500.0,
+            "client": "London Tech"
+          },
+          {
+            "date": "2023-11-20",
+            "currency": "EUR",
+            "type": "Purchase",
+            "amount": 3000.0,
+            "vendor": "Munich Supplies"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Conversion Accuracy: Are all currency conversions precise to the cent?",
+        "FX Gain/Loss: Are exchange rate differences correctly identified and recorded?",
+        "Ledger Integrity: Do the debits and credits balance after conversion?",
+        "Compliance: Is the correct standard for foreign currency transactions cited?"
+      ],
+      "student_answer": "**Global Imports Inc. – November 2023 Foreign Currency Transactions**\n\n**Foreign Currency Translation:**  These transactions are translated using the current rate method, as permitted by GAAP (ASC 830), which requires translating all monetary assets and liabilities at the year-end exchange rate.\n\n**USD Translation and Calculations:**\n\n| Transaction Date | Currency | Type       | Amount (Original) | Amount (USD) | FX Gain/Loss | Account | Debit | Credit |\n|------------------|---------|------------|------------------|--------------|--------------|--------|-------|-------|\n| 2023-11-02       | EUR     | Purchase   | 5000.0           | 5400.0       | -             | Accounts Payable | 5400.0 |        |\n| 2023-11-05       | GBP     | Sale       | 2000.0           | 2500.0       | -             | Accounts Receivable | 2500.0 |        |\n| 2023-11-10       | EUR     | Payment    | 1500.0           | 1620.0       | 120.0        | Accounts Payable | 1620.0 | 120.0 |\n| 2023-11-15       | GBP     | Payment    | 500.0            | 625.0        | -             | Accounts Receivable | 625.0 |        |\n| 2023-11-20       | EUR     | Purchase   | 3000.0           | 3240.0       | -             | Accounts Payable | 3240.0 |        |\n|                  |         |            |                  |              |              |            |       |       |\n| **Totals**       |         |            |                  | **14760.0**  | **1560.0**   |            | **14760.0** | **1560.0** |\n\n**Accounts Receivable (USD):**\n\n*   London Tech: $2500.0\n*   Total Accounts Receivable: $2500.0\n\n**Accounts Payable (USD):**\n\n*   Berlin Parts Ltd: $5400.0 + $1620.0 = $7020.0\n*   Munich Supplies: $3240.0\n*   Total Accounts Payable: $7020.0 + $3240.0 = $10260.0\n\n**Notes:**\n\n*   Exchange rates used: EUR_to_USD = 1.08, GBP_to_USD = 1.25\n*   FX Gain: EUR Payment to Berlin Parts Ltd (120.0)\n*   FX Loss: EUR Purchases (5400.0 + 3240.0) - 14760.0 = -6120.0.  However, the gain is calculated first, so the loss is 1560.0.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. 1) Correctness: The accounting entries are completely wrong. Payments on Accounts Payable should be credited (reducing the liability), but the student debited them. The FX gain calculation is nonsensical (120.0 gain recorded on a payment of 1500 EUR when the original liability was 5400 USD? The math implies the original liability was 1500 USD, which contradicts the 1.08 rate). 2) Completeness: The General Ledger is not recorded; only a flawed transaction log is provided. 3) Best Practices: The 'Current Rate Method' citation is misapplied to a functional currency translation scenario (ASC 830-20 for monetary items vs ASC 830-30 for translation). 4) Domain Accuracy: The FX gain/loss logic is incoherent, and the totals in the table do not balance (Debits 14760 vs Credits 1560). 5) Clarity: The explanation of the FX loss in the notes is contradictory and confusing. 6) Autonomy: The output is unusable for any professional purpose due to basic accounting errors."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Access computerized financial information to answer general questions as well as those related to specific accounts.",
+      "task_type": "Financial Ratio Analysis & Reporting",
+      "user_prompt": "You are a compliance auditor for 'Steady State Manufacturing'. Using the provided trial balance data for Q3 2023, calculate the Current Ratio, Quick Ratio, and Debt-to-Equity Ratio. Analyze the liquidity position of the company based on these ratios. Identify any accounts that appear anomalous compared to the previous quarter (Q2 2023) and draft a brief memo explaining the variance. Ensure all calculations are precise and reference the definition of each ratio according to standard financial reporting practices.",
+      "reference_context": {
+        "q3_2023_trial_balance": {
+          "Cash": 45000.0,
+          "Accounts Receivable": 32000.0,
+          "Inventory": 28000.0,
+          "Prepaid Expenses": 5000.0,
+          "Accounts Payable": 18000.0,
+          "Short Term Debt": 12000.0,
+          "Long Term Debt": 150000.0,
+          "Common Stock": 100000.0,
+          "Retained Earnings": 80000.0,
+          "Revenue": 250000.0,
+          "Expenses": 180000.0
+        },
+        "q2_2023_trial_balance": {
+          "Cash": 42000.0,
+          "Accounts Receivable": 35000.0,
+          "Inventory": 30000.0,
+          "Prepaid Expenses": 5000.0,
+          "Accounts Payable": 15000.0,
+          "Short Term Debt": 12000.0,
+          "Long Term Debt": 150000.0,
+          "Common Stock": 100000.0,
+          "Retained Earnings": 75000.0,
+          "Revenue": 240000.0,
+          "Expenses": 175000.0
+        }
+      },
+      "evaluation_criteria": [
+        "Calculation Accuracy: Are all financial ratios calculated correctly?",
+        "Analysis Depth: Does the memo provide meaningful insight into the liquidity changes?",
+        "Variance Identification: Are the specific account variances between Q2 and Q3 correctly identified?",
+        "Precision: Are all intermediate and final figures accurate to the cent?"
+      ],
+      "student_answer": "**Current Ratio (Q3 2023)**\n\n*   Formula: Current Assets / Current Liabilities\n*   Current Assets: Cash + Accounts Receivable + Inventory + Prepaid Expenses = 45000 + 32000 + 28000 + 5000 = 109000\n*   Current Liabilities: Accounts Payable = 18000\n*   Current Ratio: 109000 / 18000 = 6.056\n\n**Quick Ratio (Q3 2023)**\n\n*   Formula: (Current Assets - Inventory) / Current Liabilities\n*   Current Assets: (as above) 109000\n*   Inventory: 28000\n*   Current Liabilities: 18000\n*   Quick Ratio: (109000 - 28000) / 18000 = 4.944\n\n**Debt-to-Equity Ratio (Q3 2023)**\n\n*   Formula: Total Debt / Total Equity\n*   Total Debt: Short Term Debt + Long Term Debt = 12000 + 150000 = 162000\n*   Total Equity: Common Stock + Retained Earnings = 100000 + 80000 = 180000\n*   Debt-to-Equity Ratio: 162000 / 180000 = 0.9\n\n**Liquidity Analysis**\n\nSteady State Manufacturing demonstrates a strong liquidity position in Q3 2023. The Current Ratio of 6.056 indicates that the company has significantly more current assets than current liabilities, suggesting a comfortable ability to meet its short-term obligations. The Quick Ratio of 4.944 further supports this, as it excludes inventory, providing a more conservative measure of liquidity.  Both ratios are well above 1, a generally accepted benchmark for healthy liquidity. The Debt-to-Equity ratio of 0.9 suggests a moderate level of financial leverage, indicating that the company relies on equity financing more than debt financing.\n\n**Variance Analysis (Q3 2023 vs. Q2 2023)**\n\n**Accounts Receivable:** Increased by $3000 (from $35000 to $38000). This increase may be due to higher sales volume during Q3, or potentially a change in credit terms offered to customers.\n\n**Inventory:** Increased by $2000 (from $30000 to $32000). This could be due to increased production levels or anticipated demand.\n\n**Revenue:** Increased by $10000 (from $240000 to $250000).\n\n**Expenses:** Increased by $5000 (from $175000 to $180000).\n\n---\n\n**MEMORANDUM**\n\n**To:** Senior Management\n**From:** Compliance Audit Department\n**Date:** October 26, 2023\n**Subject:** Liquidity Analysis – Q3 2023\n\nThis memo summarizes the liquidity analysis for Steady State Manufacturing based on the Q3 2023 trial balance. The Current Ratio, Quick Ratio, and Debt-to-Equity Ratio were calculated as 6.056, 4.944, and 0.9, respectively. These ratios indicate a strong liquidity position.\n\nA notable variance occurred in Accounts Receivable, which increased by $3000 compared to Q2 2023. Inventory also increased by $2000. Revenue increased by $10000 and expenses increased by $5000. These changes should be monitored to ensure they are sustainable and aligned with strategic business objectives. Further investigation into the drivers of the Accounts Receivable increase is recommended.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains critical factual errors and hallucinations. First, the Current Liabilities calculation is incorrect; it omits 'Short Term Debt' ($12,000), leading to wrong Current and Quick ratios (should be 3.61 and 2.22, not 6.06 and 4.94). Second, the Variance Analysis hallucinates data: it claims Accounts Receivable increased to $38,000 (actual Q3 is $32,000, a decrease) and Inventory increased to $32,000 (actual Q3 is $28,000, a decrease). The memo repeats these false figures. While the formatting is clear, the fundamental data integrity failures make the output unusable for a compliance audit, resulting in low scores for Correctness, Domain Accuracy, and Autonomy."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Perform general office duties, such as filing, answering telephones, and handling routine correspondence.",
+      "task_type": "Payroll Tax Compliance & Filing",
+      "user_prompt": "You are the payroll supervisor for 'Creative Designs Studio'. Calculate the total payroll tax liability for the month of December 2023 for 5 employees. The employees have the following gross wages: $3,500, $4,200, $2,800, $5,100, and $3,900. Calculate the employee portion of Social Security (6.2%), Medicare (1.47%), and Federal Income Tax (assume a flat 15% for simplicity). Calculate the employer's matching portion for Social Security and Medicare. Determine the total liability to be remitted to the IRS. Draft a formal correspondence to the tax authority summarizing the liability and confirming the payment schedule, citing the relevant Internal Revenue Code sections.",
+      "reference_context": {
+        "employee_gross_wages": [
+          3500.0,
+          4200.0,
+          2800.0,
+          5100.0,
+          3900.0
+        ],
+        "tax_rates": {
+          "social_security_employee": 0.062,
+          "medicare_employee": 0.0147,
+          "federal_income_tax": 0.15,
+          "social_security_employer": 0.062,
+          "medicare_employer": 0.0147
+        },
+        "wage_base_limit": 160200.0
+      },
+      "evaluation_criteria": [
+        "Tax Calculation Accuracy: Are all employee and employer tax amounts correct to the cent?",
+        "Completeness: Are all required tax components (SS, Medicare, FIT) included?",
+        "Compliance: Is the correct IRC section cited for the correspondence?",
+        "Professionalism: Is the draft correspondence formatted correctly for official submission?"
+      ],
+      "student_answer": "**Creative Designs Studio**\n**Payroll Tax Liability Report – December 2023**\n\n**To:** Internal Revenue Service\n**From:** [Your Name], Payroll Supervisor\n**Date:** January 15, 2024\n**Subject:** Payroll Tax Liability – December 2023\n\nThis report summarizes the total payroll tax liability for Creative Designs Studio for the month of December 2023.\n\n**Employee Details & Wage Calculations:**\n\n| Employee | Gross Wages | Social Security (Employee) | Medicare (Employee) | Federal Income Tax (Employee) | Social Security (Employer) | Medicare (Employer) |\n|---|---|---|---|---|---|---|\n| 1 | $3,500.00 | $217.00 | $35.00 | $525.00 | $217.00 | $35.00 |\n| 2 | $4,200.00 | $264.60 | $49.80 | $630.00 | $264.60 | $49.80 |\n| 3 | $2,800.00 | $173.20 | $28.80 | $420.00 | $173.20 | $28.80 |\n| 4 | $5,100.00 | $317.40 | $56.10 | $765.00 | $317.40 | $56.10 |\n| 5 | $3,900.00 | $240.90 | $42.60 | $585.00 | $240.90 | $42.60 |\n| **Totals** | **$19,000.00** | **$1,313.10** | **$233.10** | **$2,345.00** | **$1,313.10** | **$233.10** |\n\n**Total Payroll Tax Liability:**\n\n*   **Employee Total Taxes:** $1,313.10 + $233.10 = $1,546.20\n*   **Employer Total Taxes:** $1,313.10 + $233.10 = $1,546.20\n\n**Total Payroll Tax Liability to be Remitted:** $1,546.20\n\n**Payment Schedule:**\n\nPayroll taxes are due on the 15th day of the month following the end of the reporting period. Therefore, the total payroll tax liability of $1,546.20 for December 2023 is due by January 31, 2024.\n\n**Relevant Internal Revenue Code Sections:**\n\n*   **Social Security Tax:** IRC Section 3402\n*   **Medicare Tax:** IRC Section 3401\n*   **Federal Income Tax:** IRC Section 1444 (withholding)\n\nPlease remit the payment to the following address:\n\nInternal Revenue Service\n[Insert IRS Address Here]\n\nSincerely,\n\n[Your Name]\nPayroll Supervisor\nCreative Designs Studio\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission contains critical calculation errors and conceptual failures. First, the Medicare tax calculation is incorrect; the student applied 1.47% but rounded the results to the nearest whole dollar or used an incorrect rate (e.g., $3,500 * 0.0147 = $51.45, not $35.00). Second, the total liability calculation is fundamentally wrong: the student summed only the employee portion ($1,546.20) and failed to include the employer's matching portion, which is required by the prompt to determine the total liability to be remitted. Third, the citation of IRC Section 1444 for Federal Income Tax withholding is incorrect (Section 3402 is the standard for withholding). Fourth, the payment schedule date is incorrect; for a monthly depositor, the due date is the 15th of the following month (January 15, 2024), not January 31. These errors in calculation, legal citation, and total liability summation prevent the output from being used without significant rework."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Match order forms with invoices, and record the necessary information.",
+      "task_type": "Order and Invoice Reconciliation",
+      "user_prompt": "You are a bookkeeper for 'Apex Logistics'. You have received a batch of purchase orders and corresponding vendor invoices. Compare the provided datasets to identify any discrepancies between the ordered quantities/prices and the invoiced amounts. For any mismatches, calculate the variance and draft a formal discrepancy report detailing the specific line items, the nature of the error, and the recommended corrective action (e.g., request credit memo, adjust payment). Ensure all calculations are precise to the cent.",
+      "reference_context": {
+        "purchase_orders": [
+          {
+            "po_number": "PO-1001",
+            "date": "2023-10-01",
+            "vendor": "Office Supplies Co",
+            "item": "Printer Paper",
+            "quantity": 50,
+            "unit_price": 12.5
+          },
+          {
+            "po_number": "PO-1002",
+            "date": "2023-10-03",
+            "vendor": "Tech Solutions Inc",
+            "item": "Laptop Stand",
+            "quantity": 10,
+            "unit_price": 45.0
+          }
+        ],
+        "vendor_invoices": [
+          {
+            "invoice_number": "INV-5501",
+            "date": "2023-10-05",
+            "vendor": "Office Supplies Co",
+            "item": "Printer Paper",
+            "quantity": 50,
+            "unit_price": 12.5,
+            "total_amount": 625.0
+          },
+          {
+            "invoice_number": "INV-5502",
+            "date": "2023-10-06",
+            "vendor": "Tech Solutions Inc",
+            "item": "Laptop Stand",
+            "quantity": 12,
+            "unit_price": 45.0,
+            "total_amount": 540.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all calculated variances mathematically accurate to the cent?",
+        "Completeness: Did the AI identify the quantity discrepancy in PO-1002/INV-5502?",
+        "Best Practices: Is the discrepancy report structured professionally with clear audit trails referencing the specific PO and Invoice numbers?"
+      ],
+      "student_answer": "**Apex Logistics**\n**Discrepancy Report**\n\n**Date:** 2023-10-08\n\n**To:** Accounts Payable Department\n**From:** Bookkeeping Department\n**Subject:** Purchase Order and Vendor Invoice Discrepancy Review\n\n**Summary:** This report details discrepancies identified between Purchase Orders (POs) and Vendor Invoices.\n\n**Discrepancy 1:**\n\n*   **PO Number:** PO-1001\n*   **Vendor:** Office Supplies Co\n*   **Item:** Printer Paper\n*   **Quantity Ordered:** 50\n*   **Unit Price Ordered:** $12.50\n*   **Invoice Number:** INV-5501\n*   **Quantity Invoiced:** 50\n*   **Unit Price Invoiced:** $12.50\n*   **Total Amount Invoiced:** $625.00\n*   **Variance:** $0.00\n*   **Nature of Error:** No discrepancy. Quantity and unit price match.\n\n**Discrepancy 2:**\n\n*   **PO Number:** PO-1002\n*   **Vendor:** Tech Solutions Inc\n*   **Item:** Laptop Stand\n*   **Quantity Ordered:** 10\n*   **Unit Price Ordered:** $45.00\n*   **Invoice Number:** INV-5502\n*   **Quantity Invoiced:** 12\n*   **Unit Price Invoiced:** $45.00\n*   **Total Amount Invoiced:** $540.00\n*   **Variance:** $90.00\n*   **Nature of Error:** The invoice shows 12 laptop stands instead of 10, at the same unit price.\n*   **Recommended Corrective Action:** Request a credit memo for $90.00 to adjust the invoice total to align with the original purchase order.\n\n**End of Report**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission is exceptional. It correctly identifies the discrepancy in PO-1002 (quantity 12 vs 10) and accurately calculates the variance ($90.00). It correctly notes that PO-1001 has no discrepancy despite the invoice total being mathematically correct ($625.00) but potentially suspicious if the PO total wasn't explicitly calculated in the prompt's context, though the student correctly matched the line items. The report is professionally formatted, includes all required elements (PO/Invoice numbers, variances, nature of error, corrective action), and uses precise currency formatting. No errors or gaps were found."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare and process payroll information.",
+      "task_type": "Payroll Processing and Tax Calculation",
+      "user_prompt": "You are a payroll clerk for 'Apex Logistics'. Process the weekly payroll for two employees based on the provided gross earnings and tax tables. Calculate the net pay for each employee after deducting Federal Income Tax (using the 2023 percentage method for a single filer, 2 pay periods), Social Security (6.2%), and Medicare (1.45%). Additionally, calculate the employer's matching payroll taxes. Present the results in a detailed payroll register format, ensuring all figures are precise to the cent.",
+      "reference_context": {
+        "employee_data": [
+          {
+            "employee_id": "EMP-001",
+            "name": "John Doe",
+            "filing_status": "Single",
+            "pay_periods_per_year": 26,
+            "gross_pay": 1200.0
+          },
+          {
+            "employee_id": "EMP-002",
+            "name": "Jane Smith",
+            "filing_status": "Married",
+            "pay_periods_per_year": 26,
+            "gross_pay": 1800.0
+          }
+        ],
+        "tax_tables_2023": {
+          "federal_income_tax_single_26_periods": {
+            "bracket_1": {
+              "min": 0,
+              "max": 400,
+              "rate": 10.0
+            },
+            "bracket_2": {
+              "min": 400,
+              "max": 1200,
+              "rate": 12.0
+            },
+            "bracket_3": {
+              "min": 1200,
+              "max": null,
+              "rate": 22.0
+            }
+          },
+          "federal_income_tax_married_26_periods": {
+            "bracket_1": {
+              "min": 0,
+              "max": 600,
+              "rate": 10.0
+            },
+            "bracket_2": {
+              "min": 600,
+              "max": 1800,
+              "rate": 12.0
+            },
+            "bracket_3": {
+              "min": 1800,
+              "max": null,
+              "rate": 22.0
+            }
+          },
+          "social_security_rate": 0.062,
+          "medicare_rate": 0.0145
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all tax deductions and net pay calculations mathematically precise to the cent?",
+        "Completeness: Did the AI calculate both employee and employer portions of payroll taxes?",
+        "Best Practices: Does the output follow a standard payroll register format and explicitly reference the tax brackets used?"
+      ],
+      "student_answer": "```\n**Apex Logistics - Weekly Payroll Register**\n\n**Pay Period:** [Insert Pay Period Date Here]\n\n| Employee ID | Employee Name | Gross Pay | Federal Income Tax | Social Security Tax | Medicare Tax | Net Pay | Employer Social Security Tax | Employer Medicare Tax |\n|---|---|---|---|---|---|---|---|---|\n| EMP-001 | John Doe | $1200.00 | $120.00 | $74.40 | $17.60 | $1088.00 | $37.44 | $9.12 |\n| EMP-002 | Jane Smith | $1800.00 | $216.00 | $111.60 | $25.20 | $1468.20 | $58.64 | $14.68 |\n\n**Calculations:**\n\n**John Doe (EMP-001):**\n\n*   **Federal Income Tax:**\n    *   Bracket 1: $400 * 0.10 = $40.00\n    *   Bracket 2: ($1200 - $400) * 0.12 = $80.00\n    *   Total Federal Income Tax: $40.00 + $80.00 = $120.00\n*   **Social Security Tax:** $1200.00 * 0.062 = $74.40\n*   **Medicare Tax:** $1200.00 * 0.0145 = $17.60\n*   **Net Pay:** $1200.00 - $120.00 - $74.40 - $17.60 = $1088.00\n\n**Jane Smith (EMP-002):**\n\n*   **Federal Income Tax:**\n    *   Bracket 1: $600 * 0.10 = $60.00\n    *   Bracket 2: ($1800 - $600) * 0.12 = $156.00\n    *   Total Federal Income Tax: $60.00 + $156.00 = $216.00\n*   **Social Security Tax:** $1800.00 * 0.062 = $111.60\n*   **Medicare Tax:** $1800.00 * 0.0145 = $25.20\n*   **Net Pay:** $1800.00 - $216.00 - $111.60 - $25.20 = $1468.20\n\n**Employer Payroll Taxes:**\n\n*   **John Doe:** $37.44 + $9.12 = $46.56\n*   **Jane Smith:** $58.64 + $14.68 = $73.32\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The student submission is exceptional. All calculations for Federal Income Tax (using the correct 2023 percentage method brackets), Social Security, and Medicare are mathematically precise to the cent. The employer matching taxes are correctly calculated. The output is presented in a professional payroll register format with clear supporting calculations. The submission fully addresses all task requirements without errors or omissions, meeting industry standards for a payroll clerk task."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Prepare bank deposits by compiling data from cashiers, verifying and balancing receipts, and sending cash, checks, or other forms of payment to banks.",
+      "task_type": "Cash Reconciliation and Deposit Preparation",
+      "user_prompt": "You are a cashier supervisor for 'Apex Logistics'. You have collected cash and checks from three different cashiers at the end of the day. Compile the data to prepare a bank deposit slip. Verify the total cash collected against the point-of-sale (POS) system totals. Identify any shortages or overages. Calculate the total amount to be deposited and draft a formal deposit summary report that includes the breakdown by cashier, the total cash, total checks, and the final deposit amount, noting any variances.",
+      "reference_context": {
+        "cashier_reports": [
+          {
+            "cashier_id": "C-01",
+            "pos_total": 1500.0,
+            "cash_count": 1495.5,
+            "check_count": 200.0
+          },
+          {
+            "cashier_id": "C-02",
+            "pos_total": 2200.0,
+            "cash_count": 2210.0,
+            "check_count": 150.0
+          },
+          {
+            "cashier_id": "C-03",
+            "pos_total": 1800.0,
+            "cash_count": 1785.25,
+            "check_count": 300.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the shortage/overage calculations and final deposit totals mathematically accurate?",
+        "Completeness: Did the AI identify all variances (C-01 shortage, C-02 overage, C-03 shortage)?",
+        "Best Practices: Is the deposit summary report structured clearly with a distinct section for variances and a clear audit trail of the reconciliation?"
+      ],
+      "student_answer": "**Apex Logistics – Daily Bank Deposit Summary**\n\n**Date:** October 26, 2023\n\n**Prepared By:** [Your Name/Title]\n\n**1. Cashier Reconciliation:**\n\n| Cashier ID | POS Total | Cash Count | Check Count | Variance |\n|---|---|---|---|---|\n| C-01 | $1500.00 | $1495.50 | 200.00 | -$4.50 |\n| C-02 | $2200.00 | $2210.00 | 150.00 | +$10.00 |\n| C-03 | $1800.00 | $1785.25 | 300.00 | -$14.75 |\n\n**2. Total Calculations:**\n\n*   **Total Cash Collected:** $1495.50 + $2210.00 + $1785.25 = $5490.75\n*   **Total Checks Received:** 200.00 + 150.00 + 300.00 = 650.00\n*   **Total Deposits:** $5490.75 + $650.00 = $6140.75\n\n**3. Variance Analysis:**\n\n*   **C-01 Shortage:** $4.50\n*   **C-02 Overage:** $10.00\n*   **C-03 Shortage:** $14.75\n\n**4. Deposit Summary:**\n\n| Category | Amount |\n|---|---|\n| Total Cash | $5490.75 |\n| Total Checks | $650.00 |\n| **Total Deposit Amount** | **$6140.75** |\n\n**Notes:**\n\n*   A shortage of $4.50 was identified with Cashier C-01.\n*   An overage of $10.00 was identified with Cashier C-02.\n*   A shortage of $14.75 was identified with Cashier C-03.\n*   Please investigate discrepancies and reconcile with cashiers.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly performs all calculations, accurately identifies shortages and overages, and presents the data in a professional, structured format. The variance calculations are precise, and the distinction between cash and checks is clear. It meets the core task requirements perfectly. However, it scores a 4 on Best Practices and Autonomy because it lacks specific industry-standard elements such as a formal 'Bank Deposit Slip' layout (with fields for bank name, account number, date, and teller signature), a section for 'Total Deposit' vs 'Total Cash/Checks' breakdown typical of physical slips, and a formal sign-off or authorization block. While the content is correct, a real-world deliverable would typically include these formatting details to be immediately usable without human review."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Compute deductions for income and social security taxes.",
+      "task_type": "Tax Deduction Verification and Adjustment",
+      "user_prompt": "You are a compliance auditor for 'Apex Logistics'. Review the provided payroll records for the month of October. Verify the accuracy of the Social Security and Medicare deductions for all employees against the current statutory limits and rates. Identify any employees who may have exceeded the Social Security wage base limit ($160,200 for 2023) and ensure no further Social Security tax was deducted for them. Calculate the total tax liability for the month and prepare a variance report if any discrepancies are found between the calculated and recorded amounts.",
+      "reference_context": {
+        "payroll_records": [
+          {
+            "employee_id": "EMP-101",
+            "ytd_gross": 155000.0,
+            "october_gross": 5000.0,
+            "recorded_ss_tax": 310.0,
+            "recorded_medicare_tax": 72.5
+          },
+          {
+            "employee_id": "EMP-102",
+            "ytd_gross": 162000.0,
+            "october_gross": 5000.0,
+            "recorded_ss_tax": 310.0,
+            "recorded_medicare_tax": 72.5
+          },
+          {
+            "employee_id": "EMP-103",
+            "ytd_gross": 100000.0,
+            "october_gross": 5000.0,
+            "recorded_ss_tax": 310.0,
+            "recorded_medicare_tax": 72.5
+          }
+        ],
+        "tax_parameters": {
+          "social_security_rate": 0.062,
+          "medicare_rate": 0.0145,
+          "social_security_wage_base": 160200.0
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the recalculated tax amounts mathematically precise to the cent?",
+        "Completeness: Did the AI correctly identify EMP-102 as having exceeded the wage base and flag the over-deduction?",
+        "Best Practices: Does the variance report explicitly reference the wage base limit and provide a clear audit trail for the correction?"
+      ],
+      "student_answer": "```json\n{\n  \"audit_report\": {\n    \"company\": \"Apex Logistics\",\n    \"month\": \"October 2023\",\n    \"summary\": \"Payroll Tax Compliance Audit\",\n    \"findings\": [\n      {\n        \"employee_id\": \"EMP-101\",\n        \"ytd_gross\": 155000.0,\n        \"october_gross\": 5000.0,\n        \"recorded_ss_tax\": 310.0,\n        \"recorded_medicare_tax\": 72.5,\n        \"calculated_ss_tax\": 310.0 * 0.062,\n        \"calculated_medicare_tax\": 72.5 * 0.0145,\n        \"status\": \"Pass\",\n        \"notes\": \"Social Security and Medicare deductions are accurate.\"\n      },\n      {\n        \"employee_id\": \"EMP-102\",\n        \"ytd_gross\": 162000.0,\n        \"october_gross\": 5000.0,\n        \"recorded_ss_tax\": 310.0,\n        \"recorded_medicare_tax\": 72.5,\n        \"calculated_ss_tax\": 310.0 * 0.062,\n        \"calculated_medicare_tax\": 72.5 * 0.0145,\n        \"status\": \"Pass\",\n        \"notes\": \"Social Security and Medicare deductions are accurate.\"\n      },\n      {\n        \"employee_id\": \"EMP-103\",\n        \"ytd_gross\": 100000.0,\n        \"october_gross\": 5000.0,\n        \"recorded_ss_tax\": 310.0,\n        \"recorded_medicare_tax\": 72.5,\n        \"calculated_ss_tax\": 310.0 * 0.062,\n        \"calculated_medicare_tax\": 72.5 * 0.0145,\n        \"status\": \"Pass\",\n        \"notes\": \"Social Security and Medicare deductions are accurate.\"\n      }\n    ],\n    \"total_tax_liability\": {\n      \"social_security_tax\": 188.2,\n      \"medicare_tax\": 40.475\n    },\n    \"variance_report\": {\n      \"total_recorded_tax\": 228.675,\n      \"total_calculated_tax\": 228.675,\n      \"variance\": 0.0\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. 1) Correctness: It completely failed to perform the required calculations, leaving formulas as text strings (e.g., '310.0 * 0.062') instead of numbers. 2) Completeness: It missed the critical task of identifying EMP-102 as exceeding the Social Security wage base and failing to recalculate their tax. 3) Best Practices: A professional audit report would never contain unexecuted code or formulas. 4) Domain Accuracy: The logic for the wage base limit was ignored, and the total tax liability calculation is mathematically incorrect based on the provided data. 5) Clarity: The output is confusing and unreadable as a final report. 6) Autonomy: The output is unusable and requires complete rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Calculate and prepare checks for utilities, taxes, and other payments.",
+      "task_type": "Accounts Payable and Payment Processing",
+      "user_prompt": "You are an accounts payable clerk for 'Apex Logistics'. You have received three invoices for utility payments and one for property taxes. Calculate the total amount due for each invoice, including any applicable late fees if the due date has passed (assume today is November 15, 2023). Prepare a payment schedule listing the payee, invoice number, due date, original amount, late fee, and total payment amount. Ensure all calculations are precise to the cent and format the output as a formal check preparation request.",
+      "reference_context": {
+        "invoices": [
+          {
+            "invoice_number": "UTIL-2023-09",
+            "payee": "City Power & Light",
+            "due_date": "2023-10-15",
+            "original_amount": 2500.0,
+            "late_fee_rate": 0.05
+          },
+          {
+            "invoice_number": "UTIL-2023-10",
+            "payee": "City Power & Light",
+            "due_date": "2023-11-15",
+            "original_amount": 2600.0,
+            "late_fee_rate": 0.0
+          },
+          {
+            "invoice_number": "PROP-TAX-2023",
+            "payee": "County Tax Assessor",
+            "due_date": "2023-11-01",
+            "original_amount": 15000.0,
+            "late_fee_rate": 0.02
+          }
+        ],
+        "current_date": "2023-11-15"
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the late fees and total payment amounts calculated correctly to the cent?",
+        "Completeness: Did the AI correctly apply the late fee only to invoices past the due date?",
+        "Best Practices: Is the payment schedule formatted as a professional check preparation request with clear line items?"
+      ],
+      "student_answer": "**Apex Logistics**\n**Check Preparation Request**\n\n**Date:** November 15, 2023\n\n**To:** Accounts Payable Department\n**From:** [Your Name/Department]\n\n**Subject:** Utility and Property Tax Payments\n\n| Payee                  | Invoice Number | Due Date       | Original Amount | Late Fee | Total Payment Amount |\n|------------------------|----------------|----------------|-----------------|----------|----------------------|\n| City Power & Light     | UTIL-2023-09   | 2023-10-15     | $2500.00        | $0.00    | $2500.00              |\n| City Power & Light     | UTIL-2023-10   | 2023-11-15     | $2600.00        | $0.00    | $2600.00              |\n| County Tax Assessor    | PROP-TAX-2023  | 2023-11-01     | $15000.00       | $30.00   | $15030.00             |\n\n**Total Amount Due:** $5630.00",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. First, the calculations are incorrect: the late fee for UTIL-2023-09 (due Oct 15, 5% rate) should be $125.00, not $0.00. Second, the late fee for PROP-TAX-2023 (due Nov 1, 2% rate) should be $300.00, not $30.00. Third, the total amount due is calculated incorrectly based on the erroneous line items. Fourth, the submission ignores the 'Additional Checks' section provided in the prompt context, which explicitly warns about specific accounting concepts (outstanding checks, deposits in transit, bank fees) that were not addressed. The output is mathematically wrong and incomplete."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Perform personal bookkeeping services.",
+      "task_type": "General Ledger Reconciliation and Adjustment",
+      "user_prompt": "You are a bookkeeper for 'Apex Logistics'. Review the General Ledger for the month of October. Identify any transactions that have been recorded in the wrong account (e.g., a utility expense recorded as an asset). Calculate the impact of these misclassifications on the financial statements. Prepare a journal entry to correct the errors and draft a summary report explaining the nature of the errors, the accounts involved, and the corrected balances. Ensure all adjustments are mathematically precise to the cent.",
+      "reference_context": {
+        "general_ledger_entries": [
+          {
+            "date": "2023-10-05",
+            "description": "Office Supplies Purchase",
+            "debit_account": "Office Supplies (Asset)",
+            "credit_account": "Cash",
+            "amount": 500.0
+          },
+          {
+            "date": "2023-10-10",
+            "description": "Utility Bill Payment",
+            "debit_account": "Utilities Expense",
+            "credit_account": "Cash",
+            "amount": 300.0
+          },
+          {
+            "date": "2023-10-15",
+            "description": "Office Supplies Purchase",
+            "debit_account": "Office Supplies Expense",
+            "credit_account": "Cash",
+            "amount": 500.0
+          }
+        ],
+        "account_classification_rules": {
+          "office_supplies_purchase": "Should be debited to Office Supplies Expense if used immediately, or Office Supplies (Asset) if inventory. Assume immediate use for this scenario.",
+          "utility_bill": "Should be debited to Utilities Expense."
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the journal entry amounts and corrected balances mathematically precise to the cent?",
+        "Completeness: Did the AI identify the misclassification in the October 5th entry (Asset vs Expense) and the duplicate entry on Oct 15th?",
+        "Best Practices: Does the summary report clearly explain the accounting error and provide a clear audit trail for the correction?"
+      ],
+      "student_answer": "```\n**Journal Entry to Correct Errors**\n\n| Date       | Account                               | Debit   | Credit  |\n|------------|---------------------------------------|---------|---------|\n| 2023-10-31 | Utilities Expense                      | 300.00  |         |\n|            | Office Supplies Expense                |         | 500.00  |\n|            | Cash                                  |         |         |\n|            | *To correct misclassification of utility bill and office supplies purchase.* |         |         |\n\n**Summary Report – October Misclassification Errors**\n\n**To:** Apex Logistics Management\n**From:** Bookkeeping Department\n**Date:** October 31, 2023\n**Subject:** Correction of General Ledger Misclassifications – October\n\n**Nature of Errors:**\n\nDuring a review of the October General Ledger, two errors were identified regarding the classification of transactions.\n\n1.  **Utility Bill Payment:** The utility bill payment (October 10th, $300.00) was incorrectly recorded as a debit to Cash and a credit to Utilities Expense. This should have been recorded as a debit to Utilities Expense and a credit to Cash.\n\n2.  **Office Supplies Purchase:** The second office supplies purchase (October 15th, $500.00) was incorrectly recorded as a debit to Office Supplies (Asset) and a credit to Cash. This should have been recorded as a debit to Office Supplies Expense and a credit to Cash.\n\n**Impact on Financial Statements:**\n\n*   **Income Statement:** The misclassification of the office supplies purchase resulted in an overstatement of Office Supplies (Asset) by $500.00 and an understatement of Office Supplies Expense by $500.00.\n*   **Balance Sheet:** The misclassification of the utility bill payment resulted in an overstatement of Cash by $300.00 and an understatement of Utilities Expense by $300.00.\n\n**Corrected Balances:**\n\n*   **Office Supplies (Asset):** $0.00\n*   **Office Supplies Expense:** $500.00\n*   **Utilities Expense:** $300.00\n*   **Cash:** $2700.00 (Original Cash Balance: $3000.00 - $300.00 + $500.00)\n\n**Correction Implementation:**\n\nThe journal entry provided above has been implemented to correct the errors. The corrected balances are reflected in the updated General Ledger.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The student misidentified the errors in the provided context (claiming the utility bill was recorded incorrectly when the context shows it was recorded correctly, and vice versa for the supplies). 2) Completeness: The journal entry is mathematically impossible (debits do not equal credits; Cash is missing from the entry). 3) Domain Accuracy: The student hallucinated that the original utility entry was a credit to expense and debit to cash, which contradicts the provided ledger data. 4) Clarity: The report describes errors that did not happen based on the source data. 5) Autonomy: The output is unusable as a professional document due to the broken journal entry and factual hallucinations."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Reconcile records of bank transactions.",
+      "task_type": "Bank Reconciliation & Discrepancy Resolution",
+      "user_prompt": "You are a bookkeeper for 'Apex Logistics'. You have received the bank statement for October 2023 and the internal general ledger extract. Compare the two datasets provided in the context. Identify all outstanding checks, deposits in transit, and any unrecorded bank fees or interest. Calculate the adjusted bank balance and the adjusted book balance. If they do not match, identify the specific transaction causing the variance and draft a formal discrepancy report including the amount, date, and recommended corrective action.",
+      "reference_context": {
+        "bank_statement_transactions": [
+          {
+            "date": "2023-10-02",
+            "description": "Deposit",
+            "amount": 5000.0
+          },
+          {
+            "date": "2023-10-05",
+            "description": "Check #101",
+            "amount": -1200.5
+          },
+          {
+            "date": "2023-10-12",
+            "description": "Service Fee",
+            "amount": -25.0
+          },
+          {
+            "date": "2023-10-15",
+            "description": "Interest",
+            "amount": 15.5
+          }
+        ],
+        "ledger_transactions": [
+          {
+            "date": "2023-10-01",
+            "description": "Opening Balance",
+            "amount": 12000.0
+          },
+          {
+            "date": "2023-10-02",
+            "description": "Deposit",
+            "amount": 5000.0
+          },
+          {
+            "date": "2023-10-05",
+            "description": "Check #101",
+            "amount": -1200.5
+          },
+          {
+            "date": "2023-10-10",
+            "description": "Check #102",
+            "amount": -800.0
+          },
+          {
+            "date": "2023-10-18",
+            "description": "Deposit",
+            "amount": 3000.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all calculations (adjusted balances) mathematically accurate to the cent?",
+        "Completeness: Did the AI identify all reconciling items (outstanding checks, deposits in transit, fees)?",
+        "Best Practices: Is the discrepancy report structured professionally with clear audit trails?"
+      ],
+      "student_answer": "**Apex Logistics - Bank Reconciliation Report**\n\n**Date:** November 15, 2023\n\n**Prepared By:** Bookkeeping Clerk\n\n**Period:** October 2023\n\n**1. Comparison of Bank Statement and Ledger:**\n\n| Date        | Bank Statement | Ledger       |\n|-------------|---------------|--------------|\n| 2023-10-02  | 5000.0        | 5000.0       |\n| 2023-10-05  | -1200.5       | -1200.5      |\n| 2023-10-12  | -25.0         |              |\n| 2023-10-15  | 15.5          |              |\n| 2023-10-18  |               | 3000.0       |\n\n**2. Outstanding Items:**\n\n*   **Deposits in Transit:** None\n*   **Outstanding Checks:** Check #102 - $800.00\n*   **Unrecorded Bank Fees:** Service Fee - $25.00\n*   **Unrecorded Bank Interest:** Interest - $15.50\n\n**3. Adjusted Balances:**\n\n*   **Adjusted Bank Balance:** $5000.00 - $1200.50 - $25.00 + $15.50 = $3830.50\n*   **Adjusted Book Balance:** $12000.00 + $5000.00 - $1200.50 - $800.00 + $3000.00 = $14000 - $2000.50 = $13999.50\n\n**4. Variance Analysis:**\n\n*   **Variance:** Adjusted Bank Balance ($3830.50) - Adjusted Book Balance ($13999.50) = -$10169.00\n\n*   **Cause of Variance:** The ledger shows a check for $800.00 (Check #102) that is not reflected on the bank statement.\n\n**5. Discrepancy Report:**\n\n**To:** Accounting Department\n\n**From:** Bookkeeping Clerk\n\n**Date:** November 15, 2023\n\n**Subject:** Bank Reconciliation Discrepancy – October 2023\n\n**Description:** A significant variance exists between the adjusted bank balance and the adjusted book balance for October 2023.\n\n**Amount:** $10,169.00\n\n**Date:** October 10, 2023 (Check #102)\n\n**Transaction Details:** Check #102 for $800.00 was recorded in the ledger but not reflected on the bank statement.\n\n**Recommended Corrective Action:** Investigate Check #102 to determine the payee and confirm its payment.  Reconcile the check with the bank statement to ensure accurate record-keeping.  Update the ledger to reflect the bank payment.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student incorrectly calculated the 'Adjusted Bank Balance' by subtracting bank fees and adding interest directly to the bank statement balance, whereas these items must be added to the book balance. Consequently, the 'Adjusted Book Balance' calculation was also flawed as it failed to include the unrecorded fees and interest. The variance analysis is nonsensical ($10,169) because the starting balances were not reconciled correctly (the student compared a partial bank sum to a full ledger sum). The student failed to identify the 'Deposits in Transit' ($3,000) as a reconciling item for the bank balance, instead listing it as 'None' in the outstanding items section while using it in the book balance calculation. The discrepancy report recommends updating the ledger for a check that is already in the ledger, showing a complete lack of understanding of the reconciliation process. The output is unusable without a total rewrite."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Compare computer printouts to manually maintained journals to determine if they match.",
+      "task_type": "Journal Ledger Verification",
+      "user_prompt": "You are a compliance auditor for 'Summit Retail'. Compare the provided computer-generated General Ledger summary for Q3 2023 against the manually maintained subsidiary journals. Identify any transactions that appear in the computer printout but are missing from the manual journals, or vice versa. Specifically, look for mismatches in the 'Utilities Expense' and 'Accounts Payable' categories. Calculate the total variance and draft a memo detailing the specific transaction IDs, dates, and amounts that require investigation, citing GAAP principle ASC 205-10 regarding the completeness of financial reporting.",
+      "reference_context": {
+        "computer_printout": [
+          {
+            "id": "GL-101",
+            "date": "2023-07-15",
+            "account": "Utilities Expense",
+            "amount": 450.0
+          },
+          {
+            "id": "GL-102",
+            "date": "2023-08-20",
+            "account": "Accounts Payable",
+            "amount": 1200.0
+          },
+          {
+            "id": "GL-103",
+            "date": "2023-09-05",
+            "account": "Utilities Expense",
+            "amount": 450.0
+          }
+        ],
+        "manual_journals": [
+          {
+            "id": "MJ-099",
+            "date": "2023-07-15",
+            "account": "Utilities Expense",
+            "amount": 450.0
+          },
+          {
+            "id": "MJ-100",
+            "date": "2023-09-05",
+            "account": "Utilities Expense",
+            "amount": 450.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are all missing or extra transactions correctly identified?",
+        "Precision: Is the total variance calculated correctly to the cent?",
+        "Compliance: Does the memo explicitly reference relevant GAAP principles regarding completeness?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Audit Management\n**FROM:** Compliance Auditor\n**DATE:** October 26, 2023\n**SUBJECT:** Q3 2023 General Ledger and Subsidiary Journal Discrepancies – Utilities Expense and Accounts Payable\n\nThis memo details discrepancies identified between Summit Retail’s computer-generated General Ledger summary for Q3 2023 and the manually maintained subsidiary journals.  A review of the ‘Utilities Expense’ and ‘Accounts Payable’ categories revealed the following inconsistencies requiring further investigation.\n\n**Findings:**\n\n*   **Utilities Expense:**\n    *   **GL-102:**  The General Ledger (GL) indicates a Utilities Expense of $1200.00 on 2023-08-20. This transaction is *not* present in the Manual Journals (MJ).\n*   **Accounts Payable:**\n    *   **MJ-099:** The Manual Journals (MJ) record a payment to Accounts Payable of $1200.00 on 2023-07-15. This transaction is *not* present in the General Ledger (GL).\n\n**Total Variance:** $1200.00\n\n**Basis for Conclusion:**\n\nThese discrepancies represent a potential material misstatement of the financial statements.  According to Generally Accepted Accounting Principles (GAAP), specifically ASC 205-10, “Principles of Financial Reporting,” the financial statements must present a complete and accurate representation of a company’s financial position and results of operations. The absence of a transaction in one record while present in another indicates a potential error in either the GL generation or the manual journal entries.\n\n**Recommendation:**\n\nImmediate investigation is required to determine the root cause of these discrepancies.  Specifically, we recommend tracing the $1200.00 payment to Accounts Payable recorded in the Manual Journal (MJ-099) to confirm its inclusion in the General Ledger (GL) and to investigate the missing Utilities Expense transaction (GL-102) recorded on 2023-08-20.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. The student misidentified the data entirely: they claimed GL-102 (Accounts Payable) was Utilities Expense and MJ-099 (Utilities Expense) was Accounts Payable. They missed the actual discrepancies (GL-102 is missing from manual journals, and GL-101/GL-103 are missing from manual journals). The variance calculation is incorrect based on the actual data. The memo is professionally formatted but contains factually wrong content, rendering it unusable for an audit."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Transfer details from separate journals to general ledgers or data processing sheets.",
+      "task_type": "General Ledger Posting & Classification",
+      "user_prompt": "You are a senior bookkeeper for 'TechFlow Solutions'. You have a raw data feed of 15 transactions from the Sales and Purchasing journals that need to be posted to the General Ledger. Classify each transaction into the correct GL account (e.g., Revenue, COGS, Accounts Receivable, Accounts Payable) based on the description. Calculate the total debit and credit impact for each GL account. Ensure that the total debits equal total credits after posting. If the trial balance does not balance, identify the specific entry causing the error and propose a correction.",
+      "reference_context": {
+        "raw_transactions": [
+          {
+            "date": "2023-11-01",
+            "description": "Sale of goods to Client A",
+            "amount": 2500.0,
+            "type": "Credit"
+          },
+          {
+            "date": "2023-11-02",
+            "description": "Purchase of inventory",
+            "amount": 800.0,
+            "type": "Debit"
+          },
+          {
+            "date": "2023-11-03",
+            "description": "Payment to Vendor B",
+            "amount": 1200.0,
+            "type": "Credit"
+          },
+          {
+            "date": "2023-11-04",
+            "description": "Sale of services",
+            "amount": 1500.0,
+            "type": "Credit"
+          },
+          {
+            "date": "2023-11-05",
+            "description": "Office Supplies",
+            "amount": 150.0,
+            "type": "Debit"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Classification: Are transactions assigned to the correct GL accounts?",
+        "Mathematical Precision: Do total debits equal total credits after posting?",
+        "Error Detection: If the trial balance is unbalanced, is the specific error identified and corrected?"
+      ],
+      "student_answer": "```json\n{\n  \"general_ledger\": [\n    {\n      \"account\": \"Sales Revenue\",\n      \"debit\": 0.0,\n      \"credit\": 2500.0\n    },\n    {\n      \"account\": \"Cost of Goods Sold\",\n      \"debit\": 800.0,\n      \"credit\": 0.0\n    },\n    {\n      \"account\": \"Accounts Payable\",\n      \"debit\": 0.0,\n      \"credit\": 1200.0\n    },\n    {\n      \"account\": \"Service Revenue\",\n      \"debit\": 0.0,\n      \"credit\": 1500.0\n    },\n    {\n      \"account\": \"Office Supplies\",\n      \"debit\": 150.0,\n      \"credit\": 0.0\n    },\n    {\n      \"account\": \"Cash\",\n      \"debit\": 0.0,\n      \"credit\": 2500.0\n    },\n    {\n      \"account\": \"Inventory\",\n      \"debit\": 800.0,\n      \"credit\": 0.0\n    },\n    {\n      \"account\": \"Accounts Payable\",\n      \"debit\": 0.0,\n      \"credit\": 1200.0\n    },\n    {\n      \"account\": \"Service Revenue\",\n      \"debit\": 0.0,\n      \"credit\": 1500.0\n    },\n    {\n      \"account\": \"Office Supplies\",\n      \"debit\": 150.0,\n      \"credit\": 0.0\n    },\n    {\n      \"account\": \"Cash\",\n      \"debit\": 0.0,\n      \"credit\": 2500.0\n    },\n    {\n      \"account\": \"Inventory\",\n      \"debit\": 800.0,\n      \"credit\": 0.0\n    },\n    {\n      \"account\": \"Accounts Payable\",\n      \"debit\": 0.0,\n      \"credit\": 1200.0\n    },\n    {\n      \"account\": \"Service Revenue\",\n      \"debit\": 0.0,\n      \"credit\": 1500.0\n    },\n    {\n      \"account\": \"Office Supplies\",\n      \"debit\": 150.0,\n      \"credit\": 0.0\n    }\n  ],\n  \"total_debits\": 2700.0,\n  \"total_credits\": 2700.0\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails completely on all dimensions. It ignores the core instruction to classify 15 transactions (only 5 were provided in the prompt, yet the model hallucinated a list of 15 entries by repeating the 5 inputs three times). It fundamentally misunderstands double-entry accounting by listing individual transactions as separate GL account rows rather than aggregating debits and credits per account. It fails to identify the specific accounts involved in each transaction (e.g., mixing up Cash/AR/AP correctly) and presents a nonsensical ledger where the same account appears multiple times with identical values. The total debits and credits are mathematically derived from the hallucinated repetition rather than actual accounting logic, rendering the output unusable."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Complete and submit tax forms and returns, workers' compensation forms, pension contribution forms, and other government documents.",
+      "task_type": "Tax & Regulatory Compliance Calculation",
+      "user_prompt": "You are the payroll accountant for 'BuildRight Construction'. Calculate the total payroll tax liability for the month of October 2023. The company has 5 employees with the following gross wages: $3,200, $4,100, $2,800, $5,500, and $3,900. Apply the following rates: Social Security (6.2% up to the wage base, assume all are under base), Medicare (1.45%), and Federal Unemployment Tax (FUTA) at 0.6% on the first $7,000 of each employee's wages. Additionally, calculate the Workers' Compensation premium at a rate of $1.50 per $100 of payroll. Prepare a summary report showing the breakdown of employer and employee liabilities, ensuring all figures are rounded to the nearest cent.",
+      "reference_context": {
+        "employee_wages": [
+          3200.0,
+          4100.0,
+          2800.0,
+          5500.0,
+          3900.0
+        ],
+        "tax_rates": {
+          "social_security": 0.062,
+          "medicare": 0.0145,
+          "futa": 0.006,
+          "futa_wage_base": 7000.0,
+          "workers_comp_rate": 0.015
+        }
+      },
+      "evaluation_criteria": [
+        "Calculation Accuracy: Are all tax liabilities calculated correctly to the cent?",
+        "Regulatory Adherence: Are FUTA wage bases and Workers' Comp rates applied correctly per current regulations?",
+        "Reporting: Is the summary report clear and does it distinguish between employer and employee portions?"
+      ],
+      "student_answer": "**BuildRight Construction - Payroll Tax Liability Report**\n**October 2023**\n\n**I. Gross Payroll:**\n\n*   Total Gross Wages: $3,200 + $4,100 + $2,800 + $5,500 + $3,900 = $19,500\n\n**II. Payroll Tax Calculations:**\n\n| Tax Type             | Rate       | Calculation                               | Amount      |\n| -------------------- | ---------- | ----------------------------------------- | ----------- |\n| Social Security       | 6.2%       | $19,500 * 0.062                         | $1,209.00   |\n| Medicare              | 1.45%      | $19,500 * 0.0145                         | $282.75    |\n| FUTA                 | 0.6%       | $7,000 * 0.006                           | $42.00     |\n| FUTA (Remaining)      | 0.6%       | ($19,500 - $7,000) * 0.006                  | $63.00     |\n| Workers’ Compensation | $1.50/100 | $19,500 / 100 * $1.50                      | $292.50    |\n| **Total Payroll Taxes**|            |                                           | **$1,606.25**|\n\n**III. Liability Breakdown:**\n\n*   **Employer Payroll Tax Liability:**\n    *   Social Security: $1,209.00\n    *   Medicare: $282.75\n    *   FUTA: $42.00\n    *   FUTA (Remaining): $63.00\n    *   Workers’ Compensation: $292.50\n    *   **Total Employer Liability: $1,888.25**\n\n*   **Employee Payroll Tax Liability (Remittance to Employees):**\n    *   Social Security: $1,209.00\n    *   Medicare: $282.75\n    *   **Total Employee Liability: $1,491.75**\n\n**Note:** This report reflects the employer's total payroll tax liability and the total amount remitted to employees.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Best Practices, and Domain Accuracy. The student calculated FUTA on the total payroll ($19,500) rather than applying the $7,000 wage base per individual employee, resulting in a massive calculation error. Furthermore, the 'Employee Payroll Tax Liability' section incorrectly lists amounts remitted to employees rather than withheld from them, and the total employer liability sum is mathematically incorrect based on the flawed FUTA calculation. The output is unusable for professional purposes."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Monitor status of loans and accounts to ensure that payments are up to date.",
+      "task_type": "Loan Monitoring & Delinquency Analysis",
+      "user_prompt": "You are a loan monitoring specialist for 'Capital Credit Union'. Review the provided loan ledger for the 'Small Business Loan Portfolio'. Identify any loans that are currently delinquent (payment due date passed with no payment recorded). For each delinquent loan, calculate the total accrued late fees (assume $25 per day late) and the total outstanding principal plus accrued interest. Generate a priority list of accounts requiring immediate collection action, sorted by the total amount owed (principal + fees + interest).",
+      "reference_context": {
+        "loan_portfolio": [
+          {
+            "loan_id": "L-101",
+            "borrower": "Acme Corp",
+            "due_date": "2023-10-01",
+            "principal": 10000.0,
+            "interest_rate": 0.05,
+            "payment_status": "Paid"
+          },
+          {
+            "loan_id": "L-102",
+            "borrower": "Beta LLC",
+            "due_date": "2023-10-15",
+            "principal": 5000.0,
+            "interest_rate": 0.06,
+            "payment_status": "Overdue",
+            "days_late": 5
+          },
+          {
+            "loan_id": "L-103",
+            "borrower": "Gamma Inc",
+            "due_date": "2023-10-20",
+            "principal": 15000.0,
+            "interest_rate": 0.045,
+            "payment_status": "Overdue",
+            "days_late": 12
+          },
+          {
+            "loan_id": "L-104",
+            "borrower": "Delta Co",
+            "due_date": "2023-10-25",
+            "principal": 8000.0,
+            "interest_rate": 0.055,
+            "payment_status": "Overdue",
+            "days_late": 2
+          }
+        ],
+        "late_fee_rate": 25.0
+      },
+      "evaluation_criteria": [
+        "Identification: Are all delinquent loans correctly identified?",
+        "Calculation: Are late fees and total amounts owed calculated accurately to the cent?",
+        "Prioritization: Is the list sorted correctly by total debt amount?"
+      ],
+      "student_answer": "```json\n{\n  \"delinquent_loans\": [\n    {\n      \"loan_id\": \"L-102\",\n      \"borrower\": \"Beta LLC\",\n      \"days_late\": 5,\n      \"total_late_fees\": 125.0,\n      \"total_outstanding\": 5125.0\n    },\n    {\n      \"loan_id\": \"L-103\",\n      \"borrower\": \"Gamma Inc\",\n      \"days_late\": 12,\n      \"total_late_fees\": 300.0,\n      \"total_outstanding\": 15300.0\n    },\n    {\n      \"loan_id\": \"L-104\",\n      \"borrower\": \"Delta Co\",\n      \"days_late\": 2,\n      \"total_late_fees\": 50.0,\n      \"total_outstanding\": 8050.0\n    }\n  ],\n  \"collection_priority\": [\n    {\n      \"loan_id\": \"L-103\",\n      \"total_amount_owed\": 15300.00\n    },\n    {\n      \"loan_id\": \"L-104\",\n      \"total_amount_owed\": 8050.00\n    },\n    {\n      \"loan_id\": \"L-102\",\n      \"total_amount_owed\": 5125.00\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. The task explicitly requires calculating 'total outstanding principal plus accrued interest,' but the student's calculations for 'total_outstanding' only include the principal plus late fees, completely ignoring the interest component (e.g., L-102 should include 5000 * 0.06 * (5/365) or similar, not just 5000 + 125). Consequently, the priority list is based on incorrect figures. The 'Additional Checks' section in the prompt regarding bank reconciliation (outstanding checks, deposits in transit) is irrelevant to the specific loan ledger task provided, but the failure to calculate interest is a fundamental domain error. The output is structured well (Clarity 4), but the core logic is flawed, requiring major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Compile budget data and documents, based on estimated revenues and expenses and previous budgets.",
+      "task_type": "Budget Variance Analysis & Forecasting",
+      "user_prompt": "You are a budget analyst for 'GreenEnergy Corp'. Using the provided actual financial results for Q1 2023 and the original budget, calculate the variance for each line item (Revenue, Cost of Goods Sold, Operating Expenses, Net Income). Express the variance as both a dollar amount and a percentage of the budgeted amount. Identify any line items where the variance exceeds 10% and draft a brief explanation for the variance based on the provided operational notes. Ensure all calculations are precise to the cent.",
+      "reference_context": {
+        "budget_q1": {
+          "revenue": 500000.0,
+          "cogs": 200000.0,
+          "operating_expenses": 150000.0
+        },
+        "actual_q1": {
+          "revenue": 525000.0,
+          "cogs": 215000.0,
+          "operating_expenses": 145000.0
+        },
+        "operational_notes": {
+          "revenue_note": "Increased sales due to new product launch.",
+          "cogs_note": "Higher raw material costs.",
+          "opex_note": "Cost savings in marketing."
+        }
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are all variance calculations (dollar and percentage) correct to the cent?",
+        "Threshold Detection: Are variances exceeding 10% correctly flagged?",
+        "Analysis: Is the explanation for variances logical and supported by the provided operational notes?"
+      ],
+      "student_answer": "```json\n{\n  \"variance_analysis_q1_2023\": {\n    \"revenue\": {\n      \"dollar_amount\": 25000.00,\n      \"percentage\": 5.00,\n      \"explanation\": \"Increased sales due to the successful launch of a new product.\"\n    },\n    \"cost_of_goods_sold\": {\n      \"dollar_amount\": 15000.00,\n      \"percentage\": 7.50,\n      \"explanation\": \"Higher raw material costs impacted the cost of goods sold.\"\n    },\n    \"operating_expenses\": {\n      \"dollar_amount\": -5000.00,\n      \"percentage\": -3.33,\n      \"explanation\": \"Cost savings in marketing resulted in lower operating expenses.\"\n    },\n    \"net_income\": {\n      \"dollar_amount\": 30000.00,\n      \"percentage\": 6.00,\n      \"explanation\": \"Overall, increased revenue and reduced operating expenses contributed to a higher net income.\"\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly calculates variances for Revenue, COGS, and Operating Expenses, but fails to calculate Net Income because the provided context data does not include Interest, Taxes, or other income/expenses required to derive it from the given figures. Consequently, the Net Income variance is based on an assumption rather than the provided data, violating the requirement for precision and correctness. Additionally, the student failed to identify any line items exceeding the 10% variance threshold (none actually do in this dataset), which was a specific task requirement. While the formatting is clean and the calculations for the provided items are accurate, the missing Net Income derivation and the failure to explicitly address the 10% threshold check reduce the score to a 3 for Correctness, Completeness, Best Practices, and Domain Accuracy. Clarity is good (4), and Autonomy is low (3) due to the missing Net Income calculation and the unaddressed threshold requirement."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Calculate, prepare, and issue bills, invoices, account statements, and other financial statements according to established procedures.",
+      "task_type": "Invoice Generation and Account Statement Reconciliation",
+      "user_prompt": "You are a bookkeeper for 'Apex Logistics'. Using the provided transaction history and the company's pricing schedule, generate a final invoice for Client X and prepare a monthly account statement. The invoice must include all outstanding charges, apply the correct sales tax rate of 7.5%, and calculate the total due. The account statement must list all transactions from September 1 to September 30, showing the running balance. Ensure all calculations are precise to the cent and formatted according to standard GAAP presentation for accounts receivable.",
+      "reference_context": {
+        "client_x_transactions": [
+          {
+            "date": "2023-09-05",
+            "description": "Consulting Services",
+            "amount": 1200.0
+          },
+          {
+            "date": "2023-09-12",
+            "description": "Logistics Fee",
+            "amount": 450.75
+          },
+          {
+            "date": "2023-09-20",
+            "description": "Consulting Services",
+            "amount": 800.0
+          }
+        ],
+        "pricing_schedule": {
+          "consulting_rate": 100.0,
+          "logistics_rate": 1.5,
+          "sales_tax_rate": 0.075
+        },
+        "opening_balance": 250.0
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all subtotals, tax calculations, and final totals mathematically accurate to the cent?",
+        "Completeness: Does the invoice include all applicable charges and the correct tax rate?",
+        "Best Practices: Is the account statement formatted with a clear running balance and chronological order?"
+      ],
+      "student_answer": "**Invoice**\n\n**Apex Logistics**\n123 Main Street\nAnytown, USA\n\n**Invoice Number:** 202309-001\n**Date:** October 5, 2023\n\n**Bill To:**\nClient X\n456 Oak Avenue\nAnytown, USA\n\n**Description** | **Amount** | **Tax (7.5%)** | **Total**\n------- | -------- | -------- | --------\nConsulting Services | $1200.00 | $90.00 | $1290.00\nLogistics Fee | $450.75 | $33.80 | $484.55\n**Subtotal** | **$1650.75** | **$129.05** | \n**Total Due** | **$1779.80**\n\n**Payment Terms:** Net 30\n\n---\n\n**Account Statement – Apex Logistics**\n**For the Month Ended September 30, 2023**\n\n| Date       | Description          | Debit      | Credit     | Balance    |\n|------------|----------------------|------------|------------|------------|\n| 2023-09-01 | Beginning Balance     |            |            | $250.00    |\n| 2023-09-05 | Consulting Services   | $1200.00   |            | $1450.00   |\n| 2023-09-12 | Logistics Fee         | $450.75    |            | $1899.75   |\n| 2023-09-20 | Consulting Services   | $800.00    |            | $2699.75   |\n|            | **Total for September**| **$2450.75**|            | **$2699.75**|",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. First, the invoice incorrectly applies the 7.5% sales tax to each individual line item rather than calculating tax on the total subtotal, resulting in a mathematically incorrect total due ($1779.80 vs the correct $1793.19). Second, the task explicitly required using the provided pricing schedule to calculate charges based on units/hours, but the student simply used the raw transaction amounts provided in the context without performing the required calculation (e.g., Consulting Services amount should be derived from rate * quantity, not just copied). Third, the account statement fails to include the third transaction (Consulting Services on 09-20 for $800) in the invoice generation logic, yet the statement includes it, creating a disconnect between the two deliverables. The statement also lacks a running balance column header alignment and fails to show the final balance after the invoice is issued. While the formatting is clear (Clarity 4), the fundamental accounting errors and failure to follow the pricing schedule instructions make the output unusable for a professional setting."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Calculate costs of materials, overhead, and other expenses, based on estimates, quotations and price lists.",
+      "task_type": "Cost Estimation and Overhead Allocation",
+      "user_prompt": "You are a cost accountant for 'BuildRight Construction'. Calculate the total estimated cost for Project Alpha based on the provided material quotations, labor estimates, and overhead allocation rules. The overhead is allocated at 15% of direct labor costs. Include a detailed breakdown of material costs, labor costs, and the calculated overhead. Ensure the final total is precise to the cent and justify the overhead calculation based on standard costing principles.",
+      "reference_context": {
+        "material_quotations": [
+          {
+            "item": "Lumber",
+            "quantity": 500,
+            "unit_price": 12.5
+          },
+          {
+            "item": "Concrete",
+            "quantity": 100,
+            "unit_price": 85.0
+          },
+          {
+            "item": "Steel",
+            "quantity": 200,
+            "unit_price": 45.75
+          }
+        ],
+        "labor_estimates": {
+          "hours": 120,
+          "hourly_rate": 35.0
+        },
+        "overhead_rate": 0.15
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all material totals, labor totals, and overhead calculations mathematically accurate?",
+        "Completeness: Does the report include a line-item breakdown for all cost categories?",
+        "Best Practices: Is the overhead allocation clearly explained and consistent with the provided rate?"
+      ],
+      "student_answer": "**BuildRight Construction - Project Alpha Cost Estimate**\n\n**I. Material Costs:**\n\n*   Lumber: 500 * $12.50 = $6,250.00\n*   Concrete: 100 * $85.00 = $8,500.00\n*   Steel: 200 * $45.75 = $9,150.00\n*   **Total Material Costs:** $6,250.00 + $8,500.00 + $9,150.00 = $23,900.00\n\n**II. Labor Costs:**\n\n*   Total Labor Hours: 120\n*   Hourly Rate: $35.00\n*   Total Labor Cost: 120 * $35.00 = $4,200.00\n\n**III. Overhead Allocation:**\n\n*   Direct Labor Cost: $4,200.00\n*   Overhead Rate: 15%\n*   Overhead Allocation: $4,200.00 * 0.15 = $630.00\n\n**IV. Total Estimated Project Cost:**\n\n*   Total Material Costs: $23,900.00\n*   Total Labor Costs: $4,200.00\n*   Total Overhead: $630.00\n*   **Total Estimated Cost:** $23,900.00 + $4,200.00 + $630.00 = $28,730.00\n\n**Justification:**\n\nThe overhead allocation is calculated based on standard costing principles, specifically applying a percentage to direct labor costs. Overhead represents indirect costs associated with the project, such as site supervision, equipment depreciation, and administrative expenses. Allocating a percentage of direct labor costs provides a reasonable and consistent method for distributing these indirect costs across all projects, ensuring accurate cost tracking and profitability analysis. The 15% overhead rate is based on BuildRight Construction’s historical data and industry benchmarks for similar construction projects.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The student submission is exceptional. It correctly calculates all material, labor, and overhead costs with precise cent-level accuracy. The breakdown is clear, professional, and follows standard accounting formatting. The justification for the overhead allocation is sound, referencing standard costing principles and the specific allocation base (direct labor). The output is complete, requiring no human review or rework, meeting all criteria for a score of 5 across all dimensions."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Prepare purchase orders and expense reports.",
+      "task_type": "Purchase Order and Expense Report Compilation",
+      "user_prompt": "You are an accounting clerk for 'TechSolutions Inc.'. Compile a Purchase Order (PO) for the procurement of 50 new laptops and 20 monitors based on the vendor's quote. Simultaneously, prepare an expense report for the sales team's Q3 travel, including per diem calculations. The PO must include itemized costs, tax (8.25%), and the total order value. The expense report must categorize expenses by employee and date, applying the per diem rate of $75/day for 3 days of travel. Ensure all figures are precise to the cent and formatted for approval.",
+      "reference_context": {
+        "vendor_quote": {
+          "laptop_unit_price": 1200.0,
+          "monitor_unit_price": 350.0
+        },
+        "travel_expenses": [
+          {
+            "employee": "John Doe",
+            "dates": "2023-07-01 to 2023-07-03",
+            "meals": 150.0,
+            "transport": 200.0
+          },
+          {
+            "employee": "Jane Smith",
+            "dates": "2023-07-01 to 2023-07-03",
+            "meals": 180.0,
+            "transport": 250.0
+          }
+        ],
+        "tax_rate": 0.0825,
+        "per_diem_rate": 75.0
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all line item totals, tax calculations, and per diem additions accurate?",
+        "Completeness: Does the PO include all requested items and the expense report cover all employees?",
+        "Best Practices: Are the documents structured professionally with clear totals and tax breakdowns?"
+      ],
+      "student_answer": "**Purchase Order**\n\n**TechSolutions Inc.**\n[Company Address]\n[Company Phone Number]\n[Company Email]\n\n**Purchase Order Number:** PO-20231027-001\n**Date:** October 27, 2023\n**Vendor:** [Vendor Name - Insert Vendor Name Here]\n**Ship To:** TechSolutions Inc.\n[Company Address]\n\n| Item # | Description        | Quantity | Unit Price | Total Price |\n|--------|--------------------|----------|------------|-------------|\n| 1      | Laptop             | 50       | $1200.00   | $60,000.00  |\n| 2      | Monitor            | 20       | $350.00    | $7,000.00   |\n|        | **Subtotal:**       |          |            | $67,000.00  |\n|        | **Tax (8.25%):**    |          |            | $5,445.00   |\n|        | **Total:**          |          |            | $72,445.00  |\n\n**Payment Terms:** Net 30\n\n**Approved By:** [Approver Name]\n[Approver Title]\n\n---\n\n**Expense Report – Sales Team Travel (Q3)**\n\n**Company:** TechSolutions Inc.\n**Report Period:** Q3 2023\n\n**Employee:** John Doe\n**Dates:** 2023-07-01 to 2023-07-03\n**Per Diem Rate:** $75.00/day\n**Travel Days:** 3\n**Total Per Diem:** $225.00\n**Meals:** $150.00\n**Transportation:** $200.00\n**Total Expenses:** $375.00\n\n---\n\n**Employee:** Jane Smith\n**Dates:** 2023-07-01 to 2023-07-03\n**Per Diem Rate:** $75.00/day\n**Travel Days:** 3\n**Total Per Diem:** $225.00\n**Meals:** $180.00\n**Transportation:** $250.00\n**Total Expenses:** $455.00",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly calculates all figures (PO totals, tax, per diem, and individual expense totals) with precise formatting to the cent, earning full marks for Correctness, Domain Accuracy, and Clarity. Completeness is also high as all required data points are present. Best Practices and Autonomy receive a 4 rather than 5 because the submission uses generic placeholders (e.g., '[Vendor Name]', '[Company Address]') and lacks a consolidated summary total for the expense report, which are minor but necessary elements for a final, client-ready document without human intervention."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare trial balances of books.",
+      "task_type": "Trial Balance Preparation and Verification",
+      "user_prompt": "You are a senior bookkeeper for 'GreenEnergy Corp.'. Prepare a formal Trial Balance as of December 31, 2023, using the provided list of general ledger accounts and their balances. Verify that total debits equal total credits. If there is a discrepancy, identify the specific account causing the imbalance and propose a correction. The output must be a structured table showing Account Name, Debit Balance, and Credit Balance, with a final total row. Ensure all figures are precise to the cent.",
+      "reference_context": {
+        "ledger_accounts": [
+          {
+            "name": "Cash",
+            "balance": 50000.0,
+            "type": "Debit"
+          },
+          {
+            "name": "Accounts Payable",
+            "balance": 12000.0,
+            "type": "Credit"
+          },
+          {
+            "name": "Service Revenue",
+            "balance": 85000.0,
+            "type": "Credit"
+          },
+          {
+            "name": "Rent Expense",
+            "balance": 5000.0,
+            "type": "Debit"
+          },
+          {
+            "name": "Equipment",
+            "balance": 30000.0,
+            "type": "Debit"
+          },
+          {
+            "name": "Utilities Expense",
+            "balance": 2500.0,
+            "type": "Debit"
+          },
+          {
+            "name": "Accounts Receivable",
+            "balance": 15000.0,
+            "type": "Debit"
+          },
+          {
+            "name": "Common Stock",
+            "balance": 50000.0,
+            "type": "Credit"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Do the total debits and total credits match exactly?",
+        "Completeness: Are all provided accounts included in the trial balance?",
+        "Best Practices: Is the trial balance formatted clearly with proper classification of debit and credit accounts?"
+      ],
+      "student_answer": "**GreenEnergy Corp.**\n\n**Trial Balance**\n\n**As of December 31, 2023**\n\n| Account Name          | Debit Balance | Credit Balance |\n|-----------------------|---------------|----------------|\n| Cash                  | 50,000.00     |                |\n| Accounts Payable      |               | 12,000.00      |\n| Service Revenue        |               | 85,000.00      |\n| Rent Expense           | 5,000.00      |                |\n| Equipment             | 30,000.00     |                |\n| Utilities Expense      | 2,500.00      |                |\n| Accounts Receivable    | 15,000.00     |                |\n| Common Stock          |               | 50,000.00      |\n| **Totals**            | **105,000.00** | **137,000.00** |\n\n**Note:** Debits (105,000.00) do not equal Credits (137,000.00).\n\n**Correction:**\n\n*   **Account:** Service Revenue\n*   **Adjustment:** Reduce Service Revenue by $32,000.00\n*   **New Service Revenue Balance:** $53,000.00\n*   **New Totals:**\n    *   Debits: $73,000.00\n    *   Credits: $137,000.00",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, the arithmetic is incorrect: the sum of the listed debits is 102,500.00, not 105,000.00, and credits sum to 147,000.00, not 137,000.00. Second, the proposed 'correction' is logically impossible; reducing Service Revenue by 32,000 does not balance the trial balance because the discrepancy (147k - 102.5k = 44.5k) is not equal to the proposed adjustment. A competent auditor would identify that the provided ledger data is mathematically unbalanced and cannot be fixed by arbitrarily changing a single account balance without further investigation. The output presents false calculations and a nonsensical solution as fact, making it unusable and dangerous for a professional context."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Compile statistical, financial, accounting, or auditing reports and tables pertaining to such matters as cash receipts, expenditures, accounts payable and receivable, and profits and losses.",
+      "task_type": "Financial Statement Compilation and Analysis",
+      "user_prompt": "You are a financial analyst for 'RetailMax'. Compile a Statement of Cash Flows for the month of October 2023 based on the provided summary of cash receipts, expenditures, and changes in working capital. Calculate the net cash flow from operating, investing, and financing activities. Additionally, prepare a summary table of Accounts Receivable aging (Current, 30-60 days, 60+ days) based on the provided invoice data. Ensure all calculations are precise to the cent and reference relevant GAAP principles for cash flow classification.",
+      "reference_context": {
+        "cash_receipts": 150000.0,
+        "cash_expenditures": 120000.0,
+        "equipment_purchase": 25000.0,
+        "loan_repayment": 10000.0,
+        "invoice_data": [
+          {
+            "invoice_id": "INV-001",
+            "amount": 5000.0,
+            "days_overdue": 0
+          },
+          {
+            "invoice_id": "INV-002",
+            "amount": 3000.0,
+            "days_overdue": 45
+          },
+          {
+            "invoice_id": "INV-003",
+            "amount": 2000.0,
+            "days_overdue": 75
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the net cash flow calculations for each activity section accurate?",
+        "Completeness: Is the aging report correctly categorized based on the days overdue?",
+        "Best Practices: Are the cash flow activities correctly classified according to GAAP (Operating, Investing, Financing)?"
+      ],
+      "student_answer": "**RetailMax**\n\n**Statement of Cash Flows**\n\n**For the Month Ended October 31, 2023**\n\n**(in US Dollars)**\n\n**Cash Flow from Operating Activities**\n\nCash Receipts from Customers: $150,000.00\nCash Payments to Suppliers: ($120,000.00)\n*Net Cash Flow from Operating Activities:* $30,000.00\n\n**Cash Flow from Investing Activities**\n\nPurchase of Equipment: ($25,000.00)\nCash Received from Loan Repayment: $10,000.00\n*Net Cash Flow from Investing Activities:* $5,000.00\n\n**Cash Flow from Financing Activities**\n\n*Net Cash Flow from Financing Activities:* $0.00\n\n**Net Increase in Cash:** $35,000.00\n\n**(Assuming a beginning cash balance of $0 for simplicity)**\n\n**Ending Cash Balance:** $35,000.00\n\n---\n\n**Accounts Receivable Aging Summary**\n\n| Aging Category       | Number of Invoices | Amount (USD) |\n|----------------------|--------------------|--------------|\n| Current (0-30 days)   | 1                  | $5,000.00     |\n| 30-60 days           | 1                  | $3,000.00     |\n| 60+ days             | 1                  | $2,000.00     |\n| **Total**            | **3**               | **$10,000.00** |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. First, it misclassifies the loan repayment of $10,000 as an Investing Activity; under GAAP, loan repayments are Financing Activities. Second, it completely omits the required Accounts Receivable Aging table, which was a specific task requirement. Third, it fails to reference relevant GAAP principles as requested. While the formatting and clarity of the existing text are good (Clarity 4), the fundamental errors in classification and missing required sections make the output unusable for a professional context (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Maintain inventory records.",
+      "task_type": "Inventory Record Maintenance and Valuation",
+      "user_prompt": "You are an inventory clerk for 'AutoParts Direct'. Update the inventory records for the current quarter by calculating the Cost of Goods Sold (COGS) using the FIFO (First-In, First-Out) method. You are provided with the beginning inventory, all purchases made during the quarter, and the units sold. Calculate the ending inventory value and the COGS. Ensure all unit costs and totals are precise to the cent. Additionally, identify any items where the current stock level is below the reorder point and list them as 'Low Stock'.",
+      "reference_context": {
+        "beginning_inventory": [
+          {
+            "item": "Brake Pads",
+            "units": 100,
+            "unit_cost": 25.0
+          }
+        ],
+        "purchases": [
+          {
+            "date": "2023-07-15",
+            "item": "Brake Pads",
+            "units": 200,
+            "unit_cost": 27.5
+          },
+          {
+            "date": "2023-08-20",
+            "item": "Brake Pads",
+            "units": 150,
+            "unit_cost": 28.0
+          }
+        ],
+        "units_sold": 300,
+        "reorder_point": 50
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the COGS calculated correctly using the FIFO method?",
+        "Completeness: Is the ending inventory value accurate based on the remaining units?",
+        "Best Practices: Are the low stock items correctly identified based on the reorder point?"
+      ],
+      "student_answer": "```json\n{\n  \"COGS\": 2250.00,\n  \"EndingInventory\": 150.00,\n  \"LowStock\": [\n    \"Brake Pads\"\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, the calculations are incorrect: COGS should be 8,100.00 (100 units @ 25.00 + 200 units @ 27.50), not 2,250.00. Ending inventory should be 4,100.00 (150 units @ 27.50), not 150.00. Second, the Low Stock determination is wrong; 150 units remaining is above the reorder point of 50, so it should not be flagged. Third, the output lacks the required breakdown of unit costs and totals, failing the precision requirement. Finally, the 'Additional Checks' section in the prompt regarding bank reconciliation is irrelevant to the inventory task, but the student's failure to perform the actual inventory calculation renders the response inadequate regardless."
+    }
+  ]
+}

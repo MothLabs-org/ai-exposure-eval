@@ -1,0 +1,1468 @@
+{
+  "meta": {
+    "job_title": "Securities, Commodities, and Financial Services Sales Agents",
+    "job_id": "sec_sales_agent",
+    "onet_code": "41-3031.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 30,
+    "evaluated_tasks": 30,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.64,
+      "dimensions": {
+        "Correctness": 2.47,
+        "Completeness": 2.5,
+        "Best Practices": 2.3,
+        "Domain Accuracy": 2.57,
+        "Clarity": 3.67,
+        "Autonomy": 2.33
+      },
+      "evaluated_tasks": 30,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1497.64
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Make bids or offers to buy or sell securities.",
+      "task_type": "Trade Execution Strategy",
+      "user_prompt": "A client requests an immediate sale of 5,000 shares of TechCorp (ticker: TCHP) currently trading at $142.50. The market is experiencing high volatility with a widening bid-ask spread. Draft a trade execution memo proposing a specific bidding strategy to minimize market impact while ensuring the client receives a price within 0.5% of the current mid-market price. Include a calculation of the estimated slippage cost.",
+      "reference_context": {
+        "market_data": {
+          "current_price": 142.5,
+          "bid": 142.4,
+          "ask": 142.6,
+          "volume": 2500000,
+          "volatility_index": "High"
+        },
+        "client_constraints": {
+          "urgency": "Immediate",
+          "price_tolerance": "0.5% of mid-market"
+        },
+        "regulatory_constraints": [
+          "Best Execution Rule (SEC Rule 606)",
+          "FINRA Rule 5310 (Best Execution)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy - Are the slippage calculations mathematically precise and based on the provided spread data?",
+        "Criterion 2: Strategy - Does the proposed execution method (e.g., VWAP, TWAP, limit orders) appropriately address the high volatility?",
+        "Criterion 3: Compliance - Does the memo explicitly reference Best Execution obligations?"
+      ],
+      "student_answer": "**Trade Execution Memo**\n\n**Client:** [Client Name]\n**Security:** TechCorp (TCHP)\n**Shares:** 5,000\n**Date:** October 26, 2023\n**Time:** 10:30 AM EST\n\n**Objective:** Execute a sale of 5,000 shares of TCHP immediately, minimizing market impact and achieving a price within 0.5% of the current mid-market price.\n\n**Proposed Strategy:**\n\nGiven the high volatility and widening bid-ask spread, a direct market order would likely result in significant price slippage. To mitigate this, we will employ a staged, limit-based bidding approach.\n\n1.  **Initial Bid:** Place a limit order to buy 5,000 shares at $142.475 (0.5% below the mid-market price of $142.50).\n2.  **Sequential Bids:** If the initial bid is not filled immediately, we will incrementally increase the bid price in small increments (e.g., $142.48, $142.49, $142.50) every 500 shares, maintaining a consistent pace. This will help to attract buyers and reduce the risk of a large, disruptive trade.\n3.  **Monitor and Adjust:** Continuously monitor the order book and adjust the bid price as needed to maintain a balance between speed and price.  We will prioritize execution over achieving the absolute lowest price, given the client’s urgency.\n\n**Estimated Slippage Cost:**\n\n*   **Mid-Market Price:** $142.50\n*   **Target Price (within 0.5%):** $142.45 - $142.55\n*   **Estimated Slippage:**  Assuming a gradual increase in the bid price to achieve execution, we estimate a slippage cost of approximately $25 - $75 (500 shares x $0.05 - $0.15). This is a conservative estimate and could vary depending on market conditions.\n\n**Regulatory Compliance:**\n\nThis execution strategy adheres to SEC Rule 606 (Best Execution) and FINRA Rule 5310 (Best Execution) by prioritizing execution speed while seeking the most favorable terms available under the prevailing market conditions. We will document all bids and fills for audit purposes.\n\n**Confirmation:** Please confirm your approval to proceed with this strategy.\n\n**Broker:** [Brokerage Firm]\n**Sales Agent:** [Your Name]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it is directionally incorrect: the client requested a SALE, but the proposed strategy involves placing 'limit orders to BUY' and 'sequential bids' to attract buyers, which is the opposite of executing a sell order. Second, the slippage calculation is nonsensical, calculating costs based on 500 shares instead of the full 5,000 shares requested. Third, the regulatory compliance section is vague and fails to address the specific constraints of high volatility and immediate urgency. The tone is professional, but the content is financially incoherent and would result in a failed trade or a loss for the client."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Monitor markets or positions.",
+      "task_type": "Portfolio Risk Monitoring",
+      "user_prompt": "Review the provided portfolio of a conservative client holding 40% in a volatile tech ETF and 60% in municipal bonds. The tech ETF has dropped 8% in the last week while the bond sector remains stable. Generate a risk assessment report highlighting the deviation from the client's stated risk tolerance and propose a rebalancing trade to restore the target allocation, calculating the tax implications of selling the ETF in a taxable account.",
+      "reference_context": {
+        "portfolio_holdings": {
+          "tech_etf": {
+            "allocation": 40,
+            "cost_basis": 100000,
+            "current_value": 92000,
+            "short_term_capital_gains": true
+          },
+          "muni_bonds": {
+            "allocation": 60,
+            "current_value": 138000,
+            "tax_status": "Tax-exempt"
+          }
+        },
+        "client_profile": {
+          "risk_tolerance": "Conservative",
+          "account_type": "Taxable Brokerage"
+        },
+        "regulatory_constraints": [
+          "Suitability Rule (FINRA 2111)",
+          "Tax Implications of Capital Gains"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Risk Analysis - Is the deviation from the target allocation correctly identified and quantified?",
+        "Criterion 2: Tax Precision - Are the short-term capital gains taxes calculated accurately based on the provided cost basis?",
+        "Criterion 3: Suitability - Does the rebalancing proposal align with the client's conservative risk profile?"
+      ],
+      "student_answer": "**Risk Assessment Report & Rebalancing Recommendation**\n\n**To:** Client\n**From:** [Your Name/Firm Name]\n**Date:** October 26, 2023\n**Subject:** Portfolio Review and Rebalancing Recommendation\n\n**Executive Summary:**\n\nThis report addresses a significant deviation from your stated conservative risk tolerance. Your portfolio currently allocates 40% to a volatile tech ETF and 60% to municipal bonds. Following a 8% decline in the tech ETF over the past week, the portfolio’s overall risk exposure has increased substantially. This rebalancing recommendation aims to restore the target allocation and mitigate potential losses while adhering to regulatory requirements.\n\n**Risk Assessment:**\n\n*   **Deviation from Risk Tolerance:** The current portfolio allocation significantly exceeds your conservative risk tolerance. The 40% allocation to a volatile tech ETF introduces substantial market risk, potentially leading to significant losses during market downturns.\n*   **Recent Performance:** The recent 8% decline in the tech ETF exacerbates this risk. While the municipal bond portion has remained stable, it cannot fully offset the losses incurred in the tech sector.\n*   **Regulatory Compliance:** This situation requires attention to the Suitability Rule (FINRA 2111), which mandates that investment recommendations align with a client’s risk profile.\n\n**Proposed Rebalancing Trade:**\n\nWe recommend the following trade to restore the target 40/60 allocation:\n\n*   **Sell:** 40% of the Tech ETF (currently valued at $92,000)\n*   **Buy:** 40% of Municipal Bonds (currently valued at $138,000)\n\n**Tax Implications (Taxable Account):**\n\n*   **Capital Gains Tax:** Selling the Tech ETF will trigger short-term capital gains.  Based on the current value of $92,000 and the original cost basis of $100,000, the capital gain is $8,000.  Assuming a capital gains tax rate of 15% (this rate may vary based on your individual circumstances), the estimated tax liability is $1,200.\n*   **Tax-Exempt Purchase:** Purchasing municipal bonds in a taxable account will not generate any immediate taxable income.\n\n**Trade Execution Details:**\n\n*   **Sell Tech ETF:** Execute a sell order for 40% of the Tech ETF holdings.\n*   **Purchase Municipal Bonds:** Execute a buy order for 40% of the Municipal Bond holdings.\n\n**Disclaimer:** *Tax implications are subject to change based on individual circumstances and applicable tax laws. This report is for informational purposes only and does not constitute tax advice. Please consult with a qualified tax advisor for personalized guidance.*\n\n**Recommendation:** We strongly recommend implementing this rebalancing trade to align your portfolio with your stated conservative risk tolerance and mitigate potential downside risk.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. First, the mathematical logic for rebalancing is fundamentally flawed: selling 40% of the ETF ($36,800) and buying 40% of the bonds ($55,200) does not restore the 40/60 target allocation; it creates a new imbalance. Second, the tax calculation is factually incorrect; the submission claims an $8,000 capital gain when the asset dropped from $100k to $92k, resulting in an $8,000 capital loss, not a gain. Third, the tax rate assumption (15%) is inappropriate for short-term capital gains, which are taxed as ordinary income. Fourth, the submission ignores the specific instruction to check for liquidity crises or high debt, which is a required check in the prompt. Finally, the tone is generic and the trade execution details are vague. These errors make the output dangerous and unusable without significant rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Agree on buying or selling prices at optimal levels for clients.",
+      "task_type": "Price Negotiation Simulation",
+      "user_prompt": "You are negotiating a block trade for a client wishing to purchase 10,000 units of a commodity futures contract. The dealer's initial offer is $52.40 per unit. Market data suggests a fair value of $52.15. Draft a negotiation script and a final trade confirmation summary that secures a price of $52.20, justifying this price point based on market liquidity and the client's long-term holding strategy. Include a disclosure of the dealer's margin.",
+      "reference_context": {
+        "market_conditions": {
+          "dealer_offer": 52.4,
+          "fair_value": 52.15,
+          "liquidity": "Moderate"
+        },
+        "client_goal": "Long-term hedge",
+        "target_price": 52.2,
+        "regulatory_constraints": [
+          "FINRA Rule 2111 (Suitability)",
+          "Disclosure of Dealer Margin Requirements"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Negotiation Logic - Is the justification for the $52.20 price point logical and supported by the market data?",
+        "Criterion 2: Disclosure - Does the script clearly disclose the dealer's margin and potential conflicts of interest?",
+        "Criterion 3: Client Alignment - Does the final price align with the client's long-term strategy rather than short-term speculation?"
+      ],
+      "student_answer": "**Negotiation Script**\n\n**Sales Agent:** “Good morning, [Client Name]. Thank you for meeting with me. We’ve received your request for 10,000 units of the [Commodity Name] futures contract. Our initial offer was $52.40 per unit. However, based on our current market analysis, the fair value is closer to $52.15. Given the moderate liquidity we’re seeing today, and recognizing your stated long-term hedge strategy, I believe we can arrive at a more mutually beneficial price.  We’re seeing some slight upward pressure due to [mention a specific, brief market driver - e.g., recent supply concerns].  I’m proposing $52.20 per unit. This reflects a premium that acknowledges the current market dynamics and aligns with a strategic, holding-oriented approach.”\n\n**Client:** “$52.20 is still a bit higher than I was hoping for.  The fair value is clearly lower.”\n\n**Sales Agent:** “I understand your concern. Let’s consider the broader context. While the fair value is $52.15, the liquidity is currently moderate, meaning there aren’t a large number of immediate buyers or sellers.  A price of $52.20 provides a buffer against immediate price fluctuations and supports your long-term hedge.  Furthermore, this price allows us to efficiently execute the block trade, minimizing market impact.  We can also discuss a small adjustment to our margin requirements to accommodate this price.”\n\n**Client:** “What are the margin requirements?”\n\n**Sales Agent:** “Certainly. Our dealer margin requirement for this transaction is 5%.”\n\n**Client:** “Okay, let’s proceed with $52.20.”\n\n**Sales Agent:** “Excellent. Let me confirm that with my team.”\n\n---\n\n**Trade Confirmation Summary**\n\n**Trade Confirmation Number:** [Generate Confirmation Number]\n**Date:** [Current Date]\n**Time:** [Current Time]\n**Client:** [Client Name]\n**Dealer:** [Dealer Name]\n\n**Security:** [Commodity Name] Futures Contract\n**Contract Size:** 10,000 Units\n**Price:** $52.20 per Unit\n**Total Value:** $522,000.00\n**Commission:** [State Commission Amount]\n**Dealer Margin:** 5% ($26,100.00)\n**Net Amount Client Pays:** $522,000.00 - $26,100.00 = $495,900.00\n\n**Settlement Date:** [Specify Settlement Date]\n**Delivery Location:** [Specify Delivery Location]\n\n**Regulatory Disclosures:** This transaction has been conducted in accordance with FINRA Rule 2111 (Suitability).  The dealer margin requirement is 5%.  Please review the full terms and conditions attached.\n\n**Signature:** [Sales Agent Signature]\n**Confirmation Reference Number:** [Confirmation Reference Number]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission addresses the core task of drafting a script and confirmation but contains critical professional and logical errors. 1) Correctness: The trade confirmation summary incorrectly calculates the 'Net Amount Client Pays' by subtracting the margin requirement from the total trade value. In futures, margin is a performance bond (collateral), not a discount on the purchase price; the client pays the full $522,000 plus the margin deposit. 2) Completeness: The script uses placeholders like '[mention a specific...]' instead of providing the requested justification based on market liquidity and strategy as a finished deliverable. 3) Best Practices: The logic regarding margin as a price reduction is a fundamental violation of financial standards. 4) Domain Accuracy: The misunderstanding of how futures margin works (collateral vs. cost basis) is a significant domain error. 5) Clarity: The structure is clear, but the financial logic is confusing. 6) Autonomy: Due to the calculation error and the use of placeholders, this cannot be sent to a client without significant rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Keep accurate records of transactions.",
+      "task_type": "Transaction Audit and Reconciliation",
+      "user_prompt": "A client reports a discrepancy in their monthly statement regarding a foreign currency transaction. The trade was executed at 1.1250 EUR/USD, but the statement shows 1.1265. Reconstruct the transaction log based on the provided trade ticket details and the bank's exchange rate schedule. Identify the source of the discrepancy, calculate the financial impact on the client, and draft a formal correction notice that adheres to record-keeping regulations.",
+      "reference_context": {
+        "trade_ticket": {
+          "date": "2023-10-15",
+          "currency_pair": "EUR/USD",
+          "executed_rate": 1.125,
+          "amount": 50000,
+          "client_account": "ACC-9988"
+        },
+        "statement_data": {
+          "recorded_rate": 1.1265,
+          "settlement_date": "2023-10-17"
+        },
+        "regulatory_constraints": [
+          "SEC Rule 17a-4 (Record Retention)",
+          "FINRA Rule 4511 (Books and Records)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy - Is the financial impact of the rate difference calculated correctly?",
+        "Criterion 2: Regulatory Compliance - Does the correction notice reference the specific record-keeping rules violated?",
+        "Criterion 3: Clarity - Is the explanation of the discrepancy clear and actionable for the client?"
+      ],
+      "student_answer": "**Transaction Log Reconstruction:**\n\n| Date       | Currency Pair | Rate       | Amount   | Account | Notes                               |\n|------------|---------------|------------|----------|---------|-------------------------------------|\n| 2023-10-15 | EUR/USD       | 1.125      | 50000    | ACC-9988| Executed Trade - Client Order        |\n| 2023-10-17 | EUR/USD       | 1.1265     | 50000    | ACC-9988| Settlement - Recorded Rate          |\n\n**Discrepancy Analysis:**\n\nThe discrepancy arises from a difference in the exchange rate used for recording the transaction on the statement versus the rate at which the trade was executed. The statement reflects a rate of 1.1265, while the executed rate was 1.125.\n\n**Financial Impact:**\n\nThe discrepancy results in an overstatement of the transaction value.\n\n*   **Difference:** 1.1265 - 1.125 = 0.0015\n*   **Total Impact:** 0.0015 * 50000 = 75.00\n\nThe client was overcharged by $75.00.\n\n**Correction Notice:**\n\n**[Your Firm Letterhead]**\n\n**Date:** October 26, 2023\n\n**To:** Client, ACC-9988\n\n**From:** [Your Name], Securities Sales Agent\n\n**Subject: Correction to Monthly Statement – EUR/USD Transaction – October 15, 2023**\n\nDear Client,\n\nPlease accept this letter as a formal correction to your monthly statement regarding a foreign currency transaction executed on October 15, 2023, for the EUR/USD currency pair.\n\nOur records indicate that the trade was executed at a rate of 1.125 EUR/USD, with an amount of $50,000. However, your statement reflects a recorded rate of 1.1265 EUR/USD.\n\nWe have identified a discrepancy of $75.00 resulting from this difference in exchange rates. We are issuing a credit to your account to rectify this overcharge.  This credit will be reflected in your next statement.\n\nWe sincerely apologize for any inconvenience this may have caused.  We are committed to maintaining accurate records and providing transparent reporting of your transactions.\n\nSincerely,\n\n[Your Name]\n\nSecurities Sales Agent\n\n[Your Firm Contact Information]\n\n**Record Retention Compliance:** This correction notice and the supporting documentation (trade ticket, bank statements) will be retained in accordance with SEC Rule 17a-4 and FINRA Rule 4511.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the rate discrepancy and calculates the financial impact ($75). However, it fails to fully reconstruct the transaction log based on the 'bank's exchange rate schedule' as requested, simply listing the two rates without explaining the spread or markup logic. The correction notice is professional but lacks specific regulatory citation details beyond a generic mention, and the 'Securities Sales Agent' title is slightly imprecise for a foreign exchange transaction context (typically FX Desk or Treasury). The tone is appropriate, but the solution lacks the depth of a truly exceptional industry-standard response which would detail the specific mechanism of the rate difference (e.g., bid-ask spread vs. error) and provide a more robust compliance framework in the letter."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Buy or sell stocks, bonds, commodity futures, foreign currencies, or other securities on behalf of investment dealers.",
+      "task_type": "Complex Order Processing",
+      "user_prompt": "Process a complex order for a client to sell a basket of 15 different bonds with varying maturities and credit ratings. The client requires immediate liquidity. Generate a trade order ticket that aggregates these securities for a block sale, ensuring compliance with the 'Best Execution' rule. Calculate the weighted average yield of the portfolio and the estimated proceeds after deducting standard commission fees and potential early redemption penalties.",
+      "reference_context": {
+        "bond_basket": [
+          {
+            "issuer": "Corp A",
+            "coupon": 4.5,
+            "maturity": "2025",
+            "rating": "BBB",
+            "quantity": 100000
+          },
+          {
+            "issuer": "Corp B",
+            "coupon": 3.2,
+            "maturity": "2028",
+            "rating": "A",
+            "quantity": 200000
+          },
+          {
+            "issuer": "Corp C",
+            "coupon": 5.0,
+            "maturity": "2024",
+            "rating": "BB",
+            "quantity": 50000
+          }
+        ],
+        "fees": {
+          "commission_rate": 0.15,
+          "early_redemption_penalty": 1.0
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 5310 (Best Execution)",
+          "SEC Regulation NMS"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Precision - Are the weighted average yield and net proceeds calculated with correct fee and penalty deductions?",
+        "Criterion 2: Order Structure - Does the trade ticket logically aggregate the bonds for a block sale?",
+        "Criterion 3: Compliance - Does the process explicitly address Best Execution requirements for a basket of securities?"
+      ],
+      "student_answer": "**Trade Order Ticket**\n\n**Order Type:** Block Sale\n**Client:** [Client Name - Placeholder]\n**Date:** 2024-02-29\n**Time:** 14:35 EST\n**Ticker Symbols:** (Aggregated - See Below)\n**Total Quantity:** 350,000\n**Total Estimated Proceeds:** $12,475,000.00\n**Weighted Average Yield (Pre-Fees):** 4.25%\n**Commission Fees:** $48,750.00 (15% of $318,750.00)\n**Estimated Proceeds (Post-Fees):** $12,000,000.00\n**Early Redemption Penalties:** $35,000.00 (Calculated based on individual bond penalties – see attached schedule)\n**Final Estimated Proceeds:** $11,925,000.00\n\n**Bond Breakdown:**\n\n| Issuer     | Maturity | Quantity | Price (Estimated) | Proceeds |\n|------------|----------|----------|------------------|----------|\n| Corp A     | 2025     | 100,000   | $985.00          | $98,500,000.00 |\n| Corp B     | 2028     | 200,000   | $1,020.00         | $204,000,000.00 |\n| Corp C     | 2024     | 150,000   | $930.00          | $140,500,000.00 |\n\n**Aggregated Ticker Symbol:**  (Assume a composite ticker for the block - e.g., \"CorpBasket\")\n\n**Notes:**\n\n*   Best execution has been considered through multiple liquidity providers.  The current pricing reflects the most favorable available offers.\n*   Early redemption penalties are based on a conservative estimate and may vary based on specific bond terms.  Detailed penalty schedule attached.\n*   Client acknowledged and agreed to the terms and conditions outlined in the attached agreement.\n\n---\n\n**Supporting Calculations:**\n\n*   **Total Face Value:** 350,000 * (100,000 + 200,000 + 150,000) = $350,000,000\n*   **Total Proceeds (Before Fees):** $350,000,000\n*   **Commission Calculation:** $350,000,000 * 0.15 = $52,500,000\n*   **Early Redemption Penalty Calculation:**  (Detailed schedule attached, totaling $35,000)\n*   **Weighted Average Yield Calculation:** (Complex calculation – requires bond pricing models.  Estimated at 4.25% based on current market conditions and bond characteristics.)\n\n---\n\n**Attachment:** Early Redemption Penalty Schedule",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails catastrophically on all technical and logical dimensions. 1) Correctness: The math is nonsensical (e.g., Total Face Value calculation multiplies total quantity by sum of quantities, resulting in billions instead of millions; Commission is calculated as 15% of face value rather than the standard 0.15% or a fixed fee, yielding an impossible $52.5M fee on a $12M sale). 2) Completeness: The student ignored the specific input data (Corp C quantity was 50,000, not 150,000) and failed to calculate the weighted average yield using the provided coupons. 3) Best Practices: A 15% commission rate is absurd for bonds (industry standard is basis points), and the 'Best Execution' note is generic fluff. 4) Domain Accuracy: Fundamental errors in bond pricing, yield calculation, and fee structures. 5) Clarity: The document is internally contradictory (proceeds listed as $12M in header but $443M in table). 6) Autonomy: The output is unusable and dangerous for a client due to the massive calculation errors."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Complete sales order tickets and submit for processing of client-requested transactions.",
+      "task_type": "KYC and Suitability Verification",
+      "user_prompt": "A new client, a 24-year-old software engineer with $50,000 in savings and no debt, requests to purchase high-risk cryptocurrency derivatives. Perform a comprehensive KYC and suitability analysis. Draft a sales order ticket that includes a mandatory suitability warning and a refusal to execute the trade if it violates the client's risk profile, citing specific FINRA rules. If the trade is permissible with restrictions, outline the required disclosures.",
+      "reference_context": {
+        "client_profile": {
+          "age": 24,
+          "income": 120000,
+          "liquid_assets": 50000,
+          "debt": 0,
+          "investment_experience": "None",
+          "risk_tolerance": "Low"
+        },
+        "product_details": {
+          "type": "Cryptocurrency Derivatives",
+          "risk_level": "Very High",
+          "liquidity": "High"
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2111 (Suitability)",
+          "SEC Rule 17a-3 (Books and Records)",
+          "KYC/AML Requirements"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Suitability Judgment - Is the decision to refuse or restrict the trade logically derived from the client's low risk tolerance and lack of experience?",
+        "Criterion 2: Regulatory Citation - Are the specific FINRA rules regarding suitability and KYC correctly cited?",
+        "Criterion 3: Disclosure Quality - Does the sales order ticket include clear, mandatory warnings about the high-risk nature of the product?"
+      ],
+      "student_answer": "**Client:** [Client Name - Placeholder]\n**Date:** October 26, 2023\n**Product:** Cryptocurrency Derivatives (Specific Product - Placeholder)\n**Order ID:** [Generate Unique ID]\n\n**KYC/Suitability Analysis:**\n\n*   **Client Profile Summary:** 24-year-old software engineer with $120,000 annual income, $50,000 in liquid assets, and no debt.  Client reports no prior investment experience and indicates a low risk tolerance.\n*   **Product Risk Assessment:** Cryptocurrency derivatives are inherently high-risk due to leverage, volatility, and potential for rapid loss. Liquidity is high, but this does not mitigate the underlying risk.\n*   **Suitability Determination:** Based on the client’s limited investment experience, low risk tolerance, and the extremely high-risk nature of cryptocurrency derivatives, this product is **not suitable** for this client.  The client’s profile does not align with the risk characteristics of these instruments.\n\n**Sales Order Ticket:**\n\n**Order Type:** Refusal to Execute\n\n**Reason for Refusal:**  Due to a significant mismatch between the client’s risk profile and the characteristics of cryptocurrency derivatives, we are unable to execute this trade.  This decision is made to comply with FINRA Rule 2111, which requires a broker-dealer to recommend only suitable investments.  Specifically, recommending high-risk derivatives to a client with no investment experience and a low risk tolerance would violate this rule.  Furthermore, this action aligns with our firm’s commitment to protecting client assets and preventing potential harm.  Executing this trade would also be inconsistent with SEC Rule 17a-3 regarding maintaining accurate books and records of unsuitable transactions.\n\n**Mandatory Suitability Warning:**\n\n“**WARNING: Cryptocurrency derivatives are extremely volatile and carry a high risk of loss.  Given your limited investment experience and stated low risk tolerance, these products are not appropriate for your portfolio.  We strongly advise against pursuing this investment strategy.**”\n\n**If Trade is Permissible with Restrictions (Hypothetical - Not Recommended):**\n\n*   **Restrictions:**  Only a very small position size (e.g., no more than $1,000) would be considered, contingent upon a detailed discussion and written acknowledgement of the risks.\n*   **Required Disclosures:**\n    *   **Form ADV Part 2:**  Detailed disclosure of the risks associated with cryptocurrency derivatives, including potential for complete loss of principal.\n    *   **Risk Disclosure Statement:**  A comprehensive statement outlining the specific risks, including leverage, volatility, margin calls, and potential for rapid losses.\n    *   **Client Acknowledgement Form:**  A signed document confirming the client understands the risks and voluntarily accepts them.\n    *   **Explanation of Leverage:**  A clear explanation of how leverage amplifies both potential gains and potential losses.\n*   **Ongoing Monitoring:**  The client’s account would require continuous monitoring for any changes in risk tolerance or financial situation.\n\n**Compliance Officer Review:** [Compliance Officer Name/ID]\n\n**Sales Agent Signature:** [Your Signature]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies the trade as unsuitable based on the client's low risk tolerance and lack of experience, adhering to FINRA Rule 2111. The structure is professional, and the refusal is clear. However, the reasoning for citing SEC Rule 17a-3 in the context of a suitability refusal is weak; Rule 17a-3 governs record retention, not the suitability determination itself, which is a minor domain accuracy issue. Additionally, the 'hypothetical' section regarding permissible trade restrictions is somewhat speculative, though it correctly outlines necessary disclosures. The response is high quality but lacks the absolute precision required for a perfect score due to the regulatory citation nuance."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Interview clients to determine clients' assets, liabilities, cash flow, insurance coverage, tax status, or financial objectives.",
+      "task_type": "Client Financial Analysis",
+      "user_prompt": "Analyze the provided client profile and draft a comprehensive financial needs assessment report. The client is a 55-year-old consultant with high income but low liquid assets, significant debt, and no retirement savings. Identify gaps in their financial security and propose a prioritized action plan.",
+      "reference_context": {
+        "client_profile": {
+          "age": 55,
+          "occupation": "Independent Consultant",
+          "annual_income": 250000,
+          "liquid_assets": 15000,
+          "total_liabilities": 180000,
+          "retirement_savings": 0,
+          "insurance": "None",
+          "tax_bracket": "35%"
+        },
+        "regulatory_constraints": [
+          "Suitability Rule (FINRA 2111)",
+          "Know Your Customer (KYC) Requirements"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the financial calculations and gap analyses accurate based on the provided data?",
+        "Criterion 2: Completeness — Did the solution address all aspects of the client profile (assets, liabilities, insurance, tax)?",
+        "Criterion 3: Best practices — Is the proposed plan aligned with industry standards for a client in this demographic?"
+      ],
+      "student_answer": "**Financial Needs Assessment Report**\n\n**Client:** 55-Year-Old Independent Consultant\n\n**Date:** October 26, 2023\n\n**Executive Summary:** This report outlines a critical financial needs assessment for a 55-year-old consultant with a high annual income, substantial debt, and a complete lack of retirement savings and insurance coverage. The client’s current financial situation presents significant vulnerabilities and requires immediate attention to mitigate risk and establish a path toward long-term financial security.\n\n**I. Current Financial Situation Analysis:**\n\n*   **Income:** $250,000 annually – Represents a strong income base, providing potential for strategic financial planning.\n*   **Assets:** $15,000 in liquid assets – Extremely low and insufficient for emergency needs or unexpected expenses.\n*   **Liabilities:** $180,000 in total debt – A significant burden impacting cash flow and future financial flexibility.  The nature of this debt (e.g., mortgage, personal loans, credit card debt) requires further investigation.\n*   **Retirement Savings:** $0 – Represents a critical gap, placing the client at high risk of financial hardship in retirement.\n*   **Insurance:** None – Absence of insurance coverage exposes the client to substantial financial risk in the event of illness, disability, or death.\n*   **Tax Bracket:** 35% – High tax bracket necessitates tax-efficient strategies for wealth accumulation.\n\n**II. Identified Gaps in Financial Security:**\n\n1.  **Lack of Emergency Fund:** The $15,000 in liquid assets is wholly inadequate as an emergency fund. A minimum of 3-6 months of essential living expenses is required.\n2.  **High Debt Burden:** $180,000 in debt significantly restricts financial flexibility and reduces available income for savings and investments.\n3.  **No Retirement Savings:**  The complete absence of retirement savings poses a severe risk of financial insecurity in the future.\n4.  **Absence of Insurance:** Lack of health, disability, and life insurance exposes the client to potentially devastating financial consequences.\n5.  **Insufficient Liquidity:** The low liquid asset base limits the ability to handle unexpected expenses or investment opportunities.\n\n**III. Prioritized Action Plan:**\n\n**Phase 1: Immediate Stabilization (0-6 Months)**\n\n1.  **Debt Management:** Implement a debt reduction strategy. Prioritize high-interest debt (e.g., credit cards) through balance transfers, debt consolidation, or accelerated payments. (Estimated Cost: Variable, dependent on debt structure)\n2.  **Emergency Fund Establishment:**  Aggressively build an emergency fund to $15,000 - $30,000.  This can be achieved through a combination of reduced spending and increased income (if possible). (Estimated Cost: $15,000 - $30,000)\n3.  **Basic Insurance Coverage:** Secure essential health insurance. Explore options for disability insurance. (Estimated Cost: $500 - $2,000 annually, depending on coverage)\n\n**Phase 2:  Long-Term Security (6-12 Months)**\n\n1.  **Retirement Savings Plan:** Establish a retirement savings plan (e.g., 401(k), IRA) and contribute at least enough to receive any employer matching contributions. (Estimated Cost: Dependent on contribution amount)\n2.  **Risk Management Insurance:** Obtain adequate life insurance coverage based on dependents and financial obligations. (Estimated Cost: Variable, dependent on coverage amount)\n3.  **Financial Education:**  Participate in financial literacy programs to improve understanding of investment strategies and financial planning concepts. (Estimated Cost: Minimal – potentially free online resources)\n\n**Phase 3: Wealth Accumulation (12+ Months)**\n\n1.  **Investment Strategy:** Develop a diversified investment portfolio aligned with risk tolerance and long-term goals.  Consider tax-advantaged investment vehicles.\n2.  **Estate Planning:** Consult with an estate planning attorney to create a will and other necessary documents.\n\n**IV. Regulatory Considerations:**\n\n*   **Suitability Rule (FINRA 2111):** All recommendations must be suitable for the client’s financial situation, risk tolerance, and objectives.\n*   **Know Your Customer (KYC) Requirements:**  Further investigation into the client’s financial goals, risk tolerance, and investment experience is required to ensure appropriate recommendations.\n\n**Disclaimer:** This report is based on the information provided and represents a preliminary assessment. A more detailed analysis and customized financial plan will require further discussion and information gathering.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the client's profile and gaps but fails to provide a truly comprehensive assessment. Key weaknesses include: 1) The action plan suggests building an emergency fund to $15,000-$30,000, which is insufficient given the $180,000 debt load and high income; a professional would prioritize debt reduction over saving cash in this specific high-debt scenario. 2) It fails to address the specific tax implications of the 35% bracket (e.g., backdoor Roth, HSA) or the specific vehicle for a self-employed consultant (Solo 401k vs SEP IRA). 3) The regulatory section merely lists rules without applying them to the specific recommendations (e.g., suitability of high-risk investments for a client with zero liquidity). 4) The tone is professional, but the strategic advice lacks the depth required for a 'Senior' level assessment, making it more of a generic template than a tailored solution."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop financial plans, based on analysis of clients' financial status.",
+      "task_type": "Retirement Planning Strategy",
+      "user_prompt": "Develop a 10-year retirement accumulation plan for a 30-year-old software engineer earning $120,000 annually with $40,000 in student loans and $10,000 in savings. The client aims to retire at 65 with a replacement ratio of 80%. Account for a 4% inflation rate and a 7% nominal investment return. Calculate the required monthly contribution to a 401(k) and an IRA, considering tax implications of Traditional vs. Roth accounts.",
+      "reference_context": {
+        "client_profile": {
+          "age": 30,
+          "occupation": "Software Engineer",
+          "annual_income": 120000,
+          "student_loans": 40000,
+          "current_savings": 10000,
+          "retirement_goal_age": 65,
+          "target_replacement_ratio": 0.8,
+          "inflation_rate": 0.04,
+          "nominal_return": 0.07,
+          "current_tax_bracket": "24%"
+        },
+        "regulatory_constraints": [
+          "SEC Regulation Best Interest (Reg BI)",
+          "IRS Contribution Limits (2024)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Precision — Are the future value calculations and required contribution amounts mathematically accurate?",
+        "Criterion 2: Tax Efficiency — Does the solution correctly compare tax impacts of Traditional vs. Roth strategies?",
+        "Criterion 3: Regulatory Compliance — Are the proposed contribution limits and account types consistent with IRS and SEC rules?"
+      ],
+      "student_answer": "**Retirement Accumulation Plan – 10-Year Strategy**\n\n**Client:** 30-Year-Old Software Engineer\n**Annual Income:** $120,000\n**Student Loans:** $40,000\n**Current Savings:** $10,000\n**Retirement Goal Age:** 65\n**Target Replacement Ratio:** 80% (80% of pre-retirement income)\n**Inflation Rate:** 4%\n**Nominal Investment Return:** 7%\n\n**1. Retirement Needs Calculation:**\n\n*   **Pre-Retirement Income:** $120,000\n*   **Target Replacement Ratio:** 80%\n*   **Annual Retirement Income Needed:** $120,000 * 0.80 = $96,000\n*   **Inflation Adjustment:**  We’ll project this income need to year 65, accounting for 4% inflation annually.  A simplified calculation shows approximately $233,545 in today’s dollars will be needed in 35 years.\n\n**2. Investment Strategy & Projections (Simplified):**\n\n*   **Long-Term Growth:**  Assuming a 7% nominal return after inflation, a diversified portfolio (stocks 70%, bonds 30%) is recommended.\n*   **Projected Portfolio Growth:**  Using a compound interest calculator, a lump sum of $10,000 invested today, growing at 7% annually, would reach approximately $67,535 in 35 years.\n\n**3. Contribution Strategy:**\n\nTo reach the $233,545 target, a significant contribution strategy is required.  We’ll explore both Traditional and Roth options.\n\n**3.1. Traditional 401(k) & IRA:**\n\n*   **Annual Contribution Needed (without Roth):**  Approximately $11,500 - $13,000 per year.\n*   **Tax Benefit:** Contributions are tax-deferred.  Taxes are paid upon withdrawal in retirement.\n*   **2024 Contribution Limit (401(k)):** $23,000 (plus $7,500 catch-up for age 50+)\n*   **2024 Contribution Limit (IRA):** $7,000 (plus $1,000 catch-up for age 50+)\n\n**3.2. Roth 401(k) & IRA:**\n\n*   **Annual Contribution Needed (without Roth):** Approximately $11,500 - $13,000 per year.\n*   **Tax Benefit:** Contributions are made with after-tax dollars, but qualified withdrawals in retirement are tax-free.\n*   **2024 Contribution Limit (401(k)):** $23,000 (plus $7,500 catch-up for age 50+)\n*   **2024 Contribution Limit (IRA):** $7,000 (plus $1,000 catch-up for age 50+)\n\n**4. Student Loan Repayment:**\n\n*   **Strategy:** Aggressively pay down student loans while simultaneously saving for retirement.  Prioritize high-interest loans.\n*   **Estimated Repayment Timeline:**  A 10-year repayment plan could reduce the loan balance to approximately $25,000 - $30,000.\n\n**5. Monthly Contribution Recommendations:**\n\n*   **Minimum (Aggressive Savings):** $957 - $1,100 per month (split between 401(k) and IRA) – This would require significant lifestyle adjustments.\n*   **Moderate Savings:** $700 - $850 per month (split between 401(k) and IRA) – A more realistic approach, balancing debt repayment and retirement savings.\n*   **Recommended:** $850 - $1,000 per month (split between 401(k) and IRA) – A balanced approach that prioritizes both debt reduction and retirement savings.\n\n**6. Account Allocation (Example):**\n\n*   **401(k):** 60% Stocks, 30% Bonds, 10% Alternatives\n*   **IRA:** 80% Stocks, 20% Bonds\n\n**7. Important Considerations:**\n\n*   **Risk Tolerance:**  This plan assumes a moderate to high risk tolerance.  A thorough risk assessment is crucial.\n*   **Tax Planning:**  Consult with a tax advisor to optimize tax strategies.\n*   **Regular Review:**  This plan should be reviewed and adjusted annually to account for changes in income, expenses, and market conditions.\n*   **Reg BI Compliance:** All recommendations will be provided in accordance with SEC Regulation Best Interest (Reg BI).\n*   **Contribution Limits:** Contributions will be made within IRS contribution limits.\n\n**Disclaimer:** *This is a hypothetical retirement plan based on the provided information and assumptions. It is not financial advice. Actual results may vary. Consult with a qualified financial advisor before making any investment decisions.*\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails the core mathematical requirements of the task. It does not calculate the required monthly contribution; instead, it provides arbitrary ranges ($850-$1,000) without showing the derivation or verifying if these amounts actually meet the $233,545 target given the 7% return and 35-year horizon. The inflation calculation is fundamentally flawed: it states $233,545 is the need 'in today's dollars' but the figure is clearly the future value (nominal), creating a category error that invalidates the savings target. The student loan section is vague and does not integrate the debt repayment into the cash flow analysis. The tax comparison between Traditional and Roth is superficial, merely listing limits without analyzing the specific tax bracket implications for this client. While the tone is professional and the structure is clear (Clarity 3), the lack of actual calculation, the mathematical errors, and the failure to provide a specific solution as requested result in low scores for Correctness, Completeness, Best Practices, and Domain Accuracy."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Review all securities transactions to ensure accuracy of information and conformance to governing agency regulations.",
+      "task_type": "Trade Compliance Audit",
+      "user_prompt": "Review the following trade ticket details for a high-net-worth client. Identify any potential violations of FINRA or SEC regulations regarding suitability, pattern day trading, or restricted securities. Provide a compliance memo detailing the findings and recommended corrective actions.",
+      "reference_context": {
+        "trade_ticket": {
+          "client_id": "HNW-9921",
+          "account_type": "Margin Account",
+          "transaction_date": "2023-10-25",
+          "action": "Buy",
+          "security": "XYZ Corp (Penny Stock)",
+          "quantity": 50000,
+          "price_per_share": 0.45,
+          "total_value": 22500,
+          "client_risk_profile": "Conservative",
+          "client_kyc_status": "Verified",
+          "margin_usage": "100% of account equity"
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2111 (Suitability)",
+          "FINRA Rule 2232 (Customer Confirmations)",
+          "SEC Rule 15c3-1 (Net Capital)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Regulatory Identification — Are all relevant violations of suitability and margin rules correctly identified?",
+        "Criterion 2: Risk Assessment — Is the mismatch between the client's conservative profile and the high-risk penny stock purchase clearly articulated?",
+        "Criterion 3: Actionable Remediation — Does the memo provide specific, compliant steps to rectify the situation?"
+      ],
+      "student_answer": "**Compliance Memo**\n\n**To:** Compliance Department\n**From:** Sales Agent\n**Date:** October 26, 2023\n**Subject:** Review of Trade Ticket HNW-9921 – Potential Regulatory Concerns\n\n**I. Executive Summary:**\n\nThis memo addresses potential regulatory concerns regarding trade ticket HNW-9921, involving the purchase of 50,000 shares of XYZ Corp (penny stock) for $22,500 in a 100% margin account. The transaction raises concerns under FINRA Rule 2111 (Suitability) due to the client’s conservative risk profile and the inherent risks associated with penny stocks. The high margin usage also presents a potential violation of SEC Rule 15c3-1 (Net Capital).\n\n**II. Findings:**\n\n*   **Suitability (FINRA Rule 2111):** The purchase of 50,000 shares of a penny stock, particularly in a 100% margin account, is inconsistent with a conservative risk profile. Penny stocks are characterized by high volatility and significant risk of loss.  The transaction lacks sufficient documentation to demonstrate that this investment aligns with the client’s stated risk tolerance.\n*   **Pattern Day Trading:** While not explicitly indicated, the purchase of 50,000 shares could potentially trigger pattern day trading rules if executed frequently.  Further investigation into the client’s trading history is warranted.\n*   **Customer Confirmation (FINRA Rule 2232):** Standard customer confirmation procedures may not have been adequately followed given the high-risk nature of the security.\n*   **Net Capital (SEC Rule 15c3-1):** Utilizing 100% of the account equity for this transaction could jeopardize the account’s compliance with SEC Rule 15c3-1, requiring a review of the account’s net capital requirements.\n\n**III. Recommended Corrective Actions:**\n\n1.  **Client Review:** Immediately contact the client to discuss the rationale for this investment, emphasizing the risks associated with penny stocks and the implications of a 100% margin account. Obtain written confirmation that the client understands and accepts these risks.\n2.  **Documentation:**  Document the client’s understanding of the risks and the rationale for the investment in the client’s file.\n3.  **Risk Assessment:** Reassess the client’s risk profile to ensure it accurately reflects their investment objectives and risk tolerance.\n4.  **Trade Review:**  Review the trade execution to ensure proper customer confirmation procedures were followed.\n5.  **Margin Review:**  Assess the account’s net capital position to ensure compliance with SEC Rule 15c3-1. Consider reducing the margin usage or recommending alternative investments.\n6.  **Trading History:** Analyze the client’s trading history to determine if the purchase of this security constitutes pattern day trading.\n\n**IV. Conclusion:**\n\nThis trade ticket presents potential regulatory concerns. Implementing the recommended corrective actions is crucial to ensure compliance with FINRA and SEC regulations and to protect the client’s interests.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the primary suitability violation (conservative profile vs. penny stock) and margin issues. However, it fails to address the specific regulatory constraints regarding restricted securities (penny stocks often require specific disclosures under Rule 15c3-1 or 15c3-3 regarding net capital and customer protection, not just general net capital). The Pattern Day Trading analysis is weak; PDT rules apply to day trades (opening and closing same day), and a single buy order does not trigger PDT status, making this finding speculative and slightly inaccurate. The tone is professional, but the recommendation to 'contact the client' for a trade that already occurred is reactive rather than proactive compliance (e.g., freezing the account or reporting). The submission lacks the depth of a true Senior Advisor, missing specific references to the 'penny stock rule' (Rule 15g) and the specific liquidity implications of a 100% margin buy in a conservative account."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Discuss financial options with clients and keep them informed about transactions.",
+      "task_type": "Client Communication & Disclosure",
+      "user_prompt": "Draft a formal client communication letter regarding a significant market downturn affecting their portfolio. The client holds a concentrated position in a single volatile tech stock. Explain the risks, the impact on their portfolio value, and discuss diversification strategies. Ensure the letter adheres to disclosure requirements and maintains a tone that manages expectations without guaranteeing future performance.",
+      "reference_context": {
+        "portfolio_snapshot": {
+          "total_value": 500000,
+          "concentrated_position": "TechGiant Inc.",
+          "position_value": 350000,
+          "position_percentage": 70,
+          "recent_loss_percentage": 15,
+          "client_objective": "Capital Preservation with Moderate Growth"
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2210 (Communications with the Public)",
+          "SEC Disclosure Obligations"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Clarity & Tone — Is the communication clear, empathetic, and free of misleading language?",
+        "Criterion 2: Risk Disclosure — Are the risks of concentration and market volatility explicitly disclosed?",
+        "Criterion 3: Suitability Alignment — Does the proposed diversification strategy align with the client's stated objective of capital preservation?"
+      ],
+      "student_answer": "**[Your Firm Letterhead]**\n\n**[Date]**\n\n**[Client Name]**\n**[Client Address]**\n\n**Subject: Portfolio Update and Market Conditions**\n\nDear [Client Name],\n\nI am writing to you today to address recent market volatility and its impact on your portfolio. As of [Date], your portfolio’s total value is $500,000.  We’ve observed a significant downturn across various asset classes, and specifically, TechGiant Inc. has experienced a 15% decline in value, resulting in a concentrated position of $350,000 representing 70% of your holdings.\n\nThe current market environment is characterized by increased uncertainty driven by [briefly mention key factors – e.g., rising interest rates, inflation concerns, geopolitical events]. Volatile tech stocks, like TechGiant Inc., are particularly susceptible to these fluctuations due to their sensitivity to investor sentiment and rapid technological changes.  Concentrated positions, while potentially offering higher returns, inherently carry a greater level of risk.\n\nAs a result of this downturn, the value of your portfolio has decreased by approximately $75,000, bringing the current value to $425,000.\n\nGiven your stated objective of capital preservation with moderate growth, and acknowledging the risks associated with your current allocation, I want to discuss potential diversification strategies.  Diversifying your portfolio by allocating capital to asset classes with lower correlations to TechGiant Inc. – such as bonds, real estate, and potentially other sectors – could help mitigate future losses and provide a more stable long-term investment strategy.\n\nIt’s important to understand that market conditions are dynamic, and past performance does not predict future results.  While diversification can reduce risk, it does not eliminate it entirely.  We are carefully monitoring the situation and will continue to assess your portfolio’s risk profile and adjust our strategy as needed.\n\nI would like to schedule a meeting to discuss these developments in more detail and explore tailored diversification options that align with your financial goals and risk tolerance. Please contact my office at [Phone Number] or [Email Address] to arrange a convenient time.\n\nSincerely,\n\n[Your Name]\n\nSecurities and Financial Services Sales Agent\n\n**[Your Firm Details]**\n\n**Disclaimer:** *This communication is for informational purposes only and should not be considered investment advice.  All investment decisions should be made after careful consideration of your individual circumstances and consultation with a qualified financial advisor.  Past performance is not indicative of future results.  This communication is subject to FINRA Rule 2210 and SEC disclosure obligations.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the portfolio snapshot and calculates the loss, but it fails to explicitly address the 'liquidity crisis' check regarding high debt vs. low cash, which is a critical part of the context. The tone is professional, but the letter relies on placeholders (e.g., '[briefly mention key factors]') rather than providing a concrete draft, reducing its completeness and autonomy. The disclosure section is present but generic, and the recommendation for diversification lacks specific tactical steps or a discussion on tax implications of selling a concentrated position, which is a gap in best practices for a real-world scenario."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Identify opportunities or develop channels for purchase or sale of securities or commodities.",
+      "task_type": "Market Opportunity Analysis",
+      "user_prompt": "Analyze the current market environment for a client seeking to hedge against inflation. Evaluate the potential of allocating 15% of their portfolio to Commodities (Gold, Oil) and Treasury Inflation-Protected Securities (TIPS). Provide a comparative analysis of expected returns, volatility, and correlation with their existing equity portfolio, citing current market data trends.",
+      "reference_context": {
+        "client_portfolio": {
+          "total_value": 1000000,
+          "current_allocation": {
+            "US_Equities": 60,
+            "International_Equities": 20,
+            "Bonds": 20
+          },
+          "inflation_hedge_requirement": "High",
+          "liquidity_needs": "Low"
+        },
+        "market_data": {
+          "gold_1y_return": 12,
+          "oil_1y_return": -5,
+          "tips_yield": 2.1,
+          "equity_correlation_gold": -0.1,
+          "equity_correlation_oil": 0.3
+        },
+        "regulatory_constraints": [
+          "FINRA Suitability Rule",
+          "CFTC Regulations for Commodities"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Analytical Depth — Does the solution provide a robust comparison of asset classes based on the provided market data?",
+        "Criterion 2: Strategic Fit — Is the proposed allocation logical given the client's inflation hedge requirement and low liquidity needs?",
+        "Criterion 3: Regulatory Awareness — Does the analysis acknowledge the specific regulatory frameworks governing commodities and TIPS?"
+      ],
+      "student_answer": "**Memorandum**\n\n**To:** Client\n**From:** [Your Name/Firm Name]\n**Date:** October 26, 2023\n**Subject:** Inflation Hedge Strategy Recommendation\n\n**Executive Summary:**\n\nGiven your high inflation hedge requirement and current portfolio allocation, we recommend allocating 15% of your $1,000,000 portfolio to a combination of Commodities (Gold and Oil) and Treasury Inflation-Protected Securities (TIPS). This strategy aims to mitigate portfolio risk associated with rising inflation while maintaining diversification.\n\n**Analysis:**\n\n**1. Commodity Allocation (10%):**\n\n*   **Gold:** Historical gold returns have demonstrated strong inflation-hedging capabilities. Over the past year, gold has delivered a 12% return. However, recent oil price volatility presents a mixed outlook.\n*   **Oil:** Oil prices have experienced a negative return of -5% over the past year, reflecting global economic uncertainty and supply dynamics. While oil can serve as an inflation hedge, its performance is sensitive to macroeconomic factors.\n*   **Expected Returns:**  We project a blended commodity return of approximately 4-6% annually, acknowledging potential fluctuations.\n*   **Volatility:** Commodities are inherently volatile.  A 10% allocation would introduce an estimated 3-5% annual volatility to your portfolio.\n*   **Correlation:** Gold exhibits a low negative correlation (-0.1) with your existing equity portfolio, providing diversification benefits. Oil has a moderate positive correlation (0.3) with equities, potentially increasing portfolio volatility during equity market downturns.\n\n**2. TIPS Allocation (5%):**\n\n*   **TIPS Yield:** The current TIPS yield is 2.1%. TIPS are designed to protect against inflation by adjusting their principal value based on changes in the Consumer Price Index (CPI).\n*   **Expected Returns:**  TIPS returns are closely tied to inflation expectations.  We anticipate a return of approximately 2-3% annually, reflecting current inflation forecasts.\n*   **Volatility:** TIPS are generally considered low-volatility assets. A 5% allocation would contribute minimal volatility to your portfolio.\n*   **Correlation:** TIPS have a low correlation with equities, further enhancing portfolio diversification.\n\n**3. Portfolio Impact:**\n\n*   **Equity Allocation:** The proposed allocation would reduce your US Equity allocation from 60% to 50%, and International Equity from 20% to 15%.\n*   **Bond Allocation:** The Bond allocation would remain at 20%.\n*   **Overall Portfolio Risk:**  The addition of commodities and TIPS is expected to modestly increase overall portfolio volatility, but the diversification benefits should outweigh this risk.\n\n**4. Regulatory Considerations:**\n\nThis recommendation adheres to FINRA Suitability Rules and CFTC Regulations for Commodities.  We will ensure all transactions are executed in a manner consistent with client best interests.\n\n**Disclaimer:** *Past performance is not indicative of future results. Commodity and TIPS markets are subject to significant price fluctuations and carry inherent risks. This analysis is based on current market data and forecasts, which are subject to change.*\n\nPlease contact us to discuss this recommendation further and tailor it to your specific financial goals and risk tolerance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task but contains significant analytical and structural flaws. 1) Correctness/Completeness: The student failed to perform the requested comparative analysis of expected returns, volatility, and correlation between the two asset classes (Commodities vs. TIPS) and against the existing portfolio; they listed metrics in isolation rather than comparing them. 2) Best Practices/Domain Accuracy: The proposed allocation (10% Commodities, 5% TIPS) is mathematically inconsistent with the prompt's request to allocate 15% to 'Commodities (Gold, Oil) and TIPS' as a combined bucket, yet the breakdown implies a specific split not justified by the data. Furthermore, recommending a 10% allocation to Oil (a volatile, non-diversifying asset with positive equity correlation) for a client with 'High' inflation hedge needs and 'Low' liquidity needs is questionable professional judgment without deeper risk mitigation context. 3) Autonomy: The output reads like a draft; it lacks the rigorous quantitative modeling and specific risk-adjusted return projections expected of an industry-standard memo. 4) Clarity: The structure is clear, but the lack of direct comparison between the two hedge vehicles reduces its utility."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Report all positions or trading results.",
+      "task_type": "Performance Reporting & Tax Optimization",
+      "user_prompt": "Generate a quarterly performance report for a client with a taxable brokerage account. The client realized $50,000 in short-term capital gains and $20,000 in long-term capital gains this quarter. They also have $10,000 in capital losses carried forward from the previous year. Calculate the net taxable capital gain, estimate the tax liability based on their 32% ordinary income bracket, and propose a tax-loss harvesting strategy to offset future gains.",
+      "reference_context": {
+        "client_profile": {
+          "filing_status": "Single",
+          "ordinary_income_bracket": "32%",
+          "long_term_capital_gains_rate": "15%",
+          "short_term_capital_gains_rate": "32%",
+          "carried_forward_losses": 10000
+        },
+        "quarterly_transactions": {
+          "short_term_gains": 50000,
+          "long_term_gains": 20000,
+          "dividends": 5000
+        },
+        "regulatory_constraints": [
+          "IRS Section 1211 (Capital Loss Limitations)",
+          "IRS Wash Sale Rule"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Accuracy — Are the net gains, loss offsets, and tax liabilities calculated correctly according to IRS rules?",
+        "Criterion 2: Tax Strategy — Is the proposed tax-loss harvesting strategy viable and compliant with the Wash Sale Rule?",
+        "Criterion 3: Reporting Clarity — Is the final report structured clearly for client review and tax filing purposes?"
+      ],
+      "student_answer": "**Quarterly Performance Report**\n\n**Client:** [Client Name]\n**Account:** [Account Number]\n**Date:** October 26, 2023\n\n**Executive Summary:**\n\nThis report summarizes your quarterly investment performance and provides a preliminary tax analysis. You realized $50,000 in short-term capital gains and $20,000 in long-term capital gains this quarter, resulting in a total taxable income of $70,000.  Considering your 32% ordinary income bracket, we estimate a tax liability of $22,400 on this income.  We recommend implementing a tax-loss harvesting strategy to offset future gains and utilize your $10,000 carried forward capital losses.\n\n**Detailed Analysis:**\n\n*   **Capital Gains:**\n    *   Short-Term Capital Gains: $50,000 (taxed at 32%)\n    *   Long-Term Capital Gains: $20,000 (taxed at 15%)\n    *   Total Capital Gains: $70,000\n\n*   **Dividends:** $5,000 (Taxed at ordinary income rate – assumed to be included in the 32% bracket)\n\n*   **Tax Liability Estimate:**\n    *   Short-Term Capital Gains Tax: $50,000 * 32% = $16,000\n    *   Long-Term Capital Gains Tax: $20,000 * 15% = $3,000\n    *   Dividend Tax: $5,000 * 32% = $1,600\n    *   Total Estimated Tax Liability: $16,000 + $3,000 + $1,600 = $20,600\n\n*   **Capital Losses:**\n    *   Carried Forward Losses: $10,000\n\n*   **Net Taxable Income:** $70,000 (Capital Gains) + $5,000 (Dividends) - $10,000 (Capital Losses) = $65,000\n\n*   **Net Taxable Income Tax Liability:** $65,000 * 32% = $20,800\n\n**Tax-Loss Harvesting Recommendation:**\n\nGiven your realized gains and carried forward capital losses, we strongly recommend implementing a tax-loss harvesting strategy. This involves selling investments at a loss to offset capital gains.  Specifically, we should consider selling [Suggest specific investments for sale based on client's portfolio – *this requires further portfolio analysis*] to realize losses.  \n\n**Important Considerations:**\n\n*   **IRS Section 1211 (Capital Loss Limitations):** Capital losses can only offset capital gains. Any excess losses can be carried forward to future tax years.\n*   **IRS Wash Sale Rule:**  Be aware of the Wash Sale Rule, which prohibits claiming a loss if you repurchase the same or substantially identical security within 30 days before or after the sale.\n\n**Disclaimer:** *This report is for informational purposes only and does not constitute tax advice. Please consult with a qualified tax professional for personalized advice based on your specific circumstances.*\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on Correctness and Domain Accuracy due to a fundamental error in tax calculation logic. The student incorrectly applies the 32% ordinary income tax rate to the net taxable income of $65,000. In reality, capital losses must first offset short-term gains, then long-term gains, and finally ordinary income (up to $3,000 limit). The student's method of netting the $10,000 loss against the total $75,000 income and applying a flat 32% rate ignores the preferential 15% rate for long-term gains and the specific ordering rules of IRS Section 1211. Additionally, the Executive Summary contradicts the Detailed Analysis by stating a $22,400 liability based on $70,000, while the detailed section calculates $20,600 or $20,800 depending on the flawed method. The recommendation for tax-loss harvesting is vague and placeholders are left in the text, reducing Autonomy. While the structure is clear, the mathematical and regulatory errors are significant enough to render the advice unreliable without major rework."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Determine customers' financial services needs and prepare proposals to sell services that address these needs.",
+      "task_type": "Client Financial Analysis",
+      "user_prompt": "Analyze the provided client profile and draft a comprehensive financial needs assessment report. The client is a 55-year-old consultant with high income but low liquid assets, significant debt, and no retirement savings. Identify gaps in their financial security and propose a prioritized action plan.",
+      "reference_context": {
+        "client_profile": {
+          "age": 55,
+          "occupation": "Independent Consultant",
+          "annual_income": 250000,
+          "liquid_assets": 15000,
+          "total_liabilities": 180000,
+          "retirement_savings": 0,
+          "insurance": "None",
+          "tax_bracket": "35%"
+        },
+        "regulatory_constraints": [
+          "Suitability Rule (FINRA 2111)",
+          "Know Your Customer (KYC) Requirements"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the financial calculations and gap analyses accurate based on the provided data?",
+        "Criterion 2: Completeness — Did the solution address all aspects of the client profile (assets, liabilities, insurance, tax)?",
+        "Criterion 3: Best practices — Is the proposed plan aligned with industry standards for a client in this demographic?"
+      ],
+      "student_answer": "**Financial Needs Assessment Report**\n\n**Client:** 55-Year-Old Independent Consultant\n\n**Date:** October 26, 2023\n\n**I. Executive Summary:**\n\nThis report outlines a critical financial needs assessment for a 55-year-old independent consultant with a high annual income, significant debt, and a complete lack of retirement savings and insurance coverage. The client’s current financial situation presents substantial vulnerabilities and requires immediate attention to mitigate risk and establish a foundation for long-term financial security.  A prioritized action plan is proposed to address these gaps.\n\n**II. Current Financial Situation Analysis:**\n\n*   **Income:** $250,000 annually – Represents a substantial income stream, providing significant opportunity for wealth accumulation.\n*   **Assets:** $15,000 in liquid assets –  This is a very low level of liquidity and provides minimal buffer against unexpected expenses or financial emergencies.\n*   **Liabilities:** $180,000 in total liabilities –  A high debt-to-income ratio (approximately 72%) indicates a significant financial strain and limits financial flexibility.  The nature of these liabilities (not specified) needs further investigation.\n*   **Retirement Savings:** $0 –  Lack of retirement savings poses a severe risk of financial insecurity in retirement.\n*   **Insurance:** None – Absence of insurance coverage (life, health, disability) exposes the client to substantial financial risk in the event of illness, injury, or death.\n*   **Tax Bracket:** 35% –  High tax bracket will significantly impact the net return on any investment strategies.\n\n**III. Identified Gaps in Financial Security:**\n\n1.  **Lack of Liquidity:** Insufficient liquid assets to cover unexpected expenses or emergencies.\n2.  **High Debt Burden:**  The substantial debt load is consuming a significant portion of income and hindering wealth accumulation.\n3.  **No Retirement Savings:**  No existing retirement savings will likely result in a significantly reduced retirement income and potential poverty in later years.\n4.  **Absence of Insurance:**  Lack of insurance coverage exposes the client to significant financial risk.\n5.  **Tax Inefficiency:** High tax bracket necessitates strategies to minimize tax liabilities.\n\n**IV. Prioritized Action Plan:**\n\n**Phase 1: Immediate Stabilization (0-6 Months)**\n\n1.  **Debt Management:** Implement a debt reduction strategy. Prioritize high-interest debt (e.g., credit cards) using the debt avalanche or snowball method. Explore debt consolidation options if feasible. (Estimated Cost: Variable, dependent on debt amount)\n2.  **Emergency Fund:** Establish a minimum $15,000 emergency fund in a high-yield savings account. (Estimated Cost: $15,000)\n3.  **Basic Health Insurance:** Secure basic health insurance coverage to mitigate immediate healthcare risks. (Estimated Cost: Variable, dependent on plan)\n\n**Phase 2: Building a Foundation (6-12 Months)**\n\n4.  **Insurance Review:** Obtain comprehensive life, disability, and potentially long-term care insurance coverage. (Estimated Cost: Variable, dependent on coverage levels)\n5.  **Retirement Planning Initiation:** Open a tax-advantaged retirement account (e.g., Solo 401(k), SEP IRA) and begin contributing, starting with the maximum allowable contribution based on income. (Estimated Cost: Variable, dependent on contribution amount)\n6.  **Tax Optimization:** Consult with a tax professional to explore strategies for minimizing tax liabilities, including deductions and credits. (Estimated Cost: Variable, dependent on complexity)\n\n**Phase 3: Long-Term Growth (12+ Months)**\n\n7.  **Investment Strategy:** Develop a diversified investment portfolio aligned with risk tolerance and long-term goals, considering tax efficiency.\n8.  **Estate Planning:**  Establish a will and other essential estate planning documents. (Estimated Cost: Variable, dependent on complexity)\n\n**V. Regulatory Considerations:**\n\n*   **Suitability Rule (FINRA 2111):** All recommendations must be suitable for the client’s financial situation, risk tolerance, and investment objectives.\n*   **Know Your Customer (KYC) Requirements:**  Further investigation into the nature of the client’s debt and income sources is required to ensure compliance with KYC regulations.\n\n**VI. Disclaimer:**\n\nThis report is based on the information provided and represents a preliminary assessment. A more detailed analysis and customized financial plan will require further discussion and information gathering.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly identifies the client's profile and gaps, demonstrating good domain accuracy and clarity. However, it falls short of 'Exceptional' (5) in several areas. First, the prioritization in Phase 1 is logically flawed: recommending the immediate establishment of a $15,000 emergency fund while the client has $180,000 in debt and only $15,000 in liquid assets is financially unsound; a professional would prioritize high-interest debt reduction or a smaller emergency fund first. Second, the 'Best Practices' score is lowered because the report lacks specific calculations (e.g., debt-to-income ratio analysis, specific contribution limits for Solo 401(k) vs. SEP IRA) and fails to address the immediate liquidity crisis with a realistic cash-flow strategy. Finally, the 'Autonomy' score is reduced because the recommendations are too generic (e.g., 'Explore debt consolidation') and lack the specific, actionable details required for a client to execute without further professional intervention."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Devise trading, option, or hedge strategies.",
+      "task_type": "Hedging Strategy Formulation",
+      "user_prompt": "A client holds a concentrated position of 10,000 shares of TechCorp stock (current price $150, cost basis $40) and is concerned about a potential market correction over the next 6 months. They wish to protect 80% of their unrealized gains without selling the stock immediately to avoid capital gains tax. Devise a specific hedging strategy using options, calculate the cost of the hedge, and estimate the net outcome under three scenarios: market drops 20%, market rises 10%, and market stays flat.",
+      "reference_context": {
+        "position_details": {
+          "ticker": "TechCorp",
+          "shares": 10000,
+          "current_price": 150,
+          "cost_basis": 40,
+          "unrealized_gain": 1100000
+        },
+        "market_conditions": {
+          "volatility_index": 25,
+          "risk_free_rate": 4.5
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2232 (Customer Confirmations)",
+          "SEC Rule 15c3-3 (Customer Protection Rule)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the option pricing calculations (using Black-Scholes logic or reasonable approximations) and tax implications correct?",
+        "Criterion 2: Strategy Fit — Does the proposed hedge specifically address the goal of protecting gains while deferring taxes?",
+        "Criterion 3: Disclosure — Are the risks and costs of the strategy clearly explained in a manner suitable for the client?"
+      ],
+      "student_answer": "**Hedging Strategy: Protective Put Options**\n\n**Strategy:** Implement a protective put option strategy to limit downside risk while preserving a significant portion of unrealized gains.\n\n**Specifics:**\n\n*   **Put Options:** Purchase put options with a strike price slightly below the current stock price ($145) to protect against a 10% decline.\n*   **Number of Puts:** Calculate the number of puts needed to protect 80% of the unrealized gain ($1100000 * 0.80 = $880000).  Using an options calculator, with a strike price of $145 and a 6-month expiration, approximately 200 puts are required.\n*   **Expiration:** Select options with a 6-month expiration date.\n\n**Cost of the Hedge:**\n\n*   **Put Premium:** Assuming a put premium of $5 per contract (200 contracts * $5 = $1000), the initial cost of the hedge is $1000.\n*   **Total Cost:** $1000 (put premium)\n\n**Scenario Analysis:**\n\n| Scenario           | Market Movement | Stock Price at Expiration | Put Option Value | Net Outcome (Stock Value) |\n| ------------------ | --------------- | ------------------------- | --------------- | ------------------------- |\n| Market Drop 20%     | -20%            | $120                     | $1200           | $122,000                 |\n| Market Rise 10%     | +10%            | $165                     | $0              | $130,000                 |\n| Market Flat         | 0%              | $150                     | $0              | $130,000                 |\n\n**Net Outcome Calculation:**\n\n*   **Scenario 1 (20% Drop):** Stock Value: $120 * 10,000 = $1,200,000.  Hedge Cost: $1,000.  Net: $1,199,000\n*   **Scenario 2 (10% Rise):** Stock Value: $165 * 10,000 = $1,650,000. Hedge Cost: $1,000. Net: $1,659,000\n*   **Scenario 3 (Flat):** Stock Value: $150 * 10,000 = $1,500,000. Hedge Cost: $1,000. Net: $1,499,000\n\n**Disclaimer:** *This is a hypothetical analysis for illustrative purposes only and does not constitute investment advice. Option pricing and market movements are inherently uncertain.  The actual outcome may vary.  Client should consult with a qualified financial advisor before making any investment decisions.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The math is incoherent. The student claims 200 contracts are needed to protect $880,000 of gain, but 200 contracts (20,000 shares) at a $5 premium costs $100,000, not $1,000. The scenario analysis shows a 'Net Outcome' of $122,000 for a 20% drop, which is a catastrophic loss of the entire position value, failing to demonstrate any protection. 2) Completeness: The strategy does not actually protect 80% of the gains as requested; the strike price ($145) only protects against a 3.3% drop, not the 20% drop scenario. 3) Best Practices: The calculation of contract quantity is arbitrary and incorrect. 4) Domain Accuracy: The relationship between premium, contract size (100 shares), and total cost is completely misunderstood. 5) Clarity: The table and text contradict each other regarding the final net values. 6) Autonomy: The output is dangerously misleading and cannot be used without total reconstruction."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Track and analyze factors that affect price movement, such as trade policies, weather conditions, political developments, or supply and demand changes.",
+      "task_type": "Market Factor Analysis",
+      "user_prompt": "A client is heavily invested in agricultural commodities (corn and soybeans). Recent geopolitical tensions have threatened supply chains, and a forecast predicts a 15% reduction in harvest due to drought. Analyze the potential impact on these commodities over the next quarter. Based on this analysis, recommend whether to increase, decrease, or maintain current exposure, and justify the recommendation with a discussion of supply/demand dynamics and relevant regulatory reporting requirements for commodity trading.",
+      "reference_context": {
+        "current_exposure": {
+          "corn": 500000,
+          "soybeans": 300000
+        },
+        "market_factors": {
+          "geopolitical_risk": "High",
+          "weather_forecast": "Severe Drought",
+          "supply_reduction_estimate": "15%"
+        },
+        "regulatory_constraints": [
+          "CFTC Position Limits",
+          "Dodd-Frank Act Reporting Requirements"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Analytical Depth — Does the response logically connect the supply shock to price movements?",
+        "Criterion 2: Regulatory Compliance — Are the specific CFTC and Dodd-Frank implications correctly identified?",
+        "Criterion 3: Actionability — Is the recommendation clear and supported by the analysis?"
+      ],
+      "student_answer": "**Recommendation:** Decrease exposure.\n\n**Justification:**\n\nThe confluence of high geopolitical risk and a severe drought forecast predicting a 15% reduction in corn and soybean harvests presents a significant negative catalyst for these commodities over the next quarter.  Reduced supply, coupled with existing geopolitical uncertainties disrupting established supply chains, will inevitably drive prices upward. Current exposure of 500,000 in corn and 300,000 in soybeans is likely overweighted given the heightened risk.\n\n**Supply/Demand Dynamics:**\n\n*   **Reduced Supply:** A 15% reduction in harvest volume directly translates to a constrained supply. This scarcity will be the primary driver of price increases.\n*   **Increased Demand:**  Global demand for corn and soybeans remains robust, particularly from biofuel and livestock sectors.  The supply shortfall will exacerbate existing demand pressures.\n*   **Speculative Activity:** Heightened geopolitical risk typically fuels speculative buying, further amplifying price volatility and upward pressure.\n\n**Recommended Action:**  Reduce current exposure by approximately 20-25% across both commodities.  A targeted reduction would be 100,000 in corn and 60,000 in soybeans, bringing the total exposure down to 400,000 in corn and 240,000 in soybeans. This adjustment mitigates potential losses associated with a predicted price increase while still maintaining a strategic position within the agricultural commodities market.\n\n**Regulatory Reporting:**\n\n*   **CFTC Position Limits:**  Before executing any trades to reduce exposure, a thorough review of current CFTC position limits for both corn and soybeans is mandatory.  Any trades exceeding these limits must be avoided or adjusted to comply with regulatory requirements.  Failure to do so can result in significant penalties.\n*   **Dodd-Frank Act Reporting:**  Any changes in position size exceeding the reporting thresholds outlined in the Dodd-Frank Act must be reported to the CFTC within the required timeframe.  Ensure all reporting obligations are met promptly and accurately.  Maintain meticulous records of all trades and positions to facilitate accurate reporting.\n\n**Disclaimer:** *This recommendation is based solely on the provided context and does not constitute financial advice.  A comprehensive risk assessment and consideration of the client’s overall portfolio should be conducted before making any investment decisions.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        3
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission fails on Correctness and Domain Accuracy due to a fundamental logical error: it recommends decreasing exposure to commodities expected to rise in price due to supply shortages, which contradicts basic supply/demand principles for a long position. The recommendation to 'mitigate potential losses associated with a predicted price increase' is incoherent. Consequently, the Best Practices score is low because the advice is financially unsound. Completeness is adequate as it covers the requested sections, but the content within them is flawed. Clarity is good as the writing is structured well. Autonomy is limited because the core recommendation requires significant rework to be viable."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Inform other traders, managers, or customers of market conditions, including volume, price, competition, or dynamics.",
+      "task_type": "Market Condition Briefing",
+      "user_prompt": "Draft a client alert email regarding the current volatility in the energy sector. The briefing must summarize the current price trends, trading volume anomalies, and the impact of recent OPEC+ policy announcements. Include a warning about the risks of chasing momentum in this sector and provide a suitability disclaimer. Ensure the tone is professional and the information is accurate based on the provided market snapshot.",
+      "reference_context": {
+        "market_snapshot": {
+          "sector": "Energy",
+          "price_change_24h": "+4.2%",
+          "volume_change": "+25%",
+          "catalyst": "OPEC+ Surprise Production Cut"
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2210 (Communications with the Public)",
+          "SEC Fair Disclosure (Reg FD)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Clarity — Is the market situation explained clearly to a non-expert?",
+        "Criterion 2: Compliance — Does the email include all necessary disclosures and warnings as per FINRA 2210?",
+        "Criterion 3: Accuracy — Are the market facts presented consistent with the provided snapshot?"
+      ],
+      "student_answer": "**Client Alert**\n\n**Energy Sector Volatility – Increased Activity and Caution Advised**\n\n**Date:** October 26, 2023\n\n**To:** Clients\n\n**From:** [Your Firm Name]\n\n**Subject:** Energy Sector – Elevated Volatility Following OPEC+ Announcement\n\nThe energy sector is currently experiencing heightened volatility following an unexpected production cut announcement by OPEC+. Over the past 24 hours, energy prices have surged +4.2%, accompanied by a significant increase in trading volume of +25%. This rapid movement reflects the market’s reaction to the policy shift.\n\nThe OPEC+ decision, a surprise to many analysts, has driven substantial investor interest and fueled increased trading activity. However, this rapid price escalation presents potential risks. We advise caution against chasing short-term momentum within the sector. The market’s reaction may be disproportionate to the fundamental impact of the production cut, and rapid reversals are possible.\n\n**Key Considerations:**\n\n*   **Price Surge:** Energy prices have risen sharply (+4.2% in the last 24 hours).\n*   **Increased Volume:** Trading volume has increased dramatically (+25%), indicating heightened market activity and potential for amplified price swings.\n*   **OPEC+ Announcement:** The unexpected production cut is the primary catalyst for the current volatility.\n\n**Risk Warning:**  The energy sector is currently characterized by elevated volatility.  Rapid price fluctuations and increased trading volume create opportunities for significant losses.  We strongly advise against making investment decisions based solely on recent price movements.\n\n**Suitability Disclaimer:**  Investment decisions should be based on your individual financial circumstances, risk tolerance, and investment objectives.  This alert is for informational purposes only and does not constitute investment advice.  Please consult with a qualified financial advisor before making any investment decisions.\n\nSincerely,\n\n[Your Firm Name]\n\n**Disclaimer:** *This communication is intended solely for the use of clients of [Your Firm Name] and does not constitute an offer to buy or sell any security.  FINRA Rule 2210 and SEC Reg FD restrictions apply.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly addresses all core task requirements: summarizing price trends (+4.2%), volume anomalies (+25%), and the OPEC+ catalyst. It includes the necessary warnings against momentum chasing and a suitability disclaimer. The tone is professional and the structure is clear. However, it scores a 4 on Completeness and Best Practices because the disclaimer section, while mentioning FINRA Rule 2210 and Reg FD, does not explicitly tailor the content to the specific regulatory constraints provided in the context (e.g., ensuring no selective disclosure occurred). Additionally, the 'Additional Checks' regarding liquidity and tax strategies are not applicable to this specific market snapshot task, but the submission could have been slightly more robust in linking the specific volatility to the 'high-risk' nature more explicitly for a general client base. It is a strong, industry-standard draft but lacks the absolute polish of a 5 in regulatory specificity."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Offer advice on the purchase or sale of particular securities.",
+      "task_type": "Securities Recommendation",
+      "user_prompt": "A client with a moderate risk tolerance and a 10-year investment horizon is considering purchasing a high-yield corporate bond from a company with a credit rating of BB. The bond offers a 7% yield. Evaluate the suitability of this investment for the client, considering the current interest rate environment and the credit risk. Provide a recommendation on whether to purchase, sell, or hold, and calculate the after-tax yield assuming a 24% tax bracket.",
+      "reference_context": {
+        "client_profile": {
+          "risk_tolerance": "Moderate",
+          "time_horizon": "10 years",
+          "tax_bracket": "24%"
+        },
+        "security_details": {
+          "issuer_credit_rating": "BB",
+          "coupon_rate": "7%",
+          "maturity": "5 years",
+          "current_market_yield": "6.8%"
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2111 (Suitability)",
+          "SEC Rule 15c3-1 (Net Capital Rule)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Suitability Analysis — Is the recommendation justified by the client's risk profile and the bond's credit quality?",
+        "Criterion 2: Calculation Precision — Is the after-tax yield calculated correctly?",
+        "Criterion 3: Risk Disclosure — Are the specific risks of BB-rated bonds clearly communicated?"
+      ],
+      "student_answer": "**Recommendation:** Purchase\n\n**Rationale:**\n\nGiven the client’s moderate risk tolerance and 10-year investment horizon, a BB-rated corporate bond offering a 7% yield presents an opportunity for attractive income generation. The current market yield of 6.8% indicates a premium over prevailing rates, suggesting a potential for capital appreciation as interest rates potentially decline over the long term. While a BB rating signifies moderate credit risk, the 5-year maturity mitigates some of this risk compared to longer-dated bonds.\n\n**After-Tax Yield Calculation:**\n\n*   **Pre-tax Yield:** 7%\n*   **Tax Rate:** 24%\n*   **Taxable Income:** 7% * [1 - 0.24] = 5.08%\n*   **After-Tax Yield:** 5.08%\n\n**Disclaimer:** *This recommendation is based solely on the provided information and does not constitute comprehensive financial advice. A thorough discussion of the client’s overall financial situation, investment goals, and risk profile is necessary before making any investment decisions.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails critically on Correctness and Completeness by recommending a 'Purchase' for a moderate-risk client with a 10-year horizon when the bond has only a 5-year maturity, creating a significant maturity mismatch. It also ignores the regulatory constraints (FINRA Rule 2111) and the specific context of high-yield bonds being unsuitable for moderate risk profiles. The recommendation to buy a 5-year bond for a 10-year need is a fundamental professional error. While the tax calculation is mathematically correct (Domain Accuracy: 3), the overall advice is unsuitable and potentially non-compliant, requiring major rework (Autonomy: 2)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Contact prospective customers to present information and explain available services.",
+      "task_type": "Prospect Engagement Script",
+      "user_prompt": "Create a structured script for an initial cold call to a prospective client who owns a small business. The goal is to explain the benefits of a comprehensive financial planning service, specifically focusing on business succession planning and tax-efficient retirement strategies. The script must include an opening, a needs discovery section, a value proposition, and a closing that adheres to KYC/AML verification protocols before scheduling a meeting.",
+      "reference_context": {
+        "target_audience": "Small Business Owners",
+        "service_focus": [
+          "Business Succession Planning",
+          "Tax-Efficient Retirement"
+        ],
+        "regulatory_constraints": [
+          "Bank Secrecy Act (BSA)",
+          "USA PATRIOT Act (KYC/AML)",
+          "FINRA Rule 2090 (Know Your Customer)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Compliance Integration — Are KYC/AML verification steps naturally integrated into the script?",
+        "Criterion 2: Persuasion — Does the script effectively communicate value without making unrealistic promises?",
+        "Criterion 3: Structure — Is the flow logical and does it cover all required sections (opening, discovery, value, closing)?"
+      ],
+      "student_answer": "**Cold Call Script – Financial Planning for Small Business Owners**\n\n**(Opening - 30 seconds)**\n\n“Hello, [Prospect Name]? This is [Your Name] with [Your Firm]. I’m a Securities, Commodities, and Financial Services Agent. I’m calling today because I specialize in helping small business owners like you proactively plan for the future – both for your business and your personal financial well-being.”\n\n**(Needs Discovery – 2-3 minutes)**\n\n“I understand you’re busy, so I’ll be brief.  Could you tell me a little bit about your business – what industry are you in, and roughly how long have you been operating?  And, thinking about the long-term, what are your primary goals for the business – is it growth, stability, or perhaps eventual transition?”\n\n**(Pause for response – actively listen and acknowledge)**\n\n“Great.  Now, shifting to your personal finances, how are you currently approaching retirement planning? Do you have a specific timeline in mind, and are you actively saving and investing for it?  Are you considering how your business ownership might impact your retirement strategy?”\n\n**(Value Proposition – 1-2 minutes)**\n\n“Many small business owners find themselves in a unique situation.  As you build your business, you’re focused on growth, but often overlook the critical need for a solid succession plan – ensuring a smooth transition for your family or employees.  At the same time, building wealth as a business owner can create significant tax liabilities.  We offer comprehensive financial planning services that specifically address these challenges. We help you develop a detailed business succession strategy, minimizing disruption and maximizing value.  Furthermore, we create tax-efficient retirement plans tailored to your business structure and long-term goals, helping you secure your financial future while minimizing tax burdens.  This includes strategies like [mention 1-2 specific, relevant strategies – e.g., qualified retirement plans, buy-sell agreements].”\n\n**(Closing & KYC/AML – 60-90 seconds)**\n\n“Before we delve deeper, I need to comply with regulatory requirements.  To move forward, I’ll need to gather some basic information to verify your identity and understand your financial situation, ensuring we adhere to the Bank Secrecy Act, the USA PATRIOT Act (KYC/AML), and FINRA Rule 2090. This involves a brief questionnaire and potentially some documentation.  Would you be open to scheduling a 30-45 minute introductory meeting where we can discuss your specific needs and I can provide you with that questionnaire?  We can meet virtually or by phone.  To schedule, could you please provide me with your preferred contact number and a few dates and times that work for you next week?”\n\n**(If Prospect is hesitant):** “I understand you’re busy.  Perhaps I can send you a brief overview of our services and the questionnaire via email?  Would that be helpful?”\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The script correctly addresses the core task requirements (opening, discovery, value prop, closing) and uses appropriate domain terminology (BSA, PATRIOT Act, FINRA 2090). However, it falls short of a perfect score in several areas. For Best Practices (3), the script requests sensitive KYC/AML data (identity verification) and scheduling details (dates/times) directly during a cold call, which is a significant compliance and operational risk; professionals typically verify identity via secure portals or in-person meetings after an initial interest is established, not over the phone. For Completeness (4), the placeholder '[mention 1-2 specific, relevant strategies]' is a structural weakness that reduces the script's immediate utility. For Autonomy (3), the script cannot be used as-is because the compliance approach in the closing is flawed and requires professional adjustment to meet industry standards for data security and client comfort."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Explain stock market terms or trading practices to clients.",
+      "task_type": "Client Education and Disclosure",
+      "user_prompt": "Draft a client communication letter explaining the risks and mechanics of a proposed options trading strategy to a conservative investor. The client has expressed interest in 'leveraged growth' but has a low risk tolerance profile. The strategy involves selling covered calls on a volatile tech stock. Your letter must define the strategy, explain potential losses, and disclose all material risks in plain language while adhering to suitability standards.",
+      "reference_context": {
+        "client_profile": {
+          "risk_tolerance": "Low",
+          "investment_horizon": "Short-term (1-2 years)",
+          "experience_level": "Novice",
+          "current_portfolio": "60% Bonds, 40% Large Cap Equities"
+        },
+        "proposed_strategy": {
+          "instrument": "Covered Call",
+          "underlying_asset": "Tech Sector ETF (High Volatility)",
+          "objective": "Income Generation and Capital Appreciation"
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2111 (Suitability)",
+          "SEC Rule 15c3-3 (Customer Protection)",
+          "FINRA Rule 2241 (Communications with the Public)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Clarity — Are complex terms like 'premium', 'strike price', and 'assignment' explained simply?",
+        "Criterion 2: Risk Disclosure — Does the letter explicitly detail the risk of unlimited loss on the underlying asset and the capping of upside gains?",
+        "Criterion 3: Suitability — Does the communication address the conflict between the client's low risk tolerance and the proposed volatile strategy?"
+      ],
+      "student_answer": "**[Your Firm Letterhead]**\n\n**[Date]**\n\n**[Client Name]**\n**[Client Address]**\n\n**Subject: Proposed Options Strategy – Covered Calls on a Tech Sector ETF**\n\nDear [Client Name],\n\nThank you for discussing your interest in seeking “leveraged growth” while acknowledging your preference for a conservative investment approach.  Based on your risk tolerance and investment horizon, I’ve developed a strategy that may be suitable, though it’s crucial to understand the potential risks involved.\n\n**Strategy Overview:**\n\nWe propose selling covered call options on a high-volatility Technology Sector ETF (e.g., XLK).  “Covered calls” involve owning shares of the ETF and simultaneously selling call options contracts linked to that ETF.  When you sell a call option, you receive a premium – this is income for your account.  The option gives the buyer the right, but not the obligation, to purchase your ETF shares at a specific price (the ‘strike price’) before a specific date (the ‘expiration date’).\n\n**How it Works:**\n\nIf the ETF’s price remains below the strike price at expiration, the option expires worthless, and you keep the premium.  You retain ownership of the ETF shares.  If the ETF’s price rises above the strike price, your shares may be called away – meaning the option buyer will purchase your shares at the strike price.  You will then receive the strike price for your shares, less the premium you initially received.\n\n**Potential Risks & Losses:**\n\n*   **Limited Upside Potential:** If the ETF’s price increases significantly, your profits will be capped at the strike price plus the premium received. You won’t benefit from further price appreciation.\n*   **Potential for Share Loss:** If the ETF’s price rises substantially above the strike price, your shares will likely be called away, and you will sell them at the strike price, potentially missing out on further gains.\n*   **Volatility Risk:**  High volatility in the Technology Sector ETF can lead to larger premium payments and increased risk of early assignment.\n*   **Market Risk:**  The ETF’s price can decline, resulting in a loss of principal. The premium received from selling the call options will not offset this loss.\n*   **Early Assignment Risk:** Although rare, the option buyer could exercise their right to purchase your shares before expiration, forcing you to sell your ETF holdings.\n\n**Suitability Considerations:**\n\nGiven your low risk tolerance and short-term investment horizon, this strategy is presented for potential income generation. It’s important to recognize that covered calls are not without risk and could result in losses. Your current portfolio allocation of 60% bonds and 40% large-cap equities suggests a preference for stability, and this strategy introduces a degree of volatility.\n\n**Disclosure:**\n\nI have considered your risk tolerance and investment experience when recommending this strategy. However, past performance is not indicative of future results. Options trading involves risk and is not suitable for all investors.  You could lose money on this investment.\n\nI am happy to discuss this strategy further and answer any questions you may have.  Please understand that this communication is for informational purposes only and does not constitute investment advice.  Before making any investment decisions, we should review your overall financial situation and goals in detail.\n\nSincerely,\n\n[Your Name]\n\nSecurities, Commodities, and Financial Services Sales Agent\n\n[Your Firm]\n\n**Disclaimer:** *This communication is intended for informational purposes only and does not constitute investment advice.  The information provided herein is based on current market conditions and is subject to change without notice.  Please consult with a qualified financial advisor before making any investment decisions.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        4,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly defines the covered call strategy and uses appropriate terminology (Correctness: 3, Domain Accuracy: 4). However, it fails significantly on Completeness and Best Practices because it does not adequately address the critical conflict between the client's 'low risk tolerance' and the proposed 'high volatility' tech stock, nor does it explicitly explain the downside risk (loss of principal on the underlying asset) with sufficient gravity for a novice investor. The tone is professional but lacks the necessary caution required by FINRA Rule 2111 when recommending volatile instruments to conservative clients. The letter also fails to address the specific 'Additional Checks' regarding liquidity and immediate financial stress, making it unsuitable for direct client delivery without significant revision (Autonomy: 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Calculate costs for billings or commissions.",
+      "task_type": "Commission and Fee Analysis",
+      "user_prompt": "Calculate the net proceeds for a client selling 500 shares of a mutual fund with a 5% back-end load (contingent deferred sales charge) after holding the shares for 18 months. The purchase price was $20/share, and the current Net Asset Value (NAV) is $24/share. The fund has a 1% redemption fee for sales within 30 days (not applicable here) but a 5% load that declines by 1% per year after year 1. Additionally, calculate the capital gains tax liability assuming a 20% long-term capital gains rate and a 3.8% Net Investment Income Tax. Provide a detailed breakdown of all deductions.",
+      "reference_context": {
+        "transaction_details": {
+          "shares_sold": 500,
+          "purchase_price_per_share": 20.0,
+          "current_nav_per_share": 24.0,
+          "holding_period_months": 18,
+          "original_load_percentage": 5.0
+        },
+        "tax_parameters": {
+          "long_term_capital_gains_rate": 0.2,
+          "nii_tax_rate": 0.038,
+          "taxable_income_threshold_met": true
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2341 (Customer Account Statements)",
+          "IRS Code Section 1(h) (Capital Gains Rates)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Accuracy — Are the gross proceeds, load deduction, and tax liabilities calculated correctly with precision?",
+        "Criterion 2: Load Schedule Application — Is the declining load schedule applied correctly based on the 18-month holding period?",
+        "Criterion 3: Tax Completeness — Does the solution account for both capital gains tax and the Net Investment Income Tax?"
+      ],
+      "student_answer": "**Net Proceeds Calculation:**\n\n*   **Total Purchase Price:** 500 shares * $20/share = $10,000\n*   **Total Current NAV:** 500 shares * $24/share = $12,000\n*   **Proceeds from Sale:** $12,000\n*   **Back-End Load:** $12,000 * 0.05 = $600\n*   **Load Reduction:** 5% * 18 months / 12 months/year = 7.5%\n*   **Adjusted Load:** $600 * (1 - 0.075) = $555\n*   **Net Proceeds After Load:** $12,000 - $555 = $11,445\n\n**Capital Gains Tax Calculation:**\n\n*   **Capital Gain:** $12,000 (Proceeds) - $10,000 (Purchase Price) = $2,000\n*   **Long-Term Capital Gains Tax:** $2,000 * 0.20 = $400\n*   **Net Investment Income Tax (NII):** $2,000 * 0.038 = $76\n*   **Total Tax Liability:** $400 + $76 = $476\n\n**Tax Breakdown:**\n\n*   **Taxable Capital Gain:** $2,000\n*   **Long-Term Capital Gains Tax:** $400 (Calculated at 20% rate)\n*   **Net Investment Income Tax (NII):** $76 (Calculated on the entire capital gain)\n*   **Total Tax:** $476\n\n**Summary:**\n\n*   **Net Proceeds:** $11,445\n*   **Capital Gains Tax Liability:** $476",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission contains critical calculation errors and conceptual misunderstandings. First, the back-end load calculation is fundamentally wrong: the load declines by 1% per year *after* year 1, meaning at 18 months (1.5 years), the load should be 4% (5% - 1%), not calculated via a linear monthly reduction resulting in 7.5% reduction. Second, the tax calculation incorrectly applies the Net Investment Income Tax (NII) to the gross capital gain rather than the net gain after the sales charge (the load reduces the amount realized, thereby reducing the taxable gain). Third, the submission fails to address the 'Additional Checks' regarding suitability and liquidity, which are part of the prompt's context for a professional advisor. While the structure is clear (Dimension 5), the financial logic is flawed, preventing it from being used without review."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Prepare financial reports to monitor client or corporate finances.",
+      "task_type": "Portfolio Performance and Risk Reporting",
+      "user_prompt": "Generate a quarterly performance report for a corporate client's $10M portfolio. The portfolio consists of 40% US Equities, 30% International Equities, 20% Fixed Income, and 10% Cash. The S&P 500 returned 8%, MSCI EAFE returned -2%, and the Bloomberg Aggregate Bond Index returned 1%. Calculate the portfolio's weighted return, compare it to a custom benchmark (60/40 stock/bond mix), and analyze the volatility impact of the international allocation. Include a section on compliance with the client's Investment Policy Statement (IPS) regarding sector concentration limits.",
+      "reference_context": {
+        "portfolio_allocation": {
+          "us_equities": 0.4,
+          "international_equities": 0.3,
+          "fixed_income": 0.2,
+          "cash": 0.1
+        },
+        "market_returns": {
+          "sp500": 0.08,
+          "msci_eafe": -0.02,
+          "bloomberg_aggregate": 0.01
+        },
+        "client_constraints": {
+          "max_sector_concentration": "25% in any single sector",
+          "current_tech_exposure": "28%"
+        },
+        "regulatory_constraints": [
+          "SEC Rule 206(4)-1 (Investment Advisers Act)",
+          "CFA Institute Standards of Practice"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Weighted Return Calculation — Is the portfolio return calculated accurately using the provided weights and market returns?",
+        "Criterion 2: Benchmark Comparison — Is the performance relative to the 60/40 benchmark clearly articulated?",
+        "Criterion 3: Compliance Check — Does the report correctly identify the breach of the 25% sector concentration limit and recommend remediation?"
+      ],
+      "student_answer": "**Quarterly Performance Report – [Client Name] Portfolio**\n\n**Date:** October 26, 2023\n\n**Portfolio Size:** $10,000,000\n\n**Reporting Period:** Q3 2023\n\n**1. Portfolio Performance Summary**\n\n*   **Portfolio Return:** 5.3%\n*   **Asset Allocation:**\n    *   US Equities: 40%\n    *   International Equities: 30%\n    *   Fixed Income: 20%\n    *   Cash: 10%\n\n**2. Market Returns**\n\n*   S&P 500: 8%\n*   MSCI EAFE: -2%\n*   Bloomberg Aggregate Bond Index: 1%\n\n**3. Weighted Return Calculation**\n\n*   US Equities Return: 40% * 8% = 3.2%\n*   International Equities Return: 30% * -2% = -0.6%\n*   Fixed Income Return: 20% * 1% = 0.2%\n*   Cash Return: 10% * 0% = 0%\n*   **Total Portfolio Return:** 3.2% - 0.6% + 0.2% + 0% = 2.8%\n\n**Note:** The initial calculation of the portfolio return was incorrect. The correct weighted return is 2.8%.\n\n**4. Benchmark Comparison**\n\n*   **Custom Benchmark:** 60% S&P 500, 40% Bloomberg Aggregate Bond Index\n    *   S&P 500 Return: 8%\n    *   Bloomberg Aggregate Bond Index Return: 1%\n    *   **Benchmark Return:** (60% * 8%) + (40% * 1%) = 4.8% + 0.4% = 5.2%\n*   **Portfolio vs. Benchmark:** The portfolio’s 2.8% return underperformed the custom benchmark’s 5.2% return by 2.4 percentage points.\n\n**5. Volatility Analysis – International Equity Impact**\n\nThe allocation to International Equities (30%) contributed to the portfolio’s overall volatility. While the MSCI EAFE returned -2%, this negative return was partially offset by the positive performance of US Equities. However, the negative international return still impacted the portfolio’s overall volatility, contributing to a higher standard deviation compared to a portfolio solely invested in US equities. Further analysis of volatility metrics (e.g., Sharpe Ratio, Beta) would provide a more granular understanding of the impact of international exposure.\n\n**6. Investment Policy Statement (IPS) Compliance**\n\n*   **Sector Concentration Limit:** The IPS mandates a maximum of 25% concentration in any single sector.\n*   **Current Tech Exposure:** The portfolio currently has 28% exposure to the Technology sector.\n*   **Compliance Status:** The portfolio is currently in violation of the sector concentration limit.  We recommend reviewing the portfolio holdings to reduce Tech exposure and bring it into compliance with the IPS.\n\n**7. Regulatory Compliance**\n\nThis report has been prepared in accordance with SEC Rule 206(4)-1 (Investment Advisers Act) and the CFA Institute Standards of Practice.\n\n**Disclaimer:** *This report is for informational purposes only and does not constitute investment advice. Past performance is not indicative of future results. Investment decisions should be made based on individual circumstances and after consulting with a qualified financial advisor.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly calculates the weighted return (2.8%) and benchmark (5.2%), but the initial presentation of an incorrect 5.3% followed by a correction note is unprofessional and indicates a lack of rigorous internal review before output. The volatility analysis is vague, failing to provide the requested analysis of the impact rather than just stating it exists. The IPS compliance section correctly identifies the violation but lacks specific remediation steps or quantitative impact analysis. While the structure is clear (Clarity 4), the presence of calculation errors in the draft and the lack of depth in the volatility section prevent a higher score in Correctness, Completeness, and Best Practices. The output requires human review to remove the 'correction note' and expand the analysis, limiting Autonomy to 3."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Supply the latest price quotes on any security, as well as information on the activities or financial positions of the corporations issuing these securities.",
+      "task_type": "Security Research and Valuation",
+      "user_prompt": "Conduct a preliminary due diligence report on 'TechNova Inc.' for a potential institutional client. The company has reported a 15% YoY revenue growth but a net loss due to heavy R&D spending. The P/E ratio is N/A, but the P/S ratio is 12x, compared to an industry average of 6x. Analyze the financial position, identify key risks related to the valuation premium, and determine if the stock meets the client's 'Value' investment mandate. Include a summary of recent SEC filings (10-K/10-Q) regarding debt covenants.",
+      "reference_context": {
+        "company_data": {
+          "revenue_growth_yoy": 0.15,
+          "net_income": -50000000,
+          "price_to_sales": 12.0,
+          "industry_avg_p_s": 6.0,
+          "debt_to_equity": 1.5
+        },
+        "client_mandate": {
+          "style": "Value",
+          "max_p_e_threshold": 25,
+          "profitability_requirement": "Positive Net Income"
+        },
+        "regulatory_constraints": [
+          "SEC Regulation S-K (Disclosure Requirements)",
+          "FINRA Rule 2241 (Research Analysts)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Financial Analysis — Is the discrepancy between revenue growth and profitability correctly interpreted?",
+        "Criterion 2: Valuation Assessment — Is the high P/S ratio contextualized against industry peers and the client's value mandate?",
+        "Criterion 3: Regulatory Compliance — Does the report reference specific risks found in SEC filings regarding debt covenants?"
+      ],
+      "student_answer": "**TechNova Inc. – Preliminary Due Diligence Report**\n\n**Date:** October 26, 2023\n\n**To:** Institutional Client\n\n**Subject:** Assessment of TechNova Inc. for Value Investment Mandate\n\n**Executive Summary:**\n\nTechNova Inc. demonstrates strong revenue growth (15% YoY), but currently operates at a net loss due to significant R&D investment. The current Price-to-Sales (P/S) ratio of 12x, compared to an industry average of 6x, suggests a premium valuation. While the company’s growth potential is attractive, it currently does not meet the client’s ‘Value’ mandate due to the lack of positive net income and the elevated valuation multiple. Further investigation into debt covenants is warranted.\n\n**Financial Analysis:**\n\n*   **Revenue Growth:** 15% YoY growth is a positive indicator of market traction and product demand.\n*   **Net Loss:** The reported net loss of $50 million reflects substantial R&D expenditure, a common characteristic of high-growth technology companies.\n*   **P/S Ratio:** A P/S ratio of 12x is significantly higher than the industry average of 6x, indicating that the market is pricing in substantial future growth expectations. This warrants careful scrutiny.\n*   **Debt-to-Equity Ratio:** A debt-to-equity ratio of 1.5 suggests a moderately leveraged capital structure.\n\n**Valuation Risk Assessment:**\n\n*   **Premium Valuation:** The elevated P/S ratio suggests a premium valuation relative to its peers. This premium is primarily driven by anticipated future growth, but the current net loss makes it difficult to justify.\n*   **Lack of Profitability:** The absence of positive net income is a primary concern for a ‘Value’ investor. Without profitability, the company’s long-term sustainability is uncertain.\n*   **R&D Dependence:** Reliance on R&D spending creates volatility in earnings and requires continued investment to maintain growth momentum.\n\n**Recent SEC Filings (10-K/10-Q):**\n\n*   **Debt Covenants:** Recent filings (most recent 10-K) indicate TechNova Inc. is subject to standard debt covenants, including minimum interest coverage ratios and limitations on capital expenditures.  Specifically, the 10-K noted a requirement for a minimum EBITDA interest coverage ratio of 3.0x, which was met in the last fiscal year.  Further review of the most recent 10-Q is recommended to assess current compliance.\n\n**Client Mandate Alignment:**\n\n*   **Style:** The company’s current financial profile (net loss, high P/S ratio) does not align with the client’s ‘Value’ investment style, which prioritizes positive net income and a reasonable valuation multiple.\n*   **P/E Threshold:** The company’s lack of positive net income prevents a meaningful P/E ratio from being calculated.\n*   **Profitability Requirement:** The company fails to meet the client’s profitability requirement.\n\n**Recommendation:**\n\nAt this time, TechNova Inc. does not meet the client’s ‘Value’ investment mandate. Further investigation is recommended, focusing on:\n\n*   Detailed analysis of R&D spending and projected returns.\n*   Assessment of the sustainability of revenue growth.\n*   Monitoring of debt covenant compliance and potential covenant breaches.\n*   Tracking of future profitability milestones.\n\n**Disclaimer:** This report is based on publicly available information and represents a preliminary assessment. It does not constitute investment advice.  FINRA Rule 2241 applies.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the core financial metrics and concludes the stock does not meet the Value mandate, which is the primary analytical task. However, it fails significantly on Completeness and Domain Accuracy regarding the specific instruction to 'Include a summary of recent SEC filings.' The student fabricates specific details (e.g., 'minimum EBITDA interest coverage ratio of 3.0x') that are not present in the provided context, which is a critical error for a compliance officer. Additionally, the submission ignores the 'Additional Checks' regarding liquidity crises and suitability rules, and the tone is somewhat generic. The Autonomy score is low because the hallucinated SEC details make the report unreliable for client delivery without rigorous human verification and correction."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Supervise support staff and ensure proper execution of contracts.",
+      "task_type": "Trade Execution and Compliance Oversight",
+      "user_prompt": "Review a batch of 50 trade orders submitted by junior support staff for a high-frequency trading account. Identify any orders that violate the client's 'No Short Selling' restriction or the 'Best Execution' standard. Specifically, flag any orders executed at a price worse than the National Best Bid and Offer (NBBO) by more than 0.5% without a valid exception. Draft a corrective action plan for the staff member responsible for the errors, citing relevant FINRA rules.",
+      "reference_context": {
+        "trade_batch": [
+          {
+            "order_id": "T-101",
+            "action": "Sell",
+            "price": 102.5,
+            "nbbo_ask": 102.0,
+            "client_restriction": "No Short Selling"
+          },
+          {
+            "order_id": "T-102",
+            "action": "Buy",
+            "price": 50.1,
+            "nbbo_bid": 50.0,
+            "client_restriction": "None"
+          },
+          {
+            "order_id": "T-103",
+            "action": "Sell",
+            "price": 75.0,
+            "nbbo_bid": 75.5,
+            "client_restriction": "No Short Selling"
+          }
+        ],
+        "regulatory_constraints": [
+          "FINRA Rule 5310 (Best Execution)",
+          "FINRA Rule 2090 (Know Your Customer)",
+          "SEC Rule 611 (Order Protection Rule)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Error Identification — Are all trades violating the 'No Short Selling' rule and Best Execution standards correctly flagged?",
+        "Criterion 2: Regulatory Citation — Are the specific FINRA rules cited accurately in the corrective action plan?",
+        "Criterion 3: Actionability — Is the corrective plan specific, addressing both the trade errors and the staff training gap?"
+      ],
+      "student_answer": "**Subject: Review of Trade Orders – High-Frequency Trading Account**\n\n**Date:** October 26, 2023\n\n**To:** Junior Support Staff\n\n**From:** [Your Name/Compliance Department]\n\n**Review Summary:**\n\nThe following trade orders submitted by the junior support staff require immediate attention and corrective action due to violations of the client’s ‘No Short Selling’ restriction and the ‘Best Execution’ standard.\n\n**Flagged Orders:**\n\n*   **Order ID: T-101**\n    *   **Issue:** Violation of ‘No Short Selling’ restriction. Selling at $102.5 when the NBBO Ask was $102.0.\n    *   **Regulatory Violation:** FINRA Rule 5310 (Best Execution) – Failure to obtain the most favorable terms available.\n*   **Order ID: T-103**\n    *   **Issue:** Violation of ‘No Short Selling’ restriction. Selling at $75.0 when the NBBO Bid was $75.5.\n    *   **Regulatory Violation:** FINRA Rule 5310 (Best Execution) – Failure to obtain the most favorable terms available.\n\n**Corrective Action Plan:**\n\nThe following corrective actions are required for the staff member responsible for these errors:\n\n1.  **Mandatory Training:** The staff member will participate in a mandatory training session focusing on FINRA Rule 5310 (Best Execution) and the client’s restrictions, specifically the ‘No Short Selling’ policy. This training will include a detailed review of NBBO pricing and order execution procedures.\n2.  **Process Review:** A comprehensive review of the order entry and execution process will be conducted to identify the root cause of the errors. This will involve examining order ticket templates, system configurations, and workflow procedures.\n3.  **Supervisory Oversight:** The staff member’s work will be subject to increased supervisory oversight for a period of 30 days. All orders will be reviewed by a senior team member before execution.\n4.  **Documentation Review:** The staff member must demonstrate a thorough understanding of the client’s restrictions and the importance of adhering to the ‘Best Execution’ standard through written documentation.\n5.  **FINRA Rule 2090 Reminder:** Reinforcement of FINRA Rule 2090 (Know Your Customer) to ensure a complete understanding of client mandates and restrictions.\n\n**Relevant Regulatory Citations:**\n\n*   **FINRA Rule 5310 (Best Execution):** Requires brokers to use reasonable skill and care to obtain the most favorable terms reasonably available to their customers.\n*   **FINRA Rule 2090 (Know Your Customer):** Requires brokers to understand and document their customers’ investment objectives, risk tolerance, and any restrictions on their accounts.\n\n**Next Steps:**\n\nA follow-up meeting will be scheduled in one week to assess the staff member’s progress and ensure compliance with the corrective action plan.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. First, it misidentifies the nature of the violations: T-101 and T-103 are flagged as 'No Short Selling' violations, but the data shows T-101 is a Sell at a price worse than the Ask (Best Execution issue) and T-103 is a Sell at a price worse than the Bid (Best Execution issue); neither is inherently a short sale violation based on the provided data (which lacks position history). Second, it completely ignores the specific instruction to flag orders executed worse than NBBO by more than 0.5% (T-101 is 0.49%, T-103 is 0.67%); the student failed to perform this calculation or apply the threshold logic. Third, the corrective plan is generic and does not address the specific 0.5% threshold breach requested. While the tone and structure (Clarity) are professional, the fundamental failure to analyze the data correctly and follow the specific constraints results in low scores for technical dimensions."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Relay buy or sell orders to securities exchanges or to firm trading departments.",
+      "task_type": "Order Routing and Market Impact Analysis",
+      "user_prompt": "A client requests an immediate market order to sell 100,000 shares of 'BioGen Corp', a stock with an average daily volume of 50,000 shares. The current price is $45.00. Analyze the potential market impact of executing this as a single market order versus splitting it into 10 smaller limit orders over 2 hours. Calculate the estimated slippage for both scenarios assuming a 0.1% price impact per 10% of daily volume. Recommend the optimal execution strategy that minimizes market impact while adhering to the client's urgency requirement, and draft the order routing instruction to the trading desk.",
+      "reference_context": {
+        "order_details": {
+          "shares": 100000,
+          "current_price": 45.0,
+          "avg_daily_volume": 50000,
+          "urgency": "Immediate but with discretion on timing"
+        },
+        "market_parameters": {
+          "price_impact_per_10_pct_volume": 0.001
+        },
+        "regulatory_constraints": [
+          "SEC Rule 605 (Market Data)",
+          "FINRA Rule 5320 (Manipulative Transactions)",
+          "Dodd-Frank Act (Order Handling)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Slippage Calculation — Are the market impact costs calculated correctly for both execution strategies?",
+        "Criterion 2: Strategic Recommendation — Is the recommendation to split the order justified by the volume analysis?",
+        "Criterion 3: Regulatory Adherence — Does the routing instruction explicitly avoid manipulative practices and ensure best execution under the circumstances?"
+      ],
+      "student_answer": "**Analysis:**\n\n*   **Single Market Order:** Executing 100,000 shares as a single market order will likely result in a significant market impact. Given the average daily volume of 50,000 shares, a 200% increase in volume represents a substantial order.  Based on the provided price impact parameter of 0.1% per 10% of daily volume, a 200% increase would result in a potential price impact of 2.0%. This translates to a potential slippage of $900 (100,000 * 0.002).\n*   **Split into 10 Limit Orders:** Dividing the order into 10 limit orders of 10,000 shares each, spread over two hours, will significantly reduce the market impact. Each limit order represents 20% of the average daily volume.  Therefore, the price impact per order would be 0.2%.  Over 10 orders, the total impact would be 2.0%.  The slippage would be $900 (10 * 10,000 * 0.002).  The spread over two hours allows for a more gradual execution, minimizing the immediate price disruption.\n\n**Recommendation:**\n\nGiven the client’s urgency and the potential for substantial slippage with a single market order, splitting the order into 10 limit orders over two hours is the optimal strategy. This approach minimizes market impact while still fulfilling the client’s need for an immediate execution.\n\n**Order Routing Instruction:**\n\n**To:** Trading Desk\n**From:** [Your Name]\n**Date:** October 26, 2023\n**Subject:** Order Execution – BioGen Corp – 100,000 Shares\n\n“Execute the following order: Divide 100,000 shares of BioGen Corp (Symbol: BGNC) into ten (10) limit orders, each for 10,000 shares.  Spread the limit orders over a two-hour period, starting immediately.  Target price: $44.95 - $45.05.  Prioritize execution speed while minimizing market impact.  Monitor order flow closely and adjust limit prices as needed to maintain a reasonable spread.  Ensure compliance with SEC Rule 605, FINRA Rule 5320, and Dodd-Frank Act.”",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission contains critical mathematical and logical errors. First, the calculation of slippage is incorrect: 100,000 shares at $45 with a 2% impact results in $90,000, not $900. Second, the logic for the split order is flawed; splitting 100,000 shares into 10 orders of 10,000 shares each means each order is 20% of daily volume, not 10%, leading to a cumulative impact calculation that ignores the compounding nature of market impact or assumes linear additivity incorrectly. Third, the recommendation contradicts the client's 'immediate' urgency by suggesting a 2-hour spread for a 'market order' request, failing to propose a more appropriate algorithmic execution (like VWAP/TWAP) or a hybrid approach. The tone is professional, but the core financial analysis is fundamentally weak."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Evaluate costs and revenue of agreements to determine continued profitability.",
+      "task_type": "Profitability Analysis",
+      "user_prompt": "Analyze the provided fee structure and revenue projections for a proposed institutional trust agreement. Determine if the agreement remains profitable over a 5-year horizon given a projected 1.5% annual market volatility and a 25% tax rate on net gains. Identify specific cost centers that threaten profitability and propose adjustments.",
+      "reference_context": {
+        "agreement_details": {
+          "annual_management_fee": "1.25%",
+          "performance_fee": "15% of gains above 5% benchmark",
+          "operational_costs_annual": 120000,
+          "projected_assets_under_management_year_1": 50000000,
+          "projected_growth_rate": "6%",
+          "tax_rate": "25%"
+        },
+        "regulatory_constraints": [
+          "SEC Rule 206(4)-1 (Investment Advisers Act)",
+          "FINRA Rule 2090 (Know Your Customer)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the 5-year revenue and cost projections calculated correctly with tax implications included?",
+        "Criterion 2: Risk Assessment — Does the analysis account for the 1.5% market volatility impact on performance fees?",
+        "Criterion 3: Actionability — Are the proposed adjustments specific and compliant with regulatory fee disclosure requirements?"
+      ],
+      "student_answer": "**Profitability Analysis & Recommendations – Institutional Trust Agreement**\n\n**Executive Summary:**\n\nBased on the provided data, the agreement’s profitability is uncertain over a 5-year horizon. While initial growth projections are promising, the combination of management fees, performance fees, operational costs, and tax liabilities presents significant challenges. Addressing operational costs and optimizing performance fee structuring are critical for sustained profitability.\n\n**Financial Projections (5-Year Horizon):**\n\n| Year | AUM (USD) | Growth Rate | Management Fee (USD) | Performance Fee (USD) | Operational Costs (USD) | Taxable Income Before Tax (USD) | Tax (USD) | Net Income (USD) |\n|---|---|---|---|---|---|---|---|---|\n| 1 | 50,000,000 | 6% | 625,000 | 0 | 120,000 | 625,000 | 156,250 | 468,750 |\n| 2 | 57,500,000 | 6% | 718,750 | 0 | 120,000 | 718,750 | 179,687.50 | 539,062.50 |\n| 3 | 66,125,000 | 6% | 833,125 | 0 | 120,000 | 833,125 | 208,281.25 | 624,843.75 |\n| 4 | 76,175,000 | 6% | 963,187.50 | 0 | 120,000 | 963,187.50 | 240,796.88 | 722,390.62 |\n| 5 | 88,390,000 | 6% | 1,110,325 | 0 | 120,000 | 1,110,325 | 277,581.25 | 832,743.75 |\n\n*Note: Volatility of 1.5% is not factored into these projections. These are purely based on AUM growth and fee structure.*\n\n**Profitability Assessment:**\n\n*   **Initial Years (Years 1-3):** The agreement demonstrates positive net income, driven primarily by AUM growth.\n*   **Later Years (Years 4-5):**  Net income begins to decline due to the escalating management fee as AUM increases, outpacing the growth rate.\n*   **Tax Impact:** The 25% tax rate significantly reduces net income, particularly in later years.\n\n**Threats to Profitability & Proposed Adjustments:**\n\n1.  **High Management Fee:** The 1.25% annual management fee is relatively high for institutional accounts.\n    *   **Recommendation:** Consider tiered management fees based on AUM size. A lower rate for larger accounts could incentivize greater AUM growth.\n\n2.  **Performance Fee Structure:** The 15% performance fee above a 5% benchmark is aggressive and may deter clients.\n    *   **Recommendation:** Explore a hurdle rate (minimum return) before performance fees are charged.  Consider a reduced performance fee percentage (e.g., 10%) or a modified calculation to align with client expectations.\n\n3.  **Operational Costs:** $120,000 annual operational costs are a fixed expense.\n    *   **Recommendation:** Conduct a thorough operational cost review. Explore opportunities for automation and efficiency improvements.  Negotiate better rates with vendors.\n\n4.  **Market Volatility:** The 1.5% annual market volatility is not currently factored into the projections.  This could significantly impact performance and, consequently, performance fees.\n    *   **Recommendation:** Incorporate volatility analysis into future projections and consider risk management strategies.\n\n5.  **Regulatory Compliance:** SEC Rule 206(4)-1 and FINRA Rule 2090 require ongoing compliance efforts.\n    *   **Recommendation:** Allocate sufficient resources for compliance and regularly review procedures to ensure adherence.  Factor compliance costs into operational expenses.\n\n**Conclusion:**\n\nTo ensure long-term profitability, the agreement requires adjustments to the management fee structure, performance fee calculation, and operational cost management. A detailed sensitivity analysis incorporating market volatility and a comprehensive cost review are strongly recommended before implementation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. It completely ignores the explicit instruction to factor in '1.5% annual market volatility' into the projections, instead dismissing it in a note. It fails to calculate the performance fee, which is a core component of the fee structure (15% of gains above 5% benchmark), resulting in a table where the performance fee is zero for all five years despite the 6% projected growth. The financial logic is flawed: it claims net income declines in later years due to management fees outpacing growth, which is mathematically impossible as fees are a percentage of a growing base while costs are fixed. The recommendation to lower the management fee for institutional accounts contradicts the goal of maximizing revenue without a clear strategic justification. The output is a rough draft requiring significant rework to be usable."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Sell services or equipment, such as trusts, investments, or check processing services.",
+      "task_type": "Product Pitch & Suitability",
+      "user_prompt": "Draft a client proposal for a structured trust product for a high-net-worth individual seeking estate tax mitigation. The client has a 40% marginal tax rate and is concerned about liquidity. Ensure the proposal explicitly addresses suitability under FINRA 2111 and includes all mandatory risk disclosures regarding the illiquidity of the trust assets.",
+      "reference_context": {
+        "client_profile": {
+          "net_worth": 15000000,
+          "tax_bracket": "40%",
+          "liquidity_needs": "High",
+          "estate_tax_exposure": "Significant"
+        },
+        "product_details": {
+          "type": "Irrevocable Life Insurance Trust (ILIT)",
+          "liquidity_period": "10 years",
+          "expected_return": "4.5% net of fees"
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2111 (Suitability)",
+          "SEC Regulation S-K Item 10 (Risk Factors)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Suitability — Does the proposal justify the product fit given the client's liquidity needs and tax status?",
+        "Criterion 2: Disclosure — Are all material risks, especially liquidity constraints, clearly and prominently disclosed?",
+        "Criterion 3: Compliance — Does the language adhere to FINRA and SEC communication standards?"
+      ],
+      "student_answer": "**Client Proposal: Irrevocable Life Insurance Trust (ILIT)**\n\n**To:** [Client Name]\n**From:** [Your Name], Securities, Commodities, and Financial Services Sales Agent\n**Date:** October 26, 2023\n\n**Subject: Estate Tax Mitigation Strategy Utilizing an ILIT**\n\n**Executive Summary:**\n\nThis proposal outlines a strategy to mitigate your significant estate tax exposure while addressing your need for liquidity. We recommend establishing an Irrevocable Life Insurance Trust (ILIT) to hold a life insurance policy, thereby removing the life insurance proceeds from your estate. This approach is particularly beneficial given your high marginal tax rate of 40% and your desire to maintain a high level of liquidity.\n\n**Understanding Your Needs:**\n\nBased on our discussions, you possess a substantial net worth of $15,000,000 and face considerable estate tax liabilities. Your 40% marginal tax rate significantly impacts the value of your estate, and your need for high liquidity is paramount.  An ILIT addresses both of these concerns by strategically managing your life insurance assets.\n\n**Proposed Solution: Irrevocable Life Insurance Trust (ILIT)**\n\nWe propose establishing an ILIT to hold a life insurance policy with a death benefit sufficient to cover potential estate taxes.  The ILIT will be structured as an irrevocable trust, ensuring the life insurance proceeds are excluded from your estate for estate tax purposes.\n\n*   **Structure:** The ILIT will be a grantor trust, meaning you retain certain powers and benefits.\n*   **Life Insurance Policy:** We will work with you to select a suitable life insurance policy, considering your financial goals and estate planning objectives.\n*   **Liquidity Provisions:**  The ILIT will include a 10-year liquidity period, allowing for access to a portion of the trust assets during this timeframe.  Specifically, the trust agreement will outline a process for requesting distributions, subject to trustee approval and adherence to the trust’s terms.  This addresses your need for liquidity while maintaining the primary benefit of estate tax reduction.\n*   **Expected Return:** The ILIT is projected to generate a net annualized return of 4.5% after trustee fees and expenses. This return will be achieved through a diversified portfolio of liquid assets held within the trust, carefully selected to balance risk and return.\n\n**FINRA Rule 2111 Suitability:**\n\nWe have considered your financial situation, investment objectives, risk tolerance, and time horizon in evaluating the suitability of this ILIT.  The proposed strategy aligns with your stated goals of minimizing estate taxes and maintaining liquidity.  However, it is crucial to acknowledge that the ILIT’s illiquidity for the first 10 years necessitates a thorough understanding of the potential limitations.  We have discussed these limitations with you and believe this product is suitable given your specific circumstances.\n\n**Risk Disclosure – Critical Illiquidity:**\n\n**IMPORTANT RISK DISCLOSURES:**\n\n*   **Illiquidity:**  Assets held within the ILIT are *not* readily marketable and may not be sold or otherwise disposed of within the first 10 years without the trustee’s consent.  This illiquidity is a significant risk.  Access to funds during this period is limited and subject to the terms outlined in the trust agreement.  You may not be able to access funds when you need them.\n*   **Loss of Control:** As a grantor, you relinquish control over the assets held within the ILIT.  The trustee has discretionary authority over the management and distribution of the trust assets.\n*   **Investment Risk:**  The 4.5% return is a projection and is not guaranteed.  Investment returns can fluctuate, and you could lose money on your investment.\n*   **Tax Implications:**  While the ILIT aims to exclude life insurance proceeds from your estate for estate tax purposes, there may be other tax consequences associated with establishing and maintaining the trust.  Consult with a qualified tax advisor for specific tax advice.\n*   **Trustee Risk:** The performance of the ILIT depends on the competence and diligence of the trustee.\n\n**Disclaimer:** *These risk disclosures are not exhaustive and should be reviewed carefully.  Please consult with a qualified tax advisor and legal counsel to fully understand the potential risks and benefits of this investment.*\n\n**Next Steps:**\n\n1.  Review and sign the ILIT trust agreement.\n2.  Establish the life insurance policy.\n3.  Fund the ILIT with the designated assets.\n\nWe are committed to assisting you throughout this process. Please contact me to schedule a follow-up discussion or to address any questions you may have.\n\nSincerely,\n\n[Your Name]\n\nSecurities, Commodities, and Financial Services Sales Agent\n\n[Your Brokerage Firm]\n\n[Your Contact Information]\n\n---\n\n**Disclaimer:** *I am an AI Chatbot and not a financial advisor. This proposal is for illustrative purposes only and does not constitute financial advice. Consult with a qualified professional before making any investment decisions.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy due to a critical logical contradiction. The client profile explicitly states 'High' liquidity needs, yet the proposal recommends an ILIT with a 10-year illiquidity period and claims this addresses the liquidity need. In reality, an ILIT is inherently illiquid and does not solve a high liquidity requirement; a competent advisor would recommend a different structure (e.g., a GRAT, SLAT, or liquid asset allocation) or explicitly state that the client must reduce liquidity needs to proceed. The proposal also incorrectly labels the user as a 'Securities, Commodities, and Financial Services Sales Agent' (FINRA terminology) for a trust product, which is typically a legal/estate planning instrument, not a security sold by a broker-dealer in this context. The 'Expected Return' of 4.5% for an ILIT is also misleading as the primary function is insurance, not investment return. While the formatting and clarity are good (Score 4), the core financial advice is unsuitable and potentially harmful, making the output unusable without major rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Negotiate prices or contracts for securities or commodities sales or purchases.",
+      "task_type": "Contract Negotiation Strategy",
+      "user_prompt": "Develop a negotiation strategy for a block trade of 50,000 shares of a volatile tech stock. The counterparty is demanding a 0.5% discount from the current market price. Calculate the breakeven point considering a 0.15% transaction tax and potential slippage of 0.2% due to market volatility. Determine the optimal counter-offer price that maintains a minimum 1% net margin.",
+      "reference_context": {
+        "market_data": {
+          "current_price": 150.0,
+          "volatility_index": "High",
+          "transaction_tax": "0.15%",
+          "estimated_slippage": "0.2%"
+        },
+        "client_constraints": {
+          "minimum_net_margin": "1%",
+          "volume": 50000
+        },
+        "regulatory_constraints": [
+          "SEC Rule 610 (Market Data)",
+          "FINRA Rule 5310 (Best Execution)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Precision — Are the breakeven price and slippage impacts calculated with exact precision?",
+        "Criterion 2: Strategic Value — Does the counter-offer maximize margin while remaining competitive?",
+        "Criterion 3: Regulatory Adherence — Does the strategy ensure best execution and avoid market manipulation concerns?"
+      ],
+      "student_answer": "**Negotiation Strategy:**\n\n1.  **Acknowledge Counterparty Demand:** Briefly acknowledge the counterparty’s 0.5% discount request.\n2.  **Highlight Volatility:** Emphasize the high volatility of the stock and the associated risk, justifying a slightly lower discount.\n3.  **Present Initial Offer:** Offer 149.50, representing a 0.33% discount (below the counterparty’s request).\n4.  **Justify Margin:** Clearly state the client’s minimum 1% net margin requirement.\n5.  **Address Slippage:** Point out the potential for slippage due to market volatility and its impact on the final execution price.\n6.  **Incremental Concessions:** Be prepared to concede in small increments (e.g., 0.05%) if necessary, while maintaining the 1% net margin target.\n\n**Breakeven Point Calculation:**\n\n*   **Current Price:** $150.00\n*   **Discount:** 0.5% = $0.75 per share\n*   **Transaction Tax:** 0.15% = $0.75 per share\n*   **Slippage:** 0.2% = $0.30 per share\n*   **Total Price per Share:** $150.00 - $0.75 - $0.75 - $0.30 = $148.60\n*   **Total Breakeven Point:** 50,000 shares * $148.60/share = $7,430,000\n\n**Optimal Counter-Offer Price:**\n\n*   **Target Net Margin:** 1%\n*   **Required Gross Profit:** $7,430,000 / (1 - 0.01) = $7,504,545.45\n*   **Required Gross Proceeds:** $7,504,545.45 / 0.99 = $7,580,389.39\n*   **Price per Share:** $7,580,389.39 / 50,000 shares = $151.61\n*   **Counter-Offer Price:** $151.61\n\n**Final Offer:** $151.61",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student misinterprets the core financial task: they calculate a 'breakeven' based on the counterparty's demanded discount rather than the client's required net margin, leading to a nonsensical 'optimal counter-offer' of $151.61 (a premium) when the client is selling into a volatile market and needs to maintain a margin after costs. The calculation logic is incoherent (e.g., dividing by 0.99 twice, treating costs as additive to a discount in a way that ignores the direction of the trade). The strategy suggests offering a price higher than the current market price ($151.61 vs $150.00) to a counterparty demanding a discount, which is commercially impossible. The tone is professional, but the content is financially invalid and would cause immediate loss or rejection in a real scenario."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare and send requests for price quotations to all companies in a particular market.",
+      "task_type": "Market Intelligence Gathering",
+      "user_prompt": "Generate a standardized Request for Quotation (RFQ) template for a client seeking to purchase corporate bonds in the emerging markets sector. The RFQ must request yield spreads, liquidity terms, and settlement cycles from at least 5 potential dealers. Include clauses ensuring compliance with KYC/AML regulations and data privacy standards (GDPR/CCPA) for the exchange of client information.",
+      "reference_context": {
+        "client_requirements": {
+          "asset_class": "Emerging Market Corporate Bonds",
+          "investment_horizon": "3 years",
+          "risk_tolerance": "Moderate"
+        },
+        "regulatory_constraints": [
+          "FINRA Rule 2090 (KYC)",
+          "AML Act (Bank Secrecy Act)",
+          "GDPR Article 6 (Lawfulness of Processing)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Completeness — Does the RFQ request all necessary pricing and operational data points?",
+        "Criterion 2: Regulatory Compliance — Are KYC/AML and data privacy clauses robust and legally sound?",
+        "Criterion 3: Clarity — Is the template clear enough for dealers to provide comparable quotes?"
+      ],
+      "student_answer": "**REQUEST FOR QUOTATION (RFQ)**\n\n**To:** [Dealer Name]\n**From:** [Your Firm Name]\n**Date:** [Date]\n**Subject:** Emerging Market Corporate Bonds – Request for Quotation\n\n**1. Introduction**\n\n[Your Firm Name] is seeking quotations from qualified dealers for the potential purchase of Emerging Market Corporate Bonds. This RFQ aims to gather competitive pricing, liquidity terms, and settlement details to facilitate informed investment decisions for our client.\n\n**2. Client Information**\n\n*   **Client Name:** [Client Name]\n*   **Client Address:** [Client Address]\n*   **Client Contact:** [Client Contact Name]\n*   **Client Phone:** [Client Phone Number]\n*   **Client Email:** [Client Email Address]\n\n**3. Investment Parameters**\n\n*   **Asset Class:** Emerging Market Corporate Bonds\n*   **Investment Horizon:** 3 Years\n*   **Risk Tolerance:** Moderate\n*   **Currency:** [Specify Currency – e.g., USD, EUR]\n*   **Minimum Investment Size:** [Specify Minimum Investment Size – e.g., $1,000,000]\n\n**4. Requested Information**\n\nPlease provide the following information for the following bond types (indicate your preference for each):\n\n| Bond Type             | Issuer Criteria (Examples) | Minimum Rating |\n| --------------------- | -------------------------- | --------------- |\n| Investment Grade       | BBB- or higher             | N/A             |\n| High Yield             | BB+ or lower               | N/A             |\n| Specific Country/Sector | [Specify Country/Sector]    | N/A             |\n\n*   **Yield Spread:**  Provide yield spreads (over benchmark – e.g., J.P. Morgan EMBI+) for each bond type listed above, clearly indicating the spread for Investment Grade and High Yield.\n*   **Liquidity Terms:**\n    *   Bid/Ask Spread (as a percentage)\n    *   Trading Volume (Average Daily Trading Volume over the past 30 days)\n    *   Market Maker Availability\n*   **Settlement Cycle:**  Specify the standard settlement cycle for each bond type (e.g., T+1, T+2, T+3).\n*   **Fees & Commissions:**  Outline all fees and commissions associated with the purchase and sale of these bonds.\n*   **Credit Support Annex (CSA) Availability:**  Indicate whether CSA arrangements are available.\n*   **Bond Pricing Methodology:** Describe the pricing methodology used (e.g., indicative pricing, fixed pricing).\n*   **Recent Trading History:** Provide a brief overview of recent trading activity for the specified bonds.\n\n**5. Compliance & Legal**\n\n*   **KYC/AML:**  All information provided will be subject to our Client’s Know Your Customer (KYC) and Anti-Money Laundering (AML) compliance procedures, as required by FINRA Rule 2090 and the Bank Secrecy Act.  You are required to provide documentation demonstrating your compliance with these regulations.\n*   **Data Privacy:**  We are committed to protecting client data.  All data exchanged will be processed in accordance with GDPR Article 6 (Lawfulness of Processing) and CCPA regulations.  Please confirm your data privacy policies and procedures.  Specifically, we require confirmation that you have implemented appropriate technical and organizational measures to ensure the security of personal data.\n*   **Conflicts of Interest:**  Disclose any potential conflicts of interest that may exist regarding the provision of this quotation.\n\n**6. Quotation Deadline**\n\nPlease submit your quotation electronically to [Your Email Address] by [Date and Time].\n\n**7. Contact Information**\n\n[Your Name]\n[Your Title]\n[Your Firm Name]\n[Your Phone Number]\n[Your Email Address]\n\n---\n\n**Disclaimer:** *This RFQ is for informational purposes only and does not constitute an offer to buy or sell securities.  [Your Firm Name] reserves the right to accept or reject any or all quotations received.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails to meet the specific requirement of requesting quotes from 'at least 5 potential dealers' (it uses a generic template format without specifying the list or mechanism for 5 dealers). The compliance section is vague, asking dealers to 'provide documentation' rather than stating the firm's obligation to verify it or including standard legal boilerplate for data processing agreements. The 'Additional Checks' regarding suitability and liquidity crises are not addressed in the template, though the template itself is a valid starting point. The structure is clear, but the content lacks the rigor and specific constraints required for an industry-standard RFQ in this context."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Price securities or commodities based on market conditions.",
+      "task_type": "Dynamic Pricing Model",
+      "user_prompt": "Calculate the fair value of a commodity futures contract (Crude Oil) for a client hedge, adjusting for a 2% sudden spike in volatility and a 0.5% increase in storage costs. The contract expires in 3 months. Provide a pricing range that accounts for a 95% confidence interval and ensure the pricing model complies with CFTC reporting requirements for large traders.",
+      "reference_context": {
+        "market_inputs": {
+          "spot_price": 75.0,
+          "volatility_spike": "2%",
+          "storage_cost_increase": "0.5%",
+          "time_to_expiry": "90 days"
+        },
+        "regulatory_constraints": [
+          "CFTC Rule 43.3 (Large Trader Reporting)",
+          "CFTC Rule 1.35 (Position Limits)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Mathematical Rigor — Is the pricing model correctly adjusted for volatility and storage costs?",
+        "Criterion 2: Risk Management — Does the confidence interval accurately reflect the market uncertainty?",
+        "Criterion 3: Regulatory Alignment — Does the output support compliance with CFTC large trader reporting thresholds?"
+      ],
+      "student_answer": "**Crude Oil Futures - Fair Value Calculation & Pricing Range (3-Month Expiry)**\n\n**Base Fair Value (No Adjustments):**\n\nUsing a standard Black-Scholes-Merton model with the provided spot price of $75.0 and a 90-day (3 months) time to expiry, the initial fair value is approximately **$77.50**. (This is a simplified estimate; a full model would incorporate yield curve assumptions and other factors.)\n\n**Volatility Adjustment:**\n\n*   2% volatility spike translates to a 2% increase in the implied volatility.\n*   Adjusted Implied Volatility: 102% of the base implied volatility.  (Assuming a base implied volatility of 20% for illustrative purposes – actual implied volatility would need to be sourced).\n*   Adjusted Volatility: 20.4%\n\n**Storage Cost Adjustment:**\n\n*   0.5% increase in storage costs.\n*   Adjusted Storage Cost: 100.5% of the base storage cost. (Assuming a base storage cost of 1% for illustrative purposes – actual storage cost would need to be sourced).\n\n**Revised Fair Value Calculation:**\n\nIncorporating the adjustments, the revised fair value is approximately **$78.25**.\n\n**95% Confidence Interval:**\n\nTo calculate the 95% confidence interval, we need to consider the inherent uncertainty in the volatility estimate.  A 95% confidence interval typically uses a +/- 2 standard deviation range around the mean.  Assuming a standard deviation of 3% (a reasonable estimate for implied volatility), the 95% confidence interval is:\n\n*   Lower Bound: $78.25 - (3% * $78.25) = $78.25 - $2.35 = **$75.90**\n*   Upper Bound: $78.25 + (3% * $78.25) = $78.25 + $2.35 = **$80.60**\n\n**Pricing Range:**\n\nTherefore, the fair value of the Crude Oil futures contract for this hedge, accounting for the volatility spike and storage cost increase, is estimated to be within the range of **$75.90 - $80.60**.\n\n**Regulatory Compliance:**\n\n*   **CFTC Rule 43.3 (Large Trader Reporting):**  This calculation assumes the client is *not* a large trader.  If the client’s position size triggers reporting requirements under Rule 43.3, detailed position reporting and risk management procedures must be in place, including daily and monthly reporting to the CFTC.\n*   **CFTC Rule 1.35 (Position Limits):**  The client's position must comply with all applicable position limits established by the CFTC for Crude Oil futures.  This calculation does not address position limits; compliance with those limits is a separate requirement.\n\n**Disclaimer:** *This is a simplified illustration. A comprehensive pricing model would incorporate a more sophisticated volatility model, yield curve assumptions, and other relevant market factors.  Actual pricing will vary based on market conditions and the specific model used.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. It uses the Black-Scholes-Merton model (designed for options) to price a futures contract, which is a critical domain error; futures fair value is determined by the Cost of Carry model (Spot * e^((r+storage-y)*t)). The 'volatility spike' is incorrectly applied as a direct multiplier to the price rather than affecting the option premium or hedging strategy. The 95% confidence interval calculation is statistically invalid, using a flat percentage of the price rather than a proper volatility-based standard deviation derivation. While the formatting is clear (Clarity 4), the content is professionally inadequate for a Senior Financial Advisor role, requiring major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Purchase or sell financial derivatives for customers.",
+      "task_type": "Derivative Execution & Compliance",
+      "user_prompt": "Execute a buy order for a client to purchase a put option on a major index to hedge a portfolio. The client's portfolio value is $10M with a beta of 1.2. Calculate the notional value required to fully hedge the portfolio against a 10% market drop. Verify the transaction against the client's suitability profile and ensure all trade confirmations include the required risk disclosures under SEC Rule 15c3-5.",
+      "reference_context": {
+        "portfolio_data": {
+          "value": 10000000,
+          "beta": 1.2,
+          "current_market_level": 4000
+        },
+        "trade_details": {
+          "instrument": "Put Option",
+          "strike_price": "Current Market",
+          "expiration": "3 months"
+        },
+        "regulatory_constraints": [
+          "SEC Rule 15c3-5 (Market Access Rule)",
+          "FINRA Rule 2111 (Suitability)",
+          "CFTC Regulation 1.35 (Position Limits)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Hedging Accuracy — Is the notional value calculated correctly to offset the portfolio's beta-adjusted risk?",
+        "Criterion 2: Suitability Check — Does the trade align with the client's risk tolerance and investment objectives?",
+        "Criterion 3: Disclosure Compliance — Are the trade confirmations structured to meet SEC and CFTC disclosure mandates?"
+      ],
+      "student_answer": "**Trade Execution:**\n\n**Instrument:** Put Option on S&P 500 Index\n**Strike Price:** Current Market (as of [Date & Time]) – [Specify Strike Price]\n**Expiration:** 3 Months\n**Notional Value:** $10,000,000 (10% hedge)\n**Brokerage:** [Brokerage Firm Name]\n**Trade ID:** [Generate Unique Trade ID]\n\n**Hedge Calculation:**\n\n*   Portfolio Value: $10,000,000\n*   Portfolio Beta: 1.2\n*   Target Market Drop: 10%\n*   Required Portfolio Drop to Match Hedge: 1.2 * 10% = 12%\n*   S&P 500 Index Drop Required: $10,000,000 * 12% = $1,200,000\n*   Notional Value of Put Option: $1,200,000\n\n**Suitability Verification:**\n\n*   Client Profile Review: [Summarize Client’s Risk Tolerance and Investment Objectives – e.g., Conservative, Seeking Portfolio Protection]\n*   Suitability Assessment: The purchase of a put option on the S&P 500 index aligns with the client’s stated risk tolerance and objective of hedging portfolio risk. The 10% hedge is appropriate given the client’s beta of 1.2.\n*   Suitability Confirmation: Client acknowledged and confirmed understanding of the risks associated with put options and the purpose of the hedge.\n\n**Regulatory Compliance:**\n\n*   **SEC Rule 15c3-5 (Market Access Rule):**  Confirmation will include the required disclosures regarding the firm’s market access and the client’s access to the market.\n*   **FINRA Rule 2111 (Suitability):**  Documentation of the suitability assessment and client acknowledgement is attached.\n*   **CFTC Regulation 1.35 (Position Limits):**  Position limits for put options on the S&P 500 index are within permissible limits for this client.\n\n**Trade Confirmation Details:**\n\n*   Client Name: [Client Name]\n*   Client Account Number: [Client Account Number]\n*   Instrument: Put Option on S&P 500 Index\n*   Strike Price: [Specify Strike Price]\n*   Expiration Date: [Specify Expiration Date]\n*   Notional Value: $1,200,000\n*   Premium Paid: [Specify Premium Paid]\n*   Commission: [Specify Commission]\n*   Trade Date: [Date]\n*   Confirmation Number: [Confirmation Number from Brokerage]\n*   Risk Disclosures (as required by SEC Rule 15c3-5): [Include Standard Risk Disclosures – e.g., “Put options are leveraged investments and can result in substantial losses.”]\n\n---\n[End of Document]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on Correctness and Domain Accuracy due to a fundamental calculation error. The student calculated the required hedge value as $1.2M (Portfolio Value * Beta * Drop), but the Notional Value of the put options must equal the Portfolio Value * Beta * Drop to fully hedge the portfolio's systematic risk exposure. The student's calculation logic ($10M * 12% = $1.2M) is actually correct for the dollar amount of exposure, but the submission lists the Notional Value as $10M in the header and $1.2M in the calculation, creating confusion. More critically, the student failed to calculate the number of contracts required (Notional Value / (Index Level * Multiplier)), which is essential for executing a trade. The submission relies heavily on placeholders (e.g., [Specify Strike Price], [Brokerage Firm Name]), making it a template rather than a completed execution plan. Regulatory compliance is vague, merely stating 'Confirmation will include' rather than detailing the specific risk disclosures required for options trading (e.g., Options Disclosure Document). The tone is professional, but the lack of concrete execution details and the calculation ambiguity regarding contract sizing significantly reduce its utility."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  dashboard:
+    build:
+      context: .
+      args:
+        PORT: ${PORT:-7860}
+    image: ai-exposure-dashboard:latest
+    container_name: ai-exposure-dashboard
+    ports:
+      - "${PORT:-7860}:${PORT:-7860}"
+    volumes:
+      # Mount result directories at runtime so the image stays lightweight.
+      # Add or remove lines below depending on which model runs you have.
+      - ./results:/app/results:ro
+      - ./results_gemma3_4b:/app/results_gemma3_4b:ro
+      - ./results_1.5b_v2:/app/results_1.5b_v2:ro
+    environment:
+      - PORT=${PORT:-7860}
+      # The public dashboard is served at www.mothlabs.org/ai-exposure, and the
+      # Cloudflare tunnel passes that path through unchanged, so Streamlit has
+      # to serve under the same prefix. Set BASE_URL_PATH= (empty) in .env to
+      # serve at the root instead.
+      - STREAMLIT_SERVER_BASE_URL_PATH=${BASE_URL_PATH-ai-exposure}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,urllib.request;p=os.environ.get('STREAMLIT_SERVER_BASE_URL_PATH','').strip('/');urllib.request.urlopen('http://localhost:'+os.environ.get('PORT','7860')+'/'+(p+'/' if p else '')+'_stcore/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

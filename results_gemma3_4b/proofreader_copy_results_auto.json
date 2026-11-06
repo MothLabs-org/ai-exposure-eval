@@ -1,0 +1,436 @@
+{
+  "meta": {
+    "job_title": "Proofreaders and Copy Markers",
+    "job_id": "proofreader_copy",
+    "onet_code": "43-9081.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 11,
+    "evaluated_tasks": 11,
+    "batches": 2,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.77,
+      "dimensions": {
+        "Correctness": 2.73,
+        "Completeness": 2.73,
+        "Best Practices": 2.45,
+        "Domain Accuracy": 3.0,
+        "Clarity": 3.18,
+        "Autonomy": 2.55
+      },
+      "evaluated_tasks": 11,
+      "scale_max": 5
+    },
+    "total_time_seconds": 228.6
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Mark copy to indicate and correct errors in type, arrangement, grammar, punctuation, or spelling, using standard printers' marks.",
+      "task_type": "Grammar and Syntax Correction",
+      "user_prompt": "You are reviewing a draft article for a financial newsletter. The text contains multiple errors in grammar, punctuation, and factual consistency. Identify all errors, apply standard printer's marks (represented as [CORRECTED: ...] or [DELETE: ...]), and provide a summary of changes. Ensure the final text adheres to AP Style guidelines.",
+      "reference_context": {
+        "original_text": "The companys revenue grew 15% last quarter, which was the highest in five years. Their stock price jumped $5.00, reaching a new high of $120.50. The CEO, John Smith, said 'we are very happy with the results.' The report also noted that the company has 500 employes worldwide.",
+        "style_guide": "AP Style: Use 'company's' for possessive, spell out numbers under ten unless they are percentages or currency, use title case for names, and use double quotation marks for direct quotes."
+      },
+      "evaluation_criteria": [
+        "Correctness: All grammatical, punctuation, and spelling errors are identified and fixed.",
+        "Completeness: The output includes both the marked text and a summary of changes.",
+        "Best practices: The solution strictly adheres to the provided AP Style guide."
+      ],
+      "student_answer": "[CORRECTED: The company’s revenue grew 15% last quarter, which was the highest in five years. Their stock price jumped $5, reaching a new high of $120.50. The CEO, John Smith, said, “We are very happy with the results.” The report also noted that the company has 500 employees worldwide.]\n\nSummary of Changes:\n\n*   “company’s” corrected to reflect AP Style for possessives.\n*   “$5.00” corrected to \"$5\" per AP Style guidelines for currency.\n*   Added quotation marks around the direct quote.\n*   “employes” corrected to “employees” to adhere to AP Style.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identified and fixed the possessive apostrophe, the spelling of 'employees', and the quotation marks. However, it failed to apply AP Style to the number '500' (should be spelled out as 'five hundred' per the provided style guide for numbers under ten, though 500 is over ten, the guide's instruction on spelling out numbers under ten was followed, but the currency formatting of $5.00 to $5 was correct). More critically, the student failed to use the requested 'printer's marks' format for the entire text, instead providing a fully corrected block without the specific [CORRECTED: ...] tags for every change as implied by the instruction to 'apply standard printer's marks'. The summary of changes also missed the capitalization of 'We' inside the quote, which is required for a direct quote starting a sentence. The output is functional but lacks the rigorous adherence to the specific formatting constraints and the full application of the style guide's number rules (though 500 is fine, the prompt's specific instruction on numbers under ten was not the issue, the issue is the lack of explicit marking for every change). The failure to mark the capitalization change and the lack of granular printer's marks for the whole text reduces the score."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Read corrected copies or proofs to ensure that all corrections have been made.",
+      "task_type": "Proof Verification",
+      "user_prompt": "You are the lead proofreader for a technical manual. Below is the original text, a list of corrections requested by the editor, and the 'corrected' version provided by the typesetter. Your task is to compare the corrected version against the original and the requested changes to verify that every correction was applied accurately and no new errors were introduced. List any discrepancies found.",
+      "reference_context": {
+        "original_text": "The system requires a minimum of 8GB RAM and 256GB SSD storage. Users must install the driver before connecting the device. The warranty covers hardware defects for 2 years.",
+        "requested_corrections": [
+          "Change '8GB' to '8 gigabytes' per style guide.",
+          "Change '256GB' to '256 gigabytes'.",
+          "Change '2 years' to 'two years'.",
+          "Add a comma after 'Users'."
+        ],
+        "corrected_version": "The system requires a minimum of 8 gigabytes RAM and 256 gigabytes SSD storage. Users, must install the driver before connecting the device. The warranty covers hardware defects for two years."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Identify that '8 gigabytes RAM' is missing 'of' or 'of' is implied incorrectly, and 'Users, must' has an incorrect comma placement.",
+        "Verification: Confirm that '8GB' and '256GB' were correctly expanded, but note the missing 'of' in the first sentence if the style guide requires it.",
+        "Completeness: Provide a clear list of all discrepancies between the requested changes and the final output."
+      ],
+      "student_answer": "*   The addition of a comma after \"Users\" was not requested.\n*   The corrected version incorrectly uses \"gigabytes\" instead of \"GB\" for both RAM and SSD storage, despite the style guide requesting \"8GB\" and \"256GB\" respectively.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The student submission failed the task completely. It incorrectly identified the style guide request (claiming the guide asked for 'GB' when the text explicitly requested 'gigabytes') and failed to identify the actual error: the insertion of an unnecessary comma after 'Users'. The student missed the only factual error in the corrected version and hallucinated a non-existent error regarding the unit of measurement. This demonstrates a fundamental failure in reading comprehension and verification."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Correct or record omissions, errors, or inconsistencies found.",
+      "task_type": "Data Consistency and Omission Detection",
+      "user_prompt": "You are editing a quarterly report. The text below contains a narrative section and a data table. Compare the narrative figures against the table data to detect any inconsistencies or omissions. Identify the specific errors and propose the correct text to resolve the conflict.",
+      "reference_context": {
+        "narrative_text": "In Q3, sales reached $1.2 million, a 10% increase from the previous quarter. The marketing department spent $50,000 on campaigns, while the R&D department allocated $200,000. Total operational costs were $350,000.",
+        "data_table": {
+          "Q3_Sales": "$1.25 million",
+          "Marketing_Spend": "$50,000",
+          "R&D_Spend": "$200,000",
+          "Total_Operational_Costs": "$350,000"
+        },
+        "style_guide": "Numbers in the narrative must match the table exactly. Use dollar signs and decimal points for currency."
+      },
+      "evaluation_criteria": [
+        "Inconsistency Detection: Identify that the narrative states sales were $1.2 million while the table shows $1.25 million.",
+        "Correction: Propose updating the narrative to '$1.25 million'.",
+        "Completeness: Verify that the other figures (marketing, R&D, total costs) are consistent between text and table."
+      ],
+      "student_answer": "In Q3, sales reached $1.25 million, a 10% increase from the previous quarter. The marketing department spent $50,000, while the R&D department allocated $200,000. Total operational costs were $350,000.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        2,
+        3,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The student correctly identified the sales figure discrepancy ($1.2m vs $1.25m) and updated the narrative. However, the submission failed to explicitly identify the errors as requested by the prompt ('Identify the specific errors') and did not propose the correction in a structured format distinguishing between the error and the fix. It only provided the corrected text. Additionally, the student missed a logical inconsistency: the sum of Marketing ($50k) and R&D ($200k) is $250k, which does not match the stated Total Operational Costs of $350k. The narrative claims these are the costs, but the math doesn't add up, and the student did not flag this omission or calculation error. The output is a corrected paragraph rather than the required analysis and proposal, reducing its utility as a direct response to the task."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Compare information or figures on one record against same data on other records, or with original copy, to detect errors.",
+      "task_type": "Cross-Reference Verification",
+      "user_prompt": "You are verifying a legal contract draft. Compare the 'Definitions' section with the 'Terms of Service' section below. Identify any terms defined in the Definitions section that are used incorrectly or inconsistently in the Terms of Service section. List the specific term, the definition, and the inconsistent usage.",
+      "reference_context": {
+        "definitions_section": "Section 1.1: 'Confidential Information' means any non-public information disclosed by Party A. Section 1.2: 'Effective Date' means the date of signing.",
+        "terms_of_service_section": "By signing this agreement on the Effective Date, Party A agrees to protect all Confidential Information. However, if the Effective Date is not specified, the agreement is void."
+      },
+      "evaluation_criteria": [
+        "Consistency Check: Verify that 'Effective Date' is used consistently with its definition.",
+        "Error Identification: Note that the Terms of Service section introduces a conditional clause ('if the Effective Date is not specified') that contradicts the definition's implication of a specific signing date.",
+        "Clarity: Clearly articulate the conflict between the definition and the conditional usage."
+      ],
+      "student_answer": "**Term:** Effective Date\n**Definition:** The date of signing.\n**Inconsistent Usage:** The Terms of Service section states that if the Effective Date is not specified, the agreement is void, which contradicts the definition that it is the date of signing.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The student correctly identified the 'Effective Date' inconsistency, which is the primary logical flaw in the text. However, the submission failed to identify that the term 'Confidential Information' is also used inconsistently: the definition requires information to be 'non-public,' yet the Terms of Service clause demands protection of 'all Confidential Information' without reiterating the non-public constraint, creating a potential scope ambiguity. Additionally, the student did not explicitly state that 'Confidential Information' is defined in Section 1.1, making the response less complete than a professional audit would be. The reasoning is clear but lacks the thoroughness expected of a Senior Specialist."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Route proofs with marked corrections to authors, editors, typists, or typesetters for correction or reprinting.",
+      "task_type": "Correction Routing and Annotation",
+      "user_prompt": "You have reviewed a manuscript and identified three critical errors: a missing chapter title, a misaligned table, and a citation error. Generate a routing instruction document that clearly describes each error, the required correction, and assigns the task to the appropriate role (Author, Typesetter, or Editor). Use standard printer's mark descriptions in your instructions.",
+      "reference_context": {
+        "manuscript_notes": [
+          "Page 12: Chapter title 'Introduction' is missing.",
+          "Page 45: Table 3.1 is shifted 2 inches to the right.",
+          "Page 88: Citation (Smith, 2020) should be (Smith, 2021) based on the bibliography."
+        ],
+        "roles": {
+          "Author": "Content and title verification",
+          "Typesetter": "Layout and alignment",
+          "Editor": "Citation and reference accuracy"
+        }
+      },
+      "evaluation_criteria": [
+        "Accuracy: Correctly map each error to the appropriate role based on the provided roles list.",
+        "Clarity: Use clear, actionable language describing the correction (e.g., 'Insert title', 'Shift table left', 'Update citation').",
+        "Completeness: Ensure all three errors are addressed with specific routing instructions."
+      ],
+      "student_answer": "**Routing Instruction Document**\n\n**Document ID:** RI-20231027-01\n**Date:** October 27, 2023\n\n**To:** Relevant Team Members\n\n**From:** Proofreading & Copy Marking Team\n\n**Subject:** Manuscript Corrections – Urgent\n\n**Instructions:**\n\n1.  **Missing Chapter Title:**\n    *   **Error:** Chapter title ‘Introduction’ is absent on Page 12.\n    *   **Required Correction:** Add the chapter title ‘Introduction’ to the top of Page 12.\n    *   **Assigned To:** Author (PR-AUTH-001) – *Verify and implement title.*\n\n2.  **Misaligned Table:**\n    *   **Error:** Table 3.1 is shifted 2 inches to the right on Page 45.\n    *   **Required Correction:** Adjust the table’s position to center alignment on Page 45.\n    *   **Assigned To:** Typesetter (PR-TYP-002) – *Correct table layout.*\n\n3.  **Citation Error:**\n    *   **Error:** Citation (Smith, 2020) is incorrectly formatted in the text on Page 88.\n    *   **Required Correction:** Change the citation to (Smith, 2021) to reflect the correct reference in the bibliography.\n    *   **Assigned To:** Editor (PR-EDIT-003) – *Verify and correct citation.*\n\n---\n\nEnd of Document---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly identifies all three errors, assigns them to the appropriate roles based on the provided context, and uses clear professional language. It meets all task requirements (Correctness: 5, Completeness: 5, Domain Accuracy: 5, Clarity: 5). However, it scores a 4 on Best Practices and Autonomy because it lacks specific 'printer's mark' descriptions (e.g., 'insert title,' 'move left 2 inches,' 'strike through and insert') as explicitly requested in the prompt, making it a solid draft but not yet an industry-standard routing document ready for immediate production without minor stylistic additions."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Consult reference books or secure aid of readers to check references with rules of grammar and composition.",
+      "task_type": "Style Guide Compliance and Reference Check",
+      "user_prompt": "You are reviewing a scientific abstract. The author has used several terms and formatting choices that may conflict with the Chicago Manual of Style (17th ed.). Based on the provided text and the specific Chicago rules below, identify the non-compliant items and provide the corrected version. Focus on capitalization of job titles, hyphenation of compound adjectives, and the use of the serial comma.",
+      "reference_context": {
+        "original_text": "The study was led by john doe, a senior researcher, and jane smith, a junior analyst. The results show a significant increase in the number of participants, and the data was analyzed using SPSS. The team, consisting of five members, reported a 20% improvement.",
+        "style_rules": "Chicago Manual of Style: Capitalize job titles when preceding a name (e.g., Senior Researcher John Doe). Use the serial comma in a list of three or more items. Hyphenate compound adjectives before a noun (e.g., 'significant increase' is fine, but '20% improvement' does not need hyphenation unless it's a compound modifier like '20-percent improvement')."
+      },
+      "evaluation_criteria": [
+        "Capitalization: Identify that 'john doe' and 'jane smith' should be capitalized, and 'senior researcher' and 'junior analyst' should be capitalized if they precede the name (though here they follow, so check if the rule implies a different structure or if the user prompt implies a specific interpretation). Note: The prompt asks to check against rules; if the rule says 'preceding a name', then 'senior researcher' following the name is correct, but the names themselves must be capitalized.",
+        "Serial Comma: Verify the use of the serial comma in the list 'john doe, a senior researcher, and jane smith'.",
+        "Correction: Provide the fully corrected text adhering to the specified rules."
+      ],
+      "student_answer": "The study was led by John Doe, a Senior Researcher, and Jane Smith, a Junior Analyst. The results show a significant increase in the number of participants, and the data was analyzed using SPSS. The team, consisting of five members, reported a 20% improvement.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The student submission failed the core task entirely. The prompt explicitly required the AI to identify non-compliant items and provide a corrected version based on specific Chicago Manual of Style rules (capitalization, hyphenation, serial comma). Instead, the student simply copied the original text, making only minor capitalization changes to names while ignoring the instruction to analyze and correct the text according to the provided rules. The submission contains no critique, no list of errors, and no explanation of the corrections, rendering it a failure to address the task requirements."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Mark copy to indicate and correct errors in type, arrangement, grammar, punctuation, or spelling, using standard printers' marks.",
+      "task_type": "Grammar and Syntax Correction",
+      "user_prompt": "You are reviewing a draft article for a financial newsletter. The text contains multiple errors in grammar, punctuation, and factual consistency. Identify all errors, apply standard printer's marks (represented as [CORRECTED: ...] or [DELETE: ...]), and provide a summary of changes. Ensure the final text adheres to AP Style guidelines.",
+      "reference_context": {
+        "original_text": "The companys revenue grew 15% last quarter, which was the highest in five years. Their stock price jumped $5.00, reaching a new high of $120.50. The CEO, John Smith, said 'we are very happy with the results.' The report also noted that the company has 500 employes worldwide.",
+        "style_guide": "AP Style: Use 'company's' for possessive, spell out numbers under ten unless they are percentages or currency, use title case for names, and use double quotation marks for direct quotes."
+      },
+      "evaluation_criteria": [
+        "Correctness: All grammatical, punctuation, and spelling errors are identified and fixed.",
+        "Completeness: The output includes both the marked text and a summary of changes.",
+        "Best practices: The solution strictly adheres to the provided AP Style guide."
+      ],
+      "student_answer": "[CORRECTED: The company’s revenue grew 15% last quarter, which was the highest in five years. Their stock price jumped $5, reaching a new high of $120.50. The CEO, John Smith, said, “We are very happy with the results.” The report also noted that the company has 500 employees worldwide.]\n\nSummary of Changes:\n\n*   “company’s” corrected to reflect AP Style for possessives.\n*   “$5.00” corrected to \"$5\" for AP Style regarding currency.\n*   Added quotation marks around the direct quote.\n*   “employes” corrected to “employees” for spelling.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        4,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identified the possessive error, the spelling of 'employees', and the need for quotation marks. However, it failed to apply AP Style to the currency format (retaining '$5.00' instead of '$5') and missed the instruction to spell out numbers under ten (changing 'five' to '5' is not required by AP, but the prompt's style guide explicitly stated 'spell out numbers under ten', which the student ignored). Additionally, the student failed to use the requested printer's mark format for the corrections (e.g., [CORRECTED: ...] around the specific changes rather than just listing them in a summary), and the summary of changes was incomplete regarding the specific formatting rules requested. The output is functional but lacks the precision and adherence to specific formatting constraints required for a 5."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Typeset and measure dimensions, spacing, and positioning of page elements, such as copy and illustrations, to verify conformance to specifications, using printer's ruler or layout software.",
+      "task_type": "Layout and Spacing Verification",
+      "user_prompt": "You are tasked with verifying the layout specifications for a magazine spread. The client requires specific margins, column widths, and image placement. Analyze the provided text description of the layout and identify any deviations from the specifications. Output a list of required adjustments using standard layout notation (e.g., [MOVE: 0.5in right], [RESIZE: 200x300px]).",
+      "reference_context": {
+        "layout_specifications": "Margins: 1 inch top/bottom, 0.75 inch sides. Column width: 3 inches. Image placement: Centered within the right column. Text alignment: Justified.",
+        "current_layout_description": "Top margin is 1.2 inches. Left margin is 0.75 inches. The headline is left-aligned. The main image is 250px wide and positioned 0.2 inches to the left of the column center. The text is left-aligned."
+      },
+      "evaluation_criteria": [
+        "Accuracy: All deviations from the specifications are correctly identified.",
+        "Notation: Adjustments are described using clear, standard layout notation.",
+        "Completeness: Every element (margins, alignment, image) is addressed."
+      ],
+      "student_answer": "[MOVE: 0.2in right]\n[ALIGN: left]\n[MOVE: 1.2in top]\n[MOVE: 0.2in bottom]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the task requirements. It lists four commands that are either factually incorrect based on the provided specifications (e.g., [MOVE: 1.2in top] suggests moving the margin to 1.2 inches rather than correcting it to 1 inch) or syntactically invalid for the requested format (e.g., [ALIGN: left] contradicts the requirement to change alignment to justified). The student missed critical deviations including the headline alignment, text alignment, image width, and image horizontal positioning. The output is not usable as a professional layout adjustment list."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Consult with authors and editors regarding manuscript changes and suggestions.",
+      "task_type": "Editorial Consultation and Revision",
+      "user_prompt": "Act as a copy editor consulting with an author. The author has submitted a manuscript with inconsistent tone and unclear phrasing. Review the text, identify areas where the tone shifts or clarity is lost, and propose specific revisions. Provide a response that explains the rationale for each change, citing the need for consistency and clarity.",
+      "reference_context": {
+        "manuscript_excerpt": "The new policy was implemented with great enthusiasm. However, it was a disaster. People were angry. The government tried to fix it, but they failed. Now, we must act with urgency to save our economy.",
+        "style_guide": "Tone: Professional, objective, and constructive. Avoid colloquialisms like 'disaster' or 'they failed' without specific context."
+      },
+      "evaluation_criteria": [
+        "Tone Consistency: Revisions align with the professional and objective tone.",
+        "Clarity: Ambiguous phrases are clarified or removed.",
+        "Rationale: Each proposed change includes a clear explanation based on the style guide."
+      ],
+      "student_answer": "Revised Text:\n\n“The new policy was implemented with considerable optimism. Initial results, however, indicated significant challenges. Public reaction was negative, and despite government efforts to address these issues, the intended outcomes were not achieved. Immediate action is required to mitigate potential economic consequences.”\n\nRationale:\n\n*   “Great enthusiasm” changed to “considerable optimism”: This aligns with the desired professional and objective tone, avoiding overly emotive language.\n*   “It was a disaster” changed to “indicated significant challenges”: Replacing the subjective and dramatic “disaster” with a more measured description maintains objectivity and provides a more nuanced assessment.\n*   “People were angry” changed to “Public reaction was negative”: This is a more formal and less emotionally charged way to convey the same information, fitting the style guide.\n*   “They failed” changed to “the intended outcomes were not achieved”: This removes the accusatory tone and focuses on the lack of results, which is a more constructive approach.\n*   “Now, we must act with urgency” changed to “Immediate action is required”: This revision streamlines the phrasing and eliminates the somewhat abrupt “now.” It also replaces the potentially alarming “urgency” with a more professional “immediate action.”",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The student submission perfectly addresses the task by providing a revised text that aligns with the professional, objective, and constructive tone specified in the style guide. The rationale clearly explains the changes made to remove colloquialisms and emotional language, demonstrating strong domain accuracy and clarity. The output is polished, complete, and requires no further editing, meeting the highest standards for autonomy."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Read proof sheets aloud, calling out punctuation marks and spelling unusual words and proper names.",
+      "task_type": "Proofreading and Phonetic Verification",
+      "user_prompt": "You are proofreading a technical manual that includes several proper names and technical terms. Read the provided text aloud (simulated) and identify any potential pronunciation ambiguities, spelling errors, or punctuation issues that could cause confusion. List the problematic items and suggest corrections.",
+      "reference_context": {
+        "text_to_proofread": "The device uses a 'Xylophone' algorithm. The 'Qwerty' keyboard is standard. The 'Zephyr' module requires a '1234' code. The 'Aeolian' wind turbine is efficient.",
+        "style_guide": "Proper names must be capitalized correctly. Technical terms should be consistent with industry standards. Punctuation must not interrupt the flow of reading."
+      },
+      "evaluation_criteria": [
+        "Identification: All potential pronunciation or spelling ambiguities are flagged.",
+        "Correction: Suggested corrections are accurate and follow the style guide.",
+        "Clarity: The output clearly distinguishes between subjective and objective errors."
+      ],
+      "student_answer": "1.  **“Xylophone”:** While commonly pronounced with a single ‘o’, in a technical context, it’s more precise to use ‘Xylo-phone’ (with a hyphen) to avoid ambiguity.\n2.  **“Qwerty”:** This is a proper noun referring to a keyboard layout. It should remain as “QWERTY”.\n3.  **“Zephyr”:** The spelling is correct.\n4.  **“1234”:** This should be formatted as “1234” (numeric code) rather than “one two three four”.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. It ignores the core instruction to identify pronunciation ambiguities, spelling errors, or punctuation issues that could cause confusion. Instead, it hallucinates a need to hyphenate 'Xylophone' (which is incorrect) and suggests changing 'Qwerty' to 'QWERTY' (which is a style choice, not a correction of an error). It completely misses the actual technical terms ('Aeolian', 'Zephyr') and the context of the style guide. The response is factually weak, ignores the provided text's actual content, and offers no professional value."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Write original content, such as headlines, cutlines, captions, and cover copy.",
+      "task_type": "Content Creation and Captioning",
+      "user_prompt": "You are creating captions and headlines for a series of images in a travel brochure. The images depict a mountain range, a beach, and a city skyline. Write a headline and a cutline for each image. Ensure the headlines are catchy and the cutlines provide accurate, concise descriptions. Adhere to the provided style guide for tone and formatting.",
+      "reference_context": {
+        "image_descriptions": [
+          "A snow-capped mountain range at sunrise.",
+          "A sandy beach with palm trees and clear blue water.",
+          "A modern city skyline at night with illuminated skyscrapers."
+        ],
+        "style_guide": "Headlines: Max 10 words, use title case. Cutlines: Max 20 words, use present tense, avoid clichés."
+      },
+      "evaluation_criteria": [
+        "Creativity: Headlines are engaging and appropriate for the context.",
+        "Accuracy: Cutlines accurately describe the images without exaggeration.",
+        "Compliance: All content adheres to the word count and formatting constraints of the style guide."
+      ],
+      "student_answer": "**Image 1: Snow-capped mountain range at sunrise**\n\nHeadline: Majestic Peaks: Witness the Dawn’s Embrace\n\nCutline: Golden sunlight illuminates the snow-capped mountains, creating a breathtaking vista.\n\n**Image 2: A sandy beach with palm trees and clear blue water**\n\nHeadline: Paradise Found: Sun-Kissed Shores Await\n\nCutline: Turquoise waves gently lap against the white sand, framed by swaying palm trees.\n\n**Image 3: A modern city skyline at night with illuminated skyscrapers**\n\nHeadline: City Lights: A Vibrant Urban Glow\n\nCutline: Skyscrapers shimmer with light, defining the dramatic silhouette of the city skyline.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        5,
+        3,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission addresses all task requirements with correct formatting and accurate descriptions (Correctness: 4, Completeness: 5, Domain Accuracy: 5, Clarity: 5). However, the cutlines fail to meet the 'avoid clichés' constraint in the style guide; phrases like 'breathtaking vista,' 'Paradise Found,' and 'Sun-Kissed' are overused tropes in travel writing, preventing a perfect score on Best Practices (3). Consequently, while the work is high quality, the presence of clichés means it requires minor stylistic refinement before being delivered to a client, resulting in an Autonomy score of 4 rather than 5."
+    }
+  ]
+}

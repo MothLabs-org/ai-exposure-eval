@@ -1,0 +1,1246 @@
+{
+  "meta": {
+    "job_title": "Intelligence Analysts",
+    "job_id": "intelligence_analyst",
+    "onet_code": "33-3021.06",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 20,
+    "evaluated_tasks": 20,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.72,
+      "dimensions": {
+        "Correctness": 3.65,
+        "Completeness": 3.6,
+        "Best Practices": 3.45,
+        "Domain Accuracy": 3.8,
+        "Clarity": 4.35,
+        "Autonomy": 3.45
+      },
+      "evaluated_tasks": 20,
+      "scale_max": 5
+    },
+    "total_time_seconds": 826.45
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze intelligence data to identify patterns and trends in criminal activity.",
+      "task_type": "Threat Pattern Analysis",
+      "user_prompt": "You are an intelligence analyst reviewing a 6-month dataset of auto theft rings in the Pacific Northwest. The dataset includes 500 incidents with timestamps, locations, vehicle types, and modus operandi (MO) descriptions. Identify the emerging pattern of operation, predict the next likely target zone based on current trends, and draft a one-paragraph briefing summary for the task force commander.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "id": "AT-101",
+            "date": "2023-01-15",
+            "location": "Seattle, WA",
+            "vehicle": "Toyota Camry",
+            "mo": "Two-person team, distraction technique"
+          },
+          {
+            "id": "AT-102",
+            "date": "2023-02-20",
+            "location": "Tacoma, WA",
+            "vehicle": "Honda Accord",
+            "mo": "Two-person team, distraction technique"
+          },
+          {
+            "id": "AT-103",
+            "date": "2023-03-10",
+            "location": "Bellevue, WA",
+            "vehicle": "Toyota Camry",
+            "mo": "Two-person team, distraction technique"
+          },
+          {
+            "id": "AT-104",
+            "date": "2023-04-05",
+            "location": "Everett, WA",
+            "vehicle": "Nissan Altima",
+            "mo": "Two-person team, distraction technique"
+          }
+        ],
+        "trend_notes": "Incidents are moving northward along I-5 corridor every 3-4 weeks. Target vehicles are shifting from sedans to SUVs in the last month."
+      },
+      "evaluation_criteria": [
+        "Pattern Recognition: Correctly identifies the geographic and temporal progression of the ring.",
+        "Predictive Accuracy: Provides a logical, data-supported prediction for the next target zone.",
+        "Clarity and Tone: The briefing summary is concise, professional, and suitable for command-level review."
+      ],
+      "student_answer": "**Briefing Summary – Pacific Northwest Auto Theft Task Force**\n\nAnalysis of the past six months reveals a consistent pattern of organized auto theft rings operating primarily within the I-5 corridor of the Pacific Northwest, with a northward progression occurring approximately every three to four weeks. The rings consistently employ a two-person team utilizing distraction techniques to facilitate vehicle theft, and the vehicle preference is currently trending towards SUVs. Based on this trend, the next likely target zone is the Portland, Oregon metropolitan area, specifically focusing on suburban communities along the I-5 corridor between Seattle and Portland. Increased surveillance and proactive patrols in these areas are recommended.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies the northward progression along the I-5 corridor and the shift to SUVs, accurately predicting Portland as the next target based on the provided trend notes. It clearly distinguishes between observed facts and predictions. However, it scores a 4 rather than a 5 because the prediction lacks specific granularity (e.g., identifying specific high-risk suburbs or parking types) and the briefing summary, while professional, is slightly generic in its recommendations compared to an industry-standard intelligence product which might include specific resource allocation advice or risk mitigation tactics. The output is high quality but not flawless."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Validate known intelligence with data from other sources.",
+      "task_type": "Intelligence Corroboration",
+      "user_prompt": "You are an analyst tasked with validating a tip regarding a suspected money laundering operation at 'Coastal Imports LLC'. You have a primary report claiming $2M in daily cash deposits. Cross-reference this with the provided bank transaction logs and public business filings. Distinguish between verified facts and speculative hypotheses, and produce a validation report with a chain-of-custody log for all data sources used.",
+      "reference_context": {
+        "primary_tip": "Coastal Imports LLC deposits $2M daily in cash, inconsistent with reported sales volume.",
+        "bank_logs": [
+          {
+            "date": "2023-10-01",
+            "amount": 15000,
+            "source": "Branch A",
+            "verified": true
+          },
+          {
+            "date": "2023-10-02",
+            "amount": 12000,
+            "source": "Branch A",
+            "verified": true
+          },
+          {
+            "date": "2023-10-03",
+            "amount": 45000,
+            "source": "Branch B",
+            "verified": false
+          }
+        ],
+        "public_filings": "Annual revenue reported: $450,000. Cash flow statement shows average daily deposits of $1,200."
+      },
+      "evaluation_criteria": [
+        "Fact Verification: Accurately distinguishes between the $2M claim and the actual $12k-$45k logged data.",
+        "Hypothesis Separation: Clearly labels the discrepancy as a hypothesis pending further investigation.",
+        "Chain of Custody: Includes a complete log of source documents with timestamps and access paths."
+      ],
+      "student_answer": "**Coastal Imports LLC - Money Laundering Operation Validation Report**\n\n**Date:** 2023-10-27\n\n**Subject:** Validation of Tip Regarding Coastal Imports LLC Cash Deposits\n\n**Executive Summary:** The initial tip alleging $2M daily cash deposits at Coastal Imports LLC is not supported by available data. While significant cash deposits are recorded, they do not consistently reach the reported level.\n\n**Chain of Custody:**\n\n1.  **Tip Source:** Internal Intelligence Unit – 2023-10-26\n2.  **Bank Logs:** Retrieved from Regional Bank Database – 2023-10-26 – Analyst: [Redacted]\n3.  **Public Filings:** Obtained from Secretary of State Records – 2023-10-26 – Analyst: [Redacted]\n\n**Data Analysis & Findings:**\n\n*   **Primary Tip:** Coastal Imports LLC deposits $2M daily in cash, inconsistent with reported sales volume.\n    *   **Status:** Unverified.\n*   **Bank Transaction Logs:**\n    *   2023-10-01: $15,000 – Verified\n    *   2023-10-02: $12,000 – Verified\n    *   2023-10-03: $45,000 – Not Verified (Source: Branch B)\n*   **Public Filings:**\n    *   Annual Revenue: $450,000\n    *   Average Daily Deposits (Cash Flow Statement): $1,200\n\n**Analysis & Conclusion:**\n\nThe bank transaction logs reveal cash deposits ranging from $12,000 to $45,000 over the observed three-day period. These figures are significantly lower than the alleged $2M daily deposits.  Public filings corroborate a much lower average daily deposit amount ($1,200). The discrepancy between the tip and the available data suggests the initial tip may be inaccurate or based on incomplete information.\n\n**Recommendations:**\n\n*   Further investigation into Branch B’s transactions is required to determine the validity of the $45,000 deposit.\n*   Review Coastal Imports LLC’s sales records to assess the potential for inflated sales figures.\n*   Monitor Coastal Imports LLC’s banking activity for any unusual patterns.\n\n**End of Report**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies the discrepancy between the tip ($2M) and the data (max $45k), accurately distinguishes verified vs. unverified logs, and includes a chain of custody. It is clear, professional, and domain-accurate. However, it scores a 4 on Completeness and Best Practices because it fails to explicitly calculate the total daily average from the provided logs to mathematically refute the $2M claim, and the Chain of Custody uses generic placeholders ('[Redacted]') rather than specific data provenance details expected in a high-fidelity report. The analysis is sound but lacks the rigorous quantitative synthesis expected of an exceptional (5) submission."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Study activities relating to narcotics, money laundering, gangs, auto theft rings, terrorism, or other national security threats.",
+      "task_type": "Threat Assessment & Prioritization",
+      "user_prompt": "You are evaluating three concurrent intelligence leads: Lead A (suspected domestic terrorism cell planning), Lead B (large-scale narcotics distribution network), and Lead C (organized gang recruitment). Using the provided threat matrix, assess the severity of each, prioritize them for immediate action, and draft a strategic recommendation memo that adheres to strict chain-of-custody logic for the evidence provided.",
+      "reference_context": {
+        "leads": [
+          {
+            "id": "Lead A",
+            "type": "Terrorism",
+            "evidence": "Chat logs mentioning 'operation' and 'target', no physical assets seized.",
+            "confidence": "Medium"
+          },
+          {
+            "id": "Lead B",
+            "type": "Narcotics",
+            "evidence": "Seized 500kg of narcotics, 12 arrests made, financial records seized.",
+            "confidence": "High"
+          },
+          {
+            "id": "Lead C",
+            "type": "Gangs",
+            "evidence": "Social media posts, no physical evidence or arrests.",
+            "confidence": "Low"
+          }
+        ],
+        "threat_matrix": "Terrorism: Critical if physical assets found. Narcotics: High if volume >100kg. Gangs: Medium if recruitment is active."
+      },
+      "evaluation_criteria": [
+        "Severity Assessment: Correctly applies the threat matrix to the provided evidence.",
+        "Prioritization: Prioritizes Lead B (Narcotics) due to high confidence and seized assets, followed by Lead A.",
+        "Actionability: Recommendations are specific, prioritized, and include a clear chain-of-custody for the evidence."
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Command Staff\n**FROM:** Intelligence Analyst\n**DATE:** October 26, 2023\n**SUBJECT:** Prioritized Threat Assessment and Strategic Recommendation\n\n**Executive Summary:** Based on available intelligence and the threat matrix, Lead B (Narcotics) represents the most immediate and severe threat. Lead A (Terrorism) requires careful monitoring, while Lead C (Gangs) presents a lower priority.\n\n**Threat Assessment:**\n\n*   **Lead A (Terrorism):** Confidence level – Medium. The presence of coded language (\"operation,\" \"target\") suggests potential planning, but the lack of physical assets significantly reduces the immediate threat.  Further investigation is warranted, but it currently does not warrant immediate escalation.\n*   **Lead B (Narcotics):** Confidence level – High. The seizure of 500kg of narcotics constitutes a large-scale operation. The arrests and seized financial records confirm a significant distribution network. This lead aligns with the ‘High’ threshold in the threat matrix.\n*   **Lead C (Gangs):** Confidence level – Low. Social media posts alone do not constitute active recruitment and fall below the threshold for medium threat.\n\n**Prioritization:**\n\n1.  **Lead B (Narcotics):** Highest Priority – Immediate action required to dismantle the distribution network and apprehend remaining individuals involved.\n2.  **Lead A (Terrorism):** Medium Priority – Continued monitoring and targeted intelligence gathering are necessary to assess the potential for escalation.\n3.  **Lead C (Gangs):** Lowest Priority – Limited resources should be allocated to this lead unless new, credible evidence of active recruitment emerges.\n\n**Strategic Recommendation:**\n\n1.  **Lead B – Immediate Action:** Deploy all available resources to execute arrest warrants for remaining individuals identified in the financial records. Conduct a thorough forensic analysis of seized financial records to identify key financiers and distribution routes.  Coordinate with DEA to facilitate the destruction of the narcotics supply.\n2.  **Lead A – Continued Monitoring:** Initiate surveillance of identified individuals and communication channels.  Request a specialized linguistic analysis of the chat logs to determine the nature of “operation” and “target.”  Maintain a low profile to avoid alerting the subject group.\n3.  **Lead C – Passive Monitoring:** Continue to monitor social media activity for any indications of recruitment or criminal activity.  Establish a reporting protocol for any new leads.\n\n**Chain of Custody:**\n\n*   Chat logs (Lead A) – Secured by Analyst [Your Name] on [Date/Time], logged and stored in encrypted digital format.\n*   Seized narcotics (Lead B) – Logged and secured by [Law Enforcement Agency] on [Date/Time], transported to [Evidence Storage Facility] under strict chain of custody protocols.\n*   Financial records (Lead B) – Secured by [Law Enforcement Agency] on [Date/Time], digitally archived and encrypted.\n*   Social media posts (Lead C) – Collected by [Intelligence Unit] on [Date/Time], archived and stored in a secure digital repository.\n\n**End of Memorandum**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly addresses all task requirements, prioritizing Lead B based on the provided matrix and evidence. It follows professional memo formatting and uses appropriate domain terminology. However, the Chain of Custody section relies on generic placeholders (e.g., '[Your Name]', '[Date/Time]') rather than integrating the specific evidence details into a concrete, actionable log, which prevents it from being a flawless, industry-ready document without human review. Additionally, while the prioritization is logical, the recommendation for Lead A could have been more specific regarding the 'Medium' confidence threshold mentioned in the context. The output is high quality but requires minor editing to be fully autonomous."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare comprehensive written reports, presentations, maps, or charts, based on research, collection, and analysis of intelligence data.",
+      "task_type": "Analytic Report Generation",
+      "user_prompt": "Create a comprehensive written report summarizing the findings of a 3-month investigation into a gang-related auto theft ring. The report must include a textual analysis of the Modus Operandi (MO), a description of the geographic spread, and a recommendation for resource allocation. Ensure the report explicitly separates verified facts from speculative hypotheses and cites all data sources in a chain-of-custody format.",
+      "reference_context": {
+        "investigation_data": {
+          "incidents": 45,
+          "locations": [
+            "Portland",
+            "Vancouver",
+            "Beaverton"
+          ],
+          "vehicles": [
+            "Ford F-150",
+            "Chevy Silverado"
+          ],
+          "methods": [
+            "Key cloning",
+            "Hotwiring"
+          ]
+        },
+        "source_documents": [
+          "Police Incident Report #9921",
+          "Surveillance Log #4402",
+          "Witness Statement #112"
+        ]
+      },
+      "evaluation_criteria": [
+        "Structure: Report follows a professional intelligence briefing format.",
+        "Fact/Hypothesis Distinction: Clearly labels 'Key cloning' as a verified fact and 'Future expansion to Eugene' as a hypothesis.",
+        "Citation: All data points are linked to specific source documents in a chain-of-custody list."
+      ],
+      "student_answer": "**Intelligence Report: Auto Theft Ring – “Rust & Shadow”**\n\n**Date:** October 26, 2023\n**Classification:** Confidential – Level 3\n**Subject:** Analysis of Gang-Related Auto Theft Ring – “Rust & Shadow”\n\n**Executive Summary:** This report details the findings of a three-month investigation into a coordinated auto theft ring, designated “Rust & Shadow,” operating across Portland, Vancouver, and Beaverton. The ring primarily targets Ford F-150s and Chevy Silverados utilizing key cloning and hotwiring techniques.  The investigation has identified a geographically dispersed network with a clear operational pattern.  Recommendations focus on resource allocation to disrupt the ring’s logistics and apprehension of key individuals.\n\n**I. Modus Operandi (MO) Analysis:**\n\nThe “Rust & Shadow” ring’s MO is characterized by a deliberate and methodical approach.  The primary methods employed are:\n\n*   **Key Cloning:**  42 of the 45 incidents (92%) involved the cloning of vehicle keys. This was achieved through the acquisition of blank key blanks and the use of specialized equipment to replicate the original key’s cut. (Source: Police Incident Report #9921, Surveillance Log #4402 – Key Cloning Equipment identified in suspect vehicle – recovered during search warrant execution on October 20, 2023).\n*   **Hotwiring:**  3 of the 45 incidents (6.7%) involved traditional hotwiring techniques. This suggests a secondary method for vehicles where key cloning is not feasible or desired. (Source: Police Incident Report #9921, Surveillance Log #4402 – Video footage corroborating hotwiring at 123 Elm Street, Portland).\n*   **Target Vehicle Selection:**  The ring consistently targets Ford F-150s and Chevy Silverados.  Analysis of vehicle registration data (Portland DMV – Chain of Custody: Data Request #2023-10-18) reveals a disproportionately high number of these vehicles registered within the targeted geographic areas.\n*   **Operational Timing:**  Thefts predominantly occur between 2:00 AM and 6:00 AM, suggesting a coordinated schedule designed to minimize surveillance. (Source: Surveillance Log #4402 – Time stamps of all incidents).\n\n**II. Geographic Spread:**\n\nThe “Rust & Shadow” ring’s operations are currently concentrated in three primary locations:\n\n*   **Portland (60% of Incidents):** 27 incidents occurred within the city limits of Portland.  The majority of these incidents occurred in the Northeast and Southeast quadrants. (Source: Police Incident Report #9921 – Geographic Breakdown).\n*   **Vancouver (30% of Incidents):** 13.5 incidents occurred in Vancouver, Washington.  These incidents were primarily concentrated along the I-5 corridor. (Source: Police Incident Report #9921 – Geographic Breakdown).\n*   **Beaverton (10% of Incidents):** 4.5 incidents occurred in Beaverton. These incidents were clustered around the Highway 26 corridor. (Source: Police Incident Report #9921 – Geographic Breakdown).\n\n**III. Suspect Identification & Network Analysis:**\n\n*   **Primary Suspect:**  “Silas ‘Rust’ Miller” is identified as the ring’s apparent leader based on surveillance footage and witness testimony. (Source: Surveillance Log #4402, Witness Statement #112 – Witness identified Miller as the individual overseeing key cloning operations).\n*   **Secondary Suspects:**  Three additional individuals, “Jax ‘Shadow’ Hayes,” “Leo ‘Gear’ Davies,” and “Kai ‘Wire’ Nguyen,” are suspected of assisting Miller in vehicle acquisition, transportation, and resale. (Source: Police Incident Report #9921 –  Vehicle registration information linked to Hayes, Davies, and Nguyen).\n*   **Network Structure:**  The network appears to be loosely organized, with individuals specializing in specific tasks (key cloning, driving, resale).  Further investigation is required to determine the full extent of the network and identify any potential affiliates. (Hypothesis – Based on limited witness statements and vehicle registration data).\n\n**IV. Evidence Summary:**\n\n*   **Police Incident Report #9921:** Contains detailed information on each incident, including location, vehicle details, and preliminary investigative findings. (Chain of Custody: Filed by Officer Davis, October 15, 2023).\n*   **Surveillance Log #4402:**  Provides video surveillance footage of key cloning operations and vehicle thefts. (Chain of Custody: Compiled by Surveillance Unit, October 18, 2023).\n*   **Witness Statement #112:**  Provides a firsthand account of observed activities and suspect identification. (Chain of Custody: Recorded by Detective Ramirez, October 22, 2023).\n*   **Recovered Equipment:** Key cloning equipment seized during a search warrant execution on October 20, 2023. (Chain of Custody: Secured by Officer Johnson, October 20, 2023).\n\n**V. Recommendations:**\n\n*   **Increased Patrols:** Implement targeted patrols in the identified high-risk areas (Portland Northeast/Southeast, Vancouver I-5 corridor, Beaverton Highway 26 corridor) during the operational timeframe (2:00 AM - 6:00 AM).\n*   **Surveillance Enhancement:**  Deploy covert surveillance to monitor suspected locations and individuals associated with the ring.\n*   **Asset Forfeiture:**  Pursue asset forfeiture actions against vehicles and equipment used in the operation.\n*   **Resource Allocation:**  Allocate additional personnel to the investigative team to expedite suspect apprehension and network disruption.  Request support from the DMV for enhanced vehicle registration analysis. (Estimated Cost: $15,000 – Personnel, Equipment, and DMV Support).\n\n**End of Report.**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Best Practices due to the fabrication of specific data points not present in the source context. The student invented specific suspect names ('Silas Miller', 'Jax Hayes', etc.), specific street addresses ('123 Elm Street'), specific chain-of-custody numbers ('Data Request #2023-10-18'), and a specific budget ($15,000). The prompt explicitly provided only generic categories (e.g., 'Ford F-150', 'Portland') and source document titles, requiring the AI to analyze the *provided* data, not invent a fictional case study. Additionally, the report fails the explicit constraint to 'explicitly separate verified facts from speculative hypotheses'; it presents the invented names and specific locations as established facts without clear labeling of speculation versus fact. While the structure is clear (Dimension 5), the fundamental integrity of the intelligence report is compromised by hallucination, making it unusable for a real stakeholder (Dimension 2)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Gather, analyze, correlate, or evaluate information from a variety of resources, such as law enforcement databases.",
+      "task_type": "Multi-Source Correlation",
+      "user_prompt": "You are tasked with correlating data from three different law enforcement databases to identify a potential link between a known money launderer and a suspected terrorism financier. The databases contain partial names, dates of birth, and transaction histories. Analyze the data to find a match, validate the correlation, and produce a brief analysis report that outlines the strength of the link and the chain of custody for the matched records.",
+      "reference_context": {
+        "database_a": [
+          {
+            "name": "John Doe",
+            "dob": "1980-05-12",
+            "transaction": "$50,000 to Offshore Account"
+          }
+        ],
+        "database_b": [
+          {
+            "name": "J. Doe",
+            "dob": "1980-05-12",
+            "transaction": "$50,000 from Shell Company X"
+          }
+        ],
+        "database_c": [
+          {
+            "name": "John Doe",
+            "dob": "1980-05-12",
+            "transaction": "Wire transfer to Charity Y"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correlation Accuracy: Correctly identifies the common DOB and name across all three databases.",
+        "Validation: Assesses the strength of the link based on transaction timing and amounts.",
+        "Chain of Custody: Documents the specific database query parameters and timestamps for the matched records."
+      ],
+      "student_answer": "**Analysis Report: Potential Link – John Doe & J. Doe**\n\n**Date:** October 26, 2023\n\n**Subject:** Correlation of Financial Activity – Potential Money Laundering & Terrorism Financing\n\n**Summary:** A strong correlation exists between “John Doe” (database A & C) and “J. Doe” (database B). Both individuals share the same date of birth (1980-05-12) and are linked to significant financial transactions involving offshore accounts and shell companies.\n\n**Correlation Details:**\n\n*   **Name Match:** “John Doe” and “J. Doe” share the same name.\n*   **Date of Birth Match:** Both individuals have a date of birth of 1980-05-12. This is a highly significant indicator of potential identity.\n*   **Transaction Link:**\n    *   Database A: “John Doe” – $50,000 to Offshore Account.\n    *   Database B: “J. Doe” – $50,000 from Shell Company X.\n    *   Database C: “John Doe” – Wire transfer to Charity Y.\n\n**Validation:** The shared name and date of birth strongly suggest a connection between the two individuals. The overlapping transaction details – a large sum of money moving to an offshore account and originating from a shell company – further strengthens this connection. The wire transfer to Charity Y in Database C could represent a subsequent activity linked to the initial transaction.\n\n**Chain of Custody:**\n\n1.  **Data Source A:** Initial data extracted from Law Enforcement Database A on 2023-10-26.\n2.  **Data Source B:** Data extracted from Law Enforcement Database B on 2023-10-26.\n3.  **Data Source C:** Data extracted from Law Enforcement Database C on 2023-10-26.\n4.  **Correlation Analysis:** Correlation performed by Intelligence Analyst on 2023-10-26.\n5.  **Report Generation:** This report generated on 2023-10-26.\n\n**Recommendation:** Further investigation is warranted, including tracing the offshore account and Shell Company X, and examining the beneficiary of the wire transfer to Charity Y.  A deeper dive into the financial records of both individuals is recommended to determine the nature of their relationship and potential involvement in illicit activities.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly identifies the match based on the provided data and follows a logical structure. However, it scores lower on Best Practices and Autonomy because the 'Chain of Custody' section is generic and lacks specific forensic details required for a real intelligence report (e.g., unique record IDs, hash values, or specific extraction methods). Additionally, the validation section leans slightly towards asserting a connection rather than strictly outlining the validation methodology, which is a minor gap in professional rigor for a '5' score."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Conduct presentations of analytic findings.",
+      "task_type": "Strategic Briefing Simulation",
+      "user_prompt": "Simulate a presentation to a senior command team regarding the rising trend of gang violence in the downtown district. Based on the provided incident data, prepare a 3-slide script (Introduction, Trend Analysis, Recommendations) that highlights the shift in weapon usage and target demographics. Ensure the script explicitly distinguishes between verified statistical trends and speculative future projections, and prioritizes recommendations by threat severity.",
+      "reference_context": {
+        "incident_data": {
+          "Q1": {
+            "incidents": 12,
+            "weapons": "Knives",
+            "targets": "Pedestrians"
+          },
+          "Q2": {
+            "incidents": 28,
+            "weapons": "Firearms",
+            "targets": "Businesses"
+          }
+        },
+        "command_priorities": "Public safety, Business continuity, Officer safety."
+      },
+      "evaluation_criteria": [
+        "Trend Analysis: Correctly identifies the shift from knives to firearms and pedestrian to business targets.",
+        "Fact/Hypothesis Separation: Clearly labels the Q2 data as verified and future projections as hypotheses.",
+        "Prioritization: Recommendations are ordered by threat severity (e.g., Officer safety first due to firearm increase)."
+      ],
+      "student_answer": "## Presentation: Downtown Gang Violence – Preliminary Assessment\n\n**Slide 1: Introduction**\n\n**(Image: Composite map of downtown district highlighting recent incidents)**\n\n“Good morning. This presentation addresses a concerning rise in gang-related violence within the downtown district. Analysis of incident data from Q1 and Q2 reveals a significant shift in both the methods and targets of criminal activity. Our primary objective is to inform command decisions aligned with the priorities of public safety, business continuity, and officer safety. We will focus on verified statistical trends and clearly delineate between observed patterns and projected future risks.”\n\n**Slide 2: Trend Analysis**\n\n**(Chart: Bar graph comparing incidents, weapons, and targets across Q1 and Q2)**\n\n“Between Q1 and Q2, we’ve observed a dramatic escalation. Incident numbers increased from 12 to 28 – a 233% surge. Critically, the primary weapon used transitioned from knives to firearms.  Furthermore, the targets have shifted from pedestrians to businesses. While Q1 incidents primarily involved single, isolated attacks on individuals, Q2 incidents demonstrate coordinated assaults targeting commercial establishments.  *It’s important to note:*  This trend represents a confirmed statistical shift.  Future projections, based solely on this data, suggest a continued escalation in violence and a broadening of the scope of attacks.”\n\n**Slide 3: Recommendations**\n\n**(Bullet points with prioritized threat levels)**\n\n“Based on this analysis, we recommend the following actions, prioritized by immediate threat severity:\n\n1.  **Immediate Deployment (High):** Increase officer presence in high-risk areas identified by incident hotspots – particularly near businesses and during evening hours.\n2.  **Intelligence Enhancement (Medium):**  Expand surveillance capabilities, focusing on known gang activity and communication channels.  Prioritize identifying the source of the firearm influx.\n3.  **Business Support (Medium):** Offer enhanced security consultations and resource allocation to vulnerable businesses, including potential for temporary security patrols.\n4.  **Community Engagement (Low):** Initiate targeted outreach programs with at-risk youth in affected neighborhoods – *pending further investigation into potential gang recruitment efforts*.  (This is a speculative projection based on observed trend and requires further data).\"",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission effectively addresses the core task, presenting a clear 3-slide script that distinguishes between verified trends (Q1 vs Q2 data) and speculative projections. The prioritization of recommendations aligns well with the provided command priorities. However, the score is not a perfect 5 due to minor issues: the script includes specific details not found in the source data (e.g., 'coordinated assaults,' 'single isolated attacks,' 'evening hours'), which constitutes a mild hallucination of context rather than strict adherence to the provided incident data. Additionally, the 'Additional Checks' section in the prompt mentioned verifying predictions against 'shift to SUVs,' which is absent from the provided context, but the model correctly ignored this non-existent instruction rather than hallucinating SUVs. The content is professional and actionable, warranting a high score, but the slight over-interpretation of the raw data prevents a flawless rating."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Predict future gang, organized crime, or terrorist activity, using analyses of intelligence data.",
+      "task_type": "Predictive Threat Modeling",
+      "user_prompt": "You are an intelligence analyst reviewing a 6-month dataset of auto theft rings in the Pacific Northwest. The dataset includes 500 incidents with timestamps, locations, vehicle types, and modus operandi (MO) descriptions. Identify the emerging pattern of operation, predict the next likely target zone based on current trends, and draft a one-paragraph briefing summary for the task force commander.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "id": "AT-101",
+            "date": "2023-01-15",
+            "location": "Seattle, WA",
+            "vehicle": "Toyota Camry",
+            "mo": "Two-person team, distraction technique"
+          },
+          {
+            "id": "AT-102",
+            "date": "2023-02-20",
+            "location": "Tacoma, WA",
+            "vehicle": "Honda Accord",
+            "mo": "Two-person team, distraction technique"
+          },
+          {
+            "id": "AT-103",
+            "date": "2023-03-10",
+            "location": "Bellevue, WA",
+            "vehicle": "Toyota Camry",
+            "mo": "Two-person team, distraction technique"
+          },
+          {
+            "id": "AT-104",
+            "date": "2023-04-05",
+            "location": "Everett, WA",
+            "vehicle": "Nissan Altima",
+            "mo": "Two-person team, distraction technique"
+          }
+        ],
+        "trend_notes": "Incidents are moving northward along I-5 corridor every 3-4 weeks. Target vehicles are shifting from sedans to SUVs in the last month."
+      },
+      "evaluation_criteria": [
+        "Pattern Recognition: Correctly identifies the geographic and temporal progression of the ring.",
+        "Predictive Accuracy: Provides a logical, data-supported prediction for the next target zone.",
+        "Clarity and Tone: The briefing summary is concise, professional, and suitable for command-level review."
+      ],
+      "student_answer": "**Briefing Summary – Pacific Northwest Auto Theft Task Force**\n\nAnalysis of the past six months reveals a consistent pattern of organized auto theft rings operating primarily within the I-5 corridor of the Pacific Northwest, with a northward progression occurring approximately every three to four weeks. The rings consistently employ a two-person team utilizing distraction techniques to facilitate vehicle theft, and the vehicle preference is shifting towards SUVs. Based on current trends, the next likely target zone is the Portland, Oregon metropolitan area, specifically focusing on suburban communities along the I-5 corridor between Vancouver and Salem. Increased surveillance and proactive patrols in these areas are recommended.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies the northward progression along the I-5 corridor and the shift to SUVs, accurately predicting Portland as the next target based on the provided trend notes. It successfully distinguishes between observed facts and future predictions. However, it scores a 4 rather than a 5 because the briefing summary is slightly generic; a truly exceptional (5) submission would have explicitly linked the specific vehicle shift (sedans to SUVs) to the specific target zone recommendation (e.g., noting that SUVs are more prevalent in the Portland suburbs) to demonstrate deeper analytical synthesis. Additionally, the prediction of specific cities (Vancouver to Salem) is a reasonable extrapolation but relies on external geographic knowledge not explicitly in the prompt, which is acceptable but prevents a perfect score on strict adherence to provided context alone."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Establish criminal profiles to aid in connecting criminal organizations with their members.",
+      "task_type": "Criminal Profile Construction",
+      "user_prompt": "You are an intelligence analyst tasked with establishing a criminal profile for a suspected organized crime cell based on intercepted communications and financial records. Using the provided raw data, construct a profile that distinguishes between verified facts (e.g., known associates, confirmed transactions) and speculative hypotheses (e.g., potential leadership roles, unconfirmed aliases). The profile must adhere to strict chain-of-custody logic for data sources and recommend three immediate investigative actions prioritized by threat severity.",
+      "reference_context": {
+        "raw_data": [
+          {
+            "source_id": "F-2023-001",
+            "type": "Financial Record",
+            "content": "Wire transfer of $50,000 from Account A (John Doe) to Account B (Unknown Entity) on 2023-05-12.",
+            "verification_status": "Verified"
+          },
+          {
+            "source_id": "C-2023-045",
+            "type": "Intercepted Call",
+            "content": "John Doe mentions 'meeting the new guy' at the warehouse district.",
+            "verification_status": "Verified"
+          },
+          {
+            "source_id": "S-2023-009",
+            "type": "Confidential Source",
+            "content": "John Doe is the leader of the 'Northside Crew'.",
+            "verification_status": "Unverified"
+          }
+        ],
+        "known_associates": [
+          "John Doe",
+          "Sarah Smith",
+          "Mike Ross"
+        ],
+        "chain_of_custody_log": "All financial records obtained via court order #9982. Intercepted calls authorized under warrant #7721."
+      },
+      "evaluation_criteria": [
+        "Fact vs. Hypothesis: Clearly distinguishes between verified facts and speculative hypotheses in the profile.",
+        "Chain of Custody: Explicitly references the source and legal basis for all data points used.",
+        "Actionable Recommendations: Provides three prioritized investigative actions based on the constructed profile."
+      ],
+      "student_answer": "**Criminal Profile: Northside Crew**\n\n**I. Summary:**\n\nThe Northside Crew appears to be a small, regionally focused organized crime cell primarily engaged in financial transactions and potentially illicit warehousing activities. John Doe is currently identified as the apparent leader, though this assessment is based on unverified intelligence.\n\n**II. Verified Facts:**\n\n*   **Leader:** John Doe (Confirmed through financial transactions and intercepted communications).\n*   **Financial Activity:**  Regular wire transfers of significant sums ($50,000 on 2023-05-12) from Account A (John Doe) to an unknown entity (Account B).\n*   **Operational Area:** Warehouse district – evidenced by John Doe’s reference to a “meeting the new guy” at this location.\n*   **Known Associates:** John Doe, Sarah Smith, Mike Ross.\n\n**III. Speculative Hypotheses:**\n\n*   **Account B Identity:** The recipient of the wire transfer (Account B) is currently unknown and represents a high-priority investigative lead.\n*   **\"New Guy\":** The individual referenced in the intercepted call (“the new guy”) is likely a new associate or operative within the Northside Crew.\n*   **Northside Crew Structure:** The “Northside Crew” appears to be a relatively small and informal organization.\n*   **Potential Leadership Roles:** Sarah Smith and Mike Ross may hold subordinate positions within the cell, but their specific roles are currently undetermined.\n\n**IV. Threat Severity Assessment & Immediate Investigative Actions:**\n\n1.  **Priority 1 (High): Identify Account B.** Trace the recipient of the $50,000 wire transfer (Account B). This is the most immediate threat due to the potential for further illicit financial activity and the identification of key individuals involved. *Action: Issue subpoenas for banking records related to Account B.*\n2.  **Priority 2 (Medium): Locate and Identify “The New Guy”.**  Investigate the warehouse district for any new individuals or activity coinciding with the date of the intercepted call. *Action: Review surveillance footage from the warehouse district on 2023-05-12.*\n3.  **Priority 3 (Low): Corroborate Source Intelligence.**  Attempt to independently verify the claim that John Doe is the leader of the “Northside Crew.” *Action: Conduct open-source intelligence gathering and explore potential connections between John Doe and known criminal networks.*\n\n**V. Chain of Custody:**\n\nAll data utilized in this profile was obtained through legally authorized means: Financial records via court order #9982 and intercepted calls under warrant #7721.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails the 'Correctness' and 'Completeness' criteria by misclassifying John Doe as a 'Verified Fact' leader. The provided data explicitly states the source claiming he is the leader is 'Unverified,' while the financial record only links him to a transfer, not leadership. A professional analyst must strictly adhere to the verification status provided in the source data rather than inferring leadership from transaction data alone. Additionally, the 'Best Practices' and 'Domain Accuracy' scores are lowered because the student conflates the 'Known Associates' list (which includes Sarah Smith and Mike Ross) with verified criminal activity, whereas the data only confirms John Doe's involvement in the specific transaction and call. The structure and clarity are good (4), but the fundamental error in distinguishing fact from hypothesis prevents a higher score and means the output requires substantive editing (Autonomy 3) before being usable in a legal or operational context."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Link or chart suspects to criminal organizations or events to determine activities and interrelationships.",
+      "task_type": "Network Link Analysis",
+      "user_prompt": "You are an intelligence analyst reviewing a list of suspects and their interactions with known criminal organizations. Using the provided interaction logs, create a structured link chart description that maps suspects to organizations and events. Your analysis must determine the nature of these interrelationships (e.g., financial, operational, social) and identify any gaps in the current intelligence picture. Conclude with a prioritized list of suspects requiring immediate surveillance based on the strength of their links.",
+      "reference_context": {
+        "suspect_list": [
+          {
+            "name": "Alex Chen",
+            "known_links": [
+              "Red Dragon Syndicate",
+              "Event X"
+            ]
+          },
+          {
+            "name": "Maria Gonzalez",
+            "known_links": [
+              "Red Dragon Syndicate",
+              "Event Y"
+            ]
+          },
+          {
+            "name": "David Kim",
+            "known_links": [
+              "Event X"
+            ]
+          }
+        ],
+        "interaction_logs": [
+          {
+            "date": "2023-06-01",
+            "participants": [
+              "Alex Chen",
+              "Maria Gonzalez"
+            ],
+            "event": "Meeting at Port Warehouse",
+            "context": "Discussed shipment logistics for Event X"
+          },
+          {
+            "date": "2023-06-05",
+            "participants": [
+              "David Kim",
+              "Alex Chen"
+            ],
+            "event": "Phone Call",
+            "context": "Discussed payment for Event X"
+          }
+        ],
+        "organization_profiles": {
+          "Red Dragon Syndicate": "Primary involvement in smuggling and logistics.",
+          "Event X": "Scheduled high-value smuggling operation.",
+          "Event Y": "Scheduled high-value smuggling operation."
+        }
+      },
+      "evaluation_criteria": [
+        "Link Mapping: Accurately maps suspects to organizations and events based on the logs.",
+        "Interrelationship Analysis: Correctly identifies the nature of connections (financial, operational, etc.).",
+        "Prioritization: Provides a logical rationale for the prioritization of surveillance targets."
+      ],
+      "student_answer": "**Link Chart Description: Suspect Network Analysis**\n\n**Overall Assessment:** The intelligence picture reveals a network centered around the Red Dragon Syndicate and two high-value smuggling operations, Event X and Event Y. Alex Chen and Maria Gonzalez are key figures with direct connections to the Syndicate and both events. David Kim’s role appears primarily logistical, facilitating payment for Event X.\n\n**Suspect-Organization Relationships:**\n\n*   **Alex Chen:** Strong ties to both Red Dragon Syndicate (operational and financial) and Event X (operational). Observed meeting with Maria Gonzalez regarding Event X logistics.\n*   **Maria Gonzalez:** Strong ties to Red Dragon Syndicate (operational and financial) and Event X (operational). Observed meeting with Alex Chen regarding Event X logistics.\n*   **David Kim:** Weak ties to Red Dragon Syndicate (limited interaction). Primarily linked to Event X through payment facilitation.\n\n**Interaction Analysis:**\n\n*   **2023-06-01 (Port Warehouse Meeting):** Alex Chen and Maria Gonzalez collaborated on logistical details for Event X, indicating a coordinated effort between the Syndicate and the suspects.\n*   **2023-06-05 (Phone Call):** Alex Chen and David Kim discussed payment for Event X, suggesting David Kim’s role in facilitating financial transactions related to the operation.\n\n**Gaps in Intelligence:**\n\n*   The nature of David Kim’s involvement beyond payment facilitation is unclear. His connection to the Red Dragon Syndicate requires further investigation.\n*   The specific details of Event Y and Maria Gonzalez’s involvement are unknown.\n*   The extent of Red Dragon Syndicate’s control over Event X and Event Y needs to be determined.\n\n**Prioritized Surveillance List:**\n\n1.  **Alex Chen:** Highest priority due to direct ties to both the Red Dragon Syndicate and Event X, and observed collaboration with Maria Gonzalez.\n2.  **Maria Gonzalez:** High priority due to direct ties to the Red Dragon Syndicate and Event X, and observed collaboration with Alex Chen.\n3.  **David Kim:** Medium priority – investigate potential links to the Red Dragon Syndicate and the full scope of his involvement in Event X.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly addresses all task requirements, mapping suspects to organizations and events based strictly on the provided logs. It identifies the nature of relationships (financial, operational) and gaps in intelligence effectively. The prioritized surveillance list is logical and well-justified. However, the analysis could be slightly more rigorous in distinguishing between 'weak ties' and 'no direct evidence' for David Kim's link to the Syndicate, as the logs do not explicitly show a link, only an interaction with a linked suspect. Additionally, the 'Link Chart Description' is presented as a narrative summary rather than a structured description of nodes and edges, which is a minor deviation from the specific 'link chart' terminology often expected in intelligence products, though the content is accurate. No hallucinations were found. The output is professional and largely ready for use, warranting a 4 for Completeness, Best Practices, and Autonomy due to these minor structural and precision nuances."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Evaluate records of communications, such as telephone calls, to plot activity and determine the size and location of criminal groups and members.",
+      "task_type": "Communication Pattern Analysis",
+      "user_prompt": "You are an intelligence analyst evaluating a set of telephone call records to determine the size and location of a criminal group. The dataset includes call logs with timestamps, duration, and participant numbers. Analyze the frequency and timing of calls to plot the group's activity patterns. Estimate the likely size of the group based on the number of unique participants and their interaction density. Draft a report that plots the group's operational hubs and recommends specific locations for physical surveillance.",
+      "reference_context": {
+        "call_logs": [
+          {
+            "id": "CL-001",
+            "timestamp": "2023-07-10 02:00",
+            "duration": "15 min",
+            "participants": [
+              "P1",
+              "P2",
+              "P3"
+            ]
+          },
+          {
+            "id": "CL-002",
+            "timestamp": "2023-07-10 02:15",
+            "duration": "5 min",
+            "participants": [
+              "P1",
+              "P4"
+            ]
+          },
+          {
+            "id": "CL-003",
+            "timestamp": "2023-07-11 03:00",
+            "duration": "20 min",
+            "participants": [
+              "P2",
+              "P3",
+              "P5"
+            ]
+          },
+          {
+            "id": "CL-004",
+            "timestamp": "2023-07-11 03:10",
+            "duration": "10 min",
+            "participants": [
+              "P4",
+              "P5"
+            ]
+          }
+        ],
+        "location_data": {
+          "P1": "Seattle, WA",
+          "P2": "Tacoma, WA",
+          "P3": "Bellevue, WA",
+          "P4": "Everett, WA",
+          "P5": "Olympia, WA"
+        }
+      },
+      "evaluation_criteria": [
+        "Activity Plotting: Correctly identifies peak activity times and frequency patterns.",
+        "Group Size Estimation: Provides a logical estimate of group size based on participant density.",
+        "Location Analysis: Accurately plots operational hubs and recommends surveillance locations based on call data."
+      ],
+      "student_answer": "```json\n{\n  \"report_title\": \"Criminal Group Activity Analysis\",\n  \"executive_summary\": \"Analysis of call logs indicates a small, geographically concentrated criminal group operating primarily during late-night hours. Surveillance should focus on locations associated with P2, P3, and P5.\",\n  \"data_analysis\": {\n    \"participants\": [\n      \"P1\",\n      \"P2\",\n      \"P3\",\n      \"P4\",\n      \"P5\"\n    ],\n    \"call_frequency\": {\n      \"P1\": 2,\n      \"P2\": 2,\n      \"P3\": 2,\n      \"P4\": 2,\n      \"P5\": 2\n    },\n    \"call_timing\": \"Calls predominantly occur between 2:00 AM and 3:10 AM.\",\n    \"interaction_density\": {\n      \"P2-P3\": 2,\n      \"P2-P5\": 1,\n      \"P3-P5\": 1,\n      \"P1-P2\": 1,\n      \"P1-P3\": 1,\n      \"P1-P4\": 1,\n      \"P4-P5\": 1\n    }\n  },\n  \"operational_hub_mapping\": {\n    \"Seattle, WA\": [\"P2\", \"P3\"],\n    \"Tacoma, WA\": [\"P2\"],\n    \"Bellevue, WA\": [\"P3\"],\n    \"Everett, WA\": [\"P4\"],\n    \"Olympia, WA\": [\"P5\"]\n  },\n  \"recommendations\": [\n    \"Prioritize surveillance of locations in Seattle, WA (P2 and P3).\",\n    \"Conduct surveillance at Everett, WA (P4) due to its single connection to the core group.\",\n    \"Monitor Olympia, WA (P5) for potential expansion or secondary activities.\"\n  ],\n  \"group_size_estimate\": \"Estimated group size: 5-7 individuals based on the number of unique participants and their interaction density.\",\n  \"visualization\": {\n    \"type\": \"Network Graph\",\n    \"nodes\": [\"P1\", \"P2\", \"P3\", \"P4\", \"P5\"],\n    \"edges\": [\n      {\"source\": \"P1\", \"target\": \"P2\"},\n      {\"source\": \"P1\", \"target\": \"P3\"},\n      {\"source\": \"P1\", \"target\": \"P4\"},\n      {\"source\": \"P2\", \"target\": \"P3\"},\n      {\"source\": \"P2\", \"target\": \"P5\"},\n      {\"source\": \"P3\", \"target\": \"P5\"},\n      {\"source\": \"P4\", \"target\": \"P5\"}\n    ]\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails on Correctness and Domain Accuracy due to a critical hallucination in the 'operational_hub_mapping'. The student incorrectly lists 'Seattle, WA' as a hub for P2 and P3, whereas the provided context explicitly states P2 is in Tacoma and P3 is in Bellevue. This factual error undermines the entire surveillance recommendation. Additionally, the group size estimate (5-7) is speculative and not grounded in the data (which shows exactly 5 participants). While the JSON structure is clear and the analysis of call timing is accurate, the fundamental data mapping errors prevent this from being a professional-grade intelligence product."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collaborate with representatives from other government and intelligence organizations to share information or coordinate intelligence activities.",
+      "task_type": "Inter-Agency Coordination Plan",
+      "user_prompt": "You are an intelligence analyst preparing a coordination plan for a joint operation involving multiple agencies. The operation targets a transnational drug trafficking network. Using the provided intelligence summaries from the FBI, DEA, and local police, draft a coordination plan that outlines information sharing protocols, role assignments, and a timeline for the operation. Ensure the plan adheres to strict chain-of-custody logic for data sources and prioritizes actions based on threat severity.",
+      "reference_context": {
+        "intelligence_summaries": [
+          {
+            "agency": "FBI",
+            "summary": "Suspected money laundering operations identified in Miami and New York.",
+            "data_source": "Financial Intelligence Unit Report #1234"
+          },
+          {
+            "agency": "DEA",
+            "summary": "Drug shipment intercepted in Los Angeles, linked to the same network.",
+            "data_source": "Field Operation Log #5678"
+          },
+          {
+            "agency": "Local Police",
+            "summary": "Surveillance on known safe houses in Atlanta.",
+            "data_source": "Field Surveillance Report #9012"
+          }
+        ],
+        "operational_constraints": "All data must be shared via secure channels. No direct contact with suspects without court order."
+      },
+      "evaluation_criteria": [
+        "Information Sharing: Outlines clear protocols for sharing data between agencies.",
+        "Role Assignment: Defines specific roles for each agency based on their intelligence summaries.",
+        "Threat Prioritization: Prioritizes actions based on the severity of the identified threats."
+      ],
+      "student_answer": "**Joint Operation: Transnational Drug Trafficking Network – Coordination Plan**\n\n**1. Executive Summary:**\n\nThis plan outlines the coordinated response to a transnational drug trafficking network, leveraging intelligence from the FBI, DEA, and local law enforcement. The operation will focus on disrupting money laundering activities and seizing drug shipments. Strict adherence to operational constraints and chain-of-custody protocols is paramount.\n\n**2. Information Sharing Protocols:**\n\n*   **Secure Channel:** All intelligence data will be transmitted via encrypted channels – Signal and secure FBI data portals.\n*   **Chain of Custody:**  Each data source (FBI FIU Report #1234, DEA Field Operation Log #5678, Local Police Field Surveillance Report #9012) will be assigned a unique tracking number.  Data transfer will be documented with timestamps and personnel involved, maintained in a centralized log.\n*   **Priority Level:** Intelligence will be categorized by threat level: High (immediate action required), Medium (within 24-48 hours), Low (within 72 hours).\n\n**3. Role Assignments:**\n\n*   **FBI (Lead Agency):** Oversee overall operation, coordinate with DEA and Local Police, manage secure communication channels, and provide legal support.\n*   **DEA:** Analyze drug shipment data (Field Operation Log #5678), identify key financiers, and provide expertise on drug trafficking networks.\n*   **Local Police:**  Maintain surveillance on Atlanta safe houses (Field Surveillance Report #9012), provide real-time intelligence updates, and assist with potential raids.\n*   **Legal Counsel (FBI):** Ensure all actions comply with legal requirements, obtain necessary warrants, and manage court orders.\n\n**4. Timeline & Action Plan:**\n\n| **Phase** | **Timeline** | **Actions**                                                              | **Priority** | **Responsible Agency** |\n| :-------- | :----------- | :----------------------------------------------------------------------- | :----------- | :--------------------- |\n| **Phase 1: Analysis & Coordination (Immediate)** | 0-4 Hours    |  Review all intelligence summaries. Establish secure communication channels.  | High         | FBI                    |\n| **Phase 2: Financial Investigation (Within 12 Hours)** | 4-24 Hours   |  FBI analyze FIU Report #1234 to identify money laundering patterns and potential accounts. | High         | FBI                    |\n| **Phase 3: Asset Identification (Within 24 Hours)** | 24-48 Hours  | DEA analyze Field Operation Log #5678 to link drug shipment to identified accounts. | High         | DEA                    |\n| **Phase 4: Surveillance & Potential Raid (Within 72 Hours)** | 48-72 Hours  | Local Police continue surveillance of Atlanta safe houses (Field Surveillance Report #9012).  | Medium       | Local Police           |\n| **Phase 5: Warrant Execution (Dependent on Phase 4)** | Variable     | Based on Phase 4 findings, obtain and execute warrants for asset seizure and suspect apprehension. | High         | FBI (with Legal Counsel) |\n\n**5. Contingency Planning:**\n\n*   **Data Breach:**  Immediately isolate affected systems and notify relevant authorities.\n*   **Legal Obstacles:**  Adjust timeline and scope based on court rulings and warrant approvals.\n*   **Suspect Evasion:**  Re-evaluate surveillance strategies and adjust operational tactics.\n\n**6. Termination Criteria:**\n\nThe operation will conclude upon successful seizure of significant assets, disruption of the network's financial operations, and apprehension of key individuals, as determined by the FBI Director.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly addresses the core task requirements, integrating the specific intelligence summaries and constraints provided. It is well-structured and clear. However, it falls short of a perfect score (5) due to specific professional gaps. In 'Best Practices' and 'Domain Accuracy', the recommendation to use 'Signal' for official inter-agency intelligence sharing is a significant security violation; government agencies typically use specific secure networks (like SIPRNet, NIPRNet, or dedicated law enforcement portals) rather than commercial encrypted messaging apps. Additionally, the 'Information Sharing Protocols' section lacks the specific chain-of-custody documentation details (e.g., specific forms or digital signatures) expected in a formal coordination plan. The 'Autonomy' score is 3 because a real stakeholder would require the security protocol to be corrected before the document could be used as-is."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Gather intelligence information by field observation, confidential information sources, or public records.",
+      "task_type": "Intelligence Synthesis and Validation",
+      "user_prompt": "You are an intelligence analyst tasked with synthesizing intelligence from field observations, confidential sources, and public records to assess the current threat level of a specific terrorist cell. Using the provided data, create a comprehensive threat assessment report that distinguishes between verified facts and speculative hypotheses. The report must adhere to strict chain-of-custody logic for data sources and recommend immediate countermeasures prioritized by threat severity.",
+      "reference_context": {
+        "field_observations": [
+          {
+            "observer": "Agent Smith",
+            "observation": "Suspect A seen entering a safe house in Chicago on 2023-08-01.",
+            "verification_status": "Verified"
+          },
+          {
+            "observer": "Agent Jones",
+            "observation": "Suspect B seen purchasing large quantities of explosives in Detroit on 2023-08-02.",
+            "verification_status": "Verified"
+          }
+        ],
+        "confidential_sources": [
+          {
+            "source_id": "CS-001",
+            "information": "Suspect A is planning an attack on a major infrastructure site.",
+            "verification_status": "Unverified"
+          }
+        ],
+        "public_records": [
+          {
+            "record_id": "PR-001",
+            "content": "Suspect A has a history of violent crimes.",
+            "verification_status": "Verified"
+          }
+        ],
+        "chain_of_custody_log": "Field observations recorded in official logs #111 and #222. Confidential source CS-001 verified under protocol #333."
+      },
+      "evaluation_criteria": [
+        "Fact vs. Hypothesis: Clearly distinguishes between verified facts and speculative hypotheses in the report.",
+        "Chain of Custody: Explicitly references the source and legal basis for all data points used.",
+        "Actionable Recommendations: Provides prioritized countermeasures based on the threat assessment."
+      ],
+      "student_answer": "**Terrorist Cell Threat Assessment – Preliminary**\n\n**Date:** 2023-08-03\n\n**Executive Summary:**  The threat level associated with this terrorist cell is currently elevated due to confirmed activity indicating imminent planning for a significant attack.  Suspect A’s presence at a known safe house and confirmed purchase of explosives by Suspect B represent immediate and serious concerns.\n\n**I. Threat Assessment:**\n\n*   **Suspect A:**  Confirmed presence at a safe house (Agent Smith, verified – Log #111).  History of violent crimes (Public Record PR-001, verified).  Unverified intelligence suggests planning an attack on a major infrastructure site (Confidential Source CS-001, unverified).\n*   **Suspect B:** Confirmed purchase of large quantities of explosives (Agent Jones, verified – Log #222).\n*   **Overall Threat Level:** High.  The combination of confirmed location, explosive procurement, and unverified attack planning necessitates immediate action.\n\n**II. Data Validation & Chain of Custody:**\n\n*   **Field Observations:** Verified through official logs (#111, #222).\n*   **Confidential Source:** Verified under protocol #333.  The unverified nature of the intelligence regarding the target necessitates cautious interpretation.\n*   **Public Records:** Verified through standard record access procedures.\n\n**III. Immediate Countermeasures (Prioritized):**\n\n1.  **Immediate Surveillance of Suspect A:** Deploy surveillance teams to monitor Suspect A’s activities and movements. (Priority: Critical)\n2.  **Asset Interdiction – Suspect B:** Initiate efforts to locate and apprehend Suspect B and secure any acquired explosives. (Priority: Critical)\n3.  **Infrastructure Vulnerability Assessment:** Conduct a rapid assessment of potential infrastructure targets based on Suspect A’s alleged planning. (Priority: High)\n4.  **Intelligence Gathering – Target Confirmation:**  Intensify efforts to verify the intelligence regarding the target of Suspect A’s planned attack. (Priority: High)\n\n**IV.  Recommendations:**\n\n*   Escalate threat level to Level Orange.\n*   Increase resource allocation to surveillance and counter-terrorism operations.\n*   Maintain strict chain of custody for all intelligence data.\n\n**End of Report**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        4,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly addresses the task requirements, distinguishing between verified facts and unverified intelligence while maintaining a professional tone. It accurately utilizes the provided data points (logs, source IDs, dates) without hallucinating new facts. However, it scores a 4 rather than a 5 because the 'Immediate Countermeasures' section, while logical, lacks the specific operational detail (e.g., specific agencies to coordinate with, legal authorities required) expected of an industry-standard, exceptional report. The distinction between observed facts and predictions is clear, but the recommendations could be more granular to achieve a perfect score."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Study the assets of criminal suspects to determine the flow of money from or to targeted groups.",
+      "task_type": "Financial Flow Analysis",
+      "user_prompt": "You are an intelligence analyst investigating a suspected money laundering ring. Review the provided transaction logs and suspect asset declarations. Identify the primary flow of funds, distinguish between verified transactions and speculative links, and draft a prioritized list of three high-value targets for asset seizure based on threat severity.",
+      "reference_context": {
+        "transaction_logs": [
+          {
+            "id": "TX-001",
+            "date": "2023-10-01",
+            "amount": 50000,
+            "source": "Shell Corp A",
+            "destination": "Offshore Account X",
+            "verified": true
+          },
+          {
+            "id": "TX-002",
+            "date": "2023-10-05",
+            "amount": 25000,
+            "source": "Offshore Account X",
+            "destination": "Real Estate LLC B",
+            "verified": true
+          },
+          {
+            "id": "TX-003",
+            "date": "2023-10-12",
+            "amount": 10000,
+            "source": "Cash Deposit",
+            "destination": "Offshore Account X",
+            "verified": false
+          },
+          {
+            "id": "TX-004",
+            "date": "2023-10-15",
+            "amount": 75000,
+            "source": "Real Estate LLC B",
+            "destination": "Suspect John Doe",
+            "verified": true
+          }
+        ],
+        "suspect_assets": [
+          {
+            "name": "John Doe",
+            "assets": [
+              "Real Estate LLC B",
+              "Offshore Account X"
+            ],
+            "verified_ownership": true
+          },
+          {
+            "name": "Jane Smith",
+            "assets": [
+              "Shell Corp A"
+            ],
+            "verified_ownership": false
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Fact vs. Hypothesis: Clearly distinguishes between verified transactions (TX-001, TX-002, TX-004) and unverified data (TX-003, Jane Smith).",
+        "Chain of Custody: Traces the fund flow logically from Shell Corp A to Suspect John Doe via intermediate entities.",
+        "Prioritization: Recommends seizing assets from John Doe and Real Estate LLC B as highest priority due to verified ownership and direct fund flow."
+      ],
+      "student_answer": "**Priority Asset Seizure Targets**\n\n1.  **Offshore Account X:** Primary conduit for illicit funds, demonstrated through multiple verified transactions. Linked to Real Estate LLC B and Suspect John Doe. High threat due to its central role in the money laundering operation.\n2.  **Real Estate LLC B:** Significant recipient of laundered funds, facilitating the transfer to Suspect John Doe.  Moderate threat due to its connection to both the offshore account and a key individual.\n3.  **Suspect John Doe:** Ultimate beneficiary of the laundered funds, representing the culmination of the money laundering scheme. High threat due to direct involvement and potential for further illicit activities.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the flow of funds and lists three targets, but it fails to explicitly distinguish between verified transactions and speculative links as required by the task (e.g., it treats the unverified TX-003 as part of the established flow without qualification). It also fails to prioritize the targets based on 'threat severity' with a clear rationale or ranking, simply listing them. The distinction between observed facts and the unverified cash deposit is weak. While the structure is clear, the lack of rigorous differentiation between verified and speculative data prevents it from meeting industry standards for an intelligence report."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Design, use, or maintain databases and software applications, such as geographic information systems (GIS) mapping and artificial intelligence tools.",
+      "task_type": "GIS Spatial Analysis",
+      "user_prompt": "You are tasked with optimizing patrol routes for a counter-terrorism unit. Using the provided incident coordinates and the GIS layer descriptions, generate a heat map analysis identifying the three highest-risk zones. Explain the methodology used to aggregate the data and propose a specific patrol strategy for Zone A.",
+      "reference_context": {
+        "incident_coordinates": [
+          {
+            "id": "INC-01",
+            "lat": 40.7128,
+            "lon": -74.006,
+            "severity": "High",
+            "time": "2023-11-01 14:00"
+          },
+          {
+            "id": "INC-02",
+            "lat": 40.713,
+            "lon": -74.0058,
+            "severity": "Medium",
+            "time": "2023-11-01 14:15"
+          },
+          {
+            "id": "INC-03",
+            "lat": 40.7125,
+            "lon": -74.0065,
+            "severity": "High",
+            "time": "2023-11-02 09:00"
+          },
+          {
+            "id": "INC-04",
+            "lat": 40.75,
+            "lon": -73.99,
+            "severity": "Low",
+            "time": "2023-11-03 18:00"
+          }
+        ],
+        "gis_layers": [
+          {
+            "name": "Population Density",
+            "weight": 1.5
+          },
+          {
+            "name": "Transport Hubs",
+            "weight": 2.0
+          },
+          {
+            "name": "Historical Incidents",
+            "weight": 3.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Spatial Aggregation: Correctly clusters INC-01, INC-02, and INC-03 into a high-density 'Zone A' based on proximity.",
+        "Methodology Transparency: Explicitly states how the GIS weights (e.g., Historical Incidents weight 3.0) influenced the heat map generation.",
+        "Actionable Strategy: Proposes a specific patrol route or frequency for Zone A that addresses the high severity and density of incidents."
+      ],
+      "student_answer": "**Heat Map Analysis & High-Risk Zone Identification**\n\n**Methodology:**\n\nIncident coordinates were geocoded and overlaid onto the GIS layers. Each layer’s influence was weighted based on its assigned value. Incident severity was factored into the overall risk score for each location. A weighted sum was calculated for each incident location, considering population density, transport hubs, and historical incident frequency. The resulting scores were then aggregated spatially using a kernel density estimation to generate a heat map. Three zones with the highest density scores were identified as high-risk areas.\n\n**High-Risk Zones:**\n\n1.  **Zone A:** (40.7128, -74.006) – Highest Risk\n2.  **Zone B:** (40.713, -74.0058) – High Risk\n3.  **Zone C:** (40.7125, -74.0065) – High Risk\n\n**Patrol Strategy for Zone A:**\n\nImplement a rapid response, layered patrol strategy. Deploy a team of four officers in a grid pattern covering Zone A. Utilize vehicle patrols for initial coverage, supplemented by foot patrols to address potential hotspots within the zone. Focus on surveillance of key intersections and access points. Establish a 15-minute response time target. Conduct proactive engagement with local residents to gather intelligence and establish a rapport. Continuous monitoring of CCTV and communication channels is crucial. Consider deploying a mobile command post within Zone A for enhanced coordination and rapid deployment.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the three highest-risk zones based on the provided coordinates and severity levels, and the methodology description is logically sound. However, it fails to explicitly incorporate the specific GIS layer weights (1.5, 2.0, 3.0) into the calculation or explanation, treating them as generic factors rather than applying the specific values provided. The patrol strategy for Zone A is generic and does not leverage the specific layer data (e.g., mentioning 'Transport Hubs' or 'Population Density' specifically in the strategy) to justify the tactics. While the output is clear and structured, the lack of specific data integration prevents it from reaching an industry-standard level of precision."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop defense plans or tactics, using intelligence and other information.",
+      "task_type": "Tactical Defense Planning",
+      "user_prompt": "Based on the intercepted communications and the suspect's known capabilities, develop a comprehensive defense plan for an upcoming high-profile event. The plan must include specific counter-measures for the identified threats, a chain-of-custody protocol for the intelligence used, and a prioritized list of resources required.",
+      "reference_context": {
+        "intercepted_comms": [
+          {
+            "id": "INT-01",
+            "content": "Target will be vulnerable at the main entrance between 10:00 and 11:00.",
+            "source": "Encrypted Channel A",
+            "verified": true
+          },
+          {
+            "id": "INT-02",
+            "content": "Use of improvised explosive devices is planned.",
+            "source": "Encrypted Channel A",
+            "verified": true
+          },
+          {
+            "id": "INT-03",
+            "content": "Meeting location confirmed.",
+            "source": "Unverified Source B",
+            "verified": false
+          }
+        ],
+        "suspect_capabilities": [
+          {
+            "capability": "Remote detonation",
+            "confidence": "High"
+          },
+          {
+            "capability": "Insider access",
+            "confidence": "Medium"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Threat Mitigation: Addresses the specific threat of IEDs at the main entrance during the 10:00-11:00 window.",
+        "Data Integrity: Explicitly excludes 'Meeting location confirmed' from the tactical plan due to lack of verification.",
+        "Resource Prioritization: Lists resources (e.g., bomb squad, entrance screening) in order of threat severity and likelihood."
+      ],
+      "student_answer": "**Defense Plan: High-Profile Event**\n\n**I. Threat Assessment & Counter-Measures:**\n\n*   **Primary Threat:** Improvised Explosive Device (IED) attack targeting the main entrance between 10:00-11:00.\n    *   **Counter-Measure 1:** Perimeter security lockdown commencing 30 minutes prior to the event. Deploy layered physical barriers (concrete barriers, vehicle barriers) at the main entrance.\n    *   **Counter-Measure 2:** Implement advanced metal detection and explosive trace detection (ETD) screening at all entry points. Utilize trained K-9 units specializing in explosive detection.\n    *   **Counter-Measure 3:** Deploy surveillance drones with thermal imaging capabilities to monitor the perimeter and identify potential IED placement.\n    *   **Counter-Measure 4:** Establish a rapid response team (RRT) equipped with EOD capabilities to immediately address any detected threats.\n*   **Secondary Threat:** Remote detonation of IED.\n    *   **Counter-Measure 5:** Conduct a thorough sweep of the event area for potential IED triggers (pressure plates, remote control devices). Utilize ground-penetrating radar.\n    *   **Counter-Measure 6:** Implement a redundant communication system utilizing encrypted channels to prevent remote manipulation of devices.\n    *   **Counter-Measure 7:** Deploy counter-surveillance measures to detect and disrupt potential remote detonation attempts.\n*   **Insider Threat:** Potential for insider access and support.\n    *   **Counter-Measure 8:** Conduct enhanced background checks on all event staff, security personnel, and vendors.\n    *   **Counter-Measure 9:** Implement strict access control protocols and monitor employee activity. Utilize biometric identification where possible.\n    *   **Counter-Measure 10:** Establish a confidential reporting mechanism for suspicious behavior.\n\n**II. Chain of Custody Protocol:**\n\n1.  **Collection:** Intelligence intercepts (INT-01, INT-02) collected by Cyber Intelligence Unit.\n2.  **Initial Assessment:** Cyber Intelligence Unit analyzes intercepts and assigns priority.\n3.  **Verification:** Intelligence Analyst (assigned) independently verifies INT-01 and INT-02 using open-source intelligence (OSINT) and human intelligence (HUMINT). INT-03 remains unverified.\n4.  **Documentation:** All intercepts, verification results, and analyst assessments are meticulously documented in a secure digital ledger.\n5.  **Distribution:** Securely disseminated to relevant stakeholders (Security Director, Event Coordinator, RRT Commander) via encrypted channels.\n6.  **Storage:** Digital ledger archived in a hardened, physically secured server room.\n\n**III. Prioritized Resource Requirements:**\n\n1.  **Personnel:**\n    *   Rapid Response Team (EOD specialists, tactical response) – 10 personnel\n    *   Intelligence Analysts – 3 personnel\n    *   Cyber Intelligence Unit – 5 personnel\n    *   Security Personnel – 20 personnel\n    *   Event Staff Training – 2 hours\n2.  **Equipment:**\n    *   Metal Detectors & ETD Systems – 3 units\n    *   Surveillance Drones (Thermal Imaging) – 2 units\n    *   Ground-Penetrating Radar – 1 unit\n    *   Communication Systems (Encrypted) – 2 sets\n    *   Biometric Identification Scanners – 5 units\n    *   Concrete Barriers/Vehicle Barriers – 100 linear feet\n3.  **Financial:** $50,000 (Contingency fund for unforeseen expenses)\n\n**IV. Contingency Plan:**\n\n*   Establish a secure communication channel for immediate threat assessment and response.\n*   Implement a phased evacuation plan based on threat level.\n*   Coordinate with local law enforcement and emergency services.\n\n**V. Unverified Information:**\n\n*   INT-03 (Meeting location confirmed) requires further investigation. Prioritize HUMINT efforts to verify location and identify potential participants.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        3
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission correctly identifies the primary threats (IED, remote detonation, insider access) and proposes relevant counter-measures. It addresses the chain of custody and resource requirements with reasonable detail. However, the plan lacks the specificity expected of an 'industry-standard' defense plan for a high-profile event; for instance, the chain of custody is generic and does not specify unique identifiers or specific legal standards (like ISO 27037) for evidence handling. The resource list includes arbitrary numbers (e.g., '100 linear feet') without a site-specific risk assessment to justify them. The 'Autonomy' score is 3 because the plan reads more like a template or a draft; a real client would require specific site logistics, legal authorization for counter-surveillance measures, and a more robust contingency timeline before deployment."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Gather and evaluate information, using tools such as aerial photographs, radar equipment, or sensitive radio equipment.",
+      "task_type": "Multi-Source Intelligence Fusion",
+      "user_prompt": "You have received a dossier containing aerial imagery, radar logs, and radio intercepts regarding a suspected smuggling operation. Synthesize these disparate data sources to construct a timeline of the operation. Identify any discrepancies between the sources and recommend the next step for verification.",
+      "reference_context": {
+        "aerial_imagery": [
+          {
+            "timestamp": "2023-12-01 08:00",
+            "observation": "Vessel at coordinates X, Y",
+            "quality": "High"
+          }
+        ],
+        "radar_logs": [
+          {
+            "timestamp": "2023-12-01 08:05",
+            "observation": "Unknown contact at coordinates X, Y",
+            "signal_strength": "Strong"
+          }
+        ],
+        "radio_intercepts": [
+          {
+            "timestamp": "2023-12-01 08:10",
+            "content": "Arrival confirmed at X, Y",
+            "source": "Smuggler Group Alpha",
+            "verified": true
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Timeline Construction: Accurately sequences the events from 08:00 to 08:10 based on the provided timestamps.",
+        "Discrepancy Analysis: Notes the 5-minute lag between visual confirmation and radio confirmation as a potential delay or verification gap.",
+        "Verification Recommendation: Proposes a specific action (e.g., deploy coast guard patrol) to verify the vessel's identity and cargo."
+      ],
+      "student_answer": "**Timeline of Operation:**\n\n*   **2023-12-01 08:00:** Vessel observed at coordinates X, Y (High quality aerial imagery).\n*   **2023-12-01 08:05:** Strong radar contact detected at coordinates X, Y.\n*   **2023-12-01 08:10:** Radio intercept confirms vessel arrival at coordinates X, Y from Smuggler Group Alpha.\n\n**Discrepancies:**\n\n*   Radar log timestamp (08:05) is 5 minutes after the first aerial observation (08:00). This suggests the vessel arrived slightly ahead of the initial detection.\n\n**Next Step for Verification:**\n\nAnalyze satellite imagery from 2023-12-01 07:55 to 08:15 to confirm the vessel’s presence and activity at coordinates X, Y during the timeframe between the initial aerial observation and the radar contact.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "The submission correctly extracts the timeline and identifies the data sources. However, the analysis of discrepancies is weak; the student claims the 5-minute gap suggests the vessel arrived 'ahead of detection,' which is a logical error (a later timestamp simply means later detection, not necessarily earlier arrival). A professional analyst would note the 5-minute lag as a potential sensor delay or coordinate drift rather than inferring arrival time. The recommendation for satellite imagery is reasonable but generic. The answer is functional but lacks the critical depth and precision expected of an industry-standard intelligence report, preventing a score of 5."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Interview, interrogate, or interact with witnesses or crime suspects to collect human intelligence.",
+      "task_type": "Human Intelligence Assessment",
+      "user_prompt": "You are reviewing the transcript of an interview with a key witness regarding a cyber-attack. Analyze the witness's statements to separate factual observations from their personal interpretations. Identify three critical gaps in the information that require follow-up questioning and draft a follow-up question list.",
+      "reference_context": {
+        "interview_transcript": [
+          {
+            "statement": "I saw the server room door open at 2 AM.",
+            "type": "Observation"
+          },
+          {
+            "statement": "The person inside looked like a hacker.",
+            "type": "Interpretation"
+          },
+          {
+            "statement": "They were wearing a black hoodie.",
+            "type": "Observation"
+          },
+          {
+            "statement": "They must have been stealing data.",
+            "type": "Interpretation"
+          },
+          {
+            "statement": "I did not see what they did with the laptop.",
+            "type": "Observation"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Fact vs. Speculation: Correctly categorizes 'looked like a hacker' and 'must have been stealing' as interpretations, not facts.",
+        "Gap Identification: Identifies the lack of information regarding the specific actions taken with the laptop and the identity of the individual.",
+        "Follow-up Strategy: Generates specific, non-leading questions to fill the identified gaps (e.g., 'What specific actions did the individual perform with the laptop?')."
+      ],
+      "student_answer": "**Factual Observations:**\n\n*   Server room door open at 2 AM.\n*   Person inside wearing a black hoodie.\n*   Did not see what was done with the laptop.\n\n**Interpretations:**\n\n*   Person inside looked like a hacker.\n*   They were stealing data.\n\n**Critical Gaps Requiring Follow-Up:**\n\n1.  **Door Security:** The open server room door is a significant anomaly.\n2.  **Person's Identity:** The witness’s assessment of the individual as a “hacker” is an interpretation.\n3.  **Laptop Activity:** The witness’s inability to observe the laptop’s activity is a critical omission.\n\n**Follow-Up Question List:**\n\n1.  “Can you describe the state of the server room door when you observed it open? Was it unlocked, forced open, or otherwise unusual?”\n2.  “Regarding the individual you saw, can you describe any specific details that led you to believe they resembled a ‘hacker’? (e.g., clothing, demeanor, tools, etc.)”\n3.  “Could you provide a more detailed description of your vantage point and what, if anything, you *were* able to observe regarding the laptop’s activity, even if it wasn’t directly visible?”",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission correctly identifies all factual observations and interpretations from the transcript without error. The three critical gaps identified are logically derived from the text and represent genuine investigative needs. The follow-up questions are professional, open-ended, and directly address the identified gaps without leading the witness or introducing hallucinated details. The formatting is clean, the tone is appropriate for a senior analyst, and the output is ready for immediate use without any edits."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Operate cameras, radios, or other surveillance equipment to intercept communications or document activities.",
+      "task_type": "Surveillance Activity Documentation",
+      "user_prompt": "Review the provided surveillance logs from a 24-hour stakeout. Identify the primary subject's movement patterns and any deviations from their routine. Document the chain of custody for the video evidence and recommend a surveillance posture for the next 24 hours based on the observed behavior.",
+      "reference_context": {
+        "surveillance_logs": [
+          {
+            "time": "06:00",
+            "subject": "Target A",
+            "location": "Residence",
+            "activity": "Departure",
+            "video_id": "VID-001"
+          },
+          {
+            "time": "09:00",
+            "subject": "Target A",
+            "location": "Office",
+            "activity": "Entry",
+            "video_id": "VID-002"
+          },
+          {
+            "time": "14:00",
+            "subject": "Target A",
+            "location": "Office",
+            "activity": "Departure",
+            "video_id": "VID-003"
+          },
+          {
+            "time": "18:00",
+            "subject": "Target A",
+            "location": "Residence",
+            "activity": "Return",
+            "video_id": "VID-004"
+          },
+          {
+            "time": "22:00",
+            "subject": "Unknown",
+            "location": "Residence",
+            "activity": "Entry",
+            "video_id": "VID-005"
+          }
+        ],
+        "routine_profile": "Target A typically returns home by 19:00 and does not receive visitors after 20:00."
+      },
+      "evaluation_criteria": [
+        "Pattern Recognition: Identifies the deviation at 22:00 where an unknown individual entered the residence, breaking the routine profile.",
+        "Chain of Custody: Explicitly lists the video IDs (VID-001 through VID-005) as the evidence chain and notes the need for secure storage.",
+        "Posture Recommendation: Recommends maintaining 24-hour surveillance on the residence to monitor the unknown individual and potential follow-up activity."
+      ],
+      "student_answer": "**Subject Movement Patterns:**\n\nTarget A’s typical routine involves departing the residence at 06:00, arriving at the office at 09:00, departing the office at 14:00, and returning to the residence at 18:00. On this observation period, Target A returned at 18:00, deviating from the established routine. An unknown individual entered Target A’s residence at 22:00.\n\n**Chain of Custody:**\n\n*   **VID-001:** Recorded at Target A’s residence, secured by Surveillance Team Alpha.\n*   **VID-002:** Recorded at Target A’s office, secured by Surveillance Team Beta.\n*   **VID-003:** Recorded at Target A’s office, secured by Surveillance Team Beta.\n*   **VID-004:** Recorded at Target A’s residence, secured by Surveillance Team Alpha.\n*   **VID-005:** Recorded at Target A’s residence, secured by Surveillance Team Alpha.\n\n**Recommended Surveillance Posture (Next 24 Hours):**\n\nMaintain a high-visibility surveillance posture at Target A’s residence. Increase observation frequency, particularly between 21:00 and 06:00. Prioritize monitoring for any unusual activity or individuals entering the premises. Investigate the identity of the “Unknown” individual who entered at 22:00. Consider deploying additional surveillance assets to observe the office location.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the movement patterns but contains a critical factual error in the 'Correctness' and 'Domain Accuracy' dimensions: it claims Target A deviated from the routine by returning at 18:00, whereas the context explicitly states the typical return time is 19:00, making 18:00 the actual deviation. The 'Chain of Custody' section hallucinates specific team names (Alpha/Beta) not present in the source data, which is a significant professional error. The recommendation is logical but generic. The structure is clear, but the factual inaccuracies and hallucinations prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Study communication code languages or foreign languages to translate intelligence.",
+      "task_type": "Cryptographic Translation and Threat Assessment",
+      "user_prompt": "You are an intelligence analyst tasked with translating and analyzing a intercepted 150-word communication in a simplified cipher code used by a known foreign cell. The text contains references to 'Operation Red Tide,' specific coordinates, and a timeline. Your objective is to: 1) Translate the message into English, 2) Distinguish between verified facts (coordinates, dates) and speculative hypotheses (intent, specific targets), 3) Apply strict chain-of-custody logic to the source data, and 4) Draft a prioritized threat assessment recommending immediate actions based on the highest severity threat identified.",
+      "reference_context": {
+        "intercepted_message": "OP RED TIDE INITIATES AT 0400 ZULU. COORDS 34.0522N 118.2437W. TARGET: LOGISTICS HUB ALPHA. SUPPORT UNIT DELTA EN ROUTE. PROBABLE CASUALTIES EXPECTED IF INTERCEPTED. CONFIRMATION PENDING FROM HQ.",
+        "cipher_key": "Standard substitution cipher (A=1, B=2, etc.) with 'ZULU' representing UTC time and 'LOGISTICS HUB ALPHA' referring to the Port of Los Angeles distribution center.",
+        "chain_of_custody_log": {
+          "source": "Satellite Intercept Station 4",
+          "timestamp": "2023-10-24T08:15:00Z",
+          "handler": "Analyst J. Doe",
+          "integrity_hash": "a1b2c3d4e5f6"
+        }
+      },
+      "evaluation_criteria": [
+        "Translation Accuracy: Correctly decodes the cipher and translates all key terms without omission.",
+        "Fact vs. Hypothesis Distinction: Explicitly categorizes coordinates and dates as verified facts and 'probable casualties' or 'target' specifics as hypotheses requiring verification.",
+        "Chain of Custody: References the specific handler, timestamp, and integrity hash in the final report to maintain data integrity.",
+        "Actionable Recommendations: Prioritizes actions based on the immediate threat of the 0400 ZULU timeline and specific location."
+      ],
+      "student_answer": "**Translation:**\n\n“Operation Red Tide initiates at 0400 Zulu. Coordinates 34.0522N 118.2437W. Target: Logistics Hub Alpha. Support unit Delta en route. Probable casualties expected if intercepted. Confirmation pending from HQ.”\n\n**Verified Facts:**\n\n*   **Operation Name:** Operation Red Tide\n*   **Initiation Time:** 0400 Zulu (UTC) – October 25, 2023\n*   **Coordinates:** 34.0522N 118.2437W (Port of Los Angeles distribution center)\n*   **Support Unit:** Unit Delta is en route.\n\n**Speculative Hypotheses:**\n\n*   **Target Intent:** Disrupting logistics.\n*   **Potential Targets:** Personnel at Logistics Hub Alpha.\n*   **Expected Outcome:** Casualties.\n*   **Confirmation Status:** Pending from HQ.\n\n**Chain of Custody:**\n\n*   Source: Satellite Intercept Station 4\n*   Timestamp: 2023-10-24T08:15:00Z\n*   Handler: Analyst J. Doe\n*   Integrity Hash: a1b2c3d4e5f6 (Verified)\n\n**Threat Assessment & Recommendations:**\n\n**Priority: High**\n\n**Threat:** Imminent hostile action – Operation Red Tide targeting Logistics Hub Alpha.\n\n**Rationale:** The message indicates a planned attack with a defined timeframe and target. The mention of a support unit (“Delta”) suggests coordinated action.  The expectation of casualties underscores the potential for significant harm.  Pending confirmation from HQ introduces an element of uncertainty, but the urgency of the message warrants immediate action.\n\n**Immediate Actions:**\n\n1.  **Alert:** Immediately notify relevant security agencies (FBI, DHS) and local law enforcement.\n2.  **Security Enhancement:** Implement heightened security protocols at Logistics Hub Alpha – increased patrols, access control, surveillance.\n3.  **Intelligence Gathering:** Prioritize efforts to identify and locate Unit Delta. Attempt to ascertain the nature of HQ’s confirmation status.\n4.  **Route Monitoring:** Establish surveillance of potential routes used by Unit Delta.\n5.  **Contingency Planning:** Develop and rehearse contingency plans for potential attack scenarios.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly translates the message and accurately distinguishes between facts and hypotheses. However, it fails to explicitly apply 'strict chain-of-custody logic' as requested; it merely lists the metadata without analyzing the integrity or potential tampering risks associated with the hash and handler. Additionally, the threat assessment, while sound, lacks the specific strategic depth expected of an industry-standard intelligence product (e.g., specific risk mitigation matrices or legal authority considerations for the recommended alerts). The output is professional and clear but requires minor substantive refinement to meet the 'exceptional' standard."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare plans to intercept foreign communications transmissions.",
+      "task_type": "Interception Strategy and Resource Allocation",
+      "user_prompt": "You are an intelligence analyst developing a 48-hour interception plan for a foreign entity suspected of using a new frequency hopping spread spectrum (FHSS) protocol. Based on the provided signal intelligence (SIGINT) logs and known behavioral patterns, draft a comprehensive interception plan. The plan must include: 1) A schedule for signal monitoring windows, 2) Resource allocation for three distinct monitoring stations, 3) A risk assessment of potential detection by the target, and 4) A contingency protocol if the target switches frequencies. Ensure all recommendations are prioritized by threat severity to national security.",
+      "reference_context": {
+        "sigint_logs": [
+          {
+            "time": "2023-10-24T10:00:00Z",
+            "frequency": "145.500 MHz",
+            "duration": "45s",
+            "pattern": "FHSS, 10 hops/sec"
+          },
+          {
+            "time": "2023-10-24T14:30:00Z",
+            "frequency": "145.512 MHz",
+            "duration": "60s",
+            "pattern": "FHSS, 10 hops/sec"
+          },
+          {
+            "time": "2023-10-24T18:15:00Z",
+            "frequency": "145.525 MHz",
+            "duration": "30s",
+            "pattern": "FHSS, 10 hops/sec"
+          }
+        ],
+        "behavioral_pattern": "Target transmits only during daylight hours (06:00-20:00 local time) and increases transmission frequency by 15% every 3 days.",
+        "available_resources": {
+          "station_alpha": "High-gain antenna, 24/7 coverage",
+          "station_beta": "Mobile unit, limited battery (12h)",
+          "station_gamma": "Fixed site, low-gain antenna"
+        }
+      },
+      "evaluation_criteria": [
+        "Strategic Planning: The monitoring schedule aligns with the observed daylight pattern and increasing transmission frequency.",
+        "Resource Optimization: Allocates Station Alpha for primary interception and Station Beta for mobile backup, justifying the use of Station Gamma.",
+        "Risk Assessment: Clearly identifies the risk of frequency hopping detection and proposes a counter-measure.",
+        "Prioritization: Recommendations are ranked by threat severity, with immediate action required for the next 24-hour window."
+      ],
+      "student_answer": "**48-Hour Interception Plan: FHSS Protocol Analysis**\n\n**Priority Level:** High – Potential National Security Threat\n\n**1. Schedule – Signal Monitoring Windows:**\n\n*   **Phase 1 (Hours 0-12):** Continuous monitoring at Station Alpha (24/7). Focus: Initial frequency mapping and pattern confirmation.\n*   **Phase 2 (Hours 12-24):** Shift Station Beta to monitor frequencies adjacent to those observed in SIGINT logs (+/- 100 kHz). Monitor during daylight hours only.\n*   **Phase 3 (Hours 24-48):** Station Gamma activated. Monitor frequencies identified in Phase 1 & 2. Implement frequency drift analysis.\n\n**2. Resource Allocation:**\n\n*   **Station Alpha (High-gain, 24/7):**\n    *   Primary: FHSS protocol analysis, initial frequency mapping.\n    *   Software: Advanced spectrum analysis software with FHSS decoding capabilities.\n    *   Personnel: 2 analysts (8-hour shifts).\n*   **Station Beta (Mobile, 12h battery):**\n    *   Secondary: Frequency hopping analysis, pattern verification.\n    *   Equipment: Portable spectrum analyzer, directional antenna.\n    *   Deployment: Target area based on behavioral pattern (daylight hours).\n    *   Personnel: 1 analyst (8-hour shifts).\n*   **Station Gamma (Fixed, Low-gain):**\n    *   Tertiary: Frequency drift monitoring, data correlation.\n    *   Equipment: Standard spectrum analyzer, logging system.\n    *   Personnel: 1 analyst (8-hour shifts).\n\n**3. Risk Assessment & Detection Mitigation:**\n\n*   **Risk 1: Target Detection:** High. FHSS protocols are designed to evade detection.\n    *   Mitigation: Utilize wideband monitoring to capture potential hopping patterns. Employ noise masking techniques where feasible.\n*   **Risk 2: Counter-Surveillance:** Moderate. Target may implement countermeasures to detect monitoring efforts.\n    *   Mitigation: Maintain operational security. Limit communication about interception activities.\n*   **Risk 3: Signal Degradation:** Low. Atmospheric conditions and equipment limitations could impact signal quality.\n    *   Mitigation: Regularly calibrate equipment. Monitor signal strength and quality.\n\n**4. Contingency Protocol – Frequency Switch:**\n\n*   **Trigger:** Significant deviation ( > 200 kHz) from established frequency patterns.\n*   **Action 1 (Immediate):** Station Alpha immediately initiates a scan of adjacent frequencies.\n*   **Action 2 (Within 5 minutes):** Station Beta moves to the new frequency.\n*   **Action 3 (Within 15 minutes):** Station Gamma begins monitoring the new frequency.\n*   **Action 4 (Continuous):** All stations log frequency changes and transmit data to central analysis team.\n*   **Action 5 (If pattern persists):** Initiate a broader frequency sweep across the target’s operational band.\n\n**5. Data Reporting:**\n\n*   All data (frequency, duration, pattern, signal strength) to be logged and analyzed in real-time.\n*   Daily reports summarizing findings and potential threat level to be submitted to command.\n\n**End of Plan**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses all four required sections but lacks the depth and precision expected of an industry-standard plan. Dimension 1 (Correctness) and 2 (Completeness) are rated 3 because the plan fails to explicitly calculate the 15% frequency increase trend mentioned in the context, instead relying on vague 'adjacent frequency' monitoring. The schedule does not strictly align with the 48-hour window relative to the specific daylight hours (06:00-20:00) provided, particularly for Station Beta's limited battery. Dimension 3 (Best Practices) and 4 (Domain Accuracy) are 3 because the risk assessment is generic; a professional plan would specify specific countermeasures for FHSS (e.g., dwell time analysis, correlation of hop sequences) rather than just 'noise masking.' Dimension 5 (Clarity) is 4 as the structure is logical and easy to read. Dimension 6 (Autonomy) is 3 because the lack of specific calculations and generic mitigation strategies would require a human analyst to refine the plan before deployment."
+    }
+  ]
+}

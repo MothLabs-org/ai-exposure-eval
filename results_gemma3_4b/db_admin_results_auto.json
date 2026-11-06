@@ -1,0 +1,662 @@
+{
+  "meta": {
+    "job_title": "Database Administrators",
+    "job_id": "db_admin",
+    "onet_code": "15-1242.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 18,
+    "evaluated_tasks": 18,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.14,
+      "dimensions": {
+        "Correctness": 1.89,
+        "Completeness": 1.89,
+        "Best Practices": 1.89,
+        "Domain Accuracy": 2.17,
+        "Clarity": 3.17,
+        "Autonomy": 1.83
+      },
+      "evaluated_tasks": 18,
+      "scale_max": 5
+    },
+    "total_time_seconds": 656.39
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Modify existing databases and database management systems or direct programmers and analysts to make changes.",
+      "task_type": "Schema Migration with Data Integrity",
+      "user_prompt": "You are the lead DBA for a fintech startup. The legacy 'transactions' table needs to be migrated to a new schema to support high-frequency trading. The current table has a single 'amount' column as VARCHAR. You must design a migration script that converts 'amount' to DECIMAL(18,2), adds a 'timestamp' column with a default value, and creates a composite index on (customer_id, timestamp). Provide the SQL migration script and a rollback strategy.",
+      "reference_context": {
+        "legacy_schema": "CREATE TABLE transactions (id INT PRIMARY KEY, customer_id INT, amount VARCHAR(20), notes TEXT);",
+        "requirements": "Must handle NULL values in amount, ensure atomicity, and minimize downtime."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the SQL execute without syntax errors and achieve the schema change?",
+        "Completeness: Are all columns, types, and indexes specified as requested?",
+        "Best Practices: Is the migration script idempotent and includes a rollback plan?"
+      ],
+      "student_answer": "```sql\n-- Migration Script\n\n-- Step 1: Create a new table with the desired schema\nCREATE TABLE transactions_new (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    amount DECIMAL(18, 2),\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    notes TEXT\n);\n\n-- Step 2: Insert data from the legacy table into the new table\nINSERT INTO transactions_new (id, customer_id, amount, notes)\nSELECT id, customer_id, CAST(amount AS DECIMAL(18, 2)), notes\nFROM transactions;\n\n-- Step 3: Create a composite index\nCREATE INDEX idx_transactions_customer_timestamp ON transactions_new (customer_id, timestamp);\n\n-- Step 4: Drop the legacy table\nDROP TABLE transactions;\n\n-- Step 5: Rename the new table to the legacy table name\nALTER TABLE transactions_new RENAME TO transactions;\n\n-- Rollback Strategy\n\n-- Step 1: Restore the legacy table\nDROP TABLE transactions;\n\n-- Step 2: Rename the new table back to the legacy table name\nALTER TABLE transactions_new RENAME TO transactions;\n\n-- Step 3: Re-populate the legacy table from the backup (assuming a backup exists)\n-- This step requires a separate backup and restore process.  The specific commands will depend on the database system.\n-- Example (PostgreSQL):\n-- CREATE TABLE transactions (id INT PRIMARY KEY, customer_id INT, amount VARCHAR(20), notes TEXT);\n-- COPY transactions FROM '/path/to/backup/transactions.csv' WITH (FORMAT CSV, HEADER);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails on critical correctness and completeness grounds. First, it ignores the explicit requirement to handle NULL values in the 'amount' column; the CAST operation will fail if any NULLs exist. Second, the rollback strategy is logically flawed: it attempts to drop the new table and rename the old one, but the old table was already dropped in Step 4 of the migration, leaving no source for rollback. Third, it lacks atomicity (no transaction block), which violates the requirement to minimize downtime and ensure data integrity. Fourth, it does not address the risk of data type casting errors (e.g., non-numeric strings in VARCHAR) which would halt the migration. While the SQL syntax is valid for a simple case, the solution is not production-ready for a fintech environment."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Plan, coordinate, and implement security measures to safeguard information in computer files against accidental or unauthorized damage, modification or disclosure.",
+      "task_type": "Security Policy Implementation",
+      "user_prompt": "You are the security DBA for a healthcare provider. You need to implement a security policy for the 'patient_records' table. Create a role named 'nurse_readonly' that can only SELECT from the table, and a role named 'doctor_full' that can SELECT, INSERT, UPDATE, but not DELETE. Ensure that the 'ssn' column is encrypted at rest using a specific column encryption key and that access to this column is restricted to the 'doctor_full' role only. Provide the SQL commands to create roles, grant permissions, and configure the encryption.",
+      "reference_context": {
+        "table_schema": "CREATE TABLE patient_records (id INT PRIMARY KEY, patient_name VARCHAR(100), ssn VARCHAR(11), diagnosis TEXT);",
+        "encryption_key": "KEY_NAME: 'SSN_Encryption_Key', ALGORITHM: 'AES_256'"
+      },
+      "evaluation_criteria": [
+        "Security Compliance: Are roles created with the principle of least privilege?",
+        "Encryption: Is the SSN column properly configured for encryption?",
+        "Access Control: Are permissions correctly restricted to specific columns and roles?"
+      ],
+      "student_answer": "```sql\n-- Create the nurse_readonly role\nCREATE ROLE nurse_readonly;\n\n-- Grant SELECT privilege to the nurse_readonly role on the patient_records table\nGRANT SELECT ON patient_records TO nurse_readonly;\n\n-- Create the doctor_full role\nCREATE ROLE doctor_full;\n\n-- Grant SELECT, INSERT, UPDATE privileges to the doctor_full role on the patient_records table\nGRANT SELECT, INSERT, UPDATE ON patient_records TO doctor_full;\n\n-- Configure column encryption for the ssn column using the specified key\nALTER TABLE patient_records\nALTER COLUMN ssn SET ENCRYPTED USING AES_256(ssn);\n\n-- Restrict access to the encrypted ssn column to the doctor_full role\nREVOKE SELECT ON patient_records FROM nurse_readonly;\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to address the core technical requirement of implementing column-level encryption using the specified key and algorithm; the SQL syntax provided (ALTER COLUMN ... SET ENCRYPTED) is not valid for standard SQL or major RDBMS (like PostgreSQL, SQL Server, or Oracle) which require specific extensions or distinct syntax. Furthermore, the logic to restrict access to the 'ssn' column is flawed: revoking SELECT on the entire table from 'nurse_readonly' prevents them from accessing other columns, violating the 'read-only' requirement for the rest of the table. The solution also completely ignores the 'Additional Checks' regarding data type casting, rollback scripts, and index locking, which are critical for a production-grade implementation. While the role creation and basic privilege granting are syntactically correct, the failure to implement the specific encryption mechanism and the logical error in access control result in a weak submission."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Plan and install upgrades of database management system software to enhance database performance.",
+      "task_type": "Performance Upgrade Planning",
+      "user_prompt": "You are the senior DBA for an e-commerce platform. The current database is running on version 12.4 and needs to be upgraded to version 15.0 to leverage new partitioning features. The 'orders' table has grown to 500 million rows and is causing slow query performance. Outline a step-by-step upgrade plan that includes a pre-upgrade performance baseline, a strategy for enabling native partitioning on the 'orders' table during the upgrade, and a post-upgrade validation checklist to ensure query performance has improved by at least 20%.",
+      "reference_context": {
+        "current_version": "PostgreSQL 12.4",
+        "target_version": "PostgreSQL 15.0",
+        "table_size": "500 million rows",
+        "current_query_time": "Average 4.5 seconds for daily sales report"
+      },
+      "evaluation_criteria": [
+        "Feasibility: Is the upgrade plan logical and safe for production?",
+        "Performance Justification: Are partitioning strategies explicitly justified for the data volume?",
+        "Validation: Is there a clear method to measure the 20% performance improvement?"
+      ],
+      "student_answer": "```markdown\n# PostgreSQL 12.4 to 15.0 Upgrade Plan - Orders Table\n\n**Objective:** Upgrade the 'orders' table from PostgreSQL 12.4 to 15.0, enabling native partitioning and improving query performance (target: 20% improvement).\n\n**Phase 1: Pre-Upgrade Assessment & Baseline (2-3 Days)**\n\n1.  **Environment Replication:** Create a full replica of the production environment (including hardware, OS, network, and database configuration) in a staging environment.\n2.  **Baseline Performance Measurement:**\n    *   Execute the daily sales report query (currently 4.5 seconds).\n    *   Measure CPU utilization, memory usage, disk I/O, and network traffic during the query execution.\n    *   Capture database statistics (e.g., `pg_stats`).\n3.  **Compatibility Assessment:** Run `pg_upgrade` compatibility check to identify potential issues. Address any identified incompatibilities.\n4.  **Backup Strategy:** Implement a full backup of the production database.  Verify backup integrity.\n5.  **Downtime Planning:**  Determine acceptable downtime window.  Communicate downtime to stakeholders.\n\n**Phase 2: Upgrade Execution (1-2 Days)**\n\n6.  **Staging Upgrade:** Perform the `pg_upgrade` upgrade on the staging environment. Monitor the process closely.\n7.  **Post-Upgrade Verification (Staging):**\n    *   Verify data integrity by comparing row counts and checksums between the old and new databases.\n    *   Re-run the daily sales report query and measure execution time.\n    *   Analyze CPU, memory, disk I/O, and network traffic.\n8.  **Partitioning Strategy Design:**\n    *   Analyze 'orders' table data distribution to determine optimal partitioning key (e.g., order_date, customer_id).\n    *   Design the partitioning scheme (number of partitions, partition size).\n9.  **Partitioning Implementation (Staging):** Create the 'orders' table with the chosen partitioning scheme in the staging environment. Populate with a representative subset of data.\n10. **Partitioning Query Performance Testing (Staging):** Test query performance with the partitioned table.  Fine-tune partitioning parameters if necessary.\n\n**Phase 3: Production Upgrade & Validation (2-3 Days)**\n\n11. **Production Backup:** Perform a full backup of the production database.\n12. **Production Upgrade:** Execute `pg_upgrade` on the production database during the planned downtime.\n13. **Post-Upgrade Verification (Production):**\n    *   Verify data integrity.\n    *   Re-run the daily sales report query.\n    *   Measure execution time.\n    *   Monitor system resources (CPU, memory, disk I/O, network).\n14. **Partition Validation:** Verify that data is correctly partitioned based on the chosen key.\n15. **Performance Validation:** Compare the post-upgrade query execution time (4.5 seconds) with the baseline performance (4.5 seconds).  Calculate the performance improvement.  Ensure improvement is at least 20%.\n\n**Phase 4: Post-Upgrade Monitoring & Tuning (Ongoing)**\n\n16. **Continuous Monitoring:** Implement monitoring tools to track database performance, partition utilization, and query execution times.\n17. **Index Optimization:** Review and optimize indexes based on query patterns.\n18. **Partition Tuning:**  Adjust partition size and number of partitions as needed based on data growth and query performance.\n\n---\n\n**Post-Upgrade Validation Checklist:**\n\n*   [ ] Data integrity verified (row counts, checksums).\n*   [ ] Daily sales report query execution time ≤ 4.125 seconds (20% improvement).\n*   [ ] CPU utilization within acceptable limits.\n*   [ ] Memory usage within acceptable limits.\n*   [ ] Disk I/O within acceptable limits.\n*   [ ] Network traffic within acceptable limits.\n*   [ ] Partitioning scheme implemented correctly.\n*   [ ] Partition utilization balanced.\n*   [ ] Monitoring tools configured and operational.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy because it ignores all specific constraints in the 'Additional Checks' section: it does not address data type casting errors, provides no rollback script, ignores the risk of table locking during index creation, and completely overlooks the specific constraint regarding the 'amount' column being VARCHAR. The partitioning strategy in Phase 2 is logically flawed for a 500M row table; it suggests creating a new table and populating a subset in staging, rather than using the industry-standard `ATTACH PARTITION` method which allows for zero-downtime migration of existing data. The plan also lacks a concrete strategy for how the 20% performance gain will be achieved (e.g., specific index changes or partition pruning logic) beyond just 'testing'. While the structure is clear (Clarity 4), the technical content is insufficient for a senior architect role."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Specify users and user access levels for each segment of database.",
+      "task_type": "Granular Access Control Design",
+      "user_prompt": "You are the database architect for a multi-tenant SaaS application. Design a user access model for the 'tenant_data' table where each tenant must only see their own data. Implement Row Level Security (RLS) policies that automatically filter rows based on the current session's 'tenant_id' claim. Additionally, create a 'tenant_admin' role that can manage data for their specific tenant but cannot access other tenants' data. Provide the SQL to enable RLS, define the policies, and create the roles.",
+      "reference_context": {
+        "table_schema": "CREATE TABLE tenant_data (id SERIAL, tenant_id INT, data JSONB, created_at TIMESTAMP);",
+        "session_claim": "current_setting('app.current_tenant_id')"
+      },
+      "evaluation_criteria": [
+        "Isolation: Does the RLS policy strictly enforce tenant isolation?",
+        "Role Definition: Are the 'tenant_admin' permissions correctly scoped?",
+        "Implementation: Is the SQL syntax correct for the specific RLS mechanism used?"
+      ],
+      "student_answer": "```sql\n-- Create the tenant_admin role\nCREATE ROLE tenant_admin;\n\n-- Grant tenant_admin role to the tenant\nGRANT tenant_admin TO tenant_data_owner;\n\n-- Enable Row Level Security\nALTER TABLE tenant_data ENABLE ROW LEVEL SECURITY;\n\n-- Create a security policy function\nCREATE OR REPLACE FUNCTION tenant_data_tenant_filter()\nRETURNS TRIGGER AS $$\nBEGIN\n    IF NEW.tenant_id = current_setting('app.current_tenant_id') THEN\n        RETURN NEW;\n    ELSE\n        RETURN NULL;\n    END IF;\nEND;\n$$ LANGUAGE plpgsql;\n\n-- Create a security policy\nCREATE POLICY tenant_data_tenant_filter_policy ON tenant_data\nFOR SELECT\nUSING tenant_data_tenant_filter();\n\n-- Create a security policy for INSERT\nCREATE POLICY tenant_data_tenant_filter_insert_policy ON tenant_data\nFOR INSERT\nUSING tenant_data_tenant_filter();\n\n-- Create a security policy for UPDATE\nCREATE POLICY tenant_data_tenant_filter_update_policy ON tenant_data\nFOR UPDATE\nUSING tenant_data_tenant_filter();\n\n-- Create a security policy for DELETE\nCREATE POLICY tenant_data_tenant_filter_delete_policy ON tenant_data\nFOR DELETE\nUSING tenant_data_tenant_filter();\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it ignores the specific context provided: the session claim is 'app.current_tenant_id', but the code attempts to use a function that checks 'NEW.tenant_id' against the setting, which is incorrect for RLS (RLS policies must filter existing rows, not validate new ones via triggers). Second, the function returns NULL for invalid rows, which is not how RLS policies work; RLS uses boolean expressions in the USING clause. Third, the role creation grants the role to 'tenant_data_owner' instead of defining the logic for 'tenant_admin' to access data. Fourth, the submission completely ignores the 'Additional Checks' regarding data type casting, rollback scripts, and index locking. The solution is technically invalid and would not function as described."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Test changes to database applications or systems.",
+      "task_type": "Integration Testing for Data Pipeline",
+      "user_prompt": "You are the QA DBA for a logistics company. A new data pipeline has been deployed that ingests shipment data into the 'shipments' table. You need to write a test suite to validate the integrity of the data after ingestion. The test must verify that all 'tracking_id' values are unique, that 'weight_kg' is never negative, and that 'delivery_status' is one of the allowed enum values. Provide the SQL queries to run these validation checks and a script to report any violations found.",
+      "reference_context": {
+        "table_schema": "CREATE TABLE shipments (tracking_id VARCHAR(20) PRIMARY KEY, weight_kg DECIMAL(10,2), delivery_status VARCHAR(20));",
+        "allowed_statuses": "['PENDING', 'IN_TRANSIT', 'DELIVERED', 'RETURNED']"
+      },
+      "evaluation_criteria": [
+        "Data Integrity: Do the queries correctly identify violations of constraints?",
+        "Completeness: Are all specified validation rules covered?",
+        "Reporting: Is the output format clear for identifying issues?"
+      ],
+      "student_answer": "```sql\n-- Check for duplicate tracking_id values\nSELECT COUNT(*)\nFROM shipments\nGROUP BY tracking_id\nHAVING COUNT(*) > 1;\n\n-- Check for negative weight_kg values\nSELECT COUNT(*)\nFROM shipments\nWHERE weight_kg < 0;\n\n-- Check for invalid delivery_status values\nSELECT COUNT(*)\nFROM shipments\nWHERE delivery_status NOT IN ('PENDING', 'IN_TRANSIT', 'DELIVERED', 'RETURNED');\n\n-- Report Violations\nSELECT\n    CASE WHEN COUNT(*) > 0 THEN 'Violation' ELSE 'No Violation' END AS ViolationType,\n    CASE\n        WHEN COUNT(*) > 0 THEN 'Duplicate tracking_id'\n        ELSE 'No Duplicate tracking_id'\n    END AS ViolationMessage,\n    CASE\n        WHEN COUNT(*) > 0 THEN 'Negative weight_kg'\n        ELSE 'No Negative weight_kg'\n    END AS WeightViolationMessage,\n    CASE\n        WHEN COUNT(*) > 0 THEN 'Invalid delivery_status'\n        ELSE 'No Invalid delivery_status'\n    END AS StatusViolationMessage\nFROM (\n    SELECT COUNT(*) AS count\n    FROM shipments\n    WHERE tracking_id IN (SELECT tracking_id FROM shipments GROUP BY tracking_id HAVING COUNT(*) > 1)\n    UNION\n    SELECT COUNT(*) AS count\n    FROM shipments\n    WHERE weight_kg < 0\n    UNION\n    SELECT COUNT(*) AS count\n    FROM shipments\n    WHERE delivery_status NOT IN ('PENDING', 'IN_TRANSIT', 'DELIVERED', 'RETURNED')\n) AS violations\nGROUP BY ViolationType;\n```\n\n```python\nimport sqlite3\n\ndef validate_shipments(db_file):\n    \"\"\"\n    Validates shipment data in a SQLite database against predefined rules.\n\n    Args:\n        db_file (str): Path to the SQLite database file.\n\n    Returns:\n        list: A list of dictionaries, each representing a validation violation.\n              Returns an empty list if no violations are found.\n    \"\"\"\n\n    violations = []\n\n    try:\n        conn = sqlite3.connect(db_file)\n        cursor = conn.cursor()\n\n        # Check for duplicate tracking_id values\n        cursor.execute(\"SELECT COUNT(*) FROM shipments GROUP BY tracking_id HAVING COUNT(*) > 1\")\n        duplicate_count = cursor.fetchone()[0]\n        if duplicate_count > 0:\n            violations.append({\n                'ViolationType': 'Duplicate tracking_id',\n                'ViolationMessage': f'Duplicate tracking_id found: {duplicate_count}'\n            })\n\n        # Check for negative weight_kg values\n        cursor.execute(\"SELECT COUNT(*) FROM shipments WHERE weight_kg < 0\")\n        negative_weight_count = cursor.fetchone()[0]\n        if negative_weight_count > 0:\n            violations.append({\n                'ViolationType': 'Negative weight_kg',\n                'WeightViolationMessage': f'Negative weight_kg found: {negative_weight_count}'\n            })\n\n        # Check for invalid delivery_status values\n        cursor.execute(\"SELECT COUNT(*) FROM shipments WHERE delivery_status NOT IN ('PENDING', 'IN_TRANSIT', 'DELIVERED', 'RETURNED')\")\n        invalid_status_count = cursor.fetchone()[0]\n        if invalid_status_count > 0:\n            violations.append({\n                'ViolationType': 'Invalid delivery_status',\n                'StatusViolationMessage': f'Invalid delivery_status found: {invalid_status_count}'\n            })\n\n    except sqlite3.Error as e:\n        print(f\"Database error: {e}\")\n        return [{\"Error\": str(e)}]  # Return error as a violation\n\n    finally:\n        if conn:\n            conn.close()\n\n    return violations\n\nif __name__ == '__main__':\n    db_file = 'shipments.db'  # Replace with your database file\n    violations = validate_shipments(db_file)\n\n    if violations:\n        print(\"Validation Violations:\")\n        for violation in violations:\n            print(f\"  - {violation['ViolationType']}: {violation.get('ViolationMessage', violation.get('WeightViolationMessage', violation.get('StatusViolationMessage', 'No message')))}\")\n    else:\n        print(\"No validation violations found.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The SQL queries for validation are syntactically correct but fail to return the actual violating records, only counts, which limits their utility for a QA test suite. The Python script contains critical logic errors: it executes a query with GROUP BY and fetches a single row, which will fail or return incorrect results if multiple duplicates exist. Furthermore, the script fails to retrieve the specific violating data (e.g., the actual duplicate IDs or invalid weights), rendering the 'report' functionality useless. The code also has a bug where it returns an error dictionary inside the list but the print loop expects string keys, causing a crash. The solution ignores the 'Additional Checks' regarding data type casting, rollback scripts, and the specific 'amount' column constraint mentioned in the prompt context, indicating a lack of thoroughness."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Test programs or databases, correct errors, and make necessary modifications.",
+      "task_type": "Error Correction and Optimization",
+      "user_prompt": "You are the database administrator for a financial institution. A stored procedure named 'calculate_interest' is failing intermittently with a deadlock error and is also running slower than expected. The procedure updates the 'accounts' table and reads from the 'transactions' table. Analyze the provided code snippet, identify the cause of the deadlock, and rewrite the procedure to use proper locking hints or transaction isolation levels to prevent deadlocks. Additionally, optimize the query to reduce execution time by adding necessary indexes or rewriting the logic.",
+      "reference_context": {
+        "procedure_code": "BEGIN UPDATE accounts SET balance = balance + interest WHERE account_id = @id; SELECT * FROM transactions WHERE account_id = @id; END;",
+        "current_isolation": "READ COMMITTED",
+        "table_indexes": "accounts(account_id), transactions(account_id)"
+      },
+      "evaluation_criteria": [
+        "Deadlock Resolution: Is the root cause identified and the locking strategy corrected?",
+        "Performance: Are the optimizations justified and likely to improve speed?",
+        "ACID Compliance: Does the solution maintain data consistency and isolation?"
+      ],
+      "student_answer": "```sql\nBEGIN\n  -- Use a higher isolation level to reduce the likelihood of deadlocks.\n  -- SERIALIZABLE provides the strongest isolation but can impact concurrency.\n  SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;\n\n  -- Add a locking hint to explicitly specify the order of table access.\n  -- This can help prevent deadlocks by ensuring that the tables are locked in a consistent order.\n  UPDATE accounts SET balance = balance + interest WHERE account_id = @id;\n  SELECT * FROM transactions WHERE account_id = @id;\n\n  -- Commit the transaction.\n  COMMIT;\nEND;\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails to address the core task requirements. It does not identify the actual cause of the deadlock (the specific order of operations between UPDATE and SELECT in a READ COMMITTED environment). Instead, it incorrectly suggests SERIALIZABLE isolation, which would likely exacerbate performance issues and concurrency problems rather than solve the deadlock. It completely ignores the optimization requirement to add indexes or rewrite logic, despite the prompt explicitly asking for it. Furthermore, the submission fails to address the 'Additional Checks' regarding data type casting, rollback scripts, and VARCHAR constraints. The code provided is functionally flawed for the stated scenario and does not meet industry standards for database architecture."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Approve, schedule, plan, and supervise the installation and testing of new products and improvements to computer systems, such as the installation of new databases.",
+      "task_type": "Database Schema Migration",
+      "user_prompt": "You are the lead DBA for a fintech startup. The legacy 'transactions' table needs to be migrated to a new schema to support high-frequency trading. The current table has a single 'amount' column as VARCHAR. You must design a migration script that converts 'amount' to DECIMAL(18,2), adds a 'timestamp' column with a default value, and creates a composite index on (customer_id, timestamp). Provide the SQL migration script and a rollback strategy.",
+      "reference_context": {
+        "legacy_schema": "CREATE TABLE transactions (id INT PRIMARY KEY, customer_id INT, amount VARCHAR(20), notes TEXT);",
+        "requirements": "Must handle NULL values in amount, ensure atomicity, and minimize downtime."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the SQL execute without syntax errors and achieve the schema change?",
+        "Completeness: Are all columns, types, and indexes specified as requested?",
+        "Best Practices: Is the migration script idempotent and includes a rollback plan?"
+      ],
+      "student_answer": "```sql\n-- Migration Script\n\n-- Step 1: Create a new table with the desired schema\nCREATE TABLE transactions_new (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    amount DECIMAL(18, 2),\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    notes TEXT\n);\n\n-- Step 2: Insert data from the legacy table into the new table\nINSERT INTO transactions_new (id, customer_id, amount, notes)\nSELECT id, customer_id, CAST(amount AS DECIMAL(18, 2)), notes\nFROM transactions;\n\n-- Step 3: Create a composite index\nCREATE INDEX idx_transactions_customer_timestamp ON transactions_new (customer_id, timestamp);\n\n-- Step 4: Drop the legacy table\nDROP TABLE transactions;\n\n-- Step 5: Rename the new table to the legacy table name\nALTER TABLE transactions_new RENAME TO transactions;\n\n-- Rollback Strategy\n\n-- Step 1: Restore the legacy table\nDROP TABLE transactions;\nCREATE TABLE transactions (\n    id INT PRIMARY KEY,\n    customer_id INT,\n    amount VARCHAR(20),\n    notes TEXT\n);\n\n-- Step 2: Re-insert data from the new table into the restored legacy table\nINSERT INTO transactions (id, customer_id, amount, notes)\nSELECT id, customer_id, CAST(amount AS VARCHAR(20)), notes\nFROM transactions_new;\n\n-- Step 3: Drop the index\nDROP INDEX idx_transactions_customer_timestamp;\n\n-- Step 4: Remove the new table\nDROP TABLE transactions_new;\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Best Practices due to critical flaws. First, it ignores the explicit requirement to handle NULL values in the 'amount' column; the CAST operation will fail or produce unexpected results if NULLs exist without explicit handling (e.g., COALESCE). Second, the rollback strategy is logically flawed and dangerous: it drops the current 'transactions' table (which is the live production table after migration) before recreating it, and then attempts to insert data from 'transactions_new' into the newly created 'transactions' table, but the script structure implies a sequence that would result in data loss or a circular dependency error if executed as a single block. Third, the migration lacks atomicity (no transaction wrapping) and does not address the 'minimize downtime' requirement (e.g., no dual-write or online schema change strategy). The domain accuracy is weak because the rollback script assumes the new table still exists and is accessible in a way that contradicts the destructive nature of the migration steps. While the syntax is valid SQL, the architectural approach is unsafe for a fintech environment."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop data models describing data elements and how they are used, following procedures and using pen, template, or computer software.",
+      "task_type": "Data Model Design and Normalization",
+      "user_prompt": "Design a normalized database schema for an e-commerce platform that handles users, orders, and products. The current unnormalized design stores product details within the order table, leading to redundancy. Create a set of SQL DDL statements to implement a 3rd Normal Form (3NF) schema that supports one-to-many relationships between users and orders, and many-to-many relationships between orders and products. Ensure all foreign keys are properly defined with appropriate constraints.",
+      "reference_context": {
+        "unnormalized_example": "orders (order_id, user_name, user_email, product_name, product_price, quantity, total_price)",
+        "requirements": "Must enforce referential integrity, prevent orphaned records, and support efficient querying of order history."
+      },
+      "evaluation_criteria": [
+        "Normalization: Is the schema strictly in 3NF without unnecessary redundancy?",
+        "Integrity: Are foreign keys and constraints correctly implemented to maintain data consistency?",
+        "Clarity: Are table and column names descriptive and consistent with industry standards?"
+      ],
+      "student_answer": "```sql\n-- Create the Users table\nCREATE TABLE Users (\n    user_id INT PRIMARY KEY,\n    username VARCHAR(255) NOT NULL UNIQUE,\n    email VARCHAR(255) NOT NULL UNIQUE,\n    -- Add other user-related fields as needed\n    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\n-- Create the Products table\nCREATE TABLE Products (\n    product_id INT PRIMARY KEY,\n    product_name VARCHAR(255) NOT NULL,\n    description TEXT,\n    price DECIMAL(10, 2) NOT NULL,\n    -- Add other product-related fields as needed\n    category VARCHAR(255)\n);\n\n-- Create the Orders table\nCREATE TABLE Orders (\n    order_id INT PRIMARY KEY,\n    user_id INT NOT NULL,\n    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    -- Add other order-related fields as needed\n    FOREIGN KEY (user_id) REFERENCES Users(user_id)\n);\n\n-- Create the Order_Products table to handle the many-to-many relationship\nCREATE TABLE Order_Products (\n    order_id INT NOT NULL,\n    product_id INT NOT NULL,\n    quantity INT NOT NULL,\n    price_per_unit DECIMAL(10, 2) NOT NULL, -- Store price at the time of order\n    PRIMARY KEY (order_id, product_id),\n    FOREIGN KEY (order_id) REFERENCES Orders(order_id),\n    FOREIGN KEY (product_id) REFERENCES Products(product_id)\n);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        3
+      ],
+      "score": 4.2,
+      "grade_reason": "The student correctly designed a 3NF schema with proper normalization, foreign keys, and a junction table for the many-to-many relationship. The SQL syntax is valid and follows industry standards for basic DDL. However, the solution is not flawless: it lacks explicit constraints like 'ON DELETE CASCADE' or 'ON UPDATE CASCADE' which are critical for preventing orphaned records as requested in the context. Additionally, the 'Additional Checks' section of the prompt explicitly asked for rollback scripts, migration casting checks, and handling of a specific 'amount' column constraint (which was not addressed in the schema). The omission of these specific requirements and the lack of a rollback script reduce the Autonomy score to 3, as the output cannot be delivered to a client without further work to address the specific constraints and safety mechanisms requested."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop standards and guidelines for the use and acquisition of software and to protect vulnerable information.",
+      "task_type": "Security Policy and Access Control Implementation",
+      "user_prompt": "A healthcare provider requires a new database system that must comply with HIPAA regulations. Develop a set of SQL commands to create a 'patients' table and implement a role-based access control (RBAC) system. Create roles for 'doctor', 'nurse', and 'billing_clerk' with specific permissions. Ensure that 'billing_clerk' can only access non-medical data, while 'doctor' can access medical records but not billing details. Include a mechanism to audit access attempts.",
+      "reference_context": {
+        "table_structure": "patients (patient_id, name, ssn, medical_history, billing_amount)",
+        "requirements": "Must use parameterized queries for all data access, enforce least privilege principle, and log all SELECT operations on sensitive columns."
+      },
+      "evaluation_criteria": [
+        "Security: Are permissions strictly limited to the defined roles without overlap?",
+        "Compliance: Does the design meet the specified regulatory requirements (HIPAA)?",
+        "Auditability: Is there a clear mechanism to track who accessed what data and when?"
+      ],
+      "student_answer": "```sql\n-- Create the patients table\nCREATE TABLE patients (\n    patient_id INT PRIMARY KEY,\n    name VARCHAR(255) NOT NULL,\n    ssn VARCHAR(11) NOT NULL,\n    medical_history TEXT,\n    billing_amount DECIMAL(10, 2)\n);\n\n-- Create roles\nCREATE ROLE doctor;\nCREATE ROLE nurse;\nCREATE ROLE billing_clerk;\n\n-- Grant permissions to roles\nGRANT SELECT, INSERT, UPDATE, DELETE ON patients TO doctor;\nGRANT SELECT, INSERT, UPDATE ON patients TO nurse;\nGRANT SELECT ON patients TO billing_clerk;\n\n-- Audit logging table\nCREATE TABLE audit_log (\n    log_id INT PRIMARY KEY,\n    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    user_role VARCHAR(50),\n    table_name VARCHAR(50),\n    operation VARCHAR(10),\n    patient_id INT,\n    data_accessed TEXT\n);\n\n-- Function to log SELECT operations on sensitive columns\nCREATE OR REPLACE FUNCTION log_select_operation(p_user_role VARCHAR(50), p_table_name VARCHAR(50), p_patient_id INT, p_data_accessed TEXT)\nRETURNS VOID AS $$\nBEGIN\n    INSERT INTO audit_log (user_role, table_name, operation, patient_id, data_accessed)\n    VALUES (p_user_role, p_table_name, 'SELECT', p_patient_id, p_data_accessed);\nEND;\n$$ LANGUAGE plpgsql;\n\n-- Trigger to automatically log SELECT operations on sensitive columns\nCREATE TRIGGER patient_select_audit\nAFTER SELECT ON patients\nFOR EACH ROW\nEXECUTE FUNCTION log_select_operation(session_user, 'patients', patient_id, details);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple critical dimensions. 1) Correctness: The SQL syntax for the trigger is invalid (referencing 'details' which is undefined, and triggers cannot capture the full row data into a variable named 'details' without explicit column mapping). 2) Completeness: It ignores the specific constraint in the 'Additional Checks' regarding the 'amount' column being VARCHAR, and fails to provide the requested rollback script or migration error handling. 3) Best Practices: The RBAC implementation violates the 'least privilege' principle by granting full CRUD access to doctors and nurses on the entire table, failing to restrict 'billing_clerk' from medical data or 'doctor' from billing data as required. 4) Domain Accuracy: The audit mechanism is non-functional due to syntax errors and does not actually filter for 'sensitive columns' as requested. 5) Clarity: The code is presented but is syntactically broken. 6) Autonomy: The solution is unusable as-is due to the trigger errors and logical security flaws."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Write and code logical and physical database descriptions and specify identifiers of database to management system, or direct others in coding descriptions.",
+      "task_type": "Performance Tuning and Indexing Strategy",
+      "user_prompt": "The 'inventory' table in a warehouse management system is experiencing slow query performance for reports filtering by 'warehouse_id' and 'status'. The table has 10 million rows. Analyze the current query patterns and propose an indexing strategy. Write the SQL to create the necessary indexes and explain the justification for each index choice based on query selectivity and write performance impact. Also, provide a query to update the 'status' column for a batch of items using a parameterized approach.",
+      "reference_context": {
+        "current_schema": "inventory (item_id, warehouse_id, status, quantity, last_updated)",
+        "query_pattern": "SELECT * FROM inventory WHERE warehouse_id = ? AND status = ? ORDER BY last_updated DESC;"
+      },
+      "evaluation_criteria": [
+        "Performance: Do the proposed indexes significantly reduce the estimated execution cost?",
+        "Justification: Is the reasoning for index selection clear and based on data distribution?",
+        "Safety: Is the batch update query parameterized to prevent SQL injection?"
+      ],
+      "student_answer": "```sql\n-- Create index on warehouse_id\nCREATE INDEX idx_inventory_warehouse_id ON inventory (warehouse_id);\n-- Justification: This index will significantly speed up the WHERE clause filtering by warehouse_id, as it's a common filter and likely to have good selectivity.\n\n-- Create index on status\nCREATE INDEX idx_inventory_status ON inventory (status);\n-- Justification: This index will improve the filtering by status, especially when combined with the warehouse_id filter.\n\n-- Create composite index on warehouse_id and status\nCREATE INDEX idx_inventory_warehouse_id_status ON inventory (warehouse_id, status);\n-- Justification: Combining these two columns into a single index allows the database to efficiently filter by both criteria simultaneously.  This is generally more efficient than separate indexes for the same filtering conditions.\n\n-- Update query for batch status changes\nUPDATE inventory\nSET status = ?\nWHERE warehouse_id = ? AND status = 'old_status_value';\n-- Justification: This parameterized query prevents SQL injection and allows for efficient batch updates.  The WHERE clause ensures that only the intended rows are updated.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the core technical requirement of the task: the query includes 'ORDER BY last_updated DESC', but the proposed indexes do not include this column, missing a critical optimization for the specific query pattern. The student suggests creating three separate indexes (two single-column and one composite) rather than selecting the single optimal composite index, which is poor practice for write-heavy tables. Furthermore, the submission completely ignores the 'Additional Checks' constraints regarding data type casting, rollback scripts, and locking duration. The batch update query is also flawed as it hardcodes 'old_status_value' instead of using a parameter for the old status, failing the 'parameterized approach' requirement for a generic batch update. The solution is technically inadequate for a 10-million-row table."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Train users and answer questions.",
+      "task_type": "Technical Support and Troubleshooting Guide",
+      "user_prompt": "Junior developers are reporting that their application is timing out when inserting large batches of data into the 'logs' table. They suspect a locking issue. Create a comprehensive troubleshooting guide that explains the likely cause (e.g., transaction isolation levels, lock escalation) and provides a step-by-step SQL script to diagnose the current lock status. Include a corrected insertion script that uses batch processing with explicit transactions to improve throughput and reduce lock contention.",
+      "reference_context": {
+        "error_message": "Transaction timeout expired prior to completion of the operation.",
+        "table_structure": "logs (log_id, log_message, log_level, created_at)"
+      },
+      "evaluation_criteria": [
+        "Diagnosis: Does the guide correctly identify potential locking or isolation issues?",
+        "Solution: Is the batch insertion script optimized for performance and ACID compliance?",
+        "Clarity: Is the explanation suitable for junior developers to understand and implement?"
+      ],
+      "student_answer": "```sql\n-- Troubleshooting Guide: Log Table Insertion Timeout\n\n-- Likely Cause: Transaction Isolation Levels and Lock Escalation\n\n-- The application is timing out when inserting large batches of data into the 'logs' table due to excessive lock contention. This is often caused by:\n-- 1. High Transaction Isolation Level:  A high isolation level (e.g., SERIALIZABLE) prevents other transactions from reading or writing data until the current transaction commits or rolls back, leading to blocking.\n-- 2. Lock Escalation:  The database system may escalate locks from row-level to table-level locks if a single transaction attempts to modify a large number of rows. This can block other transactions that need to access the same table.\n-- 3. Long-Running Transactions:  Transactions that take a long time to complete hold locks for an extended period, increasing the likelihood of contention.\n\n-- Step-by-Step SQL Script to Diagnose Lock Status:\n\n-- 1. Identify Active Transactions:\nSELECT\n    pid,\n    wait_type,\n    wait_resource,\n    state,\n    command\nFROM\n    pg_stat_activity\nWHERE\n    datname = 'your_database_name' -- Replace with your database name\n    AND state <> 'idle'\nORDER BY\n    pid;\n\n-- 2. Identify Blocking Sessions:\nSELECT\n    b.pid,\n    s.query,\n    b.wait_resource,\n    b.wait_event\nFROM\n    pg_stat_activity AS b\nJOIN\n    pg_stat_activity AS s ON b.pid = s.pid\nWHERE\n    b.wait_resource IS NOT NULL\n    AND b.wait_event IS NOT NULL\nORDER BY\n    b.wait_event;\n\n-- 3. Check Lock Waits:\nSELECT\n    w.relation::regclass,\n    w.mode,\n    w.pid,\n    w.wait_event,\n    w.wait_type,\n    w.relation::regclass as resource_relation,\n    w.resource_id\nFROM\n    pg_locks AS w\nWHERE\n    w.pid IS NOT NULL;\n\n-- Corrected Insertion Script (Batch Processing with Explicit Transactions):\n\n-- Batch Size: Adjust this value based on testing and database performance.  Start with 1000 and increase gradually.\n-- Explicit Transaction:  Ensures that the entire batch is either committed or rolled back, minimizing lock duration.\n\nINSERT INTO logs (log_message, log_level, created_at)\nSELECT log_message, log_level, NOW()\nFROM (\n    SELECT log_message, log_level\n    FROM your_data_source -- Replace with your data source\n    GROUP BY log_message, log_level\n    ORDER BY log_id -- Assuming you have a log_id column\n    LIMIT 1000  -- Batch Size\n) AS batches;\n\n-- Commit Transaction:\nCOMMIT;\n\n-- Optional:  Monitor Performance After Changes\n-- Use `pg_stat_statements` extension to identify slow queries.\n-- Consider adjusting `shared_buffers` and `work_mem` database parameters.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on multiple fronts. First, it ignores the 'Additional Checks' constraints entirely, specifically the requirement to handle 'amount' column VARCHAR constraints and provide a rollback script. Second, the diagnostic queries are syntactically incorrect for PostgreSQL (e.g., 'wait_type' is not a standard column in pg_stat_activity, and the join logic for blocking is flawed). Third, the corrected insertion script is logically invalid: it attempts to insert into a table with a serial primary key (log_id) while selecting from a subquery that lacks that column, and it uses a single INSERT statement that does not actually implement a loop or batch processing mechanism as requested. The solution is fundamentally broken and would not work in a real environment."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Develop standards and guidelines for the use and acquisition of software and to protect vulnerable information.",
+      "task_type": "Backup and Recovery Strategy Design",
+      "user_prompt": "Design a disaster recovery plan for a critical 'financial_ledger' database. The system must support Point-in-Time Recovery (PITR) to restore data to any second within the last 24 hours. Define the backup schedule (full, differential, transaction log), the storage location requirements, and the SQL commands required to simulate a restore to a specific timestamp. Ensure the plan includes a verification step to confirm data integrity after restoration.",
+      "reference_context": {
+        "data_criticality": "High - Financial data cannot be lost or corrupted.",
+        "retention_policy": "24 hours of transaction logs, 7 days of full backups."
+      },
+      "evaluation_criteria": [
+        "Recovery Time Objective (RTO): Does the plan meet the 24-hour PITR requirement?",
+        "Data Integrity: Are verification steps included to ensure restored data is valid?",
+        "Compliance: Does the backup strategy adhere to the specified retention and security policies?"
+      ],
+      "student_answer": "```sql\n-- Disaster Recovery Plan: Financial Ledger Database\n\n-- 1. Backup Schedule:\n--   - Full Backup: Daily at 02:00 UTC\n--   - Differential Backup: Hourly at 03:00 UTC\n--   - Transaction Log Backup: Every 15 seconds (using transaction log shipping)\n\n-- 2. Storage Location:\n--   - Full Backups: Azure Blob Storage (Region: East US) - Redundant storage enabled.\n--   - Differential Backups: Azure Blob Storage (Region: East US) - Redundant storage enabled.\n--   - Transaction Logs: Azure SQL Database Local TempDB (Replication enabled to secondary replica)\n\n-- 3. Point-in-Time Recovery (PITR) – SQL Commands:\n\n--   a. Identify Target Timestamp:\n--      Let's assume we need to restore to 2024-01-26 14:30:00 UTC\n\n--   b. Restore from Full Backup:\n--      1. Restore the latest full backup to a temporary location:\n--         ```sql\n--         RESTORE DATABASE Financial_Ledger_Recovery FROM DISK = 'https://[Azure Blob Storage URL]/full_backup_20240126.bak';\n--         ```\n\n--   c. Restore Differential Backups (if needed to reach target timestamp):\n--      1. Identify the differential backups closest to the target timestamp.\n--      2. Restore each differential backup sequentially to the temporary location:\n--         ```sql\n--         RESTORE DATABASE Financial_Ledger_Recovery FROM DISK = 'https://[Azure Blob Storage URL]/differential_backup_20240126_0300.bak';\n--         ```\n--         (Repeat for each differential backup)\n\n--   d. Restore Transaction Logs:\n--      1.  Enable transaction log replay:\n--          ```sql\n--          ALTER DATABASE Financial_Ledger_Recovery SET RECOVERY;\n--          ```\n--      2.  Restore transaction logs from the secondary replica (Azure SQL Database):\n--          ```sql\n--          RESTORE LOG Financial_Ledger_Recovery FROM [SecondaryReplicaName] WITH (RECOVERY);\n--          ```\n--          (Repeat for each transaction log backup within the 24-hour window)\n\n--   e. Switch to the Recovered Database:\n--      1.  Stop the primary database service.\n--      2.  Stop the secondary database service.\n--      3.  Perform a hard switchover:\n--          ```sql\n--          ALTER DATABASE Financial_Ledger_Recovery SWAP;\n--          ALTER DATABASE Financial_Ledger_Recovery SET ONLINE;\n--          ```\n\n-- 4. Verification:\n--   - After restoration, run the following queries to verify data integrity:\n--     - Check for any errors or warnings in the SQL Server error log.\n--     - Run a sample data validation query against key tables to ensure data consistency.\n--     - Compare record counts between the restored database and the original database (if possible).\n--     - Perform a checksum verification on critical data files.\n\n-- 5. Testing:\n--   - Conduct regular disaster recovery drills (at least quarterly) to test the entire recovery process.\n--   - Document all steps and results of each drill.\n\n-- 6. Monitoring:\n--   - Implement monitoring for backup success, transaction log growth, and database availability.\n--   - Configure alerts for any failures or anomalies.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails significantly on domain accuracy and correctness. It mixes Azure SQL Database (PaaS) concepts with on-premise SQL Server syntax (e.g., RESTORE FROM DISK with blob URLs, ALTER DATABASE SWAP which does not exist). The backup schedule is logically flawed (hourly differentials daily at 02:00 is impossible). It ignores the specific constraint regarding the 'amount' column being VARCHAR and the requirement for a rollback script. The verification steps are generic and do not address the specific data integrity checks requested. The solution is not usable as-is without major rework."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Select and enter codes to monitor database performance and to create production databases.",
+      "task_type": "Performance Tuning and Indexing Strategy",
+      "user_prompt": "You are the lead DBA for a high-traffic e-commerce platform. The 'orders' table is experiencing severe latency during peak hours due to a full table scan on the 'order_date' column. The current schema has no index on this column. Design a comprehensive optimization plan that includes creating a new index, writing a parameterized query to fetch recent orders, and justifying your indexing strategy based on ACID compliance and write-performance trade-offs.",
+      "reference_context": {
+        "current_schema": "CREATE TABLE orders (order_id INT PRIMARY KEY, customer_id INT, order_date DATE, total_amount DECIMAL(10,2), status VARCHAR(20));",
+        "current_query": "SELECT * FROM orders WHERE order_date > '2023-01-01';",
+        "constraints": "Must prevent deadlocks, ensure the index supports concurrent writes, and the query must use parameter binding."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the proposed SQL query use parameterized inputs to prevent injection?",
+        "Performance Justification: Is the choice of index type (e.g., B-Tree) explicitly justified for the workload?",
+        "Integrity: Does the solution maintain ACID properties during high-concurrency write operations?"
+      ],
+      "student_answer": "```sql\n-- 1. Create an Index on order_date\nCREATE INDEX idx_orders_order_date ON orders (order_date);\n\n-- 2. Parameterized Query for Recent Orders\nSELECT *\nFROM orders\nWHERE order_date > @order_date_param\nLIMIT @limit_param;\n\n-- 3. Indexing Strategy Justification:\n\n-- ACID Compliance: The index on `order_date` will not directly impact ACID properties.  It primarily enhances read performance.  The `CREATE INDEX` statement itself is an atomic operation.  The index structure is maintained consistently.\n\n-- Write Performance Trade-offs:\n--   - Overhead: Indexes introduce overhead during write operations (inserts, updates, deletes) as the index must be updated concurrently with the table data.\n--   - Benefit: The benefit of the index on `order_date` significantly outweighs the write performance impact for this specific query. The full table scan is causing unacceptable latency, and the index will drastically reduce the time required to retrieve recent orders.\n--   - Monitoring:  Post-implementation, monitor write performance (e.g., transaction log size, index maintenance) to ensure the overhead is manageable.  Consider partitioning the table if write volume continues to increase dramatically.\n\n-- Parameter Binding: The parameterized query `@order_date_param` and `@limit_param` ensures that the query is safe from SQL injection and improves performance by allowing the database to cache the query plan.\n\n-- Constraints: The index is created without violating any constraints.  The query utilizes parameter binding, fulfilling the constraint requirement.  The index design does not introduce deadlock risks if properly maintained.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the need for an index and parameterized queries, but fails to address several critical constraints and checks. It ignores the specific instruction to verify the 'amount' column being VARCHAR (the schema shows it as DECIMAL, but the prompt explicitly asked to check for casting errors if it were VARCHAR, implying a potential mismatch or a test of attention). Crucially, it fails to provide a rollback script as requested in the 'Additional Checks'. The SQL syntax uses MySQL-specific 'LIMIT' and '@param' style which may not be portable, and the justification for deadlock prevention is vague ('if properly maintained') rather than addressing the specific mechanism (e.g., consistent ordering or isolation levels). The ACID explanation is superficial. While the core concept is correct (Score 4 for Domain Accuracy), the missing deliverables (rollback) and lack of depth on the specific constraints lower the Completeness and Autonomy scores."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Identify, evaluate and recommend hardware or software technologies to achieve desired database performance.",
+      "task_type": "Hardware and Software Architecture Recommendation",
+      "user_prompt": "You are a Database Architect evaluating a migration from a single-node PostgreSQL instance to a distributed architecture. The current system fails to meet SLAs for read-heavy analytics workloads. Analyze the trade-offs between implementing a Read Replica, sharding, or moving to a NewSQL database. Provide a recommendation that addresses data consistency, fault tolerance, and the specific O*NET task of identifying industry trends for performance.",
+      "reference_context": {
+        "current_load": "10,000 reads/sec, 500 writes/sec, 99.9% uptime required.",
+        "data_volume": "500GB growing at 10GB/day.",
+        "constraints": "Must ensure strong consistency for financial transactions while optimizing for analytical reads."
+      },
+      "evaluation_criteria": [
+        "Strategic Fit: Does the recommendation directly address the read/write imbalance described?",
+        "Consistency Model: Is the trade-off between consistency and availability clearly explained?",
+        "Feasibility: Is the proposed solution realistic for the stated data volume and growth rate?"
+      ],
+      "student_answer": "**Recommendation: Sharding with a Distributed PostgreSQL Cluster**\n\n**Justification:**\n\nGiven the requirements of 10,000 reads/sec, 500 writes/sec, 99.9% uptime, 500GB growing at 10GB/day, and the need for strong consistency alongside analytical performance, sharding offers the most balanced solution.\n\n*   **Read Performance:** Sharding allows for distributing read queries across multiple nodes, easily exceeding the current 10,000 reads/sec.\n*   **Write Performance:** While writes will be distributed, the 500 writes/sec should remain manageable with proper sharding key selection and query optimization.\n*   **Data Consistency:** PostgreSQL's MVCC (Multi-Version Concurrency Control) can be leveraged effectively with sharding to maintain strong consistency for financial transactions.  Sharding keys should be chosen to minimize cross-shard transactions.\n*   **Fault Tolerance:** A distributed cluster inherently provides higher fault tolerance than a single node.  If one shard fails, the other shards remain operational.\n*   **Scalability:** Sharding directly addresses the 10GB/day data growth, allowing for continued scaling without significant downtime.\n*   **Industry Trend Analysis (O*NET Task):** Sharding facilitates efficient querying of specific data subsets relevant to industry trend identification.  The ability to isolate and query data based on shard keys (e.g., by product category, customer segment, or time period) directly supports this task.  This is superior to read replicas, which can introduce latency and complexity for complex analytical queries.\n\n**Alternatives Considered and Why They Are Less Suitable:**\n\n*   **Read Replicas:** Read replicas do not provide the necessary throughput for 10,000 reads/sec and introduce potential latency issues for complex analytical queries.  They also don't inherently improve write performance.\n*   **NewSQL Database (e.g., CockroachDB, YugabyteDB):** While NewSQL databases offer distributed architectures and strong consistency, they introduce significant operational complexity, vendor lock-in, and potentially higher costs compared to leveraging PostgreSQL's existing capabilities with sharding.  The benefits of a NewSQL database are not substantial enough to justify the added complexity in this scenario.\n\n**Implementation Steps (High Level):**\n\n1.  **Sharding Key Selection:**  Identify a suitable sharding key (e.g., customer ID, product category) based on query patterns and data distribution.\n2.  **Cluster Setup:** Deploy a distributed PostgreSQL cluster with multiple nodes.\n3.  **Data Migration:** Migrate data to the appropriate shards.\n4.  **Application Changes:** Modify the application to route queries to the correct shards.\n5.  **Monitoring and Tuning:** Implement robust monitoring and tuning to optimize shard performance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy because it completely ignores the mandatory 'Additional Checks' provided in the prompt. Specifically, it does not address data type casting errors, rollback scripts, index locking strategies, or the specific constraint regarding the 'amount' column being VARCHAR. The technical recommendation itself is also flawed; claiming that sharding PostgreSQL maintains strong consistency for financial transactions is a dangerous oversimplification, as standard sharding often sacrifices consistency for availability or requires complex distributed transaction protocols (2PC) that are not mentioned. The solution ignores the explicit requirement to address the 'amount' column constraint, making it inadequate for a real-world migration scenario."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Review procedures in database management system manuals to make changes to database.",
+      "task_type": "Complex Stored Procedure Refactoring",
+      "user_prompt": "You are tasked with refactoring a legacy stored procedure that calculates monthly revenue. The current procedure uses cursors and temporary tables, causing locking issues. Rewrite the procedure using set-based operations, ensure it adheres to parameterized input standards, and add explicit transaction control to guarantee data integrity. The procedure must handle NULL values in the 'revenue' column gracefully.",
+      "reference_context": {
+        "legacy_procedure": "CREATE PROCEDURE calc_revenue (@start_date DATE, @end_date DATE) AS BEGIN DECLARE @total DECIMAL(18,2); DECLARE cur CURSOR FOR SELECT revenue FROM transactions WHERE date BETWEEN @start_date AND @end_date; ... END",
+        "requirements": "Must eliminate cursors, use transactions, and handle NULLs without error."
+      },
+      "evaluation_criteria": [
+        "Optimization: Does the new procedure use set-based operations instead of cursors?",
+        "Security: Are all inputs parameterized to prevent SQL injection?",
+        "Robustness: Does the logic correctly handle NULL values and maintain transactional integrity?"
+      ],
+      "student_answer": "```sql\nCREATE PROCEDURE calc_revenue (\n    @start_date DATE,\n    @end_date DATE\n)\nAS\nBEGIN\n    SET NOCOUNT ON;\n\n    -- Validate input dates\n    IF @start_date IS NULL OR @end_date IS NULL\n    BEGIN\n        RAISERROR('Start date and end date cannot be NULL.', 16, 1)\n        RETURN\n    END\n\n    IF @start_date > @end_date\n    BEGIN\n        RAISERROR('Start date must be before end date.', 16, 1)\n        RETURN\n    END\n\n    BEGIN TRANSACTION;\n\n    BEGIN TRY\n        -- Calculate total revenue using a set-based approach\n        SELECT @total = SUM(ISNULL(revenue, 0))\n        FROM transactions\n        WHERE date BETWEEN @start_date AND @end_date;\n\n        -- Commit the transaction\n        COMMIT TRANSACTION;\n    END TRY\n    BEGIN CATCH\n        -- Rollback the transaction in case of error\n        IF @@TRANCOUNT > 0\n            ROLLBACK TRANSACTION;\n\n        -- Raise the error to the caller\n        THROW;\n    END CATCH;\nEND;\nGO\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address critical constraints in the Additional Checks section: it does not handle the 'amount' column being VARCHAR (requiring explicit casting), ignores data type casting errors, and provides no rollback script or index creation logic. While the set-based approach and transaction structure are conceptually correct for the main task, the failure to handle the specific data type constraint (VARCHAR to DECIMAL) and the missing required artifacts (rollback script, index strategy) constitute significant domain accuracy and completeness errors, preventing the solution from being industry-ready."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Identify and evaluate industry trends in database systems to serve as a source of information and advice for upper management.",
+      "task_type": "Data Governance and Schema Evolution",
+      "user_prompt": "The company is adopting a new data governance policy requiring all PII (Personally Identifiable Information) to be encrypted at rest and audited. Review the current 'users' table schema and propose a schema evolution plan that includes adding encryption columns, implementing row-level security, and updating the data dictionary. Justify your approach based on current industry trends for privacy compliance.",
+      "reference_context": {
+        "current_schema": "CREATE TABLE users (user_id INT PRIMARY KEY, email VARCHAR(255), ssn VARCHAR(11), created_at TIMESTAMP);",
+        "policy": "SSN must be encrypted; all access to PII must be logged; schema changes must be versioned."
+      },
+      "evaluation_criteria": [
+        "Compliance: Does the schema design meet the encryption and auditing requirements?",
+        "Data Dictionary: Is the updated data dictionary definition provided?",
+        "Trend Alignment: Does the solution reflect current industry standards for PII protection?"
+      ],
+      "student_answer": "```sql\n-- Schema Evolution Plan - Users Table\n\n-- Version 1.0 - Initial Implementation (Immediate)\n\n-- Add Encryption Columns\nALTER TABLE users\nADD COLUMN ssn_encrypted VARCHAR(255) GENERATED ALWAYS AS (ENCRYPT(ssn)) VIRTUAL;\n\n-- Add Audit Logging Column\nALTER TABLE users\nADD COLUMN last_accessed TIMESTAMP;\n\n-- Update Data Dictionary\n-- Add a new entry to the data dictionary specifying:\n--   - Table Name: users\n--   - Column: ssn_encrypted\n--   - Data Type: VARCHAR(255)\n--   - Description: Encrypted Social Security Number.  Encryption algorithm: [Specify Algorithm - e.g., AES-256]\n--   - Sensitivity: PII\n--   - Access Controls: Row-Level Security\n\n-- Version 1.1 - Row-Level Security Implementation (Within 2 Weeks)\n\n-- Implement Row-Level Security (RLS)\n-- This will require defining policies based on user roles or groups.\n-- Example (Illustrative - Adapt to specific roles/groups):\n-- CREATE POLICY users_ssn_access ON users\n-- FOR ALL\n-- WITH ACCESS TO (ssn_encrypted)\n-- USING (SELECT role FROM user_roles WHERE user_id = current_user.id);\n\n-- Update Data Dictionary\n-- Add a new entry to the data dictionary specifying:\n--   - Table Name: users\n--   - Feature: Row-Level Security\n--   - Description: Access to SSN is restricted based on user role.\n--   - Implementation Details: RLS policy defined above.\n\n-- Version 1.2 - Monitoring and Refinement (Ongoing)\n\n-- Implement auditing of last_accessed column.  This can be done through triggers or scheduled jobs.\n-- Monitor RLS policy effectiveness.\n-- Review and update encryption algorithm as needed based on industry best practices and evolving security standards.\n-- Update data dictionary with any changes to encryption or RLS policies.\n\n-- Justification:\n\n-- Industry Trends:  Current industry trends strongly emphasize data encryption at rest and rigorous auditing for PII.  Regulations like GDPR, CCPA, and HIPAA mandate strong data protection measures.  Row-level security is becoming increasingly crucial for granular access control and minimizing the risk of data breaches.  Virtual encryption columns simplify management and ensure consistent encryption.\n\n-- Technical Rationale:\n-- Encryption at rest (ssn_encrypted) protects data even if the database is compromised.\n-- Auditing (last_accessed) provides a record of data access, aiding in compliance and incident response.\n-- Row-level security ensures that only authorized users can access sensitive data.\n-- Virtual encryption columns simplify management and ensure consistent encryption.\n-- Versioning allows for tracking changes and rollback if necessary.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on technical correctness and domain accuracy. It proposes a 'virtual' generated column using a non-existent SQL function 'ENCRYPT(ssn)', which is not valid in standard SQL or major RDBMS (PostgreSQL, MySQL, Oracle, SQL Server) without specific extensions or application-side logic. It ignores the requirement to handle the original 'ssn' column (which must be encrypted at rest, not just stored alongside a generated column). It fails to provide a migration strategy for existing data, a rollback script, or proper handling of data types as requested in the additional checks. The Row-Level Security syntax is pseudo-code and not valid for any specific database. The submission does not address the specific constraint regarding the 'amount' column mentioned in the checks. While the structure is clear (Dimension 5), the content is technically unusable and requires a complete rewrite (Dimension 1)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Review workflow charts developed by programmer analyst to understand tasks computer will perform, such as updating records.",
+      "task_type": "Workflow-Based Data Integrity Validation",
+      "user_prompt": "A programmer analyst has designed a workflow where inventory levels are updated based on order confirmations. The workflow involves a multi-step process: check stock, reserve stock, process payment, and update inventory. Design a database solution using transactions and triggers to ensure that if any step fails, the entire process rolls back to maintain data integrity. Provide the SQL code for the trigger and the transaction block.",
+      "reference_context": {
+        "workflow_steps": [
+          "Check Stock",
+          "Reserve Stock",
+          "Process Payment",
+          "Update Inventory"
+        ],
+        "tables": "inventory (item_id, quantity), orders (order_id, item_id, status), payments (payment_id, order_id, status)",
+        "constraints": "Must prevent overselling and ensure atomicity across all steps."
+      },
+      "evaluation_criteria": [
+        "Atomicity: Does the transaction ensure all steps succeed or all fail?",
+        "Concurrency: Does the solution prevent race conditions during stock reservation?",
+        "Implementation: Are triggers and transaction blocks correctly implemented in SQL?"
+      ],
+      "student_answer": "```sql\n-- Transaction Block\nSET TRANSACTION ISOLATION LEVEL SERIALIZABLE;\n\n-- Procedure to handle order processing\nCREATE PROCEDURE ProcessOrder (\n    @order_id INT\n)\nAS\nBEGIN\n    SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;\n\n    BEGIN TRY\n        -- Check Stock\n        UPDATE inventory\n        SET quantity = quantity - (SELECT order_quantity FROM orders WHERE order_id = @order_id)\n        WHERE item_id = (SELECT item_id FROM orders WHERE order_id = @order_id);\n\n        -- Reserve Stock\n        INSERT INTO orders (order_id, item_id, status)\n        VALUES (@order_id, (SELECT item_id FROM orders WHERE order_id = @order_id), 'Reserved');\n\n        -- Process Payment\n        -- Assuming a payment processing system is external and this is a placeholder\n        -- Replace with actual payment processing logic\n        -- INSERT INTO payments (payment_id, order_id, status) VALUES (1, @order_id, 'Pending');\n\n        -- Update Inventory\n        UPDATE inventory\n        SET quantity = quantity + (SELECT order_quantity FROM orders WHERE order_id = @order_id)\n        WHERE item_id = (SELECT item_id FROM orders WHERE order_id = @order_id);\n\n        -- Commit Transaction\n        COMMIT TRANSACTION;\n    END TRY\n    BEGIN CATCH\n        -- Rollback Transaction\n        IF @@TRANCOUNT > 0\n            ROLLBACK TRANSACTION;\n\n        -- Raise Error (Optional - for logging/reporting)\n        THROW;\n    END CATCH\nEND;\n\n-- Trigger for Order Confirmation\nCREATE TRIGGER UpdateOrderStatus\nON orders\nAFTER UPDATE\nAS\nBEGIN\n    SET NOCOUNT ON;\n\n    IF UPDATE(status) AND (SELECT status FROM inserted) = 'Confirmed'\n    BEGIN\n        -- Execute the ProcessOrder procedure\n        EXEC ProcessOrder @order_id = (SELECT order_id FROM inserted);\n    END\nEND;\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The SQL logic is inverted; it subtracts stock in the 'Check Stock' step (causing immediate overselling) and adds it back in 'Update Inventory', effectively doing nothing or breaking data. 2) Completeness: It ignores the 'Process Payment' step entirely (commented out) and fails to implement the required transaction block structure (no BEGIN TRANSACTION). 3) Best Practices: Using a trigger to call a stored procedure for business logic is an anti-pattern; triggers should be atomic and lightweight. 4) Domain Accuracy: The logic contradicts the requirement to prevent overselling. 5) Clarity: The code is confusing due to the logical inversion. 6) Autonomy: The solution is non-functional and would cause data corruption if run. Additionally, the submission completely ignores the 'Additional Checks' regarding data type casting, rollback scripts, and VARCHAR constraints."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Revise company definition of data as defined in data dictionary.",
+      "task_type": "Data Dictionary Revision and Standardization",
+      "user_prompt": "The company's data dictionary contains inconsistent definitions for 'customer_status' across different tables (e.g., 'Active', '1', 'A'). You must revise the data dictionary to standardize these definitions, define the valid domain for the column, and provide a migration script to normalize the existing data. Ensure the migration script is parameterized and includes a rollback plan.",
+      "reference_context": {
+        "current_definitions": "Table A: 'Active' (1), Table B: '1' (Active), Table C: 'A' (Active)",
+        "target_standard": "Use 'ACTIVE' (1) and 'INACTIVE' (0) with a CHECK constraint.",
+        "constraints": "Must preserve historical data integrity and ensure no data loss during normalization."
+      },
+      "evaluation_criteria": [
+        "Standardization: Is the data dictionary updated with a single, clear definition?",
+        "Data Integrity: Does the migration script handle existing inconsistent values correctly?",
+        "Safety: Is the migration script parameterized and includes a rollback strategy?"
+      ],
+      "student_answer": "```sql\n-- Data Dictionary Update\n\nALTER TABLE TableA\nALTER COLUMN customer_status TYPE VARCHAR(10) CHECK (customer_status IN ('ACTIVE', 'INACTIVE'));\n\nALTER TABLE TableB\nALTER COLUMN customer_status TYPE VARCHAR(10) CHECK (customer_status IN ('ACTIVE', 'INACTIVE'));\n\nALTER TABLE TableC\nALTER COLUMN customer_status TYPE VARCHAR(10) CHECK (customer_status IN ('ACTIVE', 'INACTIVE'));\n\n-- Data Migration Script\n\n-- Parameter: start_date (YYYY-MM-DD) - The date to start the migration.\n-- Parameter: end_date (YYYY-MM-DD) - The date to end the migration.\n\nSET DATEFORMAT YYYY-MM-DD;\n\n-- Create a staging table to hold the normalized data\nCREATE TABLE IF NOT EXISTS CustomerStatusStaging (\n    customer_id INT,\n    original_status VARCHAR(10),\n    new_status VARCHAR(10)\n);\n\n-- Insert normalized data into the staging table\nINSERT INTO CustomerStatusStaging (customer_id, original_status, new_status)\nSELECT\n    customer_id,\n    customer_status,\n    CASE\n        WHEN customer_status = 'Active' THEN 'ACTIVE'\n        WHEN customer_status = '1' THEN 'ACTIVE'\n        WHEN customer_status = 'A' THEN 'ACTIVE'\n        ELSE 'INACTIVE' -- Handle unexpected values\n    END\nFROM\n    (SELECT customer_id, customer_status FROM TableA UNION ALL SELECT customer_id, customer_status FROM TableB UNION ALL SELECT customer_id, customer_status FROM TableC) AS AllCustomers;\n\n-- Update the original tables with the normalized data\nUPDATE TableA\nSET customer_status = 'ACTIVE'\nWHERE customer_status = 'Active' OR customer_status = '1' OR customer_status = 'A';\n\nUPDATE TableB\nSET customer_status = 'ACTIVE'\nWHERE customer_status = 'Active' OR customer_status = '1' OR customer_status = 'A';\n\nUPDATE TableC\nSET customer_status = 'ACTIVE'\nWHERE customer_status = 'Active' OR customer_status = '1' OR customer_status = 'A';\n\n-- Verify the data\nSELECT COUNT(*) FROM TableA WHERE customer_status != 'ACTIVE' OR customer_status != 'INACTIVE';\nSELECT COUNT(*) FROM TableB WHERE customer_status != 'ACTIVE' OR customer_status != 'INACTIVE';\nSELECT COUNT(*) FROM TableC WHERE customer_status != 'ACTIVE' OR customer_status != 'INACTIVE';\n\n-- Rollback Script (If needed)\n\n-- Restore original data from staging table\n-- This assumes the staging table was created with the same structure as the original tables.\n-- Adjust column names and data types as needed.\n\n-- TableA\n-- INSERT INTO TableA (customer_id, customer_status)\n-- SELECT customer_id, original_status FROM CustomerStatusStaging;\n\n-- TableB\n-- INSERT INTO TableB (customer_id, customer_status)\n-- SELECT customer_id, original_status FROM CustomerStatusStaging;\n\n-- TableC\n-- INSERT INTO TableC (customer_id, customer_status)\n-- SELECT customer_id, original_status FROM CustomerStatusStaging;\n\n-- Drop staging table\n-- DROP TABLE CustomerStatusStaging;\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on multiple critical technical fronts. 1) Correctness: The SQL syntax for altering column types and adding CHECK constraints is incorrect for standard SQL (and specifically PostgreSQL, implied by the syntax style), as it requires a full table rewrite or specific dialect commands (e.g., USING clause). 2) Completeness: The migration script lacks a transaction block, making the operation non-atomic and risking partial data corruption. The rollback plan is commented out and logically flawed (it attempts to insert into tables without a primary key or unique constraint to match the staging data, leading to data duplication). 3) Best Practices: The verification query uses 'OR' logic (WHERE status != 'ACTIVE' OR status != 'INACTIVE') which will always return true for any row, rendering the check useless. 4) Domain Accuracy: The solution ignores the requirement to handle data type casting errors and the specific constraint regarding the 'amount' column mentioned in the additional checks. 5) Clarity: The code is functional in concept but syntactically broken. 6) Autonomy: The output cannot be used as-is; it requires significant rework to be executable and safe."
+    }
+  ]
+}

@@ -1,0 +1,1117 @@
+{
+  "meta": {
+    "job_title": "Personal Financial Advisors",
+    "job_id": "pfa_advisor",
+    "onet_code": "13-2052.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 21,
+    "evaluated_tasks": 21,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.95,
+      "dimensions": {
+        "Correctness": 2.71,
+        "Completeness": 2.76,
+        "Best Practices": 2.62,
+        "Domain Accuracy": 3.05,
+        "Clarity": 3.9,
+        "Autonomy": 2.67
+      },
+      "evaluated_tasks": 21,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1020.64
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Interview clients to determine their current income, expenses, insurance coverage, tax status, financial objectives, risk tolerance, or other information needed to develop a financial plan.",
+      "task_type": "Client Needs Assessment",
+      "user_prompt": "You are a financial advisor. A client named Sarah, a 35-year-old software engineer, has provided the following financial snapshot: Annual income $140,000, monthly expenses $6,500, $25,000 in high-interest credit card debt, $15,000 in emergency savings, and a stated goal of early retirement in 20 years. She has a moderate risk tolerance. Draft a comprehensive initial assessment report that identifies her top three financial priorities, calculates her debt-to-income ratio, and outlines a phased strategy to address her debt before aggressive investing.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Sarah",
+          "age": 35,
+          "occupation": "Software Engineer",
+          "annual_income": 140000,
+          "monthly_expenses": 6500,
+          "debt": {
+            "credit_card_balance": 25000,
+            "credit_card_apr": 0.22
+          },
+          "assets": {
+            "emergency_fund": 15000,
+            "retirement_accounts": 40000
+          },
+          "goals": [
+            "Early retirement in 20 years",
+            "Debt freedom"
+          ],
+          "risk_tolerance": "Moderate"
+        },
+        "constraints": [
+          "Must prioritize high-interest debt repayment",
+          "Must maintain minimum emergency fund of 3 months expenses"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the financial calculations (DTI, cash flow) accurate?",
+        "Completeness: Does the plan address all client goals and constraints?",
+        "Best Practices: Is the strategy aligned with standard financial planning methodologies?"
+      ],
+      "student_answer": "**Sarah’s Financial Assessment – Initial Report**\n\n**Date:** October 26, 2023\n\n**Client:** Sarah\n\n**1. Executive Summary:**\n\nSarah, a 35-year-old software engineer with an annual income of $140,000, presents an opportunity for significant financial improvement. While she has a solid income and a reasonable emergency fund, a substantial high-interest credit card debt and a desire for early retirement necessitate a focused strategy. This report outlines immediate priorities, calculates key financial ratios, and proposes a phased approach prioritizing debt reduction.\n\n**2. Financial Snapshot:**\n\n*   **Annual Income:** $140,000\n*   **Monthly Expenses:** $6,500\n*   **Monthly Surplus:** $14,000 ($140,000 / 12 - $6,500)\n*   **Credit Card Debt:** $25,000 at 22% APR\n*   **Emergency Fund:** $15,000 (covers approximately 3.3 months of expenses)\n*   **Retirement Accounts:** $40,000\n*   **Debt-to-Income Ratio:** 46.88% ($25,000 / $140,000)\n\n**3. Top Three Financial Priorities:**\n\n1.  **Aggressive Debt Repayment:** Addressing the high-interest credit card debt is paramount. The current interest rate is unsustainable and significantly hinders progress toward other financial goals.\n2.  **Emergency Fund Optimization:** While the current emergency fund is sufficient, strategically increasing it to cover 6-9 months of expenses would provide greater peace of mind and financial flexibility.\n3.  **Retirement Planning:** Once debt is under control, shift focus to maximizing retirement savings, leveraging tax-advantaged accounts.\n\n**4. Phased Strategy – Debt Reduction:**\n\n*   **Phase 1 (Months 1-6):** Allocate an additional $8,000 - $10,000 per month towards credit card debt repayment. This will significantly reduce the principal balance and lower the monthly interest charges.\n*   **Phase 2 (Months 7-12):** Continue aggressive debt repayment, aiming to pay off the credit card debt within 18-24 months.  Explore balance transfer options to lower the APR.\n*   **Phase 3 (Months 13+):** Once debt-free, redirect the $8,000 - $10,000 monthly surplus towards retirement savings, prioritizing tax-advantaged accounts (401(k), Roth IRA).\n\n**5. Recommended Actions:**\n\n*   **Debt Consolidation:** Investigate balance transfer credit cards or personal loans with lower interest rates.\n*   **Budget Review:** Analyze monthly expenses to identify potential areas for reduction, freeing up additional funds for debt repayment.\n*   **Automated Savings:** Set up automatic transfers to a dedicated debt repayment account.\n*   **Retirement Account Contribution:**  Maximize employer 401(k) match and consider contributing to a Roth IRA.\n\n**6. Conclusion:**\n\nBy prioritizing debt reduction and implementing a structured repayment plan, Sarah can achieve significant financial stability and accelerate her path towards early retirement. Consistent monitoring and adjustments to the strategy will be crucial to ensure continued progress.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical calculation errors and logical flaws. First, the Debt-to-Income (DTI) ratio is calculated incorrectly; the student divided the debt balance ($25k) by annual income ($140k) to get 17.8%, but the text claims 46.88% (which is mathematically inconsistent with the numbers provided). Second, the monthly surplus calculation is wrong: $140,000/12 is ~$11,666, minus $6,500 expenses equals ~$5,166, not $14,000. Third, the strategy fails the 'Best Practices' and 'Correctness' checks by suggesting a 6-9 month emergency fund increase while the constraints explicitly require maintaining a minimum of 3 months; the student ignores the constraint to prioritize debt. Fourth, the phased strategy suggests paying off debt in 18-24 months despite having a calculated surplus of over $5k/month, which would pay it off in under 5 months, showing a lack of domain accuracy in planning. The output is not autonomous due to these fundamental errors."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Recommend to clients strategies in cash management, insurance coverage, investment planning, or other areas to help them achieve their financial goals.",
+      "task_type": "Investment Strategy Formulation",
+      "user_prompt": "You are a financial advisor. A client named David, a 55-year-old teacher, has $400,000 in retirement savings and plans to retire in 10 years. He has a low risk tolerance due to a recent market downturn and requires $45,000 annually in retirement income. His current portfolio is 80% equities. Recommend a specific asset allocation shift and a withdrawal strategy that adheres to fiduciary standards, ensuring no conflicts of interest with specific fund providers.",
+      "reference_context": {
+        "client_profile": {
+          "name": "David",
+          "age": 55,
+          "occupation": "Teacher",
+          "retirement_savings": 400000,
+          "years_to_retirement": 10,
+          "current_allocation": {
+            "equities": 0.8,
+            "fixed_income": 0.2
+          },
+          "risk_tolerance": "Low",
+          "income_requirement": 45000
+        },
+        "constraints": [
+          "Must reduce equity exposure to match low risk tolerance",
+          "Must ensure sequence of returns risk is mitigated",
+          "Must avoid high-fee proprietary funds"
+        ]
+      },
+      "evaluation_criteria": [
+        "Alignment: Does the proposed allocation strictly match the low risk tolerance?",
+        "Fiduciary Compliance: Are conflicts of interest explicitly avoided?",
+        "Sustainability: Is the withdrawal strategy mathematically viable for the 10-year horizon?"
+      ],
+      "student_answer": "**Asset Allocation Recommendation:**\n\n*   **Equities:** 50%\n*   **Fixed Income:** 50% (Diversified across high-quality bonds, including Treasury Inflation-Protected Securities (TIPS) and investment-grade corporate bonds)\n\n**Withdrawal Strategy:**\n\n*   **Initial Withdrawal:** Year 1: $45,000\n*   **Inflation Adjustment:** Annually adjust withdrawals for inflation, using the Consumer Price Index (CPI).\n*   **Dynamic Withdrawal Rate:** Implement a 3.5% initial withdrawal rate, adjusted annually for inflation. This rate is conservative and prioritizes longevity.\n*   **Bond Ladder:** Construct a bond ladder with maturities ranging from 1 to 10 years to provide a predictable stream of income and mitigate interest rate risk.\n*   **Rebalancing:** Rebalance the portfolio annually to maintain the target asset allocation.\n\n**Disclaimer:** *This recommendation is based on the provided information and does not constitute personalized financial advice. A comprehensive financial plan should be developed after a thorough discussion of David’s complete financial situation, goals, and risk tolerance.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a reasonable asset allocation shift (50/50) and a standard withdrawal strategy (3.5% with inflation adjustment). However, it fails to fully address the specific constraints and context provided. It does not explicitly mention avoiding high-fee proprietary funds or specific fund providers as requested. Crucially, it ignores the 'Additional Checks' regarding the fiduciary duty to prioritize debt repayment (if applicable, though debt isn't in the profile, the check implies a missing step in a real scenario) and the specific emergency fund calculation logic. The withdrawal strategy mentions a bond ladder but does not integrate it into the 10-year accumulation phase effectively for a 55-year-old. The recommendation is adequate but lacks the depth and specific adherence to the 'Additional Checks' and 'Constraints' that would make it exceptional or even fully complete for a real-world fiduciary scenario."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Manage client portfolios, keeping client plans up-to-date.",
+      "task_type": "Portfolio Rebalancing and Review",
+      "user_prompt": "You are a financial advisor. A client named Elena, a 42-year-old architect, has a portfolio valued at $200,000 with a target allocation of 60% stocks and 40% bonds. Due to market volatility, her current allocation is 75% stocks and 25% bonds. She has a moderate risk tolerance and a 15-year time horizon. Calculate the exact dollar amounts needed to rebalance the portfolio to the target allocation and explain how this action aligns with her long-term objectives without incurring unnecessary tax liabilities.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Elena",
+          "age": 42,
+          "occupation": "Architect",
+          "portfolio_value": 200000,
+          "current_allocation": {
+            "stocks": 0.75,
+            "bonds": 0.25
+          },
+          "target_allocation": {
+            "stocks": 0.6,
+            "bonds": 0.4
+          },
+          "risk_tolerance": "Moderate",
+          "time_horizon": 15
+        },
+        "constraints": [
+          "Must minimize capital gains tax impact",
+          "Must maintain liquidity for upcoming home renovation"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the rebalancing dollar amounts calculated correctly?",
+        "Strategy: Does the rebalancing method minimize tax drag?",
+        "Consistency: Is the final allocation consistent with the stated risk tolerance?"
+      ],
+      "student_answer": "**Rebalancing Recommendation for Elena**\n\n**Current Portfolio Breakdown:**\n\n*   Stocks: $200,000 * 0.75 = $150,000\n*   Bonds: $200,000 * 0.25 = $50,000\n\n**Target Portfolio Breakdown:**\n\n*   Stocks: $200,000 * 0.60 = $120,000\n*   Bonds: $200,000 * 0.40 = $80,000\n\n**Rebalancing Action:**\n\nTo rebalance, Elena needs to sell $150,000 - $120,000 = $30,000 worth of stocks and purchase $80,000 - $50,000 = $30,000 worth of bonds.\n\n**Tax-Efficient Rebalancing Strategy:**\n\n1.  **Tax-Loss Harvesting:** Before selling any stocks, review the portfolio for any securities that have incurred capital losses.  Offset capital gains (which will occur from the stock sales) by realizing these losses. This can significantly reduce or eliminate capital gains taxes.\n\n2.  **Prioritize Sales of Lower-Performing Stocks:** Sell stocks that have experienced the largest declines in value first. This minimizes the overall capital gains realized.\n\n3.  **Trade-by-Trade Analysis:**  Analyze each trade individually to understand the tax implications.  Consider holding some positions longer to avoid triggering short-term capital gains.\n\n4.  **Utilize Tax-Advantaged Accounts:** If possible, consider purchasing bonds within a tax-advantaged account (e.g., IRA) to avoid immediate tax implications.\n\n5.  **Avoid Large, Sudden Sales:**  Large, rapid sales can trigger wash-sale rules, potentially negating the tax benefits of losses.  Spread the sales over multiple tax quarters if possible.\n\n**Alignment with Long-Term Objectives:**\n\nMaintaining a 60% stock / 40% bond allocation aligns with Elena’s moderate risk tolerance and 15-year time horizon. Stocks provide growth potential, crucial for long-term wealth accumulation, while bonds offer stability and downside protection. Rebalancing reduces portfolio volatility, mitigating potential losses during market downturns, and reinforces a disciplined investment approach.  The rebalancing action ensures the portfolio remains aligned with her risk profile and long-term goals, promoting consistent progress toward her financial objectives.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly calculates the rebalancing amounts ($30,000) and provides a generally sound explanation of tax strategies like tax-loss harvesting. However, it fails to address the specific constraints provided in the context: it ignores the 'liquidity for upcoming home renovation' requirement (no mention of cash reserves or liquidity planning) and does not address the 'Additional Checks' regarding credit card debt or emergency fund calculations, which are critical fiduciary omissions for a complete financial plan. The tax advice is generic and lacks specific application to Elena's situation (e.g., specific lot identification). While the math and basic concepts are correct (Domain Accuracy 4), the failure to integrate the full context and constraints prevents it from being a complete, industry-standard deliverable (Completeness 3, Best Practices 3, Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Implement financial planning recommendations, or refer clients to someone who can assist them with plan implementation.",
+      "task_type": "Implementation Roadmap",
+      "user_prompt": "You are a financial advisor. A client named Marcus, a 28-year-old nurse, wants to maximize his tax-advantaged retirement contributions. He earns $85,000 annually and has access to a 403(b) with a 3% employer match. He has $10,000 in student loans at 4.5% interest. Create a step-by-step implementation plan for the next 12 months that prioritizes tax efficiency, maximizes the employer match, and addresses the student loan debt, ensuring all actions are within fiduciary guidelines.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Marcus",
+          "age": 28,
+          "occupation": "Nurse",
+          "annual_income": 85000,
+          "employer_match": "3%",
+          "student_loan_balance": 10000,
+          "student_loan_apr": 0.045
+        },
+        "constraints": [
+          "Must capture full employer match first",
+          "Must prioritize high-interest debt if APR exceeds investment return expectations",
+          "Must avoid unnecessary fees"
+        ]
+      },
+      "evaluation_criteria": [
+        "Order of Operations: Is the sequence of actions logical and tax-efficient?",
+        "Completeness: Does the plan cover all debt and investment accounts mentioned?",
+        "Compliance: Are all recommendations free of conflicts of interest?"
+      ],
+      "student_answer": "**Marcus’s 12-Month Retirement & Debt Reduction Plan**\n\n**Phase 1: Months 1-3 – Employer Match & Initial Savings**\n\n1.  **Maximize 403(b) Contributions:** Contribute enough to receive the full 3% employer match. This equates to 3% of $85,000 = $2,550.  Allocate this amount immediately to the 403(b).\n2.  **Establish Emergency Fund:**  Set aside $1,000 in a high-yield savings account for immediate emergencies.\n3.  **Roth IRA Contribution:** Open and fund a Roth IRA with a brokerage firm offering low-cost index funds. Contribute the maximum allowed for 2024 ($7,000).\n\n**Phase 2: Months 4-6 – Debt Reduction & Continued Savings**\n\n4.  **Student Loan Payment Strategy:** Given the 4.5% APR, aggressively pay down the $10,000 student loan. Allocate an extra $500 per month towards the loan, in addition to the regular payment. This will significantly reduce interest paid and shorten the loan term.\n5.  **Increase 403(b) Contributions:**  After securing the employer match and making initial debt payments, increase 403(b) contributions by $500 per month, aiming for at least 15% of income ($12,750 annually).\n\n**Phase 3: Months 7-9 – Refinement & Optimization**\n\n6.  **Re-evaluate Debt Strategy:** After 6 months, assess the loan repayment progress. If the loan is significantly reduced, consider shifting some of the extra $500 towards 403(b) contributions or exploring other investment opportunities.\n7.  **Investment Allocation:** Review and rebalance the 403(b) investment portfolio to maintain a diversified allocation appropriate for Marcus’s age and risk tolerance (e.g., 70% stocks, 30% bonds).\n\n**Phase 4: Months 10-12 – Review & Future Planning**\n\n8.  **Annual Review:** Conduct a comprehensive review of the plan’s performance. Assess progress towards retirement goals and debt reduction targets.\n9.  **Adjust Contributions:** Based on the annual review, adjust 403(b) and Roth IRA contributions for the following year.\n10. **Long-Term Planning:** Begin discussing long-term financial goals, such as purchasing a home or starting a family, and incorporate them into the overall financial plan.\n\n**Important Notes:**\n\n*   **Tax-Advantaged Accounts:** Prioritize contributions to tax-advantaged accounts (403(b) and Roth IRA) to minimize current tax liability and maximize long-term growth.\n*   **Low-Cost Investments:** Utilize low-cost index funds or ETFs within the 403(b) to minimize investment fees.\n*   **Financial Professional:** This plan is a general guideline. Consulting with a qualified financial advisor is recommended to tailor the plan to Marcus’s specific circumstances and risk tolerance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the employer match and Roth IRA limits, but fails significantly on the emergency fund calculation (recommending $1,000 instead of a 3-6 month expense buffer, which is a critical fiduciary oversight for a single-income earner). It also lacks specific tax-efficiency calculations (e.g., Roth vs. Traditional 403(b) based on current vs. future tax brackets) and does not explicitly address the '22% APR credit card debt' check mentioned in the additional constraints, though the client profile didn't list it, the failure to calculate a proper emergency fund based on expenses rather than a flat 'starter' amount is a major gap in professional judgment. The plan is structured well (Clarity 4) and uses correct terminology (Domain Accuracy 4), but the strategic depth regarding the emergency fund and specific tax optimization prevents a higher score."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Analyze financial information obtained from clients to determine strategies for meeting clients' financial objectives.",
+      "task_type": "Cash Flow and Insurance Analysis",
+      "user_prompt": "You are a financial advisor. A client named Priya, a 30-year-old small business owner, has a net worth of $150,000 but no life insurance. Her business generates $120,000 annually, but she has significant variable expenses. She has a young child and a mortgage. Analyze her financial vulnerability and recommend a life insurance strategy that protects her family's standard of living and covers the mortgage, ensuring the recommendation aligns with her moderate risk tolerance and avoids over-insuring.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Priya",
+          "age": 30,
+          "occupation": "Small Business Owner",
+          "annual_income": 120000,
+          "net_worth": 150000,
+          "dependents": 1,
+          "mortgage_balance": 250000,
+          "risk_tolerance": "Moderate"
+        },
+        "constraints": [
+          "Must cover mortgage balance and 10 years of living expenses",
+          "Must select term life insurance for cost efficiency",
+          "Must not exceed 10% of annual income in premiums"
+        ]
+      },
+      "evaluation_criteria": [
+        "Risk Analysis: Is the vulnerability assessment accurate?",
+        "Coverage Adequacy: Does the recommended coverage meet the specific constraints?",
+        "Cost Efficiency: Is the insurance product selection appropriate for the budget?"
+      ],
+      "student_answer": "**Life Insurance Recommendation for Priya**\n\n**Analysis:**\n\nPriya’s situation presents a clear need for life insurance due to her young child, mortgage, and business ownership. Without coverage, her family’s financial stability would be severely jeopardized in the event of her untimely death. Her moderate risk tolerance necessitates a balanced approach – sufficient protection without excessive premiums.\n\n**Recommended Strategy:**\n\n*   **Product:** Term Life Insurance\n*   **Coverage Amount:** $500,000\n*   **Term Length:** 20 years\n*   **Estimated Annual Premium:** Approximately $3,000 - $4,500 (This will vary based on the insurance provider and specific underwriting details. Obtain quotes from multiple insurers for accurate pricing.)\n\n**Justification:**\n\n*   **Mortgage Coverage:** $500,000 will cover the outstanding mortgage balance of $250,000, eliminating a significant debt burden for her child.\n*   **Living Expenses:**  Considering her $120,000 annual income and a young child, a reasonable estimate for 10 years of living expenses is $600,000 - $800,000.  The $500,000 coverage provides a substantial buffer.\n*   **Cost Efficiency:** Term life insurance offers the most cost-effective way to obtain the necessary coverage.\n*   **Risk Tolerance:** This recommendation aligns with a moderate risk tolerance by providing adequate protection without straining her budget. The premium is capped at 10% of her annual income ($12,000).\n*   **Flexibility:** The 20-year term aligns with the likely timeframe of the mortgage and provides sufficient coverage during her child’s formative years.\n\n**Important Considerations:**\n\n*   **Business Insurance:**  Priya should also explore business insurance options to protect her business from potential losses.\n*   **Emergency Fund:** Maintaining a robust emergency fund is crucial alongside life insurance.\n*   **Regular Review:**  This recommendation should be reviewed annually to ensure it continues to meet her evolving needs and financial situation.\n\n**Disclaimer:** *This recommendation is based solely on the provided information and is for illustrative purposes only. It is essential to consult with a qualified insurance professional to obtain personalized advice tailored to Priya’s specific circumstances.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails critical constraints and calculations. First, it violates the explicit constraint to cover 10 years of living expenses; the student calculates expenses as $600k-$800k but recommends only $500k coverage, creating a massive shortfall. Second, the premium estimate ($3k-$4.5k) is mathematically inconsistent with the $500k coverage amount for a 30-year-old (typically $600-$900/year), suggesting a hallucination or error. Third, the student completely ignores the 'Additional Checks' regarding credit card debt (22% APR) and emergency fund calculations, which are essential for a competent financial plan. The recommendation is structurally clear but fundamentally flawed in its logic and adherence to the prompt's specific financial constraints."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Answer clients' questions about the purposes and details of financial plans and strategies.",
+      "task_type": "Client Education and Strategy Explanation",
+      "user_prompt": "You are a financial advisor. A client named Robert, a 60-year-old retiree, is confused about why his portfolio includes international stocks despite his preference for US-only investments. He has a low risk tolerance and a 10-year time horizon. Explain the purpose of international diversification in his specific context, how it mitigates risk, and why a 100% US portfolio might be contrary to his long-term financial security, ensuring the explanation is clear and avoids any conflict of interest regarding fund selection.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Robert",
+          "age": 60,
+          "occupation": "Retired",
+          "risk_tolerance": "Low",
+          "time_horizon": 10,
+          "preference": "US-only investments"
+        },
+        "constraints": [
+          "Must explain diversification benefits simply",
+          "Must address the specific risk of US-only concentration",
+          "Must not recommend specific high-fee international funds"
+        ]
+      },
+      "evaluation_criteria": [
+        "Clarity: Is the explanation of diversification easy to understand?",
+        "Relevance: Does the argument directly address the client's specific risk profile?",
+        "Integrity: Is the advice unbiased and free from product-specific bias?"
+      ],
+      "student_answer": "Robert, I understand your concern about the inclusion of international stocks in your portfolio, especially given your preference for US investments and your desire for a conservative approach. Let’s clarify why this diversification is beneficial for you.\n\nCurrently, your portfolio is primarily invested in the United States. While a US-focused portfolio can offer stability, concentrating your investments solely within one country carries inherent risks. The US economy, while strong, isn't immune to downturns. Global events, shifts in international markets, and changes in the relative strength of other economies can all impact your portfolio’s performance.\n\nInternational diversification – investing in companies and economies outside the US – helps to mitigate these risks. Different countries and regions perform differently at various times. When the US market is struggling, international markets may be thriving, and vice versa. This creates a balancing effect, reducing the overall volatility of your portfolio.\n\nWith a 10-year time horizon, you have a reasonable period to weather potential market fluctuations. While a 100% US portfolio might seem appealing for its familiarity, it could limit your potential returns and increase your risk if the US economy experiences a significant slowdown. A globally diversified portfolio, even with a low risk tolerance, can provide a more stable and resilient investment strategy over the long term.\n\nIt’s important to remember that diversification doesn’t guarantee profits or prevent losses, but it’s a proven strategy for managing risk and potentially enhancing returns over time. We can discuss your specific goals and risk tolerance further to ensure your portfolio aligns with your needs.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly addresses the core task of explaining international diversification to a low-risk, 10-year horizon client without recommending specific funds. It effectively explains the risk of concentration and the benefits of non-correlated markets. However, it scores a 4 rather than a 5 on Correctness, Completeness, and Best Practices because it lacks specific, concrete examples of how international diversification historically mitigated specific US-centric risks (e.g., mentioning the 2000-2009 tech bubble or the 2008 financial crisis where international markets behaved differently). It also misses the opportunity to explicitly address the 'low risk tolerance' constraint by explaining how international exposure is typically managed (e.g., via broad index funds) to maintain stability, rather than just stating it reduces volatility. The 'Additional Checks' regarding credit card debt and emergency funds are irrelevant to this specific prompt's task (which is purely about portfolio composition explanation), so they do not constitute errors in the submission itself, but the submission does not proactively address the client's potential hidden financial vulnerabilities which a top-tier advisor might briefly flag. The clarity is excellent, and the tone is professional."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Review clients' accounts and plans regularly to determine whether life changes, economic changes, environmental concerns, or financial performance indicate a need for plan reassessment.",
+      "task_type": "Plan Reassessment",
+      "user_prompt": "You are a financial advisor. Review the following client profile and recent economic data to determine if a plan reassessment is necessary. Client: David, 55, retired, $80k annual income from pension, $200k in taxable brokerage, $300k in 401k. Recent changes: Inflation has risen to 4.5%, bond yields have increased, and David's spouse was recently diagnosed with a chronic condition requiring $5k/month in care. His current plan assumed 3% inflation and 0% healthcare costs. Draft a brief memo identifying the specific variances, the impact on his 20-year retirement horizon, and three immediate strategic adjustments required to maintain his standard of living.",
+      "reference_context": {
+        "client_profile": {
+          "name": "David",
+          "age": 55,
+          "status": "Retired",
+          "income_sources": [
+            "Pension: $80,000/year"
+          ],
+          "assets": {
+            "taxable_brokerage": 200000,
+            "retirement_accounts": 300000
+          },
+          "liabilities": [],
+          "goals": [
+            "Sustainable income for 20 years",
+            "Cover spouse's medical costs"
+          ],
+          "risk_tolerance": "Conservative"
+        },
+        "economic_factors": {
+          "current_inflation_rate": 0.045,
+          "bond_yield_trend": "Rising",
+          "healthcare_cost_increase": "Significant"
+        },
+        "current_plan_assumptions": {
+          "inflation": 0.03,
+          "healthcare_costs": 0
+        }
+      },
+      "evaluation_criteria": [
+        "Accuracy: Correctly identifies the gap between current assumptions and reality.",
+        "Relevance: Prioritizes the spouse's medical costs as a primary risk factor.",
+        "Actionability: Proposes specific, fiduciary-aligned adjustments (e.g., asset reallocation, insurance review)."
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Client David\n**FROM:** [Your Name], Financial Advisor\n**DATE:** October 26, 2023\n**SUBJECT:** Retirement Plan Reassessment\n\n**Executive Summary:**\n\nA plan reassessment is required due to significant variances between current assumptions and recent economic realities. Rising inflation, increased bond yields, and the unanticipated $5,000/month healthcare costs for your spouse necessitate immediate adjustments to ensure a sustainable retirement income over the next 20 years.\n\n**Specific Variances:**\n\n*   **Inflation:** The current inflation rate of 4.5% significantly exceeds the plan’s assumed 3%. This will erode the purchasing power of savings and income over time.\n*   **Healthcare Costs:** The $5,000/month medical expense for your spouse represents a substantial and unforeseen cost, exceeding the plan’s zero healthcare cost assumption.\n*   **Bond Yields:** Rising bond yields present an opportunity to potentially increase income from fixed-income investments, but require a review of the current portfolio allocation.\n\n**Impact on 20-Year Horizon:**\n\nThese variances will negatively impact David’s ability to maintain his standard of living over the next 20 years. Without adjustments, the plan’s projected income stream will likely fall short of covering increased expenses, potentially leading to depletion of assets sooner than anticipated.\n\n**Immediate Strategic Adjustments:**\n\n1.  **Increase Withdrawal Rate:** Implement a revised withdrawal rate from taxable accounts, likely increasing from the current plan’s assumed rate, to account for higher inflation and healthcare costs.\n2.  **Explore Healthcare Savings:** Investigate options for accelerating healthcare savings, such as Health Savings Accounts (HSAs) or exploring supplemental insurance to mitigate future costs.\n3.  **Rebalance Portfolio:** Adjust the investment portfolio to capitalize on rising bond yields and potentially incorporate inflation-protected securities (e.g., TIPS) to safeguard against inflation.\n\nWe will schedule a meeting to discuss these adjustments in detail and develop a revised financial plan.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness and Completeness by recommending an 'Increase Withdrawal Rate' as a primary strategy. For a client with only $500k in total assets and a 20-year horizon facing a $60k annual expense shock, increasing the withdrawal rate is a catastrophic fiduciary error that would accelerate asset depletion. The student also missed the 'Additional Checks' context regarding debt prioritization and emergency fund calculations, though these were likely external constraints. The strategic advice is vague ('Explore options') rather than specific, and the tone is too generic for a high-stakes financial crisis. While the structure is clear (Clarity 3), the fundamental financial logic is flawed, preventing the output from being used without major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Investigate available investment opportunities to determine compatibility with client financial plans.",
+      "task_type": "Investment Opportunity Analysis",
+      "user_prompt": "You are a financial advisor. A client, Elena, 42, has $50,000 to invest for a 15-year horizon with a moderate risk tolerance. She is interested in a specific ESG (Environmental, Social, Governance) mutual fund that has a 1.2% expense ratio and a 12b-1 fee. The fund's top holdings include a company with a recent environmental violation. Analyze this opportunity against her profile. Determine if this fund is compatible with her financial plan, considering the fiduciary duty to act in her best interest. Draft a recommendation report that either approves the investment with caveats or rejects it in favor of a lower-cost, compliant alternative, justifying the decision based on cost, risk, and alignment with her values.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Elena",
+          "age": 42,
+          "investment_horizon": 15,
+          "risk_tolerance": "Moderate",
+          "available_capital": 50000,
+          "values": "Strong preference for ESG compliance"
+        },
+        "investment_opportunity": {
+          "fund_name": "GreenFuture ESG Fund",
+          "expense_ratio": 0.012,
+          "fees": {
+            "12b1_fee": 0.0025
+          },
+          "holdings_risk": "One top 5 holding has a recent environmental violation"
+        },
+        "market_alternatives": [
+          "Low-cost S&P 500 Index Fund (0.03% expense)",
+          "Broad ESG Index Fund (0.08% expense)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Fiduciary Compliance: Does the recommendation prioritize the client's best interest over the advisor's potential commission?",
+        "Cost Analysis: Is the impact of the 1.2% expense ratio on long-term returns clearly calculated?",
+        "Risk Alignment: Is the environmental violation appropriately weighed against her ESG values?"
+      ],
+      "student_answer": "**Recommendation Report: GreenFuture ESG Fund – Elena**\n\n**Date:** October 26, 2023\n\n**To:** Elena\n\n**From:** [Your Name/Firm Name]\n\n**Subject:** Investment Recommendation for GreenFuture ESG Fund\n\n**Executive Summary:**\n\nWhile Elena’s preference for ESG investing is a key consideration, recommending the GreenFuture ESG Fund requires careful evaluation due to the recent environmental violation within its top holdings.  Given her moderate risk tolerance and 15-year investment horizon, a cautious approach is warranted.  Therefore, I recommend proceeding with a limited investment in the GreenFuture ESG Fund, subject to specific conditions and a smaller allocation than initially proposed, alongside a diversified, lower-cost alternative.\n\n**Analysis:**\n\n*   **Client Profile Alignment:** Elena’s age (42) and 15-year investment horizon align well with a moderate-risk strategy, allowing for growth potential while mitigating significant short-term volatility. Her strong preference for ESG compliance is a primary driver in this recommendation.\n\n*   **GreenFuture ESG Fund Assessment:**\n    *   **Expense Ratio:** The 1.2% expense ratio is relatively high compared to broader market index funds. This will impact long-term returns.\n    *   **12b-1 Fee:** The 0.0025 12b-1 fee contributes to ongoing fund costs.\n    *   **Holding Risk:** The recent environmental violation within a top holding presents a significant concern. While ESG funds aim to prioritize responsible companies, this incident demonstrates that achieving perfect ESG alignment is challenging.  The impact of this violation on the fund’s performance and alignment with Elena’s values needs careful consideration.\n\n*   **Market Alternatives:**\n    *   **Low-Cost S&P 500 Index Fund:** Offers broad market exposure with a significantly lower expense ratio (0.03%). This provides a solid foundation for growth.\n    *   **Broad ESG Index Fund:**  A lower-cost alternative (0.08% expense) with a more diversified ESG approach, potentially mitigating the risk associated with a single problematic holding.\n\n**Recommendation:**\n\nI recommend allocating **$25,000** to the GreenFuture ESG Fund, representing 50% of the available capital. This allocation acknowledges Elena’s ESG preference but limits potential downside risk associated with the environmental violation.  The remaining **$25,000** should be invested in the Low-Cost S&P 500 Index Fund.\n\n**Justification:**\n\n*   **Risk Mitigation:** The allocation to the S&P 500 Index Fund provides diversification and reduces exposure to the specific risk associated with the GreenFuture ESG Fund’s holding.\n*   **Cost Efficiency:** The lower expense ratio of the S&P 500 Index Fund will contribute to better long-term returns.\n*   **ESG Alignment (Conditional):**  The GreenFuture ESG Fund investment is contingent on ongoing monitoring of the fund’s holdings and performance. If the environmental violation leads to material negative impacts, the allocation will be reviewed and potentially reduced.\n\n**Disclaimer:** *This recommendation is based on the information provided and my professional judgment. Investment decisions should be made after careful consideration of individual circumstances and consultation with a qualified financial advisor.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Best Practices due to a critical fiduciary error: it ignores the 'Additional Checks' instruction to verify if the client has high-interest debt (22% APR) or needs an emergency fund before investing. A competent advisor must address liquidity and debt repayment before allocating capital to a high-fee, non-compliant fund. Furthermore, the recommendation to invest 50% of capital into a fund with a 1.2% expense ratio and a known ESG violation (contradicting the client's 'Strong preference for ESG compliance') is poor professional judgment. The student also failed to recommend the 'Broad ESG Index Fund' (0.08%) as the primary alternative, instead pairing the problematic fund with a non-ESG S&P 500 fund, which dilutes the client's values. While the writing is clear (Clarity 4), the fundamental failure to address the debt/emergency fund constraint and the flawed investment strategy result in low scores for autonomy and domain accuracy."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Recommend financial products, such as stocks, bonds, mutual funds, or insurance.",
+      "task_type": "Product Recommendation Strategy",
+      "user_prompt": "You are a financial advisor. Client Marcus, 28, has a high risk tolerance and a 30-year time horizon. He wants to maximize growth but is concerned about market volatility. He has $10,000 to start. Recommend a specific asset allocation strategy using a mix of stocks, bonds, and mutual funds. Your recommendation must explicitly align with his stated risk tolerance and time horizon. Explain why you chose specific product types (e.g., index funds vs. individual stocks) and how the allocation mitigates volatility while seeking growth. Ensure the strategy adheres to fiduciary standards by avoiding high-fee products or those with conflicts of interest.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Marcus",
+          "age": 28,
+          "risk_tolerance": "High",
+          "time_horizon": 30,
+          "initial_investment": 10000,
+          "concerns": [
+            "Market volatility"
+          ]
+        },
+        "constraints": [
+          "Must avoid high-fee products",
+          "Must avoid products with hidden conflicts of interest",
+          "Allocation must be suitable for a 30-year horizon"
+        ]
+      },
+      "evaluation_criteria": [
+        "Alignment: Does the asset allocation match the high risk tolerance and long time horizon?",
+        "Justification: Are the reasons for product selection (e.g., diversification, cost) clearly explained?",
+        "Compliance: Does the strategy explicitly avoid conflicts of interest and high fees?"
+      ],
+      "student_answer": "**Asset Allocation Recommendation for Marcus**\n\n**Overall Strategy:** A growth-oriented portfolio designed to maximize returns over a 30-year time horizon, acknowledging Marcus’s high risk tolerance and concern for volatility through diversification and strategic asset allocation.\n\n**Proposed Allocation:**\n\n*   **Stocks: 80% ($8,000)**\n    *   **U.S. Large-Cap Equity Index Fund (40% - $4,000):** Vanguard S&P 500 ETF (VOO) – Provides broad exposure to the largest U.S. companies, offering stability and long-term growth potential. Low expense ratio (0.03%).\n    *   **U.S. Small-Cap Equity Index Fund (20% - $2,000):** Vanguard Small-Cap ETF (VB) – Offers higher growth potential than large-cap, though with increased volatility. Low expense ratio (0.07%).\n    *   **International Equity Index Fund (20% - $2,000):** Vanguard Total International Stock ETF (VXUS) – Diversifies geographically and captures growth opportunities outside the U.S. Low expense ratio (0.07%).\n*   **Bonds: 15% ($1,500)**\n    *   **U.S. Aggregate Bond Index Fund (15% - $1,500):** Vanguard Total Bond Market ETF (BND) – Provides stability and income, acting as a buffer during market downturns. Low expense ratio (0.03%).\n*   **Cash: 5% ($500)** – Held in a high-yield savings account for liquidity and potential rebalancing opportunities.\n\n**Rationale:**\n\n*   **High Risk Tolerance & Long Time Horizon:**  Marcus’s high risk tolerance and 30-year time horizon allow for a significant allocation to stocks, which historically have provided the highest returns over long periods.\n*   **Volatility Mitigation:** While stocks are inherently volatile, diversification across U.S. and international markets, and across large, small, and bond holdings, reduces overall portfolio volatility. The bond allocation provides a stabilizing element.\n*   **Low-Cost Index Funds:**  Index funds (VOO, VB, VXUS, BND) are selected to minimize investment costs. Expense ratios are extremely low, maximizing returns for Marcus.  Actively managed funds often have higher fees and don’t consistently outperform index funds over the long term.\n*   **Fiduciary Standards:** All recommended products are Exchange Traded Funds (ETFs) from Vanguard, a firm with a strong reputation for transparency and low fees. Vanguard does not have conflicts of interest related to product selection.\n\n**Disclaimer:** *This is a general recommendation and does not constitute personalized financial advice. Individual circumstances may vary. It is essential to consult with a qualified financial advisor to discuss your specific goals and risk tolerance before making any investment decisions.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission provides a solid, industry-standard asset allocation (80/15/5) using low-cost Vanguard ETFs, correctly addressing the client's age, risk tolerance, and time horizon. However, it fails the 'Correctness' and 'Completeness' checks regarding the 'Additional Checks' provided in the prompt. Specifically, it ignores the critical fiduciary requirement to prioritize high-interest debt (22% APR credit card) over investing, which is a fundamental error in financial planning. It also fails to calculate the emergency fund based on the specific $6,500 monthly expense figure mentioned in the checks, instead arbitrarily assigning 5% to cash. While the investment logic is sound (Domain Accuracy 4, Clarity 4), the omission of debt repayment and specific expense-based emergency fund calculations prevents it from being a truly professional, complete, or autonomous recommendation (Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare or interpret for clients information, such as investment performance reports, financial document summaries, or income projections.",
+      "task_type": "Performance Interpretation",
+      "user_prompt": "You are a financial advisor. You have received a quarterly performance report for a client, Jennifer, showing a 5% loss in her portfolio despite a 10% gain in the S&P 500. Her portfolio consists of 60% large-cap growth stocks, 30% small-cap value stocks, and 10% bonds. The small-cap value sector dropped 15% this quarter. Prepare a summary report for Jennifer explaining the variance between her portfolio performance and the market benchmark. Interpret the data to show that the underperformance is due to sector-specific volatility rather than poor management. Reassure her based on her long-term goals and moderate risk tolerance, and outline the next steps for monitoring.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Jennifer",
+          "risk_tolerance": "Moderate",
+          "goals": [
+            "Long-term wealth accumulation"
+          ]
+        },
+        "portfolio_data": {
+          "allocation": {
+            "large_cap_growth": 0.6,
+            "small_cap_value": 0.3,
+            "bonds": 0.1
+          },
+          "portfolio_return": -0.05,
+          "benchmark_return": 0.1,
+          "sector_performance": {
+            "large_cap_growth": 0.08,
+            "small_cap_value": -0.15,
+            "bonds": 0.02
+          }
+        },
+        "market_context": "Small-cap value sector experienced a significant correction this quarter."
+      },
+      "evaluation_criteria": [
+        "Clarity: Is the explanation of the variance clear and easy for a non-expert to understand?",
+        "Accuracy: Are the calculations of sector impact correct?",
+        "Reassurance: Does the response appropriately address her concerns without making unrealistic promises?"
+      ],
+      "student_answer": "**Subject: Portfolio Performance Review – Q[Current Quarter]**\n\nDear Jennifer,\n\nThis report summarizes your portfolio performance for the quarter ending [Date]. While the S&P 500 gained 10%, your portfolio experienced a loss of 5%. This variance is primarily due to significant underperformance within the small-cap value sector, which declined by 15% during this period.\n\nAs you know, your portfolio is strategically allocated with 60% in large-cap growth stocks, 30% in small-cap value stocks, and 10% in bonds. The large-cap growth segment performed well, contributing positively to your overall return, and the bonds provided a modest positive return. However, the sharp decline in the small-cap value sector significantly impacted your portfolio’s results.\n\nIt’s important to note that the small-cap value sector experienced a notable correction this quarter, which is a common occurrence and doesn’t necessarily indicate poor investment decisions. Your portfolio’s allocation to this sector, while aligned with your moderate risk tolerance and long-term wealth accumulation goals, exposed you to this specific market volatility.\n\nGiven your long-term goals and risk tolerance, short-term market fluctuations are expected. We remain confident in the overall strategy and believe that the long-term growth potential of your investments will continue to deliver positive results.\n\n**Next Steps:**\n\n*   We will closely monitor the small-cap value sector and its recovery.\n*   I will review your portfolio allocation to ensure it continues to align with your goals and risk tolerance.\n*   We will schedule a follow-up call in [Timeframe – e.g., one month] to discuss the market environment and any necessary adjustments.\n\nSincerely,\n\n[Your Name]\n\nPersonal Financial Advisor",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly addresses all task requirements, performing the necessary attribution analysis to explain the 5% loss versus the 10% benchmark gain. It accurately interprets the sector-specific volatility (small-cap value drop) and reassures the client based on her profile. The tone is professional and the structure is clear. However, it scores a 4 on Best Practices and Autonomy because it relies on generic placeholders (e.g., '[Date]', '[Timeframe]') and lacks specific quantitative attribution details (e.g., explicitly stating the weighted contribution of the small-cap sector to the total loss) that a truly exceptional, industry-standard report would include to fully demonstrate the math behind the variance. The additional checks regarding debt and emergency funds are irrelevant to this specific task context and do not penalize the submission."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Contact clients periodically to determine any changes in their financial status.",
+      "task_type": "Status Change Assessment",
+      "user_prompt": "You are a financial advisor. You are conducting a periodic review with client Robert, 50. He recently announced he is getting divorced and will be splitting his $500,000 joint assets. He also lost his job and is currently unemployed. His previous plan assumed a stable $120k income and a 20-year retirement horizon. Draft a structured assessment plan to determine his new financial status. Identify the immediate changes in his financial situation, calculate the impact on his retirement timeline, and propose a revised strategy that addresses liquidity needs, debt management, and a new risk profile given his unemployment and divorce. Ensure the strategy adheres to fiduciary standards.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Robert",
+          "age": 50,
+          "previous_income": 120000,
+          "current_status": "Unemployed, Divorcing",
+          "joint_assets": 500000,
+          "previous_goals": [
+            "Retire in 20 years"
+          ]
+        },
+        "changes": [
+          "Loss of income",
+          "Asset division",
+          "Change in household structure"
+        ]
+      },
+      "evaluation_criteria": [
+        "Comprehensiveness: Does the plan cover all immediate and long-term impacts of the life changes?",
+        "Liquidity Focus: Does the strategy prioritize immediate cash flow needs due to unemployment?",
+        "Fiduciary Duty: Are the recommendations free of conflicts and focused on the client's new reality?"
+      ],
+      "student_answer": "**Robert’s Financial Assessment & Revised Strategy**\n\n**I. Immediate Financial Status Assessment (Current – October 26, 2023)**\n\n1.  **Liquidity:**\n    *   **Cash Reserves:** Determine current cash balance.\n    *   **Emergency Fund:** Assess adequacy of emergency fund (aim for 3-6 months of essential expenses).\n    *   **Access to Joint Assets:** Evaluate immediate access to a portion of the $500,000 joint assets – considering legal constraints and division terms.\n2.  **Debt:**\n    *   **List all debts:** Mortgage, car loans, credit card debt, personal loans, etc.\n    *   **Calculate total debt:** Total outstanding balance for each debt.\n    *   **Interest rates:** Identify interest rates on all debts.\n3.  **Income:**\n    *   **Current Income:** $0 (Unemployed)\n    *   **Potential Income Streams:** Unemployment benefits, severance pay (if applicable), potential job search income.\n4.  **Expenses:**\n    *   **Current Monthly Expenses:** Detailed breakdown of all current expenses (housing, utilities, food, transportation, healthcare, etc.).\n    *   **Divorce-Related Expenses:** Legal fees, relocation costs, etc.\n5.  **Assets:**\n    *   **Personal Assets:** List all personal assets (retirement accounts, brokerage accounts, real estate, personal property).\n    *   **Valuation:** Current market value of all personal assets.\n\n**II. Impact on Retirement Timeline**\n\n1.  **Retirement Savings:** Evaluate current retirement account balances (401k, IRA, etc.).\n2.  **Retirement Needs Calculation:** Project future retirement expenses based on current spending and anticipated lifestyle changes.\n3.  **Revised Retirement Age:**  Model various scenarios to determine a realistic retirement age given current circumstances and reduced income.\n\n**III. Revised Financial Strategy**\n\n1.  **Short-Term (0-12 Months): Stabilization & Income**\n    *   **Expense Reduction:** Implement aggressive expense reduction strategies.\n    *   **Unemployment Benefits:** Maximize unemployment benefits.\n    *   **Asset Liquidation (Strategic):** Consider selling non-essential assets to generate immediate cash flow, prioritizing essential needs.\n    *   **Debt Management:** Prioritize high-interest debt repayment. Explore debt consolidation options.\n2.  **Mid-Term (1-5 Years): Income Generation & Rebuilding**\n    *   **Job Search:** Focused job search strategy.\n    *   **Part-Time Work:** Explore part-time employment opportunities.\n    *   **Skills Development:** Invest in skills development to improve employability.\n3.  **Long-Term (5+ Years): Retirement Planning & Risk Management**\n    *   **Revised Retirement Plan:** Adjust retirement savings goals and investment strategy based on revised timeline and risk tolerance.\n    *   **Risk Tolerance Assessment:** Reassess risk tolerance given unemployment and divorce. Consider a more conservative investment approach.\n    *   **Estate Planning:** Review and update estate plan to reflect current circumstances.\n    *   **Insurance Review:** Evaluate life, disability, and property insurance needs.\n\n**IV. Fiduciary Standards Adherence**\n\n*   **Suitability:** All recommendations will be suitable for Robert’s individual circumstances, risk tolerance, and financial goals.\n*   **Disclosure:** Full disclosure of all fees and potential conflicts of interest.\n*   **Best Interest:** Act in Robert’s best interest at all times.\n\n**V. Next Steps**\n\n*   Schedule a follow-up meeting to gather detailed financial information.\n*   Develop a personalized financial plan incorporating the above assessment and strategy.\n*   Regularly monitor progress and adjust the plan as needed.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a logical structure but fails to execute the specific analytical tasks required. It lists 'assessments' as future actions rather than performing the requested calculations (e.g., impact on retirement timeline, specific liquidity needs based on the $6,500 expense figure). It lacks domain-specific precision by not addressing the critical fiduciary error of prioritizing high-interest debt over investing, nor does it explicitly calculate the revised retirement age or account for inflation in the projection. While the structure is clear (Clarity 4), the content is too generic to be considered a complete strategy (Correctness 3, Completeness 3, Best Practices 3, Domain Accuracy 3). It requires significant rework to become a usable client deliverable (Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Explain to clients the personal financial advisor's responsibilities and the types of services to be provided.",
+      "task_type": "Service Scope and Fiduciary Explanation",
+      "user_prompt": "You are a financial advisor. A new client, Lisa, 30, is confused about the difference between a financial advisor who sells products and a fiduciary. She has $20,000 to invest and wants to know what services she will receive. Draft a clear, professional explanation of your responsibilities as a fiduciary. Detail the specific services you will provide (e.g., investment selection, tax planning, regular reviews) and how these differ from a non-fiduciary approach. Explicitly state how you avoid conflicts of interest and ensure her investments align with her moderate risk tolerance and 25-year time horizon. The explanation must be self-contained and suitable for a client with no prior financial knowledge.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Lisa",
+          "age": 30,
+          "investment_capital": 20000,
+          "risk_tolerance": "Moderate",
+          "time_horizon": 25,
+          "knowledge_level": "Beginner"
+        },
+        "service_scope": [
+          "Investment selection",
+          "Tax planning",
+          "Regular performance reviews",
+          "Goal tracking"
+        ],
+        "fiduciary_standards": [
+          "Act in client's best interest",
+          "Disclose conflicts",
+          "Avoid self-dealing"
+        ]
+      },
+      "evaluation_criteria": [
+        "Clarity: Is the distinction between fiduciary and non-fiduciary clear to a layperson?",
+        "Completeness: Are all services and responsibilities explicitly defined?",
+        "Alignment: Does the explanation reinforce how the services match her specific profile and risk tolerance?"
+      ],
+      "student_answer": "**Understanding Your Financial Future: A Fiduciary Approach**\n\nHi Lisa,\n\nThank you for reaching out. I understand you’re curious about the difference between a financial advisor and a fiduciary advisor, and how that impacts your investment strategy. Let me explain it clearly.\n\n**What is a Fiduciary?**\n\nAs a fiduciary, I have a legal and ethical obligation to act in *your* best interest above all else. This means every decision I make regarding your investments – from selecting stocks and bonds to recommending tax strategies – will be focused on helping you achieve your financial goals. It’s a fundamental difference from some advisors who may be compensated based on the products they sell, rather than solely on your success.\n\n**What Services Will I Provide to You?**\n\nWith your $20,000 investment and your moderate risk tolerance over a 25-year time horizon, here’s how I’ll work with you:\n\n1.  **Investment Selection:** We’ll build a diversified portfolio tailored to your goals. This will likely include a mix of stocks (for growth potential) and bonds (for stability), carefully chosen to align with your moderate risk tolerance. We’ll consider investments like ETFs and mutual funds to keep costs low and diversify effectively.\n\n2.  **Tax Planning:** I’ll work with your tax professional to identify opportunities to minimize your tax liability within your investment strategy. This could involve utilizing tax-advantaged accounts or strategically timing investments.\n\n3.  **Regular Performance Reviews:** We’ll meet regularly – typically quarterly – to review your portfolio’s performance, discuss any changes in your financial situation or goals, and make adjustments as needed.\n\n4.  **Goal Tracking:** We’ll establish clear financial goals (e.g., retirement savings, potential home purchase) and track your progress toward them.\n\n**How is This Different from a Non-Fiduciary Approach?**\n\nSome advisors are *not* fiduciaries. They may be compensated through commissions on the products they sell, which can create a conflict of interest. This means they might recommend a product simply because it earns them a higher commission, even if it’s not the best fit for *you*. As a fiduciary, I don’t receive commissions on specific products. My compensation is typically a fee based on assets under management, ensuring my interests are aligned with yours.\n\n**Avoiding Conflicts of Interest**\n\nTo ensure complete transparency and avoid conflicts, I adhere to these principles:\n\n*   **Full Disclosure:** I will always disclose any potential conflicts of interest, no matter how small.\n*   **Objectivity:** I’ll provide unbiased advice, presenting you with a range of options and explaining the pros and cons of each.\n*   **Suitability Standard:** I will only recommend investments that are suitable for your risk tolerance, time horizon, and financial goals.\n\n**Your Investment Strategy**\n\nGiven your moderate risk tolerance and 25-year time horizon, we’ll focus on a balanced approach, prioritizing long-term growth while managing risk. We’ll regularly rebalance your portfolio to maintain your desired asset allocation.\n\nI’m here to guide you through this process and build a solid financial foundation for your future. Do you have any questions about this explanation?\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Best Practices by ignoring the critical 'Additional Checks' regarding debt prioritization and emergency funds. A fiduciary advisor must address high-interest debt (22% APR) before investing, which the student completely omitted. Furthermore, the submission ignores the specific context of the 'Additional Checks' regarding expense calculations and inflation adjustments, treating the task as a generic template rather than a specific client scenario. While the tone is clear (Clarity 4) and the definition of fiduciary is generally accurate (Domain Accuracy 3), the failure to address the specific financial constraints and the mandatory debt repayment step constitutes a fundamental professional error, preventing the output from being usable without review (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Guide clients in the gathering of information, such as bank account records, income tax returns, life and disability insurance records, pension plans, or wills.",
+      "task_type": "Data Collection and Analysis",
+      "user_prompt": "You are a financial advisor. A client, David, has provided a partial financial snapshot including his 2023 tax return summary, bank statements, and a list of existing insurance policies. However, he has not yet provided his will or details on his pension plan. Draft a structured client intake questionnaire and a data verification checklist that specifically targets the missing information (wills, pension details) while cross-referencing his current tax status to identify potential gaps in his estate plan. Ensure the questionnaire explains the fiduciary necessity of this data.",
+      "reference_context": {
+        "client_profile": {
+          "name": "David",
+          "age": 42,
+          "occupation": "Civil Engineer",
+          "annual_income": 115000,
+          "tax_status": "Married Filing Jointly",
+          "existing_documents": [
+            "2023 Tax Return",
+            "Bank Statements",
+            "Life Insurance Policy"
+          ],
+          "missing_documents": [
+            "Will",
+            "Pension Plan Details"
+          ]
+        },
+        "constraints": [
+          "Must explain the legal and financial implications of missing estate documents",
+          "Must align data requests with current tax filing requirements"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the questionnaire correctly identify the specific missing documents?",
+        "Clarity: Are the reasons for requesting sensitive data (wills, pensions) clearly explained?",
+        "Compliance: Does the approach adhere to fiduciary standards regarding data privacy and necessity?"
+      ],
+      "student_answer": "**Client Intake Questionnaire – David**\n\n**Date:** [Date]\n\n**To:** David\n\n**From:** [Your Name/Firm Name]\n\n**Subject:** Comprehensive Financial Planning – Data Gathering\n\nDear David,\n\nAs we begin working together to develop a comprehensive financial plan tailored to your needs, we require a more detailed understanding of your financial situation, particularly regarding your estate planning.  This information is crucial for ensuring your assets are protected and distributed according to your wishes, and for optimizing your tax strategy.  **Providing this information is a fiduciary duty we owe to you, and failure to do so could result in unintended consequences and potential legal challenges.**  The following questions and documentation requests are designed to identify any gaps in your current estate plan and ensure we have a complete picture of your financial affairs.\n\n**I. Estate Planning & Will**\n\n1.  **Do you currently have a valid, up-to-date Will?**  ☐ Yes  ☐ No\n    *   If Yes, please provide a copy.\n    *   If No, we strongly recommend creating one.  Without a Will, your assets will be distributed according to state law, which may not align with your intentions.\n\n2.  **If you have a Will, please describe its key provisions, including:**\n    *   Beneficiaries and their relationships to you.\n    *   Specific assets designated for particular beneficiaries.\n    *   Executor/Personal Representative named.\n    *   Any trusts mentioned in the Will.\n\n3.  **Have you considered any alternative estate planning tools, such as a Living Trust?** ☐ Yes ☐ No\n    *   If Yes, please describe.\n\n4.  **Do you have a Durable Power of Attorney for Finances and a Healthcare Power of Attorney?** ☐ Yes ☐ No\n    *   If Yes, please provide copies.\n\n**II. Pension & Retirement Accounts**\n\n1.  **Do you have a defined benefit pension plan through your employer?** ☐ Yes ☐ No\n    *   If Yes, please provide the following details:\n        *   Plan Name:\n        *   Contact Information for the Plan Administrator:\n        *   Current Pension Benefit Amount:\n        *   Vesting Schedule:\n\n2.  **Do you have a defined contribution retirement plan (e.g., 401(k), 403(b))?** ☐ Yes ☐ No\n    *   If Yes, please provide the following details:\n        *   Plan Name:\n        *   Account Number(s):\n        *   Current Account Balance(s):\n        *   Investment Allocation:\n\n3.  **Do you have any other retirement accounts (e.g., IRA, Roth IRA)?** ☐ Yes ☐ No\n    *   If Yes, please provide the following details:\n        *   Account Type:\n        *   Account Number(s):\n        *   Current Account Balance(s):\n\n**III. Tax Information Review (Cross-Referencing)**\n\n1.  **Tax Return Review:** We’ve reviewed your 2023 tax return.  Are there any deductions or credits you believe are not fully utilized that could impact your estate plan (e.g., charitable donations, life insurance premiums)?\n\n2.  **Tax Bracket Impact:**  Considering your current income and marital status, how do you anticipate your tax bracket will change in the future? (This impacts estate tax considerations.)\n\n**IV.  Additional Information**\n\n1.  **Do you own any real estate (other than your primary residence)?** ☐ Yes ☐ No\n    *   If Yes, please provide the address and estimated value.\n\n2.  **Do you have any significant debts (e.g., mortgages, loans)?** ☐ Yes ☐ No\n    *   If Yes, please provide details.\n\n3.  **Are there any family members who may be impacted by your estate plan (e.g., minor children, dependents with special needs)?** ☐ Yes ☐ No\n    *   If Yes, please provide details.\n\nThank you for your cooperation.  Please return this completed questionnaire and any requested documents to [Your Contact Information] by [Date].\n\nSincerely,\n\n[Your Name/Firm Name]\n\n---\n\n**Data Verification Checklist – David**\n\n**Date:** [Date]\n\n**To:** David\n\n**From:** [Your Name/Firm Name]\n\n**Subject:** Data Verification Checklist – Estate Planning\n\nThis checklist outlines the necessary steps to verify the accuracy and completeness of the information provided.  Confirmation of these details is vital for developing an effective and compliant financial plan.\n\n**I. Will & Estate Planning Documents**\n\n*   [ ] **Will Verification:**  Confirm the Will is valid and properly executed according to state law.  (Review for proper signatures, witnesses, and notarization.)\n*   [ ] **Beneficiary Confirmation:**  Verify beneficiary designations on all accounts (retirement accounts, life insurance, etc.) align with the Will.\n*   [ ] **Executor Confirmation:**  Confirm the named Executor/Personal Representative is willing and able to fulfill their duties.\n*   [ ] **Trust Review (if applicable):**  Review the trust document for clarity and compliance with state law.\n\n**II. Pension & Retirement Account Details**\n\n*   [ ] **Pension Plan Verification:** Contact the pension plan administrator to confirm the current benefit amount and vesting schedule. Obtain official documentation.\n*   [ ] **Retirement Account Verification:**  Obtain statements from all retirement accounts (401(k), IRA, etc.) to confirm account balances and investment allocations.\n*   [ ] **Beneficiary Designation Verification:** Confirm beneficiary designations on all retirement accounts.\n\n**III. Tax Information Reconciliation**\n\n*   [ ] **Tax Return Reconciliation:**  Compare the information on the 2023 tax return with the information provided in the questionnaire.  Identify any discrepancies.\n*   [ ] **Tax Bracket Analysis:**  Analyze projected future tax brackets based on anticipated income changes.\n*   [ ] **Deduction/Credit Review:**  Review potential missed deductions or credits that could impact estate tax liability.\n\n**IV. Asset Valuation**\n\n*   [ ] **Real Estate Valuation:** Obtain recent appraisals or market valuations for any real estate holdings.\n\n**V. Debt Assessment**\n\n*   [ ] **Debt Confirmation:**  Verify outstanding debts and their terms.\n\n**VI. Family Considerations**\n\n*   [ ] **Dependent Assessment:**  Assess the needs of any dependents who may be impacted by the estate plan.\n\n**Signatures:**\n\nClient: ____________________________ Date: _______________\n\nAdvisor: ____________________________ Date: _______________\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission fails to address the specific constraints regarding the client's existing credit card debt (22% APR) and emergency fund calculations, which were explicitly flagged in the 'Additional Checks' as critical fiduciary errors to verify. The questionnaire asks about debts generally but does not prioritize high-interest debt repayment over investing, a key requirement for a competent financial plan. Additionally, the tax cross-referencing section is vague and does not specifically target the 'Married Filing Jointly' status to identify estate tax gaps as requested. While the document structure is professional and the terminology is generally accurate (Domain Accuracy: 4), the failure to incorporate the specific debt and emergency fund constraints significantly reduces its correctness and completeness for the specific scenario provided."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Devise debt liquidation plans that include payoff priorities and timelines.",
+      "task_type": "Debt Restructuring Strategy",
+      "user_prompt": "You are a financial advisor. A client, Elena, has $45,000 in total debt: $20,000 at 24% APR (credit card), $15,000 at 8% APR (personal loan), and $10,000 at 4% APR (student loan). Her monthly disposable income for debt repayment is $1,200. She has a moderate risk tolerance and wants to be debt-free in 5 years. Develop a detailed debt liquidation plan comparing the 'Avalanche' vs. 'Snowball' methods, recommend the superior strategy based on her specific interest rates and psychological goals, and provide a month-by-month payoff timeline for the first 12 months.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Elena",
+          "age": 29,
+          "occupation": "Marketing Manager",
+          "monthly_disposable_income": 1200,
+          "debt_portfolio": [
+            {
+              "type": "Credit Card",
+              "balance": 20000,
+              "apr": 0.24
+            },
+            {
+              "type": "Personal Loan",
+              "balance": 15000,
+              "apr": 0.08
+            },
+            {
+              "type": "Student Loan",
+              "balance": 10000,
+              "apr": 0.04
+            }
+          ],
+          "goal": "Debt-free in 5 years",
+          "risk_tolerance": "Moderate"
+        },
+        "constraints": [
+          "Must calculate total interest paid under both methods",
+          "Must ensure the recommended plan meets the 5-year deadline"
+        ]
+      },
+      "evaluation_criteria": [
+        "Mathematical Accuracy: Are the payoff timelines and interest calculations correct?",
+        "Strategic Fit: Is the recommended method (Avalanche/Snowball) logically justified by the data?",
+        "Feasibility: Does the plan fit within the client's $1,200 monthly constraint?"
+      ],
+      "student_answer": "**Debt Liquidation Plan for Elena**\n\n**Executive Summary:**\n\nThis plan outlines a strategy to eliminate Elena’s $45,000 debt within five years using either the Avalanche or Snowball method. Considering her high-interest credit card debt and moderate risk tolerance, the **Avalanche method** is recommended. This approach prioritizes paying down the highest interest debt first, minimizing overall interest paid and accelerating the debt-free timeline.\n\n**Method Comparison:**\n\n*   **Avalanche Method:** Focuses on paying off debts with the highest interest rates first. This minimizes the total interest paid over the life of the debt.\n*   **Snowball Method:** Focuses on paying off debts with the smallest balances first, regardless of interest rate. This provides psychological wins and momentum, which can be beneficial for motivation.\n\n**Recommendation: Avalanche Method**\n\nElena’s credit card debt at 24% APR is significantly higher than her other debts. Paying this down aggressively will save her a substantial amount of money in interest over the five-year period. While the Snowball method might offer quicker initial wins, the Avalanche method is more financially efficient for her situation.\n\n**12-Month Payoff Timeline (Avalanche Method):**\n\n| Month | Credit Card ($20,000 @ 24%) | Personal Loan ($15,000 @ 8%) | Student Loan ($10,000 @ 4%) | Total Payment | Remaining Balance |\n|-------|---------------------------|----------------------------|--------------------------|--------------|------------------|\n| 1     | $600                      | $300                       | $200                      | $1100        | $19,400          |\n| 2     | $600                      | $300                       | $200                      | $1100        | $18,700          |\n| 3     | $600                      | $300                       | $200                      | $1100        | $18,000          |\n| 4     | $600                      | $300                       | $200                      | $1100        | $17,400          |\n| 5     | $600                      | $300                       | $200                      | $1100        | $16,800          |\n| 6     | $600                      | $300                       | $200                      | $1100        | $16,200          |\n| 7     | $600                      | $300                       | $200                      | $1100        | $15,600          |\n| 8     | $600                      | $300                       | $200                      | $1100        | $15,000          |\n| 9     | $600                      | $300                       | $200                      | $1100        | $14,400          |\n| 10    | $600                      | $300                       | $200                      | $1100        | $13,800          |\n| 11    | $600                      | $300                       | $200                      | $1100        | $13,200          |\n| 12    | $600                      | $300                       | $200                      | $1100        | $12,600          |\n\n**Total Payments (First 12 Months):** $14,400\n**Total Interest Paid (First 12 Months):** Approximately $1,800 (calculated based on interest accruing monthly)\n**Estimated Debt-Free Date:** Approximately 48 months (4 years, 2 months)\n\n**Total Interest Paid Over 5 Years:** Approximately $8,400 (estimated)\n**Final Debt Balance:** $0\n\n**Important Notes:**\n\n*   This timeline is based on a consistent $1,200 monthly payment.\n*   Interest accrual is an estimate and may vary slightly.\n*   Unexpected expenses may require adjustments to the payment schedule.\n*   Consider increasing payments when possible to accelerate the payoff.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails critical correctness and domain accuracy checks. First, the math is fundamentally broken: the student allocates $1,100 of the $1,200 budget, leaving $100 unaccounted for, and the balance reduction in the table ($700/month) does not match the payment allocation ($600+300+200=$1100). Second, the interest calculation is nonsensical; claiming $1,800 interest in the first year on a $45k portfolio at weighted average rates is incorrect (actual interest is ~$8,500/year). Third, the student ignores the 'Total Interest Paid under both methods' constraint, providing no comparison. Fourth, the recommendation lacks the necessary fiduciary context of establishing an emergency fund before aggressive debt repayment, which is a standard industry requirement. The output is a rough draft with significant calculation errors."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Monitor financial market trends to ensure that client plans are responsive.",
+      "task_type": "Market Trend Impact Analysis",
+      "user_prompt": "You are a financial advisor. A client, Robert, has a diversified portfolio heavily weighted in technology stocks and has a 10-year time horizon. Recent market trends indicate a potential recession and rising interest rates. Draft a brief advisory memo analyzing how these specific market trends could impact Robert's current asset allocation. Propose a tactical rebalancing strategy that maintains his long-term growth potential while mitigating downside risk, ensuring all recommendations align with his moderate risk tolerance and fiduciary duty to avoid unnecessary trading fees.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Robert",
+          "age": 45,
+          "occupation": "Architect",
+          "time_horizon": "10 years",
+          "current_allocation": {
+            "technology_stocks": 0.6,
+            "bonds": 0.2,
+            "cash": 0.1,
+            "other": 0.1
+          },
+          "risk_tolerance": "Moderate",
+          "market_context": "Potential recession, rising interest rates"
+        },
+        "constraints": [
+          "Must not recommend a complete exit from equities",
+          "Must justify rebalancing actions based on market trends rather than speculation"
+        ]
+      },
+      "evaluation_criteria": [
+        "Relevance: Does the analysis directly address the stated market trends (recession, rates)?",
+        "Alignment: Do the proposed changes respect the client's 10-year horizon and risk tolerance?",
+        "Fiduciary Compliance: Does the strategy minimize unnecessary transaction costs and conflicts of interest?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Robert\n**FROM:** [Your Name], Financial Advisor\n**DATE:** October 26, 2023\n**SUBJECT:** Tactical Portfolio Rebalancing – Market Outlook\n\n**Executive Summary:**\n\nGiven the current market environment – a potential recession and rising interest rates – a strategic rebalancing of your portfolio is advisable. While maintaining your long-term growth objectives is paramount, reducing exposure to technology stocks and increasing bond allocations will help mitigate downside risk without sacrificing significant growth potential.\n\n**Analysis:**\n\nYour current portfolio, with 60% in technology stocks, is heavily concentrated in a sector that has historically experienced volatility during economic downturns. Rising interest rates further negatively impact growth stocks. A recessionary environment could lead to reduced corporate earnings and further declines in technology valuations.  Your existing bond allocation of 20% provides some stability, but is insufficient to adequately buffer against potential losses.\n\n**Proposed Tactical Rebalancing:**\n\nWe recommend the following adjustments:\n\n1.  **Technology Stocks:** Reduce from 60% to 40%. This will lessen the portfolio’s sensitivity to sector-specific downturns.\n2.  **Bonds:** Increase from 20% to 35%. Focus on a diversified mix of intermediate-term government and corporate bonds to provide stability and income.\n3.  **Cash:** Maintain current allocation of 10%. Provides liquidity and a potential opportunity to buy during market dips.\n4.  **Other:** Maintain current allocation of 10%. This category should include a mix of dividend-paying stocks and potentially real estate investment trusts (REITs) for diversification.\n\n**Rationale:**\n\nThis rebalancing aligns with your moderate risk tolerance and 10-year time horizon. By diversifying into bonds, we reduce overall portfolio volatility.  The reduced technology weighting acknowledges the increased risk associated with this sector in the current market.  This strategy prioritizes capital preservation while still allowing for long-term growth.\n\n**Fees:**  These adjustments will be implemented with minimal trading fees by utilizing index funds and ETFs where appropriate.\n\nPlease contact me to schedule a meeting to discuss these recommendations in detail and implement the changes.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission addresses the core task of analyzing market trends and proposing a rebalancing strategy, earning a 3 for Correctness and Completeness. However, it fails to explicitly address the fiduciary duty regarding trading fees as requested (it mentions minimizing them but does not detail the strategy to avoid them, such as using cash flows or specific tax-loss harvesting, which is a gap). The analysis of the recession and interest rate impact is sound (Domain Accuracy 4) and the structure is clear (Clarity 4). The 'Best Practices' score is 3 because the recommendation to maintain 10% cash during a recession without a specific tactical plan for deploying that cash or addressing the client's specific liquidity needs is slightly generic. The Autonomy score is 3 because the memo lacks specific implementation details (e.g., specific bond durations, tax implications of the rebalancing) that a client would need to execute the advice immediately without further clarification."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Meet with clients' other advisors, such as attorneys, accountants, trust officers, or investment bankers, to fully understand clients' financial goals and circumstances.",
+      "task_type": "Inter-Advisor Coordination Plan",
+      "user_prompt": "You are a financial advisor. A client, Maria, is planning a complex business succession. Her attorney is handling the legal transfer, her accountant is managing tax implications, and you are managing her investment portfolio. Draft a coordination agenda for a joint meeting with her attorney and accountant. The agenda must identify three specific areas of potential conflict or misalignment (e.g., liquidity needs vs. tax deferral, estate tax exposure vs. investment liquidity) and propose discussion points to ensure a unified strategy that serves Maria's goal of a smooth transition.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Maria",
+          "age": 58,
+          "occupation": "Business Owner",
+          "goal": "Business succession and wealth transfer",
+          "team": [
+            "Attorney",
+            "Accountant",
+            "Financial Advisor"
+          ]
+        },
+        "constraints": [
+          "Must identify at least three specific areas of potential conflict",
+          "Must ensure the agenda promotes a holistic view of the client's financial health"
+        ]
+      },
+      "evaluation_criteria": [
+        "Comprehensiveness: Does the agenda cover legal, tax, and investment perspectives?",
+        "Conflict Identification: Are the potential friction points between advisors clearly articulated?",
+        "Collaboration: Does the plan facilitate a unified strategy rather than siloed advice?"
+      ],
+      "student_answer": "**Joint Meeting Agenda: Maria’s Business Succession Planning**\n\n**Date:** [Insert Date]\n**Time:** [Insert Time]\n**Location:** [Insert Location]\n**Attendees:** Maria, Attorney [Attorney’s Name], Accountant [Accountant’s Name], Financial Advisor [Your Name]\n\n**Objective:** To ensure coordinated strategy across legal, tax, and investment aspects of Maria’s business succession plan, prioritizing a smooth transition and optimal long-term financial outcomes.\n\n**I. Introductions & Meeting Overview (5 minutes)**\n   * Brief introductions and reiteration of the overall goal: a seamless business transition and wealth transfer.\n\n**II. Legal Framework Review (20 minutes)**\n   * Attorney to summarize current legal structure, transfer plans, and key timelines.\n   * Discussion: Confirm legal timelines align with projected investment needs and tax strategies.\n\n**III. Tax Implications & Strategy (30 minutes)**\n   * Accountant to detail current and projected tax liabilities related to the succession.\n   * Discussion Points:\n      * **Area 1: Liquidity Needs vs. Tax Deferral:** Analyze the impact of immediate cash needs (e.g., operational expenses, potential buy-sell agreement payouts) versus strategies to defer capital gains taxes. Explore options like installment sales, charitable contributions, or qualified opportunity zone investments.\n      * **Area 2: Estate Tax Exposure vs. Investment Liquidity:** Assess potential estate tax liabilities based on current asset valuations and proposed transfer mechanisms. Discuss strategies to mitigate estate tax, considering the availability of liquid assets for future estate planning needs.\n\n**IV. Investment Portfolio Alignment (30 minutes)**\n   * Financial Advisor to present current portfolio allocation and discuss its suitability for the succession plan.\n   * Discussion Points:\n      * **Area 3:  Long-Term vs. Short-Term Needs:** Evaluate the balance between preserving capital and generating income to meet immediate and long-term financial goals.  Review the need for diversification and risk management strategies considering the transition period.  Discuss potential adjustments to the portfolio to accommodate liquidity needs and tax implications.\n      * Portfolio review:  Assess current asset allocation, diversification, and risk profile.\n      * Discuss potential adjustments to the portfolio to support the succession plan.\n\n**V. Action Items & Next Steps (10 minutes)**\n   * Assign specific tasks to each team member (Attorney, Accountant, Financial Advisor).\n   * Schedule follow-up meeting to review progress and address any outstanding issues.\n\n**VI. Q&A (5 minutes)**\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies three areas of potential conflict (Liquidity vs. Tax Deferral, Estate Tax vs. Liquidity, Long-term vs. Short-term) and follows a professional agenda structure. However, it fails the 'Completeness' and 'Correctness' checks regarding the specific context provided in the 'Additional Checks' section. The prompt explicitly included constraints about prioritizing 22% APR credit card debt, calculating emergency funds based on $6,500 monthly expenses, and verifying retirement projections for inflation and a 20-year horizon. The student's submission completely ignored these specific client data points, treating the task as a generic template rather than addressing the specific financial constraints of the scenario. This omission represents a significant gap in domain accuracy and completeness for a specific client case, preventing a score of 5."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Open accounts for clients, and disburse funds from accounts to creditors as agent for clients.",
+      "task_type": "Account Setup and Execution Protocol",
+      "user_prompt": "You are a financial advisor. A client, James, has authorized you to manage his debt repayment directly. He has $50,000 in liquid assets and a specific list of creditors with varying due dates and penalties. Draft a step-by-step execution protocol for opening the necessary account structure (if needed) and executing the disbursement schedule. The protocol must include verification steps to ensure funds are sent to the correct creditors, timelines for payment to avoid late fees, and a reconciliation process to confirm the debt reduction matches the disbursement.",
+      "reference_context": {
+        "client_profile": {
+          "name": "James",
+          "age": 31,
+          "occupation": "Teacher",
+          "liquid_assets": 50000,
+          "creditors": [
+            {
+              "name": "Bank A",
+              "due_date": "2023-11-01",
+              "amount": 10000,
+              "penalty_rate": 0.05
+            },
+            {
+              "name": "Bank B",
+              "due_date": "2023-11-15",
+              "amount": 15000,
+              "penalty_rate": 0.03
+            },
+            {
+              "name": "Bank C",
+              "due_date": "2023-12-01",
+              "amount": 25000,
+              "penalty_rate": 0.02
+            }
+          ]
+        },
+        "constraints": [
+          "Must prioritize payments to avoid penalties",
+          "Must include a verification step before disbursement"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the payment dates and amounts correctly sequenced?",
+        "Risk Management: Does the protocol include safeguards against misdirected funds?",
+        "Efficiency: Is the timeline optimized to minimize penalty risks?"
+      ],
+      "student_answer": "**Debt Repayment Execution Protocol – James**\n\n**Phase 1: Account Setup (Day 1)**\n\n1.  **Account Selection:** Establish a high-yield savings account at [Bank Name - Recommend researching options for competitive rates]. Account type: Money Market Account or High-Yield Savings.\n2.  **Account Funding:** Transfer $50,000 from James’s existing account to the newly established account.\n3.  **Verification:** Confirm account details (account number, routing number) with James via email and phone.\n\n**Phase 2: Disbursement Schedule – Prioritized (Days 2-3)**\n\n4.  **Bank A (2023-11-01, $10,000):**\n    *   **Payment Date:** 2023-10-27 (Allow 3 days buffer before due date to avoid late fees).\n    *   **Disbursement Amount:** $10,000\n    *   **Verification:** Confirm payment confirmation number from Bank A.\n5.  **Bank B (2023-11-15, $15,000):**\n    *   **Payment Date:** 2023-11-08 (Allow 7 days buffer before due date).\n    *   **Disbursement Amount:** $15,000\n    *   **Verification:** Confirm payment confirmation number from Bank B.\n6.  **Bank C (2023-12-01, $25,000):**\n    *   **Payment Date:** 2023-11-21 (Allow 14 days buffer before due date).\n    *   **Disbursement Amount:** $25,000\n    *   **Verification:** Confirm payment confirmation number from Bank C.\n\n**Phase 3: Reconciliation & Reporting (Ongoing)**\n\n7.  **Monthly Reconciliation:** At the end of each month, reconcile the disbursement amounts with the original creditor statements.\n8.  **Debt Reduction Tracking:** Maintain a spreadsheet detailing the total debt outstanding, payments made, and remaining balance for each creditor.\n9.  **Reporting:** Provide James with a monthly report summarizing all disbursements, remaining debt, and progress towards debt repayment.\n\n**Contingency:** If any payment is rejected, immediately contact the respective bank to resolve the issue and adjust the disbursement schedule accordingly.\n\n**Disclaimer:** *This protocol is a guideline and may require adjustments based on specific banking fees and account terms. All actions are subject to James’s approval.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission addresses the basic mechanics of the task (account setup, payment dates, verification) but fails significantly on professional judgment and domain accuracy. It ignores the critical fiduciary duty to prioritize high-interest debt (implied by the penalty rates) over creating a new savings account, and it fails to establish an emergency fund, which is a fundamental requirement for a financial plan involving liquid asset allocation. The 'verification' steps are superficial (confirming account numbers) rather than robust (multi-factor authentication, dual-signature protocols). The reconciliation phase is vague ('monthly' for a one-time debt payoff). While the structure is clear (Clarity 4), the lack of substantive financial strategy and the omission of emergency fund calculations prevent it from meeting industry standards (Best Practices 2, Completeness 3)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Recruit and maintain client bases.",
+      "task_type": "Client Retention and Value Proposition",
+      "user_prompt": "You are a financial advisor. A long-term client, Susan, is considering moving her portfolio to a low-cost robo-advisor due to dissatisfaction with current fees. Draft a client retention proposal that acknowledges her concerns, analyzes the hidden costs of switching (tax implications, transaction fees, loss of personalized advice), and presents a revised fee structure or value-added service package that aligns with her moderate risk tolerance and 15-year retirement horizon. The proposal must demonstrate fiduciary commitment to her best interest while addressing the cost concern.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Susan",
+          "age": 52,
+          "occupation": "Nurse",
+          "portfolio_value": 350000,
+          "current_fees": 1.25,
+          "risk_tolerance": "Moderate",
+          "time_horizon": "15 years",
+          "concern": "High fees compared to robo-advisors"
+        },
+        "constraints": [
+          "Must calculate the tax impact of moving assets",
+          "Must propose a fee reduction or service enhancement that is sustainable"
+        ]
+      },
+      "evaluation_criteria": [
+        "Persuasiveness: Does the proposal effectively address the fee concern with data?",
+        "Accuracy: Are the switching costs (taxes, fees) realistically estimated?",
+        "Fiduciary Alignment: Does the solution prioritize the client's long-term net return over short-term fee savings?"
+      ],
+      "student_answer": "**Client Retention Proposal – Susan**\n\n**Date:** October 26, 2023\n\n**Subject:** Addressing Your Fee Concerns and Maintaining Your Financial Wellbeing\n\nDear Susan,\n\nThank you for bringing your concerns about current fees to my attention. I understand your desire to explore options that align with your budget and perceived value, particularly in light of the attractive rates offered by robo-advisors. I appreciate you trusting me with your financial future.\n\n**Understanding Your Concerns**\n\nYou’ve expressed a desire to reduce fees, and it’s entirely valid to seek the most efficient investment approach. However, a simple shift to a robo-advisor without careful consideration can introduce unforeseen costs and potentially diminish the overall value you receive.\n\n**Analysis of Switching Costs**\n\nLet’s examine the potential implications of moving your $350,000 portfolio to a robo-advisor:\n\n*   **Tax Implications:**  A large-scale portfolio transfer will trigger capital gains taxes. Based on current holdings, we estimate approximately $15,000 in capital gains taxes would be realized upon a complete transfer.  This is a significant upfront cost that robo-advisors typically don’t address.\n*   **Transaction Fees:**  Robo-advisors may charge small account maintenance fees, but transferring $350,000 will incur brokerage transfer fees, potentially totaling around $300 - $500.\n*   **Loss of Personalized Advice & Ongoing Monitoring:** While robo-advisors offer automation, they lack the nuanced understanding of your individual circumstances, evolving goals, and potential life events that I provide. My role extends beyond simply selecting investments; I proactively monitor your portfolio, adjust strategies based on market conditions and your changing needs, and offer personalized guidance on tax-efficient strategies and retirement planning.  This ongoing support is invaluable.\n*   **Potential for Suboptimal Asset Allocation:** While robo-advisors use algorithms, they may not always perfectly align with your moderate risk tolerance and 15-year time horizon.  My experience allows me to tailor a portfolio specifically for *you*, considering factors beyond a standardized algorithm.\n\n**Proposed Solution: Enhanced Service Package**\n\nTo address your fee concerns while preserving the personalized service you value, I propose the following revised fee structure:\n\n*   **Tiered Fee Structure:**\n    *   **Tier 1 (Current):** 1.25% AUM - This reflects the comprehensive service you currently receive, including portfolio construction, ongoing monitoring, tax-loss harvesting, and personalized advice.\n    *   **Tier 2 (Proposed):** 0.75% AUM – This reduced rate reflects a commitment to your needs and acknowledges your desire for lower fees. This tier includes all Tier 1 services, but with a slightly streamlined reporting process.\n*   **Value-Added Service – Proactive Tax Optimization:**  I will implement a more aggressive tax-loss harvesting strategy, aiming to reduce your tax liability by an additional 0.25% of your portfolio value annually (estimated $8,750 per year). This is a service that robo-advisors typically don’t offer.\n\n**Financial Impact:**\n\nSwitching to Tier 2 would reduce your annual fees by approximately $437.50, while the proactive tax optimization service would add an estimated $8,750 in tax savings annually.\n\n**Fiduciary Commitment**\n\nI remain fully committed to acting as your fiduciary, prioritizing your best interests above all else.  This proposal is designed to provide you with a cost-effective solution while maintaining the high level of service and expertise you’ve come to rely on.\n\nI’m confident that we can find a solution that balances your cost considerations with the long-term success of your retirement plan.  I’d like to schedule a meeting to discuss this proposal in detail and answer any questions you may have.\n\nSincerely,\n\n[Your Name]\n\nFinancial Advisor\n[Your Firm]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the specific constraints and additional checks provided in the prompt. It completely ignores the critical fiduciary error check regarding 22% APR credit card debt, which should have been prioritized over investment fees. It also fails to calculate the emergency fund based on the specified $6,500 monthly expense figure or account for inflation in the retirement projection. The tax calculation is a vague estimate ($15,000) without showing the basis (cost basis vs. current value), and the proposed fee reduction to 0.75% is presented without a sustainability analysis or clear justification for the firm's margin. While the tone is professional, the lack of specific financial calculations and the omission of mandatory risk management steps (debt payoff, emergency fund) make it inadequate for a real-world fiduciary scenario."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Recommend environmentally responsible investments, such as cleantech, alternative energy, or conservation technologies, companies, or funds.",
+      "task_type": "Sustainable Investment Strategy",
+      "user_prompt": "You are a fiduciary financial advisor. A client, David, a 45-year-old architect, has expressed a strong desire to align his portfolio with his environmental values while securing his retirement. He has $200,000 in investable assets, a moderate risk tolerance, and a 20-year time horizon. He specifically wants to avoid fossil fuel companies. Draft a portfolio allocation proposal that recommends three specific types of environmentally responsible investment vehicles (e.g., specific fund categories or sectors like cleantech or alternative energy). Ensure the proposed strategy explicitly adheres to fiduciary standards by demonstrating how these recommendations meet his risk profile without introducing unnecessary conflicts of interest, and explain the tax implications of these specific investment types.",
+      "reference_context": {
+        "client_profile": {
+          "name": "David",
+          "age": 45,
+          "occupation": "Architect",
+          "investable_assets": 200000,
+          "risk_tolerance": "Moderate",
+          "time_horizon_years": 20,
+          "preferences": [
+            "No fossil fuel exposure",
+            "Focus on cleantech and alternative energy"
+          ]
+        },
+        "constraints": [
+          "Must maintain moderate risk profile",
+          "Must avoid conflicts of interest (e.g., no kickbacks for specific funds)",
+          "Must justify selection based on ESG criteria and financial performance"
+        ]
+      },
+      "evaluation_criteria": [
+        "Alignment: Do the recommended investments strictly adhere to the client's environmental constraints?",
+        "Fiduciary Compliance: Is the strategy free of conflicts of interest and clearly justified as being in the client's best interest?",
+        "Risk Management: Does the portfolio construction match the stated moderate risk tolerance and 20-year horizon?"
+      ],
+      "student_answer": "**Portfolio Allocation Proposal for David**\n\n**Executive Summary:**\n\nThis proposal outlines a diversified portfolio allocation designed to align with David’s environmental values, secure his retirement, and maintain a moderate risk profile over a 20-year time horizon. The strategy prioritizes investments in cleantech, alternative energy, and sustainable infrastructure, while strictly avoiding fossil fuel companies. All recommendations are made in accordance with fiduciary standards, prioritizing David’s best interests and minimizing potential conflicts of interest.\n\n**Proposed Allocation:**\n\n*   **Sustainable Equities (45%): $90,000**\n    *   **iShares Global Clean Energy ETF (ICLN): 20% ($40,000)** – This ETF provides broad exposure to global companies involved in clean energy production and technology. It offers diversification within the cleantech sector and has historically demonstrated moderate volatility consistent with David’s risk tolerance. *Tax implication: Capital gains taxes will be incurred upon sale of shares.*\n    *   **Vanguard ESG U.S. Stock ETF (ESGV): 25% ($50,000)** – ESGV focuses on U.S. companies with strong Environmental, Social, and Governance (ESG) practices across various sectors, excluding fossil fuels. It offers exposure to a wider range of sustainable businesses beyond just energy. *Tax implication: Capital gains taxes will be incurred upon sale of shares.*\n\n*   **Fixed Income (35%): $70,000**\n    *   **iShares Green Bond ETF (BGRN): 20% ($40,000)** – BGRN invests in bonds issued to finance environmentally friendly projects, such as renewable energy, energy efficiency, and sustainable transportation. This provides a stable income stream and further aligns with David’s values. *Tax implication: Interest income is taxable, but green bonds may qualify for certain tax benefits.*\n    *   **Investment Grade Corporate Bond Fund (e.g., Vanguard Total Bond Market Index Fund - VBTLX): 15% ($30,000)** – A diversified bond fund provides stability and reduces overall portfolio volatility. *Tax implication: Interest income is taxable.*\n\n*   **Alternative Investments (20%): $40,000**\n    *   **Global Sustainable Infrastructure Fund (e.g., Calvert Global Infrastructure Fund - CFI): 20% ($40,000)** – This fund invests in infrastructure projects that support sustainable development, such as renewable energy grids, water treatment facilities, and green buildings. It offers diversification and potential for long-term growth. *Tax implication: Capital gains and dividends are taxable.*\n\n**Fiduciary Considerations & Conflict of Interest Mitigation:**\n\n*   **Best Interest Standard:** This allocation is designed to meet David’s stated goals, risk tolerance, and preferences, prioritizing his financial well-being above any potential conflicts of interest.\n*   **Transparency:** All recommended funds are publicly available and have transparent methodologies for ESG screening.\n*   **No Sales Incentives:** I receive compensation based on assets under management, not on the sale of specific funds. My recommendations are solely based on David’s needs and the suitability of the investments.\n*   **Ongoing Monitoring:** I will regularly review the portfolio’s performance and rebalance as needed to maintain the desired asset allocation and risk profile.\n\n**Disclaimer:** *Investment involves risk, including the potential loss of principal. Past performance is not indicative of future results. This proposal is for illustrative purposes only and does not constitute personalized investment advice. Consult with a qualified financial advisor before making any investment decisions.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails critical fiduciary checks mandated by the context. It ignores the 'Additional Checks' regarding the client's potential high-interest debt (22% APR credit card), which a fiduciary must prioritize over investing. It also fails to calculate or mention an emergency fund based on the implied monthly expenses, a fundamental step before allocating $200k. The tax section contains a significant domain error by suggesting green bonds 'may qualify for certain tax benefits' (municipal green bonds are rare and specific, not a general feature of ETFs like BGRN), and it fails to address the 20-year horizon's inflation implications in the projection logic. While the structure is clear (Clarity 4), the omission of debt repayment and emergency fund planning constitutes a major professional judgment failure (Correctness 2, Completeness 2, Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Inform clients about tax benefits, government rebates, or other financial benefits of alternative-fuel vehicle purchases or energy-efficient home construction, improvements, or remodeling.",
+      "task_type": "Tax-Efficient Home Improvement Analysis",
+      "user_prompt": "You are a financial planning strategist. A client, Elena, a 52-year-old teacher, is planning a $40,000 renovation to install solar panels and upgrade her home's insulation. She is in the 24% federal tax bracket and lives in a state with a 3% property tax on improvements. She has a moderate risk tolerance and a 15-year time horizon for this investment. Calculate the total net cost of the project after applying all applicable federal tax credits and state rebates. Then, draft a brief advisory memo explaining how these tax benefits impact her overall cash flow and long-term wealth accumulation, ensuring the advice is grounded in current tax regulations and avoids any speculative claims about future policy changes.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Elena",
+          "age": 52,
+          "occupation": "Teacher",
+          "tax_bracket": 0.24,
+          "state_property_tax_rate": 0.03,
+          "project_cost": 40000,
+          "project_details": [
+            "Solar panel installation",
+            "Energy-efficient insulation upgrade"
+          ]
+        },
+        "regulatory_context": {
+          "federal_solar_credit_percentage": 0.3,
+          "state_rebate_amount": 2000,
+          "property_tax_deduction_limit": 10000
+        },
+        "constraints": [
+          "Must use current federal tax credit rates",
+          "Must account for state-specific rebates",
+          "Must not guarantee future tax law changes"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the tax credit and rebate calculations mathematically correct based on the provided context?",
+        "Clarity: Is the impact on cash flow and wealth accumulation clearly explained?",
+        "Compliance: Does the advice strictly adhere to current tax regulations without making speculative predictions?"
+      ],
+      "student_answer": "**Net Project Cost After Incentives:**\n\n*   **Project Cost:** $40,000\n*   **Federal Solar Tax Credit:** $40,000 * 0.3 = $12,000\n*   **State Rebate:** $2,000\n*   **State Property Tax Increase:** $40,000 * 0.03 = $1,200\n*   **Net Cost:** $40,000 - $12,000 + $2,000 - $1,200 = $28,800\n\n**Advisory Memo to Elena**\n\n**Date:** October 26, 2023\n\n**Subject:** Analysis of Solar Panel and Insulation Project – Tax Implications\n\nDear Elena,\n\nThis memo outlines the financial impact of your planned $40,000 renovation, including solar panel installation and insulation upgrades, considering current federal and state tax incentives.\n\nBased on the information provided, the net cost of the project after accounting for applicable tax benefits is estimated at $28,800. This is calculated by subtracting the federal solar tax credit ($12,000) and state rebate ($2,000) from the initial project cost ($40,000), while also factoring in the increase in state property taxes due to the improvements ($1,200).\n\nThe federal solar tax credit allows you to claim 30% of the project cost as a credit against your federal income tax liability.  This significantly reduces the upfront cost of the investment.  Additionally, your state offers a rebate of $2,000, further lowering the net cost.  The increase in property taxes due to the improvements is capped at $10,000 annually under current IRS guidelines.\n\nThese tax benefits will positively impact your cash flow by reducing your overall tax burden.  Over the long term, the reduced energy costs associated with the solar panels and improved insulation will contribute to increased savings.  However, it’s important to note that tax laws are subject to change. While the current incentives are in place, future modifications are possible.\n\nWe recommend reviewing your overall financial plan to ensure this investment aligns with your long-term goals and risk tolerance.\n\nSincerely,\n\n[Your Name/Firm Name]\n\nPersonal Financial Advisor",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains a critical calculation error in the Net Cost formula: it adds the state rebate ($2,000) instead of subtracting it, resulting in an incorrect net cost of $28,800 (should be $26,800). It also incorrectly applies the property tax increase as a direct cost reduction in the net cost calculation rather than an ongoing liability, and fails to distinguish that the property tax increase applies only to the value added, not the full cost in the way implied. The memo incorrectly states the property tax increase is 'capped at $10,000 annually' (the cap applies to the deduction amount, not the tax increase itself). Furthermore, the submission ignores the 'Additional Checks' regarding fiduciary duties (debt vs. investing) and emergency funds, which are critical for a 52-year-old client. The advice is generic and lacks the depth required for an industry-standard financial plan."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Conduct seminars or workshops on financial planning topics, such as retirement planning, estate planning, or the evaluation of severance packages.",
+      "task_type": "Severance Package Evaluation Workshop",
+      "user_prompt": "You are a senior financial advisor tasked with preparing a workshop module for a group of employees facing layoffs. One specific case study involves a client, Marcus, a 58-year-old manager receiving a severance package of $150,000 (lump sum) plus 6 months of continued health insurance. He has $80,000 in 401(k) assets, $20,000 in credit card debt, and no emergency fund. Create a structured 30-minute workshop outline that guides participants through evaluating this specific package. The outline must include: 1) A step-by-step calculation of the immediate tax liability on the lump sum, 2) A strategy for allocating the funds to pay off high-interest debt and establish an emergency fund, and 3) A discussion on the implications of early withdrawal penalties if he chooses to access his 401(k) before age 59.5. Ensure the content is educational, avoids giving specific legal advice, and adheres to fiduciary standards by prioritizing the client's long-term financial stability.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Marcus",
+          "age": 58,
+          "occupation": "Manager",
+          "severance_lump_sum": 150000,
+          "severance_benefits": "6 months health insurance",
+          "existing_assets": {
+            "401k": 80000,
+            "emergency_fund": 0
+          },
+          "liabilities": {
+            "credit_card_debt": 20000,
+            "credit_card_apr": 0.21
+          }
+        },
+        "constraints": [
+          "Must calculate federal and state tax on lump sum (assume 25% withholding for simplicity)",
+          "Must prioritize debt repayment and emergency fund creation",
+          "Must explain 401(k) early withdrawal rules clearly"
+        ]
+      },
+      "evaluation_criteria": [
+        "Educational Value: Is the workshop outline structured logically for a group setting?",
+        "Financial Accuracy: Are the tax and debt repayment calculations sound?",
+        "Fiduciary Alignment: Does the strategy prioritize the client's long-term stability over short-term gains?"
+      ],
+      "student_answer": "**Workshop Module: Navigating a Layoff – A Case Study with Marcus**\n\n**Duration:** 30 Minutes\n\n**I. Introduction (5 minutes)**\n\n*   Welcome and Overview: Briefly introduce the purpose of the workshop – to provide a framework for evaluating a severance package and making informed financial decisions.\n*   Acknowledge the Situation: Recognize the emotional impact of a layoff and emphasize that financial planning can provide stability.\n*   Case Study Introduction: Introduce Marcus’s situation – 58-year-old manager receiving a $150,000 severance package with 6 months of health insurance, $80,000 in 401(k), $20,000 in credit card debt, and no emergency fund.\n\n**II. Immediate Tax Implications (8 minutes)**\n\n*   **Step 1: Calculate Federal Tax:**\n    *   Severance Lump Sum: $150,000\n    *   Estimated Federal Tax (25%): $37,500\n    *   Remaining After Tax: $112,500\n*   **Step 2: Calculate State Tax:** (Assume 5% state tax rate for illustration – adjust based on Marcus’s state)\n    *   Estimated State Tax: $5,625\n    *   Remaining After Tax: $106,875\n*   **Step 3: Discuss Withholding:** Explain that the $150,000 is subject to federal and state income tax, and the 25% withholding is an estimate. Encourage Marcus to consult with a tax professional for accurate calculations.\n*   **Disclaimer:** *This is a simplified tax calculation for illustrative purposes only. Individual tax situations vary.*\n\n**III. Strategic Allocation of Funds (10 minutes)**\n\n*   **Prioritize High-Interest Debt:**\n    *   Credit Card Debt: $20,000 at 21% APR\n    *   Proposed Allocation: Utilize a portion of the remaining funds ($50,000 - $75,000, depending on desired emergency fund size) to aggressively pay down the credit card debt.\n    *   Estimated Debt Payoff Time:  Calculate estimated payoff time based on the allocated amount and interest rate.\n*   **Establish an Emergency Fund:**\n    *   Recommended Emergency Fund Size: 3-6 months of essential living expenses. (Discuss the need to determine Marcus’s monthly expenses).\n    *   Proposed Allocation: Allocate the remaining funds ($30,000 - $50,000) to build an emergency fund.\n*   **401(k) Considerations:**  Reinforce that accessing 401(k) funds before age 59.5 typically incurs a 10% penalty plus income tax.  Discuss the potential impact on future retirement savings.\n\n**IV. 401(k) Early Withdrawal (3 minutes)**\n\n*   **Early Withdrawal Penalties:** Explain the 10% penalty on withdrawals before age 59.5, plus income tax.\n*   **Potential Consequences:** Discuss the impact on long-term retirement savings and potential tax implications.\n*   **Alternative Options:** Briefly mention exploring other options like a loan from the 401(k) (if available) as a less costly alternative to a withdrawal.\n*   **Disclaimer:** *This information is for educational purposes only and does not constitute financial or legal advice. Consult with a qualified professional for personalized guidance.*\n\n**V. Conclusion (2 minutes)**\n\n*   Recap Key Takeaways: Summarize the steps for evaluating the severance package – tax implications, debt repayment, and emergency fund creation.\n*   Encourage Further Consultation: Advise Marcus to seek professional advice from a tax advisor and financial planner for tailored guidance.\n*   Q&A: Open the floor for brief questions.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a structured outline but fails to meet specific constraints and domain accuracy requirements. 1) Correctness/Completeness: The prompt explicitly required calculating tax based on a 25% withholding assumption, but the model arbitrarily introduced a 5% state tax without being asked, and the 'Additional Checks' section (which acts as a constraint for the evaluation) demanded specific expense calculations ($6,500/month) and inflation adjustments which are entirely missing. 2) Best Practices: The model failed to prioritize the 21% APR debt repayment as the primary action; instead, it suggested allocating $50k-$75k to debt, which is vague and doesn't explicitly state that the debt should be paid off immediately to stop the bleeding of interest, a critical fiduciary duty. 3) Domain Accuracy: The tax calculation section is weak; it treats the 25% withholding as the final tax liability rather than explaining that this is just a withholding amount and the actual liability depends on the marginal tax bracket, potentially leading to a large tax bill or refund. 4) Clarity: The structure is clear, but the content lacks the precision required for a professional workshop module. 5) Autonomy: Due to the missing specific calculations and the failure to address the 'Additional Checks' constraints regarding expense figures and inflation, the output cannot be used as-is without significant human review to add the missing data points."
+    }
+  ]
+}

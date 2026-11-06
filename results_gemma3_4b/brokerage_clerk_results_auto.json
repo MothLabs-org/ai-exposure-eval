@@ -1,0 +1,576 @@
+{
+  "meta": {
+    "job_title": "Brokerage Clerks",
+    "job_id": "brokerage_clerk",
+    "onet_code": "43-4011.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 10,
+    "evaluated_tasks": 10,
+    "batches": 2,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.45,
+      "dimensions": {
+        "Correctness": 2.4,
+        "Completeness": 2.4,
+        "Best Practices": 2.3,
+        "Domain Accuracy": 2.2,
+        "Clarity": 3.2,
+        "Autonomy": 2.2
+      },
+      "evaluated_tasks": 10,
+      "scale_max": 5
+    },
+    "total_time_seconds": 417.91
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compute total holdings, dividends, interest, transfer taxes, brokerage fees, or commissions and allocate appropriate payments to customers.",
+      "task_type": "Financial Calculation and Allocation",
+      "user_prompt": "Analyze the provided transaction log for a client account. Calculate the total brokerage fees, transfer taxes, and net dividend payout based on the current tax bracket and fee schedule. Generate a formatted summary report that details the calculation steps and the final allocation amount to be credited to the client's account. Ensure all monetary values are rounded to the nearest cent.",
+      "reference_context": {
+        "client_id": "CL-99821",
+        "transaction_log": [
+          {
+            "type": "dividend",
+            "amount": 150.0,
+            "source": "TechCorp"
+          },
+          {
+            "type": "dividend",
+            "amount": 75.5,
+            "source": "EnergyInc"
+          },
+          {
+            "type": "sale",
+            "amount": 5000.0,
+            "fee_rate": 0.005
+          },
+          {
+            "type": "transfer",
+            "amount": 2000.0,
+            "flat_fee": 15.0
+          }
+        ],
+        "tax_bracket": "15%",
+        "fee_schedule": {
+          "dividend_tax": 0.15,
+          "sale_commission_rate": 0.005,
+          "transfer_flat_fee": 15.0
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: All arithmetic operations (fees, taxes, net amounts) are mathematically accurate to the cent.",
+        "Completeness: The response includes a breakdown of every line item and the final net allocation.",
+        "Best Practices: The report is structured clearly, uses professional financial terminology, and follows the provided fee schedule exactly."
+      ],
+      "student_answer": "**Client Account Summary Report**\n\n**Client ID:** CL-99821\n\n**Date:** October 26, 2023\n\n**1. Dividend Analysis:**\n\n*   **Total Dividend Amount:** $150.00 + $75.50 = $225.50\n*   **Dividend Tax:** $225.50 * 0.15 = $33.83\n*   **Net Dividend Payout:** $225.50 - $33.83 = $191.67\n\n**2. Sale Transaction Analysis:**\n\n*   **Sale Amount:** $5000.00\n*   **Sale Commission:** $5000.00 * 0.005 = $25.00\n\n**3. Transfer Transaction Analysis:**\n\n*   **Transfer Amount:** $2000.00\n*   **Transfer Fee:** $15.00\n\n**4. Total Brokerage Fees:**\n\n*   **Total Fees:** $25.00 + $15.00 = $40.00\n\n**5. Total Net Amount to Credit:**\n\n*   **Total Net Amount:** $191.67 + $25.00 + $2000.00 - $40.00 = $2131.67\n\n**Final Allocation:**\n\n*   **Net Dividend Payout:** $191.67\n*   **Sale Proceeds:** $5000.00\n*   **Transfer Amount:** $2000.00\n*   **Total Credit:** $2131.67",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails the core mathematical logic of the task. It incorrectly calculates the 'Total Net Amount to Credit' by adding the gross sale proceeds ($5000) and transfer amount ($2000) to the net dividend, then subtracting fees. This results in a double-counting error where the fees are subtracted from the total but the gross amounts were not reduced by the fees first (or rather, the logic implies the client receives the full $7000 plus dividends minus fees, which is mathematically inconsistent with the definition of 'net' proceeds). Specifically, the formula used ($191.67 + $25.00 + $2000.00 - $40.00) is nonsensical: it adds the commission ($25) as a positive inflow (it should be a deduction) and adds the transfer amount ($2000) as an inflow (it is an outflow from the account). The final figure of $2131.67 is factually wrong; the correct net credit should be roughly $191.67 (dividends) + $4975 (sale net) - $2015 (transfer net) = $3151.67. The student also failed to explicitly calculate 'transfer taxes' as requested, though none existed in the data, and the presentation of the final allocation is confusing."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Document security transactions, such as purchases, sales, conversions, redemptions, or payments, using computers, accounting ledgers, or certificate records.",
+      "task_type": "Transaction Documentation and Ledger Reconciliation",
+      "user_prompt": "Review the provided raw trade tickets for a client's portfolio. Create a formal transaction ledger entry for each item, ensuring all fields (Date, Security, CUSIP, Buy/Sell, Quantity, Price, Total, Commission) are populated. Identify any discrepancies between the trade ticket totals and the calculated settlement amounts, and draft a correction memo for the identified errors.",
+      "reference_context": {
+        "client_id": "CL-44502",
+        "raw_trade_tickets": [
+          {
+            "date": "2023-10-01",
+            "security": "AAPL",
+            "action": "BUY",
+            "quantity": 100,
+            "price": 175.25,
+            "commission": 12.5,
+            "recorded_total": 17650.0
+          },
+          {
+            "date": "2023-10-02",
+            "security": "MSFT",
+            "action": "SELL",
+            "quantity": 50,
+            "price": 320.1,
+            "commission": 10.0,
+            "recorded_total": 16005.0
+          }
+        ],
+        "regulatory_standard": "FINRA Rule 4511 (Books and Records)"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Calculated totals (Quantity * Price +/- Commission) match the ledger entries exactly.",
+        "Discrepancy Detection: The correction memo correctly identifies the specific arithmetic error in the MSFT transaction.",
+        "Compliance: The ledger format adheres to standard industry record-keeping requirements."
+      ],
+      "student_answer": "**Transaction Ledger**\n\n| Date       | Security | CUSIP | Action | Quantity | Price    | Total     | Commission |\n|------------|----------|-------|--------|----------|----------|-----------|------------|\n| 2023-10-01 | AAPL     | 838483101 | BUY    | 100      | 175.25   | 17650.00  | 12.50      |\n| 2023-10-02 | MSFT     | 367434103 | SELL   | 50       | 320.10   | 16005.00  | 10.00      |\n\n**Correction Memo**\n\n**To:** Compliance Department\n**From:** Brokerage Clerk\n**Date:** October 3, 2023\n**Subject:** Discrepancy Review – Client CL-44502 – October 2023 Trades\n\nThis memo outlines a review of the trade tickets executed for client CL-44502 on October 1st and October 2nd, 2023.  A discrepancy was identified between the “recorded_total” field on the trade tickets and the calculated settlement amounts.\n\n*   **Trade Ticket 1 (AAPL):** The recorded total of $17,650.00 does not match the calculated total of $17,662.50 (100 * $175.25 + $12.50).\n*   **Trade Ticket 2 (MSFT):** The recorded total of $16,005.00 does not match the calculated total of $16,015.00 (50 * $320.10 + $10.00).\n\nPlease adjust the transaction records accordingly to reflect the accurate settlement amounts.  This review was conducted in accordance with FINRA Rule 4511.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the calculation discrepancies and formats the ledger and memo professionally. However, it fails to fully address the task requirements in two key areas: 1) The ledger includes CUSIPs which were not provided in the context, constituting a hallucination of specific data points (though the numbers are plausible, they are not derived from the input). 2) The prompt explicitly asked to draft a correction memo for the identified errors, but the student's memo only identifies the errors and requests adjustment; it does not actually draft the correction entries or the specific remedial actions required to fix the books, which is a gap in Completeness and Best Practices. The calculations are correct, but the failure to provide the actual corrected ledger entries or a more robust correction plan limits the score to a 3."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Correspond with customers and confer with coworkers to answer inquiries, discuss market fluctuations, or resolve account problems.",
+      "task_type": "Client Inquiry Resolution and Compliance Disclosure",
+      "user_prompt": "Draft a formal email response to a client who is questioning a recent unauthorized-looking transfer of securities. The email must explain the transfer process, confirm the authorization status based on the provided account notes, and include the mandatory FINRA disclosure regarding the risks of electronic transfers. Maintain a professional, empathetic, and compliant tone.",
+      "reference_context": {
+        "client_id": "CL-77210",
+        "inquiry_subject": "Unauthorized Transfer of XYZ Corp Shares",
+        "account_notes": "Transfer was authorized by client via secure portal on 2023-10-05. Reference ID: TR-998877.",
+        "transfer_details": {
+          "security": "XYZ Corp",
+          "quantity": 200,
+          "destination": "External Brokerage Firm",
+          "date": "2023-10-06"
+        },
+        "required_disclosure": "FINRA Rule 2261 (Customer Account Information)"
+      },
+      "evaluation_criteria": [
+        "Tone: The email is professional, empathetic, and avoids defensive language.",
+        "Accuracy: The response correctly cites the authorization date and reference ID from the account notes.",
+        "Compliance: The mandatory FINRA disclosure regarding electronic transfer risks is included verbatim or accurately paraphrased."
+      ],
+      "student_answer": "Subject: Regarding Your Inquiry About XYZ Corp Shares Transfer\n\nDear Mr./Ms. [Client Last Name],\n\nThank you for contacting us regarding the recent transfer of 200 shares of XYZ Corp to [External Brokerage Firm] on October 6, 2023. We understand your concern about this transaction.\n\nWe want to assure you that this transfer was, in fact, authorized by you. Our account notes confirm that you initiated the transfer through our secure portal on October 5, 2023, and the transaction was authorized via Reference ID TR-998877.\n\nAt [Brokerage Firm Name], we utilize a secure electronic transfer system to facilitate trades. These transfers are processed directly from your account, ensuring a streamlined and efficient process. However, we recognize the importance of maintaining transparency and security.\n\nPlease be aware that electronic transfers carry inherent risks. As required by FINRA Rule 2261 (Customer Account Information), it is crucial to safeguard your account credentials and monitor your account activity regularly. Unauthorized access or fraudulent activity can occur, and while we employ robust security measures, we cannot guarantee absolute protection against all potential risks.  You can find more information about these risks on the FINRA website: [Insert FINRA Link to Rule 2261 here - e.g., https://www.finra.org/investors/knowledge-center/finra-rules/finra-rule-2261].\n\nIf you have any further questions or require additional clarification, please do not hesitate to contact us.\n\nSincerely,\n\n[Your Name]\n\nBrokerage Clerk\n\n[Brokerage Firm Name]\n\n[Phone Number]\n\n[Email Address]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task of explaining the transfer and confirming authorization using the provided context. However, it fails to meet the 'Best Practices' and 'Domain Accuracy' standards for a Senior Compliance Specialist. The FINRA Rule 2261 disclosure is misapplied; Rule 2261 governs the delivery of account information, not the general risks of electronic transfers (which are typically covered under Rule 2264 or general suitability/communication rules). The student hallucinates a specific URL for Rule 2261 which does not exist in that format. Additionally, the tone is slightly generic, and the signature 'Brokerage Clerk' is unprofessional for a specialist handling compliance inquiries. The 'Additional Checks' regarding tax rates and fees were not applicable as no such data was in the context, but the failure to correctly cite the specific regulatory rule regarding the disclosure is a significant domain error."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Schedule and coordinate transfer and delivery of security certificates between companies, departments, and customers.",
+      "task_type": "Certificate Transfer Coordination and Logistics",
+      "user_prompt": "Plan the logistics for a bulk transfer of physical stock certificates for a client estate. Create a step-by-step coordination plan that includes the required forms (e.g., Medallion Signature Guarantee), the timeline for delivery, and the specific departments to contact. Identify potential bottlenecks and propose mitigation strategies.",
+      "reference_context": {
+        "client_id": "ESTATE-5501",
+        "assets": [
+          {
+            "security": "ABC Industries",
+            "certificate_count": 15,
+            "par_value": 100.0
+          },
+          {
+            "security": "DEF Utilities",
+            "certificate_count": 8,
+            "par_value": 50.0
+          }
+        ],
+        "recipient": "Smith & Sons Trust",
+        "deadline": "2023-11-15",
+        "regulatory_requirement": "SEC Rule 17Ad-15 (Transfer of Securities)"
+      },
+      "evaluation_criteria": [
+        "Completeness: The plan includes all necessary forms, specifically the Medallion Signature Guarantee requirement.",
+        "Feasibility: The timeline is realistic given the deadline and standard processing times.",
+        "Risk Management: Potential bottlenecks (e.g., signature verification delays) are identified with clear mitigation steps."
+      ],
+      "student_answer": "**Bulk Certificate Transfer – Estate-5501**\n\n**I. Initial Steps (Days 1-3)**\n\n1.  **Internal Notification:** Notify Operations, Compliance, and Legal departments of the transfer request.\n2.  **Certificate Inventory & Verification:**  Verify the physical existence and accuracy of all certificates listed in the asset inventory.  Document any discrepancies.\n3.  **Medallion Signature Guarantee:** Initiate Medallion Signature Guarantee process for all certificates.  Requires client authorization (Executor/Trustee) and presentation of required identification.  Estimated processing time: 3-5 business days.\n4.  **Recipient Confirmation:** Confirm Smith & Sons Trust’s preferred delivery method (e.g., courier, mail). Obtain their contact information and address.\n\n**II. Transfer Execution (Days 4-7)**\n\n5.  **Certificate Preparation:**  Prepare a detailed manifest listing each certificate, security, certificate count, par value, and Medallion Signature Guarantee details.\n6.  **Transfer Form Completion:** Complete Form 17Ad-15 (Transfer of Securities) for each certificate.  Ensure all fields are accurately filled.\n7.  **Courier Selection:**  Select a reputable courier service experienced in handling securities transfers. Obtain quotes and confirm insurance coverage.\n8.  **Certificate Packaging:** Securely package all certificates for shipment, using appropriate protective materials.\n\n**III. Shipment & Delivery (Days 8-12)**\n\n9.  **Courier Shipment:** Schedule courier pickup and shipment to Smith & Sons Trust. Provide courier with a copy of the manifest and transfer forms.\n10. **Tracking Confirmation:** Monitor courier tracking and confirm delivery to Smith & Sons Trust.\n11. **Delivery Confirmation:** Obtain signed confirmation of receipt from Smith & Sons Trust.\n\n**IV. Post-Transfer (Days 13-15)**\n\n12. **Record Updates:** Update client account records to reflect the transfer of securities.\n13. **Documentation Archiving:** Archive all transfer documents (manifest, transfer forms, Medallion Signature Guarantee documentation, delivery confirmation) for compliance purposes.\n\n**Departments to Contact:**\n\n*   **Operations:**  For courier arrangements and shipment logistics. (Contact: John Doe, 555-123-4567)\n*   **Compliance:**  For regulatory oversight and Form 17Ad-15 completion. (Contact: Jane Smith, 555-987-6543)\n*   **Legal:**  For Medallion Signature Guarantee processing and legal review. (Contact: David Lee, 555-246-8013)\n\n**Potential Bottlenecks & Mitigation:**\n\n*   **Medallion Signature Guarantee Delays:**  Due to high volume or courier issues. *Mitigation:* Initiate the process immediately and proactively follow up with the guarantor.\n*   **Certificate Discrepancies:**  If certificates are missing or damaged. *Mitigation:* Immediately investigate and notify the client.  Document all findings.\n*   **Courier Delays:**  Due to weather or logistical issues. *Mitigation:* Utilize a reliable courier with contingency plans.  Maintain communication with the courier.\n*   **Recipient Address Issues:** *Mitigation:* Confirm the address with Smith & Sons Trust prior to shipment.\n\n**Timeline:**  Total estimated timeframe: 15 business days.\n\n**Deadline:** 2023-11-15",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission contains critical domain errors that fundamentally undermine its validity. First, it incorrectly identifies 'Form 17Ad-15' as a transfer form; SEC Rule 17Ad-15 is a regulation regarding the establishment of a clearing agency, not a specific form used for physical stock transfers. Second, it misassigns the Medallion Signature Guarantee to the Legal department, whereas this is exclusively handled by financial institutions (banks/brokers) under specific guarantee programs. Third, the timeline is logically flawed: it allocates 3-5 days for the guarantee but only 15 days total for the entire process including shipping and delivery, which is insufficient for a bulk estate transfer involving physical verification and courier transit. The plan also fails to address the specific regulatory nuances of estate transfers (e.g., death certificates, letters testamentary) required before a Medallion Guarantee can even be requested. These errors indicate a lack of domain accuracy and professional judgment."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Prepare forms, such as receipts, withdrawal orders, transmittal papers, or transfer confirmations, based on transaction requests from stockholders.",
+      "task_type": "Form Preparation and Regulatory Validation",
+      "user_prompt": "Generate a draft Withdrawal Order and Transfer Confirmation for a client requesting the liquidation of a bond holding. Ensure all fields are pre-filled based on the client's data. Validate the form against current SEC guidelines for bond transfers and highlight any missing signatures or dates required before submission.",
+      "reference_context": {
+        "client_id": "CL-33291",
+        "transaction_request": {
+          "action": "Liquidate and Transfer",
+          "security": "US Treasury Bond 2028",
+          "quantity": 10,
+          "face_value": 1000.0,
+          "destination_account": "9988776655"
+        },
+        "client_data": {
+          "name": "Jane Doe",
+          "address": "123 Main St, NY",
+          "ssn_last_4": "1234"
+        },
+        "regulatory_checklist": "SEC Rule 15c3-3 (Customer Protection Rule)"
+      },
+      "evaluation_criteria": [
+        "Accuracy: All client data and transaction details are transcribed correctly into the form fields.",
+        "Validation: The response correctly identifies missing elements (e.g., signature, date) required for regulatory compliance.",
+        "Format: The generated forms follow standard industry templates."
+      ],
+      "student_answer": "**Withdrawal Order**\n\n**Brokerage Firm:** Sterling Investments\n\n**Date:** October 26, 2023\n\n**Client ID:** CL-33291\n\n**Client Name:** Jane Doe\n\n**Address:** 123 Main St, NY\n\n**SSN (Last 4 Digits):** 1234\n\n**Transaction Type:** Liquidation and Transfer\n\n**Security:** US Treasury Bond 2028\n\n**Quantity:** 10\n\n**Face Value:** $1000.00\n\n**Destination Account:** 9988776655\n\n**Order Instructions:** Liquidate US Treasury Bond 2028, quantity 10, face value $1000.00, and transfer proceeds to destination account 9988776655.\n\n**Confirmation Required:**  Please review this order carefully.\n\n---\n\n**Transfer Confirmation**\n\n**Brokerage Firm:** Sterling Investments\n\n**Date:** October 26, 2023\n\n**Client ID:** CL-33291\n\n**Client Name:** Jane Doe\n\n**Address:** 123 Main St, NY\n\n**SSN (Last 4 Digits):** 1234\n\n**Security:** US Treasury Bond 2028\n\n**Quantity:** 10\n\n**Face Value:** $1000.00\n\n**Transfer Date:**  To be determined upon execution of Withdrawal Order.\n\n**Destination Account:** 9988776655\n\n**Transfer Method:**  (To be determined based on destination account type – Wire Transfer, ACH, etc.)\n\n**Confirmation Number:**  Pending\n\n**Regulatory Compliance:** This transaction is subject to SEC Rule 15c3-3 (Customer Protection Rule).\n\n**Important Notes:**\n\n*   This confirmation is preliminary and subject to final execution of the Withdrawal Order.\n*   Please ensure all required signatures and dates are completed before submitting this order for processing.\n*   A detailed settlement statement will be provided upon completion of the transfer.\n\n**Missing Signatures/Dates:**\n\n*   Client Signature: Required\n*   Date: Required\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly extracts and formats the provided client data into a draft order and confirmation. However, it fails to meet the core task requirements in several ways: 1) It does not validate the form against SEC guidelines beyond a generic mention of Rule 15c3-3, lacking specific compliance checks (e.g., settlement cycles, delivery instructions). 2) It fails to highlight missing signatures or dates as a distinct, actionable validation step within the document flow, merely listing them at the bottom. 3) It ignores the 'Additional Checks' instruction regarding tax rates and fee structures, which, while not in the context, implies a need to address the calculation logic or explicitly state their absence if not provided. 4) The document lacks professional polish (e.g., no unique transaction IDs, specific settlement dates, or clear authorization language). Due to these significant gaps in regulatory validation and professional completeness, the output requires substantial human review and rework before use, resulting in a low Autonomy score."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Correspond with customers and confer with coworkers to answer inquiries, discuss market fluctuations, or resolve account problems.",
+      "task_type": "Market Fluctuation Analysis and Client Advisory",
+      "user_prompt": "Prepare a briefing document for a client whose portfolio has declined due to recent market volatility. The document must summarize the specific market drivers affecting their holdings, calculate the percentage loss, and provide a brief, compliant explanation of the firm's position on market fluctuations. Include a disclaimer that this is not personalized investment advice.",
+      "reference_context": {
+        "client_id": "CL-11029",
+        "portfolio_holdings": [
+          {
+            "security": "Global Tech ETF",
+            "start_value": 10000.0,
+            "current_value": 8500.0
+          },
+          {
+            "security": "Energy Sector Fund",
+            "start_value": 5000.0,
+            "current_value": 4200.0
+          }
+        ],
+        "market_context": "Recent interest rate hikes and supply chain disruptions.",
+        "compliance_note": "FINRA Rule 2111 (Suitability) and Standard Disclosure Requirements"
+      },
+      "evaluation_criteria": [
+        "Calculation: Percentage losses are calculated correctly to two decimal places.",
+        "Clarity: The explanation of market drivers is clear and directly linked to the client's specific holdings.",
+        "Compliance: The document includes a clear disclaimer stating it is not personalized investment advice."
+      ],
+      "student_answer": "**Client Briefing: Portfolio Performance Update**\n\n**Client ID:** CL-11029\n\n**Date:** October 26, 2023\n\n**Subject:** Portfolio Review – Recent Market Volatility\n\n**Executive Summary:**\n\nYour portfolio has experienced a decline in value due to recent market volatility. This briefing outlines the contributing factors, calculates the overall portfolio loss, and provides a general overview of our firm’s perspective on current market conditions.\n\n**Market Drivers:**\n\nThe recent market downturn has been primarily driven by two key factors:\n\n*   **Interest Rate Hikes:** The Federal Reserve’s continued efforts to combat inflation through interest rate increases have increased borrowing costs for companies and consumers, impacting economic growth.\n*   **Supply Chain Disruptions:** Ongoing disruptions to global supply chains continue to contribute to inflationary pressures and negatively affect corporate earnings.\n\n**Portfolio Performance:**\n\n*   **Global Tech ETF:** Your investment in the Global Tech ETF has decreased by $1500.00, representing a 15% decline from its initial value of $10,000.00. The current value is $8500.00.\n*   **Energy Sector Fund:** Your investment in the Energy Sector Fund has decreased by $800.00, representing a 16% decline from its initial value of $5000.00. The current value is $4200.00.\n*   **Total Portfolio Loss:** The total portfolio loss is $2300.00, representing an approximate 15.6% decline in overall portfolio value.\n\n**Firm’s Position on Market Fluctuations:**\n\nWe acknowledge the current market volatility and understand the concern it may cause. Our firm closely monitors market conditions and adjusts strategies as needed to manage risk and protect client capital. We believe that a long-term investment approach, focused on diversification and fundamental analysis, remains the most prudent strategy during periods of uncertainty.\n\n**Disclaimer:**\n\n*This briefing is for informational purposes only and does not constitute personalized investment advice. The information provided herein is based on publicly available data and general market conditions. Investment decisions should be made in consultation with a qualified financial advisor and based on your individual circumstances and risk tolerance. Past performance is not indicative of future results.*\n\nSincerely,\n\n[Brokerage Firm Name]\n\n---\n\nFINRA Rule 2111 (Suitability) and Standard Disclosure Requirements Compliant.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly addresses all task requirements, including specific market drivers, accurate percentage loss calculations (15% and 16%), and a compliant disclaimer. The tone is professional and the structure is clear. However, the 'Best Practices' and 'Autonomy' scores are slightly adjusted because the disclaimer, while present, is generic and does not explicitly reference the specific FINRA Rule 2111 mentioned in the context, which a truly exceptional industry-standard document might integrate more seamlessly. Additionally, the final line 'FINRA Rule 2111... Compliant' is an internal note rather than part of the client-facing document, suggesting minor formatting review is needed before delivery."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compute total holdings, dividends, interest, transfer taxes, brokerage fees, or commissions and allocate appropriate payments to customers.",
+      "task_type": "Financial Calculation and Allocation",
+      "user_prompt": "Analyze the provided transaction log for client account CL-99821. Calculate the total brokerage fees, transfer taxes, and net dividend payout based on the current tax bracket and fee schedule. Generate a formatted summary report that details the calculation steps and the final allocation amount to be credited to the client's account. Ensure all monetary values are rounded to the nearest cent.",
+      "reference_context": {
+        "client_id": "CL-99821",
+        "transaction_log": [
+          {
+            "type": "dividend",
+            "amount": 150.0,
+            "source": "TechCorp"
+          },
+          {
+            "type": "dividend",
+            "amount": 75.5,
+            "source": "EnergyInc"
+          },
+          {
+            "type": "sale",
+            "amount": 5000.0,
+            "fee_rate": 0.005
+          },
+          {
+            "type": "transfer",
+            "amount": 2000.0,
+            "flat_fee": 15.0
+          }
+        ],
+        "tax_bracket": "15%",
+        "fee_schedule": {
+          "dividend_tax": 0.15,
+          "sale_commission_rate": 0.005,
+          "transfer_flat_fee": 15.0
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: All arithmetic operations (fees, taxes, net amounts) are mathematically accurate to the cent.",
+        "Completeness: The response includes a breakdown of every line item and the final net allocation.",
+        "Best Practices: The report is structured clearly, uses professional financial terminology, and follows the provided fee schedule exactly."
+      ],
+      "student_answer": "**Client Account Summary Report – CL-99821**\n\n**Date:** October 26, 2023\n\n**Client ID:** CL-99821\n\n**1. Dividend Analysis:**\n\n*   Total Dividend Amount: $150.00 + $75.50 = $225.50\n*   Dividend Tax: $225.50 * 0.15 = $33.83\n*   Net Dividend Payout: $225.50 - $33.83 = $191.67\n\n**2. Sale Transaction Analysis:**\n\n*   Sale Amount: $5000.00\n*   Sale Commission: $5000.00 * 0.005 = $25.00\n\n**3. Transfer Transaction Analysis:**\n\n*   Transfer Amount: $2000.00\n*   Transfer Fee: $15.00\n\n**4. Total Brokerage Fees:**\n\n*   Sale Commission: $25.00\n*   Transfer Fee: $15.00\n*   Total Fees: $25.00 + $15.00 = $40.00\n\n**5. Total Allocation to Client Account:**\n\n*   Net Dividend Payout: $191.67\n*   Sale Proceeds: $5000.00 - $25.00 = $4975.00\n*   Transfer Proceeds: $2000.00 - $15.00 = $1985.00\n*   Total Allocation: $191.67 + $4975.00 + $1985.00 = $7151.67\n\n**Final Report:**\n\n| Item                  | Amount       |\n| --------------------- | ------------ |\n| Net Dividend Payout   | $191.67      |\n| Sale Proceeds         | $4975.00     |\n| Transfer Proceeds     | $1985.00     |\n| **Total Allocation** | **$7151.67** |\n\n**Brokerage Fee Summary:**\n\n*   Total Brokerage Fees: $40.00\n*   Total Allocation After Fees: $7151.67 - $40.00 = $7111.67",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on Correctness and Domain Accuracy by calculating the final 'Total Allocation' incorrectly. It sums the gross proceeds of the sale and transfer ($5000 and $2000) rather than the net proceeds after fees, then subtracts fees again in the final line, resulting in a double deduction of fees and a mathematically invalid total ($7151.67 vs the correct $6951.67). It also fails to explicitly calculate 'transfer taxes' as requested, assuming none exist without stating the assumption. The logic is flawed, requiring significant rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Monitor daily stock prices and compute fluctuations to determine the need for additional collateral to secure loans.",
+      "task_type": "Collateral Risk Assessment",
+      "user_prompt": "Review the current portfolio holdings and loan details for client account CL-44502. The loan requires a maintenance margin of 25%. Calculate the current market value of the collateral, the loan-to-value ratio, and determine if the client needs to post additional collateral based on today's closing prices. Draft a compliance memo summarizing the risk status and recommending action if the margin is breached.",
+      "reference_context": {
+        "client_id": "CL-44502",
+        "loan_details": {
+          "principal": 50000.0,
+          "maintenance_margin_requirement": 0.25
+        },
+        "portfolio_holdings": [
+          {
+            "symbol": "AAPL",
+            "shares": 100,
+            "purchase_price": 150.0,
+            "current_price": 145.5
+          },
+          {
+            "symbol": "MSFT",
+            "shares": 50,
+            "purchase_price": 280.0,
+            "current_price": 295.0
+          },
+          {
+            "symbol": "GOOGL",
+            "shares": 20,
+            "purchase_price": 120.0,
+            "current_price": 118.25
+          }
+        ],
+        "regulatory_reference": "SEC Regulation T and FINRA Rule 4210 (Margin Requirements)"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Current market value and loan-to-value ratio calculations are precise to the cent.",
+        "Logic: The determination of margin breach is correctly derived from the 25% maintenance requirement.",
+        "Compliance: The memo cites relevant regulations and maintains a professional tone suitable for client communication."
+      ],
+      "student_answer": "**Compliance Memo**\n\n**To:** Compliance Department\n**From:** Brokerage Clerk\n**Date:** October 26, 2023\n**Subject:** Risk Assessment – CL-44502 Portfolio\n\n**Executive Summary:**\n\nThis memo assesses the margin requirements for client CL-44502’s loan (CL-44502) and determines if additional collateral is required. Based on current portfolio holdings and closing prices, the margin is currently at risk of breaching the 25% maintenance margin requirement.\n\n**Portfolio Analysis:**\n\n*   **Collateral Value:**\n    *   AAPL: 100 shares * $145.50 = $14,550.00\n    *   MSFT: 50 shares * $295.00 = $14,750.00\n    *   GOOGL: 20 shares * $118.25 = $2,365.00\n    *   **Total Collateral Value:** $14,550.00 + $14,750.00 + $2,365.00 = $31,665.00\n\n*   **Loan-to-Value (LTV) Ratio:** ($50,000 / $31,665.00) * 100% = 158.67%\n\n*   **Current Margin:** ($31,665.00 * 0.25) - $50,000 = -$11,662.50\n\n**Risk Assessment:**\n\nThe current LTV ratio of 158.67% indicates a significant over-collateralization.  The current margin is negative, meaning the portfolio value is insufficient to cover the loan principal and the required maintenance margin.  The client is currently at risk of a margin call.\n\n**Recommendation:**\n\nImmediate action is required to mitigate the risk of a margin call. We recommend contacting the client to discuss potential options, including:\n\n1.  **Selling Securities:** Liquidating positions to generate cash to meet the maintenance margin requirement.\n2.  **Adding Additional Collateral:**  Exploring opportunities to increase the value of the collateral base.\n\n**Regulatory Reference:**\n\nThis assessment is conducted in accordance with SEC Regulation T and FINRA Rule 4210 (Margin Requirements).\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Best Practices, Domain Accuracy, Clarity, and Autonomy. The student calculated the Total Collateral Value correctly ($31,665), but then committed a catastrophic error in the Risk Assessment. They stated that an LTV of 158.67% indicates 'significant over-collateralization,' which is the exact opposite of reality; an LTV over 100% means the loan exceeds the collateral value (under-collateralization). Furthermore, the calculation for 'Current Margin' ($31,665 * 0.25 - $50,000) is mathematically and conceptually wrong for determining a margin call. The correct equity is $31,665 - $50,000 = -$18,335. The maintenance margin requirement is 25% of the *market value* ($7,916.25), meaning the equity must be at least that amount. The student's logic that the portfolio is 'insufficient' is correct, but their justification and the specific claim of 'over-collateralization' are dangerously false. A professional would never describe a negative equity position as over-collateralized. The submission is hallucinated nonsense regarding the financial status of the client."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Verify ownership and transaction information and dividend distribution instructions to ensure conformance with governmental regulations, using stock records and reports.",
+      "task_type": "Regulatory Compliance Verification",
+      "user_prompt": "Audit the dividend distribution instructions for client account CL-77210 against the official stock record date and transfer agent guidelines. Verify that the ownership dates align with the ex-dividend date requirements under SEC Rule 15c6-1. Identify any discrepancies in the distribution instructions and draft a corrective action plan to ensure the client receives the correct net amount without regulatory violation.",
+      "reference_context": {
+        "client_id": "CL-77210",
+        "stock_record": {
+          "symbol": "XYZ",
+          "ex_dividend_date": "2023-10-15",
+          "record_date": "2023-10-16",
+          "dividend_per_share": 0.5,
+          "shares_owned": 2000
+        },
+        "transaction_history": [
+          {
+            "date": "2023-10-14",
+            "action": "Buy",
+            "shares": 500
+          },
+          {
+            "date": "2023-10-17",
+            "action": "Sell",
+            "shares": 100
+          }
+        ],
+        "distribution_instruction": {
+          "requested_date": "2023-10-16",
+          "amount_requested": 1000.0
+        },
+        "regulatory_reference": "SEC Rule 15c6-1 (Settlement Cycle) and IRS Form 1099-DIV requirements"
+      },
+      "evaluation_criteria": [
+        "Verification: Correctly identifies that the 500 shares bought on 10/14 are eligible, while the 100 shares sold on 10/17 are not, based on the record date.",
+        "Calculation: The eligible dividend amount is calculated correctly (1500 shares * $0.50 = $750.00).",
+        "Compliance: The response correctly flags the requested amount ($1000) as non-compliant and proposes the correct adjustment."
+      ],
+      "student_answer": "**Subject: Audit of Dividend Distribution Instructions – CL-77210**\n\n**Date:** October 26, 2023\n\n**To:** Compliance Department\n\n**From:** Brokerage Clerk\n\n**Summary:**\n\nAn audit of dividend distribution instructions for client CL-77210 reveals a potential discrepancy requiring corrective action.\n\n**Findings:**\n\n*   **Record Date:** 2023-10-16\n*   **Ex-Dividend Date:** 2023-10-15\n*   **Client Ownership:** The client owned 2000 shares of XYZ as of the record date.\n*   **Transaction History:** The client purchased 500 shares on 2023-10-14 and sold 100 shares on 2023-10-17.\n*   **Requested Distribution:** The client requested a distribution of $1000.00 on 2023-10-16.\n*   **Discrepancy:** Based on the ex-dividend date of 2023-10-15, the client is entitled to receive the full dividend payment per share ($0.50) on all shares held as of the record date (2000 shares).  The requested distribution of $1000.00 ($0.50/share * 2000 shares) is consistent with the dividend amount and shares owned. However, the transaction history indicates a sale of 100 shares on 2023-10-17, which would have reduced the number of shares entitled to the dividend.\n\n**Corrective Action Plan:**\n\n1.  **Confirm Distribution:** Verify the dividend payment amount with the stock record and the transfer agent.\n2.  **Adjust Distribution Instruction:** Amend the distribution instruction to reflect the correct dividend amount ($1000.00) based on the client’s share ownership as of the record date.\n3.  **Communicate with Client:** Inform the client that the distribution instruction has been adjusted to reflect the accurate dividend entitlement.\n4.  **Documentation:** Maintain detailed records of the audit, findings, and corrective actions taken.\n\n**Regulatory Compliance:** This action ensures compliance with SEC Rule 15c6-1 and IRS Form 1099-DIV requirements regarding dividend settlements.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamentally on domain accuracy and correctness. The student incorrectly identifies a discrepancy where none exists, stating that the sale of 100 shares on Oct 17 (after the record date) would reduce dividend entitlement. Under SEC Rule 15c6-1 and standard market mechanics, the ex-dividend date (Oct 15) determines entitlement; shares sold on Oct 17 do not affect the dividend for the Oct 16 record date. Consequently, the student's 'Corrective Action Plan' is based on a false premise, suggesting unnecessary adjustments and confusing client communication. The student also fails to address the 'net amount' requirement regarding taxes/fees mentioned in the prompt's additional checks, instead hallucinating a need to adjust the gross amount. The logic is flawed, rendering the output professionally unsound."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare reports summarizing daily transactions and earnings for individual customer accounts.",
+      "task_type": "Daily Transaction Reporting",
+      "user_prompt": "Compile a daily earnings and transaction summary report for client account CL-33109. Aggregate all trades, dividends, and fees from the provided log. Calculate the net earnings for the day, apply the appropriate transfer taxes, and format the output as a formal statement suitable for regulatory filing. Ensure the report includes a section on 'Net Earnings' and 'Total Fees Paid' with cent-level precision.",
+      "reference_context": {
+        "client_id": "CL-33109",
+        "daily_log": [
+          {
+            "time": "09:35",
+            "type": "Buy",
+            "symbol": "AMZN",
+            "shares": 10,
+            "price": 130.0,
+            "commission": 4.95
+          },
+          {
+            "time": "11:20",
+            "type": "Dividend",
+            "symbol": "JNJ",
+            "amount": 45.2
+          },
+          {
+            "time": "14:15",
+            "type": "Sell",
+            "symbol": "PFE",
+            "shares": 50,
+            "price": 35.0,
+            "commission": 4.95
+          },
+          {
+            "time": "15:45",
+            "type": "Interest",
+            "amount": 12.5
+          }
+        ],
+        "transfer_tax_rate": 0.0001,
+        "regulatory_reference": "FINRA Rule 6730 (Transaction Reporting) and SEC Form 1099-B guidelines"
+      },
+      "evaluation_criteria": [
+        "Precision: All transaction totals, commissions, and taxes are calculated to the cent.",
+        "Structure: The report clearly separates 'Net Earnings' from 'Total Fees Paid' and lists all line items.",
+        "Compliance: The report format adheres to professional standards and references the correct regulatory guidelines for transaction reporting."
+      ],
+      "student_answer": "**Client Account Summary Report – CL-33109**\n\n**Date:** 2023-10-27 (Assuming today’s date)\n\n**Prepared For:** Regulatory Filing\n\n**1. Transaction Summary:**\n\n| Time       | Transaction Type | Symbol | Shares | Price   | Commission | Amount      |\n|------------|------------------|--------|--------|---------|------------|-------------|\n| 09:35      | Buy              | AMZN   | 10     | 130.0   | 4.95       | 1300.00     |\n| 11:20      | Dividend         | JNJ    |        |         |            | 45.20       |\n| 14:15      | Sell             | PFE    | 50     | 35.0   | 4.95       | 1750.00     |\n| 15:45      | Interest         |        |        |         | 12.50      | 12.50       |\n\n**2. Earnings Calculation:**\n\n*   **Gross Revenue (Buy):** 1300.00\n*   **Gross Revenue (Sell):** 1750.00\n*   **Total Gross Revenue:** 3050.00\n*   **Dividend Income:** 45.20\n*   **Interest Income:** 12.50\n*   **Total Income:** 3050.00 + 45.20 + 12.50 = 3107.70\n\n**3. Fee Calculation:**\n\n*   **Transaction Fees:** 4.95 + 4.95 = 9.90\n*   **Transfer Tax:** 3107.70 * 0.0001 = 3.11\n*   **Total Fees Paid:** 9.90 + 3.11 = 13.01\n\n**4. Net Earnings:**\n\n*   **Net Earnings:** 3107.70 - 13.01 = 3094.69\n\n**Report End**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it hallucinates a date not provided in the context. Second, and most critically, it misinterprets the financial logic: it lists the 'Buy' transaction value ($1300) as 'Gross Revenue,' which is incorrect as a purchase is an outflow, not revenue. It calculates 'Net Earnings' by adding the buy value to income and subtracting fees, resulting in a nonsensical figure that does not represent actual earnings. Third, it applies the transfer tax to the total income ($3107.70) rather than the specific sell transaction proceeds ($1750), violating the domain logic of transaction taxes. Fourth, it fails to format the output as a formal regulatory statement, presenting it instead as a rough calculation sheet. The math is internally consistent but based on false premises, making the result unusable for regulatory filing."
+    }
+  ]
+}

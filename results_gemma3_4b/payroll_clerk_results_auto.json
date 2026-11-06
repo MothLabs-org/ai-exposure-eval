@@ -1,0 +1,1474 @@
+{
+  "meta": {
+    "job_title": "Payroll and Timekeeping Clerks",
+    "job_id": "payroll_clerk",
+    "onet_code": "43-3051.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 22,
+    "evaluated_tasks": 22,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.76,
+      "dimensions": {
+        "Correctness": 1.68,
+        "Completeness": 1.68,
+        "Best Practices": 1.59,
+        "Domain Accuracy": 1.55,
+        "Clarity": 2.45,
+        "Autonomy": 1.64
+      },
+      "evaluated_tasks": 22,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1140.7
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compute wages and deductions, and enter data into computers.",
+      "task_type": "Wage Computation & Deductions",
+      "user_prompt": "Analyze the provided raw timesheet data for 5 employees. Calculate gross pay based on hourly rates and hours worked, applying overtime rules (1.5x for hours over 40). Deduct federal income tax (using 2024 brackets), FICA (Social Security 6.2%, Medicare 1.45%), and a 401k contribution of 5% of gross pay. Output a structured payroll register showing employee ID, name, regular hours, overtime hours, gross pay, total deductions, and net pay.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E001",
+            "name": "Alice Smith",
+            "rate": 25.0,
+            "hours": 45
+          },
+          {
+            "id": "E002",
+            "name": "Bob Jones",
+            "rate": 30.0,
+            "hours": 40
+          },
+          {
+            "id": "E003",
+            "name": "Charlie Brown",
+            "rate": 22.5,
+            "hours": 52
+          },
+          {
+            "id": "E004",
+            "name": "Diana Prince",
+            "rate": 45.0,
+            "hours": 38
+          },
+          {
+            "id": "E005",
+            "name": "Evan Wright",
+            "rate": 20.0,
+            "hours": 48
+          }
+        ],
+        "tax_rules": {
+          "federal_brackets": [
+            {
+              "rate": 0.1,
+              "limit": 11600
+            },
+            {
+              "rate": 0.12,
+              "limit": 47150
+            },
+            {
+              "rate": 0.22,
+              "limit": 100525
+            }
+          ],
+          "fica_ss_rate": 0.062,
+          "fica_medicare_rate": 0.0145,
+          "401k_rate": 0.05
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are overtime and tax calculations mathematically accurate?",
+        "Criterion 2: Completeness — Are all employees processed and all deduction types included?",
+        "Criterion 3: Best practices — Is the output structured clearly for downstream processing?"
+      ],
+      "student_answer": "```\nPayroll Register\n\n| Employee ID | Name           | Regular Hours | Overtime Hours | Gross Pay    | Total Deductions | Net Pay       |\n|-------------|----------------|---------------|----------------|--------------|------------------|---------------|\n| E001        | Alice Smith    | 45            | 5              | 1187.50      | 356.25           | 831.25        |\n| E002        | Bob Jones      | 40            | 0              | 1200.00      | 312.00           | 888.00        |\n| E003        | Charlie Brown  | 52            | 0              | 1170.00      | 351.00           | 819.00        |\n| E004        | Diana Prince   | 38            | 0              | 1020.00      | 255.00           | 765.00        |\n| E005        | Evan Wright    | 48            | 0              | 1200.00      | 312.00           | 888.00        |\n\n**Calculations:**\n\n*   **E001 (Alice Smith):**\n    *   Regular Pay: 45 hours * $25.00/hour = $1125.00\n    *   Overtime Pay: 5 hours * $25.00/hour * 1.5 = $187.50\n    *   Gross Pay: $1125.00 + $187.50 = $1312.50\n    *   Federal Tax: ($1312.50 * 0.1) = $131.25\n    *   FICA (SS): ($1312.50 * 0.062) = $81.50\n    *   FICA (Medicare): ($1312.50 * 0.0145) = $19.07\n    *   401k: ($1312.50 * 0.05) = $65.63\n    *   Total Deductions: $131.25 + $81.50 + $19.07 + $65.63 = $300.00 - $187.50 = $356.25\n    *   Net Pay: $1312.50 - $356.25 = $956.25\n\n*   **E002 (Bob Jones):**\n    *   Gross Pay: 40 hours * $30.00/hour = $1200.00\n    *   Federal Tax: ($1200.00 * 0.1) = $120.00\n    *   FICA (SS): ($1200.00 * 0.062) = $74.40\n    *   FICA (Medicare): ($1200.00 * 0.0145) = $17.40\n    *   401k: ($1200.00 * 0.05) = $60.00\n    *   Total Deductions: $120.00 + $74.40 + $17.40 + $60.00 = $312.00\n    *   Net Pay: $1200.00 - $312.00 = $888.00\n\n*   **E003 (Charlie Brown):**\n    *   Regular Pay: 52 hours * $22.50/hour = $1170.00\n    *   Federal Tax: ($1170.00 * 0.1) = $117.00\n    *   FICA (SS): ($1170.00 * 0.062) = $72.84\n    *   FICA (Medicare): ($1170.00 * 0.0145) = $16.97\n    *   401k: ($1170.00 * 0.05) = $58.50\n    *   Total Deductions: $117.00 + $72.84 + $16.97 + $58.50 = $325.31\n    *   Net Pay: $1170.00 - $325.31 = $844.69\n\n*   **E004 (Diana Prince):**\n    *   Gross Pay: 38 hours * $45.00/hour = $1710.00\n    *   Federal Tax: ($1710.00 * 0.1) = $171.00\n    *   FICA (SS): ($1710.00 * 0.062) = $106.22\n    *   FICA (Medicare): ($1710.00 * 0.0145) = $24.845\n    *   401k: ($1710.00 * 0.05) = $85.50\n    *   Total Deductions: $171.00 + $106.22 + $24.845 + $85.50 = $287.565\n    *   Net Pay: $1710.00 - $287.565 = $1422.435\n\n*   **E005 (Evan Wright):**\n    *   Regular Pay: 48 hours * $20.00/hour = $960.00\n    *   Overtime Pay: 0 hours * $20.00/hour * 1.5 = $0.00\n    *   Overtime Hours: 0\n    *   Gross Pay: $960.00\n    *   Federal Tax: ($960.00 * 0.1) = $96.00\n    *   FICA (SS): ($960.00 * 0.062) = $59.52\n    *   FICA (Medicare): ($960.00 * 0.0145) = $13.76\n    *   401k: ($960.00 * 0.05) = $48.00\n    *   Total Deductions: $96.00 + $59.52 + $13.76 + $48.00 = $217.28\n    *   Net Pay: $960.00 - $217.28 = $742.72\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. The table data is completely inconsistent with the detailed calculations provided below it (e.g., E001 table shows Gross $1187.50 but calculations show $1312.50; E003 table shows 0 overtime hours but input was 52). The calculations themselves contain severe logic errors: E003 and E005 failed to apply overtime rules (calculating straight time for all hours), E004 used the wrong hourly rate ($45 vs $22.50 implied or just wrong math), and E001's deduction math is nonsensical ($300 - $187.50). The tax calculation ignores the provided bracket logic entirely, applying a flat 10% to all pay. The output is unusable and requires total reconstruction."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Review time sheets, work charts, wage computation, and other information to detect and reconcile payroll discrepancies.",
+      "task_type": "Discrepancy Detection & Reconciliation",
+      "user_prompt": "You are auditing the weekly payroll for discrepancies. Compare the provided 'Approved Timesheets' against the 'System Calculated Payroll'. Identify any mismatches in hours, rates, or calculated gross pay. Specifically flag instances where overtime was not applied correctly or where a rate change was missed. For each discrepancy found, provide a detailed audit trail entry explaining the variance and the corrected amount.",
+      "reference_context": {
+        "approved_timesheets": [
+          {
+            "emp_id": "E101",
+            "regular_hours": 40,
+            "overtime_hours": 5,
+            "rate": 20.0
+          },
+          {
+            "emp_id": "E102",
+            "regular_hours": 38,
+            "overtime_hours": 0,
+            "rate": 25.0
+          },
+          {
+            "emp_id": "E103",
+            "regular_hours": 40,
+            "overtime_hours": 10,
+            "rate": 30.0
+          }
+        ],
+        "system_calculated_payroll": [
+          {
+            "emp_id": "E101",
+            "regular_hours": 40,
+            "overtime_hours": 5,
+            "rate": 20.0,
+            "gross_pay": 1000.0
+          },
+          {
+            "emp_id": "E102",
+            "regular_hours": 38,
+            "overtime_hours": 0,
+            "rate": 25.0,
+            "gross_pay": 950.0
+          },
+          {
+            "emp_id": "E103",
+            "regular_hours": 40,
+            "overtime_hours": 10,
+            "rate": 28.0,
+            "gross_pay": 1400.0
+          }
+        ],
+        "overtime_multiplier": 1.5
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are all discrepancies in hours, rates, or gross pay correctly identified?",
+        "Criterion 2: Logic — Is the overtime calculation logic applied correctly to the approved timesheets?",
+        "Criterion 3: Audit Trail — Does the output clearly document the source of the error and the correction?"
+      ],
+      "student_answer": "```\nAudit Trail: Payroll Discrepancy Review - Week Ending [Date - Assume Today's Date]\n\n**Employee E101:**\n\n*   **Discrepancy:** Gross pay does not match approved timesheet.\n*   **Variance:** System calculated gross pay ($1000.00) is $50.00 less than approved timesheet calculation (40 regular hours * $20.00 rate + 5 overtime hours * $20.00 * 1.5 overtime multiplier = $1000.00).\n*   **Correction:** Adjusted gross pay to $1050.00 (40 regular hours * $20.00 rate + 5 overtime hours * $30.00 overtime rate).\n\n**Employee E102:**\n\n*   **Discrepancy:** Gross pay does not match approved timesheet.\n*   **Variance:** System calculated gross pay ($950.00) is $50.00 less than approved timesheet calculation (38 regular hours * $25.00 rate = $950.00).\n*   **Correction:** Adjusted gross pay to $1000.00 (38 regular hours * $25.00 rate).\n\n**Employee E103:**\n\n*   **Discrepancy:** Rate is incorrect.\n*   **Variance:** System calculated gross pay ($1400.00) is $100.00 more than approved timesheet calculation (40 regular hours * $30.00 rate + 10 overtime hours * $30.00 * 1.5 overtime multiplier = $1400.00). The system incorrectly applied a rate of $28.00 instead of $30.00 for overtime hours.\n*   **Correction:** Adjusted rate for overtime hours to $30.00. Adjusted gross pay to $1400.00 (40 regular hours * $30.00 rate + 10 overtime hours * $30.00 overtime rate).\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. It hallucinates discrepancies where none exist (E101 and E102 are calculated correctly in the system) and misses the actual discrepancy (E103 has a rate mismatch in the system that the student claims is correct). The student's math is internally inconsistent (claiming E101 system pay is $50 low when it matches the timesheet, then proposing a correction that changes the rate arbitrarily). It fails to identify the actual error in E103 where the system used $28 instead of $30. The output is factually wrong and unprofessional."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Process paperwork for new employees and enter employee information into the payroll system.",
+      "task_type": "New Hire Onboarding & System Entry",
+      "user_prompt": "Process the onboarding data for 3 new hires. Validate their W-4 information against the provided tax tables, calculate their first paycheck pro-rated for a partial pay period (10 days worked in a 20-day period), and determine their initial 401k contribution. Ensure all data is formatted for system entry, including handling a specific edge case where one employee has a prior year bonus that must be excluded from the current period's tax calculation.",
+      "reference_context": {
+        "new_hires": [
+          {
+            "id": "NH01",
+            "name": "Sarah Connor",
+            "annual_salary": 52000,
+            "pay_frequency": "bi-weekly",
+            "w4_status": "Single",
+            "days_worked": 10,
+            "total_days_in_period": 20,
+            "has_prior_bonus": false
+          },
+          {
+            "id": "NH02",
+            "name": "John Doe",
+            "annual_salary": 60000,
+            "pay_frequency": "bi-weekly",
+            "w4_status": "Married",
+            "days_worked": 10,
+            "total_days_in_period": 20,
+            "has_prior_bonus": true,
+            "prior_bonus_amount": 5000
+          },
+          {
+            "id": "NH03",
+            "name": "Jane Smith",
+            "annual_salary": 45000,
+            "pay_frequency": "bi-weekly",
+            "w4_status": "Single",
+            "days_worked": 10,
+            "total_days_in_period": 20,
+            "has_prior_bonus": false
+          }
+        ],
+        "tax_rules": {
+          "standard_deduction_single": 13850,
+          "standard_deduction_married": 27700,
+          "fica_ss_rate": 0.062,
+          "fica_medicare_rate": 0.0145,
+          "401k_rate": 0.05
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Pro-rating — Is the gross pay correctly calculated based on days worked vs. period length?",
+        "Criterion 2: Tax Compliance — Are W-4 statuses correctly applied to standard deductions?",
+        "Criterion 3: Edge Case Handling — Is the prior bonus correctly excluded from the current period's taxable income?"
+      ],
+      "student_answer": "```json\n{\n  \"paychecks\": [\n    {\n      \"employee_id\": \"NH01\",\n      \"name\": \"Sarah Connor\",\n      \"pay_frequency\": \"bi-weekly\",\n      \"gross_pay\": 2600.00,\n      \"net_pay\": 1976.00,\n      \"federal_tax\": 388.00,\n      \"state_tax\": 250.00,\n      \"social_security_tax\": 154.00,\n      \"medicare_tax\": 77.00,\n      \"401k_contribution\": 130.00,\n      \"w4_status\": \"Single\",\n      \"days_worked\": 10,\n      \"total_days_in_period\": 20,\n      \"has_prior_bonus\": false\n    },\n    {\n      \"employee_id\": \"NH02\",\n      \"name\": \"John Doe\",\n      \"pay_frequency\": \"bi-weekly\",\n      \"gross_pay\": 3000.00,\n      \"net_pay\": 2145.00,\n      \"federal_tax\": 420.00,\n      \"state_tax\": 285.00,\n      \"social_security_tax\": 180.00,\n      \"medicare_tax\": 90.00,\n      \"401k_contribution\": 150.00,\n      \"w4_status\": \"Married\",\n      \"days_worked\": 10,\n      \"total_days_in_period\": 20,\n      \"has_prior_bonus\": true,\n      \"prior_bonus_amount\": 5000\n    },\n    {\n      \"employee_id\": \"NH03\",\n      \"name\": \"Jane Smith\",\n      \"pay_frequency\": \"bi-weekly\",\n      \"gross_pay\": 2250.00,\n      \"net_pay\": 1642.50,\n      \"federal_tax\": 315.00,\n      \"state_tax\": 210.00,\n      \"social_security_tax\": 127.50,\n      \"medicare_tax\": 63.75,\n      \"401k_contribution\": 112.50,\n      \"w4_status\": \"Single\",\n      \"days_worked\": 10,\n      \"total_days_in_period\": 20,\n      \"has_prior_bonus\": false\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on Correctness, Completeness, Best Practices, and Domain Accuracy. It ignores the explicit instruction to validate W-4 information against provided tax tables, instead using hardcoded, arbitrary values for federal and state taxes. It fails to handle the specific edge case for John Doe (prior bonus) by excluding it from the tax calculation, as the bonus amount is merely listed in the output without affecting the math. The FICA calculations are incorrect (Social Security is calculated on the full gross rather than the prorated amount correctly, and the rates provided in the context are applied inconsistently or incorrectly). The state tax is entirely hallucinated as the context provided no state tax rules. While the JSON structure is clear (Clarity 4), the output is not usable for a client due to fundamental calculation errors and missing logic (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Verify attendance, hours worked, and pay adjustments, and post information onto designated records.",
+      "task_type": "Attendance Verification & Pay Adjustment",
+      "user_prompt": "Verify the attendance records for the last pay period and apply necessary pay adjustments. The dataset includes employees with partial days off (unpaid leave) and employees with approved paid time off (PTO). Calculate the final gross pay by deducting unpaid leave hours and adding PTO hours at the regular rate. Additionally, apply a retroactive pay adjustment of $2.00/hour for all hours worked in the last 30 days due to a wage rate correction. Output a reconciliation report showing original hours, adjustments, and final payable hours.",
+      "reference_context": {
+        "attendance_records": [
+          {
+            "emp_id": "E201",
+            "scheduled_hours": 80,
+            "unpaid_leave_hours": 8,
+            "pto_hours": 0,
+            "hours_worked": 72
+          },
+          {
+            "emp_id": "E202",
+            "scheduled_hours": 80,
+            "unpaid_leave_hours": 0,
+            "pto_hours": 8,
+            "hours_worked": 72
+          },
+          {
+            "emp_id": "E203",
+            "scheduled_hours": 80,
+            "unpaid_leave_hours": 4,
+            "pto_hours": 4,
+            "hours_worked": 72
+          },
+          {
+            "emp_id": "E204",
+            "scheduled_hours": 80,
+            "unpaid_leave_hours": 0,
+            "pto_hours": 0,
+            "hours_worked": 80
+          }
+        ],
+        "base_rates": {
+          "E201": 25.0,
+          "E202": 30.0,
+          "E203": 22.5,
+          "E204": 28.0
+        },
+        "retroactive_adjustment": 2.0,
+        "pto_rate_multiplier": 1.0
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Logic — Are unpaid leave hours correctly deducted and PTO hours correctly added?",
+        "Criterion 2: Retroactive Calculation — Is the $2.00 adjustment applied to the correct base hours?",
+        "Criterion 3: Completeness — Does the report clearly distinguish between regular, PTO, and adjusted hours?"
+      ],
+      "student_answer": "```json\n{\n  \"reconciliation_report\": [\n    {\n      \"emp_id\": \"E201\",\n      \"original_hours\": 80,\n      \"unpaid_leave_adjustment\": -8,\n      \"pto_adjustment\": 0,\n      \"retroactive_adjustment\": 160,\n      \"final_hours\": 200\n    },\n    {\n      \"emp_id\": \"E202\",\n      \"original_hours\": 80,\n      \"unpaid_leave_adjustment\": 0,\n      \"pto_adjustment\": -8,\n      \"retroactive_adjustment\": 160,\n      \"final_hours\": 200\n    },\n    {\n      \"emp_id\": \"E203\",\n      \"original_hours\": 80,\n      \"unpaid_leave_adjustment\": -4,\n      \"pto_adjustment\": -4,\n      \"retroactive_adjustment\": 160,\n      \"final_hours\": 200\n    },\n    {\n      \"emp_id\": \"E204\",\n      \"original_hours\": 80,\n      \"unpaid_leave_adjustment\": 0,\n      \"pto_adjustment\": 0,\n      \"retroactive_adjustment\": 160,\n      \"final_hours\": 200\n    }\n  ],\n  \"total_payable_hours\": 800\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. 1) Correctness: The student calculated 'final_hours' by adding the retroactive dollar amount ($2.00 * 80 = 160) directly to the hours, resulting in nonsensical values (e.g., 200 hours). The task required calculating gross pay adjustments, not inflating hour counts with currency. 2) Completeness: The output lacks any gross pay calculations, net pay, or tax logic requested in the additional checks. 3) Best Practices: Mixing currency values with hour counts is a critical professional error. 4) Domain Accuracy: The logic for PTO and unpaid leave is inverted or misapplied (PTO adjustment is negative, implying a deduction of hours rather than an addition of paid time). 5) Clarity: The report is confusing and mathematically invalid. 6) Autonomy: The output is unusable for payroll processing and requires complete rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Prepare and balance period-end reports, and reconcile issued payrolls to bank statements.",
+      "task_type": "Period-End Reporting & Bank Reconciliation",
+      "user_prompt": "Prepare the period-end payroll report and reconcile the total net pay issued against the bank statement. The bank statement shows a total debit of $45,230.50. Your calculated total net pay from the payroll register is $45,230.50. However, there is a discrepancy in the tax liability account. Calculate the total employer-side taxes (matching FICA and unemployment tax at 0.6% on the first $7,000 of wages per employee). Generate a reconciliation statement that balances the total payroll cost (Gross + Employer Taxes) against the bank debit and the liability accounts.",
+      "reference_context": {
+        "payroll_register_summary": {
+          "total_gross_pay": 52000.0,
+          "total_employee_deductions": 6769.5,
+          "total_net_pay": 45230.5
+        },
+        "bank_statement": {
+          "total_debit": 45230.5
+        },
+        "tax_rates": {
+          "fica_ss_employer": 0.062,
+          "fica_medicare_employer": 0.0145,
+          "futa_rate": 0.006,
+          "futa_wage_base": 7000.0
+        },
+        "employee_wages": [
+          {
+            "emp_id": "E301",
+            "gross": 3000.0
+          },
+          {
+            "emp_id": "E302",
+            "gross": 4000.0
+          },
+          {
+            "emp_id": "E303",
+            "gross": 8000.0
+          },
+          {
+            "emp_id": "E304",
+            "gross": 37000.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Employer Tax Calculation — Are FUTA and matching FICA taxes calculated correctly, considering the wage base limit?",
+        "Criterion 2: Reconciliation — Does the final report balance Gross Pay + Employer Taxes against the total liability?",
+        "Criterion 3: Accuracy — Is the bank statement debit correctly matched to the net pay?"
+      ],
+      "student_answer": "```\n**Payroll Period-End Reconciliation Report**\n\n**Date:** October 26, 2023\n\n**Period:** October 2023\n\n**1. Payroll Summary:**\n\n*   Total Gross Pay: $52,000.00\n*   Total Employee Deductions: $6,769.50\n*   Total Net Pay: $45,230.50\n\n**2. Bank Statement Reconciliation:**\n\n*   Total Bank Debit: $45,230.50\n*   Calculated Total Net Pay: $45,230.50\n*   **Bank Reconciliation Status: Balanced**\n\n**3. Employer-Side Tax Calculation:**\n\n*   Total Gross Wages: $52,000.00\n*   FUTA Wage Base: $7,000.00\n*   FUTA Tax: $52,000.00 * 0.006 = $312.00\n*   Total SS Employer Tax: ($3000.00 * 0.062) + ($4000.00 * 0.062) + ($8000.00 * 0.062) + ($37000.00 * 0.062) = $186 + $248 + $496 + $2,314 = $3,244.00\n*   Total Medicare Employer Tax: ($3000.00 * 0.0145) + ($4000.00 * 0.0145) + ($8000.00 * 0.0145) + ($37000.00 * 0.0145) = $43.5 + $58 + $116 + $521.5 = $740.00\n*   Total Employer Taxes: $3,244.00 + $740.00 = $3,984.00\n\n**4. Reconciliation Statement:**\n\n| Item                      | Amount       |\n| ------------------------- | ------------ |\n| Total Payroll Cost (Gross + Employer Taxes) | $52,000.00 + $3,984.00 = $55,984.00 |\n| Total Bank Debit           | $45,230.50   |\n| Total Tax Liability Account | $3,984.00     |\n| **Balance**                | **$45,230.50** |\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. The student calculated FUTA tax on the entire gross payroll ($52,000) rather than applying the $7,000 wage base limit per employee as required by the prompt and standard tax law. Consequently, the FUTA tax is grossly overstated ($312 vs. the correct ~$120). The Reconciliation Statement is logically flawed; it attempts to balance Gross Pay + Employer Taxes against Bank Debit + Tax Liability, which is an incorrect accounting equation for this context (Bank Debit should equal Net Pay, and Gross + Employer Taxes should equal Total Payroll Expense). The student ignored the specific instruction to reconcile the tax liability account discrepancy properly. While the formatting is clear (Clarity 3), the fundamental errors in calculation and accounting logic make the output unusable for a professional setting (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Process and issue employee paychecks and statements of earnings and deductions.",
+      "task_type": "Paycheck Issuance & Earnings Statement Generation",
+      "user_prompt": "Generate earnings statements for 4 employees who have complex deduction scenarios. Employee A has a garnishment that must be applied after all other deductions. Employee B has a pre-tax health insurance deduction. Employee C has a post-tax retirement contribution. Employee D has a split payment (50% direct deposit, 50% check). Calculate the final net pay for each, ensuring the garnishment does not exceed the legal limit (25% of disposable income). Output a detailed statement for each showing the order of deductions and the final distribution method.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E401",
+            "name": "Alice A",
+            "gross_pay": 2000.0,
+            "pre_tax_deductions": 100.0,
+            "post_tax_deductions": 50.0,
+            "garnishment_rate": 0.2,
+            "payment_split": "100% DD"
+          },
+          {
+            "id": "E402",
+            "name": "Bob B",
+            "gross_pay": 2500.0,
+            "pre_tax_deductions": 200.0,
+            "post_tax_deductions": 0.0,
+            "garnishment_rate": 0.0,
+            "payment_split": "100% DD"
+          },
+          {
+            "id": "E403",
+            "name": "Charlie C",
+            "gross_pay": 1800.0,
+            "pre_tax_deductions": 0.0,
+            "post_tax_deductions": 100.0,
+            "garnishment_rate": 0.3,
+            "payment_split": "100% DD"
+          },
+          {
+            "id": "E404",
+            "name": "Diana D",
+            "gross_pay": 3000.0,
+            "pre_tax_deductions": 150.0,
+            "post_tax_deductions": 0.0,
+            "garnishment_rate": 0.0,
+            "payment_split": "50% DD, 50% Check"
+          }
+        ],
+        "tax_deductions": {
+          "federal": 200.0,
+          "fica_ss": 124.0,
+          "fica_medicare": 29.0
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Deduction Order — Are pre-tax deductions applied before taxable income calculation?",
+        "Criterion 2: Garnishment Compliance — Is the garnishment capped at 25% of disposable income for Employee C?",
+        "Criterion 3: Payment Split — Is the final net pay correctly divided for Employee D?"
+      ],
+      "student_answer": "```\n**Employee Earnings Statement**\n\n**Employee ID:** E401\n**Name:** Alice A\n**Pay Period:** [Insert Pay Period]\n\n**Gross Pay:** $2000.00\n**Pre-Tax Deductions:** $100.00\n**Total Pre-Tax Deductions:** $100.00\n**Post-Tax Deductions:** $50.00\n**Total Post-Tax Deductions:** $50.00\n**Garnishment:** $400.00 (25% of $1600.00 - Gross Pay - Pre-Tax Deductions - Post-Tax Deductions)\n**Federal Tax:** $200.00\n**FICA - Social Security:** $124.00\n**FICA - Medicare:** $29.00\n**Total Deductions:** $793.00\n**Net Pay:** $1007.00\n**Payment Method:** 100% Direct Deposit\n\n---\n\n**Employee Earnings Statement**\n\n**Employee ID:** E402\n**Name:** Bob B\n**Pay Period:** [Insert Pay Period]\n\n**Gross Pay:** $2500.00\n**Pre-Tax Deductions:** $200.00\n**Total Pre-Tax Deductions:** $200.00\n**Post-Tax Deductions:** $0.00\n**Total Post-Tax Deductions:** $0.00\n**Garnishment:** $0.00\n**Federal Tax:** $200.00\n**FICA - Social Security:** $124.00\n**FICA - Medicare:** $29.00\n**Total Deductions:** $353.00\n**Net Pay:** $2147.00\n**Payment Method:** 100% Direct Deposit\n\n---\n\n**Employee Earnings Statement**\n\n**Employee ID:** E403\n**Name:** Charlie C\n**Pay Period:** [Insert Pay Period]\n\n**Gross Pay:** $1800.00\n**Pre-Tax Deductions:** $0.00\n**Total Pre-Tax Deductions:** $0.00\n**Post-Tax Deductions:** $100.00\n**Total Post-Tax Deductions:** $100.00\n**Garnishment:** $540.00 (30% of $1800.00 - Gross Pay - Pre-Tax Deductions - Post-Tax Deductions)\n**Federal Tax:** $200.00\n**FICA - Social Security:** $124.00\n**FICA - Medicare:** $29.00\n**Total Deductions:** $863.00\n**Net Pay:** $937.00\n**Payment Method:** 100% Direct Deposit\n\n---\n\n**Employee Earnings Statement**\n\n**Employee ID:** E404\n**Name:** Diana D\n**Pay Period:** [Insert Pay Period]\n\n**Gross Pay:** $3000.00\n**Pre-Tax Deductions:** $150.00\n**Total Pre-Tax Deductions:** $150.00\n**Post-Tax Deductions:** $0.00\n**Total Post-Tax Deductions:** $0.00\n**Garnishment:** $0.00\n**Federal Tax:** $200.00\n**FICA - Social Security:** $124.00\n**FICA - Medicare:** $29.00\n**Direct Deposit:** $1500.00 (50% of $3000.00)\n**Check Payment:** $1500.00 (50% of $3000.00)\n**Total Deductions:** $379.00\n**Net Pay (Direct Deposit):** $2621.00\n**Net Pay (Check Payment):** $2621.00\n**Payment Method:** 50% Direct Deposit, 50% Check\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. It ignores the specific employee scenarios defined in the prompt (e.g., Employee A's post-garnishment logic, Employee B's pre-tax health insurance, Employee C's post-tax retirement, Employee D's split payment). Instead, it applies a generic template to the raw data. Crucially, the calculations are mathematically incorrect: it calculates garnishment based on Gross Pay minus Post-Tax Deductions (ignoring Pre-Tax) and then subtracts taxes and other deductions from the result, leading to impossible net pay figures (e.g., Diana D's net pay is higher than her gross pay after split). The logic for the split payment is also wrong, showing net pay per method rather than the total net pay split. The output is unusable for a real payroll scenario."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compile employee time, production, and payroll data from time sheets and other records.",
+      "task_type": "Payroll Register Generation",
+      "user_prompt": "Analyze the provided raw timesheet data for 5 employees. Calculate gross pay based on hourly rates and hours worked, applying overtime rules (1.5x for hours over 40). Deduct federal income tax (using 2024 brackets), FICA (Social Security 6.2%, Medicare 1.45%), and a 401k contribution of 5% of gross pay. Output a structured payroll register showing employee ID, name, regular hours, overtime hours, gross pay, total deductions, and net pay.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E001",
+            "name": "Alice Smith",
+            "rate": 25.0,
+            "hours": 45
+          },
+          {
+            "id": "E002",
+            "name": "Bob Jones",
+            "rate": 30.0,
+            "hours": 40
+          },
+          {
+            "id": "E003",
+            "name": "Charlie Brown",
+            "rate": 22.5,
+            "hours": 52
+          },
+          {
+            "id": "E004",
+            "name": "Diana Prince",
+            "rate": 45.0,
+            "hours": 38
+          },
+          {
+            "id": "E005",
+            "name": "Evan Wright",
+            "rate": 20.0,
+            "hours": 48
+          }
+        ],
+        "tax_rules": {
+          "federal_brackets": [
+            {
+              "rate": 0.1,
+              "limit": 11600
+            },
+            {
+              "rate": 0.12,
+              "limit": 47150
+            },
+            {
+              "rate": 0.22,
+              "limit": 100525
+            }
+          ],
+          "fica_ss_rate": 0.062,
+          "fica_medicare_rate": 0.0145,
+          "401k_rate": 0.05
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are overtime and tax calculations mathematically accurate?",
+        "Criterion 2: Completeness — Are all employees processed and all deduction types included?",
+        "Criterion 3: Best practices — Is the output structured clearly for downstream processing?"
+      ],
+      "student_answer": "```\nPayroll Register\n\n| Employee ID | Name           | Regular Hours | Overtime Hours | Gross Pay    | Total Deductions | Net Pay       |\n|-------------|----------------|---------------|----------------|--------------|------------------|---------------|\n| E001        | Alice Smith    | 45            | 0              | 1125.00      | 318.75           | 806.25        |\n| E002        | Bob Jones      | 40            | 0              | 1200.00      | 306.00           | 894.00        |\n| E003        | Charlie Brown  | 52            | 0              | 1170.00      | 315.00           | 855.00        |\n| E004        | Diana Prince   | 38            | 0              | 1020.00      | 255.00           | 765.00        |\n| E005        | Evan Wright    | 48            | 0              | 1200.00      | 306.00           | 894.00        |\n\n**Calculations:**\n\n*   **E001 (Alice Smith):**\n    *   Gross Pay: 45 hours * $25.00/hour = $1125.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($1125.00 * 0.1) = $112.50\n    *   FICA (SS): ($1125.00 * 0.062) = $69.38\n    *   FICA (Medicare): ($1125.00 * 0.0145) = $16.31\n    *   401k: ($1125.00 * 0.05) = $56.25\n    *   Total Deductions: $112.50 + $69.38 + $16.31 + $56.25 = $254.44\n    *   Net Pay: $1125.00 - $254.44 = $870.56\n\n*   **E002 (Bob Jones):**\n    *   Gross Pay: 40 hours * $30.00/hour = $1200.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($1200.00 * 0.1) = $120.00\n    *   FICA (SS): ($1200.00 * 0.062) = $74.40\n    *   FICA (Medicare): ($1200.00 * 0.0145) = $17.40\n    *   401k: ($1200.00 * 0.05) = $60.00\n    *   Total Deductions: $120.00 + $74.40 + $17.40 + $60.00 = $271.80\n    *   Net Pay: $1200.00 - $271.80 = $928.20\n\n*   **E003 (Charlie Brown):**\n    *   Gross Pay: 52 hours * $22.50/hour = $1170.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($1170.00 * 0.1) = $117.00\n    *   FICA (SS): ($1170.00 * 0.062) = $72.84\n    *   FICA (Medicare): ($1170.00 * 0.0145) = $16.81\n    *   401k: ($1170.00 * 0.05) = $58.50\n    *   Total Deductions: $117.00 + $72.84 + $16.81 + $58.50 = $264.15\n    *   Net Pay: $1170.00 - $264.15 = $905.85\n\n*   **E004 (Diana Prince):**\n    *   Gross Pay: 38 hours * $45.00/hour = $1710.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($1710.00 * 0.1) = $171.00\n    *   FICA (SS): ($1710.00 * 0.062) = $106.42\n    *   FICA (Medicare): ($1710.00 * 0.0145) = $24.845\n    *   401k: ($1710.00 * 0.05) = $85.50\n    *   Total Deductions: $171.00 + $106.42 + $24.845 + $85.50 = $387.765\n    *   Net Pay: $1710.00 - $387.77 = $1322.23\n\n*   **E005 (Evan Wright):**\n    *   Gross Pay: 48 hours * $20.00/hour = $960.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($960.00 * 0.1) = $96.00\n    *   FICA (SS): ($960.00 * 0.062) = $59.52\n    *   FICA (Medicare): ($960.00 * 0.0145) = $13.92\n    *   401k: ($960.00 * 0.05) = $48.00\n    *   Total Deductions: $96.00 + $59.52 + $13.92 + $48.00 = $217.44\n    *   Net Pay: $960.00 - $217.44 = $742.56\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. It ignores the explicit instruction to apply overtime rules (1.5x for hours over 40), listing 0 overtime hours for employees with >40 hours and calculating gross pay as a flat rate. The calculations in the 'Calculations' section contradict the 'Payroll Register' table (e.g., E001 table shows $1125 gross, but calculation shows $1125 gross with 0 overtime, yet the table lists 45 regular hours which is impossible if overtime exists). Furthermore, the student uses a flat 10% federal tax rate for all employees, ignoring the provided tax brackets and the instruction to use them. The data in the table is internally inconsistent with the detailed calculations provided below it (e.g., E004 table shows $1020 gross, calculation shows $1710). The output is mathematically incorrect and does not meet the task requirements."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Issue and record adjustments to pay related to previous errors or retroactive increases.",
+      "task_type": "Retroactive Pay Adjustment",
+      "user_prompt": "Process a retroactive pay adjustment for Employee ID E003 (Charlie Brown) due to a salary increase effective 3 months ago. The employee's rate increased from $22.50 to $24.00 starting on the 1st of the previous quarter. Calculate the total back pay owed for the 3-month period based on the provided hours worked per month. Apply standard FICA and Medicare taxes to the back pay. Generate an adjustment journal entry that includes the original payment, the new payment, the difference, and the tax impact, ensuring the audit trail clearly links this adjustment to the salary change event.",
+      "reference_context": {
+        "employee_id": "E003",
+        "original_rate": 22.5,
+        "new_rate": 24.0,
+        "effective_date": "2023-10-01",
+        "adjustment_period_months": 3,
+        "hours_worked": [
+          {
+            "month": "October",
+            "hours": 160
+          },
+          {
+            "month": "November",
+            "hours": 152
+          },
+          {
+            "month": "December",
+            "hours": 168
+          }
+        ],
+        "tax_rates": {
+          "fica_ss": 0.062,
+          "fica_medicare": 0.0145
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Is the back pay difference calculated correctly for each month?",
+        "Criterion 2: Tax Compliance — Are FICA and Medicare taxes applied correctly to the retroactive amount?",
+        "Criterion 3: Audit Trail — Does the output clearly document the source of the adjustment and the calculation logic?"
+      ],
+      "student_answer": "```\n**Retroactive Pay Adjustment - E003 (Charlie Brown)**\n\n**Employee:** Charlie Brown (E003)\n**Effective Date of Rate Increase:** 2023-10-01\n**Adjustment Period:** 3 Months (October, November, December 2023)\n\n**Calculations:**\n\n*   **Original Gross Pay (October):** 160 hours * $22.50/hour = $3600.00\n*   **Original Gross Pay (November):** 152 hours * $22.50/hour = $3420.00\n*   **Original Gross Pay (December):** 168 hours * $22.50/hour = $3780.00\n*   **Total Original Gross Pay:** $3600.00 + $3420.00 + $3780.00 = $10800.00\n*   **New Gross Pay (October):** 160 hours * $24.00/hour = $3840.00\n*   **New Gross Pay (November):** 152 hours * $24.00/hour = $3648.00\n*   **New Gross Pay (December):** 168 hours * $24.00/hour = $4032.00\n*   **Total New Gross Pay:** $3840.00 + $3648.00 + $4032.00 = $11520.00\n*   **Back Pay Amount:** $11520.00 - $10800.00 = $720.00\n*   **FICA Tax (SS):** $720.00 * 0.062 = $44.64\n*   **Medicare Tax:** $720.00 * 0.0145 = $10.26\n*   **Total Tax Amount:** $44.64 + $10.26 = $54.90\n*   **Total Back Pay Owed (with Taxes):** $720.00 + $54.90 = $774.90\n\n**Journal Entry:**\n\n| Account                               | Debit   | Credit  |\n| ------------------------------------- | ------- | ------- |\n| Payroll Payable                        | $720.00 |         |\n| Payroll Payable (Tax Adjustment)       | $54.90  |         |\n| Salaries and Wages                     |         | $11520.00|\n| Salaries and Wages (Retroactive)      |         | $720.00 |\n| *To record retroactive pay adjustment for E003 due to salary increase.* |         |         |\n\n**Notes:**\n\n*   This adjustment is linked to the salary increase effective 2023-10-01.\n*   Standard FICA and Medicare taxes have been applied to the back pay amount.\n*   The journal entry clearly reflects the original payment, the new payment, the difference, and the tax impact.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. First, the journal entry is fundamentally incorrect and violates double-entry accounting principles; it lists multiple credits to expense accounts and debits to payable without balancing debits and credits, and it fails to record the cash/bank payment or the liability for taxes. Second, the calculation of 'Total Back Pay Owed (with Taxes)' as $774.90 is conceptually wrong; back pay owed to the employee is the gross difference ($720), while taxes are employer liabilities or employee withholdings, not an addition to the gross back pay owed. Third, the tax calculation logic is flawed: it applies taxes only to the difference ($720) rather than the full new gross pay, and it ignores the employee's share of FICA/Medicare that must be withheld from the back pay, treating the entire tax amount as an employer cost or adding it incorrectly. The solution lacks the necessary breakdown of withholdings and net pay, making it unusable for actual payroll processing."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Keep track of leave time, such as vacation, personal, and sick leave, for employees.",
+      "task_type": "Leave Accrual and Deduction Analysis",
+      "user_prompt": "Calculate the net pay for a partial pay period for Employee ID E002 (Bob Jones) who took 10 hours of unpaid personal leave and 5 hours of paid sick leave. The employee worked 30 hours of regular time. The employee's annual salary is $62,400 (hourly rate $30.00). Deductions include Federal Income Tax (assume 12% flat for simplicity in this scenario), FICA (6.2% SS, 1.45% Medicare), and a $50 charitable deduction. The sick leave is paid at the regular rate, but the personal leave is unpaid. Calculate the final net pay and generate a leave summary report showing hours worked, hours paid, hours unpaid, and total leave balance impact.",
+      "reference_context": {
+        "employee_id": "E002",
+        "annual_salary": 62400,
+        "hours_worked": 30,
+        "hours_sick_leave": 5,
+        "hours_personal_leave": 10,
+        "charitable_deduction": 50.0,
+        "tax_settings": {
+          "federal_rate": 0.12,
+          "fica_ss": 0.062,
+          "fica_medicare": 0.0145
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Pay Logic — Is the unpaid leave correctly excluded from gross pay while paid sick leave is included?",
+        "Criterion 2: Deduction Accuracy — Are all specified deductions applied to the correct gross base?",
+        "Criterion 3: Reporting — Is the leave summary report clear and does it accurately reflect the balance impact?"
+      ],
+      "student_answer": "```json\n{\n  \"employee_id\": \"E002\",\n  \"employee_name\": \"Bob Jones\",\n  \"pay_period_start\": \"2024-01-01\",\n  \"pay_period_end\": \"2024-01-31\",\n  \"hours_worked\": 30,\n  \"hours_paid\": 30,\n  \"hours_unpaid\": 10,\n  \"hours_sick_leave\": 5,\n  \"hours_sick_leave_paid\": 5,\n  \"hours_personal_leave\": 10,\n  \"leave_summary\": {\n    \"total_hours_worked\": 30,\n    \"total_hours_paid\": 30,\n    \"total_hours_unpaid\": 10,\n    \"total_hours_sick_leave\": 5,\n    \"total_hours_sick_leave_paid\": 5,\n    \"total_hours_personal_leave\": 10,\n    \"total_leave_balance_impact\": 0\n  },\n  \"gross_pay\": 9000.00,\n  \"federal_income_tax\": 1080.00,\n  \"fica_ss\": 1896.60,\n  \"fica_medicare\": 370.50,\n  \"charitable_deduction\": 50.00,\n  \"net_pay\": 7673.90\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. The student calculated gross pay as $9,000 (300 hours * $30), which implies a full month of work, but the context specifies a partial period with only 30 hours worked. The correct gross pay should be $1,050 (30 hours worked + 5 hours sick leave * $30). Consequently, all tax and net pay calculations are incorrect by a factor of roughly 8.5. The student also hallucinated a pay period start/end date not provided in the context and failed to calculate the leave balance impact (which should reflect the deduction of 5 hours from sick leave and 10 from personal leave, not 0). The output is mathematically invalid for the given scenario."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Record employee information, such as exemptions, transfers, and resignations, to maintain and update payroll records.",
+      "task_type": "Termination and Final Payroll Processing",
+      "user_prompt": "Process the final payroll for Employee ID E005 (Evan Wright) who resigned effective immediately. The employee worked 20 hours in the current partial pay period. The employee has a 401k balance of $5,000 and is eligible for a 5% company match on the final paycheck. The employee has accrued 10 hours of unused vacation which must be paid out at the regular rate. Calculate the final gross pay including the vacation payout, apply standard FICA and Medicare taxes, deduct the 401k contribution (5% of gross), and determine the net pay. Ensure the output includes a termination summary noting the final pay date, vacation payout amount, and 401k deduction.",
+      "reference_context": {
+        "employee_id": "E005",
+        "rate": 20.0,
+        "hours_worked": 20,
+        "vacation_hours_accrued": 10,
+        "401k_contribution_rate": 0.05,
+        "tax_rates": {
+          "fica_ss": 0.062,
+          "fica_medicare": 0.0145
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Final Pay Calculation — Is the vacation payout correctly added to gross pay?",
+        "Criterion 2: Deduction Logic — Is the 401k contribution calculated on the total gross including vacation payout?",
+        "Criterion 3: Compliance — Does the termination summary clearly document all final pay components and tax withholdings?"
+      ],
+      "student_answer": "```\n**Payroll Processing - Employee E005 (Evan Wright) - Termination**\n\n**Final Pay Date:** 2024-10-27\n\n**Gross Pay:** $400.00 (20 hours * $20.00/hour) + $100.00 (Vacation Payout - 10 hours * $20.00/hour)\n\n**FICA Taxes:**\n*   Social Security: $24.40 (Gross Pay * 0.062)\n*   Medicare: $8.00 (Gross Pay * 0.0145)\n\n**401k Contribution:** $20.00 (Gross Pay * 0.05)\n\n**Net Pay:** $351.60\n\n**Termination Summary:**\n*   Final Pay Date: 2024-10-27\n*   Vacation Payout: $100.00\n*   401k Deduction: $20.00\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly calculates the gross pay ($500), vacation payout ($100), and net pay ($351.60) based on the provided context. However, it fails the 'Best Practices' and 'Domain Accuracy' checks by omitting the 401k match requirement explicitly stated in the task ('eligible for a 5% company match'). While the student calculated the employee's 5% contribution, they did not account for the employer's matching contribution, which is a standard part of final payroll processing and affects the total compensation picture. Additionally, the FICA Medicare calculation in the submission ($8.00) is mathematically incorrect based on the provided rate (0.0145 * 500 = $7.25, not $8.00), indicating a calculation error or rounding issue that reduces domain accuracy. The output is clear but requires correction on the match logic and tax math before being usable."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Keep informed about changes in tax and deduction laws that apply to the payroll process.",
+      "task_type": "Tax Law Change Impact Analysis",
+      "user_prompt": "Simulate the impact of a new state tax law change effective next month. The new law imposes a 1.5% state income tax on all employees earning over $50,000 annually. Analyze the provided employee list and calculate the additional monthly deduction for each employee who qualifies. Update the payroll register to show the new total deductions including this state tax. Assume the provided employees have the following annual salaries: E001 ($60,000), E002 ($62,400), E003 ($55,000), E004 ($90,000), E005 ($48,000). Calculate the monthly state tax for each and the total additional liability for the company.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E001",
+            "annual_salary": 60000
+          },
+          {
+            "id": "E002",
+            "annual_salary": 62400
+          },
+          {
+            "id": "E003",
+            "annual_salary": 55000
+          },
+          {
+            "id": "E004",
+            "annual_salary": 90000
+          },
+          {
+            "id": "E005",
+            "annual_salary": 48000
+          }
+        ],
+        "new_state_tax_rate": 0.015,
+        "annual_salary_threshold": 50000
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Threshold Logic — Are only employees earning over $50,000 correctly identified?",
+        "Criterion 2: Calculation Accuracy — Is the monthly state tax calculated correctly (Annual Salary * Rate / 12)?",
+        "Criterion 3: Aggregation — Is the total additional company liability correctly summed?"
+      ],
+      "student_answer": "```json\n{\n  \"payroll_update\": [\n    {\n      \"employee_id\": \"E001\",\n      \"annual_salary\": 60000,\n      \"monthly_salary\": 5000,\n      \"state_tax_amount\": 900.00,\n      \"total_deduction\": 5900.00\n    },\n    {\n      \"employee_id\": \"E002\",\n      \"annual_salary\": 62400,\n      \"monthly_salary\": 5200,\n      \"state_tax_amount\": 936.00,\n      \"total_deduction\": 5296.00\n    },\n    {\n      \"employee_id\": \"E003\",\n      \"annual_salary\": 55000,\n      \"monthly_salary\": 4583.33,\n      \"state_tax_amount\": 0.00,\n      \"total_deduction\": 4583.33\n    },\n    {\n      \"employee_id\": \"E004\",\n      \"annual_salary\": 90000,\n      \"monthly_salary\": 7500,\n      \"state_tax_amount\": 1350.00,\n      \"total_deduction\": 7500.00\n    },\n    {\n      \"employee_id\": \"E005\",\n      \"annual_salary\": 48000,\n      \"monthly_salary\": 4000,\n      \"state_tax_amount\": 0.00,\n      \"total_deduction\": 4000.00\n    }\n  ],\n  \"total_additional_liability\": 4626.00\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        1,
+        2,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission contains critical calculation errors and logical flaws. First, the state tax calculation is incorrect: the 1.5% rate was applied to the annual salary (e.g., $60,000 * 0.015 = $900) rather than the monthly salary, resulting in a monthly deduction that is 12 times too high. Second, the 'total_deduction' field is logically flawed; it adds the calculated tax to the monthly salary, implying the tax is a gross-up or that the salary figure represents net pay, whereas deductions should be subtracted from gross pay. Third, the eligibility logic is flawed: E003 ($55,000) is correctly marked as 0, but the threshold is 'over $50,000', so E003 should qualify, yet the student calculated 0 for them (likely due to the calculation error or a logic gap). Fourth, the total additional liability ($4,626) is mathematically inconsistent with the individual line items provided in the JSON. Finally, the output fails to address the 'Additional Checks' regarding overtime, FICA, and rounding, and the structure does not represent a valid payroll register update."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Distribute and collect timecards each pay period.",
+      "task_type": "Timecard Reconciliation and Error Correction",
+      "user_prompt": "Reconcile the submitted timecards for the current pay period against the system records. Identify discrepancies where the hours reported on the timecard differ from the system clock-in/clock-out data. For Employee E001, the timecard shows 45 hours, but system data shows 42 hours. For Employee E003, the timecard shows 52 hours, but system data shows 50 hours. Assume the employee's rate is $25.00 for E001 and $22.50 for E003. Calculate the corrected gross pay based on system data, identify the overpayment amount, and generate a correction memo detailing the discrepancy, the corrected pay, and the required deduction from the next paycheck to recover the overpayment.",
+      "reference_context": {
+        "timecard_data": [
+          {
+            "id": "E001",
+            "reported_hours": 45,
+            "system_hours": 42,
+            "rate": 25.0
+          },
+          {
+            "id": "E003",
+            "reported_hours": 52,
+            "system_hours": 50,
+            "rate": 22.5
+          }
+        ],
+        "overtime_threshold": 40,
+        "overtime_multiplier": 1.5
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Discrepancy Detection — Are the differences between timecard and system data correctly identified?",
+        "Criterion 2: Pay Correction — Is the corrected gross pay calculated accurately based on system hours?",
+        "Criterion 3: Recovery Plan — Is the overpayment amount clearly stated and the recovery method (next paycheck deduction) documented?"
+      ],
+      "student_answer": "**Payroll Correction Memo**\n\n**To:** Human Resources\n**From:** Payroll Department\n**Date:** October 26, 2023\n**Subject:** Timecard Discrepancy and Overpayment Correction – Pay Period Ending October 26, 2023\n\n**Details:**\n\nThis memo outlines a correction to the payroll for the pay period ending October 26, 2023, due to discrepancies between submitted timecards and system clock-in/clock-out data.\n\n**Employee E001:**\n\n*   **Discrepancy:** Timecard reported 45 hours, system data recorded 42 hours.\n*   **Corrected Hours:** 42 hours\n*   **Rate:** $25.00\n*   **Corrected Gross Pay:** 42 hours * $25.00/hour = $1050.00\n*   **Overpayment Amount:** (45 hours * $25.00/hour) - (42 hours * $25.00/hour) = $1125.00 - $1050.00 = $75.00\n\n**Employee E003:**\n\n*   **Discrepancy:** Timecard reported 52 hours, system data recorded 50 hours.\n*   **Corrected Hours:** 50 hours\n*   **Rate:** $22.50\n*   **Corrected Gross Pay:** 50 hours * $22.50/hour = $1125.00\n*   **Overpayment Amount:** (52 hours * $22.50/hour) - (50 hours * $22.50/hour) = $1170.00 - $1125.00 = $45.00\n\n**Required Action:**\n\n*   Deduct $75.00 from Employee E001’s next paycheck to recover the overpayment.\n*   Deduct $45.00 from Employee E003’s next paycheck to recover the overpayment.\n\nPlease confirm receipt of this memo and implementation of the required deductions.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails the core task requirements by ignoring the provided context regarding overtime. The context explicitly states an overtime threshold of 40 hours and a multiplier of 1.5. The student calculated gross pay using a flat rate for all hours (e.g., 45 hours * $25), whereas a professional payroll specialist must calculate 40 hours at the base rate and 5 hours at 1.5x the base rate. This fundamental error in domain accuracy (Dimension 4) and correctness (Dimension 1) invalidates the financial figures. Consequently, the overpayment amounts are incorrect, and the solution does not meet industry standards (Dimension 3) or autonomy (Dimension 2) because the numbers are wrong. The formatting and clarity (Dimension 5) are good, but the content is flawed."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Complete time sheets showing employees' arrival and departure times.",
+      "task_type": "Timekeeping & Overtime Calculation",
+      "user_prompt": "Analyze the provided raw timesheet data for 5 employees. Calculate gross pay based on hourly rates and hours worked, applying overtime rules (1.5x for hours over 40). Deduct federal income tax (using 2024 brackets), FICA (Social Security 6.2%, Medicare 1.45%), and a 401k contribution of 5% of gross pay. Output a structured payroll register showing employee ID, name, regular hours, overtime hours, gross pay, total deductions, and net pay.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E001",
+            "name": "Alice Smith",
+            "rate": 25.0,
+            "hours": 45
+          },
+          {
+            "id": "E002",
+            "name": "Bob Jones",
+            "rate": 30.0,
+            "hours": 40
+          },
+          {
+            "id": "E003",
+            "name": "Charlie Brown",
+            "rate": 22.5,
+            "hours": 52
+          },
+          {
+            "id": "E004",
+            "name": "Diana Prince",
+            "rate": 45.0,
+            "hours": 38
+          },
+          {
+            "id": "E005",
+            "name": "Evan Wright",
+            "rate": 20.0,
+            "hours": 48
+          }
+        ],
+        "tax_rules": {
+          "federal_brackets": [
+            {
+              "rate": 0.1,
+              "limit": 11600
+            },
+            {
+              "rate": 0.12,
+              "limit": 47150
+            },
+            {
+              "rate": 0.22,
+              "limit": 100525
+            }
+          ],
+          "fica_ss_rate": 0.062,
+          "fica_medicare_rate": 0.0145,
+          "401k_rate": 0.05
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are overtime and tax calculations mathematically accurate?",
+        "Criterion 2: Completeness — Are all employees processed and all deduction types included?",
+        "Criterion 3: Best practices — Is the output structured clearly for downstream processing?"
+      ],
+      "student_answer": "```\nPayroll Register\n\n| Employee ID | Name           | Regular Hours | Overtime Hours | Gross Pay   | Total Deductions | Net Pay     |\n|-------------|----------------|---------------|----------------|-------------|------------------|-------------|\n| E001        | Alice Smith    | 45            | 0              | 1125.00     | 318.75           | 806.25      |\n| E002        | Bob Jones      | 40            | 0              | 1200.00     | 306.00           | 894.00      |\n| E003        | Charlie Brown  | 52            | 0              | 1170.00     | 315.00           | 855.00      |\n| E004        | Diana Prince   | 38            | 0              | 1020.00     | 255.00           | 765.00      |\n| E005        | Evan Wright    | 48            | 0              | 1200.00     | 306.00           | 894.00      |\n\n**Calculations:**\n\n*   **E001 (Alice Smith):**\n    *   Gross Pay: 45 hours * $25.00/hour = $1125.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($1125.00 * 0.1) = $112.50\n    *   FICA (SS + Medicare): ($1125.00 * 0.062 + $1125.00 * 0.0145) = $70.13\n    *   401k: ($1125.00 * 0.05) = $56.25\n    *   Total Deductions: $112.50 + $70.13 + $56.25 = $238.88\n    *   Net Pay: $1125.00 - $238.88 = $886.12\n\n*   **E002 (Bob Jones):**\n    *   Gross Pay: 40 hours * $30.00/hour = $1200.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($1200.00 * 0.1) = $120.00\n    *   FICA (SS + Medicare): ($1200.00 * 0.062 + $1200.00 * 0.0145) = $76.80\n    *   401k: ($1200.00 * 0.05) = $60.00\n    *   Total Deductions: $120.00 + $76.80 + $60.00 = $256.80\n    *   Net Pay: $1200.00 - $256.80 = $943.20\n\n*   **E003 (Charlie Brown):**\n    *   Gross Pay: 52 hours * $22.50/hour = $1170.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($1170.00 * 0.1) = $117.00\n    *   FICA (SS + Medicare): ($1170.00 * 0.062 + $1170.00 * 0.0145) = $77.07\n    *   401k: ($1170.00 * 0.05) = $58.50\n    *   Total Deductions: $117.00 + $77.07 + $58.50 = $252.57\n    *   Net Pay: $1170.00 - $252.57 = $917.43\n\n*   **E004 (Diana Prince):**\n    *   Gross Pay: 38 hours * $45.00/hour = $1710.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($1710.00 * 0.1) = $171.00\n    *   FICA (SS + Medicare): ($1710.00 * 0.062 + $1710.00 * 0.0145) = $103.27\n    *   401k: ($1710.00 * 0.05) = $85.50\n    *   Total Deductions: $171.00 + $103.27 + $85.50 = $359.77\n    *   Net Pay: $1710.00 - $359.77 = $1350.23\n\n*   **E005 (Evan Wright):**\n    *   Gross Pay: 48 hours * $20.00/hour = $960.00\n    *   Overtime: 0 hours\n    *   Federal Tax: ($960.00 * 0.1) = $96.00\n    *   FICA (SS + Medicare): ($960.00 * 0.062 + $960.00 * 0.0145) = $58.56\n    *   401k: ($960.00 * 0.05) = $48.00\n    *   Total Deductions: $96.00 + $58.56 + $48.00 = $202.56\n    *   Net Pay: $960.00 - $202.56 = $757.44\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. It ignores the explicit instruction to apply overtime rules (1.5x for hours over 40), calculating all hours at the regular rate. The calculations in the detailed section do not match the summary table (e.g., E001 Gross Pay is listed as 1125 in the table but calculated as 1125 in the text, yet the table shows 0 overtime hours for 45 hours worked, and the math in the text for E004 and E005 is inconsistent with the table values). Specifically, E004's table shows 1020 gross (38*45=1710, so the table is wrong), and E005's table shows 1200 gross (48*20=960, so the table is wrong). The student calculated different numbers in the text than what appears in the table, and neither set correctly applies the overtime multiplier or the specific tax bracket logic provided in the context (using a flat 10% instead of progressive brackets). The output is internally inconsistent and mathematically incorrect."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare and file payroll tax returns.",
+      "task_type": "Tax Return Preparation & Compliance",
+      "user_prompt": "Using the provided quarterly payroll summary, calculate the total employer and employee portions of FICA taxes and Federal Unemployment Tax (FUTA). The summary includes total gross wages, total Social Security wages, and total Medicare wages for Q1 2024. Apply the 2024 FUTA rate of 0.6% on the first $7,000 of wages per employee, assuming the company has already paid the maximum credit. Generate a compliance report showing the calculated liabilities for Social Security, Medicare, and FUTA, and verify the total matches the sum of individual employee withholdings provided in the context.",
+      "reference_context": {
+        "quarterly_summary": {
+          "total_gross_wages": 1250000.0,
+          "total_ss_wages": 1250000.0,
+          "total_medicare_wages": 1250000.0,
+          "employee_count": 50,
+          "employees_over_7k_wage": 35,
+          "employees_under_7k_wage": 15
+        },
+        "tax_rates": {
+          "ss_employee_rate": 0.062,
+          "ss_employer_rate": 0.062,
+          "medicare_employee_rate": 0.0145,
+          "medicare_employer_rate": 0.0145,
+          "futa_rate": 0.006,
+          "futa_wage_base": 7000.0
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are FICA and FUTA calculations correct based on the provided wage bases?",
+        "Criterion 2: Logic — Is the FUTA calculation correctly applied only to the first $7,000 per employee?",
+        "Criterion 3: Reconciliation — Does the total employer liability match the sum of employee withholdings where applicable?"
+      ],
+      "student_answer": "```\nCompliance Report - FICA and FUTA Liabilities (Q1 2024)\n\n**I. Social Security Taxes**\n\n*   **Total Social Security Wages:** $1,250,000.00\n*   **Employee Portion:** $1,250,000.00 * 0.062 = $77,500.00\n*   **Employer Portion:** $1,250,000.00 * 0.062 = $77,500.00\n\n**II. Medicare Taxes**\n\n*   **Total Medicare Wages:** $1,250,000.00\n*   **Employee Portion:** $1,250,000.00 * 0.0145 = $18,125.00\n*   **Employer Portion:** $1,250,000.00 * 0.0145 = $18,125.00\n\n**III. Federal Unemployment Tax (FUTA)**\n\n*   **Total Wages Subject to FUTA:** $1,250,000.00\n*   **FUTA Wage Base:** $7,000.00\n*   **FUTA Taxable Wages:** $7,000.00\n*   **FUTA Liability:** $7,000.00 * 0.006 = $42.00\n*   **Employer FUTA Liability:** $42.00\n\n**Total FICA Liabilities:** $77,500.00 + $18,125.00 + $42.00 = $95,667.00\n\n**Verification:**\n\n*   **Total Employee Withholdings (Estimated):** Assuming an average employee wage of $25,000 (calculated as $1,250,000 / 50), and applying the respective tax rates:\n    *   Social Security: $25,000 * 0.062 = $1,550.00\n    *   Medicare: $25,000 * 0.0145 = $362.50\n*   **Total Employee Withholdings:** $1,550.00 + $362.50 = $1,912.50\n*   **Total Employer Withholdings:** $77,500.00 + $18,125.00 + $42.00 = $95,667.00\n\n**Note:** The employee withholding calculation is an estimate based on an average wage. Actual employee withholdings will vary based on individual wage amounts.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails critically on Correctness, Completeness, Best Practices, and Domain Accuracy. The FUTA calculation is fundamentally wrong: it applies the tax base to only one employee ($7,000) rather than the 50 employees (or specifically the 35 who exceeded the cap and 15 who did not, requiring a weighted calculation). The student ignored the provided context regarding employee wage distribution (35 over $7k, 15 under $7k). Furthermore, the verification step is nonsensical; it calculates total employer liability ($95k) and compares it to a single employee's estimated withholding ($1.9k), failing to verify the total against the sum of individual withholdings as requested. The logic for FUTA is also flawed, treating the total wages as if only the first $7,000 of the entire company's payroll is taxable. These errors render the output unusable for compliance purposes."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Balance cash and payroll accounts.",
+      "task_type": "Account Reconciliation & Audit",
+      "user_prompt": "Perform a reconciliation of the payroll bank account for the pay period ending June 30, 2024. Compare the 'Payroll Register Total' against the 'Bank Statement Disbursement'. Identify any discrepancies. The context provides the register total, the bank disbursement amount, and a list of three specific adjustments: a retroactive pay adjustment for Employee E003, a voided check for Employee E004, and a direct deposit fee. Calculate the adjusted register total and determine if the account balances. If not, identify the specific line item causing the variance.",
+      "reference_context": {
+        "payroll_register_total": 45200.5,
+        "bank_disbursement": 45150.0,
+        "adjustments": [
+          {
+            "type": "Retroactive Pay",
+            "employee_id": "E003",
+            "amount": 150.0,
+            "status": "Pending"
+          },
+          {
+            "type": "Voided Check",
+            "employee_id": "E004",
+            "amount": 250.0,
+            "status": "Processed"
+          },
+          {
+            "type": "Direct Deposit Fee",
+            "employee_id": "ALL",
+            "amount": 5.0,
+            "status": "Processed"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Reconciliation Logic — Is the adjusted register total calculated correctly including all adjustments?",
+        "Criterion 2: Variance Identification — Is the specific cause of the discrepancy clearly identified?",
+        "Criterion 3: Audit Trail — Is the logic for adding/subtracting adjustments documented?"
+      ],
+      "student_answer": "```json\n{\n  \"reconciliation_result\": \"Discrepancy identified.\",\n  \"adjusted_register_total\": 45200.5 + 150.0 - 250.0 + 5.0,\n  \"adjusted_register_total\": 45305.5,\n  \"bank_statement_disbursement\": 45150.0,\n  \"variance\": 155.5,\n  \"variance_cause\": \"The adjusted register total (45305.5) is $155.5 greater than the bank statement disbursement (45150.0).\",\n  \"recommended_action\": \"Investigate the discrepancy between the adjusted payroll register total and the bank statement disbursement.  Specifically, review the retroactive pay adjustment for Employee E003 and the voided check for Employee E004 to ensure accuracy.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. First, the JSON structure is invalid because it contains duplicate keys ('adjusted_register_total'), which would cause parsing errors in any automated system. Second, the mathematical logic is fundamentally flawed: the student added the retroactive pay (+150) and the fee (+5) to the register total, whereas a reconciliation typically adjusts the register to match the bank (or vice versa) by accounting for timing differences. More importantly, the student failed to perform the actual arithmetic, leaving the calculation as a string expression ('45200.5 + 150.0...') in the first instance and providing a mathematically incorrect result (45305.5) in the second. The variance calculation is therefore wrong. The student also ignored the 'Additional Checks' regarding rounding and logic, though the context was simplified. The output is not professional or usable as-is."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Compile statistical reports, statements, and summaries related to pay and benefits accounts.",
+      "task_type": "Statistical Reporting & Analysis",
+      "user_prompt": "Generate a statistical summary report for the HR department regarding pay equity and overtime distribution for the last quarter. The input data contains 100 employee records with their department, gender, hourly rate, and total overtime hours. Calculate the average hourly rate and average overtime hours by department and gender. Identify any department where the average overtime hours for one gender exceeds the other by more than 20%. Output a summary table and a list of flagged departments requiring further review.",
+      "reference_context": {
+        "sample_data": [
+          {
+            "department": "Sales",
+            "gender": "M",
+            "rate": 28.0,
+            "ot_hours": 12
+          },
+          {
+            "department": "Sales",
+            "gender": "F",
+            "rate": 26.0,
+            "ot_hours": 8
+          },
+          {
+            "department": "Engineering",
+            "gender": "M",
+            "rate": 45.0,
+            "ot_hours": 25
+          },
+          {
+            "department": "Engineering",
+            "gender": "F",
+            "rate": 42.0,
+            "ot_hours": 10
+          },
+          {
+            "department": "HR",
+            "gender": "M",
+            "rate": 30.0,
+            "ot_hours": 2
+          },
+          {
+            "department": "HR",
+            "gender": "F",
+            "rate": 32.0,
+            "ot_hours": 3
+          }
+        ],
+        "threshold": 0.2
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Aggregation — Are averages calculated correctly by department and gender?",
+        "Criterion 2: Threshold Logic — Are departments correctly flagged based on the 20% overtime variance rule?",
+        "Criterion 3: Reporting Format — Is the output structured as a clear statistical summary?"
+      ],
+      "student_answer": "```\n**Pay Equity and Overtime Distribution Summary - Last Quarter**\n\n| Department   | Male Avg. Hourly Rate | Male Avg. Overtime Hours | Female Avg. Hourly Rate | Female Avg. Overtime Hours | Overtime Difference (%) |\n|--------------|-----------------------|--------------------------|-------------------------|---------------------------|-------------------------|\n| Sales        | 27.0                   | 10.6                      | 26.0                    | 8.0                        | 30.8%                   |\n| Engineering  | 43.5                   | 20.0                      | 41.0                    | 10.0                       | 24.4%                   |\n| HR           | 30.0                   | 2.0                       | 32.0                    | 3.0                        | 80.0%                   |\n\n**Flagged Departments for Review:**\n\n*   HR\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness and Domain Accuracy. The student calculated averages based on the provided sample data (which contains single records per group) rather than the requested 100 employee records, leading to a fundamental misunderstanding of the task scope. The 'Overtime Difference' calculation is mathematically flawed; for HR, the difference is calculated as (3-2)/2 = 50%, but the student reported 80%, and for Sales, (10.6-8)/8 = 32.5%, not 30.8%. The submission completely ignores the 'Additional Checks' regarding overtime definitions (hours over 40), tax logic, and net pay calculations, which are critical for a Payroll Specialist. The flagged department list is also incorrect based on the provided data and the 20% threshold logic applied correctly. While the table format is clear (Clarity 3), the content is unreliable and requires major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Provide information to employees and managers on payroll matters, tax issues, benefit plans, and collective agreement provisions.",
+      "task_type": "Payroll Inquiry & Benefit Calculation",
+      "user_prompt": "A manager requests a detailed pay breakdown for an employee who worked a partial pay period due to a leave of absence. The employee, ID E006, has a monthly salary of $5,200. They worked 12 days in a 20-day work month. Calculate their gross pay for the partial period. Then, calculate the pro-rated 401k contribution (5% of gross) and the pro-rated health insurance deduction ($200/month). Provide a step-by-step explanation of the pro-ration logic used for the salary and deductions to be shared with the employee.",
+      "reference_context": {
+        "employee_id": "E006",
+        "monthly_salary": 5200.0,
+        "work_days_in_month": 20,
+        "days_worked": 12,
+        "benefits": {
+          "401k_rate": 0.05,
+          "health_insurance_monthly": 200.0
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Pro-ration Accuracy — Is the salary and deduction calculation based on the correct day-count ratio?",
+        "Criterion 2: Clarity — Is the explanation of the pro-ration logic clear and suitable for employee communication?",
+        "Criterion 3: Completeness — Are both salary and benefit deductions calculated correctly?"
+      ],
+      "student_answer": "**Employee Pay Breakdown – E006**\n\n**Partial Pay Period:** 12 days out of 20 workdays\n\n**1. Gross Pay Calculation:**\n\n*   **Daily Rate:** $5,200 / 20 days = $260/day\n*   **Gross Pay:** $260/day * 12 days = $3,120\n\n**2. 401k Contribution Calculation:**\n\n*   **Pro-rated 401k:** $3,120 * 0.05 = $156\n\n**3. Health Insurance Deduction Calculation:**\n\n*   **Monthly Deduction:** $200\n*   **Pro-rated Monthly Deduction:** $200\n\n**4. Pro-ration Logic Explanation for Employee:**\n\n*   **Salary Pro-ration:** Your monthly salary of $5,200 is divided by the total number of workdays in a month (20) to determine your daily rate. This daily rate is then multiplied by the number of days you worked during this partial pay period (12) to calculate your gross pay.\n*   **Deduction Pro-ration:** Your monthly 401k contribution of 5% and your monthly health insurance premium of $200 are calculated as percentages of your total monthly salary.  Since you worked a portion of the month, these deductions are also calculated proportionally based on the number of days you worked.\n\n**Pay Summary:**\n\n*   **Gross Pay:** $3,120\n*   **401k Contribution:** $156\n*   **Health Insurance Deduction:** $200\n*   **Net Pay:** $2,764",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission fails on domain accuracy and correctness regarding the health insurance deduction. The prompt explicitly asks to calculate the 'pro-rated' health insurance deduction, but the student calculated it as the full $200 while simultaneously claiming in the explanation that it was calculated proportionally. This is a fundamental logic error in payroll processing. Additionally, the explanation for 401k pro-ration is technically flawed; 401k is typically a percentage of the actual gross pay earned (which the student did correctly in the calculation step), but the explanation implies it is a pro-rated portion of a fixed monthly contribution, which is confusing. The net pay calculation is mathematically correct based on the flawed inputs, but the failure to pro-rate the fixed benefit deduction as requested makes the solution inadequate for a real-world scenario where benefits might be prorated or handled differently based on company policy. The clarity is good, but the professional judgment and domain accuracy are weak due to the contradiction between the calculation and the pro-ration logic."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Conduct verifications of employment.",
+      "task_type": "Employment Verification & Retroactive Adjustment",
+      "user_prompt": "Process a retroactive pay adjustment for a group of 5 employees who were underpaid due to a rate error in the previous pay period. The context provides the original incorrect rate, the correct rate, and the hours worked. Calculate the total underpayment for each employee. Deduct the appropriate FICA taxes (6.2% SS, 1.45% Medicare) from the retroactive amount to determine the net payout. Generate a verification report listing the original pay, the correction amount, the tax impact, and the final net adjustment for each employee.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E007",
+            "name": "Frank",
+            "hours": 40,
+            "old_rate": 20.0,
+            "new_rate": 22.0
+          },
+          {
+            "id": "E008",
+            "name": "Grace",
+            "hours": 35,
+            "old_rate": 25.0,
+            "new_rate": 27.5
+          },
+          {
+            "id": "E009",
+            "name": "Henry",
+            "hours": 45,
+            "old_rate": 30.0,
+            "new_rate": 32.0
+          },
+          {
+            "id": "E010",
+            "name": "Ivy",
+            "hours": 40,
+            "old_rate": 18.0,
+            "new_rate": 20.0
+          },
+          {
+            "id": "E011",
+            "name": "Jack",
+            "hours": 42,
+            "old_rate": 22.0,
+            "new_rate": 24.0
+          }
+        ],
+        "tax_rates": {
+          "ss_rate": 0.062,
+          "medicare_rate": 0.0145
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Precision — Is the underpayment and tax deduction calculated correctly for each employee?",
+        "Criterion 2: Compliance — Are FICA taxes correctly applied to the retroactive adjustment?",
+        "Criterion 3: Verification — Is the report structured to clearly show the before/after state for audit purposes?"
+      ],
+      "student_answer": "```json\n{\n  \"retro_pay_adjustments\": [\n    {\n      \"employee_id\": \"E007\",\n      \"employee_name\": \"Frank\",\n      \"original_pay\": 20.0 * 40,\n      \"corrected_pay\": 22.0 * 40,\n      \"underpayment\": 20.0 * 40 - 22.0 * 40,\n      \"ss_tax\": (20.0 * 40 - 22.0 * 40) * 0.062,\n      \"medicare_tax\": (20.0 * 40 - 22.0 * 40) * 0.0145,\n      \"net_adjustment\": (20.0 * 40 - 22.0 * 40) - (20.0 * 40 - 22.0 * 40) * 0.062 - (20.0 * 40 - 22.0 * 40) * 0.0145,\n      \"final_pay\": 22.0 * 40 - (20.0 * 40 - 22.0 * 40) * 0.062 - (20.0 * 40 - 22.0 * 40) * 0.0145\n    },\n    {\n      \"employee_id\": \"E008\",\n      \"employee_name\": \"Grace\",\n      \"original_pay\": 25.0 * 35,\n      \"corrected_pay\": 27.5 * 35,\n      \"underpayment\": 25.0 * 35 - 27.5 * 35,\n      \"ss_tax\": (25.0 * 35 - 27.5 * 35) * 0.062,\n      \"medicare_tax\": (25.0 * 35 - 27.5 * 35) * 0.0145,\n      \"net_adjustment\": (25.0 * 35 - 27.5 * 35) - (25.0 * 35 - 27.5 * 35) * 0.062 - (25.0 * 35 - 27.5 * 35) * 0.0145,\n      \"final_pay\": 27.5 * 35 - (25.0 * 35 - 27.5 * 35) * 0.062 - (25.0 * 35 - 27.5 * 35) * 0.0145\n    },\n    {\n      \"employee_id\": \"E009\",\n      \"employee_name\": \"Henry\",\n      \"original_pay\": 30.0 * 45,\n      \"corrected_pay\": 32.0 * 45,\n      \"underpayment\": 30.0 * 45 - 32.0 * 45,\n      \"ss_tax\": (30.0 * 45 - 32.0 * 45) * 0.062,\n      \"medicare_tax\": (30.0 * 45 - 32.0 * 45) * 0.0145,\n      \"net_adjustment\": (30.0 * 45 - 32.0 * 45) - (30.0 * 45 - 32.0 * 45) * 0.062 - (30.0 * 45 - 32.0 * 45) * 0.0145,\n      \"final_pay\": 32.0 * 45 - (30.0 * 45 - 32.0 * 45) * 0.062 - (30.0 * 45 - 32.0 * 45) * 0.0145\n    },\n    {\n      \"employee_id\": \"E010\",\n      \"employee_name\": \"Ivy\",\n      \"original_pay\": 18.0 * 40,\n      \"corrected_pay\": 20.0 * 40,\n      \"underpayment\": 18.0 * 40 - 20.0 * 40,\n      \"ss_tax\": (18.0 * 40 - 20.0 * 40) * 0.062,\n      \"medicare_tax\": (18.0 * 40 - 20.0 * 40) * 0.0145,\n      \"net_adjustment\": (18.0 * 40 - 20.0 * 40) - (18.0 * 40 - 20.0 * 40) * 0.062 - (18.0 * 40 - 20.0 * 40) * 0.0145,\n      \"final_pay\": 20.0 * 40 - (18.0 * 40 - 20.0 * 40) * 0.062 - (18.0 * 40 - 20.0 * 40) * 0.0145\n    },\n    {\n      \"employee_id\": \"E011\",\n      \"employee_name\": \"Jack\",\n      \"original_pay\": 22.0 * 42,\n      \"corrected_pay\": 24.0 * 42,\n      \"underpayment\": 22.0 * 42 - 24.0 * 42,\n      \"ss_tax\": (22.0 * 42 - 24.0 * 42) * 0.062,\n      \"medicare_tax\": (22.0 * 42 - 24.0 * 42) * 0.0145,\n      \"net_adjustment\": (22.0 * 42 - 24.0 * 42) - (22.0 * 42 - 24.0 * 42) * 0.062 - (22.0 * 42 - 24.0 * 42) * 0.0145,\n      \"final_pay\": 24.0 * 42 - (22.0 * 42 - 24.0 * 42) * 0.062 - (22.0 * 42 - 24.0 * 42) * 0.0145\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails on all dimensions because it outputs raw mathematical expressions (e.g., '20.0 * 40') instead of calculated numerical values. A valid JSON object cannot contain executable code or uncomputed formulas; it must contain the resulting data. Consequently, the solution is not correct, complete, or usable (Autonomy 1). It lacks basic arithmetic execution, proper currency formatting (2 decimal places), and fails to address the overtime calculation requirement for Henry (45 hours). The output is a template, not a solution."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Post relevant work hours to client files to bill clients properly.",
+      "task_type": "Timesheet Validation & Billing Calculation",
+      "user_prompt": "Review the provided raw timesheet data for 5 employees and identify any discrepancies against the company's timekeeping policy. Calculate the billable hours for client invoicing, ensuring that unpaid leave (sick/PTO) is excluded from billable totals but included in total hours worked for payroll. Apply a 1.5x overtime multiplier for any hours exceeding 40 in the week. Output a reconciliation report showing Employee ID, Total Hours, Billable Hours, Non-Billable Hours, and Overtime Hours.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E001",
+            "name": "Alice Smith",
+            "total_hours": 45,
+            "sick_leave_hours": 4,
+            "billable_rate": 150.0
+          },
+          {
+            "id": "E002",
+            "name": "Bob Jones",
+            "total_hours": 40,
+            "sick_leave_hours": 0,
+            "billable_rate": 120.0
+          },
+          {
+            "id": "E003",
+            "name": "Charlie Brown",
+            "total_hours": 52,
+            "sick_leave_hours": 8,
+            "billable_rate": 135.0
+          },
+          {
+            "id": "E004",
+            "name": "Diana Prince",
+            "total_hours": 38,
+            "sick_leave_hours": 0,
+            "billable_rate": 160.0
+          },
+          {
+            "id": "E005",
+            "name": "Evan Wright",
+            "total_hours": 48,
+            "sick_leave_hours": 2,
+            "billable_rate": 110.0
+          }
+        ],
+        "policy_rules": {
+          "max_regular_hours": 40,
+          "overtime_multiplier": 1.5,
+          "non_billable_leave_types": [
+            "sick_leave"
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are billable hours correctly calculated by subtracting sick leave from total hours?",
+        "Criterion 2: Compliance — Is overtime correctly identified only on hours exceeding 40 after leave deduction?",
+        "Criterion 3: Completeness — Does the report clearly distinguish between billable and non-billable time for all employees?"
+      ],
+      "student_answer": "```\nEmployee ID | Total Hours | Billable Hours | Non-Billable Hours | Overtime Hours\n------------|-------------|----------------|--------------------|----------------\nE001        | 45          | 36            | 9                  | 0\nE002        | 40          | 40            | 0                  | 0\nE003        | 52          | 44            | 8                  | 0\nE004        | 38          | 38            | 0                  | 0\nE005        | 48          | 40            | 8                  | 8\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. It completely ignores the instruction to identify discrepancies against the timekeeping policy. It fails to calculate billable hours correctly (e.g., for E001, 45 total - 4 sick = 41 billable, not 36; for E003, 52 - 8 = 44 billable, but the overtime calculation logic is missing or incorrect as 44 hours should trigger overtime). Most critically, the submission provides no overtime hours for E001 (45 total) or E003 (52 total), which both exceed the 40-hour threshold, while incorrectly assigning overtime to E005. The output is a raw table with no reconciliation report, no calculations shown, and no explanation of the 1.5x multiplier application. It does not meet the definition of a valid solution."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Complete, verify, and process forms and documentation for administration of benefits, such as pension plans, and unemployment and medical insurance.",
+      "task_type": "Benefits Deduction & Compliance Audit",
+      "user_prompt": "Process the monthly benefits enrollment changes for 5 employees. Calculate the new net pay impact based on updated medical insurance premiums and 401(k) contribution limits. Verify that no employee exceeds the 2024 IRS elective deferral limit of $23,000. Generate a compliance log showing the change in gross pay, new deduction amounts, and a flag for any employees exceeding contribution limits.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E001",
+            "name": "Alice Smith",
+            "annual_salary": 60000,
+            "current_medical_premium": 150,
+            "new_medical_premium": 175,
+            "current_401k_contribution": 3000,
+            "new_401k_contribution": 4000
+          },
+          {
+            "id": "E002",
+            "name": "Bob Jones",
+            "annual_salary": 85000,
+            "current_medical_premium": 200,
+            "new_medical_premium": 200,
+            "current_401k_contribution": 10000,
+            "new_401k_contribution": 12000
+          },
+          {
+            "id": "E003",
+            "name": "Charlie Brown",
+            "annual_salary": 55000,
+            "current_medical_premium": 100,
+            "new_medical_premium": 125,
+            "current_401k_contribution": 2000,
+            "new_401k_contribution": 2500
+          },
+          {
+            "id": "E004",
+            "name": "Diana Prince",
+            "annual_salary": 120000,
+            "current_medical_premium": 300,
+            "new_medical_premium": 350,
+            "current_401k_contribution": 18000,
+            "new_401k_contribution": 24000
+          },
+          {
+            "id": "E005",
+            "name": "Evan Wright",
+            "annual_salary": 45000,
+            "current_medical_premium": 80,
+            "new_medical_premium": 90,
+            "current_401k_contribution": 1500,
+            "new_401k_contribution": 1800
+          }
+        ],
+        "tax_limits": {
+          "irs_401k_limit_2024": 23000,
+          "pay_period": "monthly"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Limit Compliance — Is the IRS 401(k) limit correctly enforced for Diana Prince?",
+        "Criterion 2: Calculation Accuracy — Are the monthly deduction amounts correctly derived from annual changes?",
+        "Criterion 3: Audit Trail — Does the output clearly document the delta between old and new deductions?"
+      ],
+      "student_answer": "```\nCompliance Log - Monthly Benefits Enrollment Changes\n\n**Date:** 2024-10-27\n\n| Employee ID | Employee Name | Gross Pay (Current) | Gross Pay (New) | Medical Premium (Current) | Medical Premium (New) | 401(k) Contribution (Current) | 401(k) Contribution (New) | Deduction Change (Medical) | Deduction Change (401k) | Exceeds IRS Limit |\n|---|---|---|---|---|---|---|---|---|---|---|\n| E001 | Alice Smith | $75,000 | $75,000 | $150 | $175 | $3,000 | $4,000 | $25 | $1,000 | No |\n| E002 | Bob Jones | $102,500 | $102,500 | $200 | $200 | $10,000 | $12,000 | $0 | $2,000 | No |\n| E003 | Charlie Brown | $60,500 | $60,500 | $100 | $125 | $2,000 | $2,500 | $25 | $500 | No |\n| E004 | Diana Prince | $120,000 | $120,000 | $300 | $350 | $18,000 | $24,000 | $50 | $6,000 | No |\n| E005 | Evan Wright | $47,250 | $47,250 | $80 | $90 | $1,500 | $1,800 | $10 | $300 | No |\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical dimensions. First, it hallucinates gross pay figures (e.g., E001 is listed as $75,000 instead of the provided $60,000), which is a fundamental calculation error. Second, it completely fails the primary compliance task: it does not flag Employee E004 (Diana Prince), whose new 401(k) contribution of $24,000 exceeds the $23,000 IRS limit, yet the table marks her as 'No'. Third, the 'Deduction Change' column is mathematically incorrect; it lists annual changes (e.g., $1,000 for a $100/month increase) rather than the monthly impact required for a monthly payroll run. Finally, the output lacks the required 'net pay impact' calculation and ignores the specific instruction to generate a compliance log with flags for limit violations. The work is factually wrong and incomplete."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Train employees on organizations' timekeeping systems.",
+      "task_type": "Retroactive Payroll Adjustment & Training Scenario",
+      "user_prompt": "Simulate a retroactive pay adjustment scenario where 3 employees received a salary increase effective mid-pay period. Calculate the prorated gross pay for the current period, including the retroactive difference for the previous 2 weeks. Apply federal tax withholding on the retroactive amount using the cumulative method. Generate a training guide snippet explaining the calculation logic for these employees.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E001",
+            "name": "Alice Smith",
+            "old_annual_salary": 52000,
+            "new_annual_salary": 56000,
+            "effective_date": "2024-06-15",
+            "pay_period_start": "2024-06-01",
+            "pay_period_end": "2024-06-15"
+          },
+          {
+            "id": "E002",
+            "name": "Bob Jones",
+            "old_annual_salary": 72000,
+            "new_annual_salary": 78000,
+            "effective_date": "2024-06-10",
+            "pay_period_start": "2024-06-01",
+            "pay_period_end": "2024-06-15"
+          },
+          {
+            "id": "E003",
+            "name": "Charlie Brown",
+            "old_annual_salary": 48000,
+            "new_annual_salary": 50000,
+            "effective_date": "2024-06-01",
+            "pay_period_start": "2024-06-01",
+            "pay_period_end": "2024-06-15"
+          }
+        ],
+        "tax_rules": {
+          "federal_withholding_method": "cumulative",
+          "federal_brackets": [
+            {
+              "rate": 0.1,
+              "limit": 11600
+            },
+            {
+              "rate": 0.12,
+              "limit": 47150
+            }
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Proration Logic — Is the retroactive amount correctly calculated based on the effective date within the pay period?",
+        "Criterion 2: Tax Compliance — Is the cumulative withholding method applied correctly to the increased income?",
+        "Criterion 3: Clarity — Is the training guide snippet clear enough for an employee to understand the pay change?"
+      ],
+      "student_answer": "```json\n{\n  \"retroactive_pay_adjustments\": [\n    {\n      \"employee_id\": \"E001\",\n      \"name\": \"Alice Smith\",\n      \"period_start\": \"2024-06-01\",\n      \"period_end\": \"2024-06-15\",\n      \"gross_pay\": 2400.00,\n      \"retroactive_pay\": 600.00,\n      \"total_pay\": 3000.00,\n      \"federal_tax_withheld\": 270.00,\n      \"net_pay\": 2730.00\n    },\n    {\n      \"employee_id\": \"E002\",\n      \"name\": \"Bob Jones\",\n      \"period_start\": \"2024-06-01\",\n      \"period_end\": \"2024-06-15\",\n      \"gross_pay\": 3600.00,\n      \"retroactive_pay\": 600.00,\n      \"total_pay\": 4200.00,\n      \"federal_tax_withheld\": 378.00,\n      \"net_pay\": 3822.00\n    },\n    {\n      \"employee_id\": \"E003\",\n      \"name\": \"Charlie Brown\",\n      \"period_start\": \"2024-06-01\",\n      \"period_end\": \"2024-06-15\",\n      \"gross_pay\": 2400.00,\n      \"retroactive_pay\": 200.00,\n      \"total_pay\": 2600.00,\n      \"federal_tax_withheld\": 208.00,\n      \"net_pay\": 2392.00\n    }\n  ],\n  \"training_guide_snippet\": \"Retroactive Pay Adjustments: Salary increases applied mid-pay period require prorated calculations.  For each employee, we calculate the gross pay for the full pay period (from start to end date). Then, we determine the difference between the new salary and the old salary for the retroactive period (before the effective date). This difference is added to the gross pay. Federal tax withholding is applied to the *total* pay (original gross + retroactive adjustment) using the cumulative method. The cumulative method means that the tax rate is applied to the total earnings earned to date, not just the new earnings.  This ensures accurate tax withholding across all pay periods.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. It ignores the explicit instruction to calculate the retroactive difference for the 'previous 2 weeks' (the prior pay period), instead calculating a prorated amount for the current period only. It completely fails to apply the provided cumulative tax brackets (10% up to $11,600, 12% up to $47,150), instead using arbitrary flat rates or incorrect logic that results in wrong tax figures. The training guide is vague and does not explain the specific cumulative method logic required. The calculations are mathematically inconsistent with the provided context data."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Coordinate special programs, such as United Way campaigns, that involve payroll deductions.",
+      "task_type": "Special Deduction Campaign Processing",
+      "user_prompt": "Process the final payroll deductions for the United Way campaign for 5 employees. Calculate the total deduction amount based on the percentage of gross pay selected by each employee, ensuring no deduction exceeds 10% of gross pay. Deduct the amount from the net pay after all taxes and standard benefits. Output a campaign summary report showing total raised, employee participation count, and individual deduction amounts.",
+      "reference_context": {
+        "employees": [
+          {
+            "id": "E001",
+            "name": "Alice Smith",
+            "gross_pay": 3000.0,
+            "selected_percentage": 0.05
+          },
+          {
+            "id": "E002",
+            "name": "Bob Jones",
+            "gross_pay": 4500.0,
+            "selected_percentage": 0.15
+          },
+          {
+            "id": "E003",
+            "name": "Charlie Brown",
+            "gross_pay": 2500.0,
+            "selected_percentage": 0.02
+          },
+          {
+            "id": "E004",
+            "name": "Diana Prince",
+            "gross_pay": 5000.0,
+            "selected_percentage": 0.12
+          },
+          {
+            "id": "E005",
+            "name": "Evan Wright",
+            "gross_pay": 2000.0,
+            "selected_percentage": 0.08
+          }
+        ],
+        "campaign_rules": {
+          "max_deduction_percentage": 0.1,
+          "deduction_timing": "post_tax"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Cap Enforcement — Are deductions for Bob Jones and Diana Prince correctly capped at 10% of gross pay?",
+        "Criterion 2: Calculation Accuracy — Are the final deduction amounts mathematically correct?",
+        "Criterion 3: Reporting — Does the summary report accurately reflect the total raised and individual contributions?"
+      ],
+      "student_answer": "```json\n{\n  \"campaign_summary\": {\n    \"total_raised\": 1675.0,\n    \"employee_participation_count\": 5,\n    \"deductions\": [\n      {\n        \"employee_id\": \"E001\",\n        \"name\": \"Alice Smith\",\n        \"deduction_amount\": 150.0\n      },\n      {\n        \"employee_id\": \"E002\",\n        \"name\": \"Bob Jones\",\n        \"deduction_amount\": 675.0\n      },\n      {\n        \"employee_id\": \"E003\",\n        \"name\": \"Charlie Brown\",\n        \"deduction_amount\": 50.0\n      },\n      {\n        \"employee_id\": \"E004\",\n        \"name\": \"Diana Prince\",\n        \"deduction_amount\": 600.0\n      },\n      {\n        \"employee_id\": \"E005\",\n        \"name\": \"Evan Wright\",\n        \"deduction_amount\": 160.0\n      }\n    ]\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails the core task requirements. First, it ignores the constraint that no deduction can exceed 10% of gross pay; Bob Jones (15%) and Diana Prince (12%) were calculated at their selected percentages rather than being capped at 10%. Second, the task explicitly required deducting from net pay after taxes and standard benefits, but the student calculated deductions directly from gross pay without any tax or benefit deduction logic. Third, the 'Additional Checks' regarding overtime, FICA caps, and rounding were completely ignored. While the JSON structure is valid (Clarity 4), the mathematical and procedural execution is fundamentally flawed, making the output unusable for payroll processing."
+    }
+  ]
+}

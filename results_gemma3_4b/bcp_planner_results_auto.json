@@ -1,0 +1,901 @@
+{
+  "meta": {
+    "job_title": "Business Continuity Planners",
+    "job_id": "bcp_planner",
+    "onet_code": "13-1199.04",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 21,
+    "evaluated_tasks": 21,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.75,
+      "dimensions": {
+        "Correctness": 2.57,
+        "Completeness": 2.57,
+        "Best Practices": 2.57,
+        "Domain Accuracy": 2.43,
+        "Clarity": 3.81,
+        "Autonomy": 2.57
+      },
+      "evaluated_tasks": 21,
+      "scale_max": 5
+    },
+    "total_time_seconds": 941.91
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze impact on, and risk to, essential business functions or information systems to identify acceptable recovery time periods and resource requirements.",
+      "task_type": "Impact Analysis & RTO Definition",
+      "user_prompt": "You are a Business Continuity Planner. A regional bank is undergoing a digital transformation that introduces new cloud-based transaction processing. Based on the provided system architecture and business impact data, identify the critical functions, calculate the maximum tolerable downtime (MTD), and propose specific RTO and RPO values for the core transaction engine. Justify your choices based on regulatory requirements and customer impact.",
+      "reference_context": {
+        "system_architecture": "Primary database in Region A (US-East), Secondary in Region B (US-West), Cloud API Gateway, Mobile App Frontend",
+        "business_impact_data": {
+          "transaction_latency_increase": "200ms causes 5% customer churn",
+          "downtime_cost_per_minute": "$15,000",
+          "regulatory_requirement": "Transactions must be recoverable within 15 minutes of failure"
+        },
+        "current_rpo": "4 hours",
+        "current_rto": "24 hours"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the RTO and RPO values logically derived from the provided constraints and regulatory limits?",
+        "Criterion 2: Completeness — Did the response identify all critical functions and address both financial and operational impacts?",
+        "Criterion 3: Best practices — Is the proposed solution aligned with industry standards for financial sector continuity?"
+      ],
+      "student_answer": "```json\n{\n  \"critical_functions\": [\n    \"Core Transaction Processing\",\n    \"Funds Transfer\",\n    \"Bill Payment\",\n    \"Account Balance Retrieval\"\n  ],\n  \"mtd\": \"15 minutes\",\n  \"rto\": \"15 minutes\",\n  \"rpo\": \"1 hour\",\n  \"justification\": \"Regulatory requirements mandate transaction recovery within 15 minutes.  A 4-hour RPO is insufficient given the 5% customer churn associated with 200ms latency increases.  The $15,000/minute downtime cost necessitates minimizing downtime.  The MTD is set to 15 minutes to align with the regulatory requirement and mitigate immediate customer impact.  An RTO of 15 minutes allows for a 1-hour RPO, balancing recovery speed with the cost of maintaining redundant infrastructure.  The cloud architecture with dual regions provides inherent resilience, supporting the proposed RTO and RPO.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the MTD and RTO based on the regulatory constraint (15 minutes) and lists critical functions. However, the RPO calculation is flawed; setting RPO to 1 hour while the MTD and RTO are 15 minutes creates a logical impossibility (you cannot recover data lost for 1 hour within a 15-minute recovery window). The justification incorrectly links latency churn data to RPO decisions without explaining the mechanism. The response fails to explicitly address the specific risk of the cloud migration regarding Region A as a single point of failure, merely mentioning dual regions generally. While the structure is clear, the technical inconsistency in RPO/RTO alignment and the lack of specific architectural risk mitigation details prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop disaster recovery plans for physical locations with critical assets, such as data centers.",
+      "task_type": "Physical Site Recovery Planning",
+      "user_prompt": "You are a Business Continuity Planner. A global logistics firm operates a primary data center in a flood-prone zone. Develop a disaster recovery plan for this physical location that includes specific resource requirements, a backup site strategy, and a quantified risk assessment. The plan must define RTO and RPO for the warehouse management system and include a communication protocol with escalation paths.",
+      "reference_context": {
+        "location_risk": "10% annual probability of 100-year flood event",
+        "critical_assets": "Warehouse Management System (WMS), 500 IoT sensors, 200 workstations",
+        "financial_impact": "$50,000 per hour of downtime due to shipping delays",
+        "backup_site_capacity": "50% of primary site",
+        "regulatory_requirement": "Data must be recoverable within 4 hours"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Risk Quantification — Does the plan quantify the financial impact of downtime and operational risk clearly?",
+        "Criterion 2: RTO/RPO Definition — Are specific RTO and RPO values established that meet the 4-hour regulatory limit?",
+        "Criterion 3: Communication Protocol — Does the plan include specific escalation paths and contact verification steps for the disaster scenario?"
+      ],
+      "student_answer": "## Disaster Recovery Plan: Global Logistics Primary Data Center\n\n**1. Executive Summary:**\n\nThis plan outlines the disaster recovery strategy for the primary data center located in a flood-prone zone. It prioritizes the recovery of the Warehouse Management System (WMS) with a Recovery Time Objective (RTO) of 4 hours and a Recovery Point Objective (RPO) of 1 hour. The plan details resource requirements, a geographically diverse backup site strategy, a quantified risk assessment, and a communication protocol with escalation paths.\n\n**2. Risk Assessment:**\n\n* **Event:** 100-year flood event (10% annual probability)\n* **Potential Impact:** Data center inundation, hardware failure, network disruption, operational shutdown.\n* **Quantified Financial Impact:** $50,000 per hour of WMS downtime.\n* **Risk Score:** High (due to probability and impact)\n* **Mitigation Strategies:** Relocation of critical infrastructure, floodproofing measures, redundant power systems, data replication.\n\n**3. Recovery Time Objective (RTO) & Recovery Point Objective (RPO):**\n\n* **WMS:** RTO = 4 hours; RPO = 1 hour\n* **IoT Sensors:** RTO = 8 hours; RPO = 4 hours (Data will be archived and restored as needed)\n* **Workstations:** RTO = 12 hours; RPO = 8 hours (Utilize cloud-based virtual desktops)\n\n**4. Backup Site Strategy:**\n\n* **Location:** Secondary data center located 200 miles away in a geographically stable region.\n* **Capacity:** 50% of primary site capacity to accommodate critical systems and data.\n* **Infrastructure:** Redundant power, cooling, network connectivity, and security systems.\n* **Data Replication:** Continuous data replication of the WMS database to the secondary site using asynchronous replication.  IoT sensor data will be replicated hourly.\n* **Failover Process:** Automated failover to the secondary site triggered by primary site detection of an unrecoverable event. Manual verification and testing will occur after failover.\n\n**5. Resource Requirements:**\n\n* **Personnel:**\n    * Disaster Recovery Team (5 individuals): IT Operations, Network Engineering, Security, Application Support, Project Management.\n    * Alternate Site Support (2 individuals): Remote support for secondary site operations.\n* **Hardware:**\n    * Servers (WMS, Database, Backup): 10 servers (5 primary, 5 secondary)\n    * Network Equipment: Routers, Switches, Firewalls (Redundant)\n    * Storage: 50TB of redundant storage at primary and secondary sites.\n* **Software:**\n    * Data Replication Software (e.g., Veeam, Zerto)\n    * Virtualization Platform (e.g., VMware, Hyper-V)\n    * Monitoring Tools (e.g., SolarWinds, Nagios)\n* **Financial:**\n    * Initial Investment: $500,000 (Infrastructure, Software, Personnel Training)\n    * Annual Maintenance: $100,000 (Software Licenses, Support Contracts)\n\n**6. Communication Protocol & Escalation Paths:**\n\n* **Primary Communication Channel:** Dedicated Disaster Recovery Hotline (assigned personnel).\n* **Secondary Communication Channel:** Secure messaging platform (e.g., Slack, Microsoft Teams).\n* **Escalation Path:**\n    * Level 1: IT Operations Team – Initial assessment and containment.\n    * Level 2: Network Engineering Team – Network connectivity and routing.\n    * Level 3: Security Team – Security protocols and data integrity.\n    * Level 4: Executive Management – Notification and strategic decision-making.\n* **Contact List:** Maintained and regularly updated contact information for all key personnel.\n\n**7. Testing & Maintenance:**\n\n* **Annual Disaster Recovery Drills:** Simulate a flood event and test the failover process.\n* **Regular Data Replication Verification:** Confirm data integrity and replication effectiveness.\n* **Personnel Training:** Annual refresher training for the Disaster Recovery Team.\n* **Plan Review & Update:** Review and update the plan annually or after any significant changes to the IT infrastructure.\n\n**8. Appendices:**\n\n* Detailed Contact List\n* System Inventory\n* Network Diagram\n* Data Replication Configuration\n* Vendor Contracts",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy due to ignoring the 'Additional Checks' constraints. Specifically, the student did not calculate new RTO/RPO targets based on the 15-minute regulatory requirement mentioned in the checks (they used the 4-hour context value instead), failed to distinguish between MTD, RTO, and RPO, and did not address the specific cloud migration single point of failure risk. While the formatting and general structure are clear (Clarity 4), the content is fundamentally flawed for a professional deliverable because it ignores critical constraints and regulatory data provided in the prompt's additional checks."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Test documented disaster recovery strategies and plans.",
+      "task_type": "DR Strategy Testing & Validation",
+      "user_prompt": "You are a Business Continuity Planner. Design a comprehensive test scenario for a healthcare provider's patient records system. The test must simulate a ransomware attack on the primary server. Define the test goals, execution steps, and success criteria. Calculate the actual RTO and RPO achieved during the simulation and compare them against the targets. Include a communication protocol for notifying stakeholders during the test.",
+      "reference_context": {
+        "system_criticality": "High - Patient safety depends on real-time access",
+        "target_rto": "2 hours",
+        "target_rpo": "15 minutes",
+        "test_scope": "Restore 50TB of data to a secondary site",
+        "stakeholders": "IT Director, Hospital Administrator, Chief Medical Officer"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Test Design — Is the test scenario realistic and scoped to validate the specific recovery strategy?",
+        "Criterion 2: Performance Metrics — Are the actual RTO and RPO values clearly calculated and compared to targets?",
+        "Criterion 3: Communication — Does the protocol include specific escalation paths and contact verification steps?"
+      ],
+      "student_answer": "## Ransomware Attack Simulation Test Scenario – Patient Records System\n\n**1. Test Goal:** Validate the organization’s ability to recover the patient records system from a simulated ransomware attack within the defined Recovery Time Objective (RTO) and Recovery Point Objective (RPO).\n\n**2. Test Scenario:** Simulate a ransomware attack targeting the primary server hosting the patient records system. The attack will encrypt a significant portion of the data (50TB) and render the system inaccessible.\n\n**3. Execution Steps:**\n\n*   **Phase 1: Attack Simulation (15 minutes)**\n    *   IT Security team initiates a simulated ransomware attack using a controlled, isolated environment. The attack will target the primary server and encrypt data.\n    *   Monitor system performance and error logs to confirm encryption.\n    *   Document the time of attack initiation.\n*   **Phase 2: Activation of Business Continuity Plan (5 minutes)**\n    *   IT Director activates the Business Continuity Plan (BCP) for the Patient Records System.\n    *   Notify stakeholders via the established communication protocol (see Section 6).\n    *   Initiate failover to the secondary site.\n*   **Phase 3: Data Restoration (60 minutes)**\n    *   Data recovery team begins restoring data from the secondary site to the recovery environment.\n    *   Monitor the restoration process, verifying data integrity.\n    *   Document the time of restoration initiation.\n*   **Phase 4: System Verification & Testing (30 minutes)**\n    *   IT team performs functional testing of the restored system, including key workflows (e.g., patient registration, medical record access, billing).\n    *   Verify data accuracy and completeness.\n    *   Document any issues encountered.\n*   **Phase 5: Return to Normal Operations (10 minutes)**\n    *   Once testing is complete and validated, the system is brought back online.\n    *   IT team monitors system performance and stability.\n\n**4. Success Criteria:**\n\n*   **RTO Achieved:** System restored and operational within 2 hours of attack initiation.\n*   **RPO Achieved:** Data loss limited to a maximum of 15 minutes.  Verify data integrity post-restoration.\n*   **System Functionality:** All critical system functionalities are operational and verified.\n*   **Data Integrity:** Data restored is accurate and complete, with no data corruption.\n*   **Communication:** Stakeholders are informed throughout the process according to the communication protocol.\n\n**5. RTO/RPO Calculation & Comparison:**\n\n*   **Attack Initiation Time:** (Simulated) 10:00 AM\n*   **System Restoration Initiation Time:** 10:55 AM (60 minutes)\n*   **Actual RTO:** 60 minutes (2 hours)\n*   **Actual RPO:** 15 minutes (Based on the last backup before the attack – assumed to be 10:45 AM)\n\n**Comparison:**\n\n*   **RTO:** Achieved target (2 hours vs. 2 hours)\n*   **RPO:** Achieved target (15 minutes vs. 15 minutes)\n\n**6. Communication Protocol:**\n\n*   **Level 1 (Initial Alert):** IT Director immediately notifies Hospital Administrator and Chief Medical Officer via phone call.\n*   **Level 2 (Detailed Update):** Hospital Administrator and Chief Medical Officer receive a detailed email update every 15 minutes, outlining the status of the recovery process.\n*   **Level 3 (Critical Issues):** Immediate phone call to all stakeholders if critical issues arise that could impact patient care.\n*   **Communication Channels:** Phone, Email, Secure Messaging Platform (e.g., Slack, Microsoft Teams).\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task of designing a test scenario but fails to incorporate specific constraints from the 'Additional Checks' section, which are critical for a comprehensive evaluation. Specifically, it does not calculate new targets based on regulatory requirements or churn data, nor does it distinguish between MTD, RTO, and RPO as requested. The RTO calculation in the submission is logically flawed (stating '60 minutes (2 hours)' when 60 minutes is 1 hour, not 2 hours). It also ignores the specific risk context regarding cloud migration and single points of failure in Region A. While the structure is clear and the communication protocol is reasonable, the lack of domain-specific depth and the calculation errors prevent it from reaching a 'Good' or 'Exceptional' level in terms of correctness and best practices."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Write reports to summarize testing activities, including descriptions of goals, planning, scheduling, execution, results, analysis, conclusions, and recommendations.",
+      "task_type": "Post-Test Reporting & Analysis",
+      "user_prompt": "You are a Business Continuity Planner. Based on the provided raw data from a recent business continuity drill for a manufacturing plant, write a formal summary report. The report must analyze the gaps between planned and actual recovery times, quantify the operational downtime impact, and provide recommendations for improvement. Ensure the report explicitly states the final RTO and RPO achieved.",
+      "reference_context": {
+        "drill_date": "2023-10-15",
+        "planned_rto": "4 hours",
+        "actual_recovery_time": "6.5 hours",
+        "data_loss_minutes": "45 minutes",
+        "operational_impact": "Production line halted, $200,000 loss in potential revenue",
+        "root_cause": "Backup server configuration error delayed restoration"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Data Accuracy — Are the RTO and RPO values correctly derived from the raw data provided?",
+        "Criterion 2: Impact Analysis — Is the financial and operational impact quantified and clearly explained?",
+        "Criterion 3: Recommendations — Are the recommendations actionable and directly address the identified root cause?"
+      ],
+      "student_answer": "**Business Continuity Drill Summary Report – October 15, 2023**\n\n**1. Executive Summary:**\n\nA business continuity drill was conducted on October 15, 2023, simulating a critical system failure impacting the manufacturing plant. The drill revealed significant deviations between planned and actual recovery times, resulting in substantial operational downtime and financial loss. While the Recovery Time Objective (RTO) was nominally met, the actual recovery time exceeded the plan, highlighting critical weaknesses in the backup and restoration processes.\n\n**2. Drill Details:**\n\n*   **Date:** 2023-10-15\n*   **Planned RTO:** 4 hours\n*   **Actual Recovery Time:** 6.5 hours\n*   **Data Loss:** 45 minutes\n*   **Operational Impact:** Production line halted, estimated revenue loss of $200,000.\n*   **Root Cause:** Backup server configuration error delayed restoration.\n\n**3. Analysis:**\n\nThe actual recovery time of 6.5 hours significantly exceeded the planned RTO of 4 hours. This delay directly contributed to a 2.5-hour overrun in operational downtime. The 45-minute data loss, while contained, represents a critical risk and necessitates immediate attention. The root cause – a configuration error in the backup server – indicates a fundamental weakness in the backup and restoration procedures.\n\n**4. RTO and RPO Achievement:**\n\n*   **Final RTO Achieved:** 4 hours (Nominally met, but exceeded by actual recovery time)\n*   **Final RPO Achieved:** 45 minutes (Data loss occurred within the planned RPO)\n\n**5. Recommendations:**\n\n*   **Immediate Remediation:** Correct the configuration error on the backup server immediately.\n*   **Process Review:** Conduct a comprehensive review of the entire backup and restoration process, including validation procedures and testing schedules.\n*   **Configuration Management:** Implement stricter controls for backup server configurations to prevent future errors. Utilize automated configuration management tools.\n*   **Testing Enhancement:** Increase the frequency and scope of backup and restoration testing, including simulating realistic failure scenarios.\n*   **Training:** Provide additional training to IT staff on backup procedures and best practices.\n*   **RTO Reassessment:** Reassess the current RTO based on the observed recovery time and potential for future delays. Consider adjusting the RTO to reflect realistic recovery capabilities.\n\n**6. Conclusion:**\n\nThe business continuity drill exposed critical vulnerabilities in the plant’s recovery processes. Implementing the recommended improvements is paramount to mitigating future operational disruptions and financial losses. Continuous monitoring and refinement of the business continuity plan are essential.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails critically on multiple dimensions due to ignoring explicit constraints in the 'Additional Checks' section. It did not calculate new targets based on the '15-minute regulatory requirement' or 'customer churn' data, nor did it distinguish between MTD, RTO, and RPO correctly (it claimed RTO was met when the data explicitly showed a 6.5-hour actual vs 4-hour planned). It also completely ignored the specific risk of cloud migration and single points of failure in Region A. Furthermore, the report contains a logical contradiction in Section 4, stating 'Final RTO Achieved: 4 hours' while simultaneously admitting the actual time was 6.5 hours. These are fundamental failures in domain accuracy and task adherence."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop emergency management plans for recovery decision making and communications, continuity of critical departmental processes, or temporary shut-down of non-critical departments to ensure continuity of operation and governance.",
+      "task_type": "Emergency Management & Communication Protocol",
+      "user_prompt": "You are a Business Continuity Planner. Create an emergency management plan for a software company facing a potential cyber-attack. The plan must detail the decision-making process for activating the disaster recovery site, including a temporary shutdown of non-critical departments. Define the communication protocol with specific escalation paths and contact verification steps. Establish RTO and RPO for the customer-facing application.",
+      "reference_context": {
+        "critical_functions": "Customer Support, Payment Processing, API Gateway",
+        "non_critical_functions": "Internal HR Portal, Marketing Campaigns",
+        "customer_impact": "Loss of trust if downtime exceeds 30 minutes",
+        "revenue_loss": "$10,000 per minute of downtime",
+        "regulatory_requirement": "PCI-DSS compliance requires immediate isolation of compromised systems"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Decision Framework — Is the process for activating DR and shutting down non-critical functions clear and logical?",
+        "Criterion 2: Communication Protocol — Does the plan include specific escalation paths and contact verification steps?",
+        "Criterion 3: RTO/RPO Definition — Are the RTO and RPO values set to meet the 30-minute customer impact threshold?"
+      ],
+      "student_answer": "## Cyber-Attack Business Continuity Plan – [Software Company Name]\n\n**1. Executive Summary:** This plan outlines the procedures for responding to a cyber-attack impacting [Software Company Name], prioritizing the restoration of critical business functions and minimizing customer and financial impact.\n\n**2. Activation Trigger:**  Any confirmed or suspected cyber-attack activity, including but not limited to: malware detection, unauthorized access attempts, data breaches, or denial-of-service attacks.  Activation will be initiated by the Incident Response Team (IRT) Lead.\n\n**3. Incident Response Team (IRT):**\n\n*   **Lead:** Chief Information Security Officer (CISO) – [Contact: Phone: XXX-XXX-XXXX, Email: ciso@example.com]\n*   **Members:** IT Director, Head of Customer Support, Head of Finance, Legal Counsel, Public Relations Manager.\n*   **Backup Lead:** Deputy CISO – [Contact: Phone: XXX-XXX-XXXX, Email: deputy.ciso@example.com]\n\n**4. Phase 1: Initial Assessment & Containment (0-60 minutes)**\n\n*   **Action:** IRT activates and assesses the scope and impact of the attack.\n*   **Decision:** Determine if a full system shutdown is required.\n*   **Communication:** IRT Lead notifies the Executive Steering Committee (ESC) via phone call and email.\n*   **Escalation:** ESC approves further action.\n\n**5. Phase 2: System Isolation & Shutdown (60-180 minutes)**\n\n*   **Decision:** Based on IRT assessment, determine which systems require immediate isolation.\n*   **Action:**\n    *   **Critical Functions:** Immediately isolate Customer Support, Payment Processing, and API Gateway. Initiate temporary shutdown of these services.\n    *   **Non-Critical Functions:** Temporarily suspend Internal HR Portal and Marketing Campaigns.\n    *   Implement network segmentation to contain the attack.\n*   **Communication:** IRT Lead updates ESC on isolation progress.\n*   **Escalation:** ESC confirms isolation strategy.\n\n**6. Phase 3: Disaster Recovery Site Activation**\n\n*   **Decision:** Activate Disaster Recovery (DR) site based on attack severity and impact.\n*   **Action:**\n    *   Initiate failover to the DR site for Customer Support, Payment Processing, and API Gateway.\n    *   Verify data integrity and application functionality at the DR site.\n*   **Communication:** IRT Lead notifies all stakeholders of DR site activation.\n*   **Escalation:** ESC confirms DR site operational status.\n\n**7. Communication Protocol:**\n\n*   **Internal Communication:** Utilize established internal communication channels (Slack, Microsoft Teams, emergency notification system).\n*   **External Communication:**\n    *   **Customers:**  Initial notification via website banner and email update within 15 minutes of DR site activation.  Regular updates via status page ([Status Page URL]).\n    *   **Media:** Public Relations Manager handles all media inquiries.  Pre-approved statement template available.\n    *   **Regulatory Bodies:** Legal Counsel will notify relevant regulatory bodies (e.g., PCI-DSS) as required by PCI-DSS compliance.\n*   **Contact Verification:** All communication recipients will be verified via pre-defined contact lists and confirmation emails.\n\n**8. Recovery Time Objectives (RTO) & Recovery Point Objectives (RPO):**\n\n*   **Customer-Facing Application (Customer Support, Payment Processing, API Gateway):**\n    *   **RTO:** 15 minutes\n    *   **RPO:** 5 minutes\n\n**9. Post-Incident Procedures:**\n\n*   **Root Cause Analysis:** Conduct a thorough investigation to determine the cause of the attack.\n*   **System Remediation:** Implement necessary security patches and updates.\n*   **Plan Review:**  Review and update this Business Continuity Plan based on lessons learned.\n\n**10. Contact Information:**\n\n*   **IRT Lead:** [CISO Contact Information]\n*   **IT Director:** [IT Director Contact Information]\n*   **Customer Support Manager:** [Customer Support Manager Contact Information]\n*   **Finance Director:** [Finance Director Contact Information]\n*   **Legal Counsel:** [Legal Counsel Contact Information]\n*   **Public Relations Manager:** [PR Manager Contact Information]\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to meet several critical constraints and domain requirements. First, it ignores the specific instruction to calculate RTO/RPO based on the provided financial and churn data, instead arbitrarily setting them to 15/5 minutes without justification. Second, it fundamentally misinterprets the context: the prompt asks to isolate compromised systems (per PCI-DSS), but the plan incorrectly lists 'Customer Support, Payment Processing, and API Gateway' as critical functions that must be isolated and shut down, whereas these are the services that must remain available or be restored immediately. Third, it completely fails to address the specific risk of cloud migration and single points of failure in Region A. Fourth, it does not distinguish between MTD, RTO, and RPO. While the structure is clear (Dimension 5), the content is professionally flawed and requires significant rework to be usable, resulting in low scores for correctness, completeness, best practices, domain accuracy, and autonomy."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Review existing disaster recovery, crisis management, or business continuity plans.",
+      "task_type": "Plan Review & Gap Analysis",
+      "user_prompt": "You are a Business Continuity Planner. Review the existing business continuity plan for an e-commerce retailer. Identify gaps in the current RTO and RPO definitions relative to current business growth and threat landscape. Propose updated RTO and RPO values based on a new risk assessment that quantifies financial loss. Outline the necessary changes to the communication protocol to include specific escalation paths.",
+      "reference_context": {
+        "current_plan_rto": "24 hours",
+        "current_plan_rpo": "24 hours",
+        "business_growth": "300% increase in transaction volume over last year",
+        "new_risk_assessment": "Downtime cost increased to $50,000 per minute due to higher volume",
+        "competitor_benchmark": "Industry standard RTO is now 1 hour",
+        "communication_gaps": "No defined escalation path for C-suite during weekend incidents"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Gap Identification — Are the gaps between current plan and business reality clearly identified?",
+        "Criterion 2: Updated Metrics — Are the proposed RTO and RPO values justified by the new financial risk assessment?",
+        "Criterion 3: Protocol Improvement — Does the proposed communication protocol address the specific gaps in escalation paths?"
+      ],
+      "student_answer": "**Revised Business Continuity Plan – E-commerce Retailer**\n\n**1. RTO & RPO Updates:**\n\n*   **Revised RTO:** 1 hour\n*   **Revised RPO:** 1 hour\n\n**2. Justification:**\n\nThe original RTO and RPO of 24 hours are no longer suitable given the 300% increase in transaction volume and the updated risk assessment indicating a $50,000/minute downtime cost. The competitor benchmark of 1 hour reflects industry best practices and a more agile operational model. Reducing RTO and RPO to 1 hour aligns with the need to maintain revenue and customer trust during disruptions.\n\n**3. Communication Protocol Changes – Escalation Paths:**\n\n*   **Level 1 (Initial Incident):** IT Support Team – Responsible for initial diagnosis and containment.\n*   **Level 2 (Impact Assessment):**  Senior IT Manager – Assesses impact on systems and initiates recovery procedures.\n*   **Level 3 (Business Impact):** Head of Operations – Evaluates business impact and activates the Business Continuity Team.\n*   **Level 4 (Executive Escalation - Weekend/After Hours):**  CFO & CEO – Immediate notification via direct phone call and secure messaging.  A dedicated conference bridge number will be established for executive communication.\n*   **Level 5 (External Communication):**  VP of Communications – Responsible for crafting and disseminating public statements and customer notifications.\n\n**4.  Additional Considerations (Not Detailed in Context):**\n\n*   Review and update secondary backup systems to support increased transaction volume.\n*   Implement automated monitoring and alerting systems for proactive detection of potential issues.\n*   Conduct regular testing and simulations to validate RTO and RPO targets.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, and Domain Accuracy because it ignores the explicit 'Additional Checks' constraints. Specifically, it does not calculate targets based on the '15-minute regulatory requirement' or 'customer churn' data, fails to distinguish between MTD, RTO, and RPO, and completely overlooks the specific risk of cloud migration (single point of failure in Region A). While the communication protocol is clear (Clarity 4), the core technical and strategic requirements of the task were not met, resulting in a weak overall submission that requires major rework to be valid."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Create scenarios to reestablish operations from various types of business disruptions.",
+      "task_type": "Disruption Scenario & Recovery Planning",
+      "user_prompt": "You are a Business Continuity Planner. A global logistics firm faces a potential ransomware attack on its central warehouse management system. Based on the provided operational data, develop a detailed recovery scenario for the 'Order Fulfillment' function. Calculate the financial impact of a 4-hour outage, define the RTO and RPO required to meet the 99.9% service level agreement, and outline the immediate steps to reestablish operations using the manual backup protocol.",
+      "reference_context": {
+        "operational_data": {
+          "daily_order_volume": "50,000 orders",
+          "average_order_value": "$120",
+          "fulfillment_capacity_per_hour": "12,500 orders",
+          "manual_backup_efficiency": "30% of automated speed"
+        },
+        "sla_requirements": "99.9% order processing availability",
+        "current_rpo": "24 hours",
+        "current_rto": "8 hours",
+        "financial_impact_rate": "$50,000 per hour of downtime"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the RTO and RPO values logically derived from the SLA and operational capacity constraints?",
+        "Criterion 2: Completeness — Does the scenario cover the transition from automated to manual processing and the financial quantification of the 4-hour outage?",
+        "Criterion 3: Best practices — Is the recovery plan feasible given the 30% manual efficiency reduction?"
+      ],
+      "student_answer": "## Order Fulfillment Recovery Scenario – Ransomware Event\n\n**1. Recovery Scenario:**\n\n*   **Phase 1: Immediate Containment (0-30 minutes):** Activate Incident Response Plan. Isolate affected systems to prevent further spread. Notify IT security team and relevant stakeholders.\n*   **Phase 2: Manual Order Processing Activation (30-60 minutes):** Transition to manual order processing using the documented manual backup protocol.  Designated teams will receive and process orders via phone, email, and manual data entry. Prioritize critical orders based on customer contracts and urgency.\n*   **Phase 3: Data Restoration (60-120 minutes):** Initiate data restoration from the most recent viable backup (24-hour RPO). Validate data integrity upon restoration.\n*   **Phase 4: System Rebuild/Patching (120-240 minutes):** IT security team implements necessary patches and security updates. Begin rebuilding the WMS, prioritizing functionality essential for order fulfillment.\n*   **Phase 5: Phased System Reintegration (240+ minutes):** Gradually reintegrate the WMS functionality, starting with less critical modules. Monitor system performance and order processing accuracy closely.  Transition back to automated processing as systems stabilize.\n\n**2. Financial Impact of 4-Hour Outage:**\n\n*   Hourly Loss: $50,000\n*   Total Loss: $200,000\n\n**3. RTO & RPO Calculation:**\n\n*   **RTO (Recovery Time Objective):** 8 hours (Current) – Maintain at 8 hours to meet 99.9% SLA.\n*   **RPO (Recovery Point Objective):** 24 hours (Current) – Maintain at 24 hours to meet 99.9% SLA.\n\n**4. Immediate Steps – Manual Backup Protocol:**\n\n1.  **Order Intake:** Establish a dedicated phone line and email address for order intake. Implement a triage process to prioritize orders.\n2.  **Order Verification:** Manual verification of order details (customer, product, quantity, shipping address) against existing records.\n3.  **Inventory Lookup:** Manual inventory checks via phone calls to regional distribution centers.\n4.  **Packing & Labeling:** Manual packing and labeling of orders using pre-printed labels and standard operating procedures.\n5.  **Shipping Coordination:** Manual coordination with shipping carriers for order dispatch.  Utilize existing shipping manifests for tracking.\n6.  **Communication:** Proactive customer communication regarding order delays and estimated delivery times.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the specific constraints in the 'Additional Checks' section, which explicitly required calculating new RTO/RPO targets based on a '15-minute regulatory requirement' and 'customer churn' data, and distinguishing between MTD, RTO, and RPO. The student simply repeated the provided current RTO/RPO values without performing the required recalculation or analysis. Furthermore, the financial impact calculation is superficial, ignoring the operational capacity constraints (manual efficiency) which would likely alter the actual revenue loss compared to the flat hourly rate provided. The solution ignores the specific cloud migration risk context. While the manual protocol steps are logical, the failure to perform the core analytical tasks (calculations and specific risk mitigation) results in a weak score across correctness, completeness, best practices, and domain accuracy."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Establish, maintain, or test call trees to ensure appropriate communication during disaster.",
+      "task_type": "Communication Protocol & Call Tree Design",
+      "user_prompt": "You are a Business Continuity Planner. Design a comprehensive call tree and communication protocol for a healthcare provider during a cyber-incident. The protocol must include specific escalation paths for the C-suite, IT security, and clinical operations. Define the contact verification steps required before activating the emergency response team. Calculate the maximum tolerable communication delay (MTCD) to ensure patient safety is not compromised, and justify the RTO for the patient scheduling system based on this delay.",
+      "reference_context": {
+        "organizational_structure": {
+          "c_suite": "CEO, CIO, COO",
+          "it_security": "CISO, 2 Senior Analysts",
+          "clinical_ops": "Head Nurse, 5 Department Leads"
+        },
+        "patient_safety_threshold": "No delay in emergency scheduling > 15 minutes",
+        "current_communication_latency": "45 minutes average",
+        "regulatory_requirement": "HIPAA compliance mandates immediate notification of breaches affecting patient records"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the escalation paths and contact verification steps clearly defined and logical?",
+        "Criterion 2: Completeness — Does the response address the MTCD and derive the RTO for the scheduling system from it?",
+        "Criterion 3: Best practices — Is the protocol aligned with HIPAA requirements and healthcare emergency standards?"
+      ],
+      "student_answer": "## Healthcare Provider Cyber Incident Call Tree & Communication Protocol\n\n**I. Initial Detection & Verification**\n\n1.  **Detection Source:** (IT Security Analyst, Help Desk, Staff Report)\n2.  **Initial Verification (5-10 minutes):**\n    *   **Contact Verification:** Immediately attempt to contact the reporting party via multiple channels (phone, secure messaging). Confirm identity and details of the incident.\n    *   **Preliminary Assessment:** IT Security Analyst assesses the scope and potential impact based on initial reports.\n3.  **Escalation Level 1: IT Security & Clinical Operations Lead** (Within 5 minutes of initial verification)\n    *   **Contact:** CISO, Head Nurse\n    *   **Communication Method:** Secure Phone Call/Video Conference\n    *   **Content:** Incident details, preliminary assessment, potential impact.\n\n**II. Escalation & Activation – Tier 1 (IT Security & Clinical Operations)**\n\n1.  **Assessment & Containment (15-30 minutes):** IT Security & Clinical Operations Lead collaborate to:\n    *   Determine immediate containment measures.\n    *   Assess potential disruption to patient care.\n    *   Initiate incident response plan.\n2.  **Escalation Level 2: C-Suite (CEO, CIO, COO)** (Within 15 minutes of Tier 1 assessment)\n    *   **Contact:** CEO, CIO, COO (in order of priority) – Pre-defined contact list with multiple methods (phone, secure messaging).\n    *   **Communication Method:** Secure Phone Call/Video Conference\n    *   **Content:** Incident summary, potential impact on operations, required resources, proposed mitigation strategies.\n3.  **Emergency Response Team Activation (ERT) (Within 30 minutes of Tier 1 assessment):**\n    *   **Trigger:** Based on severity assessment, ERT activated.\n    *   **ERT Composition:** CISO, 2 Senior Analysts, Head Nurse, 2 Department Leads.\n    *   **Contact Verification:** Before activating ERT, confirm contact information for all members via secure channel.\n\n**III. Communication Channels & Protocols**\n\n*   **Primary:** Secure Phone Conference (dedicated line)\n*   **Secondary:** Secure Messaging Platform (e.g., Signal, Slack with end-to-end encryption)\n*   **Tertiary:** Pre-defined contact list for C-Suite (phone, secure messaging)\n*   **Mass Notification:** HIPAA-compliant system for patient updates (if applicable and approved by legal counsel).\n\n**IV. Escalation Paths & Responsibilities**\n\n| Level | Role             | Contact                               | Responsibility                                                              |\n|-------|------------------|---------------------------------------|------------------------------------------------------------------------------|\n| 1     | CISO             | Head Nurse                             | Technical assessment, containment, initial response coordination.             |\n| 1     | Head Nurse        | CISO                                  | Clinical impact assessment, patient care coordination, resource allocation.     |\n| 2     | CEO               | CIO, COO                              | Strategic oversight, resource allocation, stakeholder communication.          |\n| 2     | CIO               | CEO, COO                              | IT infrastructure support, system recovery, data restoration.                 |\n| 2     | COO               | CEO, CIO                              | Operational continuity, workflow adjustments, staff support.                   |\n\n**V. Maximum Tolerable Communication Delay (MTCD) & Recovery Time Objective (RTO)**\n\n*   **MTCD:** 15 minutes – Based on the patient safety threshold of no delay in emergency scheduling exceeding 15 minutes. This is the absolute maximum acceptable delay for critical communication.\n*   **RTO – Patient Scheduling System:** 60 minutes.\n    *   **Justification:** The current average communication latency is 45 minutes.  The MTCD of 15 minutes necessitates a buffer to account for potential delays and ensure critical communication reaches the appropriate personnel within the acceptable timeframe.  A 60-minute RTO allows for system restoration and testing while minimizing disruption to patient scheduling.  This RTO is conservative and prioritizes patient safety.\n\n**VI. Regulatory Compliance**\n\n*   HIPAA compliance dictates immediate notification of breaches affecting patient records.  Notification procedures will be executed within regulatory timelines, coordinated by the CISO and legal counsel.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails to address specific constraints in the 'Additional Checks' section, specifically the need to calculate targets based on 'customer churn' (which was not in the context but was a specific instruction) and the 'cloud migration single point of failure' risk. The RTO calculation logic is flawed; it justifies a 60-minute RTO by citing a 45-minute current latency, which is a failure to design a solution that meets the 15-minute safety threshold rather than accepting the current poor performance. The distinction between MTD, RTO, and RPO is not clearly articulated or correctly applied in the context of the 15-minute threshold. While the call tree structure is clear (Dimension 5), the domain accuracy (Dimension 4) is weak due to the incorrect RTO justification and failure to address the specific risk scenarios requested."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Conduct or oversee contingency plan integration and operation.",
+      "task_type": "Contingency Plan Integration & Testing",
+      "user_prompt": "You are a Business Continuity Planner. A manufacturing plant is integrating a new automated assembly line with its legacy ERP system. Oversee the integration of the contingency plan for this new system. Identify the critical failure points where the two systems interact. Define the RTO and RPO for the integration layer to prevent a total production halt. Quantify the operational downtime impact if the integration fails for 2 hours, assuming a production value of $200,000 per hour.",
+      "reference_context": {
+        "system_details": {
+          "legacy_erp": "On-premise, 99.5% uptime",
+          "new_assembly_line": "Cloud-based, 99.9% uptime",
+          "integration_layer": "API Gateway"
+        },
+        "production_value_per_hour": "$200,000",
+        "regulatory_requirement": "ISO 22301 compliance requires documented integration testing",
+        "current_rpo": "1 hour",
+        "current_rto": "4 hours"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the RTO and RPO values appropriate for the integration layer given the production value?",
+        "Criterion 2: Completeness — Does the response identify specific failure points and quantify the 2-hour downtime impact?",
+        "Criterion 3: Best practices — Is the integration plan compliant with ISO 22301 standards?"
+      ],
+      "student_answer": "**Business Continuity Plan: Automated Assembly Line & ERP Integration**\n\n**1. Critical Failure Points:**\n\n*   **API Gateway Downtime:** Complete failure of the API Gateway will immediately halt data flow between the assembly line and ERP.\n*   **API Connectivity Issues:** Intermittent connectivity problems, latency spikes, or packet loss will disrupt real-time data synchronization, leading to inaccurate inventory, production scheduling, and order fulfillment.\n*   **Data Corruption:** Errors during data transmission or processing within the API Gateway can corrupt production data, requiring manual correction and potentially halting production.\n*   **Authentication/Authorization Failure:** Issues with user credentials or access controls can prevent the assembly line from communicating with the ERP.\n*   **Rate Limiting:** Exceeding API rate limits will cause assembly line operations to be throttled or completely blocked.\n*   **Schema Changes:** Unexpected changes to the API schema without proper versioning and testing will break integration functionality.\n\n**2. Recovery Time Objective (RTO) & Recovery Point Objective (RPO):**\n\n*   **RPO:** 15 minutes.  Maintaining a 15-minute RPO ensures that the ERP system has the most recent data available to minimize data loss and the need for rollback.\n*   **RTO:** 30 minutes.  A 30-minute RTO is achievable through automated failover to a redundant API Gateway instance and pre-configured rollback procedures.\n\n**3. Operational Downtime Impact (2-Hour Failure):**\n\n*   **Total Loss:** $400,000 (2 hours * $200,000/hour)\n*   **Indirect Costs:** Potential loss of customer orders, reputational damage, expedited shipping costs to fulfill existing orders, and potential penalties for non-delivery. (Quantification of these costs requires further analysis – estimated at $100,000 - $300,000 depending on the severity and scope of the disruption).\n*   **Total Estimated Impact:** $500,000 - $700,000\n\n**4. ISO 22301 Compliance:**\n\n*   **Integration Testing:** Mandatory.  Documented integration testing must be performed quarterly, including simulated failure scenarios (API Gateway downtime, connectivity issues, data corruption) to validate the RTO and RPO. Test results must be formally reviewed and approved.\n\n**5. Mitigation Strategies (Beyond RTO/RPO):**\n\n*   **Redundant API Gateway:** Implement a geographically diverse, redundant API Gateway instance with automatic failover.\n*   **Data Replication:** Implement data replication between the assembly line and ERP to ensure data consistency.\n*   **Circuit Breakers:** Utilize circuit breakers in the API Gateway to automatically isolate failing components and prevent cascading failures.\n*   **Monitoring & Alerting:** Implement comprehensive monitoring of the API Gateway, network connectivity, and data integrity.  Establish automated alerts for critical events.\n*   **Version Control & Change Management:** Strict version control of API schemas and a robust change management process are essential to minimize integration issues.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies failure points and calculates the direct financial impact ($400k). However, it fails the specific 'Additional Checks' and task requirements: it ignores the instruction to calculate new RTO/RPO targets based on '15-minute regulatory requirement' and 'customer churn' data, instead arbitrarily setting 15/30 minutes without derivation. It also fails to distinguish between MTD, RTO, and RPO as requested, and does not address the specific cloud migration risk (Region A single point of failure). While the content is professional and structured (Clarity 4), the lack of adherence to specific constraints and the omission of MTD analysis prevent a higher score in Correctness, Completeness, and Domain Accuracy."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Identify opportunities for strategic improvement or mitigation of business interruption and other risks caused by business, regulatory, or industry-specific change initiatives.",
+      "task_type": "Strategic Risk Mitigation & Improvement",
+      "user_prompt": "You are a Business Continuity Planner. A retail chain is expanding into international markets, introducing new data sovereignty regulations. Identify the strategic risks associated with this expansion regarding business interruption. Propose a mitigation strategy that includes updated RTO and RPO values for customer data processing in the new regions. Quantify the potential financial loss if data sovereignty is violated, estimated at $5 million per incident, and calculate the acceptable downtime to keep the risk below 1% of annual revenue ($500 million).",
+      "reference_context": {
+        "expansion_details": {
+          "new_regions": "EU, APAC",
+          "data_sovereignty_law": "Data must reside within the region of origin",
+          "annual_revenue": "$500 million"
+        },
+        "violation_cost": "$5 million per incident",
+        "risk_tolerance": "1% of annual revenue",
+        "current_rpo": "24 hours",
+        "current_rto": "12 hours"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the RTO and RPO values derived from the risk tolerance and violation cost?",
+        "Criterion 2: Completeness — Does the response address both data sovereignty and business interruption risks?",
+        "Criterion 3: Best practices — Is the mitigation strategy aligned with international data protection regulations?"
+      ],
+      "student_answer": "**Strategic Risks & Mitigation Strategy: International Expansion – Data Sovereignty**\n\n**Strategic Risks:**\n\n*   **Legal & Compliance:** Non-compliance with data sovereignty regulations (GDPR in EU, various APAC regulations) leading to fines, legal action, and reputational damage.\n*   **Operational Disruption:**  Relocating data infrastructure to comply with regulations will cause operational downtime and potentially impact service availability.\n*   **Data Access & Processing:** Restrictions on data transfer and processing can hinder operational efficiency and customer service.\n*   **Vendor Management:** Reliance on third-party vendors may not align with data residency requirements, creating vulnerabilities.\n*   **Security Risks:** Increased complexity of data management can introduce new security vulnerabilities.\n\n**Mitigation Strategy:**\n\n1.  **Regional Data Centers:** Establish and maintain geographically diverse data centers within the EU and APAC regions to ensure data residency.\n2.  **Data Localization Solutions:** Implement data localization technologies (e.g., data replication, edge computing) to maintain data within the required regions.\n3.  **Vendor Due Diligence:** Thoroughly vet all third-party vendors to confirm their compliance with local data sovereignty laws. Include data residency clauses in all contracts.\n4.  **Data Governance Framework:** Develop and enforce a comprehensive data governance framework that addresses data residency, access controls, and data protection.\n5.  **Change Management:** Implement a robust change management process to ensure all system updates and deployments comply with data sovereignty regulations.\n6.  **Regular Audits & Monitoring:** Conduct regular audits and monitoring to verify compliance and identify potential vulnerabilities.\n\n**Updated RTO & RPO Values:**\n\n*   **RPO (Recovery Point Objective):** Reduce to **4 hours**. This shorter RPO allows for faster data recovery in the event of a data sovereignty violation.\n*   **RTO (Recovery Time Objective):** Reduce to **4 hours**.  A faster RTO minimizes the duration of service disruption.\n\n**Financial Risk Quantification & Downtime Calculation:**\n\n*   **Acceptable Downtime:** 1% of $500 million annual revenue = $5 million.\n*   **Maximum Tolerable Downtime:** 4 hours (new RTO)\n*   **Probability of Violation:** (4 hours / 24 hours) = 17% (Assuming a 24-hour current RPO)\n*   **Cost of Violation:** $5 million per incident.\n*   **Maximum Acceptable Financial Loss:** 17% * $5 million = $850,000\n\n**Conclusion:**\n\nThe proposed RTO and RPO reductions, coupled with the implementation of the mitigation strategy, are designed to minimize the risk of data sovereignty violations and maintain financial stability. Continuous monitoring and adaptation to evolving regulations are crucial for sustained business continuity.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails critically on multiple dimensions. First, it ignores the 'Additional Checks' which explicitly required calculating targets based on '15-minute regulatory requirement' and 'customer churn' data, and distinguishing between MTD, RTO, and RPO. Second, the financial calculation is logically flawed: it attempts to calculate 'probability' by dividing RTO by RPO (4/24), which is mathematically invalid for risk probability. Third, it fails to address the specific risk of 'single point of failure in Region A' during cloud migration. Fourth, the domain accuracy is poor; it suggests reducing RPO/RTO to 4 hours to mitigate a 'data sovereignty violation,' whereas sovereignty violations are compliance/legal issues, not recovery time issues. The response does not perform the required calculation to keep risk below 1% of revenue ($5M loss limit) correctly, nor does it derive the acceptable downtime from the $5M loss cap and $5M per incident cost (which implies 1 incident is the limit, not a time-based calculation). The answer is a generic template that misses the specific constraints and calculations requested."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Interpret government regulations and applicable codes to ensure compliance.",
+      "task_type": "Regulatory Compliance & RTO/RPO Alignment",
+      "user_prompt": "You are a Business Continuity Planner. A pharmaceutical company must comply with new FDA regulations requiring real-time monitoring of cold chain logistics. Interpret these regulations to determine the maximum allowable downtime for the monitoring system. Define the RTO and RPO for the cold chain system to ensure product integrity. Calculate the financial impact of a 30-minute outage, assuming a product loss value of $100,000 per minute and a regulatory fine of $2 million for non-compliance.",
+      "reference_context": {
+        "regulatory_requirements": {
+          "monitoring_frequency": "Real-time",
+          "max_downtime_allowed": "5 minutes",
+          "product_integrity_threshold": "Temperature deviation > 2°C for > 10 minutes"
+        },
+        "product_loss_rate": "$100,000 per minute",
+        "regulatory_fine": "$2 million",
+        "current_rpo": "1 hour",
+        "current_rto": "4 hours"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the RTO and RPO values aligned with the FDA's 5-minute maximum downtime requirement?",
+        "Criterion 2: Completeness — Does the response quantify the financial impact of the 30-minute outage including fines?",
+        "Criterion 3: Best practices — Is the compliance strategy robust enough to prevent product loss and regulatory penalties?"
+      ],
+      "student_answer": "**Business Continuity Plan: Cold Chain Monitoring System – FDA Compliance**\n\n**1. Downtime Tolerance:**\n\n*   **Regulatory Maximum:** 5 minutes\n*   **Operational Limit:** 5 minutes (to comply with FDA regulations)\n\n**2. Recovery Time Objective (RTO):**\n\n*   **Defined:** 5 minutes – The maximum acceptable duration for the cold chain monitoring system to be unavailable before impacting product integrity.\n\n**3. Recovery Point Objective (RPO):**\n\n*   **Current:** 1 hour – This will be maintained.\n*   **Rationale:** Maintaining the current RPO of 1 hour ensures that data loss is minimized, aligning with the product integrity threshold of temperature deviation > 2°C for > 10 minutes.\n\n**4. Financial Impact Analysis (30-Minute Outage):**\n\n*   **Product Loss:** 30 minutes * $100,000/minute = $3,000,000\n*   **Regulatory Fine:** $2,000,000\n*   **Total Financial Impact:** $3,000,000 + $2,000,000 = $5,000,000\n\n**5. Conclusion:**\n\nA 30-minute outage of the cold chain monitoring system represents a critical risk with a substantial financial impact ($5,000,000) and potential regulatory penalties ($2,000,000).  Maintaining the current RTO and RPO, and strictly adhering to the 5-minute maximum downtime allowed by the FDA, is paramount to mitigating these risks and ensuring product integrity.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the core task of interpreting regulations to determine new RTO/RPO targets, instead simply restating the provided context values without critical analysis. It ignores the specific additional checks requiring differentiation between MTD, RTO, and RPO, and fails to address the cloud migration single point of failure risk. While the financial calculation is correct, the strategic recommendations are weak, and the RPO rationale is logically flawed (a 1-hour RPO contradicts the need for real-time monitoring). The output requires significant rework to meet professional standards."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Create or administer training and awareness presentations or materials.",
+      "task_type": "Training Program & Risk Awareness",
+      "user_prompt": "You are a Business Continuity Planner. Develop a training module for senior management on business continuity risks for a financial services firm. The module must include a scenario where a primary data center fails. Define the RTO and RPO for the trading platform based on the scenario. Quantify the operational downtime impact if the recovery takes 6 hours instead of the target 1 hour, assuming a trading loss of $1 million per minute. Include specific escalation paths and contact verification steps in the training material.",
+      "reference_context": {
+        "scenario_details": {
+          "primary_data_center": "New York",
+          "secondary_data_center": "Chicago",
+          "trading_platform": "High-frequency trading"
+        },
+        "trading_loss_rate": "$1 million per minute",
+        "target_recovery_time": "1 hour",
+        "actual_recovery_time_in_scenario": "6 hours",
+        "current_rpo": "15 minutes",
+        "current_rto": "2 hours"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the RTO and RPO values clearly defined and justified by the trading loss rate?",
+        "Criterion 2: Completeness — Does the training material quantify the impact of the 5-hour delay (6 hours vs 1 hour)?",
+        "Criterion 3: Best practices — Are the escalation paths and contact verification steps clear and actionable for senior management?"
+      ],
+      "student_answer": "## Business Continuity Training Module: Senior Management – Financial Services\n\n**Module Objective:** To educate senior management on critical business continuity risks, specifically focusing on the potential impact of data center failure on the trading platform, and to outline escalation procedures.\n\n**I. Introduction – The Importance of Business Continuity**\n\nFinancial services firms are inherently vulnerable to disruptions. A single event – a natural disaster, cyberattack, or infrastructure failure – can have catastrophic consequences, impacting revenue, reputation, and regulatory compliance. This module will highlight the importance of proactive business continuity planning and demonstrate the potential financial ramifications of inadequate preparedness.\n\n**II. Risk Assessment – Primary Data Center Failure Scenario**\n\n*   **Scenario:** The primary data center located in New York experiences a complete and unrecoverable failure. This event isolates all systems and applications dependent on that data center.\n*   **Secondary Site:** The secondary data center in Chicago is operational and capable of taking over trading platform functions.\n\n**III. Recovery Time Objectives (RTO) & Recovery Point Objectives (RPO)**\n\n*   **Trading Platform:** Due to the nature of high-frequency trading, the trading platform requires immediate availability.\n    *   **RTO (Recovery Time Objective):** 1 hour – This represents the maximum acceptable time for the trading platform to be restored and operational.\n    *   **RPO (Recovery Point Objective):** 15 minutes – This represents the maximum acceptable data loss.  Data loss exceeding this timeframe could lead to significant trading errors and financial losses.\n\n**IV. Downtime Impact Analysis – Delayed Recovery**\n\n*   **Scenario:** Recovery takes 6 hours instead of the target 1 hour.\n*   **Calculation:**\n    *   Downtime: 6 hours = 360 minutes\n    *   Trading Loss: $1 million per minute * 360 minutes = $360 million\n*   **Conclusion:** A 5-hour delay in recovery results in a $360 million loss.\n\n**V. Escalation Paths & Contact Verification**\n\n| Level        | Role                  | Contact Information          | Responsibility                               | Verification Method |\n|--------------|-----------------------|------------------------------|----------------------------------------------|---------------------|\n| **Level 1**   | IT Director           | [IT Director Phone Number]     | Initiate BC Plan, Activate Secondary Site     | Automated Alert     |\n| **Level 2**   | Head of Trading       | [Head of Trading Phone Number] | Confirm Trading Platform Readiness, Halt New Trades | Phone Call          |\n| **Level 3**   | CFO                   | [CFO Phone Number]            | Approve Financial Loss, Initiate Insurance Claim | Email Confirmation |\n| **Level 4**   | CEO                   | [CEO Phone Number]            | Strategic Decision Making, Public Relations | Secure Phone Call   |\n\n*   **Contact Verification:** All contacts listed above will be verified weekly via a documented contact list reviewed during monthly business continuity meetings.  Contact information will be updated immediately upon any change.  Two-factor authentication will be used for critical systems access.\n\n**VI.  BC Plan Activation Checklist (Sample)**\n\n1.  Confirm Secondary Site Readiness\n2.  Activate Failover Procedures\n3.  Notify Key Personnel (as per Escalation Path)\n4.  Monitor System Performance\n5.  Communicate Status Updates to Stakeholders\n\n**VII.  Training Exercise – Simulated Data Center Failure**\n\n(A brief, simulated scenario will be presented to test understanding of escalation paths and recovery procedures.)\n\n**VIII.  Q&A and Discussion**\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task of creating a training module and correctly calculates the financial impact of the downtime ($360 million). However, it fails to meet specific constraints in the 'Additional Checks' section: it does not recalculate RTO/RPO based on regulatory requirements or churn data, it does not distinguish between MTD, RTO, and RPO, and it ignores the specific cloud migration risk mentioned. The escalation path is generic with placeholder contact info rather than specific verification steps for a real scenario. While the structure is clear (Clarity 4), the lack of domain-specific customization and failure to follow the additional constraints prevents a higher score in Correctness, Completeness, Best Practices, and Domain Accuracy."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze impact on, and risk to, essential business functions or information systems to identify acceptable recovery time periods and resource requirements.",
+      "task_type": "Impact Analysis & RTO Definition",
+      "user_prompt": "You are a Business Continuity Planner. A regional bank is undergoing a digital transformation that introduces new cloud-based transaction processing. Based on the provided system architecture and business impact data, identify the critical functions, calculate the maximum tolerable downtime (MTD), and propose specific RTO and RPO values for the core transaction engine. Justify your choices based on regulatory requirements and customer impact.",
+      "reference_context": {
+        "system_architecture": "Primary database in Region A (US-East), Secondary in Region B (US-West), Cloud API Gateway, Mobile App Frontend",
+        "business_impact_data": {
+          "transaction_latency_increase": "200ms causes 5% customer churn",
+          "downtime_cost_per_minute": "$15,000",
+          "regulatory_requirement": "Transactions must be recoverable within 15 minutes of failure"
+        },
+        "current_rpo": "4 hours",
+        "current_rto": "24 hours"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the RTO and RPO values logically derived from the provided constraints and regulatory limits?",
+        "Criterion 2: Completeness — Did the response identify all critical functions and address both financial and operational impacts?",
+        "Criterion 3: Best practices — Is the proposed solution aligned with industry standards for financial sector continuity?"
+      ],
+      "student_answer": "```json\n{\n  \"critical_functions\": [\n    \"Core Transaction Processing\",\n    \"Funds Transfer\",\n    \"Bill Payment\",\n    \"Account Balance Retrieval\"\n  ],\n  \"mtd\": \"15 minutes\",\n  \"rto\": \"15 minutes\",\n  \"rpo\": \"1 hour\",\n  \"justification\": \"Regulatory requirements mandate transaction recovery within 15 minutes.  A 4-hour RPO is insufficient given the 5% customer churn associated with 200ms latency increases.  The $15,000/minute downtime cost necessitates minimizing disruption.  A 15-minute RTO and 1-hour RPO provide a balance between regulatory compliance, financial impact mitigation, and acceptable customer experience.  Maintaining a secondary database in a different region (US-West) supports the RTO target.  The Cloud API Gateway and Mobile App Frontend are considered less critical for immediate recovery and can tolerate longer downtimes.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the MTD as 15 minutes based on the regulatory requirement and proposes an RTO of 15 minutes. However, the RPO of 1 hour is logically inconsistent with an RTO of 15 minutes and the stated regulatory requirement for transaction recovery; typically, RPO must be significantly less than RTO to ensure data integrity within the recovery window. The justification incorrectly links the 200ms latency churn metric to the RPO calculation, whereas latency is a performance metric, not a data loss metric. The response fails to explicitly address the single point of failure risk in Region A or propose specific architectural mitigations (e.g., synchronous replication) to achieve the aggressive targets. While the structure is clear, the technical reasoning contains significant gaps that would require professional review and correction before use."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Create business continuity and disaster recovery budgets.",
+      "task_type": "Budgeting & Resource Allocation",
+      "user_prompt": "You are a Business Continuity Planner. Develop a preliminary budget for a Disaster Recovery (DR) site upgrade for a logistics company. The current DR site is 500 miles away. The company needs to reduce RTO from 48 hours to 4 hours. Use the provided cost parameters to calculate the total capital expenditure (CapEx) and annual operational expenditure (OpEx) for the new site, including hardware, connectivity, and personnel. Ensure the budget includes a 15% contingency for risk mitigation.",
+      "reference_context": {
+        "current_dr_site": "Remote facility, 500 miles away, 48-hour RTO",
+        "target_dr_site": "Regional data center, 50 miles away, 4-hour RTO",
+        "hardware_costs": {
+          "servers": "$250,000",
+          "storage": "$120,000",
+          "networking": "$80,000"
+        },
+        "connectivity_costs": {
+          "dedicated_line_monthly": "$5,000",
+          "backup_line_monthly": "$2,500"
+        },
+        "personnel_costs": {
+          "dr_specialist_annual": "$110,000",
+          "training_annual": "$15,000"
+        },
+        "contingency_rate": "15%"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are all cost components (CapEx and OpEx) summed correctly including the contingency?",
+        "Criterion 2: Alignment — Does the budget directly support the reduction of RTO from 48 to 4 hours?",
+        "Criterion 3: Financial Logic — Is the distinction between one-time and recurring costs clear and accurate?"
+      ],
+      "student_answer": "**Disaster Recovery Site Upgrade Budget – Logistics Company**\n\n**I. Capital Expenditure (CapEx)**\n\n*   **Hardware:**\n    *   Servers: $250,000\n    *   Storage: $120,000\n    *   Networking: $80,000\n    *   **Total Hardware:** $450,000\n*   **Connectivity (Initial Setup):**\n    *   Dedicated Line: $5,000 (One-time)\n    *   Backup Line: $2,500 (One-time)\n    *   **Total Connectivity:** $7,500\n*   **Contingency (Hardware & Connectivity):** $7,500 * 0.15 = $1,125\n*   **Total CapEx:** $450,000 + $7,500 + $1,125 = **$458,625**\n\n**II. Annual Operational Expenditure (OpEx)**\n\n*   **Connectivity (Monthly):**\n    *   Dedicated Line: $5,000\n    *   Backup Line: $2,500\n    *   **Total Connectivity:** $7,500\n*   **Personnel:**\n    *   DR Specialist: $110,000\n    *   Training: $15,000\n    *   **Total Personnel:** $125,000\n*   **Contingency (OpEx):** $7,500 + $125,000 * 0.15 = $7,500 + $18,750 = $26,250\n*   **Total OpEx:** $7,500 + $125,000 + $26,250 = **$159,000**\n\n**III. Summary**\n\n*   **Total CapEx:** $458,625\n*   **Total OpEx (Annual):** $159,000\n*   **Total Cost (Year 1):** $458,625 + $159,000 = **$617,625**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy because it ignores the 'Additional Checks' constraints which explicitly required calculating new targets based on regulatory/churn data, distinguishing MTD/RTO/RPO, and addressing cloud migration risks. Furthermore, the financial calculations are flawed: it incorrectly treats monthly recurring connectivity costs as one-time CapEx setup fees, and it applies the contingency rate inconsistently (calculating OpEx contingency on a monthly sum rather than the annual total). While the formatting is clear (Clarity 4), the output is not usable for a client due to these fundamental errors and omissions (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Recommend or implement methods to monitor, evaluate, or enable resolution of safety, operations, or compliance interruptions.",
+      "task_type": "Monitoring & Escalation Protocol Design",
+      "user_prompt": "You are a Business Continuity Planner. Design a comprehensive monitoring and escalation protocol for a manufacturing plant's SCADA system. The system controls critical safety valves. Define the specific triggers for escalation, the exact contact verification steps for the Incident Response Team, and the communication channels to be used. The protocol must ensure that any safety interruption is reported within 5 minutes of detection.",
+      "reference_context": {
+        "system": "SCADA System controlling safety valves",
+        "critical_threshold": "Any deviation > 5% from normal pressure",
+        "incident_response_team": {
+          "lead": "Plant Manager",
+          "technical": "Senior Control Engineer",
+          "safety": "EHS Director"
+        },
+        "communication_channels": [
+          "Primary: Encrypted VoIP",
+          "Secondary: SMS Alert System",
+          "Tertiary: Satellite Phone"
+        ],
+        "detection_latency_limit": "5 minutes"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Specificity — Are the escalation triggers and contact verification steps explicitly defined?",
+        "Criterion 2: Compliance — Does the protocol meet the 5-minute detection and reporting requirement?",
+        "Criterion 3: Redundancy — Are multiple communication channels defined with clear fallback procedures?"
+      ],
+      "student_answer": "**SCADA System – Safety Valve Monitoring & Escalation Protocol**\n\n**1. Detection & Initial Alert:**\n\n*   **Monitoring System:** The SCADA system continuously monitors safety valve pressure data, comparing it against established baseline values.\n*   **Trigger:** Any deviation exceeding 5% from the established baseline pressure triggers an immediate alert.\n*   **Initial Alert Generation:** The SCADA system automatically generates an alert and logs the timestamp.\n\n**2. Incident Response Team Verification (Within 2 Minutes of Alert):**\n\n*   **Step 1: Technical Verification (Senior Control Engineer):**\n    *   Immediately access the SCADA system to confirm the deviation.\n    *   Review historical data for the affected valve(s) to assess the nature and duration of the deviation.\n    *   Verify the data source integrity – check for sensor malfunctions or communication errors.\n    *   Document all findings and actions taken.\n*   **Step 2: Safety Verification (EHS Director):**\n    *   Receive notification of the Technical Verification findings via Encrypted VoIP.\n    *   Assess the potential safety impact based on the deviation magnitude and valve type.\n    *   Determine if immediate operational adjustments are required (e.g., manual valve override – documented by the Senior Control Engineer).\n*   **Step 3: Plant Manager Confirmation (Plant Manager):**\n    *   Receive notification of findings from both the Senior Control Engineer and EHS Director via Encrypted VoIP.\n    *   Authorize further investigation or corrective actions.\n\n**3. Escalation Protocol (Within 3 Minutes of Technical Verification):**\n\n| **Deviation Severity** | **Trigger**                               | **Escalation Channel** | **Contact**           | **Response Time** |\n| :--------------------- | :---------------------------------------- | :-------------------- | :------------------- | :---------------- |\n| **High ( > 10%)**       | Deviation > 10% from baseline           | Encrypted VoIP         | Plant Manager, Senior Control Engineer, EHS Director | Immediate         |\n| **Medium (5-10%)**      | Deviation 5-10% from baseline            | Encrypted VoIP         | Plant Manager, Senior Control Engineer, EHS Director | 2 Minutes         |\n| **Low (1-5%)**          | Deviation 1-5% from baseline             | SMS Alert System       | Senior Control Engineer | 2 Minutes         |\n\n**4. Communication Channels & Procedures:**\n\n*   **Primary:** Encrypted VoIP – Used for all critical communications, including initial alerts, verification steps, and escalation notifications.  Conference call established immediately upon alert.\n*   **Secondary:** SMS Alert System – Used for Low-Severity deviations to provide immediate notification to the Senior Control Engineer.\n*   **Tertiary:** Satellite Phone – Used only if primary and secondary channels are unavailable.\n\n**5. Documentation & Reporting:**\n\n*   All alerts, verification steps, escalation decisions, and corrective actions must be meticulously documented in the SCADA system’s event log.\n*   A formal incident report must be completed within 24 hours of the event, detailing the cause, impact, and corrective actions taken.\n\n**6. Testing & Maintenance:**\n\n*   This protocol will be tested quarterly through simulated SCADA system failures.\n*   The communication channels and contact information will be reviewed and updated annually.\n\n**7. Timekeeping:**\n\n*   All times are measured from the moment the SCADA system detects a deviation exceeding the critical threshold.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the 5% trigger and outlines the verification steps for the specified team members. However, it fails the primary constraint of reporting within 5 minutes of detection; the proposed workflow (2 minutes for verification + 3 minutes for escalation) creates a bottleneck that risks exceeding the 5-minute limit, especially if verification fails. The escalation table introduces a 'Low' severity category (1-5%) that contradicts the prompt's definition of the critical threshold (any deviation >5%), creating logical confusion. Additionally, the 'Additional Checks' section regarding RTO/RPO calculations and cloud migration risks is completely ignored, as the submission focuses solely on the SCADA protocol without addressing the specific risk analysis requirements implied by the context. While the structure is clear and terminology is generally accurate, the failure to meet the strict time constraint and the logical inconsistency in severity definitions prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Maintain and update organization information technology applications and network systems blueprints.",
+      "task_type": "System Blueprint & Risk Quantification",
+      "user_prompt": "You are a Business Continuity Planner. Review the provided network topology for a healthcare provider and update the system blueprint to reflect a new hybrid cloud integration. Identify single points of failure (SPOFs) and quantify the potential financial impact of a total network outage in terms of operational downtime and regulatory fines. Propose specific architectural changes to mitigate these risks.",
+      "reference_context": {
+        "network_topology": "Single core router connecting all departments to a hybrid cloud (AWS + On-prem)",
+        "operational_impact": "Outage halts all patient record access and billing",
+        "financial_impact_data": {
+          "downtime_cost_per_hour": "$45,000",
+          "regulatory_fine_per_incident": "$500,000",
+          "average_outage_duration": "6 hours"
+        },
+        "current_rpo": "24 hours",
+        "current_rto": "12 hours"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Risk Quantification — Is the total financial impact (downtime + fines) calculated correctly?",
+        "Criterion 2: Identification — Are all SPOFs in the provided topology accurately identified?",
+        "Criterion 3: Mitigation — Do the proposed architectural changes directly address the identified SPOFs?"
+      ],
+      "student_answer": "```json\n{\n  \"system_blueprint_update\": {\n    \"title\": \"Healthcare Provider - Hybrid Cloud Business Continuity Plan\",\n    \"version\": \"1.0\",\n    \"date\": \"October 26, 2023\",\n    \"executive_summary\": \"This document outlines the business continuity plan for the healthcare provider, incorporating a hybrid cloud architecture and addressing identified single points of failure (SPOFs) to minimize operational impact and regulatory risk.\",\n    \"network_architecture\": {\n      \"overview\": \"The existing network topology relies on a single core router as a SPOF.  A new architecture will implement redundancy and failover mechanisms across both on-premise and cloud environments.\",\n      \"components\": [\n        {\n          \"name\": \"On-Premise Infrastructure\",\n          \"description\": \"Includes servers, workstations, and local network devices.  Requires redundant switches and firewalls.\",\n          \"redundancy\": \"Implement redundant switches with automatic failover. Deploy a secondary firewall with overlapping rules.\"\n        },\n        {\n          \"name\": \"AWS Cloud Infrastructure\",\n          \"description\": \"Includes application servers, databases, and storage. Leverage AWS Availability Zones for redundancy.\",\n          \"redundancy\": \"Utilize multiple Availability Zones within AWS. Implement automated failover for critical services (e.g., databases, application servers) using services like Route 53 and Elastic Load Balancing.\"\n        },\n        {\n          \"name\": \"Hybrid Connectivity\",\n          \"description\": \"Secure and redundant connection between on-premise and AWS. Utilize a VPN with multiple tunnels and consider a dedicated leased line.\",\n          \"redundancy\": \"Establish multiple VPN tunnels with automatic failover. Implement a secondary, geographically diverse connection (e.g., dedicated leased line) as a backup.\"\n        },\n        {\n          \"name\": \"Core Router\",\n          \"description\": \"Current single point of failure.\",\n          \"replacement\": \"Replace with a redundant router cluster with automatic failover.  Implement BGP routing for dynamic failover.\"\n        },\n        {\n          \"name\": \"Monitoring & Alerting\",\n          \"description\": \"Comprehensive monitoring of all network and system components.  Automated alerts for critical events.\",\n          \"implementation\": \"Implement a centralized monitoring solution (e.g., SolarWinds, Datadog) with proactive alerting and automated remediation where possible.\"\n        }\n      ]\n    },\n    \"single_points_of_failure\": [\n      {\n        \"component\": \"Core Router\",\n        \"impact\": \"Complete network outage, halting all patient record access and billing.\",\n        \"mitigation\": \"Replace with a redundant router cluster with automatic failover.\"\n      }\n    ],\n    \"recovery_objectives\": {\n      \"rpo\": \"1 hour\",\n      \"rto\": \"2 hours\",\n      \"justification\": \"Reduced RPO and RTO through redundant infrastructure and automated failover.  This aligns with regulatory requirements and minimizes financial impact.\"\n    },\n    \"financial_impact_assessment\": {\n      \"downtime_cost_per_hour\": \"$45,000\",\n      \"regulatory_fine_per_incident\": \"$500,000\",\n      \"total_potential_loss\": \"($45,000 * 6 hours) + $500,000 = $270,000\",\n      \"mitigation_effectiveness\": \"Architectural changes significantly reduce the likelihood and duration of outages, minimizing potential financial loss.\"\n    },\n    \"testing_and_maintenance\": {\n      \"plan\": \"Regularly test failover procedures (at least quarterly). Conduct annual disaster recovery drills. Maintain updated documentation and configurations.\"\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails the specific additional checks: it ignores the '15-minute regulatory requirement' and 'customer churn' data, simply proposing generic improvements (1h RPO/2h RTO) rather than calculating targets based on the new constraints. It also fails to distinguish between MTD, RTO, and RPO correctly, using them interchangeably or without defining MTD. The financial calculation is mathematically incorrect ($45k * 6 = $270k, plus $500k fine should be $770k, but the student wrote $270k as the total). While the architectural suggestions for redundancy are generally sound (addressing the core router SPOF), the lack of specific attention to the 'Region A' cloud migration risk and the fundamental errors in the financial and regulatory analysis prevent a higher score. The output is usable but requires significant professional correction."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Design or implement products and services to mitigate risk or facilitate use of technology-based tools and methods.",
+      "task_type": "Risk Mitigation Strategy & RPO/RTO Definition",
+      "user_prompt": "You are a Business Continuity Planner. A retail chain is implementing a new AI-driven inventory management system. Design a risk mitigation strategy that includes specific RTO and RPO values for the AI model training pipeline. The strategy must account for the risk of data corruption during the training phase. Justify your RTO/RPO choices based on the cost of lost inventory data and the impact on supply chain delays.",
+      "reference_context": {
+        "system": "AI-driven inventory management with real-time data ingestion",
+        "risk_scenario": "Data corruption during model training phase",
+        "cost_of_data_loss": "$10,000 per hour of supply chain delay",
+        "data_volume": "5TB daily",
+        "backup_frequency": "Current: Daily at midnight",
+        "regulatory_requirement": "Inventory data must be recoverable within 2 hours"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: RTO/RPO Definition — Are the proposed RTO and RPO values explicitly stated and justified by the provided cost and regulatory data?",
+        "Criterion 2: Strategy — Does the mitigation strategy specifically address the AI training pipeline risks?",
+        "Criterion 3: Feasibility — Is the proposed solution realistic given the data volume and backup frequency?"
+      ],
+      "student_answer": "**Business Continuity Risk Mitigation Strategy: AI Inventory Model Training Pipeline**\n\n**1. Risk Assessment:**\n\n*   **Risk:** Data corruption during AI model training due to system failures, software bugs, or malicious activity.\n*   **Impact:** Loss of inventory data, leading to inaccurate forecasts, supply chain disruptions, and significant financial losses.\n\n**2. Recovery Time Objective (RTO): 30 Minutes**\n\n*   **Justification:**  The regulatory requirement mandates recovery within 2 hours, but a 30-minute RTO is achievable with a robust, automated recovery process.  This timeframe minimizes the immediate impact of data loss, preventing cascading delays and allowing for rapid retraining of the AI model.  A longer RTO would significantly increase the cost of supply chain delays ($10,000/hour).\n\n**3. Recovery Point Objective (RPO): 15 Minutes**\n\n*   **Justification:**  Given the 5TB daily data volume, a 15-minute RPO is feasible with near-continuous data replication to a geographically separate, redundant storage system. This ensures that the AI model can be retrained using the most recent data, minimizing the impact on forecast accuracy.  A longer RPO (e.g., hourly) would be prohibitively expensive and would introduce unacceptable levels of data staleness.\n\n**4. Mitigation Strategy:**\n\n*   **Data Replication:** Implement near-continuous data replication from the primary training environment to a secondary, geographically diverse data center. Utilize a synchronous or asynchronous replication method based on performance requirements and RPO needs.\n*   **Data Integrity Checks:** Integrate automated data integrity checks (checksums, data validation rules) into the training pipeline.  Any detected corruption should trigger an immediate alert and halt the training process.\n*   **Version Control:** Maintain strict version control of the AI model, training data, and code.  This allows for easy rollback to a previous, known-good state in case of corruption.\n*   **Automated Recovery Process:** Develop an automated recovery process that, upon detection of data corruption, initiates the following steps:\n    *   Alerting: Notify relevant stakeholders (data science team, IT operations).\n    *   Data Restoration: Restore the latest validated data from the secondary data center.\n    *   Model Retraining: Automatically trigger the retraining of the AI model using the restored data.\n    *   Verification:  Post-retraining, perform automated validation checks to confirm model accuracy and stability.\n*   **Backup Strategy:** While near-continuous replication is the primary strategy, maintain daily backups (midnight) as a secondary safeguard. These backups should be stored offsite and tested regularly.\n*   **Testing & Simulation:** Conduct regular disaster recovery drills simulating data corruption scenarios to validate the effectiveness of the recovery process and ensure the RTO/RPO targets are met.\n\n**5. Cost Considerations:**\n\n*   The cost of implementing near-continuous data replication and automated recovery processes will be offset by the avoidance of significant financial losses associated with supply chain delays and inaccurate inventory forecasts.  The $10,000/hour delay cost provides a strong economic justification for the investment.\n\n**6. Monitoring & Review:**\n\n*   Continuously monitor the health and performance of the data replication system and the AI training pipeline.\n*   Regularly review and update the risk mitigation strategy based on changes in the system, data volume, or business requirements.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to address the specific constraints in the 'Additional Checks' section. It ignores the instruction to calculate targets based on a '15-minute regulatory requirement' (the prompt context stated 2 hours, but the check explicitly demanded a 15-minute constraint be used for calculation) and completely misses the requirement to address 'cloud migration' and 'single point of failure in Region A'. The student also failed to distinguish between MTD, RTO, and RPO as requested. While the general structure is clear (Dimension 5), the failure to follow specific, critical constraints regarding the scenario details and regulatory calculations results in a weak response (Dimension 1-2) that requires significant rework to be usable (Dimension 6)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Prepare reports summarizing operational results, financial performance, or accomplishments of specified objectives, goals, or plans.",
+      "task_type": "Executive Reporting & Performance Analysis",
+      "user_prompt": "You are a Business Continuity Planner. Prepare an executive summary report on the results of the recent Business Continuity Plan (BCP) tabletop exercise for a pharmaceutical company. The report must summarize the operational results, highlight the financial performance impact of the simulated outage, and evaluate the effectiveness of the communication protocols. Include specific RTO and RPO achievement metrics and recommendations for improvement.",
+      "reference_context": {
+        "exercise_scenario": "Ransomware attack on R&D database",
+        "simulated_outage_duration": "8 hours",
+        "actual_recovery_time": "10 hours",
+        "data_loss": "2 hours of R&D logs",
+        "financial_impact": "$120,000 in lost productivity and potential fines",
+        "communication_protocol_status": "Delayed notification to senior leadership by 45 minutes",
+        "target_rto": "6 hours",
+        "target_rpo": "1 hour"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the RTO and RPO achievement metrics (10h vs 6h, 2h vs 1h) correctly reported?",
+        "Criterion 2: Financial Analysis — Is the financial impact clearly quantified and linked to the operational downtime?",
+        "Criterion 3: Actionable Insights — Does the report provide clear recommendations based on the communication protocol failure?"
+      ],
+      "student_answer": "**Executive Summary: Business Continuity Plan Tabletop Exercise – Ransomware Attack on R&D Database**\n\n**Date:** October 26, 2023\n\n**Subject:** Post-Exercise Analysis and Recommendations\n\n**1. Executive Summary:**\n\nThe recent tabletop exercise simulating a ransomware attack on the R&D database revealed critical areas for improvement within the company’s Business Continuity Plan (BCP). While the exercise demonstrated a foundational understanding of recovery procedures, significant challenges were encountered regarding recovery time objectives (RTOs) and data loss. The simulated outage duration exceeded the target RTO, resulting in a measurable financial impact and highlighting deficiencies in communication protocols. Immediate action is required to address these vulnerabilities and strengthen the BCP’s resilience.\n\n**2. Operational Results:**\n\n*   **Simulated Outage Duration:** 8 hours\n*   **Actual Recovery Time:** 10 hours – **Failure to meet RTO (Target: 6 hours).**\n*   **Data Loss:** 2 hours of R&D logs – **Failure to meet RPO (Target: 1 hour).**\n*   **Recovery Procedures:** The team successfully initiated the incident response plan and activated the secondary data backup system. However, the restoration process was hampered by unforeseen dependencies and manual intervention required for database reconstruction.\n*   **System Failover:**  The failover to the secondary system functioned as designed, but the extended recovery time indicates a need for optimization of the restoration process.\n\n**3. Financial Impact:**\n\n*   **Estimated Loss:** $120,000 – comprised of lost productivity during the outage and potential regulatory fines associated with data loss.  A more detailed financial impact assessment is recommended following a full-scale simulation.\n\n**4. Communication Protocol Evaluation:**\n\n*   **Notification Delay:** Senior leadership was notified of the incident 45 minutes after the initial detection. This delay significantly impacted decision-making and coordinated response efforts.\n*   **Communication Channels:** While the primary communication channels (email and phone) functioned, reliance on these channels proved insufficient for rapid dissemination of critical information.\n*   **Stakeholder Engagement:**  Communication with key stakeholders (legal, regulatory, and external partners) was fragmented and lacked a centralized coordination point.\n\n**5. Recommendations:**\n\n*   **RTO Reduction:** Implement automation and streamlined processes within the database restoration procedure to reduce the actual recovery time to within the 6-hour target. Investigate and eliminate manual dependencies.\n*   **RPO Improvement:** Enhance data backup frequency and implement more robust data replication strategies to minimize data loss.\n*   **Communication Protocol Enhancement:** Establish a dedicated, redundant communication system (e.g., secure messaging platform) for rapid notification of senior leadership and key stakeholders. Develop a comprehensive communication plan with pre-defined roles and responsibilities. Conduct regular communication drills.\n*   **Full-Scale Simulation:** Conduct a full-scale simulation incorporating a wider range of stakeholders and a more complex attack scenario to validate the BCP’s effectiveness.\n*   **Dependency Mapping:** Conduct a thorough dependency mapping exercise to identify and mitigate potential bottlenecks in the recovery process.\n\n\n\nPrepared by: [Your Name/BCP Team]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly summarizes the provided scenario data and follows a professional executive summary structure. However, it fails the 'Additional Checks' constraints which are critical for a high-quality response: it does not calculate new targets based on the specified regulatory and churn data, it does not distinguish between MTD, RTO, and RPO (using them interchangeably or without defining MTD), and it completely ignores the specific cloud migration risk (single point of failure in Region A) mentioned in the context. While the writing is clear and the core task is addressed, the omission of these specific analytical requirements prevents it from being industry-standard (Score 5) or even fully complete (Score 4), resulting in a score of 3 for Correctness, Completeness, Best Practices, and Domain Accuracy. Autonomy is also 3 because a client would require the missing risk analysis and target recalculation before accepting the report."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze corporate intelligence data to identify trends, patterns, or warnings indicating threats to security of people, assets, information, or infrastructure.",
+      "task_type": "Threat Intelligence & Risk Quantification",
+      "user_prompt": "You are a Business Continuity Planner. Analyze the provided corporate intelligence report regarding a new ransomware campaign targeting financial institutions. Identify the specific threats to the bank's infrastructure, quantify the potential financial impact of a successful attack based on the provided downtime costs, and define the Recovery Time Objective (RTO) and Recovery Point Objective (RPO) required to mitigate this specific threat vector. Include a communication protocol with specific escalation paths for the security team.",
+      "reference_context": {
+        "intelligence_report": "New ransomware variant 'FinLock' targets cloud API gateways. 85% of victims experience 48+ hours of downtime. Average data loss is 4 hours of transaction logs.",
+        "system_architecture": "Primary database in Region A (US-East), Secondary in Region B (US-West), Cloud API Gateway, Mobile App Frontend",
+        "business_impact_data": {
+          "downtime_cost_per_minute": "$15,000",
+          "data_loss_cost_per_mb": "$500",
+          "reputation_damage_factor": "1.5x operational loss"
+        },
+        "current_rpo": "4 hours",
+        "current_rto": "24 hours",
+        "security_team_contacts": {
+          "CISO": "ciso@bank.com",
+          "Incident_Response_Lead": "ir-lead@bank.com",
+          "External_Cyber_Firm": "emergency@cyberfirm.com"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Risk Quantification — Does the response accurately calculate the financial impact based on the 48-hour downtime scenario and data loss metrics?",
+        "Criterion 2: RTO/RPO Alignment — Are the proposed RTO and RPO values adjusted to address the specific 48-hour threat window and 4-hour data loss risk?",
+        "Criterion 3: Communication Protocol — Does the response include a clear escalation path with specific contact verification steps for the security team?"
+      ],
+      "student_answer": "**Business Continuity Assessment: FinLock Ransomware Threat**\n\n**1. Threat Analysis:**\n\n*   **Specific Threats:** FinLock ransomware specifically targets cloud API gateways. This represents a critical vulnerability as it could compromise access to core banking systems and customer data. The mobile app frontend is also a potential entry point.\n*   **Infrastructure Vulnerability:** Cloud API Gateway is the primary target. Compromise here could lead to lateral movement within the network and data exfiltration.\n\n**2. Financial Impact Quantification:**\n\n*   **Downtime Cost:** 85% of victims experience 48+ hours of downtime.\n    *   Estimated Downtime: 48 hours\n    *   Cost: 48 hours * $15,000/minute = $1,080,000\n*   **Data Loss Cost:** 4 hours of transaction logs lost.\n    *   Estimated Data Loss: 4 hours\n    *   Cost: 4 hours * $500/MB (assuming average log size) = $2,000\n*   **Reputation Damage:** 1.5x operational loss.\n    *   Reputation Cost: $1,080,000 * 1.5 = $1,620,000\n*   **Total Estimated Financial Impact:** $1,080,000 + $2,000 + $1,620,000 = **$2,702,000**\n\n**3. RTO & RPO Definition:**\n\n*   **Recovery Time Objective (RTO):** 8 hours.  Given the 48+ hour downtime experienced by previous victims, a shorter RTO is crucial to minimize financial impact and reputational damage.\n*   **Recovery Point Objective (RPO):** 2 hours.  The ransomware’s ability to exfiltrate transaction logs for 4 hours necessitates an RPO of 2 hours to prevent significant data loss.\n\n**4. Communication Protocol & Escalation Paths:**\n\n*   **Initial Detection:** Security Team (Incident Response Lead) – ir-lead@bank.com\n*   **Escalation 1 (Immediate):** Incident Response Lead immediately notifies CISO – ciso@bank.com.  Subject: “Urgent: FinLock Ransomware Threat – API Gateway Compromise”\n*   **Escalation 2 (Critical):** CISO notifies External Cyber Firm – emergency@cyberfirm.com. Subject: “Critical: FinLock Ransomware – Immediate Assistance Required”\n*   **Regular Updates:** Incident Response Lead provides hourly updates to CISO and External Cyber Firm via secure channel (e.g., encrypted messaging).\n*   **Stakeholder Communication:** CISO manages communication with executive leadership regarding the incident and recovery efforts.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies threats and calculates financial impact based on the provided text, earning a 3 for Correctness and Completeness. However, it fails significantly on Domain Accuracy (Score 2) by ignoring the specific 'Additional Checks' which required distinguishing between MTD, RTO, and RPO, and calculating targets based on a '15-minute regulatory requirement' and 'customer churn' data not present in the main context but implied as a constraint for the task. The student simply adjusted RTO/RPO arbitrarily without using the required regulatory logic. It also missed the specific instruction to address the single point of failure in Region A. While the communication protocol is clear (Score 4), the failure to follow specific calculation constraints and regulatory distinctions prevents a higher score in accuracy and autonomy."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Conduct or oversee collection of corporate intelligence to avoid fraud, financial crime, cyber attack, terrorism, and infrastructure failure.",
+      "task_type": "Infrastructure Failure Scenario & Recovery Planning",
+      "user_prompt": "You are a Business Continuity Planner. A regional bank is undergoing a digital transformation that introduces new cloud-based transaction processing. Based on the provided system architecture and business impact data, identify the critical functions, calculate the maximum tolerable downtime (MTD), and propose specific RTO and RPO values for the core transaction engine. Justify your choices based on regulatory requirements and customer impact. Define the communication protocol including specific escalation paths and contact verification steps.",
+      "reference_context": {
+        "system_architecture": "Primary database in Region A (US-East), Secondary in Region B (US-West), Cloud API Gateway, Mobile App Frontend",
+        "business_impact_data": {
+          "transaction_latency_increase": "200ms causes 5% customer churn",
+          "downtime_cost_per_minute": "$15,000",
+          "regulatory_requirement": "Transactions must be recoverable within 15 minutes of failure"
+        },
+        "current_rpo": "4 hours",
+        "current_rto": "24 hours",
+        "escalation_contacts": {
+          "IT_Director": "it-director@bank.com",
+          "Compliance_Officer": "compliance@bank.com",
+          "Regional_Manager": "regional-mgr@bank.com"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the RTO and RPO values logically derived from the provided constraints and regulatory limits (15 minutes)?",
+        "Criterion 2: Completeness — Did the response identify all critical functions and address both financial and operational impacts?",
+        "Criterion 3: Communication Protocol — Does the response include specific escalation paths and contact verification steps for the IT and Compliance teams?"
+      ],
+      "student_answer": "```json\n{\n  \"critical_functions\": [\n    \"Core Transaction Processing\",\n    \"Funds Transfer\",\n    \"Account Balance Retrieval\",\n    \"Payment Processing\"\n  ],\n  \"mtd\": \"15 minutes\",\n  \"rto\": \"15 minutes\",\n  \"rpo\": \"1 hour\",\n  \"justification\": \"Regulatory requirements mandate transaction recovery within 15 minutes. A 1-hour RPO aligns with this, minimizing data loss. The MTD of 15 minutes ensures minimal operational disruption.  A 15-minute RTO is achievable with the geographically redundant architecture and cloud-based infrastructure.  The current 4-hour RPO is excessively long, leading to significant financial losses and customer dissatisfaction.  The 200ms latency threshold causing 5% churn necessitates a faster recovery time.  The downtime cost per minute ($15,000) further reinforces the need for a reduced RTO.\",\n  \"communication_protocol\": {\n    \"escalation_path\": [\n      \"Initial Report: IT Support Team\",\n      \"Level 1 Escalation: IT Director\",\n      \"Level 2 Escalation: Compliance Officer\",\n      \"Level 3 Escalation: Regional Manager\"\n    ],\n    \"contact_verification\": \"All escalations will require confirmation of the reporter's identity via multi-factor authentication (MFA) and a verbal confirmation of the incident details.  The IT Director will verify the escalation with the Compliance Officer and Regional Manager.\",\n    \"communication_channels\": [\n      \"PagerDuty\",\n      \"Secure Messaging Platform (e.g., Slack with encryption)\",\n      \"Phone (for critical escalations)\"\n    ],\n    \"reporting_frequency\": \"Real-time updates during an incident, followed by detailed post-incident reports within 24 hours.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies critical functions and calculates the MTD, RTO, and RPO based on the regulatory constraint (15 minutes) and business impact data. The RPO of 1 hour is a logical compromise between the 15-minute regulatory recovery window and the current 4-hour baseline, though a stricter RPO (e.g., 5-10 mins) might be argued for a 15-minute RTO to ensure data integrity. The communication protocol is well-structured with clear escalation paths and verification steps. However, the response misses the specific instruction to address the risk of the cloud migration, particularly the single point of failure in Region A, which is a key part of the context. Additionally, the justification for the RPO could be more rigorous regarding the relationship between RPO and MTD. Overall, it is a strong, professional submission but lacks the specific architectural risk analysis requested, preventing a perfect score."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Identify individual or transaction targets to direct intelligence collection.",
+      "task_type": "Targeted Intelligence Collection & Business Impact Analysis",
+      "user_prompt": "You are a Business Continuity Planner. You have identified a pattern of targeted fraud attempts against high-value transaction accounts. Based on the provided intelligence on transaction targets and the associated business impact data, determine the critical functions that require immediate protection. Calculate the financial loss if these targets are compromised for 30 minutes versus 4 hours. Propose specific RTO and RPO values for the fraud detection system and the core transaction engine. Outline a communication protocol with specific escalation paths for the fraud investigation unit.",
+      "reference_context": {
+        "intelligence_targets": "High-value accounts (> $50k) and international wire transfers",
+        "system_architecture": "Fraud Detection Engine (Real-time), Core Transaction Engine, International Gateway",
+        "business_impact_data": {
+          "fraud_loss_per_minute": "$25,000",
+          "regulatory_fine_potential": "$500,000 per incident",
+          "customer_trust_recovery_time": "72 hours"
+        },
+        "current_rpo": "1 hour",
+        "current_rto": "4 hours",
+        "fraud_unit_contacts": {
+          "Fraud_Manager": "fraud-mgr@bank.com",
+          "Legal_Counsel": "legal@bank.com",
+          "Regulatory_Affairs": "regulatory@bank.com"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Risk Quantification — Does the response accurately quantify the financial loss for 30-minute vs 4-hour compromise scenarios including fines?",
+        "Criterion 2: RTO/RPO Definition — Are the proposed RTO and RPO values for the fraud detection system realistic and aligned with the real-time nature of the threat?",
+        "Criterion 3: Communication Protocol — Does the response include specific escalation paths and contact verification steps for the fraud investigation unit and legal counsel?"
+      ],
+      "student_answer": "**Critical Functions Requiring Immediate Protection:**\n\n1.  Fraud Detection Engine\n2.  Core Transaction Engine\n3.  International Gateway\n\n**Financial Loss Calculation:**\n\n*   **30-Minute Compromise:**\n    *   Loss per minute: $25,000\n    *   Total loss: 30 minutes * $25,000/minute = $750,000\n*   **4-Hour Compromise:**\n    *   Loss per minute: $25,000\n    *   Total loss: 4 hours * 60 minutes/hour * $25,000/minute = $6,000,000\n\n**RTO and RPO Values:**\n\n*   **Fraud Detection Engine:**\n    *   RTO: 15 minutes\n    *   RPO: 0 minutes (Real-time monitoring)\n*   **Core Transaction Engine:**\n    *   RTO: 30 minutes\n    *   RPO: 15 minutes\n*   **International Gateway:**\n    *   RTO: 45 minutes\n    *   RPO: 30 minutes\n\n**Communication Protocol & Escalation Paths:**\n\n1.  **Initial Detection:** Fraud Detection Engine alerts the Fraud Manager (fraud-mgr@bank.com) immediately.\n2.  **Level 1 Escalation (Within 5 minutes):** Fraud Manager notifies Legal Counsel (legal@bank.com) and Regulatory Affairs (regulatory@bank.com).\n3.  **Level 2 Escalation (Within 15 minutes):** If the incident escalates beyond initial containment, the Fraud Manager immediately contacts the CEO/CISO.\n4.  **Incident Command:** A dedicated Incident Command Team (Fraud Manager, Legal Counsel, Regulatory Affairs, IT Security Lead) is activated.\n5.  **Regular Updates:** The Fraud Manager provides hourly updates to all stakeholders via secure email and conference calls.\n6.  **Post-Incident Review:** Within 72 hours of the incident, a comprehensive post-incident review is conducted, documenting lessons learned and recommendations for improvement.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies critical functions and performs the basic financial loss calculations accurately. However, it fails significantly on the 'Additional Checks' and specific task requirements. It ignores the instruction to calculate new RTO/RPO targets based on a '15-minute regulatory requirement' and 'customer churn' data, instead proposing arbitrary values. It also fails to distinguish between MTD, RTO, and RPO conceptually, and completely omits the required analysis of the cloud migration risk (single point of failure in Region A). While the communication protocol is structured, the lack of specific risk-based justification and the omission of the cloud migration constraint prevent this from being an industry-standard response."
+    }
+  ]
+}

@@ -1,0 +1,428 @@
+{
+  "meta": {
+    "job_title": "Investment Fund Managers",
+    "job_id": "inv_fund_mgr",
+    "onet_code": "11-3031.03",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 20,
+    "evaluated_tasks": 8,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.46,
+      "dimensions": {
+        "Correctness": 2.25,
+        "Completeness": 2.38,
+        "Best Practices": 2.12,
+        "Domain Accuracy": 2.25,
+        "Clarity": 3.5,
+        "Autonomy": 2.25
+      },
+      "evaluated_tasks": 8,
+      "scale_max": 5
+    },
+    "total_time_seconds": 515.38
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Manage investment funds to maximize return on client investments.",
+      "task_type": "Portfolio Construction and Asset Allocation",
+      "user_prompt": "Given a client portfolio of $5M with a target annual return of 8% and a maximum drawdown tolerance of 12%, analyze the provided asset class performance data. Construct a new asset allocation strategy that rebalances the portfolio to meet these goals while minimizing correlation risk. Provide the specific percentage allocation for each asset class and justify the changes based on the provided market outlook.",
+      "reference_context": {
+        "current_portfolio": {
+          "US_Equities": 40,
+          "Intl_Equities": 20,
+          "Fixed_Income": 30,
+          "Alternatives": 10
+        },
+        "market_outlook": "US Equities expected to underperform due to valuation concerns; Fixed Income yields rising; Alternatives showing low correlation.",
+        "risk_metrics": {
+          "current_sharpe": 1.2,
+          "target_sharpe": 1.5,
+          "current_var_95": 14.5
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the proposed allocation mathematically meet the return and risk constraints?",
+        "Criterion 2: Completeness — did it address all asset classes and provide specific percentage changes?",
+        "Criterion 3: Best practices — is the strategy aligned with modern portfolio theory and current market conditions?"
+      ],
+      "student_answer": "```json\n{\n  \"new_asset_allocation\": {\n    \"US_Equities\": 30,\n    \"Intl_Equities\": 35,\n    \"Fixed_Income\": 20,\n    \"Alternatives\": 15\n  },\n  \"justification\": \"Given the market outlook of US equity underperformance and rising fixed income yields, we are reducing US equity exposure from 40% to 30%. Simultaneously, we are increasing international equity exposure to 35% to capitalize on potential growth opportunities outside the US. Fixed income allocation is reduced to 20% to reflect rising yields. Finally, we are increasing the allocation to alternatives to 15% due to their low correlation and potential to enhance portfolio returns and reduce overall volatility. This shift aims to improve the Sharpe ratio from 1.2 to a target of 1.5 while maintaining a maximum drawdown of 12%.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission fails to meet the core requirements of the task. It does not explicitly calculate or estimate the impact on the Sharpe ratio or VaR as requested, instead merely stating the goal. The justification for reducing Fixed Income to 20% while yields are rising is logically weak; typically, rising yields make fixed income more attractive for income, and the student fails to explain how this reduction helps minimize correlation risk or meet the 12% drawdown constraint. The allocation shift to International Equities (35%) significantly increases volatility risk without a detailed hedging strategy or correlation matrix analysis, which is a major gap for a risk analyst. The response is too generic and lacks the quantitative rigor expected of an industry-standard portfolio strategy."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Select specific investments or investment mixes for purchase by an investment fund.",
+      "task_type": "Security Selection and Due Diligence",
+      "user_prompt": "Select three specific equities from the provided list of candidates for a new ESG-focused fund. The fund must comply with SEC Regulation S-K regarding disclosure of ESG factors. For each selection, provide a quantitative valuation justification using P/E and PEG ratios compared to sector medians, and calculate the expected contribution to portfolio volatility based on historical beta.",
+      "reference_context": {
+        "candidate_securities": [
+          {
+            "ticker": "TECH_A",
+            "sector": "Technology",
+            "pe": 25,
+            "peg": 1.8,
+            "beta": 1.2,
+            "esg_score": 85
+          },
+          {
+            "ticker": "TECH_B",
+            "sector": "Technology",
+            "pe": 18,
+            "peg": 1.1,
+            "beta": 1.4,
+            "esg_score": 40
+          },
+          {
+            "ticker": "ENERGY_C",
+            "sector": "Energy",
+            "pe": 12,
+            "peg": 0.9,
+            "beta": 1.1,
+            "esg_score": 30
+          },
+          {
+            "ticker": "ENERGY_D",
+            "sector": "Energy",
+            "pe": 15,
+            "peg": 1.3,
+            "beta": 0.9,
+            "esg_score": 75
+          }
+        ],
+        "fund_constraints": {
+          "min_esg_score": 70,
+          "max_sector_weight": 25,
+          "target_beta": 1.05
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Compliance — are all selected securities compliant with the minimum ESG score and SEC disclosure requirements?",
+        "Criterion 2: Quantitative Justification — is the selection supported by P/E, PEG, and Beta analysis against sector medians?",
+        "Criterion 3: Portfolio Fit — does the final mix meet the target beta and sector weight constraints?"
+      ],
+      "student_answer": "**Equities Selected:**\n\n1.  **TECH_A**\n2.  **ENERGY_D**\n3.  **TECH_B**\n\n**Justification:**\n\n**1. TECH_A**\n\n*   **Sector:** Technology\n*   **P/E Ratio:** 25\n*   **PEG Ratio:** 1.8\n*   **Beta:** 1.2\n*   **ESG Score:** 85\n\n    *   **Valuation:** TECH\\_A’s P/E of 25 is above the Technology sector median (assumed to be around 20), but its PEG ratio of 1.8 is slightly below the sector median (around 2.0). This suggests it may be slightly undervalued relative to its growth potential.\n*   **Volatility Contribution:** Beta of 1.2 will contribute 1.2% to portfolio volatility.\n\n**2. ENERGY_D**\n\n*   **Sector:** Energy\n*   **P/E Ratio:** 15\n*   **PEG Ratio:** 1.3\n*   **Beta:** 0.9\n*   **ESG Score:** 75\n\n    *   **Valuation:** ENERGY\\_D’s P/E of 15 is below the Energy sector median (assumed to be around 17), and its PEG ratio of 1.3 is slightly above the sector median (around 1.2). This suggests it may be slightly overvalued relative to its growth potential.\n*   **Volatility Contribution:** Beta of 0.9 will contribute 0.9% to portfolio volatility.\n\n**3. TECH_B**\n\n*   **Sector:** Technology\n*   **P/E Ratio:** 18\n*   **PEG Ratio:** 1.1\n*   **Beta:** 1.4\n*   **ESG Score:** 40\n\n    *   **Valuation:** TECH\\_B’s P/E of 18 is below the Technology sector median (assumed to be around 20), and its PEG ratio of 1.1 is slightly below the sector median (around 1.2). This suggests it may be slightly undervalued relative to its growth potential.\n*   **Volatility Contribution:** Beta of 1.4 will contribute 1.4% to portfolio volatility.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on multiple critical dimensions. First, it violates the explicit fund constraint of a minimum ESG score of 70 by selecting TECH_B (ESG 40), rendering the portfolio non-compliant. Second, it ignores the sector weight constraint (max 25%) by selecting two Technology stocks (TECH_A and TECH_B), which would likely exceed the limit depending on allocation. Third, the volatility contribution calculation is conceptually wrong; beta is a relative measure of volatility against the market, not a direct percentage contribution to portfolio volatility without weighting. Fourth, the submission completely ignores the Additional Checks requirements to calculate Sharpe ratio and Value at Risk (VaR). Finally, the valuation justification relies on arbitrary, unprovided assumptions for sector medians rather than using the provided data or acknowledging the lack of data. The output is not usable for a client due to these compliance and analytical failures."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Monitor financial or operational performance of individual investments to ensure portfolios meet risk goals.",
+      "task_type": "Performance Monitoring and Risk Adjustment",
+      "user_prompt": "Review the quarterly performance of a $20M portfolio against its benchmark. The portfolio has underperformed by 1.5% with a tracking error of 4%. Calculate the Information Ratio and determine if the deviation is statistically significant. Propose a specific rebalancing action to reduce tracking error while maintaining the target return, citing MiFID II requirements for best execution and transaction cost analysis.",
+      "reference_context": {
+        "portfolio_return": 6.5,
+        "benchmark_return": 8.0,
+        "tracking_error": 4.0,
+        "risk_free_rate": 2.0,
+        "transaction_costs": {
+          "bid_ask_spread": 0.05,
+          "market_impact": 0.1
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — is the Information Ratio and statistical significance calculation correct?",
+        "Criterion 2: Regulatory Adherence — does the response explicitly reference MiFID II best execution and TCA obligations?",
+        "Criterion 3: Actionability — is the proposed rebalancing strategy specific and likely to reduce tracking error without excessive cost?"
+      ],
+      "student_answer": "**Information Ratio:**\n\n(Portfolio Return - Benchmark Return) / Tracking Error = (6.5 - 8.0) / 4.0 = -1.5 / 4.0 = -0.375\n\n**Statistical Significance:**\n\nDetermining statistical significance requires a statistical test (e.g., t-test) and historical data. Without that, we can only assess the relative magnitude of the underperformance.  The negative Information Ratio (-0.375) indicates consistently underperforming the benchmark.  Further analysis with historical data is needed to confirm if this deviation is statistically significant.\n\n**Rebalancing Action:**\n\nPropose a 10% reduction in the portfolio’s exposure to the sector with the highest weighting (currently assumed to be the sector contributing most to the underperformance – further analysis needed to identify this sector) and a corresponding 10% increase in exposure to the sector with the lowest weighting. This will reduce tracking error.\n\n**MiFID II & Best Execution:**\n\n*   **Best Execution:**  We will seek best execution by obtaining quotes from at least three different liquidity providers for each security involved in the rebalancing.  This includes direct market access (DMA) and broker-dealer quotes.\n*   **Transaction Cost Analysis (TCA):**  A detailed TCA will be conducted post-rebalancing to assess the actual transaction costs incurred. This will include:\n    *   Bid-Ask Spread Analysis:  The 0.05% bid-ask spread is factored into the cost of each trade.\n    *   Market Impact Analysis:  The 0.1% market impact will be assessed through simulations and potentially small, test trades to determine the optimal trade size to minimize price slippage.  We will aim to execute large trades in smaller blocks to mitigate market impact.\n    *   Brokerage Fees:  All brokerage fees will be included in the TCA.\n*   **Documentation:**  All quotes, trade execution details, and the TCA will be meticulously documented to demonstrate compliance with MiFID II’s best execution obligations.  The rationale for the rebalancing strategy and the consideration of transaction costs will be clearly articulated.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        4,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly calculates the Information Ratio (-0.375) and appropriately notes the lack of historical data for a formal statistical significance test. However, it fails significantly on Completeness and Best Practices by ignoring the explicit instruction to calculate or estimate the impact on Sharpe ratio and Value at Risk (VaR). The proposed rebalancing action is vague and generic ('10% reduction'), lacking specific numerical targets or a concrete strategy to reduce tracking error while maintaining return, which is a critical gap for a Senior Strategist role. While the MiFID II section is well-structured, the failure to address the specific analytical requirements (Sharpe/VaR) and the generic nature of the portfolio adjustment prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Select or direct the execution of trades.",
+      "task_type": "Trade Execution Strategy",
+      "user_prompt": "Direct the execution of a $50M block trade in a low-liquidity corporate bond. Develop an algorithmic trading strategy (e.g., VWAP, TWAP, or Implementation Shortfall) to minimize market impact. Justify the choice of algorithm using a quantitative analysis of the bond's average daily volume and volatility, and outline the disclosure required under SEC Rule 10b-18 regarding safe harbor provisions.",
+      "reference_context": {
+        "bond_issuer": "Corp_X",
+        "trade_size": 50000000,
+        "avg_daily_volume": 2000000,
+        "volatility": 15,
+        "market_hours": "09:30 - 16:00 EST"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Strategy Selection — is the chosen algorithm appropriate for the liquidity profile and trade size?",
+        "Criterion 2: Quantitative Justification — does the analysis of ADV and volatility support the execution choice?",
+        "Criterion 3: Regulatory Compliance — are SEC Rule 10b-18 safe harbor conditions correctly identified and addressed?"
+      ],
+      "student_answer": "**Algorithmic Trading Strategy: TWAP (Time-Weighted Average Price)**\n\n**Rationale:** Given the low liquidity of Corp_X’s bond (average daily volume of 2M and volatility of 15%), a TWAP strategy is the most appropriate. TWAP aims to execute the entire trade size over the available market hours (09:30 - 16:00 EST) at a price approximating the average price during that period. This minimizes market impact by spreading the order flow across the trading day, reducing the risk of significant price deviations caused by a large, concentrated order. VWAP, while theoretically sound, can be more sensitive to short-term price fluctuations in low-volume markets. Implementation Shortfall, while potentially more efficient, requires more sophisticated monitoring and adjustments and may not be optimal for this specific scenario.\n\n**Execution Plan:**\n\n1.  **Order Splitting:** The 50M trade will be divided into 1000 smaller orders, each totaling 500,000.\n2.  **Order Timing:** Orders will be submitted at regular intervals (e.g., every 30 seconds) throughout the market hours (09:30 - 16:00 EST). The initial order placement will be staggered to avoid any immediate price reaction.\n3.  **Order Size Adjustment (Dynamic):**  A small, pre-defined percentage (e.g., 5%) of the remaining trade size will be added to the next order if the TWAP price calculated over the previous 30-minute period is significantly different from the current market price. This dynamic adjustment helps to maintain alignment with the target TWAP.\n4.  **Cancellation Strategy:**  Orders will be automatically cancelled if they are executed or if the TWAP price deviates by more than 0.1% from the current market price for a sustained period (e.g., 5 minutes).\n5.  **Monitoring:** Continuous monitoring of the TWAP price and order execution progress is crucial.  The system will alert the trading desk to any significant deviations or unexpected events.\n\n**Quantitative Analysis Justification:**\n\n*   **Low Volume (2M):**  A large order will undoubtedly move the price. TWAP’s spread of orders mitigates this effect.\n*   **High Volatility (15):**  High volatility increases the risk of adverse price movements during the execution. TWAP’s gradual execution reduces the exposure to these fluctuations.\n*   **Market Hours:** Focusing execution within the open market hours (09:30 - 16:00 EST) maximizes the opportunity to achieve the TWAP target.\n\n**SEC Rule 10b-18 Disclosure (Safe Harbor Provisions):**\n\n1.  **Written Procedures:**  Detailed, written procedures outlining the algorithmic trading strategy, order execution rules, monitoring protocols, and cancellation procedures will be maintained and readily available for review by the SEC.\n2.  **Testing and Validation:**  The algorithm will have undergone rigorous backtesting and simulation using historical data to demonstrate its effectiveness and minimize the risk of unintended consequences.  Documentation of these tests will be provided.\n3.  **Risk Controls:**  Specific risk controls will be implemented, including:\n    *   **Price Thresholds:**  Orders will be automatically cancelled if the price deviates beyond a pre-defined threshold (e.g., +/- 0.25% of the TWAP).\n    *   **Volume Limits:**  Daily and hourly volume limits will be set to prevent excessive trading activity.\n    *   **Circuit Breakers:**  Automatic halts to trading if extreme price movements occur.\n4.  **Personnel Training:**  All personnel involved in the execution of the algorithm will be thoroughly trained on the procedures and risk controls.\n5.  **Ongoing Monitoring and Review:**  The algorithm’s performance will be continuously monitored, and the procedures will be reviewed and updated at least quarterly, or more frequently if necessary, to ensure they remain effective and compliant with SEC regulations.\n6.  **Disclosure of Potential Conflicts of Interest:** Any potential conflicts of interest related to the algorithm’s design or execution will be disclosed.\n\n**Disclaimer:** This plan is a preliminary outline and requires further refinement and detailed documentation to meet all SEC requirements. Legal counsel should be consulted to ensure full compliance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on domain accuracy and correctness. First, the quantitative analysis is mathematically impossible: executing a $50M trade against a $2M average daily volume (25x ADV) in a single day is not feasible via TWAP without causing catastrophic market impact; the strategy ignores the fundamental liquidity constraint. Second, the execution plan is flawed: splitting into 1,000 orders of $500k each implies a frequency that is unrealistic for low-liquidity corporate bonds (which trade infrequently), and the '30-second' interval is arbitrary and dangerous. Third, the SEC Rule 10b-18 section is factually incorrect; Rule 10b-18 applies to issuers repurchasing their own stock, not to third-party block trades of corporate bonds. The student conflates stock buyback safe harbors with bond trading compliance. Finally, the submission completely ignores the 'Additional Checks' requirement to calculate Sharpe ratio or VaR impacts, rendering the risk analysis incomplete."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop or implement fund investment policies or strategies.",
+      "task_type": "Policy Development and Governance",
+      "user_prompt": "Draft a revised Investment Policy Statement (IPS) for a new pension fund client. The IPS must incorporate a 401(k) compliance framework and address the fiduciary duty under ERISA. Include a specific section on derivative usage limits, justifying the VaR (Value at Risk) limits using a 99% confidence interval over a 10-day horizon. Ensure all conflict of interest disclosures are explicit.",
+      "reference_context": {
+        "client_profile": {
+          "risk_tolerance": "Moderate",
+          "investment_horizon": "20 years",
+          "liability_profile": "Long-term pension payouts"
+        },
+        "current_policy_gaps": [
+          "No explicit derivative limits",
+          "Outdated conflict of interest language"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Regulatory Alignment — does the IPS explicitly address ERISA fiduciary duties and 401(k) compliance?",
+        "Criterion 2: Quantitative Rigor — are the VaR limits calculated correctly using the specified confidence interval and time horizon?",
+        "Criterion 3: Disclosure — are conflicts of interest clearly defined and mitigated according to fiduciary standards?"
+      ],
+      "student_answer": "**Investment Policy Statement**\n\n**Pension Fund Name:** [Client Pension Fund Name]\n\n**Date:** October 26, 2023\n\n**1. Purpose**\n\nThis Investment Policy Statement (IPS) outlines the investment objectives, strategies, and guidelines for the [Client Pension Fund Name] (“the Fund”). It establishes the framework for managing the Fund’s assets in accordance with fiduciary duties under the Employee Retirement Income Security Act of 1974 (ERISA) and to meet the long-term pension obligations of its participants.\n\n**2. Investment Objectives**\n\n*   **Primary Objective:** To achieve a long-term rate of return sufficient to meet projected pension liabilities, considering the Fund’s moderate risk tolerance and 20-year investment horizon.\n*   **Secondary Objective:** To provide a stable and predictable stream of returns while managing portfolio volatility.\n*   **Target Return:**  8% annually, net of fees, adjusted for inflation.\n\n**3. Investment Strategy**\n\n*   **Asset Allocation:** The Fund will employ a diversified asset allocation strategy, primarily focused on equities, fixed income, and alternative investments.\n    *   **Equities (55%):** Primarily U.S. large-cap equities, with allocations to international equities (developed and emerging markets) to enhance diversification and growth potential.\n    *   **Fixed Income (35%):** A blend of investment-grade U.S. government and corporate bonds, with a smaller allocation to high-yield bonds to enhance yield.\n    *   **Alternative Investments (10%):**  Real estate, private credit, and infrastructure investments to provide diversification and potentially enhance returns.\n*   **Investment Style:**  A blend of passive and active management strategies will be utilized. Passive strategies (index funds and ETFs) will form the core of the portfolio, while active management will be employed in select sectors and asset classes to pursue alpha generation.\n\n**4. 401(k) Compliance Framework**\n\n*   **Participant Investment Choices:** The Fund will offer a menu of investment options consistent with the overall asset allocation strategy, including target-date funds and individual funds.\n*   **Automatic Enrollment:**  [Specify automatic enrollment policy – e.g., default enrollment into a target-date fund].\n*   **Vesting Schedule:** [Outline the vesting schedule for employer contributions].\n*   **Recordkeeping:**  Accurate and timely recordkeeping of participant accounts and contributions will be maintained.\n*   **Annual Disclosure:** Participants will receive an annual statement detailing their account balance, investment performance, and fee information.\n\n**5. Fiduciary Duty & ERISA Compliance**\n\n*   The Investment Manager acknowledges and accepts the fiduciary duties under ERISA, including the duty of care, duty of loyalty, and duty of prudence.\n*   Investment decisions will be made solely in the best interest of the Fund’s participants and beneficiaries.\n*   All investment activities will comply with applicable ERISA regulations, including reporting requirements and prohibited transactions.\n*   Independent Trustee Services will be engaged to provide oversight and independent review of the Fund’s investment strategy and performance.\n\n**6. Derivative Usage Limits**\n\n*   **General Policy:** Derivatives will be used sparingly and strategically to enhance risk-adjusted returns, manage portfolio duration, and hedge specific risks.\n*   **Specific Limits:**\n    *   **Total Derivative Exposure:** Not to exceed 10% of the Fund’s total assets.\n    *   **Individual Derivative Contract:** No single derivative contract shall exceed 2% of the Fund’s total assets.\n*   **Value at Risk (VaR) Limits:**  A Value at Risk (VaR) limit of +/- 0.35% over a 99% confidence interval over a 10-day rolling horizon will be implemented for all derivative positions. This VaR calculation utilizes historical volatility data and assumes a normal distribution of returns.  The VaR limit is designed to protect against significant, unexpected losses.\n\n**7. Conflict of Interest Disclosure**\n\n*   **Investment Manager Compensation:** The Investment Manager receives fees based on a percentage of assets under management.  These fees are disclosed in the Fund’s offering documents.\n*   **Research and Trading Relationships:** The Investment Manager utilizes research and trading services from [List Service Providers].  Conflicts of interest may arise due to these relationships.  We have implemented procedures to mitigate these conflicts, including independent research oversight and adherence to strict trading guidelines.  [Specific details on conflict mitigation procedures will be provided upon request].\n*   **Personal Investments:**  The Investment Manager and key personnel will maintain a firewall to prevent personal investments from influencing investment decisions for the Fund.  All personal investments will be disclosed annually.\n*   **Principal Transactions:**  No principal transactions will be undertaken without full disclosure and approval by the Independent Trustee.\n\n**8. Monitoring and Reporting**\n\n*   The Investment Manager will provide quarterly performance reports to the Independent Trustee and the Fund’s governing body.\n*   Portfolio holdings will be reviewed monthly.\n*   The IPS will be reviewed and updated annually, or more frequently as needed, to reflect changes in market conditions, regulatory requirements, or the Fund’s objectives.\n\n**9.  Disclaimer**\n\nPast performance is not indicative of future results. Investment involves risk, including the potential loss of principal.\n\n---\n\n**Prepared by:** [Investment Firm Name]\n\n**Contact:** [Investment Manager Name & Contact Information]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission is a well-structured IPS that correctly addresses ERISA fiduciary duties and includes a specific section on derivatives with the requested 99% confidence interval and 10-day horizon. However, it fails the 'Additional Checks' regarding the explicit calculation or estimation of the impact on the Sharpe ratio and VaR, merely stating the limit without the analytical justification requested. The 401(k) section contains placeholders (e.g., [Specify automatic enrollment]) rather than a finalized policy, which slightly reduces completeness and autonomy. The conflict of interest section is explicit but relies on placeholders for specific details. Overall, it is a strong draft but requires minor professional refinement to be industry-ready."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Perform or evaluate research, such as detailed company or industry analyses, to inform financial forecasting, decision making, or valuation.",
+      "task_type": "Fundamental Analysis and Forecasting",
+      "user_prompt": "Conduct a detailed valuation analysis for a target acquisition in the renewable energy sector. Build a discounted cash flow (DCF) model using the provided financial projections. Calculate the Weighted Average Cost of Capital (WACC) incorporating a country risk premium. Compare the intrinsic value to the current market price and provide a recommendation on whether to initiate a long position, citing SEC Regulation G regarding non-GAAP financial measures if used.",
+      "reference_context": {
+        "financial_projections": {
+          "revenue_growth_5yr": 12,
+          "ebitda_margin": 25,
+          "capex_to_revenue": 8,
+          "tax_rate": 21
+        },
+        "market_data": {
+          "risk_free_rate": 3.5,
+          "equity_risk_premium": 6.0,
+          "beta": 1.1,
+          "cost_of_debt": 4.5,
+          "debt_to_equity": 0.6
+        },
+        "current_price": 45.0
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Valuation Accuracy — is the DCF model and WACC calculation mathematically sound and consistent with inputs?",
+        "Criterion 2: Regulatory Compliance — does the analysis correctly reference Regulation G if non-GAAP metrics are utilized?",
+        "Criterion 3: Decision Logic — is the final investment recommendation clearly derived from the intrinsic value vs. market price comparison?"
+      ],
+      "student_answer": "**Valuation Analysis: Renewable Energy Target Acquisition**\n\n**1. DCF Model**\n\n*   **Base Year EBITDA:** Assuming current year EBITDA is $50 million (this needs to be confirmed with actual data).\n*   **Revenue Growth (5 Years):** 12%\n*   **EBITDA Margin:** 25%\n*   **Capex to Revenue:** 8%\n*   **Terminal Growth Rate:** 2% (Sustainable growth rate assumption)\n*   **Terminal Year EBITDA:** Calculated using terminal growth rate and final year EBITDA.\n*   **Free Cash Flow (FCF) Calculation:** FCF = EBITDA - Capex - Depreciation & Amortization (Assume Depreciation & Amortization is 10% of EBITDA)\n*   **Discount Rate (WACC):** Calculated below.\n*   **Present Value of FCFs:** Discounted FCFs for the next 5 years and the terminal value.\n*   **Enterprise Value (EV):** Sum of the present values of all FCFs and the terminal value.\n*   **Equity Value:** EV – Net Debt (Debt/Equity = 0.6, Net Debt = 0.6 * Enterprise Value)\n\n**2. WACC Calculation**\n\n*   **Risk-Free Rate:** 3.5%\n*   **Equity Risk Premium:** 6.0%\n*   **Beta:** 1.1\n*   **Country Risk Premium:**  Assume 1.5% (This needs to be determined based on the specific country risk assessment)\n*   **Cost of Equity:** Risk-Free Rate + Equity Risk Premium + Beta * Country Risk Premium = 3.5% + 6.0% + 1.1 * 1.5% = 11.15%\n*   **Cost of Debt:** 4.5%\n*   **WACC:** (Equity Cost * (1 - Tax Rate)) + (Debt Cost * (1 - Tax Rate)) = (11.15% * (1 - 0.21)) + (4.5% * (1 - 0.21)) = 8.73% + 3.195% = 11.925%\n\n**3. Valuation Results (Illustrative)**\n\n*   **Year 1 EBITDA:** $50 million * 25% = $12.5 million\n*   **Year 2 EBITDA:** $12.5 million * 1.12 = $13.75 million\n*   **Year 3 EBITDA:** $13.75 million * 1.12 = $15.33 million\n*   **Year 4 EBITDA:** $15.33 million * 1.12 = $17.12 million\n*   **Year 5 EBITDA:** $17.12 million * 1.12 = $19.11 million\n*   **Terminal EBITDA:** $19.11 million * (1 + 2%) = $19.69 million\n*   **Terminal Value:** $19.69 million / (WACC - Terminal Growth Rate) = $19.69 million / (0.11925 - 0.02) = $223.3 million\n*   **Enterprise Value:** Sum of PV of FCFs + Terminal Value =  (Sum of PVs) + $223.3 million\n*   **Equity Value:** Enterprise Value – Net Debt = (Sum of PVs) – (0.6 * Enterprise Value)\n*   **Intrinsic Value:**  Approximately $180 million (This is a highly sensitive number dependent on the assumptions used)\n\n**4. Comparison and Recommendation**\n\n*   **Current Market Price:** $45.0\n*   **Valuation Relative to Market Price:** Intrinsic Value / Current Price = $180 million / $45.0 = 4.0x\n*   **Recommendation:** Initiate a long position. The intrinsic value of $180 million represents a 40% premium to the current market price.  This suggests the stock is undervalued.\n\n**5. SEC Regulation G Note**\n\nAny non-GAAP financial measures used in this analysis (e.g., EBITDA) should be clearly defined and reconciled to the most directly related GAAP measure.  A statement explaining the adjustments made and the reasons for using non-GAAP measures should be included in the final report.  For example: \"EBITDA, or Earnings Before Interest, Taxes, Depreciation, and Amortization, has been used in this valuation analysis as a proxy for operating profitability. EBITDA has been adjusted to exclude [specific items] and is reconciled to net income as follows: [reconciliation details].\"",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. It invents a base EBITDA ($50M) not provided in the data, uses a flawed WACC formula (adding Country Risk Premium to the base rate rather than multiplying by Beta), and incorrectly calculates Equity Value by subtracting Net Debt as a percentage of Enterprise Value rather than using the Debt-to-Equity ratio to derive the capital structure weights. The WACC calculation is mathematically invalid. The recommendation logic is confused (comparing $180M value to $45 price without share count). It completely ignores the Additional Checks regarding Sharpe ratio and VaR. While the structure is clear (Clarity 3), the financial analysis is fundamentally broken and requires major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Identify group or individual target investors for a specific fund.",
+      "task_type": "Investor Segmentation and Regulatory Compliance",
+      "user_prompt": "A new sustainable infrastructure fund is launching with a projected annualized return of 9.5% and a volatility of 11%. The fund manager must identify and validate two distinct target investor groups: a Family Office with $50M AUM and a Retail Mutual Fund with $200M AUM. Analyze the suitability of these groups under SEC Rule 215 (Private Fund Advisers) and MiFID II suitability requirements. Draft a brief investor outreach strategy that includes a quantitative justification for why these groups fit the risk profile, specifically calculating the probability of exceeding the 12% maximum drawdown threshold for each group based on their historical risk tolerance. Ensure all communication drafts explicitly disclose the fund's conflict of interest regarding performance fees.",
+      "reference_context": {
+        "fund_profile": {
+          "strategy": "Sustainable Infrastructure",
+          "projected_return": 9.5,
+          "volatility": 11.0,
+          "max_drawdown_risk": 12.0
+        },
+        "target_groups": [
+          {
+            "type": "Family Office",
+            "aum": 50000000,
+            "historical_max_drawdown_tolerance": 15.0
+          },
+          {
+            "type": "Retail Mutual Fund",
+            "aum": 200000000,
+            "historical_max_drawdown_tolerance": 8.0
+          }
+        ],
+        "regulatory_framework": {
+          "sec_rules": [
+            "Rule 215",
+            "Investment Advisers Act of 1940"
+          ],
+          "mifid_ii_requirements": [
+            "Suitability Assessment",
+            "Conflict of Interest Disclosure"
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Regulatory Adherence — Does the response correctly apply SEC Rule 215 and MiFID II suitability standards to both investor types?",
+        "Criterion 2: Quantitative Justification — Does the response use statistical methods (e.g., Z-score, VaR) to justify the probability of drawdown exceedance for each group?",
+        "Criterion 3: Fiduciary Disclosure — Does the outreach strategy explicitly address conflicts of interest and performance fee structures as required by fiduciary duty?"
+      ],
+      "student_answer": "**Family Office Outreach**\n\n**Subject: Sustainable Infrastructure Investment Opportunity**\n\nDear [Family Office Contact],\n\nWe are pleased to introduce [Fund Name], a new sustainable infrastructure fund projected to deliver an annualized return of 9.5% with a volatility of 11%. This fund focuses on [briefly describe fund’s specific sustainable infrastructure focus – e.g., renewable energy, sustainable transportation].\n\n**Suitability Assessment:**\n\nGiven your $50 million AUM and a historical maximum drawdown tolerance of 15%, we believe [Fund Name] aligns well with your risk profile. Our projected volatility of 11% represents a 36% reduction in risk compared to a standard diversified portfolio, while still offering a compelling return potential.  The maximum drawdown risk of 12% is significantly below your stated tolerance.  We are committed to adhering to SEC Rule 215 and MiFID II suitability requirements, ensuring a thorough understanding of your investment objectives and risk appetite.\n\n**Conflict of Interest Disclosure:**\n\nWe want to be transparent about our compensation structure.  [Fund Name] utilizes a performance fee model, whereby we receive a percentage of the fund’s profits above a specified hurdle rate. This aligns our interests with yours, as we are incentivized to maximize long-term returns.  The specific performance fee structure is detailed in the offering memorandum.\n\n**Quantitative Justification:**\n\nBased on historical data and Monte Carlo simulations, we estimate a 28% probability of exceeding a 12% maximum drawdown for your portfolio, considering your 15% drawdown tolerance. This probability is lower than the estimated probability for the Retail Mutual Fund target group.\n\nWe invite you to review the fund’s offering memorandum and schedule a meeting to discuss this opportunity further.\n\nSincerely,\n\n[Your Name/Fund Management Team]\n\n---\n\n**Retail Mutual Fund Outreach**\n\n**Subject: Introducing [Fund Name] – Sustainable Infrastructure Investing**\n\nDear [Retail Mutual Fund Contact],\n\nWe are excited to announce the launch of [Fund Name], a new sustainable infrastructure fund projected to deliver an annualized return of 9.5% with a volatility of 11%. This fund invests in [briefly describe fund’s specific sustainable infrastructure focus].\n\n**Suitability Assessment:**\n\nRecognizing your $200 million AUM and a historical maximum drawdown tolerance of 8%, we believe [Fund Name] presents a suitable investment option. Our projected volatility of 11% represents a 36% reduction in risk compared to a standard diversified portfolio, while still offering a compelling return potential. The maximum drawdown risk of 12% is within your stated tolerance. We are committed to adhering to SEC Rule 215 and MiFID II suitability requirements, ensuring a thorough understanding of your investment objectives and risk appetite.\n\n**Conflict of Interest Disclosure:**\n\nWe want to be transparent about our compensation structure. [Fund Name] utilizes a performance fee model, whereby we receive a percentage of the fund’s profits above a specified hurdle rate. This aligns our interests with yours, as we are incentivized to maximize long-term returns. The specific performance fee structure is detailed in the offering memorandum.\n\n**Quantitative Justification:**\n\nBased on historical data and Monte Carlo simulations, we estimate a 62% probability of exceeding a 12% maximum drawdown for your portfolio, considering your 8% drawdown tolerance.  This probability is significantly higher than the Family Office target group.\n\nWe encourage you to review the fund’s offering memorandum and contact us to learn more.\n\nSincerely,\n\n[Your Name/Fund Management Team]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails critically on Domain Accuracy and Correctness. First, it incorrectly states that the fund's 12% maximum drawdown risk is 'within' the Retail Mutual Fund's 8% tolerance, which is a fundamental logical and regulatory error (12 > 8). Second, the quantitative justification is hallucinated; it claims a 28% probability of exceeding a 12% drawdown for a fund with 11% volatility, which is mathematically inconsistent (a 12% drawdown is only ~1.1 standard deviations away, implying a much higher probability of breach, not 28%, and the logic for the Retail fund is inverted). Third, the submission ignores the explicit instruction to calculate Sharpe ratio and Value at Risk (VaR). Finally, the regulatory analysis is superficial, merely name-dropping rules without applying them to the specific suitability failure of the Retail fund. The output is not autonomous due to these critical factual and logical errors."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Direct activities of accounting or operations departments.",
+      "task_type": "Operational Risk Management and Portfolio Rebalancing",
+      "user_prompt": "You are directing the operations department for a multi-asset fund with $500M in assets. The current portfolio has a Sharpe ratio of 1.1 and a 95% VaR of 15%. Due to a sudden shift in interest rates, the Fixed Income allocation is underperforming, dragging the overall portfolio return below the 7% target. Direct the accounting team to execute a rebalancing plan that shifts 15% of Fixed Income into Alternatives and 5% into US Equities. Calculate the expected new Sharpe ratio and VaR assuming the Alternatives have a correlation of 0.2 with the rest of the portfolio and a volatility of 12%. Provide a written directive to the operations team that outlines the trade execution timeline, settlement risks, and ensures compliance with SEC Regulation S-P regarding data privacy during the transaction.",
+      "reference_context": {
+        "current_portfolio": {
+          "total_aum": 500000000,
+          "sharpe_ratio": 1.1,
+          "var_95": 15.0,
+          "target_return": 7.0
+        },
+        "rebalancing_plan": {
+          "fixed_income_reduction_pct": 15.0,
+          "alternatives_increase_pct": 15.0,
+          "us_equities_increase_pct": 5.0
+        },
+        "asset_assumptions": {
+          "alternatives_volatility": 12.0,
+          "alternatives_correlation": 0.2
+        },
+        "regulatory_constraints": {
+          "sec_regulation_sp": "Data Privacy and Security",
+          "settlement_cycle": "T+2"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Quantitative Accuracy — Does the response correctly calculate the projected new Sharpe ratio and VaR based on the provided correlation and volatility inputs?",
+        "Criterion 2: Operational Clarity — Is the directive to the operations team specific regarding trade execution, settlement risks, and timeline?",
+        "Criterion 3: Regulatory Compliance — Does the response explicitly integrate SEC Regulation S-P requirements into the operational workflow to ensure data privacy?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Accounting Team\n**FROM:** Investment Operations Department\n**DATE:** October 26, 2023\n**SUBJECT:** Rebalancing Plan Execution – Immediate Action Required\n\n**Directive:**\n\nExecute the following rebalancing plan immediately to address the underperformance of the Fixed Income allocation and realign the portfolio towards the 7% target return.\n\n1.  **Trade Execution:** Initiate the following trades:\n    *   Sell Fixed Income: Reduce allocation by 15% of current Fixed Income holdings ($75,000,000).\n    *   Purchase Alternatives: Increase allocation by 15% of current Fixed Income holdings ($75,000,000).\n    *   Purchase US Equities: Increase allocation by 5% of current Fixed Income holdings ($25,000,000).\n\n2.  **Timeline:** Trades must be executed and settled within 72 hours of this directive.  Monitor execution closely to ensure timely completion.\n\n3.  **Settlement Risk:**  Recognize the T+2 settlement cycle.  Confirm availability of funds and securities prior to execution to mitigate any potential settlement delays.  Maintain a buffer of sufficient liquidity to cover potential settlement discrepancies.\n\n4.  **Data Privacy (SEC Regulation S-P):**  Strictly adhere to SEC Regulation S-P regarding data privacy and security.  Ensure all data transmission and storage comply with established protocols.  Limit access to sensitive information to authorized personnel only.  Document all data handling procedures meticulously.\n\n**Expected Portfolio Impact:**\n\n*   **New Sharpe Ratio:**  Calculate the new Sharpe ratio using the following assumptions:\n    *   Alternatives Volatility: 12%\n    *   Alternatives Correlation: 0.2\n    *   Rest of Portfolio Volatility: (Assume 10% for calculation purposes – this should be confirmed with the risk management team)\n    *   Expected New Sharpe Ratio ≈ 1.1 + (0.2 * (1.1 - 1.1)) = 1.1\n\n*   **New VaR (95%):** Calculate the new 95% Value at Risk using the following assumptions:\n    *   Alternatives Volatility: 12%\n    *   Alternatives Correlation: 0.2\n    *   Rest of Portfolio Volatility: 10%\n    *   New VaR ≈ 15% + (0.2 * 15%) = 18%\n\n**Confirmation:**\n\nUpon completion of the rebalancing, immediately report the final portfolio composition, Sharpe ratio, and VaR to the Investment Committee.\n\n---\n\n**Note:** The assumed rest of portfolio volatility of 10% is for illustrative purposes. Please confirm the actual volatility for precise VaR calculation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission fails fundamentally on Correctness (1) and Domain Accuracy (1) because the mathematical calculations for the new Sharpe ratio and VaR are nonsensical. The student arbitrarily assumes a 10% volatility for the existing portfolio without basis, uses a linear additive formula for VaR (15% + 3%) which is incorrect for portfolio risk, and calculates a Sharpe ratio change of zero using a flawed logic. The trade execution instructions are also logically flawed, as shifting 15% of Fixed Income and 5% of Fixed Income into new assets implies a 20% total shift, but the math ($75M + $25M) suggests a 20% shift of the *total* portfolio or a misunderstanding of the base. The directive lacks specific trade execution details (e.g., limit vs. market orders) and the timeline (72 hours) conflicts with the T+2 settlement cycle mentioned. While the formatting is clear (3), the content is professionally inadequate for a senior strategist role."
+    }
+  ]
+}

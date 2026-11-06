@@ -1,0 +1,628 @@
+{
+  "meta": {
+    "job_title": "Statisticians",
+    "job_id": "statistician",
+    "onet_code": "15-2041.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 19,
+    "evaluated_tasks": 19,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.84,
+      "dimensions": {
+        "Correctness": 2.68,
+        "Completeness": 2.84,
+        "Best Practices": 2.37,
+        "Domain Accuracy": 2.84,
+        "Clarity": 3.79,
+        "Autonomy": 2.53
+      },
+      "evaluated_tasks": 19,
+      "scale_max": 5
+    },
+    "total_time_seconds": 752.25
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Prepare data for processing by organizing information, checking for inaccuracies, and adjusting and weighting the raw data.",
+      "task_type": "Data Cleaning & Preparation",
+      "user_prompt": "You are provided with a raw dataset of patient recovery times containing missing values, outliers, and inconsistent date formats. Perform the following: 1) Identify and describe the strategy for handling missing values based on the data distribution. 2) Detect outliers using the IQR method and decide whether to cap or remove them. 3) Apply a weighting factor to adjust for known sampling bias in the demographic data. 4) Output the cleaned dataset schema and a summary of transformations applied.",
+      "reference_context": "Raw data sample: [{\"id\": 1, \"time\": \"2023-01-15\", \"weight\": 1.2, \"status\": \"recovered\"}, {\"id\": 2, \"time\": null, \"weight\": 1.0, \"status\": \"pending\"}, {\"id\": 3, \"time\": \"2023-01-20\", \"weight\": 1.5, \"status\": \"recovered\"}]. Known bias: Patients over 60 were underrepresented by 20%.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```json\n{\n  \"dataset_schema\": {\n    \"id\": \"integer\",\n    \"time\": \"datetime\",\n    \"weight\": \"float\",\n    \"status\": \"string\"\n  },\n  \"transformations\": [\n    \"Missing values in 'time' column imputed with the median recovery time.\",\n    \"Outliers in 'time' column capped at the 95th percentile.\",\n    \"Weight factor applied to account for 20% underrepresentation of patients over 60.\"\n  ],\n  \"cleaned_data\": [\n    {\"id\": 1, \"time\": \"2023-01-15\", \"weight\": 1.2, \"status\": \"recovered\"},\n    {\"id\": 2, \"time\": \"2023-01-18\", \"weight\": 1.0, \"status\": \"pending\"},\n    {\"id\": 3, \"time\": \"2023-01-20\", \"weight\": 1.5, \"status\": \"recovered\"}\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the core analytical requirements. 1) It does not describe a strategy based on data distribution, merely stating 'median' without justification or checking for skewness. 2) It claims to use the IQR method but caps at the 95th percentile (a different method) and does not show the calculation or decision logic for capping vs. removing. 3) The weighting factor is mentioned but not calculated or applied to the data; the 'cleaned_data' shows no weight adjustments. 4) The imputation of a missing date with a median is statistically invalid (dates cannot be averaged). 5) The output lacks the requested summary of transformations in sufficient detail. The work is a superficial placeholder rather than a rigorous statistical analysis."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Analyze and interpret statistical data to identify significant differences in relationships among sources of information.",
+      "task_type": "Statistical Analysis & Interpretation",
+      "user_prompt": "Given two independent datasets representing sales figures from Region A and Region B over the last quarter, determine if there is a statistically significant difference in the mean sales between the two regions. 1) Test for normality and homogeneity of variance. 2) Select the appropriate hypothesis test (t-test or Mann-Whitney U). 3) Calculate the test statistic and p-value. 4) Interpret the results in the context of business decision-making, explicitly stating assumptions made about data distribution.",
+      "reference_context": "Region A Sales: [120, 135, 140, 110, 150, 125, 130]. Region B Sales: [160, 155, 170, 145, 165, 150, 175]. Significance level (alpha) = 0.05.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — are the statistical tests and calculations accurate?",
+        "Criterion 2: Completeness — did it address normality, variance, and interpretation?",
+        "Criterion 3: Justification — is the method selection grounded in statistical theory?"
+      ],
+      "student_answer": "```\nRegion A Sales: 120, 135, 140, 110, 150, 125, 130\nRegion B Sales: 160, 155, 170, 145, 165, 150, 175\n\n1. Normality and Homogeneity of Variance:\n   - Shapiro-Wilk test for normality: Both datasets appear approximately normally distributed (Shapiro-Wilk test statistic for Region A: 0.98, p-value > 0.05; Shapiro-Wilk test statistic for Region B: 0.97, p-value > 0.05).\n   - Levene's test for homogeneity of variance: Levene's test statistic: 1.73, p-value > 0.05.  Therefore, we assume homogeneity of variance.\n\n2. Hypothesis Test:\n   - Since the data appear normally distributed and we assume homogeneity of variance, a two-sample t-test is appropriate.\n\n3. Test Statistic and P-value:\n   - t-statistic = (mean(Region A) - mean(Region B)) / (sqrt(s^2_A/n_A) + sqrt(s^2_B/n_B))\n   - mean(Region A) = 128.57\n   - mean(Region B) = 162.14\n   - s^2_A = 33.21\n   - s^2_B = 33.21\n   - n_A = 7\n   - n_B = 7\n   - t-statistic = (128.57 - 162.14) / (sqrt(33.21/7) + sqrt(33.21/7)) = -33.57 / (2.85 + 2.85) = -33.57 / 5.7 = -5.87\n   - Degrees of freedom = n_A + n_B - 2 = 7 + 7 - 2 = 12\n   - p-value = 2 * (1 - tcdf(abs(t-statistic), df=12)) = 2 * (1 - tcdf(5.87, df=12)) = 2 * 0.000013 = 0.000026\n\n4. Interpretation:\n   - Assuming the data are normally distributed and the assumption of equal variances holds, a two-sample t-test was conducted.\n   - The calculated t-statistic is -5.87 with 12 degrees of freedom and a p-value of 0.000026.\n   - Since the p-value (0.000026) is less than the significance level (alpha = 0.05), we reject the null hypothesis that there is no difference in the mean sales between Region A and Region B.\n   - There is a statistically significant difference in the mean sales between Region A and Region B. Region B has significantly higher sales than Region A.\n\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains a critical mathematical error in the t-statistic calculation. The student used the sum of standard errors in the denominator instead of the square root of the sum of squared standard errors (sqrt(SE_A^2 + SE_B^2)). This results in an incorrect t-statistic (-5.87 vs the correct -3.31) and an incorrect p-value. While the conclusion (rejecting the null) remains the same due to the large effect size, the calculation is fundamentally flawed, violating domain accuracy and correctness. Additionally, the student claims to have performed Shapiro-Wilk and Levene's tests but provides specific test statistics without showing the raw data verification or acknowledging the extremely low power of these tests with a sample size of only 7, which is a methodological gap. The output is not autonomous (score 2) because a client would question the incorrect formula."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Determine whether statistical methods are appropriate, based on user needs or research questions of interest.",
+      "task_type": "Methodology Selection",
+      "user_prompt": "A client wants to predict customer churn based on usage frequency, tenure, and support ticket count. The target variable is binary (churned/not churned). 1) Evaluate three potential models: Linear Regression, Logistic Regression, and Decision Trees. 2) Justify the selection of the most appropriate method based on the nature of the dependent variable and the research question. 3) Outline the validation strategy (e.g., cross-validation, train-test split) to ensure the model's generalizability.",
+      "reference_context": "Dataset features: Usage Frequency (continuous), Tenure (continuous), Support Tickets (count). Target: Churn (0/1). Sample size: 5,000 records.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — is the chosen method theoretically sound for the problem?",
+        "Criterion 2: Completeness — did it evaluate alternatives and propose a validation strategy?",
+        "Criterion 3: Justification — is the reasoning clear and based on domain best practices?"
+      ],
+      "student_answer": "**Model Evaluation & Selection**\n\n*   **Linear Regression:** Inappropriate. Linear regression predicts continuous values and is unsuitable for binary classification.\n*   **Logistic Regression:** Suitable. Logistic regression is designed for binary classification problems and can model the probability of churn based on the input features.\n*   **Decision Trees:** Suitable. Decision Trees can handle both continuous and categorical features and provide a readily interpretable model.\n\n**Justification:**\n\nThe target variable (Churn) is binary, indicating a classification problem. Logistic Regression is the most appropriate method for this scenario because it directly models the probability of belonging to a specific class (churned) using a sigmoid function. While Decision Trees are also viable, Logistic Regression offers a more statistically sound approach for probability estimation and is generally preferred for binary classification tasks.\n\n**Validation Strategy:**\n\n1.  **Data Splitting:** Divide the dataset into training (70%) and testing (30%) sets.\n2.  **Cross-Validation:** Employ 10-fold cross-validation on the training set. This will provide a more robust estimate of the model's performance than a single train-test split.\n3.  **Model Training:** Train the Logistic Regression model using the training data.\n4.  **Performance Evaluation:** Evaluate the model's performance on the testing set using metrics such as:\n    *   Accuracy\n    *   Precision\n    *   Recall\n    *   F1-score\n    *   AUC-ROC\n5.  **Hyperparameter Tuning:** Optimize the model's hyperparameters (e.g., regularization strength in Logistic Regression) using techniques like grid search or randomized search on the cross-validation folds.\n6.  **Final Evaluation:**  Evaluate the final, tuned model on a held-out validation set (if available) to assess its generalization performance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies the appropriate models and justifies the choice of Logistic Regression based on the binary nature of the target variable. The validation strategy is sound, covering train-test splits, cross-validation, and relevant metrics. However, it scores a 4 on Completeness and Best Practices because it fails to address the specific data characteristics mentioned in the context (e.g., Support Tickets as a count variable often requiring specific handling, or the need for imputation/outlier checks for skewed data). Additionally, the validation strategy mentions a 'held-out validation set' in step 6 after already using a test set, which is slightly redundant or confusing without clarifying if a separate hold-out was part of the initial split or if this refers to a nested cross-validation approach. The output is professional and clear but lacks the depth of a truly exceptional, industry-standard response that would explicitly address data preprocessing nuances."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Identify relationships and trends in data, as well as any factors that could affect the results of research.",
+      "task_type": "Trend Analysis & Factor Identification",
+      "user_prompt": "Analyze the provided time-series data of monthly energy consumption to identify underlying trends and seasonal patterns. 1) Decompose the time series into trend, seasonal, and residual components. 2) Identify any external factors (e.g., temperature, holidays) that correlate with anomalies in the residual component. 3) Propose a hypothesis for the observed trend and suggest a method to test it.",
+      "reference_context": "Data: Monthly energy consumption (kWh) for 24 months. External data: Average monthly temperature and a list of public holidays. Anomaly detected in Month 12 (Christmas week).",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — are the decomposition and correlation analyses accurate?",
+        "Criterion 2: Completeness — did it identify trends, seasonality, and external factors?",
+        "Criterion 3: Best practices — is the hypothesis testing approach robust?"
+      ],
+      "student_answer": "```json\n{\n  \"decomposition\": {\n    \"trend\": \"Increasing energy consumption over the 24-month period.\",\n    \"seasonal\": \"A clear annual cycle with peak consumption in December and troughs in June/July.\",\n    \"residual\": \"Random fluctuations around the trend and seasonal components; significant spike in Month 12.\"\n  },\n  \"external_factors\": {\n    \"temperature\": \"Strong positive correlation with energy consumption – higher temperatures lead to increased demand for cooling.\",\n    \"holidays\": \"Significant impact on energy consumption, particularly during December (Christmas) and potentially around other major holidays (identified from the list).\",\n    \"anomaly\": \"Month 12 (Christmas week) exhibits a substantial anomaly in the residual component, likely due to combined effects of holidays and potentially increased consumer activity.\"\n  },\n  \"hypothesis\": \"Long-term energy consumption is primarily driven by a gradual increase in economic activity and population, resulting in a consistent upward trend, modulated by seasonal temperature variations and amplified by holiday-related consumption spikes.\",\n  \"testing_method\": \"Regression analysis with time as the independent variable and energy consumption as the dependent variable. Include temperature as a control variable.  A statistical test (e.g., Mann-Kendall test) can assess the significance of the trend.  Further, a time series decomposition with a seasonal component can be used to quantify the seasonal effect. Finally, a Granger causality test can be used to determine if temperature significantly predicts energy consumption.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        4,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the components and proposes a general hypothesis, but it fails to meet the specific analytical requirements of the task. It provides qualitative descriptions rather than performing the actual decomposition or calculating correlations (Correctness: 3, Completeness: 3). The 'testing method' section is weak because it suggests running a simple regression on the raw data without addressing the non-stationarity and autocorrelation inherent in time series, which is a fundamental methodological error (Best Practices: 2). While the terminology is generally correct (Domain Accuracy: 4) and the structure is clear (Clarity: 4), the output lacks the necessary quantitative rigor and specific implementation details to be used without significant rework or professional review (Autonomy: 2). It reads as a high-level summary rather than a statistical analysis."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Present statistical and nonstatistical results, using charts, bullets, and graphs, in meetings or conferences to audiences such as clients, peers, and students.",
+      "task_type": "Data Visualization & Reporting",
+      "user_prompt": "Create a detailed visualization plan for presenting the results of a survey on employee satisfaction to a non-technical executive audience. 1) Select the most appropriate chart types for categorical satisfaction scores and continuous tenure data. 2) Describe the precise axis labels, titles, and legend details for each chart. 3) Draft a bulleted summary of key findings that translates statistical significance into business impact.",
+      "reference_context": "Survey Data: Satisfaction Score (1-5 Likert scale), Tenure (years), Department (categorical). Key finding: Satisfaction drops significantly after 3 years of tenure in the IT department.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — are the chart types appropriate for the data?",
+        "Criterion 2: Completeness — are all visualization elements (labels, titles) described?",
+        "Criterion 3: Clarity — is the summary accessible to a non-technical audience?"
+      ],
+      "student_answer": "**Visualization Plan: Employee Satisfaction Survey Results**\n\n**1. Chart Types:**\n\n*   **Stacked Bar Chart:** For categorical satisfaction scores (Department). This will visually represent the distribution of satisfaction levels across different departments.\n*   **Scatter Plot:** For continuous tenure data versus satisfaction score. This will reveal the relationship between tenure and satisfaction.\n*   **Box Plot:** To highlight the distribution of satisfaction scores within the IT department, specifically focusing on the drop-off after 3 years.\n\n**2. Chart Details:**\n\n*   **Stacked Bar Chart (Department Satisfaction):**\n    *   **X-axis:** Department (e.g., Sales, Marketing, IT, HR, Finance) – Label clearly.\n    *   **Y-axis:** Percentage of Employees (Scale from 0% to 100%) – Label clearly.\n    *   **Bars:** Each bar will be stacked, with each segment representing the percentage of employees who selected each satisfaction score (1, 2, 3, 4, 5). Color-code segments consistently across all bars.\n    *   **Title:** “Employee Satisfaction by Department”\n    *   **Legend:** Clearly label each color segment with the corresponding satisfaction score (e.g., “1 – Very Dissatisfied”, “2 – Dissatisfied”, etc.).\n\n*   **Scatter Plot (Tenure vs. Satisfaction):**\n    *   **X-axis:** Tenure (Years) – Label clearly, starting from 0.\n    *   **Y-axis:** Satisfaction Score (1-5) – Label clearly.\n    *   **Data Points:** Each point represents an employee. Use a subtle color gradient (e.g., light blue to light orange) to represent tenure bands (e.g., 0-1, 1-3, 3-5, 5+).\n    *   **Title:** “Employee Satisfaction and Tenure”\n    *   **Trend Line (Optional):** Consider adding a smoothed trend line to visually represent the overall relationship.\n\n*   **Box Plot (IT Department Satisfaction):**\n    *   **X-axis:** IT Department\n    *   **Y-axis:** Satisfaction Score (1-5)\n    *   **Box:** Display the median, quartiles, and range of satisfaction scores for the IT department.  Highlight the box extending to 3 years of tenure.\n    *   **Title:** “Satisfaction Distribution – IT Department”\n    *   **Whisker Extension:** Extend the whiskers to show the range of data, excluding outliers.\n\n**3. Key Findings Summary (Business Impact):**\n\n*   Overall, employee satisfaction is moderately positive across departments, with an average score of 3.2 out of 5.\n*   Sales and Marketing departments demonstrate the highest satisfaction levels (average 3.8 and 3.6 respectively).\n*   A significant drop in satisfaction is observed for employees in the IT department after a tenure of 3 years.  This suggests potential issues with career progression, workload, or management within the IT team.\n*   Employees with 3-5 years of tenure in IT report an average satisfaction score of 2.7, significantly lower than those with less than 3 years (p < 0.05).\n*   Addressing concerns within the IT department, particularly regarding long-term employee engagement, could lead to improved productivity, reduced turnover, and enhanced innovation.  Recommendations should focus on career development opportunities, workload management, and leadership training.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the task but contains significant conceptual and technical flaws. 1) Correctness/Completeness: The student suggests a Box Plot to show the drop-off after 3 years, but a standard box plot cannot display a continuous variable (tenure) as a categorical split on the X-axis without creating multiple boxes or a complex facet, which was not described. A line chart or scatter plot with a trend line is far more appropriate for showing the specific 'drop after 3 years' trend. 2) Best Practices: Using a scatter plot with 1-5 discrete Y-values often results in overplotting and is less effective than a line chart or a grouped bar chart for this specific comparison. 3) Domain Accuracy: The student mentions 'p < 0.05' in the findings summary without presenting the actual statistical test or data, which is a minor hallucination of the analysis process. 4) Clarity: The plan is readable, but the visualization logic for the specific key finding is weak. 5) Autonomy: Due to the flawed chart selection for the primary insight, the output requires rework to be usable."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Report results of statistical analyses, including information in the form of graphs, charts, and tables.",
+      "task_type": "Statistical Reporting",
+      "user_prompt": "Compile a formal report summarizing the results of a correlation analysis between advertising spend and revenue across 12 regions. 1) Present the correlation matrix in a formatted table. 2) Describe a scatter plot with a regression line, including axis labels and a title. 3) Report the Pearson correlation coefficient, p-value, and R-squared value. 4) Discuss potential confounding variables that might affect the interpretation of the results.",
+      "reference_context": "Data: Advertising Spend ($1000s) and Revenue ($1000s) for 12 regions. Correlation coefficient (r) = 0.85, p < 0.01. Confounding variable: Seasonality.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — are the statistical values and table formatting accurate?",
+        "Criterion 2: Completeness — did it include all required visual descriptions and statistical metrics?",
+        "Criterion 3: Justification — is the discussion of confounding variables grounded in statistical theory?"
+      ],
+      "student_answer": "**Correlation Analysis: Advertising Spend and Revenue**\n\n**Executive Summary:**\n\nThis report summarizes the correlation analysis conducted between advertising spend and revenue across 12 regions. The analysis reveals a strong positive correlation (r = 0.85, p < 0.01) suggesting that increased advertising spend is associated with increased revenue. However, the potential influence of seasonality warrants consideration.\n\n**1. Correlation Matrix**\n\n| Region | Advertising Spend ($1000s) | Revenue ($1000s) |\n|--------|---------------------------|------------------|\n| Region 1| 15                        | 25                |\n| Region 2| 22                        | 38                |\n| Region 3| 18                        | 32                |\n| Region 4| 28                        | 45                |\n| Region 5| 12                        | 20                |\n| Region 6| 35                        | 55                |\n| Region 7| 20                        | 35                |\n| Region 8| 10                        | 18                |\n| Region 9| 25                        | 42                |\n| Region 10| 17                        | 28                |\n| Region 11| 30                        | 50                |\n| Region 12| 23                        | 40                |\n\n**2. Scatter Plot with Regression Line**\n\n*(Imagine a scatter plot here. The x-axis would be \"Advertising Spend ($1000s)\", and the y-axis would be \"Revenue ($1000s)\". Each region would be represented by a point. A regression line would be drawn through the data points, showing the general trend.)*\n\n**3. Statistical Results**\n\n*   **Pearson Correlation Coefficient (r):** 0.85\n*   **P-value:** < 0.01\n*   **R-squared (R²):** 0.7225 \n\n**4. Confounding Variables**\n\nThe observed correlation between advertising spend and revenue is likely influenced by seasonality.  Sales and advertising patterns often fluctuate significantly throughout the year (e.g., higher advertising and sales during holiday seasons). Without controlling for seasonality, it is difficult to isolate the true impact of advertising spend on revenue. Other potential confounding variables include:\n\n*   **Economic Conditions:** Overall economic growth or recession can impact both advertising budgets and consumer spending.\n*   **Competitive Landscape:** Changes in competitor activity (e.g., increased advertising by competitors) could affect revenue.\n*   **Product/Service Quality:**  Improvements in product quality or service offerings can drive sales regardless of advertising.\n*   **Pricing Strategies:** Changes in pricing can significantly impact revenue.\n*   **Demographic Factors:** Regional differences in demographics (age, income, etc.) can influence consumer behavior and response to advertising.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails the core task requirements significantly. Task 1 requested a 'correlation matrix' (a matrix of correlations between variables), but the student provided a raw data table of the 12 regions. Task 2 requested a description of a scatter plot with specific labels and a title; the student provided a placeholder text ('Imagine a scatter plot here') rather than a description or the plot itself. While the statistical values (r, p, R-squared) and the discussion on confounding variables are accurate and well-written, the failure to generate the requested visualizations and the confusion between raw data and a correlation matrix constitutes a fundamental error in addressing the prompt, preventing the output from being used as-is."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design research projects that apply valid scientific techniques, and use information obtained from baselines or historical data to structure uncompromised and efficient analyses.",
+      "task_type": "Research Design & Analysis Planning",
+      "user_prompt": "You are designing a study to evaluate the efficacy of a new manufacturing process. Historical data shows a baseline defect rate of 5% with a standard deviation of 1.2%. You plan to sample 500 units. 1) Calculate the minimum detectable effect size with 80% power at alpha=0.05. 2) Propose a sampling strategy to account for known batch-to-batch variability. 3) Outline the statistical tests to be used and justify their selection based on the data distribution assumptions. 4) Define the null and alternative hypotheses clearly.",
+      "reference_context": "Baseline defect rate: 5%. Standard deviation: 1.2%. Sample size: 500. Alpha: 0.05. Power: 80%. Batch variability is known to be significant.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the power calculations and effect size estimates mathematically accurate?",
+        "Criterion 2: Completeness — Does the response include all four required components (calculation, strategy, test selection, hypotheses)?",
+        "Criterion 3: Best practices — Is the sampling strategy robust against batch variability and are the statistical tests appropriate for the data type?"
+      ],
+      "student_answer": "1.  **Minimum Detectable Effect Size:**\n\n    *   Zα/2 = 1.96 (for α = 0.05, two-tailed)\n    *   Zβ = 0.84 (for power = 80%, β = 0.20, Zβ = ln(0.20) / ln(0.80) ≈ 0.84)\n    *   MDE = Zα/2 * (σ / √n) = 1.96 * (1.2 / √500) ≈ 0.0376 or 3.76%\n\n2.  **Sampling Strategy:**\n\n    *   Stratified sampling: Divide the 500 units into batches (e.g., 50 units per batch).\n    *   Randomly select a subset of batches (e.g., 10 batches) for inspection.\n    *   Inspect all units within each selected batch.\n    *   Calculate the average defect rate for each batch.\n    *   Analyze the distribution of batch defect rates to identify potential sources of batch-to-batch variability.\n\n3.  **Statistical Tests:**\n\n    *   **One-Sample Proportion Test (Z-test):**  Suitable if the defect rate is treated as a proportion.  Assumes the defect rate follows a normal distribution, which is reasonable with a sample size of 500.\n    *   **Alternatively, a Chi-Square Test:** Can be used to compare the observed defect rate to the expected defect rate under the null hypothesis.  Also assumes a normal distribution.\n\n4.  **Hypotheses:**\n\n    *   **Null Hypothesis (H0):** The true defect rate is 5% (p = 0.05).\n    *   **Alternative Hypothesis (H1):** The true defect rate is different from 5% (p ≠ 0.05). (Two-tailed test)",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains critical errors in statistical methodology. 1) Correctness/Domain Accuracy: The MDE calculation is fundamentally flawed; it calculates the Margin of Error (standard error) rather than the Minimum Detectable Effect (which requires incorporating the Z-score for power and the effect size formula for proportions). 2) Domain Accuracy: The student incorrectly defines Zβ using a logarithmic formula instead of the standard normal quantile. 3) Best Practices: The sampling strategy (selecting batches then inspecting all units) is a cluster sampling approach, but the student labels it 'stratified' and fails to account for the design effect or intra-class correlation, which is the primary concern given the 'known batch-to-batch variability.' 4) Statistical Tests: The proposed tests are generic and do not address the hierarchical nature of the data (units within batches) suggested by the sampling strategy. 5) Autonomy: Due to the calculation errors and methodological confusion, the output cannot be used without significant rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Process large amounts of data for statistical modeling and graphic analysis, using computers.",
+      "task_type": "Statistical Modeling & Visualization",
+      "user_prompt": "You have a dataset of 10,000 customer transactions with variables: 'transaction_amount', 'customer_age', 'region', and 'churn_status'. 1) Perform a correlation analysis between 'transaction_amount' and 'customer_age', handling missing values by assuming a normal distribution. 2) Build a logistic regression model to predict 'churn_status' using 'transaction_amount' and 'customer_age'. 3) Generate a description for a visualization showing the predicted probabilities vs. actual outcomes, including precise axis labels, titles, and legend details. 4) State assumptions regarding linearity and independence.",
+      "reference_context": "Dataset: 10,000 records. Variables: transaction_amount (continuous), customer_age (continuous), region (categorical), churn_status (binary). Missing values in 'customer_age' are 5% of total.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the logistic regression model specification correct and are the correlation coefficients calculated properly?",
+        "Criterion 2: Completeness — Does the response include the correlation analysis, model building, visualization description, and assumptions?",
+        "Criterion 3: Best practices — Are the visualization details specific enough to be implemented, and are the assumptions clearly stated?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import roc_auc_score, confusion_matrix\nimport matplotlib.pyplot as plt\n\n# Generate synthetic data (replace with your actual data loading)\nnp.random.seed(42)\nn_samples = 10000\ndata = {\n    'transaction_amount': np.random.normal(loc=50, scale=20, size=n_samples),\n    'customer_age': np.random.normal(loc=35, scale=10, size=n_samples),\n    'region': np.random.choice(['North', 'South', 'East', 'West'], size=n_samples),\n    'churn_status': np.random.choice([0, 1], size=n_samples, p=[0.7, 0.3])\n}\ndf = pd.DataFrame(data)\n\n# Handle missing values in customer_age\ndf['customer_age'] = df['customer_age'].fillna(df['customer_age'].mean())\n\n# 1. Correlation Analysis\ncorrelation_matrix = df[['transaction_amount', 'customer_age']].corr()\nprint(\"Correlation Matrix:\")\nprint(correlation_matrix)\n\n# 2. Logistic Regression Model\nX = df[['transaction_amount', 'customer_age']]\ny = df['churn_status']\n\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\nscaler = StandardScaler()\nX_train = scaler.fit_transform(X_train)\nX_test = scaler.transform(X_test)\n\nmodel = LogisticRegression(solver='liblinear', random_state=42)\nmodel.fit(X_train, y_train)\n\ny_pred_proba = model.predict_proba(X_test)[:, 1]\ny_pred = model.predict(X_test)\n\n# 3. Visualization Description\nvisualization_description = \"\"\"\nVisualization Description:\nThis visualization displays the predicted probabilities of churn (probability of being in the 'churned' class) against the actual churn outcomes.\n\nAxes Labels:\n- X-axis: Predicted Probability of Churn (ranging from 0 to 1)\n- Y-axis: Actual Churn Outcome (0 = Not Churned, 1 = Churned)\n\nTitle: Predicted Probability vs. Actual Churn Outcome\n\nLegend:\n- Blue dots: Predicted probabilities for customers who did not churn (y=0).\n- Red dots: Predicted probabilities for customers who churned (y=1).\n\nData Source: Logistic Regression Model trained on transaction amount and customer age.\n\"\"\"\n\n# 4. Assumptions\nassumptions = \"\"\"\nAssumptions:\n- Linearity: The relationship between transaction amount and customer age, and their combined effect on churn status, is approximately linear.\n- Independence: The errors (residuals) in the logistic regression model are independent of each other.\n\"\"\"\n\nprint(visualization_description)\nprint(assumptions)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly implements the requested code structure and addresses all four task components. However, it fails on domain accuracy and best practices regarding the specific data handling instructions. The prompt explicitly asked to handle missing values by 'assuming a normal distribution' (implying a stochastic imputation method like MICE or sampling from the fitted distribution), but the student used mean imputation, which is a distinct and often inferior method that ignores the distributional assumption. Additionally, the student generated synthetic data rather than analyzing the provided dataset, and the visualization description (a scatter plot of probabilities vs. binary outcomes) is statistically weak and not a standard industry practice for model evaluation (calibration plots or ROC curves are preferred). The assumptions section is also generic and lacks depth regarding the specific linearity of the log-odds. These methodological gaps prevent a score of 5 and limit the autonomy of the output."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Adapt statistical methods to solve specific problems in many fields, such as economics, biology, and engineering.",
+      "task_type": "Method Adaptation & Problem Solving",
+      "user_prompt": "An engineering team needs to analyze the failure times of a new component, but the data is heavily right-censored. 1) Select an appropriate survival analysis method (e.g., Kaplan-Meier, Cox Proportional Hazards) and justify the choice. 2) Describe how to handle the censored data points in the analysis. 3) Propose a method to compare the failure rates between two different manufacturing batches. 4) Outline the steps to validate the proportional hazards assumption if using Cox regression.",
+      "reference_context": "Data type: Time-to-failure. Issue: Heavy right-censoring (30% of data). Goal: Compare two manufacturing batches. Context: Engineering reliability testing.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the selected survival analysis method appropriate for censored data?",
+        "Criterion 2: Completeness — Does the response cover method selection, censoring handling, comparison strategy, and assumption validation?",
+        "Criterion 3: Best practices — Is the justification for the method grounded in statistical theory for censored data?"
+      ],
+      "student_answer": "1.  **Method:** Cox Proportional Hazards Regression.\n\n    **Justification:** Cox regression is well-suited for analyzing time-to-failure data with right censoring. It models the hazard rate (instantaneous failure rate) as a function of covariates, allowing for the estimation of relative hazard ratios between groups. Unlike Kaplan-Meier, it provides a parametric model that can incorporate other factors influencing failure time beyond just batch.\n\n2.  **Handling Censored Data:**\n\n    *   **Left-Censoring:**  If any observations are left-censored (failure time less than the observation time), they should be adjusted using appropriate left-censoring methods (e.g., Klein-Seeborg method) before analysis.\n    *   **Right-Censoring:**  Right-censored data points are handled directly by the Cox model. The model estimates the hazard ratio based on the observed times and the assumption of proportional hazards.  The model effectively estimates the probability of survival at each time point, accounting for those who haven't failed yet.\n\n3.  **Comparing Failure Rates Between Batches:**\n\n    *   **Cox Proportional Hazards Regression:**  Use Cox regression with 'Batch' as a predictor variable. The coefficient for 'Batch' will represent the log hazard ratio between the two batches.  Exponentiating this coefficient provides the hazard ratio.\n    *   **Hazard Ratio Interpretation:** A hazard ratio significantly different from 1 indicates a difference in failure rates between the batches.  A hazard ratio of 2, for example, suggests that the component in Batch A fails twice as often as the component in Batch B, *at the time of failure*.\n\n4.  **Validating Proportional Hazards Assumption (Cox Regression):**\n\n    *   **Graphical Methods:**\n        *   **Scaled Schoenfeld Residuals:** Plot scaled Schoenfeld residuals against time.  A proportional hazards assumption implies that the residuals should be randomly distributed around zero.  Patterns (e.g., a funnel shape) indicate a violation.\n        *   **Log-Log Plot of Hazard Ratios:** Plot the log of the hazard ratios from the Cox model against time.  A straight line suggests proportional hazards.\n    *   **Statistical Tests:**\n        *   **Lancaster Test:**  This test examines the Schoenfeld residuals for non-randomness.\n        *   **Early Hazard Test:**  This test specifically assesses whether the hazard ratio differs across time.\n    *   **If the assumption is violated:** Consider transformations of the covariates or using a stratified Cox model to account for time-dependent effects. Alternatively, explore alternative survival models (e.g., time-dependent covariates).",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        3
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission correctly identifies Cox regression but contains critical domain errors. In Section 2, it incorrectly suggests handling left-censoring (which is not the issue described in the prompt) and cites a non-existent 'Klein-Seeborg' method; the correct approach for right-censoring is simply including the censoring indicator in the partial likelihood, which the student mentions but muddles with irrelevant left-censoring advice. In Section 4, it hallucinates statistical tests ('Lancaster Test' and 'Early Hazard Test') rather than citing the standard Grambsch-Therneau test based on Schoenfeld residuals. While the structure is clear (Clarity 4), the factual inaccuracies regarding methods and tests prevent a high score in Correctness, Completeness, Best Practices, and Domain Accuracy."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Evaluate the statistical methods and procedures used to obtain data to ensure validity, applicability, efficiency, and accuracy.",
+      "task_type": "Method Evaluation & Validation",
+      "user_prompt": "A research team used a simple linear regression to model the relationship between 'temperature' and 'yield' in a chemical process. The residuals show a distinct U-shaped pattern. 1) Diagnose the issue with the current model based on the residual pattern. 2) Propose a modified statistical approach to address the non-linearity. 3) Explain how you would validate the new model using cross-validation. 4) Assess the potential impact of ignoring this non-linearity on the process control limits.",
+      "reference_context": "Current Model: Simple Linear Regression. Response: Yield. Predictor: Temperature. Observation: U-shaped residual pattern. Context: Chemical process control.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the diagnosis of non-linearity accurate and is the proposed solution (e.g., polynomial regression) appropriate?",
+        "Criterion 2: Completeness — Does the response include diagnosis, solution, validation method, and impact assessment?",
+        "Criterion 3: Best practices — Is the cross-validation strategy described correctly and is the impact on process control logically sound?"
+      ],
+      "student_answer": "1.  **Diagnosis:** The U-shaped residual pattern indicates that a simple linear regression model is inadequate. This pattern suggests a non-linear relationship between temperature and yield. Specifically, the model is underfitting the data, failing to capture the curvature present in the true relationship.\n\n2.  **Modified Statistical Approach:** Polynomial regression, specifically a quadratic model (Temperature²), would be appropriate. Alternatively, a transformation of the response variable (e.g., logarithmic transformation of yield) followed by linear regression could also address the non-linearity.\n\n3.  **Cross-Validation Validation:** Split the data into training and validation sets (e.g., 70% training, 30% validation). Fit the polynomial regression model to the training data. Calculate the predicted yield for the validation set using the fitted model. Evaluate the model's performance using metrics such as Root Mean Squared Error (RMSE) and R-squared on the validation set. Compare the performance of the polynomial regression model to the original linear regression model using the same metrics.\n\n4.  **Impact on Process Control Limits:** Ignoring the non-linearity could lead to inaccurate process control limits. The linear model will predict yield based on a straight-line relationship, which is not representative of the actual process behavior. This can result in setting control limits that are too narrow or too wide, leading to false alarms (over-control) or missed process deviations (under-control). A revised model incorporating the non-linearity will provide more accurate predictions, enabling the establishment of more reliable and effective process control limits.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly diagnoses the non-linearity and proposes valid solutions (polynomial regression). However, the cross-validation section (Dimension 3) is weak; it describes a simple train-test split rather than the more robust k-fold cross-validation typically expected for model validation in professional settings. Additionally, the explanation of process control limits (Dimension 4) lacks specific technical details on how the residual variance (sigma) changes with the non-linear fit, which is critical for calculating accurate control limits (e.g., UCL/LCL). While the content is accurate and clear, these omissions prevent it from being an exceptional, industry-standard response."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Report results of statistical analyses in peer-reviewed papers and technical manuals.",
+      "task_type": "Statistical Reporting & Communication",
+      "user_prompt": "You have completed a meta-analysis on the effectiveness of a new drug across 15 studies. The results show a significant heterogeneity (I^2 = 75%). 1) Write a summary paragraph suitable for a technical manual explaining the findings and the heterogeneity. 2) Describe the forest plot you would create, including axis labels, titles, and legend details. 3) Explain the choice of a random-effects model over a fixed-effects model in this context. 4) State the assumptions made regarding the distribution of effect sizes.",
+      "reference_context": "Analysis: Meta-analysis of 15 studies. Result: Significant heterogeneity (I^2 = 75%). Context: Drug efficacy report. Audience: Technical manual readers.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the explanation of heterogeneity and the choice of random-effects model statistically sound?",
+        "Criterion 2: Completeness — Does the response include the summary paragraph, plot description, model justification, and assumptions?",
+        "Criterion 3: Best practices — Is the technical writing clear and is the forest plot description precise enough for implementation?"
+      ],
+      "student_answer": "1.  **Summary Paragraph:**\n\n“A meta-analysis of 15 studies investigating the efficacy of the new drug revealed a small, but statistically significant, overall effect size (Hedges’ g = 0.32, 95% CI [0.18, 0.46]). However, substantial heterogeneity (I² = 75%) was observed across the included studies, indicating considerable variability in treatment effects. This heterogeneity suggests that factors beyond the drug’s inherent efficacy, such as patient populations, study protocols, and diagnostic criteria, may have influenced the observed outcomes. Consequently, a random-effects model was employed to account for this between-study variation.”\n\n2.  **Forest Plot Description:**\n\nThe forest plot would display each individual study’s effect size (Hedges’ g) as a horizontal line. The x-axis would be labeled “Effect Size (Hedges’ g)”. The y-axis would be labeled “Study”. Each study would be represented as a single point on the line, with the point’s position indicating the study’s effect size.  A horizontal line representing the overall pooled effect size (Hedges’ g = 0.32) would be plotted across the center of the plot.  A diamond shape would surround the overall effect size to represent the 95% confidence interval.  A funnel plot would be displayed below the forest plot to visually assess asymmetry and potential publication bias.  A legend would indicate the number of studies included (n=15) and the corresponding I² statistic (75%).\n\n3.  **Choice of Random-Effects Model:**\n\nA random-effects model was selected over a fixed-effects model due to the high degree of heterogeneity (I² = 75%). The random-effects model acknowledges that the true effect size may vary across studies, reflecting differences in populations, interventions, and settings.  It incorporates between-study variance, providing a more realistic estimate of the overall effect and accounting for the variability observed in the data. A fixed-effects model assumes a single, constant effect size across all studies, which is inappropriate given the substantial heterogeneity.\n\n4.  **Assumptions Regarding Effect Size Distribution:**\n\nThe analysis assumes that the effect sizes are approximately normally distributed within each study and that the between-study variance is constant.  Furthermore, it is assumed that the true effect sizes are continuous and that the data are free from severe outliers. While the random-effects model is robust to violations of normality, extreme outliers could still influence the results.  Sensitivity analyses would be warranted to assess the impact of potential non-normality and outliers on the overall findings.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission is strong on domain accuracy and correctness, correctly identifying the implications of I²=75% and the rationale for a random-effects model. However, it falls short of 'Exceptional' (5) in Best Practices and Autonomy due to a critical error in the Forest Plot description: it suggests plotting a funnel plot 'below' the forest plot within the same figure, which is non-standard (they are distinct plots) and confusing for a technical manual. Additionally, the assumptions section is slightly vague regarding the specific distributional assumption of the random-effects model (typically a normal distribution of true effects around a mean, not just 'constant variance'). The summary paragraph is good but could be more precise about the nature of the heterogeneity sources. These issues prevent a perfect score and suggest the output would need minor professional review before final delivery."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Evaluate sources of information to determine any limitations, in terms of reliability or usability.",
+      "task_type": "Data Source Evaluation & Limitation Analysis",
+      "user_prompt": "You are analyzing a dataset from a social media platform to predict consumer sentiment. The data is collected via API and contains a mix of text and metadata. 1) Identify three potential sources of bias in this data source. 2) Evaluate the reliability of the sentiment labels if they are derived from user-generated hashtags. 3) Propose a strategy to mitigate the identified biases in the analysis. 4) Describe how you would document these limitations in a final report, including specific sections for data provenance and reliability.",
+      "reference_context": "Data Source: Social media API. Variables: Text, metadata, hashtags. Goal: Predict consumer sentiment. Context: Market research.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the identified biases relevant to social media data and are the mitigation strategies feasible?",
+        "Criterion 2: Completeness — Does the response cover bias identification, reliability evaluation, mitigation, and documentation strategy?",
+        "Criterion 3: Best practices — Is the evaluation of hashtag-based sentiment labels critical and is the documentation plan comprehensive?"
+      ],
+      "student_answer": "1.  **Potential Sources of Bias:**\n    *   **Sampling Bias:** The API may not capture a representative sample of the entire user base. Certain demographics, geographic locations, or user activity patterns might be over- or under-represented.\n    *   **Algorithmic Bias in API Retrieval:** The API’s search algorithms could favor certain types of content or accounts, leading to a skewed dataset.\n    *   **Self-Selection Bias:** Users who choose to use hashtags related to a particular sentiment are more likely to express that sentiment, creating a biased representation of overall opinion.\n\n2.  **Reliability of Sentiment Labels from Hashtags:**\n    Low. Hashtags are subjective and context-dependent. Their meaning and associated sentiment can vary significantly across users and communities.  Reliance on hashtags alone introduces substantial noise and potential misinterpretation. Sentiment expressed in the text associated with the hashtag may differ.\n\n3.  **Mitigation Strategy:**\n    *   **Data Augmentation:** Supplement the API data with data from alternative sources (e.g., surveys, focus groups) to balance the sample.\n    *   **Weighted Sampling:** Implement weights in the analysis to account for potential biases in the API’s sampling process, prioritizing data from under-represented groups.\n    *   **Text-Based Sentiment Analysis:** Integrate a separate, robust text-based sentiment analysis model (e.g., BERT, RoBERTa) to validate and, where possible, correct sentiment labels derived from hashtags.  Use the text-based analysis as the primary sentiment indicator.\n    *   **Hashtag Contextualization:** Analyze the text associated with the hashtags to understand the context and refine the sentiment labels.\n\n4.  **Documentation in Final Report:**\n    *   **Data Provenance:** A dedicated section detailing the API used, its limitations, and any known biases in its data collection process. Include specific parameters used in API queries and any adjustments made to address potential biases.  Document the sampling methodology and any weighting schemes applied.\n    *   **Reliability Assessment:** A section explicitly addressing the limitations of using hashtag-derived sentiment labels.  Clearly state the potential for subjectivity and misinterpretation.  Describe the validation methods employed (e.g., text-based sentiment analysis, comparison with alternative data sources).  Quantify the uncertainty associated with the sentiment predictions, if possible (e.g., confidence intervals). Include a discussion of potential biases and their impact on the results.  Outline the steps taken to mitigate these biases.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies three distinct sources of bias (sampling, algorithmic, self-selection) and accurately evaluates the low reliability of hashtag-derived labels. The mitigation strategy is sound, proposing data augmentation, weighting, and model-based validation. Documentation sections are well-structured. However, the answer scores a 4 rather than a 5 because it lacks specific technical depth expected of an industry-standard submission: it does not mention specific statistical techniques for weighting (e.g., inverse probability weighting), fails to address the specific check for inappropriate imputation or outlier handling mentioned in the prompt's additional checks, and the mitigation strategy for algorithmic bias is somewhat generic. While the content is professional and clear, it stops short of the rigorous, implementation-ready detail required for a perfect score."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop and test experimental designs, sampling techniques, and analytical methods.",
+      "task_type": "Experimental Design",
+      "user_prompt": "You are designing a clinical trial to test a new drug's efficacy. The population has a known variance of 25. You need to detect a mean difference of 2 units with 90% power at a 5% significance level. 1) Calculate the required sample size per group assuming a two-sample t-test. 2) Propose a stratified sampling plan to ensure equal representation of two age groups (18-40, 41-65) which have different baseline variances (15 and 35 respectively). 3) Justify your choice of statistical test over a non-parametric alternative based on the Central Limit Theorem assumptions.",
+      "reference_context": "Population variance (sigma^2) = 25. Effect size (delta) = 2. Alpha = 0.05. Power = 0.90. Age group 1 variance = 15, Age group 2 variance = 35. Total population size is large enough to ignore finite population correction.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Sample size calculation uses the correct formula for two-sample t-test.",
+        "Criterion 2: Completeness — Stratified sampling plan addresses both age groups and their specific variances.",
+        "Criterion 3: Justification — Statistical test selection is logically grounded in distribution assumptions."
+      ],
+      "student_answer": "1)  n = ( (z<sub>α/2</sub> + z<sub>β</sub>) * σ<sub>p</sub> / δ )<sup>2</sup> = ( (1.645 + 1.282) * 25 / 2 )<sup>2</sup> = ( 2.927 * 12.5 )<sup>2</sup> = 36.5875<sup>2</sup> ≈ 1336.8\n\n2) Stratified Sampling:\n   *   Proportion in Age Group 1 (18-40): 60%\n   *   Proportion in Age Group 2 (41-65): 40%\n   *   Sample Size per stratum:\n        *   Age Group 1: 0.60 * 1336.8 ≈ 802.08 (round to 802)\n        *   Age Group 2: 0.40 * 1336.8 ≈ 534.72 (round to 535)\n   *   Total Sample Size: 802 + 535 = 1337\n\n3) Justification for t-test:\nThe two-sample t-test is appropriate because the population variance (25) is known and relatively small, allowing us to assume that the sampling distribution of the difference in means will be approximately normal due to the Central Limit Theorem.  With a sufficiently large sample size (as calculated), the t-test provides a more powerful and accurate test than a non-parametric alternative like the Mann-Whitney U test, which relies on the assumption of normality and may be less sensitive to detecting the specified effect size.  The t-test is also more efficient when the data are approximately normally distributed.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission contains fundamental statistical errors. 1) Correctness: The sample size formula is wrong; it uses population variance (25) instead of standard deviation (5) in the numerator, and incorrectly applies a one-sided Z-value (1.645) for a two-sided test (should be 1.96). The calculation yields ~1337, whereas the correct value is ~129. 2) Completeness: The stratified sampling plan arbitrarily assigns proportions (60/40) without justification from the prompt, which only specified different variances, not population sizes. 3) Best Practices & Domain Accuracy: The justification for the t-test is factually incorrect; it claims the t-test is used when variance is known (it is used when unknown; Z-test is for known variance) and incorrectly states the Mann-Whitney U test relies on normality (it is non-parametric and does not). 4) Clarity: While the structure is readable, the content is misleading. 5) Autonomy: The output is unusable for a clinical trial due to the massive overestimation of sample size and incorrect statistical reasoning."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Plan data collection methods for specific projects, and determine the types and sizes of sample groups to be used.",
+      "task_type": "Sampling Strategy",
+      "user_prompt": "A retail chain wants to estimate average customer satisfaction (scale 1-10) across 50 stores. The stores vary significantly in size (number of transactions). 1) Determine the optimal sampling method (Simple Random, Stratified, or Cluster) to minimize variance given the store size disparity. 2) Calculate the total sample size needed if the desired margin of error is 0.5 units with 95% confidence, assuming a population standard deviation of 2.0. 3) Describe how you would allocate the sample across the 50 stores to ensure representativeness.",
+      "reference_context": "Population: 50 stores. Target Margin of Error (E) = 0.5. Confidence Level = 95% (Z=1.96). Estimated Standard Deviation (sigma) = 2.0. Store sizes range from 100 to 10,000 transactions.",
+      "evaluation_criteria": [
+        "Criterion 1: Method Selection — Correctly identifies Stratified Sampling as optimal due to size disparity.",
+        "Criterion 2: Calculation — Sample size formula is applied correctly.",
+        "Criterion 3: Allocation — Allocation strategy (e.g., proportional or optimal) is clearly defined and justified."
+      ],
+      "student_answer": "1.  Stratified sampling is optimal.\n\n2.  Sample size = 150 stores.\n\n3.  Allocate sample proportionally to store size.  Calculate the total number of transactions across all stores (100 + 10,000 = 10,100).  Determine the proportion of transactions for each store (store size / 10,100).  Multiply this proportion by the required sample size (150) to determine the number of stores to sample from each size category.  For example, a store with 100 transactions would have 150 * (100/10,100) ≈ 14.85 stores sampled, rounded to 15.  A store with 10,000 transactions would have 150 * (10,000/10,100) ≈ 148.5 stores sampled, rounded to 149.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission contains fundamental errors in all technical aspects. 1) Correctness: The sample size calculation is wrong (n=150 is far too small for the given parameters; correct n is approx 62). 2) Completeness: The allocation logic is nonsensical; it calculates a sample of 'stores' based on transaction proportions but results in sampling more stores than exist (e.g., 149 stores from a single store). 3) Best Practices: It fails to distinguish between sampling stores vs. sampling customers within stores (PPS), which is the standard approach for this context. 4) Domain Accuracy: The math for allocation is impossible (sum of allocations exceeds 50 stores). 5) Clarity: The explanation is confusing and contradictory. 6) Autonomy: The output is unusable for a client due to mathematical impossibility."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Supervise and provide instructions for workers collecting and tabulating data.",
+      "task_type": "Data Quality Control",
+      "user_prompt": "You are supervising a team collecting survey data on household income. The raw data contains entries with negative values, text in numeric fields, and inconsistent currency formats (e.g., '$1,000', '1000 USD'). 1) Define a validation rule set to flag these errors. 2) Propose a protocol for the team to handle flagged records (e.g., imputation vs. rejection). 3) Create a summary report structure that tracks error rates by data collector to identify training needs.",
+      "reference_context": "Data fields: 'income_amount' (numeric), 'currency' (text), 'collector_id' (text). Sample errors: '-500', 'five hundred', '$1,200', 'N/A'.",
+      "evaluation_criteria": [
+        "Criterion 1: Validation Rules — Rules are specific and cover all mentioned error types.",
+        "Criterion 2: Protocol — Handling protocol is logical and minimizes data loss.",
+        "Criterion 3: Reporting — Report structure allows for performance tracking of individual collectors."
+      ],
+      "student_answer": "```json\n{\n  \"validation_rules\": [\n    {\n      \"rule_id\": \"R1\",\n      \"description\": \"Negative Income\",\n      \"condition\": \"income_amount < 0\",\n      \"severity\": \"High\",\n      \"action\": \"Reject\"\n    },\n    {\n      \"rule_id\": \"R2\",\n      \"description\": \"Non-Numeric Income\",\n      \"condition\": \"not isnumeric(income_amount)\",\n      \"severity\": \"High\",\n      \"action\": \"Reject\"\n    },\n    {\n      \"rule_id\": \"R3\",\n      \"description\": \"Currency Mismatch\",\n      \"condition\": \"currency != 'USD' and not (income_amount like '%USD%' or income_amount like '%EUR%' or income_amount like '%GBP%')\",\n      \"severity\": \"Medium\",\n      \"action\": \"Flag\"\n    },\n    {\n      \"rule_id\": \"R4\",\n      \"description\": \"Invalid Currency Format\",\n      \"condition\": \"income_amount like '%[^0-9]%')\",\n      \"severity\": \"Medium\",\n      \"action\": \"Flag\"\n    },\n    {\n      \"rule_id\": \"R5\",\n      \"description\": \"Text in Numeric Field\",\n      \"condition\": \"income_amount like '%[^0-9]%'\",\n      \"severity\": \"Medium\",\n      \"action\": \"Flag\"\n    }\n  ],\n  \"handling_protocol\": {\n    \"stage1\": \"Initial Flagging\",\n    \"process\": \"All records are initially flagged based on the validation rules.  A flag is recorded indicating which rule triggered the flag.\",\n    \"stage2\": \"Review and Investigation\",\n    \"process\": \"Data collectors review flagged records and provide justification for rejection or correction.  Justification must be documented.\",\n    \"stage3\": \"Decision\",\n    \"rejection\": \"Records flagged as 'High' severity (R1, R2) are rejected.  The reason for rejection is recorded.\",\n    \"correction\": \"Records flagged as 'Medium' severity (R3, R4, R5) are corrected based on collector justification.  The original flagged record and the corrected record are retained.\",\n    \"imputation\": \"Imputation is *not* recommended for income data due to potential bias.  Only consider if a clear, justifiable reason exists and is documented.\"\n  },\n  \"summary_report_structure\": {\n    \"report_title\": \"Income Data Quality Assessment\",\n    \"sections\": [\n      {\n        \"section_title\": \"Overall Error Rates\",\n        \"metrics\": [\n          \"Total Records\",\n          \"Records Rejected\",\n          \"Records Flagged\",\n          \"Percentage of Records Rejected\",\n          \"Percentage of Records Flagged\"\n        ]\n      },\n      {\n        \"section_title\": \"Error Rates by Data Collector\",\n        \"data_table\": {\n          \"columns\": [\n            \"Collector ID\",\n            \"Records Collected\",\n            \"Records Rejected by Collector\",\n            \"Records Flagged by Collector\",\n            \"Percentage of Records Rejected by Collector\",\n            \"Percentage of Records Flagged by Collector\"\n          ],\n          \"rows\": []\n        }\n      },\n      {\n        \"section_title\": \"Rule-Specific Error Rates\",\n        \"data_table\": {\n          \"columns\": [\n            \"Rule ID\",\n            \"Total Records Affected\",\n            \"Records Rejected by Rule\",\n            \"Records Flagged by Rule\",\n            \"Percentage of Records Rejected by Rule\",\n            \"Percentage of Records Flagged by Rule\"\n          ],\n          \"rows\": []\n        }\n      },\n      {\n        \"section_title\": \"Justification Analysis\",\n        \"description\": \"Summary of common justifications provided by collectors for correcting flagged records. Categorize justifications (e.g., 'Typo', 'Unit Conversion', 'Missing Data').\"\n      }\n    ]\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly identifies the core data quality issues and proposes a logical workflow. However, it falls short of 'Exceptional' (5) and 'Industry Standard' (4) in several areas. 1) Correctness/Completeness: The validation rules contain syntax errors (e.g., mixing SQL-like 'like' with Python-like 'isnumeric' and using regex syntax '%[^0-9]%' which is not standard SQL or generic pseudocode without context). 2) Best Practices: The handling protocol suggests rejecting records with 'High' severity (like non-numeric text) without a prior 'cleaning' or 'parsing' step. In industry practice, one would attempt to parse '$1,200' into a number before rejecting; immediate rejection of potentially salvageable data is poor practice. 3) Domain Accuracy: The currency mismatch rule logic is flawed; it checks if the currency field is not USD but then checks if the income amount contains currency codes, which is a confusing and likely incorrect logic flow for the described data structure. 4) Autonomy: Due to the syntax errors and the flawed logic regarding data salvage, a stakeholder could not use this without significant review and correction."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Examine theories, such as those of probability and inference, to discover mathematical bases for new or improved methods of obtaining and evaluating numerical data.",
+      "task_type": "Methodological Research",
+      "user_prompt": "You are investigating a new method for estimating the mean of a highly skewed distribution where the Central Limit Theorem converges slowly. 1) Compare the performance of the sample mean vs. the trimmed mean vs. the median for a sample size of 30 from a Log-Normal distribution (mu=0, sigma=1). 2) Derive the theoretical bias and variance for the trimmed mean (trimming 10% from each tail). 3) Recommend the most robust estimator for this specific scenario and justify using asymptotic theory.",
+      "reference_context": "Distribution: Log-Normal(0, 1). Sample Size (n) = 30. Trim proportion = 0.10. Comparison metrics: Bias, Variance, Mean Squared Error (MSE).",
+      "evaluation_criteria": [
+        "Criterion 1: Theoretical Derivation — Bias and variance formulas for trimmed mean are mathematically sound.",
+        "Criterion 2: Comparison — Comparison of estimators is based on statistical properties (bias/variance trade-off).",
+        "Criterion 3: Recommendation — Final recommendation is logically derived from the theoretical analysis."
+      ],
+      "student_answer": "```python\nimport numpy as np\nimport scipy.stats as stats\nimport math\n\n# 1. Comparison of Estimators\n\nnp.random.seed(42)\nlog_normal_data = stats.lognorm.rvs(0, 1, size=30)\nsample_mean = np.mean(log_normal_data)\ntrimmed_mean = np.trim_mean(log_normal_data, 0.1)\nmedian = np.median(log_normal_data)\n\nbias_mean = sample_mean - log_normal_data.mean()\nbias_trimmed = trimmed_mean - log_normal_data.mean()\nbias_median = median - log_normal_data.mean()\n\nvariance_mean = np.var(log_normal_data)\nvariance_trimmed = np.var(log_normal_data) # Approximation, more accurate calculation would require simulating many samples\nvariance_median = np.var(log_normal_data) # Approximation, more accurate calculation would require simulating many samples\n\nmse_mean = bias_mean**2 + variance_mean\nmse_trimmed = bias_trimmed**2 + variance_trimmed\nmse_median = bias_median**2 + variance_median\n\nprint(\"Sample Mean:\")\nprint(f\"  Mean: {sample_mean:.4f}\")\nprint(f\"  Bias: {bias_mean:.4f}\")\nprint(f\"  Variance: {variance_mean:.4f}\")\nprint(f\"  MSE: {mse_mean:.4f}\")\n\nprint(\"\\nTrimmed Mean:\")\nprint(f\"  Mean: {trimmed_mean:.4f}\")\nprint(f\"  Bias: {bias_trimmed:.4f}\")\nprint(f\"  Variance: {variance_trimmed:.4f}\")\nprint(f\"  MSE: {mse_trimmed:.4f}\")\n\nprint(\"\\nMedian:\")\nprint(f\"  Mean: {median:.4f}\")\nprint(f\"  Bias: {bias_median:.4f}\")\nprint(f\"  Variance: {variance_median:.4f}\")\nprint(f\"  MSE: {mse_median:.4f}\")\n\n\n# 2. Theoretical Bias and Variance for Trimmed Mean\n\ntrim_proportion = 0.10\ntrimmed_mean_theoretical_bias = 0  # Bias is zero under mild conditions\ntrimmed_mean_theoretical_variance = variance_trimmed * (1 - trim_proportion)**2\n\nprint(\"\\nTheoretical Bias and Variance for Trimmed Mean:\")\nprint(f\"  Theoretical Bias: {trimmed_mean_theoretical_bias:.4f}\")\nprint(f\"  Theoretical Variance: {trimmed_mean_theoretical_variance:.4f}\")\n\n\n# 3. Recommendation and Justification\n\nprint(\"\\nRecommendation:\")\nprint(\"The trimmed mean is the most robust estimator for this scenario.\")\nprint(\"Justification: The Log-Normal distribution is highly skewed. The Central Limit Theorem converges slowly, meaning the sample mean is not a reliable estimator of the population mean.  The trimmed mean mitigates the influence of extreme values (outliers) by removing a fixed percentage from both tails, reducing the impact of skewness.  The theoretical bias is zero, and the variance decreases as the trimming proportion increases.  Asymptotic theory suggests that as the sample size (n=30) increases, the trimmed mean will converge to the true mean more rapidly and with lower MSE than the sample mean, especially when the distribution is heavily skewed.  The median is also robust, but the trimmed mean offers more control over the degree of robustness by adjusting the trimming proportion.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. 1) Correctness: The code calculates bias and variance based on a single sample (n=30) rather than a Monte Carlo simulation, rendering the bias and variance estimates mathematically meaningless for the task. 2) Completeness: It completely fails to derive the theoretical bias and variance formulas as requested, instead printing arbitrary placeholder values (0 and a heuristic formula). 3) Best Practices: Using a single random seed and a single sample to estimate population parameters is a critical methodological error. 4) Domain Accuracy: The theoretical variance formula provided is incorrect for a trimmed mean. 5) Clarity: While the code runs, the logic is flawed. 6) Autonomy: The output is a rough draft containing significant mathematical errors and cannot be used without complete rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Prepare and structure data warehouses for storing data.",
+      "task_type": "Data Warehousing",
+      "user_prompt": "Design a schema for a data warehouse storing time-series sensor data from 10,000 IoT devices. The data includes timestamp, device_id, temperature, humidity, and status. 1) Propose a schema (Star vs. Snowflake) and justify the choice based on query performance for time-range aggregations. 2) Define the partitioning strategy for the fact table to optimize storage and retrieval. 3) Describe the indexing strategy for the dimension tables.",
+      "reference_context": "Data volume: 1TB/day. Query pattern: Frequent time-range aggregations (e.g., 'avg temp last 24h'). Dimensions: Device, Time, Location.",
+      "evaluation_criteria": [
+        "Criterion 1: Schema Design — Schema choice is justified by the specific query patterns.",
+        "Criterion 2: Partitioning — Partitioning strategy aligns with the time-series nature of the data.",
+        "Criterion 3: Indexing — Indexing strategy supports efficient joins and lookups on dimension tables."
+      ],
+      "student_answer": "```sql\n-- Schema: Star Schema\n\n-- Fact Table: sensor_readings\nCREATE TABLE sensor_readings (\n    reading_id BIGINT PRIMARY KEY,\n    device_id VARCHAR(255) NOT NULL,\n    time_id TIMESTAMP NOT NULL,\n    temperature DECIMAL(5,2),\n    humidity DECIMAL(5,2),\n    status VARCHAR(255)\n);\n\n-- Dimension Table: device\nCREATE TABLE device (\n    device_id VARCHAR(255) PRIMARY KEY,\n    device_name VARCHAR(255),\n    location_id INT,\n    manufacturer VARCHAR(255)\n);\n\n-- Dimension Table: time\nCREATE TABLE time (\n    time_id TIMESTAMP PRIMARY KEY,\n    hour INT,\n    day INT,\n    month INT,\n    year INT,\n    day_of_week INT\n);\n\n-- Dimension Table: location\nCREATE TABLE location (\n    location_id INT PRIMARY KEY,\n    location_name VARCHAR(255),\n    latitude DECIMAL(9,6),\n    longitude DECIMAL(9,6)\n);\n\n-- Partitioning Strategy for sensor_readings (Fact Table)\n-- Partition by time (monthly or quarterly) to align with common aggregation periods.\n-- Partitioning Key: time_id\n\n-- Indexing Strategy for Dimension Tables\n-- device: Index on device_id (primary key) and location_id\nCREATE INDEX idx_device_location_id ON device (location_id);\n\n-- time: Index on time_id (primary key) and hour, day, month, year, day_of_week\nCREATE INDEX idx_time_hour ON time (hour);\nCREATE INDEX idx_time_day ON time (day);\nCREATE INDEX idx_time_month ON time (month);\nCREATE INDEX idx_time_year ON time (year);\nCREATE INDEX idx_time_day_of_week ON time (day_of_week);\n\n-- location: Index on location_id (primary key)\nCREATE INDEX idx_location_location_id ON location (location_id);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies a Star Schema and provides SQL for tables, but fails significantly on technical depth required for the specified scale (1TB/day). 1) Correctness: The schema uses TIMESTAMP as a primary key in the Time dimension, which is a critical error for a time-series warehouse; time dimensions should use surrogate keys (e.g., integer YYYYMMDD) to handle joins efficiently and avoid precision issues. 2) Completeness: The partitioning strategy is vague ('monthly or quarterly') and lacks justification for the 1TB/day volume, which typically requires daily or hourly partitioning to manage retention and query speed. 3) Best Practices: Indexing every column in the Time dimension is inefficient and violates normalization principles for dimension tables; composite indexes or covering indexes are preferred. 4) Domain Accuracy: The use of VARCHAR for device_id and lack of clustering keys for the massive fact table are not industry-standard for high-volume IoT. 5) Clarity: The SQL is readable. 6) Autonomy: The solution requires significant rework to be production-ready due to the primary key design and partitioning strategy."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Develop software applications or programming for statistical modeling and graphic analysis.",
+      "task_type": "Statistical Modeling & Visualization",
+      "user_prompt": "Develop a Python script to fit a Generalized Linear Model (GLM) with a Poisson distribution to count data representing daily website visits. 1) The data has overdispersion (variance > mean). 2) Modify the model to use a Negative Binomial distribution to account for this. 3) Generate a plot comparing the observed counts vs. predicted counts for both models. 4) Describe the plot axes, title, and legend in detail.",
+      "reference_context": "Data: 'daily_visits' (count). Overdispersion parameter (alpha) is estimated to be 0.5. Libraries: statsmodels, matplotlib.",
+      "evaluation_criteria": [
+        "Criterion 1: Model Selection — Correctly identifies overdispersion and switches to Negative Binomial.",
+        "Criterion 2: Implementation — Code logic for fitting both models is correct.",
+        "Criterion 3: Visualization — Plot description includes precise axis labels, title, and legend details as required."
+      ],
+      "student_answer": "```python\nimport statsmodels.api as sm\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Generate synthetic data with overdispersion\nnp.random.seed(42)\nn = 365\ndaily_visits = np.random.poisson(lam=10, size=n)\ndispersion = 0.5\ndaily_visits = np.random.poisson(lam=10, size=n) * (1 + np.random.rand(n) * dispersion)\n\n# Fit Poisson GLM\npoisson_model = sm.GLM(daily_visits, family=sm.families.Poisson()).fit()\n\n# Fit Negative Binomial GLM\nnegative_binomial_model = sm.GLM(daily_visits, family=sm.families.NegativeBinomial(alpha=dispersion)).fit()\n\n# Generate predicted counts\npredicted_poisson = poisson_model.predict(np.hstack([np.ones(len(daily_visits)), np.arange(len(daily_visits))]))\npredicted_negative_binomial = negative_binomial_model.predict(np.hstack([np.ones(len(daily_visits)), np.arange(len(daily_visits))]))\n\n# Plot observed vs. predicted counts\nplt.figure(figsize=(12, 6))\nplt.scatter(range(len(daily_visits)), daily_visits, label='Observed Counts', color='blue')\nplt.plot(range(len(daily_visits)), predicted_poisson, label='Poisson Predicted', color='red')\nplt.plot(range(len(daily_visits)), predicted_negative_binomial, label='Negative Binomial Predicted', color='green')\nplt.xlabel('Day Number')\nplt.ylabel('Website Visits')\nplt.title('Observed vs. Predicted Website Visits')\nplt.legend()\nplt.grid(True)\nplt.show()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical fronts. 1) Correctness: The code attempts to fit a Negative Binomial model by passing a fixed 'alpha' parameter to the family constructor, which is incorrect; statsmodels estimates alpha via Maximum Likelihood, not by hardcoding it. 2) Completeness: The task requires generating a plot comparing observed vs. predicted counts, but the student creates a time-series plot of observed vs. predicted values over days, which does not effectively compare the fit quality (a Q-Q plot or Observed vs. Predicted scatter plot is standard). 3) Best Practices: The data generation logic is flawed (multiplying Poisson by a uniform random variable does not correctly simulate a Negative Binomial process with the specified alpha). 4) Domain Accuracy: The implementation of the Negative Binomial GLM is fundamentally wrong for the library used. 5) Clarity: The code is readable but the logic is misleading. 6) Autonomy: The code will not produce the requested statistical comparison correctly and requires significant rework to be valid."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Apply sampling techniques, or use complete enumeration bases to determine and define groups to be surveyed.",
+      "task_type": "Survey Design & Sampling Strategy",
+      "user_prompt": "You are designing a survey to estimate the average annual income of small business owners in a specific metropolitan area. The population is known to be highly heterogeneous, with significant income disparities between different industry sectors (e.g., tech vs. retail). You have access to a complete list of all registered small businesses (complete enumeration base) but cannot survey everyone due to budget constraints. 1) Propose a sampling strategy that ensures representation across industry sectors. 2) Calculate the minimum sample size required to achieve a 95% confidence level with a margin of error of $5,000, assuming a population standard deviation of $45,000. 3) Describe how you would handle the selection of specific businesses within each sector. 4) Justify your choice of sampling method over simple random sampling based on statistical efficiency.",
+      "reference_context": "Population size (N): 12,500 small businesses. Industry breakdown: Tech (2,000), Retail (5,000), Services (3,500), Manufacturing (2,000). Known population standard deviation (sigma): $45,000. Target confidence level: 95%. Target margin of error (E): $5,000.",
+      "evaluation_criteria": [
+        "Criterion 1: Method Selection — Does the solution correctly identify stratified sampling as the optimal approach given the heterogeneity and known population structure?",
+        "Criterion 2: Calculation Accuracy — Is the sample size calculation mathematically correct using the formula n = (Z^2 * sigma^2) / E^2, and is the allocation across strata proportional or optimal?",
+        "Criterion 3: Justification — Does the response clearly explain why stratified sampling reduces variance compared to simple random sampling in this specific context?",
+        "Criterion 4: Assumptions — Are assumptions regarding the normality of the sampling distribution or the accuracy of the population standard deviation explicitly stated?"
+      ],
+      "student_answer": "1.  **Sampling Strategy:** Stratified sampling by industry sector. Divide the population into four strata: Tech, Retail, Services, and Manufacturing. Calculate the proportion of businesses in each stratum. Allocate a proportional number of sample units to each stratum, ensuring that the sample size within each stratum reflects its representation in the population.\n\n2.  **Minimum Sample Size:**\n\n    *   Z-score for 95% confidence level: 1.96\n    *   Margin of Error (E): $5,000\n    *   Population Standard Deviation (σ): $45,000\n\n    Sample Size (n) = (Z * σ / E)^2 = (1.96 * $45,000 / $5,000)^2 = (17.64)^2 = 311.56 ≈ 312\n\n3.  **Business Selection within Sectors:** Within each stratum (Tech, Retail, Services, Manufacturing), use systematic sampling. Select a random starting point within the stratum's list of businesses (e.g., randomly select a number between 1 and 10). Then, select every *k*th business thereafter, where *k* is the desired sample size for that stratum.  Calculate *k* as n / stratum size.\n\n4.  **Justification:** Stratified sampling is more efficient than simple random sampling when there is significant heterogeneity within the population. By ensuring representation from each industry sector, stratified sampling reduces sampling error and provides a more accurate estimate of the average income across all small businesses in the metropolitan area. Simple random sampling could lead to underrepresentation of certain sectors, resulting in biased estimates and a wider margin of error.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies stratified sampling and performs the basic sample size calculation (312). However, it fails to account for the finite population correction (FPC) despite the small population size (N=12,500), which would significantly reduce the required sample size. The selection method description in section 3 is mathematically flawed; it suggests calculating k as n/stratum_size, which is incorrect for systematic sampling (k should be stratum_size/n). Additionally, it proposes proportional allocation without addressing the potential need for optimal (Neyman) allocation given the high heterogeneity mentioned in the prompt, which is a missed opportunity for statistical efficiency. While the justification is sound, these technical gaps prevent a score of 5."
+    }
+  ]
+}

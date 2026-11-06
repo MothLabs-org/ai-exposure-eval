@@ -1,0 +1,880 @@
+{
+  "meta": {
+    "job_title": "Software Quality Assurance Analysts and Testers",
+    "job_id": "qa_analyst",
+    "onet_code": "15-1253.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 30,
+    "evaluated_tasks": 18,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.58,
+      "dimensions": {
+        "Correctness": 3.5,
+        "Completeness": 3.5,
+        "Best Practices": 3.28,
+        "Domain Accuracy": 3.83,
+        "Clarity": 4.22,
+        "Autonomy": 3.17
+      },
+      "evaluated_tasks": 18,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1082.1
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design test plans, scenarios, scripts, or procedures.",
+      "task_type": "Test Plan Design",
+      "user_prompt": "Given the following API endpoint specifications and a list of recent user-reported issues, design a comprehensive test plan including positive, negative, and edge case scenarios. Include a prioritized list of test cases with expected outcomes.",
+      "reference_context": {
+        "api_endpoint": "POST /api/v1/orders",
+        "payload_schema": {
+          "type": "object",
+          "properties": {
+            "user_id": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "sku": {
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1
+                  }
+                }
+              }
+            },
+            "payment_method": {
+              "type": "string",
+              "enum": [
+                "credit_card",
+                "paypal",
+                "crypto"
+              ]
+            }
+          },
+          "required": [
+            "user_id",
+            "items",
+            "payment_method"
+          ]
+        },
+        "known_issues": [
+          "System crashes when quantity is 0",
+          "Duplicate orders generated for same user within 1 second",
+          "Invalid SKU codes accepted without validation"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the test plan cover all specified known issues and schema constraints?",
+        "Criterion 2: Completeness — Are positive, negative, and edge cases clearly defined?",
+        "Criterion 3: Best practices — Is the test plan structured for automation and traceability?"
+      ],
+      "student_answer": "```json\n{\n  \"test_plan_name\": \"POST /api/v1/orders Test Plan\",\n  \"version\": \"1.0\",\n  \"priority\": \"High\",\n  \"test_cases\": [\n    {\n      \"id\": \"TC_001\",\n      \"description\": \"Positive Test: Successful order creation with valid data\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a valid payload conforming to the schema.\",\n        \"Verify the response status code is 201 (Created).\"\n      ],\n      \"expected_outcome\": \"Order created successfully. Response body contains order details (order ID, timestamp, etc.).\",\n      \"priority\": \"High\"\n    },\n    {\n      \"id\": \"TC_002\",\n      \"description\": \"Negative Test: Invalid user_id (too low)\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a payload containing user_id = 0.\",\n        \"Verify the response status code is 400 (Bad Request).\"\n      ],\n      \"expected_outcome\": \"Response body contains an error message indicating user_id must be greater than or equal to 1.\",\n      \"priority\": \"High\"\n    },\n    {\n      \"id\": \"TC_003\",\n      \"description\": \"Negative Test: Invalid user_id (too high)\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a payload containing user_id = 999999.\",\n        \"Verify the response status code is 400 (Bad Request).\"\n      ],\n      \"expected_outcome\": \"Response body contains an error message indicating user_id is out of range.\",\n      \"priority\": \"Medium\"\n    },\n    {\n      \"id\": \"TC_004\",\n      \"description\": \"Negative Test: Missing required fields\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a payload missing 'user_id', 'items', or 'payment_method'.\",\n        \"Verify the response status code is 400 (Bad Request).\"\n      ],\n      \"expected_outcome\": \"Response body contains an error message indicating missing required fields.\",\n      \"priority\": \"High\"\n    },\n    {\n      \"id\": \"TC_005\",\n      \"description\": \"Negative Test: Invalid payment_method\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a payload containing an invalid payment_method (e.g., 'bitcoin').\",\n        \"Verify the response status code is 400 (Bad Request).\"\n      ],\n      \"expected_outcome\": \"Response body contains an error message indicating the payment_method is not supported.\",\n      \"priority\": \"High\"\n    },\n    {\n      \"id\": \"TC_006\",\n      \"description\": \"Negative Test: Invalid quantity (0)\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a payload containing an item with quantity = 0.\",\n        \"Verify the response status code is 400 (Bad Request).\"\n      ],\n      \"expected_outcome\": \"Response body contains an error message indicating quantity must be greater than 0.\",\n      \"priority\": \"High\"\n    },\n    {\n      \"id\": \"TC_007\",\n      \"description\": \"Negative Test: Invalid quantity (negative)\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a payload containing an item with quantity = -1.\",\n        \"Verify the response status code is 400 (Bad Request).\"\n      ],\n      \"expected_outcome\": \"Response body contains an error message indicating quantity must be greater than 0.\",\n      \"priority\": \"High\"\n    },\n    {\n      \"id\": \"TC_008\",\n      \"description\": \"Edge Case: Large quantity\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a payload containing an item with a very large quantity (e.g., 10000).\",\n        \"Verify the response status code is 201 (Created) and the order is created successfully.\"\n      ],\n      \"expected_outcome\": \"Order created successfully.  System handles large quantities without errors.\",\n      \"priority\": \"Medium\"\n    },\n    {\n      \"id\": \"TC_009\",\n      \"description\": \"Edge Case: Multiple items with different quantities\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a payload containing multiple items with varying quantities.\",\n        \"Verify the response status code is 201 (Created) and all items are included in the order.\"\n      ],\n      \"expected_outcome\": \"Order created successfully. All items are included in the order details.\",\n      \"priority\": \"Medium\"\n    },\n    {\n      \"id\": \"TC_010\",\n      \"description\": \"Duplicate Order Prevention\",\n      \"steps\": [\n        \"Send two POST requests to /api/v1/orders within 1 second with identical payloads (except for a slight timestamp difference).\",\n        \"Verify the response status code for the second request is 409 (Conflict).\"\n      ],\n      \"expected_outcome\": \"The second request returns a 409 Conflict status code, indicating a duplicate order was detected.\",\n      \"priority\": \"High\"\n    },\n    {\n      \"id\": \"TC_011\",\n      \"description\": \"Invalid SKU\",\n      \"steps\": [\n        \"Send a POST request to /api/v1/orders with a payload containing an invalid SKU (e.g., 'invalid-sku').\",\n        \"Verify the response status code is 400 (Bad Request).\"\n      ],\n      \"expected_outcome\": \"Response body contains an error message indicating the SKU is invalid.\",\n      \"priority\": \"High\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        3
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission provides a solid list of test cases covering positive, negative, and edge scenarios, including specific handling for the known issues (quantity 0, duplicate orders, invalid SKUs). However, it lacks database verification steps to confirm order persistence and data integrity, which is a standard requirement for a comprehensive test plan. The duplicate order test case (TC_010) describes the scenario but does not explicitly detail the race condition mitigation strategy (e.g., database locking or idempotency keys) required to truly validate the fix for the 'crash' or 'duplicate' issue. Additionally, the test plan does not explicitly mention schema validation for the 'items' array structure beyond the quantity check. These omissions prevent it from being a flawless, industry-standard deliverable ready for immediate stakeholder use without review."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Document software defects, using a bug tracking system, and report defects to software developers.",
+      "task_type": "Defect Reporting",
+      "user_prompt": "Analyze the following user session logs and application error traces to identify three distinct software defects. For each defect, draft a formal bug report including severity, steps to reproduce, expected vs. actual results, and environment details.",
+      "reference_context": {
+        "session_logs": [
+          "User ID 4521 attempted to checkout with expired credit card token 'exp_999'. System returned 500 Internal Server Error instead of 400 Bad Request.",
+          "User ID 1023 uploaded a 50MB PDF file. The server timed out after 30 seconds and the file was partially saved, causing data corruption on next access.",
+          "User ID 3301 logged in from two different IPs simultaneously. The system allowed both sessions to remain active, leading to conflicting cart updates."
+        ],
+        "error_traces": [
+          "NullPointerException at com.app.checkout.PaymentProcessor.validateToken(PaymentProcessor.java:142)",
+          "OutOfMemoryError: Java heap space at com.app.storage.FileHandler.save(FileHandler.java:89)",
+          "RaceCondition detected in session manager: concurrent write to user_cart table"
+        ],
+        "environment": "Production v2.4.1, AWS EC2, PostgreSQL 14"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Do the reports correctly map logs/traces to specific defects?",
+        "Criterion 2: Format Compliance — Does each report include severity, steps to reproduce, expected/actual results, and environment?",
+        "Criterion 3: Clarity — Are the steps to reproduce unambiguous and reproducible by a developer?"
+      ],
+      "student_answer": "## Bug Reports\n\n**Bug 1**\n\n*   **ID:** BUG-001\n*   **Summary:** 500 Internal Server Error during checkout with expired token.\n*   **Severity:** Critical\n*   **Steps to Reproduce:**\n    1.  Log in as User ID 4521.\n    2.  Navigate to the checkout page.\n    3.  Enter an expired credit card token ('exp_999').\n    4.  Attempt to complete the checkout process.\n*   **Expected Result:** The system should return a 400 Bad Request error, indicating an invalid payment method.\n*   **Actual Result:** The system returns a 500 Internal Server Error.\n*   **Environment:** Production v2.4.1, AWS EC2, PostgreSQL 14\n*   **Related Error Trace:** NullPointerException at com.app.checkout.PaymentProcessor.validateToken(PaymentProcessor.java:142)\n\n**Bug 2**\n\n*   **ID:** BUG-002\n*   **Summary:** Partial file upload resulting in data corruption.\n*   **Severity:** Major\n*   **Steps to Reproduce:**\n    1.  Log in as any user.\n    2.  Navigate to the file upload section.\n    3.  Upload a 50MB PDF file.\n    4.  Observe the upload progress.\n    5.  After the upload appears to be complete, attempt to access the uploaded file.\n*   **Expected Result:** The file should be fully uploaded and accessible without corruption.\n*   **Actual Result:** The file is partially saved, and subsequent access results in data corruption.\n*   **Environment:** Production v2.4.1, AWS EC2, PostgreSQL 14\n*   **Related Error Trace:** OutOfMemoryError: Java heap space at com.app.storage.FileHandler.save(FileHandler.java:89)\n\n**Bug 3**\n\n*   **ID:** BUG-003\n*   **Summary:** Concurrent session updates leading to conflicting cart data.\n*   **Severity:** High\n*   **Steps to Reproduce:**\n    1.  Log in as User ID 3301.\n    2.  Simultaneously log in from a different IP address.\n    3.  Perform actions that modify the user's cart (e.g., adding or removing items).\n    4.  Observe the cart contents.\n*   **Expected Result:** The system should prevent multiple sessions from modifying the same cart simultaneously, ensuring data consistency.\n*   **Actual Result:** Both sessions are allowed to remain active, resulting in conflicting cart updates.\n*   **Environment:** Production v2.4.1, AWS EC2, PostgreSQL 14\n*   **Related Error Trace:** RaceCondition detected in session manager",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies three distinct defects and formats them as professional bug reports with all required fields (ID, Summary, Severity, Steps, Expected/Actual, Environment, Trace). The severity ratings are generally appropriate, though Bug 2's severity could be debated as Critical depending on data loss impact. The primary weakness preventing a perfect score is the failure to address the 'Additional Checks' section of the prompt, which explicitly requested analysis of race conditions in duplicate orders, negative input validation, and database verification steps. While the student correctly identified the race condition in Bug 3, they did not provide the specific additional checks requested. The output is high quality and largely ready for use, but the omission of the specific additional analysis tasks reduces the Completeness and Autonomy scores."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop testing programs that address areas such as database impacts, software scenarios, regression testing, negative testing, error or bug retests, or usability.",
+      "task_type": "Test Script Development",
+      "user_prompt": "Develop a regression test script for the 'User Profile Update' feature. The script must cover database integrity checks, negative testing for invalid inputs, and edge cases regarding concurrent updates. Include assertions for database state changes.",
+      "reference_context": {
+        "feature": "User Profile Update",
+        "endpoint": "PUT /api/v1/users/{id}",
+        "database_schema": {
+          "table": "users",
+          "columns": [
+            "id (PK)",
+            "username (unique, 3-20 chars)",
+            "email (unique, valid format)",
+            "last_updated (timestamp)"
+          ]
+        },
+        "constraints": [
+          "Username cannot be changed if account is locked",
+          "Email change requires re-verification",
+          "Concurrent updates must result in the last successful commit winning"
+        ],
+        "test_data": {
+          "valid_user": {
+            "id": 101,
+            "username": "alice",
+            "email": "alice@example.com"
+          },
+          "locked_user": {
+            "id": 102,
+            "username": "bob",
+            "status": "locked"
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Coverage — Does the script test valid updates, invalid inputs, and concurrent scenarios?",
+        "Criterion 2: Database Integrity — Are assertions included to verify data consistency and timestamp updates?",
+        "Criterion 3: Negative Testing — Does the script explicitly test locked accounts and invalid formats?"
+      ],
+      "student_answer": "```python\nimport unittest\nimport requests\nimport json\nimport time\n\nclass UserProfileUpdateTests(unittest.TestCase):\n\n    BASE_URL = \"http://localhost:5000/api/v1\"  # Replace with your actual API URL\n\n    def setUp(self):\n        # Reset database for each test run\n        self.valid_user = self.test_data[\"valid_user\"]\n        self.locked_user = self.test_data[\"locked_user\"]\n\n        # Create valid user if it doesn't exist\n        if not self.exists_user(self.valid_user[\"id\"]):\n            self.create_user(self.valid_user)\n\n        # Create locked user if it doesn't exist\n        if not self.exists_user(self.locked_user[\"id\"]):\n            self.create_user(self.locked_user)\n\n\n    def tearDown(self):\n        # Clean up database after each test run\n        self.delete_user(self.valid_user[\"id\"])\n        self.delete_user(self.locked_user[\"id\"])\n\n    def exists_user(self, user_id):\n        try:\n            response = requests.get(f\"{self.BASE_URL}/users/{user_id}\")\n            response.raise_for_status()\n            return True\n        except requests.exceptions.HTTPError as e:\n            if response.status_code == 404:\n                return False\n            else:\n                raise\n\n    def create_user(self, user_data):\n        response = requests.put(f\"{self.BASE_URL}/users\", json=user_data)\n        response.raise_for_status()\n\n    def delete_user(self, user_id):\n        response = requests.delete(f\"{self.BASE_URL}/users/{user_id}\")\n        response.raise_for_status()\n\n    def update_user(self, user_id, update_data):\n        url = f\"{self.BASE_URL}/users/{user_id}\"\n        response = requests.put(url, json=update_data)\n        response.raise_for_status()\n        return response\n\n    def test_valid_update(self):\n        update_data = {\"email\": \"alice.new@example.com\"}\n        response = self.update_user(self.valid_user[\"id\"], update_data)\n        self.assertEqual(response.status_code, 200)\n        updated_user = response.json()\n        self.assertEqual(updated_user[\"email\"], \"alice.new@example.com\")\n        self.assertNotEqual(updated_user[\"id\"], self.valid_user[\"id\"])\n        self.assertEqual(updated_user[\"last_updated\"], time.time())\n\n    def test_username_update_locked_user(self):\n        update_data = {\"username\": \"alice_new\"}\n        response = self.update_user(self.locked_user[\"id\"], update_data)\n        self.assertEqual(response.status_code, 200)\n        self.assertEqual(response.json()[\"username\"], \"alice_new\")\n        self.assertEqual(response.json()[\"status\"], \"locked\")\n\n    def test_email_update_requires_reverification(self):\n        # This test requires a more complex implementation of email verification\n        # and is currently stubbed out.  A real implementation would verify\n        # the email change and prevent the update.\n        update_data = {\"email\": \"alice.new@example.com\"}\n        response = self.update_user(self.valid_user[\"id\"], update_data)\n        self.assertEqual(response.status_code, 200)\n        self.assertEqual(response.json()[\"email\"], \"alice.new@example.com\")\n\n    def test_concurrent_updates(self):\n        # Simulate concurrent updates\n        update_data1 = {\"email\": \"alice.new1@example.com\"}\n        update_data2 = {\"username\": \"alice_new2\"}\n\n        # Update 1\n        response1 = self.update_user(self.valid_user[\"id\"], update_data1)\n        self.assertEqual(response1.status_code, 200)\n\n        # Simulate a delay\n        time.sleep(0.1)\n\n        # Update 2\n        response2 = self.update_user(self.valid_user[\"id\"], update_data2)\n        self.assertEqual(response2.status_code, 200)\n\n        updated_user = response2.json()\n        self.assertEqual(updated_user[\"email\"], \"alice.new1@example.com\")\n        self.assertEqual(updated_user[\"username\"], \"alice_new2\")\n        self.assertEqual(updated_user[\"last_updated\"], time.time())\n\n    def test_invalid_username_length(self):\n        update_data = {\"username\": \"a\" * 21}\n        response = self.update_user(self.valid_user[\"id\"], update_data)\n        self.assertNotEqual(response.status_code, 200)\n        self.assertEqual(response.status_code, 400)\n\n    def test_invalid_email_format(self):\n        update_data = {\"email\": \"invalid-email\"}\n        response = self.update_user(self.valid_user[\"id\"], update_data)\n        self.assertNotEqual(response.status_code, 200)\n        self.assertEqual(response.status_code, 400)\n\nif __name__ == '__main__':\n    unittest.main()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on correctness and domain accuracy. It completely ignores the explicit requirement for database integrity checks and assertions, relying solely on API response validation. The implementation of helper methods (exists_user, create_user) is logically flawed and would cause runtime errors (e.g., create_user uses PUT instead of POST, delete_user deletes all users). The 'concurrent updates' test is a sequential simulation that does not actually test race conditions or the 'last commit wins' constraint, and it incorrectly asserts that the first update's data persists after the second. The 'locked user' test incorrectly expects a 200 OK for a forbidden action. The code contains syntax errors (undefined self.test_data) and fails to address the negative testing requirements for invalid inputs properly (e.g., email re-verification logic is stubbed out). It is not usable without major rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Identify, analyze, and document problems with program function, output, online screen, or content.",
+      "task_type": "Functional Analysis",
+      "user_prompt": "Review the provided UI wireframes and functional requirements for a 'Search Results' page. Identify at least four potential usability or functional issues related to pagination, sorting, and empty states. Document each problem with a description and impact analysis.",
+      "reference_context": {
+        "wireframe_description": "A search results page with 20 items per page. A 'Sort by' dropdown is present. An empty state message says 'No results found'. Pagination controls are at the bottom.",
+        "functional_requirements": [
+          "Users must be able to sort by relevance, price, and date.",
+          "Pagination must handle up to 10,000 results.",
+          "Empty states must appear immediately if no results match.",
+          "Sorting must persist across page changes."
+        ],
+        "observed_behavior": [
+          "Sorting resets to 'Relevance' when moving to page 2.",
+          "Empty state takes 5 seconds to load.",
+          "Pagination numbers are truncated on mobile screens.",
+          "Sorting by 'Price' does not handle null values (items without price appear at the top)."
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Identification — Are at least four distinct issues identified?",
+        "Criterion 2: Analysis — Is the impact of each issue on user experience or functionality clearly explained?",
+        "Criterion 3: Alignment — Do the identified issues contradict the provided functional requirements?"
+      ],
+      "student_answer": "**Usability and Functional Issues - Search Results Page**\n\n1.  **Issue:** Sorting Reset on Page Change\n    *   **Description:** Sorting criteria are reset to 'Relevance' when the user navigates to a different page of search results.\n    *   **Impact:** Disrupts user workflow, requiring them to re-apply their desired sorting preference, leading to frustration and decreased efficiency.\n\n2.  **Issue:** Delayed Empty State Loading\n    *   **Description:** The \"No results found\" message takes 5 seconds to appear after an unsuccessful search.\n    *   **Impact:** Creates a negative user experience, as the page appears to be unresponsive.  Users may perceive the system as slow or unreliable.\n\n3.  **Issue:** Pagination Number Truncation on Mobile\n    *   **Description:** Pagination numbers are truncated on smaller mobile screen sizes, making it difficult for users to identify the current page and navigate to the desired page.\n    *   **Impact:** Reduces usability, particularly on mobile devices, potentially leading to users getting lost or abandoning the search.\n\n4.  **Issue:** Price Sorting Handling of Null Values\n    *   **Description:** Items without a price value are sorted before items with a price value when sorting by 'Price'.\n    *   **Impact:**  Potentially misleading to users expecting items with prices to be displayed higher.  May lead to incorrect purchasing decisions or a perception of data inaccuracy.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The student correctly identified all four specific issues from the observed behavior and provided clear descriptions and impact analyses. The content is accurate and directly addresses the prompt requirements (Correctness: 5, Completeness: 5, Domain Accuracy: 5, Clarity: 5). The score for Best Practices (4) reflects that while the identification is correct, a truly exceptional submission might have offered more specific UX recommendations or technical root causes beyond just stating the problem. The score for Autonomy (4) is given because the output is high quality but lacks the comprehensive professional polish (e.g., formal formatting, specific remediation steps) that would allow it to be delivered to a stakeholder without any review or editing."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Document test procedures to ensure replicability and compliance with standards.",
+      "task_type": "Procedure Documentation",
+      "user_prompt": "Create a detailed test procedure document for performing a 'Database Migration Validation' test. The procedure must ensure replicability, include pre-requisites, step-by-step execution instructions, and acceptance criteria for data integrity.",
+      "reference_context": {
+        "migration_scope": "Migrating user data from MySQL 5.7 to PostgreSQL 14",
+        "data_volume": "5 million records",
+        "critical_fields": [
+          "user_id",
+          "hashed_password",
+          "created_at",
+          "preferences (JSON)"
+        ],
+        "standards": [
+          "ISO 25010 Data Integrity",
+          "Internal QA Standard v3.2"
+        ],
+        "risks": [
+          "Data type mismatch for timestamps",
+          "JSON structure changes"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Replicability — Can another tester follow the steps exactly to reproduce the test?",
+        "Criterion 2: Compliance — Does the document adhere to the listed standards and include all required sections?",
+        "Criterion 3: Risk Mitigation — Are specific checks included for the identified risks (timestamps, JSON)?"
+      ],
+      "student_answer": "```markdown\n# Database Migration Validation Test Procedure\n\n**Document Version:** 1.0\n**Date:** October 26, 2023\n**Prepared By:** Software Quality Assurance Analyst\n\n**1. Introduction**\n\nThis document outlines the test procedure for validating the database migration from MySQL 5.7 to PostgreSQL 14. The migration involves transferring 5 million user records, with specific attention to critical data fields.  This procedure aims to ensure data integrity and adherence to defined standards and mitigate identified risks.\n\n**2. Pre-requisites**\n\n*   **Test Environment:** A dedicated test environment mirroring the production environment as closely as possible, including PostgreSQL 14 and relevant supporting infrastructure.\n*   **Migration Tool:** The chosen database migration tool (e.g., Flyway, Liquibase, custom script) must be configured and tested.\n*   **MySQL 5.7 Database:** A representative MySQL 5.7 database containing the 5 million user records.  This database should be isolated from production.\n*   **PostgreSQL 14 Database:** A PostgreSQL 14 database ready to receive the migrated data.\n*   **Data Comparison Tool:** A tool capable of comparing data between MySQL and PostgreSQL (e.g., SQL Data Compare, custom scripts).\n*   **Test Data Set:** A subset of the 5 million records (e.g., 10% - 20,000 records) for focused testing. This subset should include a representative distribution of data types and values.\n*   **Access Credentials:**  Appropriate credentials for accessing both MySQL and PostgreSQL databases.\n*   **Documentation:**  Migration scripts, schema mappings, and any relevant documentation.\n\n**3. Test Procedure**\n\n**3.1. Initial Data Verification (MySQL)**\n\n1.  **Record Count:** Verify the total number of records in the MySQL database using `SELECT COUNT(*) FROM users;`.  Record the actual count.\n2.  **Data Sampling:** Extract the test data set (e.g., 10% of records) from the MySQL database.\n3.  **Data Integrity Checks (MySQL):**\n    *   **Data Type Validation:**  For each critical field (`user_id`, `hashed_password`, `created_at`, `preferences (JSON)`), verify the data type and format in the MySQL database.\n    *   **Null Value Check:**  Confirm that null values are handled correctly in each critical field.\n    *   **Range Checks:**  Validate that numerical values within critical fields fall within expected ranges.\n    *   **JSON Validation:**  For the `preferences (JSON)` field, validate the JSON structure and content using a JSON validator.\n\n**3.2. Migration Execution**\n\n1.  **Migration Run:** Execute the database migration script using the configured migration tool.\n2.  **Migration Status Verification:** Verify that the migration process completes successfully without errors.  Review migration logs for any warnings or issues.\n\n**3.3. Post-Migration Data Verification (PostgreSQL)**\n\n1.  **Record Count:** Verify the total number of records in the PostgreSQL database using `SELECT COUNT(*) FROM users;`.  Record the actual count.  It should match the number of records migrated.\n2.  **Data Sampling:** Extract the same test data set (e.g., 10% - 20,000 records) from the PostgreSQL database.\n3.  **Data Integrity Checks (PostgreSQL):**\n    *   **Data Type Conversion:**  Verify that data types have been correctly converted during the migration. Specifically, check for timestamp discrepancies.\n    *   **Data Value Comparison:** Compare the data values in the PostgreSQL database with the corresponding values in the MySQL database for the test data set.  Use the data comparison tool.\n    *   **JSON Structure Validation:**  Validate the JSON structure and content of the `preferences (JSON)` field in the PostgreSQL database.\n    *   **Critical Field Validation:**  Repeat the data type, null value, and range checks from Section 3.1 for the critical fields in the PostgreSQL database.\n4.  **Edge Case Testing:**  Test with boundary values and potentially problematic data to identify any migration-related issues.\n5.  **Performance Testing (Optional):**  Measure the performance of queries against the PostgreSQL database to ensure acceptable response times.\n\n**4. Acceptance Criteria**\n\n*   **Record Count:** The number of records in the PostgreSQL database must match the number of records migrated from MySQL.\n*   **Data Integrity:**  For all critical fields (`user_id`, `hashed_password`, `created_at`, `preferences (JSON)`), the data values in PostgreSQL must be identical to the corresponding values in MySQL for the test data set.\n*   **Data Type Consistency:** Data types must be correctly converted during the migration. Timestamp data must be compatible with PostgreSQL's timestamp format.\n*   **JSON Validation:** The JSON structure and content of the `preferences (JSON)` field must be valid in PostgreSQL.\n*   **Error Rate:** The migration process should not result in any errors or warnings.\n\n**5. Risk Mitigation**\n\n*   **Data Type Mismatch:**  Implement explicit data type conversions in the migration script.\n*   **JSON Structure Changes:**  Thoroughly analyze the differences between MySQL and PostgreSQL JSON support and adjust the migration script accordingly.  Consider using JSON transformation functions.\n\n**6. Test Reporting**\n\n*   Document all test results, including any discrepancies found.\n*   Record any issues encountered and their resolution.\n*   Provide a final report summarizing the test results and confirming whether the migration meets the acceptance criteria.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission provides a solid, well-structured test procedure covering the core requirements of the migration task (MySQL to PostgreSQL, specific fields, risks). It correctly identifies pre-requisites and acceptance criteria. However, it scores lower on Completeness and Best Practices because it relies on a 10% sample for a 5-million-record migration without specifying a statistical method or a full-row checksum strategy for the remaining 90%, which is a significant gap for data integrity validation at this scale. It also lacks specific SQL examples for the complex JSON and timestamp comparisons requested in the context. Furthermore, the submission fails the 'Additional Checks' requirement: it does not address race conditions, negative input validation, or order persistence verification, as the scope was incorrectly limited to user data rather than the order scenario mentioned in the checks. These omissions prevent it from reaching a score of 5."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Provide feedback and recommendations to developers on software usability and functionality.",
+      "task_type": "Feedback & Recommendations",
+      "user_prompt": "Based on the following user feedback summary and test results for the 'Checkout Flow', provide a structured feedback report to the development team. Highlight critical usability flaws and suggest specific functional improvements to reduce cart abandonment.",
+      "reference_context": {
+        "user_feedback_summary": [
+          "Users are confused by the 'Guest Checkout' button placement.",
+          "Error messages for invalid credit cards are generic ('Invalid input').",
+          "Shipping cost calculation takes 10 seconds to load.",
+          "Cannot edit cart items after entering payment info."
+        ],
+        "test_results": {
+          "success_rate": "65%",
+          "average_time_to_checkout": "4 minutes 30 seconds",
+          "error_rate": "12% on payment step",
+          "abandonment_point": "Payment info entry"
+        },
+        "current_flow": "Home -> Cart -> Login/Guest -> Shipping -> Payment -> Review -> Confirm"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Insight — Does the feedback accurately reflect the correlation between test results and user feedback?",
+        "Criterion 2: Actionability — Are the recommendations specific and technically feasible for developers?",
+        "Criterion 3: Prioritization — Are critical usability flaws addressed with higher priority than minor issues?"
+      ],
+      "student_answer": "## Checkout Flow Feedback Report\n\n**To:** Development Team\n**From:** Software Quality Assurance\n**Date:** October 26, 2023\n**Subject:** Checkout Flow Improvement Recommendations\n\n**Executive Summary:**\n\nThe current checkout flow exhibits significant usability issues and performance bottlenecks, contributing to a high cart abandonment rate. This report outlines critical flaws identified through user feedback and test results, and proposes specific functional improvements to enhance the user experience and reduce abandonment.\n\n**I. Key Issues & Severity:**\n\n| Issue                      | Severity | Description                               | Impact                               |\n|----------------------------|----------|-------------------------------------------|---------------------------------------|\n| Guest Checkout Button Placement | High     | Confusing placement of 'Guest Checkout' button | Significant user confusion, increased friction |\n| Generic Error Messages      | High     | \"Invalid input\" for credit card errors     | Frustration, difficulty resolving issues |\n| Slow Shipping Cost Calculation | High     | 10-second loading time                    | Increased checkout time, user drop-off |\n| Edit Cart After Payment     | High     | Inability to modify cart after payment entry | Loss of flexibility, potential for incorrect orders |\n| Payment Step Error Rate    | Medium   | 12% error rate at payment step            | Transaction failures, user frustration |\n\n**II. Detailed Findings & Recommendations:**\n\n1. **Guest Checkout Button Placement:**\n   * **Recommendation:**  Move the 'Guest Checkout' button to a more prominent location, ideally near the top of the page, alongside the logged-in checkout option.  Consider A/B testing different placements to determine optimal visibility.\n\n2. **Generic Error Messages:**\n   * **Recommendation:** Implement specific, user-friendly error messages for credit card errors.  Provide guidance on what information is missing or incorrect (e.g., \"Invalid card number,\" \"Expired card,\" \"Incorrect CVV\").\n\n3. **Slow Shipping Cost Calculation:**\n   * **Recommendation:** Optimize the shipping cost calculation process. Investigate potential bottlenecks in the backend and explore caching strategies to reduce loading time to under 2 seconds.\n\n4. **Edit Cart After Payment:**\n   * **Recommendation:** Allow users to edit their cart contents *before* submitting payment information.  This requires a seamless integration between the cart and payment steps.  Consider a temporary \"Save Cart\" functionality.\n\n5. **Payment Step Error Rate:**\n   * **Recommendation:** Investigate the root cause of the 12% error rate at the payment step.  Thoroughly test payment gateway integrations and implement robust error handling to prevent transaction failures.\n\n**III. Performance Metrics:**\n\n* **Success Rate:** 65% –  Requires further investigation to identify drop-off points beyond the payment step.\n* **Average Time to Checkout:** 4 minutes 30 seconds –  Significant improvement is needed to reduce this time.\n* **Abandonment Point:** Payment Info Entry –  Prioritize addressing issues identified in this section.\n\n**IV. Next Steps:**\n\n* Prioritize addressing the issues outlined above based on severity and impact.\n* Implement A/B testing for the 'Guest Checkout' button placement.\n* Conduct thorough regression testing after implementing changes.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly addresses the primary task of analyzing user feedback and test results to provide a structured report. It accurately identifies the four key issues and proposes logical, industry-standard recommendations (e.g., specific error messages, caching for performance). However, it fails to address the 'Additional Checks' section explicitly requested in the prompt, which asked for handling of race conditions, negative input validation, and database verification steps. This omission prevents the submission from being 'Exceptional' (5) in Completeness, Best Practices, and Autonomy, as a professional QA report for this scope would typically include these technical validation details. The report is well-structured and clear, but the lack of depth in the technical validation areas limits the highest scores."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Plan test schedules or strategies in accordance with project scope or delivery dates.",
+      "task_type": "Test Strategy Planning",
+      "user_prompt": "Given the project scope for a new mobile banking feature and the upcoming release date, create a detailed test strategy document. The strategy must outline the testing phases, resource allocation, risk mitigation plans, and a schedule that accounts for the known issues regarding transaction latency and security compliance.",
+      "reference_context": {
+        "project_scope": "Mobile Banking: Biometric Login and Fund Transfer",
+        "release_date": "2023-12-15",
+        "team_size": 4,
+        "known_issues": [
+          "Biometric recognition fails in low light conditions",
+          "Transaction timeout occurs if network latency exceeds 3 seconds",
+          "Security audit requires 100% coverage of PII handling"
+        ],
+        "constraints": "Must complete regression testing within 5 days prior to release."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Strategic Alignment - Does the plan align testing phases with the 5-day regression constraint?",
+        "Criterion 2: Risk Mitigation - Are specific strategies provided for the low light and network latency issues?",
+        "Criterion 3: Resource Allocation - Is the team of 4 distributed effectively across functional and security testing?"
+      ],
+      "student_answer": "```markdown\n# Mobile Banking: Biometric Login and Fund Transfer - Test Strategy Document\n\n**Date:** October 26, 2023\n**Version:** 1.0\n**Project Scope:** Mobile Banking: Biometric Login and Fund Transfer\n**Release Date:** 2023-12-15\n\n## 1. Introduction\n\nThis document outlines the test strategy for the Mobile Banking: Biometric Login and Fund Transfer feature. It details the testing phases, resource allocation, risk mitigation, and schedule, considering the identified known issues and constraints.\n\n## 2. Testing Phases\n\n| Phase             | Description                               | Duration (Days) | Entry Criteria                               | Exit Criteria                               |\n|--------------------|-------------------------------------------|-----------------|----------------------------------------------|---------------------------------------------|\n| **Unit Testing**   | Testing individual components & functions. | 3               | Code complete and buildable.                | All unit tests pass.                       |\n| **Integration Testing**| Testing interaction between modules.       | 4               | Unit testing complete.                       | All integration tests pass.                  |\n| **System Testing**  | End-to-end testing of the entire feature. | 7               | Integration testing complete.               | All system tests pass.                      |\n| **Regression Testing**| Ensuring existing functionality remains intact.| 5               | System testing complete.                     | Regression test suite passes.                |\n| **Security Testing**| Assessing security vulnerabilities.       | 3               | System testing complete.                     | Security audit report clears all critical issues.|\n| **Usability Testing**| Evaluating user experience.              | 2               | System testing complete.                     | Usability feedback incorporated and approved.|\n\n## 3. Resource Allocation\n\n| Role                | Allocation (FTE) | Responsibilities                               |\n|---------------------|------------------|------------------------------------------------|\n| QA Analyst (Lead)    | 1.0              | Test planning, test case design, execution, reporting |\n| QA Analyst           | 2.0              | Test case execution, defect tracking, reporting     |\n| Developer           | 1.0              | Bug fixing, code reviews                         |\n| Security Specialist | 0.5              | Security audit, vulnerability assessment        |\n\n## 4. Test Environment\n\n*   **Mobile Devices:** iOS (latest 3 versions), Android (latest 3 versions) – Physical and emulators.\n*   **Network Conditions:** Simulated 3G, 4G, 5G, and Wi-Fi with varying latency (including simulated high latency).\n*   **Backend Environment:** Staging environment mirroring production.\n*   **Test Data:** Realistic test data including various account types, transaction amounts, and user profiles.\n\n## 5. Risk Mitigation\n\n| Risk                               | Mitigation Strategy                                                              | Priority |\n|------------------------------------|----------------------------------------------------------------------------------|----------|\n| **Biometric Failure (Low Light)**   | Dedicated testing in low light conditions.  Develop a fallback authentication method. | High     |\n| **Transaction Timeout**            | Implement retry mechanisms.  Monitor network latency in real-time.  Alert users of potential delays. | High     |\n| **Security Audit Failure**          | Prioritize PII handling in security testing.  Engage security specialist early. | High     |\n| **Regression Testing Time Constraint**| Focus on critical user flows. Automate regression tests where possible. | High     |\n| **Resource Constraints**           | Prioritize testing based on risk and impact.  Cross-train team members.          | Medium   |\n\n## 6. Schedule (Gantt Chart Summary)\n\n| Task                      | Start Date    | End Date      | Duration (Days) |\n|---------------------------|---------------|---------------|-----------------|\n| Unit Testing              | 2023-11-06    | 2023-11-10    | 5               |\n| Integration Testing        | 2023-11-13    | 2023-11-17    | 5               |\n| System Testing             | 2023-11-20    | 2023-12-01    | 12              |\n| Regression Testing         | 2023-12-04    | 2023-12-08    | 5               |\n| Security Testing           | 2023-12-08    | 2023-12-12    | 5               |\n| Usability Testing          | 2023-12-12    | 2023-12-13    | 2               |\n| **Release Date**           | **2023-12-15** |               |                 |\n\n## 7. Defect Management\n\n*   Defects will be tracked using Jira.\n*   Severity levels: Critical, High, Medium, Low.\n*   Priority levels: Urgent, High, Medium, Low.\n*   Defect resolution time targets: Critical - 24 hours, High - 48 hours, Medium - 72 hours, Low - 7 days.\n\n## 8. Test Reporting\n\n*   Daily status reports will be provided to stakeholders.\n*   A final test report will be generated outlining test results, defect summary, and recommendations.\n\n## 9. Sign-off\n\n____________________________\nQA Lead Signature\n\n____________________________\nProject Manager Signature\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission provides a solid, well-structured test strategy with clear phases, resource allocation, and a schedule. It correctly identifies the known issues (biometric, latency, security) and proposes relevant mitigation strategies. However, it fails to meet the 'Best Practices' and 'Completeness' criteria for an industry-standard document in several ways: 1) The schedule is mathematically inconsistent (the table lists durations that do not match the start/end dates provided, e.g., Unit Testing shows 3 days in the text but 5 days in the table). 2) It lacks specific technical depth on how to test the known issues (e.g., no mention of specific tools for latency simulation or specific PII masking techniques). 3) It completely ignores the 'Additional Checks' regarding race conditions, negative input validation, and database verification steps, which are critical for a robust banking feature strategy. 4) The resource allocation for a 4-person team sums to 4.5 FTE, which is a logical error. These gaps prevent it from being a 5, and the schedule inconsistency and missing technical specifics keep it from a 4."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Conduct software compatibility tests with programs, hardware, operating systems, or network environments.",
+      "task_type": "Compatibility Test Execution",
+      "user_prompt": "Design a compatibility test matrix and execute a simulation plan for a web application across the specified browser and OS combinations. Identify potential rendering issues and input method failures, specifically focusing on edge cases like older browser versions and non-standard screen resolutions.",
+      "reference_context": {
+        "application": "E-commerce Checkout Portal",
+        "target_environments": [
+          "Chrome 110 (Windows 10)",
+          "Safari 16 (macOS Ventura)",
+          "Firefox 109 (Linux Ubuntu)",
+          "Edge 110 (Windows 11)"
+        ],
+        "known_issues": [
+          "Date picker fails on Safari 16 with RTL languages",
+          "Submit button overlaps on screen resolutions below 1024x768",
+          "Form validation errors not visible in Firefox 109"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Coverage - Does the matrix cover all specified environments and known issue vectors?",
+        "Criterion 2: Edge Case Handling - Are negative scenarios for low resolution and RTL languages explicitly tested?",
+        "Criterion 3: Defect Reporting - Are the expected vs actual results clearly defined for each failure scenario?"
+      ],
+      "student_answer": "```\n## E-commerce Checkout Portal Compatibility Test Matrix\n\n| Test Case ID | Browser        | OS            | Resolution      | Device Type | Test Objective                               | Priority | Pass/Fail | Comments                               |\n|--------------|----------------|---------------|-----------------|-------------|----------------------------------------------|----------|-----------|-----------------------------------------|\n| TC_001       | Chrome 110      | Windows 10    | 1920x1080       | Desktop     | Standard Checkout Flow - Product Selection | High     |           | Baseline test.                           |\n| TC_002       | Safari 16       | macOS Ventura | 1920x1080       | Desktop     | Standard Checkout Flow - Product Selection | High     |           | Verify RTL date picker functionality.    |\n| TC_003       | Firefox 109     | Ubuntu Linux  | 1920x1080       | Desktop     | Standard Checkout Flow - Product Selection | High     |           | Verify form validation visibility.       |\n| TC_004       | Edge 110        | Windows 11    | 1920x1080       | Desktop     | Standard Checkout Flow - Product Selection | High     |           | Baseline test.                           |\n| TC_005       | Chrome 110      | Windows 10    | 1024x768        | Desktop     | Checkout Flow - Low Resolution             | High     |           | Verify submit button positioning.        |\n| TC_006       | Safari 16       | macOS Ventura | 1024x768        | Desktop     | Checkout Flow - Low Resolution             | High     |           | Verify submit button positioning.        |\n| TC_007       | Firefox 109     | Ubuntu Linux  | 1024x768        | Desktop     | Checkout Flow - Low Resolution             | High     |           | Verify submit button positioning.        |\n| TC_008       | Edge 110        | Windows 11    | 1024x768        | Desktop     | Checkout Flow - Low Resolution             | High     |           | Verify submit button positioning.        |\n| TC_009       | Chrome 110      | Windows 10    | 800x600         | Desktop     | Checkout Flow - Very Low Resolution        | Medium   |           | Verify submit button positioning.        |\n| TC_010       | Safari 16       | macOS Ventura | 800x600         | Desktop     | Checkout Flow - Very Low Resolution        | Medium   |           | Verify submit button positioning.        |\n| TC_011       | Firefox 109     | Ubuntu Linux  | 800x600         | Desktop     | Checkout Flow - Very Low Resolution        | Medium   |           | Verify submit button positioning.        |\n| TC_012       | Edge 110        | Windows 11    | 800x600         | Desktop     | Checkout Flow - Very Low Resolution        | Medium   |           | Verify submit button positioning.        |\n| TC_013       | Chrome 110      | Windows 10    | 1600x900        | Desktop     | Checkout Flow - High Resolution            | Medium   |           | Verify layout and responsiveness.       |\n| TC_014       | Safari 16       | macOS Ventura | 1600x900        | Desktop     | Checkout Flow - High Resolution            | Medium   |           | Verify layout and responsiveness.       |\n| TC_015       | Firefox 109     | Ubuntu Linux  | 1600x900        | Desktop     | Checkout Flow - High Resolution            | Medium   |           | Verify layout and responsiveness.       |\n| TC_016       | Edge 110        | Windows 11    | 1600x900        | Desktop     | Checkout Flow - High Resolution            | Medium   |           | Verify layout and responsiveness.       |\n| TC_017       | Chrome 110      | Windows 10    | 1280x720        | Tablet      | Checkout Flow - Tablet Resolution          | Medium   |           | Verify responsiveness.                   |\n| TC_018       | Safari 16       | macOS Ventura | 1280x720        | Tablet      | Checkout Flow - Tablet Resolution          | Medium   |           | Verify responsiveness.                   |\n| TC_019       | Firefox 109     | Ubuntu Linux  | 1280x720        | Tablet      | Checkout Flow - Tablet Resolution          | Medium   |           | Verify responsiveness.                   |\n| TC_020       | Edge 110        | Windows 11    | 1280x720        | Tablet      | Checkout Flow - Tablet Resolution          | Medium   |           | Verify responsiveness.                   |\n| TC_021       | Chrome 110      | Windows 10    | 1366x768        | Desktop     | Date Picker - RTL Language                | High     |           | Verify date picker functionality.       |\n| TC_022       | Safari 16       | macOS Ventura | 1366x768        | Desktop     | Date Picker - RTL Language                | High     |           | Verify date picker functionality.       |\n\n## Simulation Plan\n\n**Phase 1: Initial Execution (2 Days)**\n\n*   **Environment Setup:**  Provision virtual machines or utilize cloud-based testing services for each target environment.\n*   **Test Case Execution:** Execute TC_001 - TC_018 sequentially across all target environments.\n*   **Data Capture:**  Record screenshots and browser console logs for any failures or unexpected behavior.\n\n**Phase 2: Edge Case Investigation (3 Days)**\n\n*   **Focus:**  Prioritize TC_021 - TC_022 and TC_005 - TC_008.\n*   **Manual Testing:**  Perform manual testing to reproduce and investigate reported issues.\n*   **Debugging:** Utilize browser developer tools to analyze rendering problems and identify the root cause.\n*   **Input Method Testing:**  Specifically test date picker functionality with RTL languages.  Simulate different keyboard layouts and input methods.\n\n**Phase 3: Regression Testing (2 Days)**\n\n*   **Fix Verification:**  After addressing identified issues, re-execute affected test cases to confirm fixes.\n*   **Expanded Testing:**  Add additional test cases based on the findings from Phase 2, focusing on potential interactions between fixed issues and other functionalities.\n\n**Tools:**\n\n*   Browser Developer Tools (Chrome DevTools, Safari Web Inspector, Firefox Developer Tools, Edge DevTools)\n*   Screenshot/Screen Recording Tools\n*   Test Management System (e.g., Jira, TestRail)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission provides a solid, well-structured test matrix and simulation plan that correctly addresses the specified browsers, OS versions, and known issues (RTL date picker, low-res overlap, Firefox validation). The formatting is professional and the plan is logical. However, it fails to meet the 'Additional Checks' requirements: it does not explicitly address race conditions in duplicate orders, validation of negative inputs, or database verification steps for order persistence. These omissions prevent the solution from being considered 'Exceptional' (5) or fully 'Autonomous' (5) for a production-grade e-commerce scenario, as they represent critical functional and data integrity gaps."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Investigate customer problems referred by technical support.",
+      "task_type": "Defect Investigation and Reproduction",
+      "user_prompt": "Analyze the provided customer support ticket and server logs to reproduce the reported issue. Create a detailed defect report including steps to reproduce, root cause hypothesis, and severity classification. Ensure the report covers negative testing scenarios where the user input deviates from the expected format.",
+      "reference_context": {
+        "ticket_id": "SUP-9921",
+        "customer_report": "User cannot upload profile picture; error message says 'File too large' but the file is only 2MB.",
+        "server_logs": [
+          "2023-10-25 10:00:01 ERROR: File size check failed. Expected max: 2MB, Received: 2048KB",
+          "2023-10-25 10:00:02 WARN: Content-Type mismatch detected.",
+          "2023-10-25 10:00:03 INFO: Upload rejected due to validation logic error."
+        ],
+        "system_specs": {
+          "max_upload_limit": "2MB",
+          "allowed_formats": [
+            "jpg",
+            "png",
+            "gif"
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Reproduction Accuracy - Do the steps to reproduce match the log analysis?",
+        "Criterion 2: Root Cause Analysis - Is the discrepancy between KB/MB or Content-Type identified?",
+        "Criterion 3: Negative Testing - Does the report include scenarios for invalid formats or oversized files?"
+      ],
+      "student_answer": "## Defect Report\n\n**Ticket ID:** SUP-9921\n\n**Reported By:** Customer\n\n**Date:** 2023-10-26\n\n**Severity:** Medium\n\n**Status:** Open\n\n**Summary:** User unable to upload profile picture due to a validation logic error, despite file size being within the specified limit.\n\n**Steps to Reproduce:**\n\n1.  Navigate to the profile settings page.\n2.  Click on the \"Upload Profile Picture\" button.\n3.  Select a profile picture file (e.g., a 2MB JPG image).\n4.  Click \"Save\" or \"Upload\".\n\n**Observed Result:**  An error message \"File too large\" is displayed, preventing the upload.\n\n**Expected Result:** The profile picture should be successfully uploaded and displayed.\n\n**Root Cause Hypothesis:** The validation logic incorrectly interprets the file size.  The error message \"File too large\" is triggered despite the file size being within the configured limit of 2MB.  The `Content-Type` mismatch warning suggests a potential issue with how the server is processing the file's MIME type, possibly leading to an incorrect size comparison.\n\n**Negative Testing Scenarios:**\n\n*   **File Size Exceeds Limit:** Upload a file larger than 2MB (e.g., 3MB JPG). Expected Result:  The upload should be rejected with an appropriate error message indicating the size limit.\n*   **Invalid File Format:** Upload a file with an unsupported format (e.g., a .pdf file). Expected Result: The upload should be rejected with an error message indicating the unsupported format.\n*   **Empty File:** Upload an empty file. Expected Result: The upload should be rejected with an error message indicating the file is empty.\n*   **Corrupted File:** Upload a corrupted image file. Expected Result: The upload should be rejected with an error message indicating the file is corrupted or invalid.\n*   **Large File Size (Near Limit):** Upload a file close to the 2MB limit (e.g., 1.9MB). Expected Result: The upload should be accepted, demonstrating the boundary condition.\n*   **File with Unusual Characters in Filename:** Upload a file with special characters in the filename (e.g., \"My Image!@#$%^&*().jpg\"). Expected Result: The upload should be accepted, assuming the filename is sanitized before being used.\n\n**Suggested Fix:** Review and correct the file size validation logic to accurately compare the received file size against the configured limit. Investigate the `Content-Type` mismatch warning and ensure proper MIME type validation is implemented.  Implement robust error handling to provide more informative error messages to the user.\n\n**Attachments:** (None)",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission is a well-structured defect report that correctly identifies the core issue (unit mismatch between MB and KB) and provides a solid root cause hypothesis. The negative testing scenarios are comprehensive and cover standard edge cases. However, it scores a 4 rather than a 5 because it lacks specific technical details expected in an industry-standard report, such as precise environment details, exact log snippets used as evidence, or a more granular breakdown of the unit conversion error (2048KB vs 2MB). Additionally, the 'Additional Checks' section in the prompt regarding race conditions and database verification was not addressed, though this may be outside the scope of the specific ticket provided. The report is professional and clear but requires minor refinement to be truly exceptional."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Review software documentation to ensure technical accuracy, compliance, or completeness, or to mitigate risks.",
+      "task_type": "Documentation Compliance Review",
+      "user_prompt": "Review the provided API documentation draft against the actual implementation specifications. Identify discrepancies in parameter descriptions, error codes, and security requirements. Generate a list of corrections needed to ensure compliance with industry standards and mitigate risks of integration failures.",
+      "reference_context": {
+        "api_version": "v2.1",
+        "documentation_draft": "POST /users creates a new user. Parameters: email (string), password (string). Returns 200 OK on success. No authentication required for this endpoint.",
+        "implementation_specs": {
+          "endpoint": "POST /users",
+          "auth_required": true,
+          "password_policy": "Min 8 chars, 1 special char",
+          "error_codes": {
+            "400": "Invalid input",
+            "401": "Unauthorized",
+            "409": "Email already exists"
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy - Are all parameter constraints and return codes correctly documented?",
+        "Criterion 2: Security Compliance - Is the authentication requirement and password policy accurately reflected?",
+        "Criterion 3: Risk Mitigation - Does the review highlight the critical omission of auth requirements?"
+      ],
+      "student_answer": "```json\n{\n  \"discrepancies\": [\n    {\n      \"category\": \"Parameter Descriptions\",\n      \"description\": \"The documentation states no authentication is required, while the implementation specifications indicate authentication is required.\",\n      \"correction\": \"Update documentation to reflect authentication requirement: 'Authentication required (API Key).' \"\n    },\n    {\n      \"category\": \"Parameter Descriptions\",\n      \"description\": \"The documentation only specifies 'email (string)' and 'password (string)' without specifying required format or validation rules.\",\n      \"correction\": \"Add validation requirements to parameter descriptions: 'email (string, valid email format)', 'password (string, min 8 characters, must contain at least one special character)'.\"\n    },\n    {\n      \"category\": \"Error Codes\",\n      \"description\": \"The documentation does not list any error codes, while the implementation specifications define several.\",\n      \"correction\": \"Add error codes to the documentation: '400: Invalid input', '401: Unauthorized', '409: Email already exists'.\"\n    },\n    {\n      \"category\": \"Security Requirements\",\n      \"description\": \"The documentation states no authentication is required, which contradicts the implementation specifications.\",\n      \"correction\": \"Implement and document appropriate authentication mechanism (e.g., API Key).  Update documentation to reflect the authentication method.\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The student correctly identified the major discrepancies regarding authentication, missing validation rules, and absent error codes. However, the submission fails to address the specific 'Additional Checks' provided in the prompt (race conditions, negative input validation, and database verification steps), which significantly impacts Completeness and Domain Accuracy. The response also contains redundant entries (authentication is listed twice under different categories) and lacks the depth of a professional architectural review, such as suggesting specific security headers or token types. While the structure is clear, the omission of the explicit additional requirements prevents a higher score in Autonomy and Correctness."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Participate in product design reviews to provide input on functional requirements, product designs, schedules, or potential problems.",
+      "task_type": "Design Review and Risk Assessment",
+      "user_prompt": "Act as a QA Lead in a product design review for a new 'Real-Time Chat' feature. Provide a formal assessment of the proposed architecture, identifying potential scalability bottlenecks, concurrency issues, and data consistency risks. Propose specific testable requirements to address these risks before development begins.",
+      "reference_context": {
+        "feature": "Real-Time Chat with Message History",
+        "proposed_architecture": "WebSocket connections for messaging, SQL database for history storage, no message queuing system.",
+        "expected_load": "10,000 concurrent users",
+        "known_risks": [
+          "Database locking during high write volume",
+          "Message loss if WebSocket disconnects",
+          "No deduplication logic for retry attempts"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Scalability Analysis - Does the assessment address the 10k concurrent user load?",
+        "Criterion 2: Risk Identification - Are database locking and message loss scenarios clearly articulated?",
+        "Criterion 3: Testable Requirements - Are specific, measurable requirements proposed to mitigate the identified risks?"
+      ],
+      "student_answer": "**Real-Time Chat Feature – Architecture Assessment & Testable Requirements**\n\n**Overall Assessment:** The proposed architecture – WebSocket connections coupled with a SQL database for message history – presents significant challenges regarding scalability, concurrency, and data consistency, particularly given the anticipated load of 10,000 concurrent users. The absence of a message queuing system is a critical oversight.\n\n**Scalability Bottlenecks:**\n\n1.  **Database Locking:**  Direct SQL writes for every message will likely lead to severe database locking, especially under high concurrency.  The SQL database will become a bottleneck, severely limiting the number of concurrent users and message throughput.\n2.  **WebSocket Server Capacity:**  Maintaining 10,000 simultaneous WebSocket connections will strain the server resources (CPU, memory, network bandwidth). Without horizontal scaling, this will quickly become unsustainable.\n3.  **Database Read Scalability:** While read operations might initially appear less problematic, a large message history will still require significant database resources, potentially impacting query performance as the data grows.\n\n**Concurrency Issues:**\n\n1.  **Race Conditions:**  Without proper concurrency control mechanisms (e.g., optimistic locking, transactions with appropriate isolation levels), concurrent users attempting to update the message history simultaneously could lead to data corruption or inconsistencies.\n2.  **WebSocket Connection Management:**  Handling a large number of WebSocket connections – including connection establishment, maintenance, and termination – requires robust and efficient management.  Poor connection handling can lead to dropped connections and message loss.\n3.  **Message Delivery Order:**  The lack of a message queue means that messages are delivered in the order they are received by the server, not necessarily in the order they were sent. This can be problematic for features requiring message sequencing.\n\n**Data Consistency Risks:**\n\n1.  **Message Loss on Disconnect:**  Without a message queuing system, messages sent to a disconnected user will be lost.  The current design doesn't provide a mechanism for replaying these messages to the user upon reconnection.\n2.  **Duplicate Messages:**  The absence of deduplication logic means that retry attempts after network errors could result in duplicate messages being delivered, leading to data inconsistencies.\n3.  **Partial Updates:**  If a WebSocket connection is interrupted during a message update, the database might be left in an inconsistent state, potentially with partially updated messages.\n\n**Testable Requirements:**\n\n1.  **Database Concurrency:**\n    *   **Requirement 1:** The system must support at least 500 concurrent write operations to the message history database per second without exceeding a 2-second latency for individual write operations. (Performance Test)\n    *   **Requirement 2:** Implement optimistic locking on the message history table to prevent concurrent updates from overwriting each other. (Code Review, Unit Test)\n2.  **WebSocket Scalability:**\n    *   **Requirement 3:** The WebSocket server must be able to handle 10,000 concurrent active connections with an average CPU utilization of no more than 70%. (Load Test)\n    *   **Requirement 4:** Implement a connection pooling mechanism to efficiently manage WebSocket connections. (Code Review, Unit Test)\n3.  **Message Delivery & Loss:**\n    *   **Requirement 5:** Implement a message queuing system (e.g., Kafka, RabbitMQ) to ensure message persistence and reliable delivery. (Architecture Review, Integration Test)\n    *   **Requirement 6:**  Upon a user reconnecting, the system must automatically replay any undelivered messages from the message queue. (Functional Test)\n4.  **Duplicate Message Prevention:**\n    *   **Requirement 7:** Implement a deduplication mechanism to prevent duplicate messages from being delivered to users after network errors. (Code Review, Unit Test)\n5.  **Data Consistency:**\n    *   **Requirement 8:** Implement a transaction mechanism to ensure that message updates are atomic – either all changes are applied, or none are. (Code Review, Unit Test)\n    *   **Requirement 9:**  Implement a mechanism to detect and handle partial updates to the message history table, ensuring data integrity. (Error Handling Test)\n\n**Recommendation:**  Immediately incorporate a message queuing system.  Prioritize database concurrency control mechanisms.  Thorough load testing and performance monitoring are crucial throughout the development process.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission is a strong, professional assessment that correctly identifies the critical architectural flaws (lack of queuing, SQL bottlenecks) and proposes relevant testable requirements. It addresses scalability, concurrency, and consistency well. However, it falls short of a perfect 5 due to minor gaps: the test requirements lack specific negative input validation scenarios (e.g., invalid message payloads) and do not explicitly detail database verification steps for order persistence (e.g., specific SQL assertions for sequence integrity). Additionally, while race conditions are mentioned, the specific handling of race conditions in the context of duplicate message ordering could be more rigorous. These are minor omissions in an otherwise high-quality response."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Monitor program performance to ensure efficient and problem-free operations.",
+      "task_type": "Performance Monitoring and Tuning",
+      "user_prompt": "Analyze the provided performance monitoring data for the payment processing service. Identify performance bottlenecks, latency spikes, and resource exhaustion patterns. Develop a test plan to validate the effectiveness of proposed optimizations, including negative testing for high-load scenarios and failure recovery.",
+      "reference_context": {
+        "service": "Payment Processing Gateway",
+        "metrics": {
+          "avg_response_time": "1.2s (Target: <200ms)",
+          "error_rate": "0.5%",
+          "cpu_usage": "85% during peak",
+          "memory_leak": "Detected in worker threads after 4 hours"
+        },
+        "proposed_optimizations": [
+          "Implement connection pooling",
+          "Add caching layer for user sessions",
+          "Increase worker thread count"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Bottleneck Identification - Are the specific causes of latency and CPU usage correctly identified?",
+        "Criterion 2: Optimization Validation - Does the test plan verify the impact of connection pooling and caching?",
+        "Criterion 3: Negative Testing - Are high-load and memory exhaustion scenarios included in the validation plan?"
+      ],
+      "student_answer": "```json\n{\n  \"analysis\": {\n    \"bottlenecks\": [\n      \"High average response time (1.2s vs. target <200ms) indicates a significant performance bottleneck.\",\n      \"High CPU usage (85%) during peak suggests resource contention and potential inefficient code.\",\n      \"Memory leak in worker threads is a critical issue that will degrade performance over time.\"\n    ],\n    \"latency_spikes\": \"Not explicitly identified, but high average response time suggests frequent latency spikes.\",\n    \"resource_exhaustion\": \"CPU and memory exhaustion are confirmed. The memory leak exacerbates this issue.\"\n  },\n  \"test_plan\": {\n    \"goals\": [\n      \"Validate the effectiveness of implemented optimizations in reducing response time and error rate.\",\n      \"Confirm the resolution of the memory leak.\",\n      \"Assess the system's stability and resilience under high load.\",\n      \"Verify failure recovery mechanisms.\"\n    ],\n    \"test_cases\": [\n      {\n        \"id\": \"TC_001\",\n        \"description\": \"Baseline Performance Test\",\n        \"steps\": [\n          \"Simulate normal payment processing load (e.g., 100 transactions/second).\",\n          \"Measure average response time, error rate, CPU usage, and memory consumption.\"\n        ],\n        \"expected_result\": \"Average response time < 200ms, error rate < 0.1%, CPU usage < 70%, memory consumption stable.\"\n      },\n      {\n        \"id\": \"TC_002\",\n        \"description\": \"Connection Pooling Validation\",\n        \"steps\": [\n          \"Configure connection pooling.\",\n          \"Simulate high transaction volume (e.g., 500 transactions/second).\",\n          \"Measure average response time, error rate, and connection pool utilization.\"\n        ],\n        \"expected_result\": \"Average response time < 200ms, error rate < 0.1%, connection pool utilization within acceptable limits.\"\n      },\n      {\n        \"id\": \"TC_003\",\n        \"description\": \"Caching Layer Validation\",\n        \"steps\": [\n          \"Implement caching layer.\",\n          \"Simulate high transaction volume with frequent user sessions.\",\n          \"Measure average response time, error rate, and cache hit ratio.\"\n        ],\n        \"expected_result\": \"Average response time < 200ms, error rate < 0.1%, cache hit ratio > 80%.\"\n      },\n      {\n        \"id\": \"TC_004\",\n        \"description\": \"Increased Worker Thread Count Validation\",\n        \"steps\": [\n          \"Increase worker thread count.\",\n          \"Simulate high transaction volume (e.g., 800 transactions/second).\",\n          \"Measure average response time, error rate, CPU usage, and memory consumption.\"\n        ],\n        \"expected_result\": \"Average response time < 200ms, error rate < 0.1%, CPU usage < 80%, memory consumption stable.\"\n      },\n      {\n        \"id\": \"TC_005\",\n        \"description\": \"Negative Load Test - Peak Load\",\n        \"steps\": [\n          \"Simulate peak load (e.g., 1000 transactions/second).\",\n          \"Monitor response time, error rate, CPU usage, memory consumption, and system stability.\"\n        ],\n        \"expected_result\": \"Response time > 200ms (acceptable threshold), error rate < 1%, CPU usage < 95%, memory consumption within limits, no system crashes.\"\n      },\n      {\n        \"id\": \"TC_006\",\n        \"description\": \"Failure Recovery Test\",\n        \"steps\": [\n          \"Simulate a database connection failure.\",\n          \"Verify that the system gracefully handles the failure and returns appropriate error messages.\",\n          \"Verify that transaction logs are correctly maintained.\"\n        ],\n        \"expected_result\": \"System recovers gracefully, error messages are informative, transaction logs are consistent.\"\n      },\n      {\n        \"id\": \"TC_007\",\n        \"description\": \"Memory Leak Regression Test\",\n        \"steps\": [\n          \"Run the baseline performance test (TC_001).\",\n          \"Monitor memory consumption over time.\",\n          \"Verify that the memory leak is resolved.\"\n        ],\n        \"expected_result\": \"Memory consumption remains stable over time.\"\n      }\n    ],\n    \"environment\": \"Staging environment mirroring production\",\n    \"tools\": [\n      \"Load testing tools (e.g., JMeter, Gatling)\",\n      \"Monitoring tools (e.g., Prometheus, Grafana)\",\n      \"Profiling tools (e.g., VisualVM, JProfiler)\"\n    ]\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies the primary bottlenecks (latency, CPU, memory leak) and proposes a structured test plan with clear goals and specific test cases. The use of industry-standard tools (JMeter, Prometheus) and a logical flow from baseline to negative testing demonstrates good professional judgment. However, the analysis of latency spikes is vague, admitting they were not explicitly identified in the data. Furthermore, the test plan lacks specific validation for the 'negative testing' requirement regarding invalid inputs (e.g., negative quantities, invalid enums) and does not explicitly mention database verification steps for order persistence or race condition handling in duplicate orders, which are critical for a payment gateway. These omissions prevent a perfect score in Correctness, Completeness, and Best Practices, though the overall quality remains high."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Identify program deviance from standards, and suggest modifications to ensure compliance.",
+      "task_type": "Compliance Audit & Remediation",
+      "user_prompt": "Review the provided code snippet for the 'UserRegistration' module against the company's security standards document. Identify all deviations, specifically focusing on input validation, password hashing, and SQL injection risks. For each deviation, propose a specific code modification and justify it based on the standard.",
+      "reference_context": {
+        "code_snippet": "function registerUser(req, res) {\n  const { username, password, email } = req.body;\n  const query = \"INSERT INTO users (username, password, email) VALUES ('\" + username + \"', '\" + password + \"', '\" + email + \"')\";\n  db.execute(query);\n  res.send('Registered');\n}",
+        "security_standards": [
+          "All user inputs must be parameterized to prevent SQL injection.",
+          "Passwords must be hashed using bcrypt with a salt cost of 12.",
+          "Email addresses must be validated against a regex pattern before insertion.",
+          "Username must be unique and between 3-20 alphanumeric characters."
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy - All SQL injection vulnerabilities are correctly identified.",
+        "Criterion 2: Completeness - Deviations regarding password hashing, email validation, and username constraints are all found.",
+        "Criterion 3: Solution Quality - Proposed modifications are syntactically correct and directly address the identified security gaps."
+      ],
+      "student_answer": "```json\n{\n  \"deviations\": [\n    {\n      \"id\": 1,\n      \"standard\": \"All user inputs must be parameterized to prevent SQL injection.\",\n      \"description\": \"The code uses string concatenation to build the SQL query, creating a significant SQL injection vulnerability.\",\n      \"code_modification\": \"Replace string concatenation with parameterized queries.  Use a database library that supports parameterized queries (e.g., `db.execute({ query: 'INSERT INTO users (username, password, email) VALUES (?, ?, ?)', values: [username, password, email] })` assuming a suitable database library is available).\",\n      \"justification\": \"Parameterized queries ensure that user inputs are treated as data, not executable code, effectively preventing SQL injection attacks.\"\n    },\n    {\n      \"id\": 2,\n      \"standard\": \"Passwords must be hashed using bcrypt with a salt cost of 12.\",\n      \"description\": \"The password is not hashed before being stored in the database.\",\n      \"code_modification\": \"Hash the password using bcrypt with a cost of 12 before inserting it into the database.  Example: `const hashedPassword = await bcrypt.hash(password, 12); db.execute({ query: 'INSERT INTO users (username, password, email) VALUES (?, ?, ?)', values: [username, hashedPassword, email] })`\",\n      \"justification\": \"Storing passwords in plain text is a severe security risk. Hashing with bcrypt and a cost of 12 provides a strong level of protection against brute-force attacks.\"\n    },\n    {\n      \"id\": 3,\n      \"standard\": \"Email addresses must be validated against a regex pattern before insertion.\",\n      \"description\": \"The code does not validate the email address format.\",\n      \"code_modification\": \"Add email validation using a regular expression before inserting the email into the database. Example: `const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/; if (!emailRegex.test(email)) { // Handle invalid email } else { ... }`\",\n      \"justification\": \"Validating email addresses helps prevent invalid data from being stored and potentially used in security-sensitive contexts.\"\n    },\n    {\n      \"id\": 4,\n      \"standard\": \"Username must be unique and between 3-20 alphanumeric characters.\",\n      \"description\": \"The code does not check for username uniqueness or length.\",\n      \"code_modification\": \"Add a check to ensure the username is unique and within the specified length constraints before inserting it. Example: `const checkUsernameQuery = 'SELECT COUNT(*) FROM users WHERE username = ?'; const usernameCount = await db.execute(checkUsernameQuery, username); if (usernameCount > 0) { // Handle duplicate username } else if (username.length < 3 || username.length > 20) { // Handle length constraints } else { ... }`\",\n      \"justification\": \"Enforcing username uniqueness and length constraints prevents potential issues like username collisions and allows for better input control.\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies all four security deviations and proposes valid, industry-standard fixes for SQL injection, password hashing, email validation, and username constraints. The reasoning is sound and the code snippets are appropriate. However, the score is not a 5 because the solution lacks explicit handling of race conditions regarding the username uniqueness check (a critical gap in concurrent environments), and the email regex provided is a basic implementation that might miss edge cases compared to robust libraries. Additionally, the 'Additional Checks' section in the prompt regarding race conditions and database verification steps was not explicitly addressed in the critique, though the core task was completed well."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Perform initial debugging procedures by reviewing configuration files, logs, or code pieces to determine breakdown source.",
+      "task_type": "Log Analysis & Root Cause Identification",
+      "user_prompt": "Analyze the provided application logs and configuration file for the 'PaymentGateway' service. The service is failing to process transactions with a 500 error. Determine the root cause of the breakdown, explain the sequence of events leading to the failure, and recommend a fix.",
+      "reference_context": {
+        "logs": [
+          "2023-10-27 10:00:01 INFO Starting PaymentGateway...",
+          "2023-10-27 10:00:02 ERROR Failed to connect to database: Connection refused",
+          "2023-10-27 10:00:03 WARN Retrying connection (attempt 1/3)...",
+          "2023-10-27 10:00:05 ERROR Failed to connect to database: Connection refused",
+          "2023-10-27 10:00:06 FATAL Service shutdown due to critical failure."
+        ],
+        "config_file": {
+          "service": "PaymentGateway",
+          "database": {
+            "host": "db.internal.local",
+            "port": 5432,
+            "user": "pg_user",
+            "password": "secret123",
+            "connection_timeout": 5000
+          },
+          "network": {
+            "firewall_rules": "Allow all outbound traffic"
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Diagnosis - Correctly identifies the 'Connection refused' error as the primary cause.",
+        "Criterion 2: Contextual Analysis - Recognizes that the firewall rule or network configuration might be the underlying issue despite the config saying 'Allow all'.",
+        "Criterion 3: Actionability - Provides a clear, step-by-step troubleshooting path to resolve the connectivity issue."
+      ],
+      "student_answer": "```json\n{\n  \"root_cause\": \"The PaymentGateway service is failing to connect to the database, resulting in a critical failure and service shutdown.\",\n  \"sequence_of_events\": [\n    \"The service started successfully at 2023-10-27 10:00:01.\",\n    \"At 2023-10-27 10:00:02, the service attempted to connect to the database but encountered a 'Connection refused' error.\",\n    \"The service retried the connection three times (attempts 1/3, 2/3, and 3/3) at 2023-10-27 10:00:05, but continued to fail.\",\n    \"At 2023-10-27 10:00:06, due to the persistent database connection failure, the service shut down.\"\n  ],\n  \"recommendation\": \"Verify the database server is running and accessible from the PaymentGateway service's host. Check the database server's firewall rules to ensure the PaymentGateway service's IP address is allowed to connect on port 5432.  Also, confirm the database user ('pg_user') has the necessary permissions to connect and access the required database.  Increase the `connection_timeout` in the configuration file to a higher value (e.g., 60000ms) to allow for longer connection attempts, but this should only be a temporary measure while investigating the underlying connectivity issue.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The student correctly identified the root cause (database connection refused) and accurately reconstructed the sequence of events from the logs. The recommendation is practical and professional, covering service status, firewall rules, and configuration adjustments. The solution scores a 5 on Correctness, Completeness, Domain Accuracy, and Clarity. It scores a 4 on Best Practices and Autonomy because the recommendation to increase the connection timeout as a 'temporary measure' is a standard troubleshooting step but not a root-cause fix, and the response does not address the 'Additional Checks' (race conditions, negative input validation, database verification steps) which, while likely out of scope for the specific log analysis task, were explicitly listed in the prompt's context. However, since the core task was log analysis, the omission of unrelated test plan items is a minor context mismatch rather than a failure of the primary task, justifying the 4s."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design or develop automated testing tools.",
+      "task_type": "Test Automation Script Development",
+      "user_prompt": "Develop a Python script using Selenium to automate the login process for the 'AdminPortal'. The script must handle dynamic elements, verify successful login via a dashboard element, and include robust error handling for invalid credentials. The script should output a JSON report of the test result.",
+      "reference_context": {
+        "portal_url": "https://admin.example.com/login",
+        "selectors": {
+          "username_field": "id='admin-user'",
+          "password_field": "id='admin-pass'",
+          "login_button": "class='btn-login'",
+          "dashboard_indicator": "id='welcome-msg'"
+        },
+        "test_data": {
+          "valid_creds": {
+            "user": "admin",
+            "pass": "secure123"
+          },
+          "invalid_creds": {
+            "user": "hacker",
+            "pass": "wrong"
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Functionality - Script successfully logs in with valid credentials and fails gracefully with invalid ones.",
+        "Criterion 2: Robustness - Script uses explicit waits for dynamic elements and handles exceptions without crashing.",
+        "Criterion 3: Reporting - Output is a valid JSON object containing status, timestamp, and error message if applicable."
+      ],
+      "student_answer": "```python\nimport json\nfrom selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\nfrom selenium.common.exceptions import TimeoutException\n\ndef login_test(portal_url, selectors, test_data):\n    driver = webdriver.Chrome()  # Or any other desired browser\n    driver.get(portal_url)\n\n    test_results = []\n\n    for credentials, result_type in test_data.items():\n        try:\n            username_field = driver.find_element(By.ID, selectors[\"username_field\"])\n            password_field = driver.find_element(By.ID, selectors[\"password_field\"])\n            login_button = driver.find_element(By.CLASS_NAME, selectors[\"login_button\"])\n\n            username_field.send_keys(result_data[\"user\"])\n            password_field.send_keys(result_data[\"pass\"])\n            login_button.click()\n\n            # Wait for dashboard indicator to appear\n            try:\n                WebDriverWait(driver, 10).until(\n                    EC.presence_of_element_located((By.ID, selectors[\"dashboard_indicator\"]))\n                )\n                dashboard_indicator = driver.find_element(By.ID, selectors[\"dashboard_indicator\"])\n                dashboard_text = dashboard_indicator.text\n                if \"Welcome, \" + result_data[\"user\"] in dashboard_text:\n                    test_results.append({\n                        \"test_name\": f\"Login with {result_data['user']} and {result_data['pass']}\",\n                        \"status\": \"pass\",\n                        \"result\": \"Successful login\",\n                        \"details\": dashboard_text\n                    })\n                else:\n                    test_results.append({\n                        \"test_name\": f\"Login with {result_data['user']} and {result_data['pass']}\",\n                        \"status\": \"fail\",\n                        \"result\": \"Login failed - Dashboard indicator mismatch\",\n                        \"details\": dashboard_text\n                    })\n            except TimeoutException:\n                test_results.append({\n                    \"test_name\": f\"Login with {result_data['user']} and {result_data['pass']}\",\n                    \"status\": \"fail\",\n                    \"result\": \"Login failed - Timeout waiting for dashboard indicator\",\n                    \"details\": \"\"\n                })\n        except Exception as e:\n            test_results.append({\n                \"test_name\": f\"Login with {result_data['user']} and {result_data['pass']}\",\n                \"status\": \"fail\",\n                \"result\": f\"Login failed - {str(e)}\",\n                \"details\": \"\"\n            })\n\n    driver.quit()\n\n    report = {\n        \"test_results\": test_results\n    }\n\n    return json.dumps(report, indent=2)\n\nif __name__ == '__main__':\n    context = {\n      \"portal_url\": \"https://admin.example.com/login\",\n      \"selectors\": {\n        \"username_field\": \"id='admin-user'\",\n        \"password_field\": \"id='admin-pass'\",\n        \"login_button\": \"class='btn-login'\",\n        \"dashboard_indicator\": \"id='welcome-msg'\"\n      },\n      \"test_data\": {\n        \"valid_creds\": {\n          \"user\": \"admin\",\n          \"pass\": \"secure123\"\n        },\n        \"invalid_creds\": {\n          \"user\": \"hacker\",\n          \"pass\": \"wrong\"\n        }\n      }\n    }\n\n    report = login_test(context[\"portal_url\"], context[\"selectors\"], context[\"test_data\"])\n    print(report)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical logical errors that prevent it from functioning correctly. Specifically, the code iterates over `test_data.items()` (which yields keys like 'valid_creds' and 'invalid_creds'), but then attempts to access `result_data['user']` inside the loop. `result_data` is undefined in this scope, causing a NameError. Additionally, the code attempts to find elements on every iteration of the loop without refreshing the page or handling the state from the previous login attempt, which would cause the script to fail on the second iteration. The selectors provided in the context (e.g., `id='admin-user'`) are passed as strings to `By.ID`, which expects just the ID value, not the full attribute string, leading to `NoSuchElementException`. The 'Additional Checks' regarding race conditions, negative inputs, and database verification are completely ignored. Due to these fundamental flaws, the code is not runnable and fails to meet the task requirements."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Install and configure recreations of software production environments to allow testing of software performance.",
+      "task_type": "Environment Setup & Performance Baseline",
+      "user_prompt": "Configure a Docker Compose environment that mirrors the production stack for the 'InventorySystem'. The setup must include a database, API server, and load balancer. Once configured, run a baseline performance test using 100 concurrent users and report the average response time and error rate.",
+      "reference_context": {
+        "production_stack": {
+          "db": "PostgreSQL 14",
+          "api": "Node.js 18",
+          "lb": "Nginx",
+          "os": "Ubuntu 22.04"
+        },
+        "load_test_params": {
+          "concurrent_users": 100,
+          "duration": "5 minutes",
+          "endpoint": "/api/v1/inventory/check"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Fidelity - Docker configuration accurately reflects the production stack components and versions.",
+        "Criterion 2: Execution - Environment starts successfully and the load test executes without configuration errors.",
+        "Criterion 3: Metrics - Report includes accurate average response time and error rate calculated from the test run."
+      ],
+      "student_answer": "```yaml\nversion: \"3.9\"\n\nservices:\n  db:\n    image: postgres:14\n    container_name: inventory_db\n    restart: always\n    environment:\n      POSTGRES_USER: inventory_user\n      POSTGRES_PASSWORD: inventory_password\n      POSTGRES_DB: inventory_db\n    ports:\n      - \"5432:5432\"\n    volumes:\n      - inventory_db_data:/var/lib/postgresql/data\n\n  api:\n    build:\n      context: ./api\n      dockerfile: Dockerfile\n    container_name: inventory_api\n    restart: always\n    ports:\n      - \"3000:3000\"\n    depends_on:\n      - db\n    environment:\n      DATABASE_URL: postgresql://inventory_user:inventory_password@inventory_db:5432/inventory_db\n    volumes:\n      - inventory_api_data:/app/data\n\n  lb:\n    image: nginx:latest\n    container_name: inventory_lb\n    restart: always\n    ports:\n      - \"80:80\"\n    volumes:\n      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro\n    depends_on:\n      - api\n\nvolumes:\n  inventory_db_data:\n  inventory_api_data:\n```\n\n```bash\n# Run the Docker Compose setup\ndocker-compose up -d\n\n# Run the performance test using JMeter (assuming JMeter is installed and configured)\n# Replace with your actual JMeter execution command\njmeter -n -t ./jmeter/inventory_test.jmx -l ./jmeter/results.jtl\n\n# Example JMeter Test Plan (inventory_test.jmx) - Simplified for demonstration\n# This is a placeholder, a real test plan would be more comprehensive\n# and tailored to the API's specific functionality.\n#\n# Thread Group:\n#   Number of Threads (users): 100\n#   Ramp-up Period (seconds): 10\n#   Loop Count: 2\n#\n# HTTP Request:\n#   Method: GET\n#   URL: http://inventory_lb:80/api/v1/inventory/check\n#\n# Listeners:\n#   View Results Tree\n#   Summary Report\n#\n#  (Add more request samplers, assertions, and listeners as needed)\n\n# Analyze the results\n# Example:\n# Average Response Time:  (Read results.jtl file)\n# Error Rate: (Read results.jtl file)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        2
+      ],
+      "score": 3.2,
+      "grade_reason": "The Docker Compose configuration correctly mirrors the specified production stack (PostgreSQL 14, Node.js, Nginx) and includes necessary volumes and environment variables, earning a 3 for Correctness and Completeness due to the lack of specific Nginx configuration details in the submission. Domain accuracy is high (4) as the versions and architecture are correct. However, the submission fails significantly on Best Practices and Autonomy (2) because it does not actually run the performance test or report the required metrics (average response time and error rate); it only provides a placeholder script and comments. Furthermore, it completely ignores the Additional Checks regarding race conditions, input validation, and database verification steps, making the output unusable as a final deliverable without substantial human intervention."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collaborate with field staff or customers to evaluate or diagnose problems and recommend possible solutions.",
+      "task_type": "Customer Issue Triage & Solution Recommendation",
+      "user_prompt": "You are acting as the QA Lead. A field support ticket describes a user unable to export reports in the 'SalesDashboard' app. The user reports the export button is unresponsive and the browser console shows a 'CORS policy' error. Analyze the scenario, propose a hypothesis for the root cause, and draft a response to the customer explaining the issue and the immediate workaround.",
+      "reference_context": {
+        "ticket_details": {
+          "user_role": "Sales Manager",
+          "browser": "Chrome 118",
+          "error_message": "Access to fetch at 'https://api.sales.example.com/export' from origin 'https://dashboard.example.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.",
+          "steps_taken": "Refreshed page, cleared cache, tried incognito mode."
+        },
+        "system_architecture": {
+          "frontend": "React SPA hosted on S3",
+          "backend": "Microservices on AWS Lambda",
+          "cors_config": "Currently restricted to 'https://internal.example.com'"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Diagnosis - Correctly identifies the CORS misconfiguration as the root cause.",
+        "Criterion 2: Communication - Response to customer is professional, clear, and avoids overly technical jargon.",
+        "Criterion 3: Solution - Provides a valid immediate workaround (e.g., using internal URL) and outlines the fix (updating CORS headers)."
+      ],
+      "student_answer": "Subject: Regarding Report Export Issue in SalesDashboard\n\nDear [Customer Name],\n\nWe’re investigating the issue you’re experiencing with exporting reports from the SalesDashboard application. Our analysis of the error message and your troubleshooting steps indicates a Cross-Origin Resource Sharing (CORS) policy restriction is preventing the frontend from accessing the report export API.\n\nSpecifically, the backend API endpoint (`https://api.sales.example.com/export`) is not configured to allow requests from your frontend domain (`https://dashboard.example.com`). The current CORS configuration only permits requests from `https://internal.example.com`.\n\n**Immediate Workaround:**\n\nTo temporarily access the report export functionality, you can try accessing the export URL directly in your browser’s address bar: `https://api.sales.example.com/export`.  Please be aware that this may not always be reliable and is only a temporary solution.\n\nOur development team is working to update the backend to allow cross-origin requests from your frontend domain. We will provide an update on the progress as soon as possible.\n\nThank you for your patience and understanding.\n\nSincerely,\n\n[Your Name]\n\nQA Lead",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        4,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the CORS error and the specific configuration mismatch (internal vs. dashboard domain), demonstrating good domain accuracy. However, the proposed workaround is technically flawed and unprofessional; instructing a user to call a POST/GET export endpoint directly in the browser address bar is unlikely to work for a file download and ignores the actual CORS restriction which would still block the request if the browser enforces it. A professional response would suggest using the internal URL directly (if accessible) or a proxy, rather than a broken workaround. The tone is appropriate, but the technical advice is weak. The additional checks regarding race conditions and database verification are irrelevant to this specific text-based ticket response task, so they are not penalized here, but the core technical solution lacks the rigor expected of a Senior QA Lead."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Coordinate user or third-party testing.",
+      "task_type": "User Acceptance Testing (UAT) Coordination & Defect Reporting",
+      "user_prompt": "Coordinate a UAT session for the new 'CheckoutFlow' feature. Based on the provided test scenarios, simulate a user journey that triggers a specific edge case (e.g., applying a discount code to an item that is out of stock). Generate a formal defect report following industry standards, including severity, steps to reproduce, and expected vs. actual results.",
+      "reference_context": {
+        "feature": "CheckoutFlow v2.0",
+        "test_scenarios": [
+          "Add item to cart",
+          "Apply discount code 'SAVE10'",
+          "Proceed to checkout",
+          "Item goes out of stock during session"
+        ],
+        "edge_case_trigger": "User applies 'SAVE10' to Item A, then Item A is removed from inventory by admin before payment."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Scenario Execution - The defect report accurately reflects the specific edge case scenario described.",
+        "Criterion 2: Format Compliance - Report includes all required fields: Severity, Steps to Reproduce, Expected Result, Actual Result, and Environment.",
+        "Criterion 3: Clarity - Steps to reproduce are detailed enough for a developer to replicate the issue consistently."
+      ],
+      "student_answer": "## Defect Report\n\n**Report ID:** CF-20231027-001\n\n**Product:** CheckoutFlow v2.0\n\n**Component:** Discount Code Application & Inventory Management\n\n**Severity:** High\n\n**Priority:** Urgent\n\n**Status:** New\n\n**Reported By:** AI QA Analyst\n\n**Date:** October 27, 2023\n\n**Subject:** Discount Code Application Failure - Out of Stock Item\n\n**Description:**  Applying a discount code to an item that subsequently becomes out of stock during the checkout process results in an incorrect discount being applied and an error message displayed.\n\n**Steps to Reproduce:**\n\n1.  Add Item A (currently in stock - quantity: 5) to the shopping cart.\n2.  Proceed to the checkout page.\n3.  Enter discount code 'SAVE10'. The system should apply a 10% discount to the total order value.\n4.  Simulate an administrator removing Item A from inventory *before* the user completes the payment process.\n5.  Attempt to proceed to payment.\n\n**Expected Result:**\n\n*   The system should display an error message indicating that the discount code cannot be applied due to the item being out of stock.\n*   The discount should *not* be applied to the order total.\n*   The user should be presented with a clear explanation of why the discount is unavailable.\n\n**Actual Result:**\n\n*   The system applies the 10% discount to the order total.\n*   A generic error message \"Unable to process order\" is displayed, without specific details regarding the discount issue.\n*   The user is unable to proceed to payment.\n\n**Environment:**\n\n*   Browser: Chrome Version 118.0.5993.88 (Official Build) (64-bit)\n*   Operating System: Windows 10\n*   Database: PostgreSQL 14\n*   URL: https://example.com/checkout\n\n**Attachments:**\n\n*   Screenshot of the order total with the incorrect discount applied.\n*   Screenshot of the generic error message.\n\n**Suggested Fix:**\n\nImplement robust inventory checks during the discount application process.  The system should verify that all items in the cart remain in stock before allowing the user to proceed to payment.  Provide a more specific error message to the user indicating that the discount is unavailable due to an out-of-stock item.  Consider logging the event for further investigation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a well-structured defect report with clear steps and professional formatting. However, it fails to fully execute the 'simulate a user journey' portion of the task, offering only a static report rather than a walkthrough of the session. The 'Expected Result' is logically flawed; if an item is out of stock, the system should prevent the discount application entirely, not just show an error after applying it. Furthermore, the 'Suggested Fix' is vague regarding the specific race condition handling required for the edge case. The report lacks database verification steps or negative input validation checks mentioned in the additional checks, reducing its completeness and domain accuracy for a senior-level architectural review."
+    }
+  ]
+}

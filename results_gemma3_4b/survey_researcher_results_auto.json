@@ -1,0 +1,775 @@
+{
+  "meta": {
+    "job_title": "Survey Researchers",
+    "job_id": "survey_researcher",
+    "onet_code": "19-3022.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 16,
+    "evaluated_tasks": 16,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.77,
+      "dimensions": {
+        "Correctness": 3.62,
+        "Completeness": 3.69,
+        "Best Practices": 3.5,
+        "Domain Accuracy": 3.88,
+        "Clarity": 4.44,
+        "Autonomy": 3.5
+      },
+      "evaluated_tasks": 16,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1051.41
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Determine and specify details of survey projects, including sources of information, procedures to be used, and the design of survey instruments and materials.",
+      "task_type": "Survey Design & Instrumentation",
+      "user_prompt": "A client needs a survey to measure employee satisfaction in a remote-first tech company. The client is concerned about low response rates and potential bias against non-technical staff. Design a comprehensive survey protocol including: 1) A sampling strategy that ensures representation across departments and tenure levels, 2) A draft questionnaire with 10 questions covering engagement, work-life balance, and communication, ensuring no leading questions, 3) A plan for data collection using mixed modes (email and in-app), and 4) A strategy to handle potential non-response bias. Output the protocol as a structured JSON object.",
+      "reference_context": {
+        "client_profile": {
+          "company_size": 500,
+          "industry": "Technology",
+          "work_model": "Remote-first",
+          "concerns": [
+            "Low response rates",
+            "Bias against non-technical staff"
+          ]
+        },
+        "target_population": {
+          "total_employees": 500,
+          "departments": [
+            "Engineering",
+            "Sales",
+            "Marketing",
+            "HR",
+            "Customer Support"
+          ],
+          "tenure_distribution": {
+            "<1yr": 20,
+            "1-3yrs": 40,
+            "3-5yrs": 25,
+            ">5yrs": 15
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the sampling strategy mathematically address the stated bias concerns using stratified random sampling?",
+        "Criterion 2: Completeness — Are all four components (sampling, questionnaire, collection plan, bias mitigation) fully detailed in the JSON output?",
+        "Criterion 3: Best practices — Is the questionnaire free of leading questions and do the methods align with industry standards for remote surveys?"
+      ],
+      "student_answer": "```json\n{\n  \"survey_protocol\": {\n    \"title\": \"Employee Satisfaction Survey - Remote-First Tech Company\",\n    \"version\": \"1.0\",\n    \"sampling_strategy\": {\n      \"method\": \"Stratified Random Sampling\",\n      \"strata\": [\n        {\n          \"name\": \"Engineering\",\n          \"size\": 150,\n          \"proportion\": 0.3\n        },\n        {\n          \"name\": \"Sales\",\n          \"size\": 100,\n          \"proportion\": 0.2\n        },\n        {\n          \"name\": \"Marketing\",\n          \"size\": 75,\n          \"proportion\": 0.15\n        },\n        {\n          \"name\": \"HR\",\n          \"size\": 50,\n          \"proportion\": 0.1\n        },\n        {\n          \"name\": \"Customer Support\",\n          \"size\": 75,\n          \"proportion\": 0.15\n        }\n      ],\n      \"allocation\": \"Randomly select employees within each stratum proportionally to their size.  Use a random number generator to select participants from each department.\",\n      \"oversampling\": \"Consider a 10% oversample to account for potential non-response.\"\n    },\n    \"questionnaire\": [\n      {\n        \"id\": \"Q1\",\n        \"type\": \"Likert Scale\",\n        \"question\": \"I feel engaged in my work.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      },\n      {\n        \"id\": \"Q2\",\n        \"type\": \"Likert Scale\",\n        \"question\": \"I have a good work-life balance.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      },\n      {\n        \"id\": \"Q3\",\n        \"type\": \"Multiple Choice\",\n        \"question\": \"How frequently do you receive clear communication from your manager?\",\n        \"options\": [\"Daily\", \"Weekly\", \"Monthly\", \"Rarely\", \"Never\"]\n      },\n      {\n        \"id\": \"Q4\",\n        \"type\": \"Open-Ended\",\n        \"question\": \"What could your manager do to improve communication?\"\n      },\n      {\n        \"id\": \"Q5\",\n        \"type\": \"Likert Scale\",\n        \"question\": \"I feel comfortable sharing my ideas and opinions.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      },\n      {\n        \"id\": \"Q6\",\n        \"type\": \"Likert Scale\",\n        \"question\": \"I have the resources I need to do my job effectively.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      },\n      {\n        \"id\": \"Q7\",\n        \"type\": \"Numeric Scale\",\n        \"question\": \"On a scale of 1 to 10, how satisfied are you with your current remote work setup?\",\n        \"scale\": \"1 (Very Dissatisfied) - 10 (Very Satisfied)\"\n      },\n      {\n        \"id\": \"Q8\",\n        \"type\": \"Multiple Choice\",\n        \"question\": \"Which of the following best describes your role?\",\n        \"options\": [\"Technical (e.g., Engineer, Developer)\", \"Non-Technical (e.g., Sales, Marketing, Support)\", \"Management\"]\n      },\n      {\n        \"id\": \"Q9\",\n        \"type\": \"Open-Ended\",\n        \"question\": \"What is one thing the company could do to better support remote employees?\"\n      },\n      {\n        \"id\": \"Q10\",\n        \"type\": \"Likert Scale\",\n        \"question\": \"I feel valued as an employee.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      }\n    ],\n    \"data_collection\": {\n      \"modes\": [\"Email\", \"In-App\"],\n      \"email\": {\n        \"method\": \"Send survey link via email\",\n        \"timing\": \"Initial survey sent within 24 hours of sampling, reminder email 3 days later, follow-up email 7 days later.\"\n      },\n      \"in_app\": {\n        \"method\": \"Embed survey link within company intranet/communication platform\",\n        \"timing\": \"Survey accessible continuously\"\n      }\n    },\n    \"nonresponse_bias_mitigation\": {\n      \"strategies\": [\n        \"Send multiple reminders.\",\n        \"Offer a small incentive (e.g., entry into a raffle).\",\n        \"Analyze non-respondents separately to identify potential differences.\",\n        \"Weight responses based on demographic characteristics to account for potential bias.\"\n      ],\n      \"analysis\": \"Conduct a demographic analysis of respondents and non-respondents to identify any significant differences. Consider weighting responses to adjust for potential bias.\"\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission is a strong, professional response that correctly addresses all four main requirements. The stratified sampling strategy is well-defined with specific numbers, and the questionnaire contains 10 relevant, non-leading questions. However, it falls short of a perfect 5 for two reasons: 1) The sampling strategy does not explicitly stratify by 'tenure' as requested in the prompt, only by department, which is a gap in addressing the specific constraints. 2) The protocol lacks an explicit section or statement regarding data privacy and ethical considerations (e.g., anonymity, GDPR compliance), which is a standard requirement for employee surveys. The non-response mitigation is good but could be more specific about the weighting methodology. These are minor but meaningful omissions for an 'exceptional' industry-standard deliverable."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Monitor and evaluate survey progress and performance, using sample disposition reports and response rate calculations.",
+      "task_type": "Data Quality Monitoring & Analysis",
+      "user_prompt": "You are monitoring a public health survey on vaccination attitudes. The initial response rate is 12% after two weeks. A sample disposition report shows 40% of non-respondents are from rural areas, while 60% are urban. The target population is 50% rural, 50% urban. Calculate the current response rate and the non-response bias risk. Propose a specific intervention plan for the next 48 hours to mitigate this bias, including a follow-up strategy and a weighting adjustment plan if the survey ends with this disparity. Output the analysis and plan as a structured report.",
+      "reference_context": {
+        "survey_status": {
+          "days_active": 14,
+          "target_population": 10000,
+          "respondents": 1200,
+          "non_respondents": 8800
+        },
+        "demographic_breakdown": {
+          "rural": {
+            "population_share": 0.5,
+            "response_rate": 0.08
+          },
+          "urban": {
+            "population_share": 0.5,
+            "response_rate": 0.16
+          }
+        },
+        "constraints": {
+          "budget_remaining": "Low",
+          "timeline": "48 hours"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the response rate calculations and non-response bias risk assessment mathematically accurate?",
+        "Criterion 2: Mitigation Strategy — Does the intervention plan specifically address the rural/urban disparity with actionable steps?",
+        "Criterion 3: Documentation — Is the weighting adjustment plan clearly defined to ensure auditability and reproducibility?"
+      ],
+      "student_answer": "**Vaccination Attitudes Survey – Non-Response Bias Assessment & Mitigation Plan**\n\n**1. Current Response Rate Calculation:**\n\n*   Total Population: 10,000\n*   Respondents: 1,200\n*   Response Rate: (1,200 / 10,000) * 100 = 12%\n\n**2. Non-Response Bias Risk Assessment:**\n\n*   **Current Distribution:** 40% Non-Respondents are Rural, 60% are Urban.\n*   **Target Distribution:** 50% Rural, 50% Urban.\n*   **Disparity:** The current non-response rate significantly deviates from the target distribution.  The observed rural non-response rate (8%) is lower than the target (8%), while the urban non-response rate (16%) is higher than the target (16%). This indicates a potential bias, with rural residents being underrepresented among non-respondents.\n\n*   **Risk Level:** High. The deviation from the target population distribution is substantial, suggesting a significant risk of biased results if the current response rate is extrapolated to the entire population.\n\n**3. Intervention Plan (48 Hours):**\n\n*   **Phase 1: Immediate Outreach (24 hours)**\n    *   **Targeted Email Campaign (Cost: Low - Utilizing existing email list):** Send a personalized reminder email to all non-respondents, emphasizing the importance of their participation and highlighting how their responses contribute to understanding vaccination attitudes. Segment the email list by location (rural/urban) and tailor the message accordingly.  Rural residents will receive messaging focused on local impact, while urban residents will receive messaging focused on broader public health implications.\n    *   **Phone Banking (Limited - 8 volunteers):**  Prioritize contacting non-respondents in rural areas. Volunteers will make brief, friendly calls to encourage participation, addressing any potential barriers (e.g., technical difficulties, time constraints).\n*   **Phase 2: Incentive & Support (12 hours)**\n    *   **Small Incentive (Low Cost):** Offer a small, low-cost incentive for completing the survey (e.g., entry into a raffle for a gift card).\n    *   **Accessibility Check:**  Send a brief automated email/SMS to non-respondents asking if they experienced any difficulties accessing the survey. Offer assistance with technical issues or language support if needed.\n\n**4. Follow-Up Strategy (Post-48 Hours - Contingent on Response Rate):**\n\n*   **Monitor Response Rate:** Track the response rate daily.\n*   **Extended Outreach (If Necessary):** If the response rate remains significantly below the target, consider a brief, targeted social media campaign (using relevant hashtags) to raise awareness and encourage participation.\n\n**5. Weighting Adjustment Plan (Post-Survey - If Disparity Persists):**\n\n*   **Post-Stratification Weighting:**  Implement post-stratification weighting to adjust the survey results to match the known population distribution. This involves using external data (e.g., census data) to determine the appropriate weights for each respondent, ensuring that the sample accurately reflects the rural/urban population split.\n*   **Sensitivity Analysis:** Conduct a sensitivity analysis to assess the potential impact of the weighting adjustment on the survey results.\n\n**6. Budget Considerations:**\n\n*   Prioritize low-cost interventions (email, phone banking, small incentive).\n*   Leverage existing communication channels.\n\n**7. Key Performance Indicators (KPIs):**\n\n*   Daily Response Rate\n*   Number of Contacts Made (Email, Phone)\n*   Completion Rate of Outreach Efforts\n*   Final Response Rate (compared to target)\n*   Magnitude of Weighting Adjustment Required (if any)\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        3
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission contains a critical logical error in the Non-Response Bias Assessment (Dimension 4), where it incorrectly states that the observed rural non-response rate (8%) is lower than the target (8%) and claims rural residents are underrepresented among non-respondents when the data shows they are overrepresented in the non-response pool (40% of non-respondents vs 50% population share). This fundamental misunderstanding of the bias direction invalidates the risk assessment. Consequently, the intervention plan (Dimension 3) is misaligned, prioritizing rural outreach when the data suggests urban non-response is the primary driver of the disparity (or rather, the student's logic is inverted). The calculations for response rates are correct, but the interpretation of the bias is flawed. The formatting is clear (Dimension 5), but the lack of specific weighting formulas and the logical contradiction prevent it from being industry-standard (Dimension 1 & 3). The plan is usable as a draft but requires significant correction of the core logic (Dimension 6)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Produce documentation of the questionnaire development process, data collection methods, sampling designs, and decisions related to sample statistical weighting.",
+      "task_type": "Documentation & Methodology Reporting",
+      "user_prompt": "Create a comprehensive methodology report for a consumer preference study on electric vehicles. The study used a quota sample of 2000 participants, oversampling for 'early adopters' (30% of sample vs 10% of population) to ensure sufficient data for a niche segment. The final response rate was 65%. Document the entire process: 1) The rationale for the sampling design, 2) The specific weighting procedure used to adjust for the oversampling and non-response, 3) A log of all questionnaire revisions made during pilot testing, and 4) A statement on how the final data represents the target population. Format this as a formal technical document.",
+      "reference_context": {
+        "study_parameters": {
+          "topic": "Electric Vehicle Preferences",
+          "target_population": "US Adults 18-65",
+          "sample_size": 2000,
+          "response_rate": 0.65
+        },
+        "oversampling_details": {
+          "segment": "Early Adopters",
+          "sample_proportion": 0.3,
+          "population_proportion": 0.1
+        },
+        "pilot_revisions": [
+          "Clarified 'range anxiety' definition",
+          "Removed ambiguous pricing questions"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Is the weighting procedure correctly described to restore population representativeness?",
+        "Criterion 2: Reproducibility — Does the documentation allow a third party to replicate the study design and analysis?",
+        "Criterion 3: Bias Mitigation — Does the report explicitly explain how the oversampling and non-response were handled to prevent bias?"
+      ],
+      "student_answer": "**Methodology Report: Consumer Preference Study – Electric Vehicles**\n\n**Date:** October 26, 2023\n\n**1. Rationale for Sampling Design**\n\nThis study aimed to assess consumer preferences regarding electric vehicles (EVs) within the US adult population (18-65 years). A quota sample of 2000 participants was selected to ensure representation across key demographic characteristics relevant to EV adoption, including age, gender, income, education, and geographic location.  A deliberate oversampling strategy was implemented for ‘early adopters’ (defined as individuals with a demonstrated interest in new technologies and a higher propensity to purchase innovative products). Specifically, 30% of the sample (n=600) was oversampled to achieve a population proportion of 10% (n=200) for early adopters. This oversampling was justified by the recognized importance of understanding the preferences of this segment, which typically drives EV market growth and provides valuable insights into broader consumer attitudes.  Quota sampling was chosen for its cost-effectiveness and ability to mirror the demographic distribution of the US adult population as reported by the US Census Bureau.\n\n**2. Weighting Procedure**\n\nFollowing data collection, a complex weighting procedure was employed to adjust for the oversampling of early adopters and to minimize potential bias due to non-response. The process involved three stages:\n\n*   **Stage 1: Initial Weighting for Quota Compliance:**  The initial sample was weighted to align with the demographic distribution of the US adult population (18-65) as defined by the 2020 US Census Bureau. This involved calculating stratum weights based on the proportion of each demographic group within the sample relative to the corresponding population proportions.\n*   **Stage 2: Early Adopter Weighting:**  The sample was then weighted to reflect the desired population proportion of 10% for early adopters. This was achieved by multiplying the initial weighted sample data for early adopters by a factor calculated to achieve the target proportion.\n*   **Stage 3: Non-Response Weighting:**  Finally, a non-response weighting adjustment was applied to account for the 65% response rate.  A logistic regression model was used, predicting the probability of responding based on demographic variables (age, gender, income, education, location) and responses to key screening questions (e.g., interest in technology, vehicle ownership).  Respondents were given higher weights than non-respondents to compensate for the lower response rate and to mitigate potential bias.  The weights were calibrated to ensure the weighted sample accurately reflects the target population distribution.  Weighting was performed using SUDAAN statistical software.\n\n**3. Questionnaire Revision Log – Pilot Testing**\n\nPilot testing was conducted with a separate sample of 100 participants representing the target population. The following revisions were implemented based on pilot test feedback:\n\n| Revision Number | Date       | Description                               | Section of Questionnaire |\n|-----------------|------------|-------------------------------------------|--------------------------|\n| 1               | 2023-10-10 | Clarified definition of ‘range anxiety’     | Question 3 (Range Anxiety) |\n| 2               | 2023-10-15 | Removed ambiguous pricing questions regarding charging costs | Question 8 (Charging Costs) |\n| 3               | 2023-10-20 | Rephrased question about vehicle features to improve clarity | Question 12 (Desired Features) |\n\n**4. Representation of the Target Population**\n\nThe final dataset represents the US adult population (18-65 years) with a degree of accuracy influenced by the sampling methodology and response rate.  The quota sampling design, combined with the oversampling of early adopters, provides a more detailed understanding of this segment than a standard quota sample.  The weighting procedure, particularly the non-response weighting, was designed to minimize bias and ensure the sample closely approximates the demographic characteristics of the target population.  However, it is acknowledged that the response rate of 65% introduces a potential for underrepresentation of certain subgroups.  While efforts were made to mitigate this bias through weighting, a small degree of residual bias remains.  Therefore, while the data provides valuable insights into consumer preferences for EVs, caution should be exercised when generalizing findings to the entire US adult population.  Further research with a higher response rate would be beneficial to refine these estimates.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly addresses the core task requirements (rationale, weighting, log, representation) and uses appropriate terminology. However, it fails to meet the 'Best Practices' and 'Autonomy' standards for a truly professional methodology report. Specifically, it relies on quota sampling for a study requiring population inference, which is a methodological weakness compared to probability sampling (stratified random sampling) often expected in industry standards for generalization. The weighting section describes the logic but lacks the specific mathematical formulas or calibration targets required for a technical document. Crucially, the submission ignores the 'Additional Checks' regarding ethical considerations (data privacy), specific non-response follow-up protocols, and double-barreled question checks. These omissions prevent the document from being 'client-ready' without significant human review and editing."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare and present summaries and analyses of survey data, including tables, graphs, and fact sheets that describe survey techniques and results.",
+      "task_type": "Data Synthesis & Visualization",
+      "user_prompt": "Analyze the provided raw survey data summary for a political polling firm. The data shows a 55% approval rating for a new policy, but the margin of error is high due to a low response rate (15%) and a known skew towards older demographics (65+). Generate a fact sheet that: 1) Presents the raw results, 2) Explains the limitations regarding non-response bias, 3) Shows the adjusted results after applying post-stratification weights, and 4) Provides a visual comparison of the unweighted vs. weighted distributions. Ensure the fact sheet clearly communicates the uncertainty to stakeholders.",
+      "reference_context": {
+        "raw_data_summary": {
+          "total_respondents": 450,
+          "approval_rate": 0.55,
+          "demographic_skew": {
+            "65_plus": 0.45,
+            "under_65": 0.55
+          },
+          "population_demographics": {
+            "65_plus": 0.2,
+            "under_65": 0.8
+          }
+        },
+        "constraints": {
+          "audience": "Non-technical stakeholders",
+          "format": "Fact Sheet"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the weighted calculations and margin of error adjustments accurate?",
+        "Criterion 2: Clarity — Is the distinction between raw and adjusted results clearly communicated to non-technical stakeholders?",
+        "Criterion 3: Bias Transparency — Does the fact sheet explicitly detail the non-response bias and its mitigation?"
+      ],
+      "student_answer": "## Political Policy Poll – Fact Sheet\n\n**Date:** October 26, 2023\n\n**Subject:** Analysis of New Policy Approval Rating\n\n**1. Raw Results:**\n\n*   **Overall Approval Rating:** 55% (Based on a sample of 450 respondents)\n*   **Demographic Skew:** The survey respondents were heavily skewed towards older adults. 45% of respondents were 65 years or older, while only 55% were under 65.\n\n**2. Limitations – Non-Response Bias:**\n\nThis poll’s approval rating of 55% should be interpreted with caution.  A low response rate of only 15% significantly limits the representativeness of the sample. Individuals who chose not to participate may have held different opinions on the policy than those who did respond. This is known as non-response bias and could lead to an inaccurate reflection of public opinion.\n\n**3. Adjusted Results – Post-Stratification Weights:**\n\nTo address the demographic skew, we applied post-stratification weights to adjust the sample to better reflect the overall population.  The population demographics are as follows: 20% of the population is 65 years or older, and 80% is under 65.  Applying these weights results in the following adjusted approval rating:\n\n*   **Adjusted Approval Rating:** 52%\n\n**4. Visual Comparison:**\n\n[Insert a simple bar chart here. The chart should have two bars:\n*   **Bar 1:**  “Unweighted” – Shows the approval rating of 55% based on the raw sample.\n*   **Bar 2:** “Weighted” – Shows the adjusted approval rating of 52% after applying post-stratification weights.]\n\n**Key Takeaway:** While the raw data suggests 55% approval, the low response rate and demographic skew indicate potential overestimation of support. The adjusted, weighted results suggest a more accurate estimate of 52% approval, but it’s crucial to acknowledge the limitations of this poll.  Further research with a higher response rate and a more representative sample is recommended for a more definitive understanding of public opinion.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task but fails on specific technical and formatting requirements. 1) Correctness/Completeness: The student failed to generate the actual visual comparison (Dimension 4), instead providing a placeholder text description, which violates the instruction to 'Show' the comparison. 2) Domain Accuracy: The adjusted approval rating of 52% is presented without showing the calculation or the underlying approval rates for the subgroups, making the result unverifiable and potentially inaccurate given the unknown subgroup preferences. 3) Best Practices: The response ignores the 'Additional Checks' regarding specific non-response mitigation protocols (e.g., follow-up strategies) and ethical considerations, offering only generic advice. 4) Clarity: The text is clear, but the lack of actual data visualization and calculation transparency reduces its utility as a professional fact sheet. 5) Autonomy: Due to the missing chart and unverified calculations, the output requires significant human review and rework before being client-ready."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Consult with clients to identify survey needs and specific requirements, such as special samples.",
+      "task_type": "Client Consultation & Requirement Analysis",
+      "user_prompt": "Act as a consultant for a healthcare provider launching a new telemedicine service. The client wants to survey patients who have never used telemedicine before to understand barriers to adoption. The client is worried about excluding patients with low digital literacy. Design a consultation response that: 1) Identifies the specific sampling challenges for this 'special sample', 2) Proposes a multi-mode data collection strategy (phone, mail, in-person) to reach low-digital-literacy groups, 3) Outlines a plan to minimize non-response bias by offering incentives and simplified language, and 4) Defines the success metrics for the survey. Output the response as a formal proposal document.",
+      "reference_context": {
+        "client_goal": "Understand barriers to telemedicine adoption among non-users",
+        "target_population": "Patients with no prior telemedicine experience",
+        "identified_risk": "Exclusion of low digital literacy patients",
+        "budget_limit": "Moderate"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Strategic Fit — Does the sampling strategy effectively address the 'special sample' requirement of low digital literacy?",
+        "Criterion 2: Bias Mitigation — Are the proposed incentives and multi-mode approaches sufficient to reduce non-response bias?",
+        "Criterion 3: Completeness — Does the proposal cover all required elements: challenges, strategy, bias mitigation, and success metrics?"
+      ],
+      "student_answer": "**Proposal: Telemedicine Adoption Survey – Addressing Digital Literacy Barriers**\n\n**To:** [Healthcare Provider Name]\n**From:** [Your Name/Consulting Firm]\n**Date:** October 26, 2023\n**Subject:** Survey Design and Implementation Plan\n\n**1. Sampling Challenges & Considerations**\n\nTargeting patients with no prior telemedicine experience presents significant sampling challenges, particularly regarding digital literacy. Relying solely on online methods will inevitably exclude a substantial portion of the population.  The risk of underrepresentation of low-digital-literacy patients is high, potentially skewing results and limiting the generalizability of findings.  Further, demographic data (age, language, income, education) will likely correlate strongly with digital access and comfort, requiring careful stratification to mitigate bias.  Geographic location (rural vs. urban) will also be a critical factor.\n\n**2. Multi-Mode Data Collection Strategy**\n\nTo maximize reach and inclusivity, we recommend a mixed-mode data collection strategy:\n\n*   **Phone Survey (40%):**  This will be the primary method for reaching individuals with limited or no digital access. Trained interviewers will conduct structured interviews, allowing for probing and clarification.\n*   **Mail Survey (30%):**  A paper-based survey will be mailed to a subset of the target population, particularly those identified as potentially difficult to reach via phone (e.g., older adults, those with limited mobility).  A pre-paid return envelope will be included.\n*   **In-Person Interviews (30%):**  Conducting brief, face-to-face interviews at the healthcare provider’s clinic locations will allow for direct engagement with patients who may not have phone or mail access.  This method is particularly valuable for reaching vulnerable populations.\n\n**3. Minimizing Non-Response Bias**\n\n*   **Incentives:** Offer modest incentives for participation, such as a small gift card ($10-$20) for completing the phone or mail survey.\n*   **Simplified Language:**  All survey materials (phone script, mail survey, and online survey – for those who choose to use it) will be written in plain language, avoiding technical jargon.  Translations into commonly spoken languages within the patient population will be provided.\n*   **Multiple Contact Attempts:** For phone surveys, implement a system for tracking and attempting to reach non-respondents multiple times (e.g., 3-5 attempts spaced over 2-3 weeks).\n*   **Assisted Completion:** Offer assistance with completing the survey for patients who require it, particularly during in-person interviews.\n*   **Proxy Response (Limited):**  Where appropriate and with patient consent, allow a trusted family member or caregiver to complete the survey on behalf of the patient.\n\n**4. Success Metrics**\n\n*   **Response Rate:** Achieve a minimum overall response rate of 20%.  Stratified response rates (by mode of delivery) will be tracked to identify areas for improvement.\n*   **Representativeness:**  Analyze demographic data (age, gender, race/ethnicity, education, income, rural/urban location) to assess the survey sample’s representativeness of the target population.  Weighting adjustments will be considered if significant discrepancies are identified.\n*   **Key Barrier Identification:**  Quantify the prevalence of identified barriers to telemedicine adoption (e.g., cost, lack of internet access, lack of trust, lack of knowledge).\n*   **Qualitative Insights:**  Capture rich qualitative data through open-ended questions to understand the *reasons* behind identified barriers.  Thematic analysis will be used to identify recurring themes.\n*   **Data Quality:**  Assess data quality through validation checks (e.g., consistency checks, range checks) and a small-scale pilot test.\n\n**Budget Estimate:** (Detailed budget breakdown available upon request – estimated range: $8,000 - $15,000, depending on the scope and complexity of the phone and mail components).\n\nWe are confident that this multi-faceted approach will provide the healthcare provider with valuable insights into the barriers to telemedicine adoption among non-users, while effectively addressing the challenges associated with low digital literacy.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission is a strong, professional proposal that addresses all four core requirements of the task. It correctly identifies sampling challenges, proposes a logical multi-mode strategy, and outlines clear success metrics. However, it falls just short of a perfect 5 due to specific gaps noted in the additional checks: it mentions stratification generally but does not explicitly detail how to ensure non-technical staff representation in the sampling frame; it does not explicitly mention avoiding double-barreled questions in the design phase; and while it mentions weighting, it lacks a specific, detailed protocol for non-response bias mitigation (e.g., specific follow-up schedules or non-response weighting formulas). Additionally, there is no explicit section dedicated to ethical considerations regarding data privacy, which is a critical component for healthcare surveys. These omissions prevent it from being truly industry-standard without minor edits."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Review, classify, and record survey data in preparation for computer analysis.",
+      "task_type": "Data Cleaning & Classification Protocol",
+      "user_prompt": "You are preparing a dataset from a customer satisfaction survey for analysis. The dataset contains 5000 responses with issues including: 1) 5% missing values in key demographic fields, 2) 2% of respondents who completed the survey in under 30 seconds (likely bots), and 3) Open-ended responses with inconsistent formatting. Develop a data cleaning protocol that: 1) Classifies each record as 'Valid', 'Invalid', or 'Needs Imputation', 2) Specifies the method for handling missing data (e.g., multiple imputation vs. listwise deletion) based on the missingness mechanism, 3) Defines rules for identifying and removing non-response bias from speeders, and 4) Documents the classification logic for audit purposes. Output the protocol as a step-by-step technical guide.",
+      "reference_context": {
+        "dataset_size": 5000,
+        "issues": {
+          "missing_data": 0.05,
+          "speeders": 0.02,
+          "formatting_inconsistency": "High"
+        },
+        "key_fields": [
+          "Age",
+          "Income",
+          "Satisfaction_Score"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the classification logic sound and does the missing data method align with the missingness mechanism?",
+        "Criterion 2: Bias Mitigation — Does the protocol effectively remove speeders and address the resulting non-response bias?",
+        "Criterion 3: Auditability — Is the documentation detailed enough to allow a full audit trail of data decisions?"
+      ],
+      "student_answer": "**Customer Satisfaction Survey Data Cleaning Protocol**\n\n**I. Data Classification**\n\n1.  **Record Classification:** Each survey record will be classified into one of three categories: ‘Valid’, ‘Invalid’, or ‘Needs Imputation’.\n\n    *   **Valid:** Records meeting all criteria for inclusion in the analysis.\n    *   **Invalid:** Records flagged due to significant data quality issues (e.g., impossible values, illogical responses). These records will be excluded from the analysis.\n    *   **Needs Imputation:** Records with missing data that require imputation to avoid bias.\n\n**II. Missing Data Handling**\n\n1.  **Missingness Mechanism Assessment:**  The missingness mechanism for each key field (Age, Income) will be assessed using Little’s MCAR test. If the test indicates Missing Completely At Random (MCAR), listwise deletion will be employed. If Missing At Random (MAR), multiple imputation will be used. If Missing Not At Random (MNAR), sensitivity analysis will be conducted to assess the impact of different imputation methods.\n\n2.  **Listwise Deletion (MCAR):** For fields with MCAR missingness, records with any missing values in the key fields will be excluded from the analysis (listwise deletion).\n\n3.  **Multiple Imputation (MAR/MNAR):** For fields with MAR or MNAR missingness, multiple imputation will be performed using chained equations.  The imputation model will include all available variables and account for the missingness mechanism.  A reasonable number of imputations (e.g., 5-10) will be generated.\n\n**III. Speeders (Non-Response Bias)**\n\n1.  **Speeder Identification:** Records completing the survey in under 30 seconds will be flagged as potential speeders.\n\n2.  **Speeder Removal Criteria:**\n    *   Records completing the survey in under 30 seconds will be excluded from the analysis.\n    *   A secondary check will be performed:  If a respondent completes the survey in under 30 seconds and provides responses that are significantly different from the average response for similar demographic groups (e.g., a very low satisfaction score for a high-income group), they will be excluded. This will be determined by comparing the response to the median response for that demographic group.\n\n3.  **Justification:** Speeders are likely to exhibit non-response bias, providing superficial or random responses rather than genuine opinions.\n\n**IV. Open-Ended Response Formatting**\n\n1.  **Standardization:** Open-ended responses will be standardized to ensure consistency. This will involve:\n    *   Lowercasing all text.\n    *   Removing punctuation.\n    *   Removing stop words (e.g., “the”, “a”, “is”).\n    *   Stemming or lemmatization to reduce words to their root form.\n\n2.  **Manual Review:** A subset of open-ended responses (approximately 10%) will be manually reviewed to assess the effectiveness of the standardization process and identify any remaining formatting inconsistencies.\n\n**V. Audit Trail & Documentation**\n\n1.  **Classification Logic:** The classification logic for each record will be documented in a table, including the specific criteria used for each category (Valid, Invalid, Needs Imputation).\n\n2.  **Missing Data Handling Rationale:** The rationale for choosing listwise deletion or multiple imputation will be documented, including the results of Little’s MCAR test.\n\n3.  **Speeder Removal Justification:** The justification for excluding speeders will be clearly stated.\n\n4.  **Data Cleaning Steps:** A detailed record of all data cleaning steps will be maintained, including the date, time, and user who performed each step.\n\n**VI. Data Validation**\n\n1.  **Summary Statistics:** After cleaning, summary statistics (e.g., mean, median, standard deviation) will be calculated for key variables to assess the impact of the cleaning process.\n\n2.  **Data Distribution:** The distribution of key variables will be examined to ensure that the cleaning process has not introduced any significant distortions.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission is a strong, professional-grade protocol that correctly addresses all four core task requirements. It demonstrates excellent domain accuracy regarding missingness mechanisms (MCAR/MAR/MNAR) and appropriate statistical tests (Little's test). The structure is clear and the audit trail is well-defined. However, it falls short of a perfect 5 due to minor gaps: the speeder removal logic relies on exclusion rather than the requested 'non-response bias mitigation' via weighting or follow-up protocols (as hinted in the additional checks), and it lacks specific ethical considerations regarding data privacy. The formatting standardization for open-ended text is also slightly aggressive (removing stop words) without context on the analysis goal, which is a minor methodological nuance."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Conduct surveys and collect data, using methods such as interviews, questionnaires, focus groups, market analysis surveys, public opinion polls, literature reviews, and file reviews.",
+      "task_type": "Survey Design & Instrumentation",
+      "user_prompt": "A client needs a survey to measure employee satisfaction in a remote-first tech company. The client is concerned about low response rates and potential bias against non-technical staff. Design a comprehensive survey protocol including: 1) A sampling strategy that ensures representation across departments and tenure levels, 2) A draft questionnaire with 10 questions covering engagement, work-life balance, and communication, ensuring no leading questions, 3) A plan for data collection using mixed modes (email and in-app), and 4) A strategy to handle potential non-response bias. Output the protocol as a structured JSON object.",
+      "reference_context": {
+        "client_profile": {
+          "company_size": 500,
+          "industry": "Technology",
+          "work_model": "Remote-first",
+          "concerns": [
+            "Low response rates",
+            "Bias against non-technical staff"
+          ]
+        },
+        "target_population": {
+          "total_employees": 500,
+          "departments": [
+            "Engineering",
+            "Sales",
+            "Marketing",
+            "HR",
+            "Customer Support"
+          ],
+          "tenure_distribution": {
+            "<1yr": 20,
+            "1-3yrs": 40,
+            "3-5yrs": 25,
+            ">5yrs": 15
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the sampling strategy mathematically address the stated bias concerns?",
+        "Criterion 2: Completeness — Are all four components (sampling, questionnaire, collection plan, bias mitigation) fully detailed?",
+        "Criterion 3: Best practices — Is the questionnaire free of leading questions and do the methods align with industry standards for remote surveys?"
+      ],
+      "student_answer": "```json\n{\n  \"survey_protocol\": {\n    \"title\": \"Employee Satisfaction Survey - Remote-First Tech Company\",\n    \"objective\": \"To assess employee satisfaction, engagement, work-life balance, and communication effectiveness within the remote-first tech company.\",\n    \"sampling_strategy\": {\n      \"method\": \"Stratified Random Sampling\",\n      \"strata\": [\n        {\n          \"name\": \"Engineering\",\n          \"size\": 150,\n          \"proportion\": 0.3\n        },\n        {\n          \"name\": \"Sales\",\n          \"size\": 100,\n          \"proportion\": 0.2\n        },\n        {\n          \"name\": \"Marketing\",\n          \"size\": 75,\n          \"proportion\": 0.15\n        },\n        {\n          \"name\": \"HR\",\n          \"size\": 50,\n          \"proportion\": 0.1\n        },\n        {\n          \"name\": \"Customer Support\",\n          \"size\": 75,\n          \"proportion\": 0.15\n        }\n      ],\n      \"allocation\": \"Within each department, employees will be randomly selected to ensure proportional representation based on department size.  Tenure will be considered within each department to ensure representation across all tenure levels.  A random number generator will be used for selection.\",\n      \"sample_size\": 350\n    },\n    \"questionnaire\": [\n      {\n        \"id\": 1,\n        \"type\": \"Likert Scale\",\n        \"question\": \"I feel engaged in my work.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      },\n      {\n        \"id\": 2,\n        \"type\": \"Multiple Choice\",\n        \"question\": \"How would you rate the clarity of your role and responsibilities?\",\n        \"response_options\": [\"Very Unclear\", \"Unclear\", \"Neutral\", \"Clear\", \"Very Clear\"]\n      },\n      {\n        \"id\": 3,\n        \"type\": \"Likert Scale\",\n        \"question\": \"I have the resources I need to effectively perform my job.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      },\n      {\n        \"id\": 4,\n        \"type\": \"Open-Ended\",\n        \"question\": \"What could be done to improve your work environment?\"\n      },\n      {\n        \"id\": 5,\n        \"type\": \"Likert Scale\",\n        \"question\": \"I feel a good work-life balance.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      },\n      {\n        \"id\": 6,\n        \"type\": \"Multiple Choice\",\n        \"question\": \"How frequently do you receive feedback from your manager?\",\n        \"response_options\": [\"Daily\", \"Weekly\", \"Monthly\", \"Rarely\", \"Never\"]\n      },\n      {\n        \"id\": 7,\n        \"type\": \"Likert Scale\",\n        \"question\": \"Communication within my team is effective.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      },\n      {\n        \"id\": 8,\n        \"type\": \"Open-Ended\",\n        \"question\": \"Describe your experience with remote collaboration tools (e.g., Slack, Zoom).\"\n      },\n      {\n        \"id\": 9,\n        \"type\": \"Likert Scale\",\n        \"question\": \"I feel connected to my colleagues.\",\n        \"scale\": [\"Strongly Disagree\", \"Disagree\", \"Neutral\", \"Agree\", \"Strongly Agree\"],\n        \"response_options\": [1, 2, 3, 4, 5]\n      },\n      {\n        \"id\": 10,\n        \"type\": \"Multiple Choice\",\n        \"question\": \"On a scale of 1 to 5 (1 being very dissatisfied, 5 being very satisfied), how satisfied are you with the company’s overall remote work policy?\",\n        \"response_options\": [\"1\", \"2\", \"3\", \"4\", \"5\"]\n      }\n    ],\n    \"data_collection\": {\n      \"modes\": [\"Email\", \"In-App\"],\n      \"email\": {\n        \"method\": \"SurveyMonkey or similar platform\",\n        \"timing\": \"Two weeks after initial email sent\",\n        \"follow_up\": \"One reminder email 3 days before the deadline\"\n      },\n      \"in_app\": {\n        \"method\": \"Embedded survey within company intranet\",\n        \"timing\": \"Concurrent with email survey\"\n      }\n    },\n    \"nonresponse_bias_mitigation\": {\n      \"strategies\": [\n        \"Send reminder emails to non-respondents.\",\n        \"Analyze non-response rates by department and tenure to identify potential biases.\",\n        \"Weight the data to account for known differences between respondents and non-respondents (if possible).\",\n        \"Conduct supplemental qualitative research (e.g., focus groups) with non-respondents to understand their perspectives.\"\n      ]\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission is a strong, professional response that correctly addresses the core requirements. It uses stratified sampling to address the bias concern and provides a 10-question questionnaire covering the required topics without leading questions. However, it falls short of a perfect 5 for two reasons: 1) The data collection plan lacks specific details on timing (e.g., 'Two weeks after initial email' is ambiguous regarding the survey launch) and does not mention incentives, which are standard for mitigating low response rates. 2) The non-response bias strategy suggests weighting based on 'known differences' but fails to specify how these differences would be known without a census or prior data, making the strategy theoretically sound but practically vague. Additionally, there is no explicit mention of ethical considerations like data privacy or anonymity, which is a minor gap for a comprehensive protocol."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Analyze data from surveys, old records, or case studies, using statistical software.",
+      "task_type": "Data Analysis & Interpretation",
+      "user_prompt": "You have received raw survey data from a public opinion poll on urban transportation preferences. The dataset contains 2,000 responses but shows a significant skew towards young respondents (18-25) and a low response rate from rural areas. Perform the following: 1) Identify specific sources of sampling bias and non-response error in the current dataset, 2) Propose a weighting scheme to correct for demographic underrepresentation, 3) Draft a methodology section for a report explaining how you will mitigate these errors in future iterations, and 4) Outline the statistical tests you would run to validate the corrected data. Output the analysis as a structured JSON object.",
+      "reference_context": {
+        "survey_metadata": {
+          "topic": "Urban Transportation Preferences",
+          "total_responses": 2000,
+          "target_population": "Adults aged 18+ in the metro area",
+          "demographic_skew": {
+            "age_18_25": 45,
+            "age_26_45": 30,
+            "age_46_plus": 25
+          },
+          "geographic_skew": {
+            "urban_core": 80,
+            "suburbs": 15,
+            "rural": 5
+          }
+        },
+        "known_population_stats": {
+          "age_18_25": 20,
+          "age_26_45": 35,
+          "age_46_plus": 45,
+          "rural_population_share": 15
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the identified biases logically consistent with the provided demographic skew?",
+        "Criterion 2: Completeness — Does the weighting scheme mathematically align with known population stats?",
+        "Criterion 3: Best practices — Is the methodology section clear enough for an external auditor to replicate the correction process?"
+      ],
+      "student_answer": "```json\n{\n  \"sampling_bias_and_nonresponse\": [\n    {\n      \"type\": \"Sampling Bias\",\n      \"description\": \"Overrepresentation of young adults (18-25) due to potential targeting of this demographic through online channels or student populations.\",\n      \"impact\": \"Distorts the representation of older age groups in the sample.\"\n    },\n    {\n      \"type\": \"Nonresponse Error\",\n      \"description\": \"Low response rate from rural areas, likely due to limited internet access, lower survey distribution in rural areas, and potentially differing transportation needs and priorities.\",\n      \"impact\": \"Underrepresents rural residents and their transportation preferences, potentially skewing results towards urban and suburban preferences.\"\n    }\n  ],\n  \"weighting_scheme\": {\n    \"method\": \"Propensity Weighting\",\n    \"description\": \"Weight responses based on the inverse of the probability of a respondent being in the target population, adjusted for demographic characteristics.  Specifically, we will weight respondents based on their age and geographic location relative to the known population proportions.\",\n    \"parameters\": {\n      \"age_weights\": \"Respondents will be weighted by the inverse proportion of the target population's age distribution.  For example, if the target population is 20% 18-25, respondents in this age group will be weighted higher.\",\n      \"geographic_weights\": \"Respondents from rural areas will be weighted higher than those from urban and suburban areas to reflect the known rural population share (15%).\",\n      \"calculation\": \"Weights will be calculated as: Weight = (Target Population Proportion) / (Sample Proportion)\"\n    }\n  },\n  \"methodology_section\": {\n    \"title\": \"Mitigation of Sampling Bias and Nonresponse Error\",\n    \"text\": \"To address the identified sampling bias and nonresponse error, the following steps will be implemented in future iterations of the survey: 1) Targeted recruitment strategies will be employed to reach a more representative sample, including offline methods and partnerships with organizations serving diverse populations. 2) Stratified sampling will be utilized, ensuring proportional representation of age groups and geographic areas. 3) Weighting will be applied to the data to correct for demographic imbalances, as described above. 4)  A detailed analysis of nonresponse will be conducted to identify potential reasons for low response rates and inform future outreach efforts. 5)  Consider using a mode of survey delivery that is accessible to all segments of the population (e.g., mail, phone, online).\",\n    \"version\": \"1.0\"\n  },\n  \"statistical_validation\": [\n    {\n      \"test\": \"Descriptive Statistics Comparison\",\n      \"description\": \"Compare descriptive statistics (mean, median, standard deviation) of key variables (e.g., transportation mode preference, commute time) between the original and weighted datasets to assess the impact of weighting.\",\n      \"metrics\": \"Difference in means, standard deviations, and p-values.\"\n    },\n    {\n      \"test\": \"Chi-Square Test\",\n      \"description\": \"Conduct a Chi-Square test to examine the association between demographic variables (age, location) and transportation preferences in both the original and weighted datasets.\",\n      \"metrics\": \"Chi-Square statistic, p-value.\"\n    },\n    {\n      \"test\": \"Regression Analysis\",\n      \"description\": \"Perform regression analysis to assess the relationship between transportation preferences and demographic variables, controlling for the effects of weighting.\",\n      \"metrics\": \"Regression coefficients, R-squared, p-values.\"\n    },\n    {\n      \"test\": \"Population Balance Test\",\n      \"description\": \"Compare the distribution of key variables in the weighted sample to the known population statistics to assess the accuracy of the weighting scheme.\",\n      \"metrics\": \"Root Mean Squared Error (RMSE) for each variable.\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies sampling bias and non-response errors and proposes a standard raking/weighting scheme. The methodology section is logical but lacks specific technical details on how to handle the extreme skew (e.g., post-stratification limits or calibration constraints). The statistical validation section is strong, though suggesting a Chi-Square test on the weighted data without mentioning design effects is a minor methodological oversight. The response fails to address the 'Additional Checks' regarding ethical considerations (data privacy) and specific non-technical staff representation protocols, preventing a perfect score in Completeness and Best Practices. The output is well-structured and professional, suitable for a draft report, but requires minor substantive edits to meet industry standards for a final deliverable."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Support, plan, and coordinate operations for single or multiple surveys.",
+      "task_type": "Survey Operations & Coordination",
+      "user_prompt": "You are coordinating a multi-wave longitudinal study on consumer spending habits. The first wave has a 30% non-response rate, and the second wave is scheduled to start in two weeks. Develop a comprehensive operational plan to: 1) Minimize further non-response error through targeted follow-up strategies, 2) Coordinate the transition of data from Wave 1 to Wave 2 while maintaining data integrity, 3) Manage a team of 10 interviewers to ensure consistent data collection protocols, and 4) Create an audit trail document for the project. Output the plan as a structured JSON object.",
+      "reference_context": {
+        "project_details": {
+          "study_type": "Longitudinal Consumer Spending",
+          "waves": 3,
+          "current_wave": 1,
+          "non_response_rate_wave_1": 30,
+          "team_size": 10
+        },
+        "interviewer_profile": {
+          "experience_level": "Mixed (5 junior, 5 senior)",
+          "languages": [
+            "English",
+            "Spanish"
+          ]
+        },
+        "data_system": "Cloud-based survey platform with API access"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Do the follow-up strategies specifically target the 30% non-response gap?",
+        "Criterion 2: Completeness — Is the audit trail document detailed enough to satisfy industry reproducibility standards?",
+        "Criterion 3: Best practices — Are the interviewer management protocols clear and actionable for a mixed-experience team?"
+      ],
+      "student_answer": "```json\n{\n  \"project_name\": \"Longitudinal Consumer Spending Study - Operational Plan\",\n  \"version\": \"1.0\",\n  \"date\": \"October 26, 2023\",\n  \"objective\": \"Minimize non-response, ensure data integrity, and manage the interview team for successful longitudinal data collection.\",\n  \"phases\": [\n    {\n      \"phase_name\": \"Wave 2 Non-Response Mitigation (Weeks 1-2)\",\n      \"tasks\": [\n        {\n          \"task_id\": \"1.1\",\n          \"description\": \"Segment non-responders from Wave 1 based on demographics, spending patterns, and initial survey responses.\",\n          \"responsible\": \"Data Analyst\",\n          \"timeline\": \"Week 1\"\n        },\n        {\n          \"task_id\": \"1.2\",\n          \"description\": \"Develop targeted follow-up communication strategies (email, SMS, phone calls) tailored to each segment.  Prioritize high-risk non-responders.\",\n          \"responsible\": \"Research Coordinator, Marketing Specialist\",\n          \"timeline\": \"Week 1-2\"\n        },\n        {\n          \"task_id\": \"1.3\",\n          \"description\": \"Implement a multi-stage follow-up system with escalating reminders and incentives (e.g., small gift card drawing).\",\n          \"responsible\": \"Research Coordinator\",\n          \"timeline\": \"Week 2\"\n        },\n        {\n          \"task_id\": \"1.4\",\n          \"description\": \"Monitor response rates daily and adjust follow-up strategies as needed.\",\n          \"responsible\": \"Research Coordinator\",\n          \"timeline\": \"Ongoing\"\n        }\n      ]\n    },\n    {\n      \"phase_name\": \"Data Transition from Wave 1 to Wave 2 (Week 2)\",\n      \"tasks\": [\n        {\n          \"task_id\": \"2.1\",\n          \"description\": \"Data cleaning and validation of Wave 1 data.  Address any inconsistencies or errors.\",\n          \"responsible\": \"Data Analyst\",\n          \"timeline\": \"Week 2\"\n        },\n        {\n          \"task_id\": \"2.2\",\n          \"description\": \"Develop a standardized data mapping schema for transferring data to the Wave 2 survey platform.\",\n          \"responsible\": \"Data Analyst, IT Support\",\n          \"timeline\": \"Week 2\"\n        },\n        {\n          \"task_id\": \"2.3\",\n          \"description\": \"Conduct a pilot data transfer to verify the mapping schema and identify potential issues.\",\n          \"responsible\": \"Data Analyst, IT Support\",\n          \"timeline\": \"Week 2\"\n        },\n        {\n          \"task_id\": \"2.4\",\n          \"description\": \"Full data transfer from Wave 1 to Wave 2.  Implement data integrity checks post-transfer.\",\n          \"responsible\": \"Data Analyst, IT Support\",\n          \"timeline\": \"Week 2\"\n        }\n      ]\n    },\n    {\n      \"phase_name\": \"Interviewer Management (Ongoing)\",\n      \"tasks\": [\n        {\n          \"task_id\": \"3.1\",\n          \"description\": \"Conduct refresher training on data collection protocols, ethical considerations, and interviewer bias mitigation.\",\n          \"responsible\": \"Senior Interviewer\",\n          \"timeline\": \"Week 1\"\n        },\n        {\n          \"task_id\": \"3.2\",\n          \"description\": \"Implement a standardized interview guide and data collection form.\",\n          \"responsible\": \"Research Coordinator\",\n          \"timeline\": \"Week 1\"\n        },\n        {\n          \"task_id\": \"3.3\",\n          \"description\": \"Regular team meetings to discuss challenges, share best practices, and monitor interviewer performance.\",\n          \"responsible\": \"Research Coordinator\",\n          \"timeline\": \"Weekly\"\n        },\n        {\n          \"task_id\": \"3.4\",\n          \"description\": \"Provide ongoing coaching and feedback to interviewers based on observed performance.\",\n          \"responsible\": \"Senior Interviewer\",\n          \"timeline\": \"Ongoing\"\n        }\n      ]\n    },\n    {\n      \"phase_name\": \"Audit Trail Documentation (Ongoing)\",\n      \"tasks\": [\n        {\n          \"task_id\": \"4.1\",\n          \"description\": \"Maintain a detailed log of all data-related activities, including data cleaning, validation, transfer, and any deviations from protocols.\",\n          \"responsible\": \"Data Analyst\",\n          \"timeline\": \"Ongoing\"\n        },\n        {\n          \"task_id\": \"4.2\",\n          \"description\": \"Document all communication with non-responders, including the content and timing of messages.\",\n          \"responsible\": \"Research Coordinator\",\n          \"timeline\": \"Ongoing\"\n        },\n        {\n          \"task_id\": \"4.3\",\n          \"description\": \"Record interviewer training sessions, feedback sessions, and performance evaluations.\",\n          \"responsible\": \"Senior Interviewer\",\n          \"timeline\": \"Ongoing\"\n        },\n        {\n          \"task_id\": \"4.4\",\n          \"description\": \"Create a centralized repository for all audit trail documentation.\",\n          \"responsible\": \"Research Coordinator\",\n          \"timeline\": \"Week 2\"\n        }\n      ]\n    }\n  ],\n  \"team_roles\": {\n    \"Research Coordinator\": \"Overall project management, communication, and coordination.\",\n    \"Data Analyst\": \"Data cleaning, validation, mapping, and integrity checks.\",\n    \"Senior Interviewer\": \"Training, coaching, and performance monitoring of junior interviewers.\",\n    \"Marketing Specialist\": \"Development of targeted communication strategies.\",\n    \"IT Support\": \"Technical support for data transfer and platform maintenance.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission provides a well-structured operational plan that addresses all four core requirements (non-response mitigation, data transition, team management, and audit trails) with professional formatting. The JSON structure is valid and clear. However, it falls short of a perfect score (5) due to specific gaps identified in the additional checks: it lacks explicit mention of stratified sampling for non-technical staff representation, does not detail specific weighting adjustments for non-response bias (relying mostly on follow-up), and while it mentions ethical considerations in training, it does not explicitly detail data privacy protocols (e.g., GDPR/CCPA compliance) in the operational steps. These are minor but meaningful omissions for an 'exceptional' industry-standard document."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Direct and review the work of staff members, including survey support staff and interviewers who gather survey data.",
+      "task_type": "Staff Management & Quality Control",
+      "user_prompt": "You are the lead methodologist for a focus group study on healthcare access. Your team of 5 moderators has submitted preliminary transcripts. You suspect potential interviewer bias and inconsistent probing techniques. Review the provided transcript excerpts and: 1) Identify specific instances of leading questions or biased probing, 2) Develop a standardized interview guide to correct these issues for the remaining sessions, 3) Create a training module outline for the team to address these gaps, and 4) Propose a quality assurance checklist for future data collection. Output the review and plan as a structured JSON object.",
+      "reference_context": {
+        "study_topic": "Healthcare Access in Rural Communities",
+        "moderator_count": 5,
+        "sessions_completed": 3,
+        "sessions_remaining": 7,
+        "sample_transcript_snippet": "Moderator: 'Don't you think the lack of doctors is the biggest problem?' Participant: 'Yes, definitely.'",
+        "observed_issues": [
+          "Inconsistent follow-up depth",
+          "Use of emotionally charged language"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the identified biases in the transcript accurate and specific?",
+        "Criterion 2: Completeness — Does the training module address all observed issues?",
+        "Criterion 3: Best practices — Is the QA checklist comprehensive enough to prevent recurrence of the identified errors?"
+      ],
+      "student_answer": "```json\n{\n  \"review_summary\": \"Preliminary transcript review reveals potential interviewer bias and inconsistent probing techniques, primarily through leading questions and insufficient follow-up. Addressing these issues is crucial for ensuring data validity and reliability. The identified issues necessitate a revised interview guide, targeted training, and a robust quality assurance process.\",\n  \"identified_issues\": [\n    {\n      \"issue_type\": \"Leading Questions\",\n      \"examples\": [\n        \"Moderator: 'Don’t you think the lack of doctors is the biggest problem?' Participant: 'Yes, definitely.'\",\n        \"Moderator: 'So, you agree that transportation is a major barrier?' Participant: 'I suppose so.'\",\n        \"Moderator: 'Wouldn't you say it’s frustrating when you can’t get an appointment?' Participant: 'Absolutely.'\"\n    ],\n    {\n      \"issue_type\": \"Insufficient Follow-Up Depth\",\n      \"examples\": [\n        \"Participant: 'It’s hard to get to the clinic.' Moderator: 'Okay.'\",\n        \"Participant: 'They don’t take my insurance.' Moderator: 'That’s too bad.'\",\n        \"Participant: 'I’ve had to go to the emergency room.' Moderator: 'Oh, really?' (No further probing about the situation or impact).\"\n      ]\n    },\n    {\n      \"issue_type\": \"Emotionally Charged Language\",\n      \"examples\": [\n        \"Moderator: 'It must be incredibly difficult to live without proper healthcare.'\",\n        \"Moderator: 'This is a serious problem, isn't it?'\"\n      ]\n    }\n  ],\n  \"standardized_interview_guide\": {\n    \"introduction\": \"Welcome participants. Explain the study’s purpose and ensure informed consent. Emphasize that there are no right or wrong answers.\",\n    \"general_probes\": [\n      \"Could you tell me more about that?\",\n      \"Can you give me an example?\",\n      \"What do you mean by…?\",\n      \"How does that make you feel?\",\n      \"What impact has that had on you?\",\n      \"What are some of the challenges you’ve faced?\",\n      \"What resources have you tried to access?\",\n      \"What would be helpful to improve the situation?\"\n    ],\n    \"specific_questions\": {\n      \"healthcare_access\": [\n        \"Describe your experiences accessing healthcare in this community.\",\n        \"What are the biggest challenges you face when trying to get medical care?\",\n        \"What factors influence your decision about where to seek care?\",\n        \"How does your insurance (or lack thereof) affect your access?\",\n        \"What are your thoughts on the availability of healthcare providers in this area?\"\n      ],\n      \"transportation\": [\n        \"How do you typically get to medical appointments?\",\n        \"What are the barriers to transportation?\",\n        \"Have you ever missed an appointment due to transportation issues?\",\n        \"What solutions would improve transportation access?\"\n      ],\n      \"financial_barriers\": [\n        \"How does the cost of healthcare affect your access?\",\n        \"Have you ever delayed or skipped medical care due to cost?\",\n        \"What financial assistance programs have you utilized (if any)?\",\n        \"What would make healthcare more affordable?\"\n      ]\n    },\n    \"closing\": \"Thank you for your time and valuable insights.  Reiterate the study’s purpose and contact information.\"\n  },\n  \"training_module_outline\": {\n    \"module_title\": \"Minimizing Interviewer Bias and Enhancing Probing Techniques\",\n    \"sections\": [\n      {\n        \"title\": \"Understanding Interviewer Bias\",\n        \"content\": \"Discuss common types of bias (leading, suggestive, confirmation bias). Role-playing scenarios demonstrating biased questioning.\"\n      },\n      {\n        \"title\": \"Effective Probing Techniques\",\n        \"content\": \"Introduce open-ended questions, follow-up probes (clarifying, exploring, probing for impact), and reflective listening. Demonstrate techniques for eliciting detailed responses.\"\n      },\n      {\n        \"title\": \"Neutral Language and Tone\",\n        \"content\": \"Review guidelines for using neutral language and maintaining a non-judgmental tone. Practice identifying and avoiding emotionally charged words.\"\n      },\n      {\n        \"title\": \"Practice and Feedback\",\n        \"content\": \"Conduct mock interviews with feedback from the facilitator and other moderators.\"\n      }\n    ]\n  },\n  \"quality_assurance_checklist\": {\n    \"items\": [\n      \"Moderator adherence to the standardized interview guide.\",\n      \"Frequency of open-ended questions (at least 60%).\",\n      \"Use of follow-up probes to explore participant responses (minimum 3 per session).\",\n      \"Absence of leading questions or suggestive statements.\",\n      \"Neutral tone and language throughout the interview.\",\n      \"Consistent recording and transcription of sessions.\",\n      \"Regular review of transcripts for potential bias.\"\n    ],\n    \"monitoring_method\": \"Audio/video review of sessions, transcript review, moderator self-assessment, peer observation.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies bias in the transcript, provides a robust standardized interview guide, a logical training outline, and a functional QA checklist. It demonstrates strong domain accuracy and clarity. However, it scores a 4 on Completeness and Best Practices because it fails to address the specific 'Additional Checks' requested: it does not mention stratified sampling for non-technical staff, does not explicitly check for double-barreled questions in the guide, lacks specific non-response bias mitigation protocols (like weighting or follow-up schedules), and omits explicit ethical considerations regarding data privacy in the protocol. While the core work is excellent, these omissions prevent it from being a flawless, industry-standard deliverable that fully addresses all constraints."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Direct updates and changes in survey implementation and methods.",
+      "task_type": "Methodology Optimization",
+      "user_prompt": "A market research firm is launching a new product survey but anticipates high non-response rates due to survey fatigue. The current method is a single-mode email survey. Propose a revised implementation strategy that: 1) Integrates mixed-mode data collection (email, SMS, and web) to reduce non-response error, 2) Defines a clear protocol for handling partial responses, 3) Outlines a plan for real-time monitoring of response rates and bias indicators, and 4) Documents the change management process for the client. Output the strategy as a structured JSON object.",
+      "reference_context": {
+        "product_type": "Consumer Electronics",
+        "target_audience": "General public aged 18-65",
+        "current_method": "Email only",
+        "anticipated_fatigue_level": "High",
+        "budget_constraint": "Moderate"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the mixed-mode strategy logically address the anticipated survey fatigue?",
+        "Criterion 2: Completeness — Are the protocols for partial responses and real-time monitoring fully defined?",
+        "Criterion 3: Best practices — Is the change management documentation clear and aligned with client communication standards?"
+      ],
+      "student_answer": "```json\n{\n  \"strategy_title\": \"Multi-Mode Response Enhancement Strategy\",\n  \"executive_summary\": \"This strategy addresses anticipated high non-response rates in the consumer electronics survey by integrating email, SMS, and web survey modes, establishing a robust partial response protocol, implementing real-time monitoring, and detailing a structured change management process for the client.\",\n  \"methodology\": {\n    \"mode_integration\": {\n      \"email\": \"Primary channel, utilized for initial contact and detailed questions.\",\n      \"sms\": \"Secondary channel for reminders and follow-ups, particularly effective for individuals with limited email access.\",\n      \"web\": \"Accessible survey platform for convenience and potential for higher response rates, integrated with email and SMS links.\",\n      \"channel_sequencing\": \"Email -> SMS (3 days after initial email) -> Web Survey (7 days after SMS) - Adaptive based on response status.\"\n    },\n    \"partial_response_protocol\": {\n      \"definition\": \"A documented process for identifying and handling incomplete survey responses.\",\n      \"steps\": [\n        \"Automatic identification of incomplete responses based on question thresholds.\",\n        \"Automated follow-up email to respondents requesting missing information.\",\n        \"Manual review of responses with critical missing data by trained research assistants.\",\n        \"Categorization of missing data reasons (e.g., technical issues, respondent fatigue, lack of understanding).\",\n        \"Imputation strategies for missing data where appropriate and justifiable (documented and approved).\"\n      ],\n      \"documentation\": \"Detailed protocol document including decision trees and data handling guidelines.\"\n    },\n    \"real_time_monitoring\": {\n      \"metrics\": [\n        \"Response rates by mode (email, SMS, web).\",\n        \"Completion rates by question.\",\n        \"Demographic response rates (age, gender, location).\",\n        \"Time to completion.\",\n        \"Drop-off rates at each question.\",\n        \"SMS delivery and read rates.\"\n      ],\n      \"tools\": [\n        \"Survey platform analytics (e.g., Qualtrics, SurveyMonkey).\",\n        \"Data visualization dashboards.\",\n        \"Regular (daily) reporting to the client.\"\n      ],\n      \"bias_indicators\": [\n        \"Significant differences in response rates across demographic groups.\",\n        \"High drop-off rates at specific questions.\",\n        \"Unusual patterns in response distributions.\"\n      ]\n    },\n    \"change_management\": {\n      \"client_communication\": [\n        \"Initial presentation outlining the rationale and benefits of the new strategy.\",\n        \"Weekly progress reports detailing response rates, bias indicators, and any adjustments made.\",\n        \"Dedicated point of contact for client questions and concerns.\",\n        \"Training for client staff on interpreting monitoring reports.\"\n      ],\n      \"internal_communication\": [\n        \"Training for research team on the new protocol and tools.\",\n        \"Regular team meetings to discuss monitoring results and address challenges.\",\n        \"Standardized data handling procedures.\"\n      ],\n      \"documentation\": \"Comprehensive change management plan document including communication schedule, roles and responsibilities, and training materials.\"\n    },\n    \"budget_allocation\": {\n      \"sms_platform_fees\": \"15%\",\n      \"data_visualization_tool_subscription\": \"10%\",\n      \"research_assistant_time\": \"35%\",\n      \"training_materials_development\": \"10%\",\n      \"contingency\": \"30%\"\n    }\n  },\n  \"timeline\": {\n    \"phase_1_planning\": \"2 weeks\",\n    \"phase_2_implementation\": \"4 weeks\",\n    \"phase_3_monitoring_and_evaluation\": \"Ongoing\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly addresses the four main requirements (mixed-mode, partial responses, monitoring, change management) and is well-structured. However, it falls short of a '5' due to several specific gaps identified in the additional checks: 1) It fails to mention stratified sampling to ensure representation of non-technical staff, which is crucial for consumer electronics. 2) It does not address questionnaire design quality (e.g., avoiding double-barreled questions). 3) The non-response bias mitigation is vague; it suggests 'imputation' but lacks specific protocols for weighting adjustments or detailed follow-up sequences for non-responders beyond the initial reminders. 4) There is no explicit mention of ethical considerations or data privacy protocols (e.g., GDPR/CCPA compliance) in the data handling section. These omissions prevent the solution from being industry-standard without human review (Autonomy score 3) and indicate a lack of deep domain best practices (Best Practices score 3)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Conduct research to gather information about survey topics.",
+      "task_type": "Pre-Survey Research & Validation",
+      "user_prompt": "Before launching a national survey on mental health stigma, you must validate the survey instrument. Conduct a research plan that: 1) Identifies potential sources of measurement bias in the proposed questions, 2) Designs a cognitive interview protocol to test question comprehension across diverse demographics, 3) Proposes a pilot study design to estimate non-response rates and refine the sampling frame, and 4) Creates a documentation template for the validation results to ensure reproducibility. Output the research plan as a structured JSON object.",
+      "reference_context": {
+        "survey_topic": "Mental Health Stigma",
+        "target_population": "National sample, diverse demographics",
+        "proposed_questions": [
+          "Do you feel comfortable discussing mental health with your family?",
+          "Have you ever avoided seeking help due to fear of judgment?"
+        ],
+        "constraints": {
+          "time_to_launch": "3 months",
+          "budget": "Limited"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the identified measurement biases relevant to the topic of mental health stigma?",
+        "Criterion 2: Completeness — Is the cognitive interview protocol detailed enough to capture comprehension issues?",
+        "Criterion 3: Best practices — Does the pilot study design effectively estimate non-response rates within the given constraints?"
+      ],
+      "student_answer": "```json\n{\n  \"research_plan\": {\n    \"title\": \"Mental Health Stigma Survey Instrument Validation Plan\",\n    \"objective\": \"To validate the survey instrument for measuring mental health stigma, ensuring accuracy, comprehension, and representativeness.\",\n    \"timeline\": \"3 months\",\n    \"budget\": \"Limited\",\n    \"phases\": [\n      {\n        \"phase_name\": \"Bias Identification & Question Refinement (Month 1)\",\n        \"activities\": [\n          \"**Bias Assessment:** Conduct a thorough review of proposed questions to identify potential sources of measurement bias (e.g., social desirability bias, acquiescence bias, response shift).\",\n          \"**Question Revision:** Revise questions based on bias assessment, aiming for neutral wording, clear instructions, and reduced potential for response distortion.\",\n          \"**Demographic Considerations:** Analyze potential differential item functioning (DIF) across demographic groups (age, gender, ethnicity, socioeconomic status, education level).\",\n          \"**Pilot Question Review:** Conduct a preliminary review of revised questions with a small, diverse group (n=10-15) to identify any remaining ambiguities or concerns.\"\n        ],\n        \"deliverables\": [\n          \"Revised survey questions with justification for changes.\",\n          \"Bias assessment report outlining identified biases and mitigation strategies.\"\n        ]\n      },\n      {\n        \"phase_name\": \"Cognitive Interview Protocol Development & Administration (Month 2)\",\n        \"activities\": [\n          \"**Cognitive Interview Protocol Design:** Develop a structured cognitive interview protocol, including probing techniques (e.g., ‘think aloud’, ‘show me’, ‘tell me what you’re thinking’ ) to assess participant understanding of each question.\",\n          \"**Participant Recruitment:** Recruit a diverse sample (n=60-80) representing the target population across key demographic subgroups (age, gender, ethnicity, socioeconomic status).\",\n          \"**Cognitive Interviews:** Conduct one-on-one cognitive interviews with participants, recording their verbalizations and non-verbal cues.\",\n          \"**Data Analysis:** Analyze interview transcripts to identify areas of confusion, misunderstanding, or difficulty in responding to questions.\"\n        ],\n        \"deliverables\": [\n          \"Cognitive interview protocol document.\",\n          \"Transcripts and analysis of cognitive interviews.\",\n          \"Report summarizing key findings and recommendations for question refinement.\"\n        ]\n      },\n      {\n        \"phase_name\": \"Pilot Study & Refinement (Month 3)\",\n        \"activities\": [\n          \"**Sampling Frame Refinement:** Review and refine the sampling frame based on initial pilot data to ensure adequate representation of the target population.\",\n          \"**Pilot Survey Administration:** Administer the survey to a pilot sample (n=200-300) using the refined sampling frame.\",\n          \"**Non-Response Rate Estimation:** Calculate non-response rates for different subgroups.\",\n          \"**Data Quality Assessment:** Assess data quality through checks for completeness, consistency, and plausibility.\",\n          \"**Survey Finalization:** Incorporate findings from the pilot study to finalize the survey instrument and administration procedures.\"\n        ],\n        \"deliverables\": [\n          \"Non-response rate report.\",\n          \"Data quality assessment report.\",\n          \"Finalized survey instrument.\",\n          \"Revised sampling frame.\"\n        ]\n      }\n    ],\n    \"documentation_template\": {\n      \"title\": \"Mental Health Stigma Survey Validation Report\",\n      \"sections\": [\n        \"Executive Summary\",\n        \"Introduction & Background\",\n        \"Methodology (Bias Identification, Cognitive Interview, Pilot Study)\",\n        \"Results (Bias Assessment, Cognitive Interview Findings, Non-Response Rates, Data Quality)\",\n        \"Discussion & Recommendations\",\n        \"Appendices (Cognitive Interview Protocol, Participant Recruitment Materials, Pilot Survey Instrument)\"\n      ],\n      \"format\": \"PDF\"\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission provides a solid, structured research plan that addresses all four core requirements of the task. It correctly identifies measurement biases (social desirability) and proposes a logical timeline. However, it falls short of a perfect score (5) due to specific gaps identified in the additional checks: 1) It lacks explicit mention of stratified sampling to ensure representation of non-technical staff or specific marginalized groups, relying only on general 'diverse sample' language. 2) It does not explicitly address the double-barreled nature of the provided example questions in the critique phase. 3) The non-response mitigation is vague, mentioning only 'calculation' rather than specific protocols like follow-up waves or weighting adjustments. 4) Ethical considerations (data privacy, IRB) are missing from the protocol description. These omissions prevent it from being an industry-standard, client-ready document without human review, warranting a 4 for Autonomy and slight deductions for Correctness and Best Practices."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Write training manuals to be used by survey interviewers.",
+      "task_type": "Training & Protocol Development",
+      "user_prompt": "Develop a comprehensive training manual section for a new survey project measuring public opinion on urban transit expansion. The manual must guide interviewers on how to handle sensitive questions about tax increases and how to mitigate interviewer bias when speaking with residents of different socioeconomic backgrounds. Include a specific module on 'Handling Non-Response' that details scripts for follow-up calls and criteria for terminating an interview attempt. The output must be a structured document with clear learning objectives, step-by-step procedures, and a checklist for quality assurance.",
+      "reference_context": {
+        "project_scope": "Urban Transit Expansion",
+        "target_demographics": [
+          "Low-income residents",
+          "High-income residents",
+          "Business owners",
+          "Commuters"
+        ],
+        "sensitive_topics": [
+          "Tax increases",
+          "Property value impact"
+        ],
+        "collection_mode": "In-person and telephone hybrid",
+        "quality_standards": "Must adhere to AAPOR Code of Ethics"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Bias Mitigation - Does the manual provide specific techniques to prevent interviewer bias across socioeconomic groups?",
+        "Criterion 2: Non-Response Strategy - Are the scripts and termination criteria clearly defined to minimize non-response error?",
+        "Criterion 3: Reproducibility - Is the manual structured with clear learning objectives and checklists suitable for audit trails?"
+      ],
+      "student_answer": "## Survey Training Manual: Urban Transit Expansion – Section 4: Sensitive Topics & Non-Response\n\n**Learning Objectives:**\n\n*   Understand the potential for interviewer bias when discussing sensitive topics related to tax increases and property values.\n*   Develop and implement effective techniques for addressing sensitive questions with respect and neutrality.\n*   Master strategies for managing non-response, including follow-up calls and termination criteria.\n*   Demonstrate adherence to the AAPOR Code of Ethics throughout the interview process.\n\n**Module 1: Handling Sensitive Questions – Tax Increases & Property Value**\n\n**1.1 Understanding the Sensitivity:**\n\nRecognize that questions about tax increases and property value impacts are inherently sensitive. Residents may have strong, deeply held opinions and emotional responses.  Avoid language that could be perceived as judgmental or leading.\n\n**1.2 General Principles:**\n\n*   **Neutrality:** Present all questions objectively, avoiding loaded language or framing that suggests a preferred answer.\n*   **Empathy:** Acknowledge the potential impact of these issues.  Start with phrases like, “I understand that changes to taxes and property values can be concerning…”\n*   **Active Listening:**  Allow respondents to fully express their opinions without interruption (unless clarification is needed).  Summarize their responses to demonstrate understanding.\n*   **Respect:** Maintain a polite and respectful tone throughout the interview, regardless of the respondent’s reaction.\n\n**1.3 Specific Question Handling Techniques:**\n\n*   **Tax Increases:**\n    *   **Avoid:** “Do you support raising taxes to fund transit?” (Leading)\n    *   **Instead:** “How do you feel about the possibility of increased taxes to support urban transit expansion?” or “What are your thoughts on funding sources for new transit projects?”\n    *   **If Resistance:** “I understand that tax increases can be difficult. Could you tell me more about your concerns?” (Listen actively and validate their concerns – “That’s a valid point.”)\n*   **Property Value Impact:**\n    *   **Avoid:** “Do you think transit expansion will lower property values?” (Suggestive)\n    *   **Instead:** “How do you believe transit expansion might affect property values in your neighborhood?” or “What factors do you consider when evaluating the value of a property?”\n    *   **If Negative Response:** “Many people are concerned about potential impacts on property values.  Can you elaborate on what specifically worries you?”\n\n**1.4 De-escalation Techniques:**\n\n*   **Acknowledge Emotion:** “I can see you’re feeling strongly about this.”\n*   **Offer a Pause:** “Let’s take a moment to consider that question.”\n*   **Reframe the Question:** “Perhaps we could look at the potential benefits of transit expansion alongside the potential concerns.”\n\n**Module 2: Mitigating Interviewer Bias – Socioeconomic Differences**\n\n**2.1 Awareness of Bias:**\n\nRecognize that personal beliefs and socioeconomic background can unconsciously influence interviewer behavior and interpretation of responses.\n\n**2.2 Tailoring Communication:**\n\n*   **Low-Income Residents:** Use simpler language, avoid jargon, and demonstrate understanding of their daily challenges. Focus on the benefits of transit for accessibility and affordability.\n*   **High-Income Residents:**  Acknowledge their potential concerns about property values and the impact on investment returns. Frame transit expansion as a benefit to the community as a whole.\n*   **Business Owners:**  Focus on the potential impact of transit on business access, customer traffic, and employee commuting.\n\n**2.3 Observation & Self-Reflection:**\n\n*   Maintain a neutral demeanor and avoid expressing personal opinions.\n*   Be mindful of your tone of voice and body language.\n*   After each interview, briefly reflect on your interactions and identify any potential biases that may have influenced your approach.\n\n**Module 3: Handling Non-Response**\n\n**3.1 Follow-Up Call Scripts:**\n\n*   **Initial Follow-Up (24-48 hours):** “Hello, this is [Interviewer Name] from [Survey Organization]. I’m calling to follow up on our previous survey attempt. We’re interested in gathering your opinion on urban transit expansion. Would you be available for a brief interview today or tomorrow?”\n*   **Second Follow-Up (3-5 days):** “Hello, I’m calling again regarding our survey on urban transit. We understand you may be busy. Is there a better time to reach you, or would you prefer we try another day?”\n*   **Third Follow-Up (7-10 days):** “Hello, I’m following up one last time regarding our survey. We appreciate your time and would value your input.  If you’re no longer interested in participating, we understand.”\n\n**3.2 Termination Criteria:**\n\n*   **Respondent Refusal:**  Clearly state, “Thank you for your time. We appreciate you considering our survey.”  End the call politely.\n*   **Respondent Unreachable:**  Document the attempted contact dates and times.\n*   **Respondent Provides Reason for Non-Response:**  Document the reason (e.g., “Too busy,” “Not interested”).\n*   **Respondent Expresses Distress:**  Immediately cease the interview and offer to reschedule for a later time, or provide contact information for relevant support services.  Document the reason for termination.\n*   **Maximum Attempts:**  Limit follow-up calls to a maximum of three attempts.\n\n**4.1 Non-Response Documentation:**\n\n*   Record the date, time, and method of each attempted contact.\n*   Document the reason for non-response (if provided).\n*   Note any unusual circumstances or observations.\n\n**Quality Assurance Checklist:**\n\n*   [ ] Interviewer adherence to script guidelines.\n*   [ ] Neutral and respectful tone of voice.\n*   [ ] Active listening and empathetic responses.\n*   [ ] Accurate documentation of all interview interactions.\n*   [ ] Proper handling of sensitive topics.\n*   [ ] Adherence to AAPOR Code of Ethics (informed consent, confidentiality, anonymity).\n*   [ ] Completion of non-response documentation.\n*   [ ] Regular supervisor observation and feedback.\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        4,
+        4,
+        4,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "The submission is well-structured and professionally written, effectively addressing the core requirements of handling sensitive topics, mitigating bias, and defining non-response procedures. It correctly cites the AAPOR Code of Ethics and provides clear scripts. However, it falls short of 'Exceptional' (5) and 'Good' (4) in specific areas: 1) It lacks the specific 'stratified sampling' or 'weighting adjustments' mentioned in the additional checks for non-response bias mitigation, offering only procedural follow-up. 2) The mitigation of interviewer bias is somewhat generic and does not provide concrete, scenario-based training on how to handle specific socioeconomic interactions beyond general tone advice. 3) While it mentions ethics, it lacks specific protocols for data privacy (e.g., encryption, data storage) which is a key part of modern survey standards. 4) The termination criteria for 'distress' are slightly vague regarding the specific support services to offer. These gaps prevent a perfect score and limit the autonomy of the document for immediate client delivery without minor substantive edits."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Write proposals to win new projects.",
+      "task_type": "Proposal & Methodology Design",
+      "user_prompt": "Draft a technical proposal section for a government grant application to study the impact of remote work on rural education. The proposal must detail a sampling strategy that addresses the high risk of non-response in rural areas and potential selection bias against households without reliable internet. Include a budget justification for a mixed-mode data collection approach (mail, phone, and web) and a specific plan for weighting adjustments to correct for known demographic disparities. The output must be a formal proposal document with an executive summary, methodology section, and risk mitigation plan.",
+      "reference_context": {
+        "grant_type": "Federal Education Research Grant",
+        "target_population": "Rural households with K-12 students",
+        "known_challenges": [
+          "Low internet penetration",
+          "Geographic isolation",
+          "Historical distrust of government surveys"
+        ],
+        "required_deliverables": [
+          "Representative dataset",
+          "Policy brief"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Sampling Rigor - Does the sampling strategy mathematically address the specific challenges of rural non-response?",
+        "Criterion 2: Bias Correction - Are the weighting adjustment plans clearly linked to the identified demographic disparities?",
+        "Criterion 3: Feasibility - Is the mixed-mode approach justified and budgeted realistically for the target population?"
+      ],
+      "student_answer": "## Technical Proposal: Impact of Remote Work on Rural Education\n\n**Grant Application: Federal Education Research Grant**\n\n**1. Executive Summary**\n\nThis research project will investigate the impact of the shift to remote work on K-12 education within rural communities. Recognizing the unique challenges of conducting research in these areas – specifically low internet access, geographic isolation, and historical skepticism – this proposal outlines a robust mixed-mode data collection strategy designed to maximize response rates and minimize selection bias. The methodology employs a stratified, multi-stage cluster sampling approach combined with mail, phone, and web surveys.  Weighting adjustments will be implemented to account for demographic disparities. The anticipated outcome is a representative dataset and a policy brief offering actionable recommendations for supporting rural students in the evolving landscape of work and education.\n\n**2. Methodology**\n\n**2.1. Research Design:** This study will employ a cross-sectional survey design to assess the experiences and perceptions of rural households with K-12 students regarding the impact of remote work on their children’s education.\n\n**2.2. Sampling Strategy:**  Due to the challenges of reaching rural populations, a multi-stage cluster sampling approach will be utilized.\n\n*   **Stage 1: Stratification:** The United States will be stratified into rural counties based on the USDA’s Rural-Urban Continuum Codes (RUCC), categorizing counties into levels 1-6, with Level 1 representing the most rural.  Within each RUCC level, counties will be further stratified by socioeconomic status (SES) based on median household income (using data from the US Census Bureau’s American Community Survey).  This stratification will ensure representation across a range of economic circumstances.\n*   **Stage 2: Cluster Selection:** Within each stratum, counties will be randomly selected.  Within each selected county, school districts will be randomly selected.\n*   **Stage 3: Household Selection:**  Within each selected school district, a random sample of households with K-12 students will be drawn.  The sample size will be determined through power analysis to ensure sufficient statistical power to detect meaningful effects, considering anticipated non-response rates.  Initial sample size is projected at 2,000 households.\n\n**2.3. Data Collection Methods:** A mixed-mode data collection strategy will be employed to address non-response and maximize participation:\n\n*   **Mail Survey (40%):**  A comprehensive mail survey will be sent to the initial sample of households.  This method is crucial for reaching households without internet access and leverages established survey response rates in rural areas.  A prepaid return envelope will be included.\n*   **Phone Survey (30%):**  Phone calls will be made to households that do not respond to the mail survey.  This will target households with limited internet access and those who may prefer phone communication.\n*   **Web Survey (30%):**  A secure, user-friendly web survey will be hosted on a reliable platform (e.g., Qualtrics).  A unique URL will be provided to each participant, and assistance will be offered to those needing technical support.  The web survey will be accessible on mobile devices.\n\n**2.4. Response Rate Mitigation:**  Strategies to mitigate low response rates include:\n\n*   **Multiple Contact Attempts:**  Phone and mail surveys will include multiple follow-up attempts.\n*   **Incentives:**  Small, culturally appropriate incentives (e.g., gift cards) will be offered to encourage participation.\n*   **Community Partnerships:**  Collaboration with local schools, community organizations, and faith-based groups will facilitate recruitment and build trust.\n\n**2.5. Weighting Adjustments:**  To address potential selection bias and ensure representativeness, the data will be weighted using propensity score matching and post-stratification.  Weights will be applied based on:\n\n*   **RUCC Level:**  Adjusting for the concentration of rural households at different RUCC levels.\n*   **SES:**  Adjusting for the distribution of households across different socioeconomic strata.\n*   **Race/Ethnicity:**  Adjusting for known demographic disparities in rural areas.\n*   **Household Composition:**  Adjusting for the proportion of households with different family structures (e.g., single-parent households, households with children with disabilities).  Data will be sourced from the American Community Survey.\n\n**3. Risk Mitigation Plan**\n\n| Risk                      | Mitigation Strategy                                                              | Timeline      | Responsible Party |\n| ------------------------- | -------------------------------------------------------------------------------- | ------------- | ----------------- |\n| Low Mail Response Rate     | Multiple mailings, prepaid return envelopes, community partnerships.                | Ongoing        | Research Team     |\n| Difficulty Contacting via Phone | Utilize a call center with experience in rural outreach, flexible scheduling.       | Ongoing        | Research Team     |\n| Technical Issues with Web Survey | Thorough testing, technical support hotline, alternative survey methods.           | Pre-launch     | IT Support        |\n| Non-Response Bias         | Rigorous weighting adjustments, sensitivity analysis to assess bias impact.        | Post-analysis   | Statistical Analyst|\n| Data Security Concerns    | Secure data storage, anonymization protocols, compliance with HIPAA regulations. | Ongoing        | IT Support        |\n| Geographic Challenges     | Local research assistants for recruitment and data collection in remote areas.     | Ongoing        | Field Team        |\n\n\n**4. Budget Justification (Estimated Total: $250,000)**\n\n| Item                      | Cost (USD) | Justification                                                              |\n| ------------------------- | ---------- | ------------------------------------------------------------------------- |\n| Personnel (Research Team) | $120,000   | Salaries for Principal Investigator, Research Assistants, Statistician.      |\n| Data Collection (Mail)    | $40,000    | Printing, postage, envelope costs.                                         |\n| Data Collection (Phone)   | $60,000    | Call center fees, personnel costs.                                          |\n| Data Collection (Web)     | $20,000    | Web survey platform fees, technical support.                               |\n| Weighting & Statistical Analysis | $30,000    | Statistical software licenses, consultant fees for weighting adjustments. |\n| Community Outreach        | $10,000    | Incentives, partnership development.                                       |\n| **Total**                 | **$250,000** |                                                                           |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission is a strong, professional draft that correctly addresses the core task requirements: it outlines a mixed-mode strategy, proposes a stratified cluster sampling design, and includes a budget and risk plan. However, it falls short of a perfect 5 due to specific gaps. First, the weighting section mentions 'propensity score matching' which is technically a method for handling selection bias in observational studies or causal inference, but for survey weighting to correct for non-response, 'raking' (iterative proportional fitting) or 'calibration weighting' is the standard industry term; this suggests a slight conceptual imprecision. Second, the sampling strategy focuses heavily on geographic and economic stratification but lacks specific detail on how to ensure representation of non-technical staff or households with specific digital literacy barriers beyond general 'technical support.' Third, the budget justification is generic and lacks the granular line-item detail (e.g., cost per interview, specific software licenses) expected in a federal grant application. Finally, while data security is mentioned, specific ethical protocols (e.g., IRB approval process, informed consent language specifics) are not detailed. These issues prevent it from being 'exceptional' and 'industry-standard' without revision."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Collaborate with other researchers in the planning, implementation, and evaluation of surveys.",
+      "task_type": "Data Quality & Evaluation",
+      "user_prompt": "Act as the lead data quality officer for a multi-institutional study on healthcare access. You have received preliminary data showing a 40% non-response rate among patients with chronic conditions. Collaborate with the statistical team to design a post-stratification weighting plan and a follow-up protocol to reduce non-response bias. Your output must be a technical report that includes: 1) An analysis of the potential bias in the current sample, 2) A proposed weighting algorithm using auxiliary census data, and 3) A revised implementation timeline for a targeted follow-up wave. Ensure the report documents all assumptions for reproducibility.",
+      "reference_context": {
+        "study_focus": "Healthcare access for chronic conditions",
+        "current_sample_size": 2500,
+        "non_response_rate": 0.4,
+        "auxiliary_data_available": [
+          "Census tract demographics",
+          "Hospital admission records",
+          "Insurance enrollment data"
+        ],
+        "stakeholders": [
+          "Statisticians",
+          "Clinicians",
+          "Policy makers"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Bias Analysis - Is the analysis of the 40% non-response rate specific to the chronic condition demographic?",
+        "Criterion 2: Weighting Strategy - Does the proposed algorithm logically use the available auxiliary data to correct bias?",
+        "Criterion 3: Documentation - Are all assumptions and methodological steps documented for an audit trail?"
+      ],
+      "student_answer": "**Technical Report: Addressing Non-Response Bias in Healthcare Access Study**\n\n**Date:** October 26, 2023\n\n**To:** Statistical Team, Stakeholders\n\n**From:** Lead Data Quality Officer\n\n**Subject:** Post-Stratification Weighting and Follow-Up Protocol for Chronic Condition Healthcare Access Study\n\n**1. Analysis of Potential Bias**\n\nThe current sample size of 2500, with a 40% non-response rate, introduces significant potential for bias. Non-response is unlikely to be random; individuals with chronic conditions who choose not to participate are systematically different from those who do. Specifically, we hypothesize that non-responders are more likely to experience:\n\n*   **Higher levels of health disparities:** Individuals facing significant barriers to care may be less motivated or able to participate.\n*   **Greater dissatisfaction with current care:** Those with unmet needs may be less inclined to engage in research.\n*   **Different demographic characteristics:** Socioeconomic status, race/ethnicity, and geographic location may be overrepresented among non-responders.\n\nWithout addressing this bias, our estimates of healthcare access will be skewed, potentially misrepresenting the experiences of the broader chronic condition population. The magnitude of the bias is difficult to quantify precisely without detailed information on non-response patterns, but it is conservatively estimated to be substantial, impacting the generalizability of our findings.\n\n**2. Proposed Weighting Algorithm**\n\nWe propose a post-stratification weighting scheme using the available auxiliary census data. The algorithm will involve the following steps:\n\n*   **Define Strata:** We will create strata based on key demographic variables derived from the auxiliary data:\n    *   **Census Tract:** Using 5-year Census tract data to capture geographic variation.\n    *   **Race/Ethnicity:** Categorized based on the 2020 Census (White, Black or African American, Hispanic or Latino, Asian, Other).\n    *   **Insurance Status:** Categorized as Private, Medicare, Medicaid, Uninsured.\n    *   **Age Group:** Categorized into 18-44, 45-64, 65+.\n*   **Weight Calculation:** For each respondent, we will calculate a weight based on the following formula:\n\n    `Weight = (Stratum Population / Stratum Sample Size) / Non-Response Rate`\n\n    Where:\n    *   `Stratum Population` is the population size for the stratum from the auxiliary data.\n    *   `Stratum Sample Size` is the number of respondents from the current sample belonging to that stratum.\n    *   `Non-Response Rate` is the overall non-response rate (40% or 0.4).\n\n*   **Weight Constraints:** Weights will be constrained to ensure positivity and prevent instability.  Maximum weights will be capped at 10.\n\n*   **Software Implementation:**  The weighting will be implemented using R with the `svydesign` package.\n\n**Assumptions:**\n\n*   The auxiliary census data accurately reflects the population of interest.\n*   The stratification variables are strong predictors of non-response.\n*   The auxiliary data is current and representative of the target population.\n\n**3. Revised Implementation Timeline for Targeted Follow-Up Wave**\n\nTo mitigate non-response bias, we recommend a targeted follow-up wave.\n\n*   **Phase 1: Identification of Non-Responders (Week 1-2):**  Identify all individuals who did not respond to the initial survey.\n*   **Phase 2: Targeted Outreach (Week 3-6):** Develop and implement a multi-channel outreach strategy:\n    *   **Phone Calls:** Prioritize non-responders identified as most likely to be underrepresented (e.g., those residing in underserved census tracts).\n    *   **Mail Reminders:** Send personalized reminders with clear instructions.\n    *   **Email Reminders:** Utilize email for individuals with known contact information.\n    *   **Clinician Referral:**  Train clinicians to inquire about study participation during routine patient visits.\n*   **Phase 3: Second Wave Survey (Week 7-10):** Administer a second, shorter survey to the identified non-responders.  The second survey will focus on the most critical missing data points.\n*   **Phase 4: Weighting and Analysis (Week 11-12):** Apply the post-stratification weighting algorithm to the combined dataset (initial and follow-up waves).\n\n**Timeline Summary:**\n\n| Phase                  | Duration | Activities                               |\n| ---------------------- | -------- | ---------------------------------------- |\n| Identification          | 2 weeks  | Identify non-responders                 |\n| Targeted Outreach       | 4 weeks  | Phone, mail, email, clinician referral |\n| Second Wave Survey      | 4 weeks  | Administer second survey                |\n| Weighting & Analysis    | 2 weeks  | Apply weighting, conduct analysis       |\n\n**Total Estimated Time: 12 weeks**\n\n**Conclusion:**\n\nImplementing this post-stratification weighting scheme and targeted follow-up wave will significantly reduce the potential for bias in our healthcare access study.  Close collaboration between the statistical team and stakeholders is crucial for successful implementation and data quality assurance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task but contains a critical methodological flaw in the weighting algorithm. The formula provided (Weight = Population / Sample / Non-Response Rate) is incorrect for post-stratification; it double-counts the non-response rate and fails to account for the specific non-response rate within each stratum, which is essential for bias reduction. Additionally, the report lacks specific ethical considerations regarding data privacy, a key requirement for healthcare studies. While the structure is clear and the follow-up timeline is logical, the statistical inaccuracy and missing ethical depth prevent a higher score in Correctness, Completeness, Best Practices, and Domain Accuracy. The Autonomy score is limited because a statistician would need to correct the weighting formula before the report could be used."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Hire and train recruiters and data collectors.",
+      "task_type": "Recruitment & Implementation Strategy",
+      "user_prompt": "Design a recruitment and training plan for a national survey on voting behavior. The plan must address the challenge of recruiting participants from underrepresented minority groups who are often under-sampled. Include a strategy for hiring recruiters with specific cultural competencies, a training curriculum on avoiding leading questions and handling refusal, and a monitoring system to track recruitment quotas and non-response rates by demographic. The output must be a detailed implementation plan including job descriptions, training modules, and a real-time dashboard specification for tracking bias indicators.",
+      "reference_context": {
+        "survey_topic": "National Voting Behavior",
+        "critical_demographics": [
+          "Minority communities",
+          "First-time voters",
+          "Non-English speakers"
+        ],
+        "recruitment_goals": "Achieve 95% representation of target demographics",
+        "risk_factors": [
+          "Recruiter bias",
+          "Language barriers",
+          "Trust issues"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Recruitment Strategy - Does the plan specifically address the under-sampling of minority groups through targeted hiring?",
+        "Criterion 2: Training Content - Does the curriculum explicitly cover bias mitigation and cultural competency?",
+        "Criterion 3: Monitoring - Is the dashboard specification designed to detect and correct non-response bias in real-time?"
+      ],
+      "student_answer": "## National Voting Behavior Survey: Recruitment & Training Plan\n\n**I. Executive Summary:**\n\nThis plan outlines a comprehensive strategy for recruiting and training survey respondents, with a specific focus on achieving high representation of critical demographics, particularly minority communities, first-time voters, and non-English speakers. It addresses potential biases, language barriers, and trust issues through targeted recruitment methods, culturally competent recruiters, and a robust monitoring system.\n\n**II. Recruitment Strategy:**\n\n* **Phase 1: Targeted Outreach (Months 1-3)**\n    * **Community Partnerships:** Establish partnerships with trusted community organizations – faith-based groups, civil rights organizations, local advocacy groups, and historically black colleges and universities (HBCUs) – to disseminate recruitment materials and facilitate recruitment.\n    * **Digital Advertising:** Utilize targeted digital advertising campaigns on platforms frequented by the target demographics (e.g., Facebook, Instagram, YouTube, Spanish-language websites and apps).  Focus on culturally relevant messaging and visuals.\n    * **Print Media:**  Distribute flyers and posters in community centers, libraries, and other locations serving the target demographics.  Translate materials into relevant languages.\n    * **Phone Banking:** Employ a multi-lingual phone banking operation, prioritizing outreach to areas with high concentrations of the target demographics.\n    * **Incentives:** Offer culturally appropriate incentives (e.g., gift cards to local businesses, transportation vouchers, community event tickets) to encourage participation.\n* **Phase 2: Ongoing Recruitment (Months 4-12)**\n    * **Referral Program:** Implement a referral program incentivizing current participants to recruit others from their networks.\n    * **Social Media Engagement:** Maintain an active social media presence, sharing information about the survey and highlighting participant stories.\n    * **Local Events:** Participate in community events to raise awareness and recruit participants.\n\n**III. Recruiter Hiring & Training:**\n\n* **Job Description: Community Engagement Recruiter**\n    * **Responsibilities:**  Direct outreach to target communities, building trust, scheduling interviews, addressing community concerns, ensuring accurate data collection.\n    * **Qualifications:**  Bachelor’s degree preferred; experience working with diverse communities; strong interpersonal and communication skills; fluency in relevant languages (Spanish, African languages, etc.); demonstrated cultural sensitivity.\n* **Recruiter Screening:** Implement a rigorous screening process including:\n    * **Behavioral Interviews:** Assess cultural competency, empathy, and ability to build rapport.\n    * **Language Proficiency Assessment:** Evaluate fluency in relevant languages.\n    * **Background Checks:** Verify trustworthiness and integrity.\n* **Training Curriculum (40 hours):**\n    * **Module 1: Cultural Competency (8 hours):**  Understanding cultural differences, implicit bias, microaggressions, and strategies for building trust with diverse populations.  Case studies and role-playing exercises.\n    * **Module 2: Survey Methodology & Ethics (8 hours):**  Explanation of the survey’s purpose, data privacy, informed consent, and ethical considerations.\n    * **Module 3: Avoiding Leading Questions & Bias (8 hours):**  Techniques for formulating neutral questions, recognizing and mitigating bias in survey design and administration, and documenting observations.  Practice scenarios.\n    * **Module 4: Handling Refusals & Difficult Conversations (8 hours):**  Strategies for respectfully addressing refusals, handling sensitive topics, and de-escalating challenging situations. Role-playing exercises.\n    * **Module 5: Data Security & Reporting (8 hours):**  Protocols for data security, confidentiality, and accurate reporting.\n\n**IV. Monitoring & Evaluation System:**\n\n* **Real-Time Dashboard Specification:**\n    * **Data Fields:**\n        * **Demographic Variables:** Race/Ethnicity, Age, Gender, Education Level, Language Spoken at Home, Voter Registration Status, First-Time Voter Status.\n        * **Recruitment Metrics:** Number of contacts made per recruiter, number of interviews scheduled, number of completed interviews, refusal rate by demographic.\n        * **Non-Response Rate:**  Non-response rate by demographic, broken down by geographic area.\n        * **Bias Indicators:**\n            * **Recruiter Performance:**  Average number of contacts per recruiter, refusal rate per recruiter, feedback from community partners.\n            * **Question Response Rates:**  Significant deviations in response rates across demographic groups for specific questions.\n            * **Missing Data Patterns:**  Clusters of missing data for specific demographic groups.\n    * **Visualization:**  Interactive charts and graphs displaying recruitment progress, non-response rates, and bias indicators.  Color-coded alerts for areas of concern.\n    * **Reporting Frequency:**  Daily monitoring of key metrics; weekly reports summarizing recruitment progress and identifying potential biases.\n* **Regular Audits:** Conduct regular audits of recruitment materials and procedures to identify and address potential biases.\n* **Community Feedback:** Establish a mechanism for ongoing feedback from community partners and participants.\n\n**V. Budget:** (Detailed budget breakdown would be included here – covering recruitment materials, incentives, recruiter salaries, training costs, dashboard development, and audit fees.)\n\n**VI. Timeline:** (Detailed timeline outlining key milestones and deadlines would be included here.)",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission provides a solid structural framework for recruitment and training, correctly identifying key demographics and outlining a 40-hour curriculum. However, it fails to meet the 'Exceptional' (5) or even 'Good' (4) standard for Completeness and Correctness due to significant omissions. Specifically, it lacks the requested detailed job descriptions (only providing a summary), does not include the specific real-time dashboard specification with technical fields, and critically fails to address the 'Additional Checks' regarding stratified sampling, double-barreled question avoidance, and specific non-response bias mitigation protocols (like weighting adjustments or follow-up sequences). The plan remains at a high-level conceptual stage rather than a detailed implementation plan, requiring substantial rework to be client-ready."
+    }
+  ]
+}

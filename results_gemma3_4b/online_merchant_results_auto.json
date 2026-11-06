@@ -1,0 +1,1617 @@
+{
+  "meta": {
+    "job_title": "Online Merchants",
+    "job_id": "online_merchant",
+    "onet_code": "13-1199.06",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 34,
+    "evaluated_tasks": 34,
+    "batches": 6,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.19,
+      "dimensions": {
+        "Correctness": 2.97,
+        "Completeness": 3.06,
+        "Best Practices": 2.91,
+        "Domain Accuracy": 3.26,
+        "Clarity": 4.06,
+        "Autonomy": 2.88
+      },
+      "evaluated_tasks": 34,
+      "scale_max": 5
+    },
+    "total_time_seconds": 961.17
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Determine and set product prices.",
+      "task_type": "Inventory Sourcing & Pricing",
+      "user_prompt": "Analyze the provided CSV of 50 potential inventory items including wholesale cost, estimated shipping, and competitor pricing. Calculate a final retail price for each item that ensures a 25% net profit margin after a 15% platform transaction fee and a fixed $4.50 shipping cost. Output the result as a JSON list containing the item ID, original cost, calculated retail price, and projected margin percentage.",
+      "reference_context": {
+        "items": [
+          {
+            "id": "SKU-001",
+            "wholesale_cost": 12.5,
+            "competitor_avg": 24.0
+          },
+          {
+            "id": "SKU-002",
+            "wholesale_cost": 45.0,
+            "competitor_avg": 89.99
+          }
+        ],
+        "formula": "Retail Price = (Wholesale Cost + Shipping Cost) / (1 - (Platform Fee % + Target Margin %))"
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the mathematical calculations for margin and fees accurate?",
+        "Completeness: Did the model process all 50 items and include all required fields in the output?",
+        "Best Practices: Is the pricing strategy competitive yet profitable, and does the JSON output strictly follow the schema?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"id\": \"SKU-001\",\n    \"original_cost\": 12.5,\n    \"retail_price\": 43.75,\n    \"margin_percentage\": 36.25\n  },\n  {\n    \"id\": \"SKU-002\",\n    \"original_cost\": 45.0,\n    \"retail_price\": 137.50,\n    \"margin_percentage\": 31.25\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        5,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails fundamentally on all substantive dimensions. First, the student ignored the instruction to analyze 50 items, providing only 2. Second, the mathematical application is incorrect: the provided formula requires dividing by (1 - (0.15 + 0.25)) = 0.6, but the student appears to have used a simple markup or incorrect denominator, resulting in wrong retail prices and margin percentages. Third, the student failed to incorporate the fixed $4.50 shipping cost into the cost base as required by the prompt's context. Fourth, the output lacks any analysis of competitor pricing, which is a key part of the task context. While the JSON syntax is valid (Clarity=5), the content is factually wrong and incomplete, making it unusable for a client."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Correspond with online customers via electronic mail, telephone, or other electronic messaging to address questions or complaints about products, policies, or shipping methods.",
+      "task_type": "Customer Service & Policy Enforcement",
+      "user_prompt": "Draft a professional email response to a customer who is requesting a return for a damaged item 12 days after purchase. The return policy states returns are accepted within 14 days but only for unopened items unless the product is defective. The customer claims the item arrived damaged but has not provided photos. The response must acknowledge their concern, explain the policy clearly, request the photos to validate the claim, and maintain a helpful, non-confrontational tone.",
+      "reference_context": {
+        "policy": "Returns accepted within 14 days. Unopened items eligible for full refund. Defective items eligible for refund/replacement with photo evidence.",
+        "customer_history": "First-time buyer, high lifetime value.",
+        "tone_guidelines": "Empathetic, professional, solution-oriented, no jargon."
+      },
+      "evaluation_criteria": [
+        "Tone Adherence: Does the email maintain a professional and empathetic tone without sounding robotic or dismissive?",
+        "Policy Accuracy: Is the 14-day window and photo requirement for defective items clearly communicated?",
+        "Actionability: Does the email clearly instruct the customer on the next steps (sending photos) to resolve the issue?"
+      ],
+      "student_answer": "Subject: Regarding Your Recent Order - [Order Number]\n\nDear [Customer Name],\n\nThank you for reaching out to us about the damage to your recent order ([Order Number]). We sincerely apologize that your item arrived in less than perfect condition – we understand how frustrating that can be.\n\nOur return policy states that we accept returns within 14 days for unopened items. However, we do offer refunds or replacements for defective items, and we’re happy to investigate this further. To help us process your request efficiently, could you please reply to this email with photos of the damaged item and its packaging? This will allow us to assess the situation and determine the best course of action.\n\nWe value you as a first-time customer and appreciate your understanding. We look forward to hearing from you soon.\n\nSincerely,\n\nThe [Your Store Name] Team",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly addresses the core task: acknowledging the damage, explaining the policy distinction between unopened and defective items, and requesting photos. However, it scores a 4 on Correctness and Completeness because it fails to explicitly confirm that the 12-day window is within the 14-day policy limit, which is a key reassurance for the customer. It also lacks a specific timeline for the next steps (e.g., 'we will process the replacement within 24 hours of receiving photos'), which is a best practice for high-value customer retention. The tone is empathetic and professional, and the domain accuracy regarding the policy logic is sound. The output is usable but requires minor additions to be truly exceptional."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Create, manage, or automate orders or invoices, using order management or invoicing software.",
+      "task_type": "Order Management & Automation",
+      "user_prompt": "You are managing a batch of 20 orders that have been flagged for 'Address Verification Required'. Review the provided order data and identify which orders can be automatically fulfilled based on valid address formats and which require manual intervention. For the orders requiring intervention, generate a standardized internal alert message listing the Order ID, the specific address error (e.g., missing ZIP, invalid street), and the customer's preferred contact method.",
+      "reference_context": {
+        "orders": [
+          {
+            "order_id": "ORD-101",
+            "address": "123 Main St, New York, NY 10001",
+            "status": "Valid"
+          },
+          {
+            "order_id": "ORD-102",
+            "address": "456 Oak Ave",
+            "status": "Invalid"
+          },
+          {
+            "order_id": "ORD-103",
+            "address": "789 Pine Rd, Chicago, IL 60601",
+            "status": "Valid"
+          }
+        ],
+        "validation_rules": "Must include Street, City, State, and 5-digit ZIP code."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are all orders correctly categorized as Valid or Invalid based on the rules?",
+        "Clarity: Is the internal alert message concise and does it highlight the specific missing data point?",
+        "Completeness: Are all 20 orders processed and no valid orders incorrectly flagged for manual review?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"order_id\": \"ORD-101\",\n    \"alert_message\": \"Order ID: ORD-101. Address is valid and meets all requirements.\"\n  },\n  {\n    \"order_id\": \"ORD-102\",\n    \"alert_message\": \"Order ID: ORD-102. Address is invalid. Missing ZIP code.\"\n  },\n  {\n    \"order_id\": \"ORD-103\",\n    \"alert_message\": \"Order ID: ORD-103. Address is valid and meets all requirements.\"\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. The prompt explicitly asks to identify orders requiring manual intervention and generate alerts for those specific orders, while the student submitted alerts for valid orders and omitted the required 'customer's preferred contact method' for the invalid order. Furthermore, the submission ignores the context of 20 orders, processing only 3. The 'Additional Checks' section regarding platform fees and profit margins is completely irrelevant to the provided task and data, indicating a hallucination or failure to read the prompt constraints. The output is not a valid response to the specific operational task described."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Create, manage, or automate orders or invoices, using order management or invoicing software.",
+      "task_type": "Product Listing Optimization",
+      "user_prompt": "Write a compelling product description for a new 'Eco-Friendly Bamboo Toothbrush' listing. The description must include 5 specific SEO keywords (e.g., 'biodegradable', 'sustainable', 'zero waste') and adhere to platform image guidelines by mentioning that the product image must show the item on a white background with no props. The description should be 150-200 words, highlighting the BPA-free bristles and the wooden handle.",
+      "reference_context": {
+        "product_specs": "Bamboo handle, BPA-free nylon bristles, biodegradable packaging.",
+        "seo_keywords": [
+          "biodegradable",
+          "sustainable",
+          "zero waste",
+          "eco-friendly",
+          "bamboo toothbrush"
+        ],
+        "image_guidelines": "White background, no props, product must fill 80% of the frame."
+      },
+      "evaluation_criteria": [
+        "SEO Integration: Are all 5 required keywords naturally integrated into the text?",
+        "Compliance: Does the text explicitly reference the image guidelines for the listing?",
+        "Content Quality: Is the description persuasive, accurate, and within the 150-200 word count?"
+      ],
+      "student_answer": "**Embrace a Greener Smile with Our Eco-Friendly Bamboo Toothbrush**\n\nUpgrade your oral hygiene routine with our consciously crafted **bamboo toothbrush** – the perfect choice for a healthier planet and a brighter smile! Made with a naturally antibacterial **bamboo** handle, this toothbrush offers a durable and sustainable alternative to traditional plastic.  We’ve paired the beautiful bamboo with soft, **BPA-free** nylon bristles that gently clean your teeth and gums without irritation.\n\nChoosing our toothbrush is a step towards a **zero waste** lifestyle.  The packaging is completely **biodegradable**, minimizing your environmental impact.  Feel good about reducing plastic consumption and contributing to a more **sustainable** future. \n\n**Product Image Guidelines:** Please note that the product image must be displayed on a clean white background with no props. The toothbrush should fill approximately 80% of the frame, showcasing its natural beauty and quality.  Order yours today and experience the difference!",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly addresses the core task of writing a product description, including the required word count range, specific product features (BPA-free bristles, wooden handle), and the mandatory image guidelines. All five SEO keywords are integrated naturally. However, the submission scores a 4 on Correctness and Completeness because it fails to include the specific keyword 'eco-friendly' as a standalone term in the body text, relying instead on the phrase 'Eco-Friendly' in the title which may not count as a distinct keyword instance depending on strict parsing. Additionally, the 'Best Practices' score is 4 because the image guidelines are written as an instruction to the designer rather than being seamlessly integrated or clearly distinguished as a separate section, which is a minor professional judgment gap. The domain accuracy is perfect, and the clarity is high. Autonomy is 4 because the output is usable but requires a minor check to ensure the keyword count is strictly met if the title is excluded from the count."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Receive and process payments from customers, using electronic transaction services.",
+      "task_type": "Payment Processing & Reconciliation",
+      "user_prompt": "A customer has attempted to pay for an order totaling $150.00 using a credit card. The transaction was declined by the bank. The customer has contacted support via chat. Draft a response that explains the decline without revealing specific bank error codes, offers two alternative payment methods (PayPal and Apple Pay), and provides a secure link to retry the transaction. Ensure the response adheres to PCI-DSS compliance by never asking for the full card number in the chat.",
+      "reference_context": {
+        "order_total": 150.0,
+        "decline_reason": "Bank declined (generic)",
+        "allowed_methods": [
+          "PayPal",
+          "Apple Pay"
+        ],
+        "compliance_rule": "Do not request, store, or display full credit card numbers in chat logs."
+      },
+      "evaluation_criteria": [
+        "Security: Does the response strictly avoid asking for sensitive card data?",
+        "Clarity: Is the explanation of the decline clear and non-technical?",
+        "Solution: Are the alternative payment methods clearly presented with the retry link?"
+      ],
+      "student_answer": "We’re sorry to see your payment was declined. Our bank has flagged the transaction for security reasons.\n\nTo ensure you can complete your order quickly, we’d like to offer two convenient alternatives:\n\n*   **PayPal:** You can easily pay with your PayPal account.\n*   **Apple Pay:** If you have an Apple device, Apple Pay is a secure and fast way to checkout.\n\nYou can retry your payment here: [https://your-secure-checkout-link.com](https://your-secure-checkout-link.com)\n\nThank you for your understanding.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task of explaining the decline and offering alternatives without violating PCI-DSS. However, it scores a 3 on Correctness and Completeness because it fails to explicitly mention the specific order total ($150.00) or the customer's name, which are standard for professional support. The explanation 'flagged for security reasons' is slightly vague compared to a more neutral 'bank declined' phrasing. The link is a placeholder, which is acceptable for a draft but reduces the 'Best Practices' score as it lacks a clear call to action or reassurance about the security of the link. The Autonomy score is 3 because a real customer would need the specific order details and a functional link to use this response immediately."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Purchase new or used items from online or physical sources for resale via retail or auction Web site.",
+      "task_type": "Sourcing & Vendor Evaluation",
+      "user_prompt": "Evaluate three potential suppliers for a new line of 'Organic Cotton T-Shirts'. Supplier A offers a unit cost of $8.00 with a 2-week lead time and requires a 50% deposit. Supplier B offers $7.50 with a 4-week lead time and no deposit. Supplier C offers $9.00 with a 1-week lead time and requires a 100% deposit. Calculate the total landed cost per unit for each (assuming $2.00 shipping and 5% customs duty) and recommend the best supplier based on a need for rapid inventory turnover with moderate cash flow constraints.",
+      "reference_context": {
+        "suppliers": [
+          {
+            "id": "A",
+            "cost": 8.0,
+            "lead_time": "2 weeks",
+            "deposit": "50%"
+          },
+          {
+            "id": "B",
+            "cost": 7.5,
+            "lead_time": "4 weeks",
+            "deposit": "0%"
+          },
+          {
+            "id": "C",
+            "cost": 9.0,
+            "lead_time": "1 week",
+            "deposit": "100%"
+          }
+        ],
+        "additional_costs": {
+          "shipping": 2.0,
+          "customs_duty_rate": 0.05
+        },
+        "business_goal": "Rapid turnover, moderate cash flow."
+      },
+      "evaluation_criteria": [
+        "Calculation: Are the landed costs (Cost + Shipping + Duty) calculated correctly for all three?",
+        "Analysis: Does the recommendation logically weigh the trade-off between cost, lead time, and cash flow?",
+        "Justification: Is the final recommendation supported by the specific business constraints provided?"
+      ],
+      "student_answer": "**Supplier A:**\n\n*   Unit Cost: $8.00\n*   Shipping Cost: $2.00\n*   Customs Duty: $8.00 * 0.05 = $0.40\n*   Total Landed Cost: $8.00 + $2.00 + $0.40 = $10.40\n\n**Supplier B:**\n\n*   Unit Cost: $7.50\n*   Shipping Cost: $2.00\n*   Customs Duty: $7.50 * 0.05 = $0.38\n*   Total Landed Cost: $7.50 + $2.00 + $0.38 = $9.88\n\n**Supplier C:**\n\n*   Unit Cost: $9.00\n*   Shipping Cost: $2.00\n*   Customs Duty: $9.00 * 0.05 = $0.45\n*   Total Landed Cost: $9.00 + $2.00 + $0.45 = $11.45\n\n**Recommendation:**\n\nSupplier B is the best choice. Its landed cost of $9.88 is the lowest, and the 4-week lead time is acceptable given the business goal of rapid inventory turnover. While Supplier A has a lower unit cost, the longer lead time and deposit requirement make it less suitable. Supplier C’s higher cost and 100% deposit pose significant challenges for moderate cash flow.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The student correctly calculated the landed costs for all three suppliers. However, the recommendation contains a critical logical error: it claims Supplier B's 4-week lead time is acceptable for 'rapid inventory turnover,' whereas Supplier A (2 weeks) or C (1 week) would be superior for speed. Additionally, the student failed to address the 'moderate cash flow' constraint effectively by ignoring the deposit requirements in the final recommendation logic (Supplier B has no deposit, which is good, but the reasoning regarding lead time contradicts the business goal). The submission also ignored the 'Additional Checks' instructions regarding platform fees and profit margins, which were part of the prompt's verification context, though the primary task was supplier selection. The recommendation is flawed due to the contradiction between the stated goal and the chosen supplier's lead time."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Determine and set product prices.",
+      "task_type": "Inventory Sourcing & Pricing",
+      "user_prompt": "Analyze the provided CSV of 50 potential inventory items including wholesale cost, estimated shipping, and competitor pricing. Calculate a final retail price for each item that ensures a 25% net profit margin after a 15% platform transaction fee and a fixed $4.50 shipping cost. Output the result as a JSON list containing the item ID, original cost, calculated retail price, and projected margin percentage.",
+      "reference_context": {
+        "items": [
+          {
+            "id": "SKU-001",
+            "wholesale_cost": 12.5,
+            "competitor_avg": 24.0
+          },
+          {
+            "id": "SKU-002",
+            "wholesale_cost": 45.0,
+            "competitor_avg": 89.99
+          }
+        ],
+        "formula": "Retail Price = (Wholesale Cost + Shipping Cost) / (1 - (Platform Fee % + Target Margin %))"
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the mathematical calculations for margin and fees accurate?",
+        "Completeness: Did the model process all 50 items and include all required fields in the output?",
+        "Best Practices: Is the pricing strategy competitive yet profitable, and does the JSON output strictly follow the schema?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"id\": \"SKU-001\",\n    \"original_cost\": 12.5,\n    \"retail_price\": 43.75,\n    \"margin_percentage\": 36.25\n  },\n  {\n    \"id\": \"SKU-002\",\n    \"original_cost\": 45.0,\n    \"retail_price\": 137.50,\n    \"margin_percentage\": 31.25\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        5,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails fundamentally on all substantive dimensions. First, the student ignored the instruction to analyze 50 items, providing only 2. Second, the mathematical application is incorrect: the provided formula requires dividing by (1 - (0.15 + 0.25)) = 0.6, but the student appears to have used a simple markup or incorrect denominator, resulting in wrong retail prices and margin percentages. Third, the student failed to incorporate the fixed $4.50 shipping cost into the cost base as required by the prompt's context. Fourth, the output lacks any analysis of competitor pricing, which is a key part of the task context. While the JSON syntax is valid (Clarity=5), the content is factually wrong and incomplete, making it unusable for a client."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Compose descriptions of merchandise for posting to online storefront, auction sites, or other shopping Web sites.",
+      "task_type": "SEO Content Creation",
+      "user_prompt": "Write a compelling product description for a 'Vintage Leather Messenger Bag' targeting SEO keywords: 'handcrafted leather bag', 'men's work bag', 'durable messenger'. The description must be 150-200 words, include a bulleted list of 3 key features, and strictly adhere to platform guidelines prohibiting all-caps and excessive exclamation marks. Ensure the tone is professional and persuasive.",
+      "reference_context": {
+        "product_name": "Vintage Leather Messenger Bag",
+        "key_features": [
+          "Full-grain leather construction",
+          "Laptop compartment fits up to 15 inches",
+          "Adjustable shoulder strap with leather padding"
+        ],
+        "seo_keywords": [
+          "handcrafted leather bag",
+          "men's work bag",
+          "durable messenger"
+        ],
+        "style_guide": {
+          "max_exclamation_marks": 1,
+          "forbidden_caps": true,
+          "word_count_range": [
+            150,
+            200
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "SEO Compliance: Are all required keywords naturally integrated?",
+        "Style Adherence: Does the text avoid all-caps and excessive punctuation?",
+        "Content Quality: Is the description persuasive, accurate, and within the word count range?"
+      ],
+      "student_answer": "**Vintage Leather Messenger Bag – A Timeless Companion**\n\nCrafted for the discerning professional, our Vintage Leather Messenger Bag combines classic style with enduring quality. This handcrafted leather bag is more than just an accessory; it’s an investment in a reliable and sophisticated tool for your daily endeavors. Built to withstand the demands of a busy lifestyle, it’s the perfect men’s work bag for those who appreciate timeless design and robust construction. Experience the difference of a truly durable messenger – one that will age gracefully and become a cherished part of your wardrobe.\n\nHere’s what makes this bag exceptional:\n\n*   **Full-grain leather construction:** Ensures exceptional durability and a rich, developing patina over time.\n*   **Laptop compartment fits up to 15 inches:** Provides secure and protected storage for your essential technology.\n*   **Adjustable shoulder strap with leather padding:** Offers comfortable carrying, even when fully loaded.\n\nElevate your style and productivity with this meticulously crafted leather bag. Order yours today and experience the legacy of quality.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        4,
+        5,
+        5,
+        3
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission successfully integrates all required SEO keywords and includes the three specific key features in a bulleted list. The tone is professional and adheres to the constraints regarding all-caps and exclamation marks. However, the word count is approximately 135 words, falling short of the mandatory 150-200 word range, which is a significant constraint violation affecting Correctness and Completeness. Additionally, the 'Additional Checks' section in the prompt regarding platform fees and profit margins was completely ignored, as the task was to write a product description, not perform financial calculations; this suggests a lack of attention to the full context provided, though the core writing task was executed well."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Compose images of products, using video or still cameras, lighting equipment, props, or photo or video editing software.",
+      "task_type": "Visual Merchandising Strategy",
+      "user_prompt": "Create a detailed shot list and lighting plan for photographing a new line of 'Ceramic Coffee Mugs'. The plan must specify camera angles (e.g., 45-degree, overhead), lighting setup (e.g., softbox placement), and prop suggestions to evoke a 'cozy morning' atmosphere. Ensure the plan complies with platform image guidelines requiring a pure white background for the main image and at least 3 lifestyle shots.",
+      "reference_context": {
+        "product_category": "Ceramic Coffee Mugs",
+        "platform_requirements": {
+          "main_image_bg": "pure white",
+          "min_lifestyle_shots": 3,
+          "resolution": "2000x2000px"
+        },
+        "brand_vibe": "cozy morning"
+      },
+      "evaluation_criteria": [
+        "Technical Accuracy: Are the lighting and camera angles appropriate for the product type?",
+        "Compliance: Does the plan strictly meet platform image guidelines?",
+        "Creativity: Do the prop suggestions effectively convey the 'cozy morning' brand vibe?"
+      ],
+      "student_answer": "**Ceramic Coffee Mug Photography Shot List & Lighting Plan**\n\n**I. Main Image (Pure White Background)**\n\n*   **Shot:** Close-up, centered mug shot.\n*   **Camera Angle:** Straight-on, 35mm equivalent.\n*   **Lighting:**\n    *   Key Light: Softbox (60x80cm) positioned 1 meter to the left of the mug, angled down 45 degrees. Diffusion gel on the front of the softbox.\n    *   Fill Light: Reflector (white foam board) placed to the right of the key light to bounce light and soften shadows.\n    *   Background Light: Low-powered LED panel (bare bulb) placed directly behind the mug, slightly angled to eliminate shadows on the white background.\n*   **Props:** None – focus solely on the mug.\n*   **Resolution:** 2000x2000px\n*   **Notes:** Ensure perfect white background. Check for dust or imperfections.\n\n**II. Lifestyle Shots (Minimum 3)**\n\n1.  **Shot:** Mug on a wooden table, steaming coffee, book nearby.\n    *   **Camera Angle:** 45-degree angle, slightly above the mug.\n    *   **Lighting:**\n        *   Key Light: Softbox (same as main image) positioned slightly behind and to the left of the mug.\n        *   Fill Light: Reflector to the right.\n        *   Accent Light: Small LED panel (warm white) directed at the book to add depth and highlight texture.\n    *   **Props:** Wooden table, stack of books (worn, slightly open), steaming coffee cup (smaller size), cozy blanket draped partially over the table.\n    *   **Resolution:** 2000x2000px\n    *   **Notes:**  Create a sense of warmth and relaxation.\n\n2.  **Shot:** Hand holding mug, sunlight streaming through a window.\n    *   **Camera Angle:** Eye-level, slightly angled towards the mug.\n    *   **Lighting:**\n        *   Key Light: Natural sunlight (supplement with a small reflector if needed to fill shadows).\n        *   Fill Light: None – rely on natural light.\n    *   **Props:**  Hand holding the mug, window with diffused sunlight (sheer curtains recommended).\n    *   **Resolution:** 2000x2000px\n    *   **Notes:**  Focus on the tactile feel of the mug.\n\n3.  **Shot:** Mug on a kitchen counter, with a scattering of coffee beans and a small French press.\n    *   **Camera Angle:** Overhead, 45-degree angle.\n    *   **Lighting:**\n        *   Key Light: Softbox (same as main image) positioned above and slightly to the left of the mug.\n        *   Fill Light: Reflector to the right.\n    *   **Props:** Kitchen counter, scattering of coffee beans, small French press, teaspoon.\n    *   **Resolution:** 2000x2000px\n    *   **Notes:**  Suggest a morning coffee ritual.\n\n**III. General Lighting & Setup Notes**\n\n*   **Color Temperature:** Aim for a warm white color temperature (around 3000K) for all lights.\n*   **Diffusion:** Use diffusion gels and bounce cards liberally to soften light and eliminate harsh shadows.\n*   **Background:** Ensure the white background is perfectly clean and free of wrinkles.\n*   **Post-Processing:**  Slightly adjust brightness and contrast in post-processing to enhance the overall image quality.  Subtle white balance correction.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission is exceptional. It correctly addresses all constraints: a pure white background for the main image, three distinct lifestyle shots, and specific camera angles and lighting setups for each. The lighting plans are technically sound (using softboxes, reflectors, and background lights appropriately for product vs. lifestyle). The prop suggestions effectively evoke the 'cozy morning' vibe. The structure is clear, professional, and ready for execution without needing further clarification or rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Calculate purchase subtotals, taxes, and shipping costs for submission to customers.",
+      "task_type": "Checkout Calculation & Tax Logic",
+      "user_prompt": "Calculate the final checkout total for a customer in California purchasing 2 units of 'Smart Watch' ($199.99 each) and 1 unit of 'Screen Protector' ($15.00). Apply a 7.25% sales tax, a $5.99 flat shipping rate, and a 3% payment processing fee on the subtotal. Provide a line-item breakdown showing the subtotal, tax amount, shipping, processing fee, and grand total.",
+      "reference_context": {
+        "items": [
+          {
+            "name": "Smart Watch",
+            "price": 199.99,
+            "quantity": 2
+          },
+          {
+            "name": "Screen Protector",
+            "price": 15.0,
+            "quantity": 1
+          }
+        ],
+        "tax_rate": 0.0725,
+        "shipping_cost": 5.99,
+        "processing_fee_rate": 0.03
+      },
+      "evaluation_criteria": [
+        "Mathematical Precision: Are all subtotals, taxes, and fees calculated correctly?",
+        "Logic Flow: Is the processing fee applied to the correct base amount?",
+        "Clarity: Is the line-item breakdown clear and easy to read?"
+      ],
+      "student_answer": "```\nLine Item Breakdown:\n\nSubtotal: $399.98\nTax (7.25%): $28.75\nShipping: $5.99\nProcessing Fee (3%): $11.99\nGrand Total: $445.71\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails on Correctness and Domain Accuracy due to a critical calculation error: the processing fee was calculated on the subtotal ($399.98 * 0.03 = $11.99) rather than the final retail price including tax and shipping as implied by 'final retail price' in the additional checks, or at minimum the math for the grand total is inconsistent with the provided line items ($399.98 + $28.75 + $5.99 + $11.99 = $446.71, not $445.71). The prompt explicitly asks for a fee on the subtotal, but the additional checks introduce ambiguity about 'final retail price' which the student ignored, leading to a potential misinterpretation of the fee base. Furthermore, the grand total arithmetic is incorrect ($446.71 vs $445.71). Completeness is average as it lists the items but lacks the detailed breakdown of the calculation steps. Best Practices are weak due to the arithmetic failure. Clarity is good as the format is readable. Autonomy is low because the output contains mathematical errors and cannot be delivered to a client without review."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Compose descriptions of merchandise for posting to online storefront, auction sites, or other shopping Web sites.",
+      "task_type": "Image Upload & Metadata Management",
+      "user_prompt": "Generate a metadata file for uploading 10 new product images to the online storefront. For each image, assign a filename following the pattern 'Category-ProductID-View.jpg', write an alt-text description including the primary keyword, and tag the image with relevant categories. Ensure the filenames are URL-safe and the alt-texts are under 125 characters.",
+      "reference_context": {
+        "products": [
+          {
+            "id": "P-101",
+            "category": "Electronics",
+            "primary_keyword": "wireless earbuds"
+          },
+          {
+            "id": "P-102",
+            "category": "Home",
+            "primary_keyword": "smart speaker"
+          }
+        ],
+        "view_types": [
+          "front",
+          "side",
+          "lifestyle"
+        ],
+        "max_alt_text_length": 125
+      },
+      "evaluation_criteria": [
+        "Naming Convention: Do filenames strictly follow the 'Category-ProductID-View.jpg' pattern?",
+        "SEO Optimization: Are alt-texts descriptive and include the primary keyword?",
+        "Constraint Adherence: Are all filenames URL-safe and alt-texts within the character limit?"
+      ],
+      "student_answer": "```json\n{\n  \"metadata\": [\n    {\n      \"filename\": \"Electronics-P-101-front.jpg\",\n      \"alt_text\": \"Wireless earbuds with sleek design\",\n      \"categories\": [\"Electronics\", \"Audio\", \"Headphones\"]\n    },\n    {\n      \"filename\": \"Electronics-P-101-side.jpg\",\n      \"alt_text\": \"Close-up of wireless earbuds features\",\n      \"categories\": [\"Electronics\", \"Audio\", \"Headphones\"]\n    },\n    {\n      \"filename\": \"Electronics-P-101-lifestyle.jpg\",\n      \"alt_text\": \"Person using wireless earbuds during workout\",\n      \"categories\": [\"Electronics\", \"Audio\", \"Headphones\", \"Fitness\"]\n    },\n    {\n      \"filename\": \"Home-P-102-front.jpg\",\n      \"alt_text\": \"Smart speaker on a bookshelf\",\n      \"categories\": [\"Home\", \"Audio\", \"Smart Home\"]\n    },\n    {\n      \"filename\": \"Home-P-102-side.jpg\",\n      \"alt_text\": \"Smart speaker displaying music controls\",\n      \"categories\": [\"Home\", \"Audio\", \"Smart Home\"]\n    },\n    {\n      \"filename\": \"Home-P-102-lifestyle.jpg\",\n      \"alt_text\": \"Smart speaker playing music in a living room\",\n      \"categories\": [\"Home\", \"Audio\", \"Smart Home\", \"Living Room\"]\n    },\n    {\n      \"filename\": \"Electronics-P-101-front.jpg\",\n      \"alt_text\": \"Wireless earbuds in charging case\",\n      \"categories\": [\"Electronics\", \"Audio\", \"Headphones\"]\n    },\n    {\n      \"filename\": \"Home-P-102-front.jpg\",\n      \"alt_text\": \"Modern smart speaker design\",\n      \"categories\": [\"Home\", \"Audio\", \"Smart Home\"]\n    },\n    {\n      \"filename\": \"Electronics-P-101-side.jpg\",\n      \"alt_text\": \"Wireless earbuds with charging cable\",\n      \"categories\": [\"Electronics\", \"Audio\", \"Headphones\"]\n    },\n    {\n      \"filename\": \"Home-P-102-side.jpg\",\n      \"alt_text\": \"Smart speaker with integrated display\",\n      \"categories\": [\"Home\", \"Audio\", \"Smart Home\"]\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission fails the core constraint of generating 10 unique images; it contains duplicate filenames (e.g., 'Electronics-P-101-front.jpg' appears twice) and reuses the same view types for the same product ID without variation, resulting in only 6 unique entries instead of 10. While the filename pattern, URL safety, and alt-text length are correct, the failure to generate distinct entries for the requested quantity and the lack of unique view types for the second product (P-102) significantly reduce the utility and correctness of the metadata file. The JSON structure is valid, but the content logic is flawed."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Calculate revenue, sales, and expenses, using financial accounting or spreadsheet software.",
+      "task_type": "Financial Performance Analysis",
+      "user_prompt": "Analyze the provided sales data for the last quarter to determine the Net Profit Margin. The data includes Total Revenue ($150,000), Cost of Goods Sold ($60,000), Platform Fees ($12,000), Marketing Expenses ($25,000), and Shipping Costs ($8,000). Calculate the Net Profit, Total Expenses, and the final Net Profit Margin percentage. Present the findings in a structured summary.",
+      "reference_context": {
+        "total_revenue": 150000,
+        "cogs": 60000,
+        "platform_fees": 12000,
+        "marketing_expenses": 25000,
+        "shipping_costs": 8000
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the total expenses and net profit calculations correct?",
+        "Formula Application: Is the Net Profit Margin calculated correctly (Net Profit / Revenue)?",
+        "Presentation: Is the summary structured clearly with all required metrics?"
+      ],
+      "student_answer": "**Net Profit Margin Analysis - Last Quarter**\n\n**1. Calculate Total Expenses:**\n\n*   Cost of Goods Sold: $60,000\n*   Platform Fees: $12,000\n*   Marketing Expenses: $25,000\n*   Shipping Costs: $8,000\n*   **Total Expenses:** $105,000\n\n**2. Calculate Net Profit:**\n\n*   Total Revenue: $150,000\n*   Total Expenses: $105,000\n*   **Net Profit:** $45,000\n\n**3. Calculate Net Profit Margin:**\n\n*   Net Profit: $45,000\n*   Total Revenue: $150,000\n*   **Net Profit Margin:** 30%",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly calculates all financial figures (Total Expenses: $105k, Net Profit: $45k, Margin: 30%) and presents them in a clear, structured format. It fully addresses the explicit calculation requirements. However, it scores a 4 on Best Practices and Autonomy because it ignores the 'Additional Checks' context regarding platform fee application nuances and edge cases (e.g., competitor pricing analysis). While the math is flawless for the provided numbers, a truly exceptional (5) submission would have acknowledged the complexity of platform fees or noted the lack of context for the additional checks, rather than treating the prompt as a simple arithmetic exercise."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Prepare or organize online storefront marketing material, including product descriptions or subject lines, optimizing content to search engine criteria.",
+      "task_type": "SEO Content Optimization",
+      "user_prompt": "Rewrite the provided product descriptions for 5 electronics items to improve SEO ranking. Each description must integrate at least 3 specific keywords from the provided list, adhere to a maximum of 160 characters for the meta description, and follow the brand's professional tone guidelines. Ensure all descriptions comply with the platform's image alt-text requirements by including a placeholder for image context.",
+      "reference_context": {
+        "items": [
+          {
+            "id": "PROD-101",
+            "original_description": "Wireless headphones with noise cancellation.",
+            "keywords": [
+              "noise cancelling",
+              "wireless audio",
+              "bluetooth 5.0"
+            ],
+            "image_alt_requirement": "Describe the color and design of the headphones"
+          },
+          {
+            "id": "PROD-102",
+            "original_description": "Smart watch for fitness tracking.",
+            "keywords": [
+              "fitness tracker",
+              "heart rate monitor",
+              "water resistant"
+            ],
+            "image_alt_requirement": "Describe the watch face and band material"
+          }
+        ],
+        "tone_guidelines": "Professional, concise, and persuasive. Avoid exclamation marks.",
+        "platform_constraints": {
+          "max_meta_length": 160,
+          "min_keywords": 3
+        }
+      },
+      "evaluation_criteria": [
+        "SEO Compliance: Are at least 3 keywords naturally integrated into each description?",
+        "Constraint Adherence: Do all meta descriptions stay under 160 characters?",
+        "Tone Consistency: Is the professional tone maintained without using exclamation marks?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"id\": \"PROD-101\",\n    \"meta_description\": \"Experience immersive sound with our noise cancelling wireless headphones. Featuring Bluetooth 5.0 for seamless wireless audio. [Image: Sleek black headphones]\"\n  },\n  {\n    \"id\": \"PROD-102\",\n    \"meta_description\": \"Track your fitness goals with this water resistant fitness tracker. Includes heart rate monitor for optimal performance. [Image: Smart watch on wrist]\"\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on multiple fronts. First, it only addresses 2 of the 5 required items (PROD-101 and PROD-102), violating the core task requirement to rewrite descriptions for 5 electronics items. Second, the 'Additional Checks' section in the prompt regarding platform fees and profit margins is completely ignored, though this appears to be a mismatch in the prompt's provided context versus the task description. Third, the keyword integration is weak; for PROD-101, 'wireless audio' is used as a noun phrase but the flow is awkward, and for PROD-102, the keywords are present but the text is repetitive. The image alt-text placeholders are included but do not strictly follow the specific 'Describe the color and design' instruction for PROD-101 (it just says 'Sleek black'). The JSON structure is valid, but the content is incomplete and does not meet the volume or depth expected of a senior specialist."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Order or purchase merchandise to maintain optimal inventory levels.",
+      "task_type": "Inventory Replenishment Strategy",
+      "user_prompt": "Analyze the provided sales data and current stock levels for 10 SKUs. Calculate the reorder quantity for each item to maintain a 45-day supply, accounting for a 14-day lead time and a safety stock buffer of 10%. Output a purchase order list that includes the SKU, current stock, reorder quantity, and estimated total cost based on the provided wholesale price.",
+      "reference_context": {
+        "sales_data": [
+          {
+            "sku": "APP-001",
+            "avg_daily_sales": 12,
+            "current_stock": 45,
+            "wholesale_price": 8.5
+          },
+          {
+            "sku": "APP-002",
+            "avg_daily_sales": 5,
+            "current_stock": 120,
+            "wholesale_price": 15.0
+          }
+        ],
+        "parameters": {
+          "target_days_supply": 45,
+          "lead_time_days": 14,
+          "safety_stock_percent": 10
+        }
+      },
+      "evaluation_criteria": [
+        "Calculation Accuracy: Is the reorder quantity correctly calculated based on (Target Days + Lead Time) * Daily Sales - Current Stock?",
+        "Safety Stock: Is the 10% safety buffer correctly applied to the total demand?",
+        "Completeness: Does the output include all 10 SKUs with accurate estimated costs?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"sku\": \"APP-001\",\n    \"current_stock\": 45,\n    \"reorder_quantity\": 171,\n    \"estimated_total_cost\": 1417.5\n  },\n  {\n    \"sku\": \"APP-002\",\n    \"current_stock\": 120,\n    \"reorder_quantity\": 60,\n    \"estimated_total_cost\": 900.0\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task of calculating reorder quantities based on the provided sales data and parameters. The calculations are incorrect: for APP-001, the required stock is (12 * (45+14)) * 1.1 = 785.4, minus current stock 45, yielding a reorder of ~740, not 171. For APP-002, required stock is (5 * 59) * 1.1 = 324.5, minus 120, yielding ~204, not 60. Furthermore, the 'Additional Checks' section in the prompt regarding platform fees and profit margins was completely ignored, and the output contains no explanation of the methodology. The response is fundamentally flawed and unusable."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Determine location for product listings to maximize exposure to online traffic.",
+      "task_type": "Listing Placement Strategy",
+      "user_prompt": "Review the provided category hierarchy and traffic analytics for an online home goods store. Assign each of the 8 new product listings to the most appropriate sub-category to maximize visibility, considering that 'Kitchen' and 'Bedroom' categories have 40% higher traffic than 'Office'. Justify each placement decision based on product attributes and traffic data.",
+      "reference_context": {
+        "categories": [
+          {
+            "name": "Kitchen",
+            "traffic_share": 0.4
+          },
+          {
+            "name": "Bedroom",
+            "traffic_share": 0.4
+          },
+          {
+            "name": "Office",
+            "traffic_share": 0.2
+          }
+        ],
+        "products": [
+          {
+            "id": "ITEM-001",
+            "attributes": [
+              "stainless steel",
+              "cookware",
+              "durable"
+            ]
+          },
+          {
+            "id": "ITEM-002",
+            "attributes": [
+              "ergonomic",
+              "desk accessory",
+              "plastic"
+            ]
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Strategic Alignment: Are high-traffic categories prioritized for relevant products?",
+        "Attribute Matching: Do the assigned categories logically match the product attributes?",
+        "Justification Quality: Is the reasoning for each placement clear and data-driven?"
+      ],
+      "student_answer": "```json\n{\n  \"assignments\": [\n    {\n      \"product_id\": \"ITEM-001\",\n      \"category\": \"Kitchen\",\n      \"justification\": \"The product attributes (stainless steel, cookware, durable) directly align with the 'Kitchen' category, which has the highest traffic share (40%).\"\n    },\n    {\n      \"product_id\": \"ITEM-002\",\n      \"category\": \"Office\",\n      \"justification\": \"The product attributes (ergonomic, desk accessory, plastic) are most relevant to the 'Office' category, which has the second highest traffic share (20%).\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The student correctly identified the product attributes and assigned them to the most logical categories (Kitchen for cookware, Office for desk accessories). However, the submission failed to address the core strategic constraint of the prompt: maximizing visibility by prioritizing the 'Kitchen' and 'Bedroom' categories which have 40% higher traffic than 'Office'. The student assigned ITEM-002 to 'Office' solely based on attributes, ignoring the traffic data implication that a product fitting 'Office' might be better placed in a higher-traffic category if attributes allowed, or at least the justification should have explicitly weighed the traffic disparity more heavily. Additionally, the 'Additional Checks' section in the prompt regarding platform fees and profit margins was completely ignored, as the task description did not include pricing data, but the student failed to acknowledge the missing data or the specific instruction to check for edge cases. The JSON is valid, but the strategic reasoning is incomplete."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Cancel orders based on customer requests or inventory or delivery problems.",
+      "task_type": "Order Cancellation & Customer Communication",
+      "user_prompt": "Draft a professional email response to a customer requesting cancellation of Order #9982 due to a delivery delay. The email must adhere to the company's return policy which states cancellations are only allowed within 24 hours of order placement, but offer a 15% discount on their next purchase as a goodwill gesture. Ensure the tone is empathetic and professional.",
+      "reference_context": {
+        "order_details": {
+          "order_id": "9982",
+          "order_date": "2023-10-01",
+          "requested_cancellation_date": "2023-10-03",
+          "reason": "Delivery delay"
+        },
+        "policy_constraints": {
+          "cancellation_window_hours": 24,
+          "goodwill_discount_percent": 15
+        },
+        "tone_guidelines": "Empathetic, apologetic, and solution-oriented."
+      },
+      "evaluation_criteria": [
+        "Policy Adherence: Does the email clearly state the cancellation policy while offering the discount?",
+        "Tone Check: Is the tone empathetic and professional without being defensive?",
+        "Clarity: Is the offer of the 15% discount clearly explained and actionable?"
+      ],
+      "student_answer": "Subject: Regarding Order #9982 Cancellation\n\nDear [Customer Name],\n\nThank you for contacting us regarding the cancellation of Order #9982. We sincerely apologize for the delivery delay and understand your frustration.\n\nWe appreciate you letting us know about your request. Unfortunately, as per our return policy, cancellations are only accepted within 24 hours of order placement. As your request was submitted on 2023-10-03, which is outside of this window, we are unable to process a full cancellation at this time.\n\nWe are truly sorry for any inconvenience this may cause. As a gesture of goodwill, we’d like to offer you a 15% discount on your next purchase with us. Please use the code THANKYOU15 at checkout.\n\nWe value your business and hope to have the opportunity to provide you with a better experience in the future.\n\nSincerely,\n\nThe [Your Company Name] Team",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly addresses the core task: declining the cancellation based on the 24-hour policy (Order #9982 placed Oct 1, requested Oct 3) and offering the 15% goodwill discount. The tone is empathetic and professional. However, the score is not a 5 because the student incorrectly cited the 'return policy' when the constraint is specifically a 'cancellation policy'; while minor, a senior specialist would distinguish these terms precisely. Additionally, the email lacks a specific call to action regarding the current order (e.g., confirming it will ship or offering to modify the delivery address), which is a common best practice in this scenario to retain the customer. The 'Additional Checks' regarding platform fees and profit margins are irrelevant to this specific email drafting task and do not apply to the student's output."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Promote products in online communities through weblog or discussion-forum postings, e-mail marketing programs, or online advertising.",
+      "task_type": "Community Marketing Campaign",
+      "user_prompt": "Create a 3-part email marketing sequence for a new summer clothing line. Each email must target a different segment (New Subscribers, Lapsed Customers, VIP Members) and include a unique subject line optimized for open rates. Ensure each email includes a clear call-to-action and adheres to the brand's image guidelines by referencing the 'Summer Breeze' collection.",
+      "reference_context": {
+        "segments": [
+          {
+            "name": "New Subscribers",
+            "focus": "Welcome offer and brand introduction"
+          },
+          {
+            "name": "Lapsed Customers",
+            "focus": "Re-engagement and exclusive discount"
+          },
+          {
+            "name": "VIP Members",
+            "focus": "Early access and premium styling tips"
+          }
+        ],
+        "collection_name": "Summer Breeze",
+        "image_guidelines": "Use bright, airy imagery descriptions in the email body text."
+      },
+      "evaluation_criteria": [
+        "Segmentation: Are the three emails distinct and tailored to the specific audience segments?",
+        "SEO/Subject Lines: Are the subject lines compelling and optimized for open rates?",
+        "Brand Consistency: Does every email reference the 'Summer Breeze' collection and follow image guidelines?"
+      ],
+      "student_answer": "**Email 1: New Subscribers**\n\nSubject: Welcome to Sunshine Style! ☀️ Your Summer Starts Now\n\nBody:\n\nHi [Subscriber Name],\n\nWelcome to the [Your Brand Name] family! We’re thrilled to have you join us. Get ready for endless summer days with our brand new **Summer Breeze** collection – a curated selection of breezy dresses, lightweight tops, and stylish shorts designed to capture the feeling of a warm, sunny escape.\n\n[Image: Bright, airy photo of a model wearing a flowy summer dress, standing in a field of wildflowers with a blue sky in the background.]\n\nAs a special welcome, enjoy 15% off your first order with code WELCOME15 at checkout.  Discover your perfect summer look today!\n\n[Button: Shop the Summer Breeze Collection]\n\nFollow us on social media: [Social Media Links]\n\nWarmly,\n\nThe [Your Brand Name] Team\n\n---\n\n**Email 2: Lapsed Customers**\n\nSubject: Missing You! ☀️ Exclusive Offer Just For You\n\nBody:\n\nHi [Customer Name],\n\nWe noticed it’s been a little while since your last visit, and we wanted to reach out and say we miss you!  We’ve just launched our stunning **Summer Breeze** collection, filled with fresh, vibrant pieces perfect for soaking up the sun.\n\n[Image: Close-up shot of a colorful summer top with a relaxed, casual vibe, set against a bright, textured background.]\n\nTo welcome you back, we’re offering you 20% off your entire order.  Use code WELCOMEBACK20 at checkout.  Don’t miss out on these summer essentials!\n\n[Button: Rediscover Summer Breeze]\n\nHappy Shopping,\n\nThe [Your Brand Name] Team\n\n---\n\n**Email 3: VIP Members**\n\nSubject: ✨ Exclusive: Summer Breeze Preview + Styling Tips\n\nBody:\n\nHi [VIP Member Name],\n\nAs a valued VIP member, you’re getting a sneak peek at our **Summer Breeze** collection before anyone else!  We’ve been busy creating a collection of effortlessly chic pieces – think linen shirts, maxi skirts, and playful swimwear – all designed to evoke the feeling of a relaxed summer getaway.\n\n[Image: A curated flat lay featuring several items from the Summer Breeze collection – a straw hat, sunglasses, a linen shirt, and a woven tote bag – arranged on a light-colored surface.]\n\n**Styling Tip:** Pair our breezy linen shirts with a flowy maxi skirt for a chic and comfortable look.  Don’t forget to accessorize with a straw hat and sunglasses!\n\nShop the exclusive VIP preview now and receive free shipping on your order.\n\n[Button: Shop Summer Breeze - VIP Exclusive]\n\nBest,\n\nThe [Your Brand Name] Team",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The student submission fully addresses all task requirements: it creates a 3-part sequence targeting the specified segments (New Subscribers, Lapsed Customers, VIP Members) with unique, optimized subject lines. Each email includes a clear CTA and explicitly references the 'Summer Breeze' collection. The image descriptions strictly adhere to the 'bright, airy' guidelines. The tone, structure, and copywriting demonstrate industry-standard best practices for email marketing. The output is professional, complete, and ready for deployment without modification."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Create or maintain database of customer accounts.",
+      "task_type": "Customer Data Management & Segmentation",
+      "user_prompt": "Process the provided raw customer data log to identify and segment customers into 'High Value', 'At Risk', and 'New' categories based on their purchase history and engagement. Flag any accounts with duplicate email addresses for review. Output a cleaned JSON dataset with the new segment assigned to each customer and a 'status' field indicating if the record is 'Clean', 'Duplicate', or 'Needs Review'.",
+      "reference_context": {
+        "raw_data": [
+          {
+            "customer_id": "CUST-001",
+            "email": "john@example.com",
+            "total_spent": 1200,
+            "last_purchase": "2023-09-15",
+            "engagement_score": 85
+          },
+          {
+            "customer_id": "CUST-002",
+            "email": "john@example.com",
+            "total_spent": 50,
+            "last_purchase": "2023-10-01",
+            "engagement_score": 20
+          }
+        ],
+        "segmentation_rules": {
+          "high_value": "total_spent > 1000",
+          "at_risk": "total_spent < 100 AND last_purchase > 90 days ago",
+          "new": "total_spent < 100 AND last_purchase < 30 days ago"
+        }
+      },
+      "evaluation_criteria": [
+        "Data Accuracy: Are the segmentation rules correctly applied to the provided data?",
+        "Duplicate Detection: Are duplicate email addresses correctly flagged?",
+        "Output Format: Is the final output a valid JSON list with all required fields (segment, status)?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"customer_id\": \"CUST-001\",\n    \"email\": \"john@example.com\",\n    \"total_spent\": 1200,\n    \"last_purchase\": \"2023-09-15\",\n    \"engagement_score\": 85,\n    \"segment\": \"High Value\",\n    \"status\": \"Clean\"\n  },\n  {\n    \"customer_id\": \"CUST-002\",\n    \"email\": \"john@example.com\",\n    \"total_spent\": 50,\n    \"last_purchase\": \"2023-10-01\",\n    \"engagement_score\": 20,\n    \"segment\": \"At Risk\",\n    \"status\": \"Duplicate\"\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy due to a critical logic error in segmentation. The student assigned 'At Risk' to CUST-002, but the provided rules define 'At Risk' as having a last purchase > 90 days ago. CUST-002's last purchase (2023-10-01) is within 30 days of the reference date implied by the data, making it a 'New' customer per the rules, not 'At Risk'. Additionally, the submission ignores the 'Additional Checks' regarding platform fees and profit margins, which were part of the prompt's verification requirements, indicating a failure to follow all instructions. The JSON structure and clarity are good (Score 4), but the functional logic is flawed."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Measure and analyze Web site usage data to maximize search engine returns or refine customer interfaces.",
+      "task_type": "Data Analysis & Optimization",
+      "user_prompt": "Review the provided website traffic report for the 'Summer Collection' landing page. Identify the top 3 pages with the highest bounce rates and the top 3 pages with the lowest conversion rates. For each identified page, propose a specific, actionable optimization strategy (e.g., image compression, CTA placement, load time reduction) that addresses the root cause. Output the analysis as a JSON object with keys 'high_bounce_pages' and 'low_conversion_pages', each containing an array of objects with 'page_url', 'metric_value', and 'optimization_strategy'.",
+      "reference_context": {
+        "traffic_report": [
+          {
+            "page_url": "/summer/dresses",
+            "bounce_rate": 0.72,
+            "conversion_rate": 0.02,
+            "avg_load_time": 4.5
+          },
+          {
+            "page_url": "/summer/shoes",
+            "bounce_rate": 0.45,
+            "conversion_rate": 0.08,
+            "avg_load_time": 1.2
+          },
+          {
+            "page_url": "/summer/accessories",
+            "bounce_rate": 0.68,
+            "conversion_rate": 0.03,
+            "avg_load_time": 3.8
+          }
+        ],
+        "benchmark_bounce_rate": 0.55,
+        "benchmark_conversion_rate": 0.05
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the correct pages identified based on the provided metrics relative to benchmarks?",
+        "Relevance: Do the proposed strategies directly address the specific metric issues (e.g., load time for high bounce)?",
+        "Format: Is the output strictly valid JSON matching the requested schema?"
+      ],
+      "student_answer": "```json\n{\n  \"high_bounce_pages\": [\n    {\n      \"page_url\": \"/summer/dresses\",\n      \"metric_value\": 0.72,\n      \"optimization_strategy\": \"Improve visual appeal and product descriptions. Implement high-quality product images and detailed descriptions to encourage users to explore further.\"\n    },\n    {\n      \"page_url\": \"/summer/accessories\",\n      \"metric_value\": 0.68,\n      \"optimization_strategy\": \"Simplify the page layout and reduce visual clutter. Streamline the presentation of accessories to improve clarity and reduce cognitive load.\"\n    },\n    {\n      \"page_url\": \"/summer/shoes\",\n      \"metric_value\": 0.45,\n      \"optimization_strategy\": \"Investigate potential mobile responsiveness issues. Ensure the page renders flawlessly on all devices, particularly mobile, as a high bounce rate may indicate usability problems.\"\n    }\n  ],\n  \"low_conversion_pages\": [\n    {\n      \"page_url\": \"/summer/dresses\",\n      \"metric_value\": 0.02,\n      \"optimization_strategy\": \"Enhance call-to-action prominence and clarity. Make the 'Add to Cart' or 'Shop Now' button more visually distinct and strategically placed.\"\n    },\n    {\n      \"page_url\": \"/summer/accessories\",\n      \"metric_value\": 0.03,\n      \"optimization_strategy\": \"Implement product recommendations. Suggest related accessories to increase average order value and encourage further browsing.\"\n    },\n    {\n      \"page_url\": \"/summer/shoes\",\n      \"metric_value\": 0.08,\n      \"optimization_strategy\": \"Improve product filtering and sorting options. Allow users to easily find desired shoes based on size, color, or other relevant attributes.\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails the core task requirements. The student identified the top 3 pages for both high bounce and low conversion rates by listing all three pages provided in the data, rather than selecting the top 3 based on the metric values (e.g., for low conversion, the student included '/summer/shoes' with 0.08, which is actually above the benchmark of 0.05 and higher than the other two pages). Furthermore, the optimization strategies are generic and do not address the specific root causes evident in the data, such as the high average load times (4.5s and 3.8s) for the high bounce pages, which are the most likely technical drivers. The JSON structure is valid, but the analytical content is fundamentally flawed."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Investigate products or markets to determine areas for opportunity or viability for merchandising specific products, using online or offline sources.",
+      "task_type": "Market Research & Product Viability",
+      "user_prompt": "Based on the provided market trend summary and competitor analysis, identify three potential new product categories for the 'Eco-Friendly Home' store. For each category, evaluate viability by analyzing supply chain risks, estimated demand growth, and margin potential. Conclude with a recommendation to 'Proceed', 'Monitor', or 'Reject' for each category, supported by a brief justification. Output the result as a JSON list of objects with keys 'category', 'viability_score', 'risk_factors', and 'recommendation'.",
+      "reference_context": {
+        "market_trends": [
+          {
+            "category": "Bamboo Kitchenware",
+            "demand_growth": "High",
+            "competitor_saturation": "Medium"
+          },
+          {
+            "category": "Recycled Plastic Furniture",
+            "demand_growth": "Medium",
+            "competitor_saturation": "High"
+          },
+          {
+            "category": "Organic Cotton Bedding",
+            "demand_growth": "Stable",
+            "competitor_saturation": "Low"
+          }
+        ],
+        "supply_chain_risks": {
+          "Bamboo Kitchenware": "Seasonal availability in Asia",
+          "Recycled Plastic Furniture": "Raw material cost volatility",
+          "Organic Cotton Bedding": "Certification delays"
+        },
+        "margin_potential": {
+          "Bamboo Kitchenware": "35%",
+          "Recycled Plastic Furniture": "20%",
+          "Organic Cotton Bedding": "40%"
+        }
+      },
+      "evaluation_criteria": [
+        "Logic: Is the viability score derived logically from the provided trend and risk data?",
+        "Consistency: Do the recommendations align with the risk and margin analysis provided in the context?",
+        "Completeness: Are all three categories evaluated with the required fields present?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"category\": \"Bamboo Kitchenware\",\n    \"viability_score\": 75,\n    \"risk_factors\": \"Seasonal availability in Asia, Medium competitor saturation.\",\n    \"recommendation\": \"Proceed\"\n  },\n  {\n    \"category\": \"Organic Cotton Bedding\",\n    \"viability_score\": 80,\n    \"risk_factors\": \"Certification delays, Low competitor saturation.\",\n    \"recommendation\": \"Proceed\"\n  },\n  {\n    \"category\": \"Recycled Plastic Furniture\",\n    \"viability_score\": 60,\n    \"risk_factors\": \"Raw material cost volatility, High competitor saturation.\",\n    \"recommendation\": \"Monitor\"\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails the Correctness dimension because it ignores the explicit instruction to include a 'brief justification' for each recommendation, providing only the recommendation label. It also fails Best Practices and Domain Accuracy by inventing a 'viability_score' (0-100 scale) when the prompt did not request a numerical score, and by failing to explicitly analyze 'estimated demand growth' and 'margin potential' as distinct factors in the output, instead vaguely combining them into risk factors. The JSON structure is valid and clear (Clarity 4), but the content is incomplete and deviates from the specific analytical requirements, requiring significant rework to be usable (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop or revise business plans for online business, emphasizing factors such as product line, pricing, inventory, or marketing strategy.",
+      "task_type": "Strategic Planning & Pricing",
+      "user_prompt": "Draft a pricing strategy section for the Q3 Business Plan for the 'Tech Gadgets' line. The strategy must account for a 12% platform fee, a $5.00 average shipping cost, and a target net profit margin of 20%. Calculate the retail price for three sample products (Wholesale: $20, $50, $100) ensuring the price is competitive against a provided competitor price list. Present the final pricing table in JSON format with 'product_id', 'wholesale_cost', 'calculated_retail_price', 'competitor_price', and 'margin_percentage'.",
+      "reference_context": {
+        "products": [
+          {
+            "id": "TG-101",
+            "wholesale_cost": 20.0,
+            "competitor_price": 35.0
+          },
+          {
+            "id": "TG-102",
+            "wholesale_cost": 50.0,
+            "competitor_price": 85.0
+          },
+          {
+            "id": "TG-103",
+            "wholesale_cost": 100.0,
+            "competitor_price": 160.0
+          }
+        ],
+        "fees": {
+          "platform_fee_percent": 0.12,
+          "shipping_cost": 5.0
+        },
+        "target_margin_percent": 0.2,
+        "formula": "Retail Price = (Wholesale Cost + Shipping Cost) / (1 - (Platform Fee % + Target Margin %))"
+      },
+      "evaluation_criteria": [
+        "Mathematical Accuracy: Are the retail prices calculated correctly using the provided formula and constraints?",
+        "Competitiveness: Are the calculated prices reasonable relative to the competitor prices provided?",
+        "Schema Compliance: Does the output JSON contain all required fields and valid data types?"
+      ],
+      "student_answer": "```json\n{\n  \"pricing_strategy\": \"Our Q3 pricing strategy for the Tech Gadgets line focuses on achieving a 20% net profit margin while remaining competitive within the market. We will factor in a 12% platform fee and a fixed shipping cost of $5.00 per item. The retail price will be calculated using the formula: Retail Price = (Wholesale Cost + Shipping Cost) / (1 - (Platform Fee % + Target Margin %)).  We will continuously monitor competitor pricing and adjust as needed to maintain market share and profitability.\",\n  \"product_pricing\": [\n    {\n      \"product_id\": \"TG-101\",\n      \"wholesale_cost\": 20.0,\n      \"calculated_retail_price\": 37.78,\n      \"competitor_price\": 35.0,\n      \"margin_percentage\": 20.0\n    },\n    {\n      \"product_id\": \"TG-102\",\n      \"wholesale_cost\": 50.0,\n      \"calculated_retail_price\": 82.58,\n      \"competitor_price\": 85.0,\n      \"margin_percentage\": 20.0\n    },\n    {\n      \"product_id\": \"TG-103\",\n      \"wholesale_cost\": 100.0,\n      \"calculated_retail_price\": 160.0,\n      \"competitor_price\": 160.0,\n      \"margin_percentage\": 20.0\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        4,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly calculates the prices for TG-102 and TG-103 using the provided formula. However, it fails on TG-101: the calculated price ($37.78) exceeds the competitor price ($35.00), yet the student presents it as a valid competitive strategy without acknowledging the pricing conflict or adjusting the price to match the competitor (which would alter the margin). This indicates a lack of critical judgment regarding the 'competitive' requirement. Additionally, the JSON structure includes a narrative string 'pricing_strategy' rather than strictly adhering to the requested table format for the final output, though the data array is present. The calculations are mathematically accurate based on the formula, but the strategic application is flawed for the first item."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Disclose merchant information and terms and policies of transactions in online or offline materials.",
+      "task_type": "Policy Drafting & Compliance",
+      "user_prompt": "Draft a 'Returns and Refunds' policy section for the company website. The policy must clearly state the 30-day return window, the condition of items required for return, and the process for initiating a return. It must also explicitly disclose that the customer is responsible for return shipping costs unless the item is defective. Ensure the tone is professional, empathetic, and legally clear. Output the policy as a JSON object with keys 'title', 'return_window', 'condition_requirements', 'shipping_responsibility', and 'process_steps'.",
+      "reference_context": {
+        "company_name": "EcoStyle Retail",
+        "return_window_days": 30,
+        "defective_item_policy": "Full refund including original shipping",
+        "non_defective_policy": "Refund of item cost only, customer pays return shipping",
+        "required_condition": "Unworn, unwashed, with original tags attached"
+      },
+      "evaluation_criteria": [
+        "Clarity: Is the policy easy to understand for a customer?",
+        "Compliance: Does it accurately reflect the provided constraints regarding shipping costs and timeframes?",
+        "Tone: Is the language professional and consistent with e-commerce best practices?"
+      ],
+      "student_answer": "```json\n{\n  \"title\": \"Returns and Refunds\",\n  \"return_window\": \"You have 30 days from the date of delivery to initiate a return. We want you to be completely satisfied with your purchase.\",\n  \"condition_requirements\": \"To be eligible for a return, items must be returned in their original, unworn, unwashed condition with all original tags and packaging attached. Items must be free from any signs of wear or use.\",\n  \"shipping_responsibility\": \"EcoStyle Retail is not responsible for return shipping costs unless the item you received is defective or damaged. In such cases, we will provide a prepaid shipping label.\",\n  \"process_steps\": [\n    \"Visit our Returns Center: [Link to Returns Center]\",\n    \"Enter your order number and email address.\",\n    \"Select the item(s) you wish to return and the reason for the return.\",\n    \"If the item is defective, attach clear photos or a video demonstrating the defect.\",\n    \"You will receive a Return Authorization (RA) number and instructions for shipping the item back to us.\",\n    \"Pack the item securely in its original packaging.\",\n    \"Ship the item to the address provided in your Return Authorization email.\",\n    \"Once we receive and inspect the returned item, we will process your refund within 7-10 business days.\"\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission is exceptional. It accurately incorporates all specific constraints from the context (30-day window, specific condition requirements, shipping cost responsibility logic). The tone is professional and empathetic. The process steps are logical, clear, and industry-standard, including necessary details like RA numbers and inspection timelines. The JSON structure is valid and directly addresses the prompt's formatting requirements. No gaps or errors were found."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collaborate with search engine shopping specialists to place marketing content in desired online locations.",
+      "task_type": "SEO & Content Optimization",
+      "user_prompt": "Generate optimized product descriptions for three new 'Sustainable Yoga Mats'. Each description must include 5 specific SEO keywords provided in the context, adhere to a character limit of 160 characters for the meta description, and follow the platform's image guideline (no text overlays). Output the result as a JSON list where each object contains 'product_name', 'seo_keywords', 'meta_description', and 'content_body'.",
+      "reference_context": {
+        "products": [
+          {
+            "name": "EcoFlow Mat",
+            "keywords": [
+              "sustainable yoga",
+              "non-toxic",
+              "eco-friendly",
+              "grip",
+              "pilates"
+            ]
+          },
+          {
+            "name": "GreenGlide Mat",
+            "keywords": [
+              "biodegradable",
+              "yoga mat",
+              "natural rubber",
+              "exercise",
+              "wellness"
+            ]
+          },
+          {
+            "name": "PureStep Mat",
+            "keywords": [
+              "organic",
+              "yoga accessories",
+              "environmentally friendly",
+              "workout",
+              "mindfulness"
+            ]
+          }
+        ],
+        "platform_guidelines": "No text overlays on images; high-resolution photos only",
+        "meta_limit": 160
+      },
+      "evaluation_criteria": [
+        "SEO Integration: Are all 5 keywords naturally integrated into the content?",
+        "Constraint Adherence: Do meta descriptions stay within the 160-character limit?",
+        "Guideline Compliance: Does the content acknowledge the image guidelines?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"product_name\": \"EcoFlow Mat\",\n    \"seo_keywords\": [\n      \"sustainable yoga\",\n      \"non-toxic\",\n      \"eco-friendly\",\n      \"grip\",\n      \"pilates\"\n    ],\n    \"meta_description\": \"EcoFlow Mat: Sustainable yoga & pilates. Non-toxic, excellent grip. Eco-friendly & durable. Shop now!\",\n    \"content_body\": \"The EcoFlow Mat is your perfect partner for sustainable practice. Crafted with eco-friendly materials, it offers superior grip for yoga and pilates. Non-toxic and durable, it supports your wellness journey. Experience the difference!\"\n  },\n  {\n    \"product_name\": \"GreenGlide Mat\",\n    \"seo_keywords\": [\n      \"biodegradable\",\n      \"yoga mat\",\n      \"natural rubber\",\n      \"exercise\",\n      \"wellness\"\n    ],\n    \"meta_description\": \"GreenGlide Mat: Biodegradable yoga mat. Made with natural rubber for superior grip & wellness. Perfect for exercise!\",\n    \"content_body\": \"Discover the GreenGlide Mat – a biodegradable yoga mat crafted from natural rubber. Ideal for exercise and promoting overall wellness. Enjoy a sustainable and supportive practice.\"\n  },\n  {\n    \"product_name\": \"PureStep Mat\",\n    \"seo_keywords\": [\n      \"organic\",\n      \"yoga accessories\",\n      \"environmentally friendly\",\n      \"workout\",\n      \"mindfulness\"\n    ],\n    \"meta_description\": \"PureStep Mat: Organic yoga accessories. Environmentally friendly & perfect for mindfulness workouts. Shop today!\",\n    \"content_body\": \"Find your center with the PureStep Mat – an organic yoga accessory designed for environmentally conscious practitioners. Enhance your workouts and cultivate mindfulness with this sustainable mat.\"\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the three products and includes the required SEO keywords and content body. However, it fails the strict character limit constraint for the meta descriptions (all three exceed 160 characters), which is a critical requirement for SEO. Additionally, the content body is generic and lacks the persuasive depth expected of a Senior Specialist. The JSON structure is valid, but the failure to meet the specific length constraint and the lack of professional polish in the copy prevent a higher score. The 'Additional Checks' regarding fees and margins were not applicable to the specific task of generating product descriptions, so no penalty was applied for that missing context."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Maintain inventory of shipping supplies, such as boxes, labels, tape, bubble wrap, loose packing materials, or tape guns.",
+      "task_type": "Inventory Management & Logistics",
+      "user_prompt": "Analyze the current inventory levels of shipping supplies against the projected order volume for the upcoming 'Black Friday' week. The projected volume is 5,000 orders. Determine if the current stock of boxes, tape, and bubble wrap is sufficient. If not, calculate the reorder quantity needed to maintain a 10% safety stock buffer. Output the analysis as a JSON object with 'supply_type', 'current_stock', 'projected_usage', 'safety_stock_needed', and 'reorder_quantity'.",
+      "reference_context": {
+        "projected_orders": 5000,
+        "usage_rates": {
+          "boxes": 1.0,
+          "tape": 0.5,
+          "bubble_wrap": 2.0
+        },
+        "current_inventory": {
+          "boxes": 4200,
+          "tape": 2000,
+          "bubble_wrap": 8000
+        },
+        "safety_buffer_percent": 0.1
+      },
+      "evaluation_criteria": [
+        "Calculation Accuracy: Are the projected usage and safety stock calculations correct?",
+        "Logic: Is the reorder quantity correctly determined based on the deficit and safety buffer?",
+        "Completeness: Are all supply types analyzed and included in the output?"
+      ],
+      "student_answer": "```json\n{\n  \"supply_type\": \"boxes\",\n  \"current_stock\": 4200,\n  \"projected_usage\": 5000 * 1.0,\n  \"safety_stock_needed\": 500,\n  \"reorder_quantity\": 4700,\n  \"supply_type\": \"tape\",\n  \"current_stock\": 2000,\n  \"projected_usage\": 5000 * 0.5,\n  \"safety_stock_needed\": 250,\n  \"reorder_quantity\": 2250,\n  \"supply_type\": \"bubble_wrap\",\n  \"current_stock\": 8000,\n  \"projected_usage\": 5000 * 2.0,\n  \"safety_stock_needed\": 0,\n  \"reorder_quantity\": 8000\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, the JSON structure is invalid because it contains duplicate keys ('supply_type') in a single object, making it unparseable. Second, the values contain raw arithmetic expressions (e.g., '5000 * 1.0') instead of calculated numbers, which violates the requirement for a valid JSON data object. Third, the logic is flawed: it calculates reorder quantities for all items regardless of whether current stock is sufficient (e.g., bubble wrap has 8000 units but only needs 10000 projected usage + 1000 safety, yet the calculation is nonsensical, and for tape, it suggests reordering 2250 despite having 2000 in stock which covers the 2500 usage? No, 2000 < 2500, so it needs 500 + 250 = 750, but the student calculated 2250). The 'Additional Checks' section in the prompt regarding platform fees and profit margins is completely irrelevant to the task of inventory analysis, indicating the model hallucinated requirements or failed to filter context. The output is not usable as-is."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design customer interface of online storefront, using web programming or e-commerce software.",
+      "task_type": "Storefront UX & Conversion Optimization",
+      "user_prompt": "Review the provided wireframe description for a new electronics storefront. Identify three specific UX friction points that could reduce conversion rates based on the description. Propose concrete design modifications for each point that align with modern e-commerce best practices (e.g., mobile-first navigation, trust signals, clear CTAs). Output the response as a structured list containing the 'Friction Point', 'Proposed Modification', and 'Expected Impact'.",
+      "reference_context": {
+        "wireframe_description": "The current layout places the search bar at the bottom of the mobile view. Product images are small thumbnails without zoom capability. The 'Add to Cart' button is gray and blends with the background. Checkout requires 5 separate pages.",
+        "best_practices": "Mobile-first design, high-contrast CTAs, single-page checkout, image zoom functionality."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the identified friction points logically derived from the provided wireframe description?",
+        "Relevance: Do the proposed modifications directly address the identified friction points?",
+        "Quality: Are the suggestions aligned with standard e-commerce UX best practices?"
+      ],
+      "student_answer": "*   **Friction Point:** Search bar placement at the bottom of the mobile view.\n    **Proposed Modification:** Move the search bar to the top of the mobile viewport, mirroring the desktop experience. Implement a prominent, easily tappable search icon.\n    **Expected Impact:** Increased discoverability of products, reduced user effort, improved mobile navigation, and potentially higher conversion rates.\n\n*   **Friction Point:** Small thumbnails without zoom capability for product images.\n    **Proposed Modification:** Implement a zoom functionality for all product images. Display larger, high-resolution images by default, with thumbnails as a secondary view option.\n    **Expected Impact:** Enhanced product visualization, increased user confidence, reduced purchase hesitation, and higher conversion rates.\n\n*   **Friction Point:** Gray ‘Add to Cart’ button blending with the background and a 5-page checkout process.\n    **Proposed Modification:** Utilize a high-contrast, visually distinct color (e.g., bright green or orange) for the ‘Add to Cart’ button. Streamline the checkout process into a single-page design with clear progress indicators.\n    **Expected Impact:** Improved button visibility and call-to-action effectiveness, reduced checkout friction, faster completion rates, and higher conversion rates.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The student submission perfectly addresses all task requirements. It identifies three distinct friction points from the wireframe description, proposes concrete and industry-standard modifications (top placement for search, zoom functionality, high-contrast CTA, single-page checkout), and clearly articulates the expected impact for each. The response is well-structured, uses correct e-commerce terminology, and is ready for immediate stakeholder review without any edits."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Select and purchase technical web services, such as web hosting services, online merchant accounts, shopping cart software, payment gateway software, or spyware.",
+      "task_type": "Vendor Selection & Cost Analysis",
+      "user_prompt": "A startup needs to select a payment gateway for a high-volume fashion retailer. Compare the three provided vendor options (Stripe, PayPal, Authorize.net) based on the provided feature matrix and pricing tiers. Calculate the estimated monthly cost for a projected volume of 5,000 transactions averaging $65 each. Recommend the best vendor based on total cost of ownership and specific feature needs (e.g., recurring billing support, fraud detection).",
+      "reference_context": {
+        "vendors": [
+          {
+            "name": "Stripe",
+            "fee_structure": "2.9% + $0.30 per transaction",
+            "features": [
+              "Recurring billing",
+              "Advanced fraud detection",
+              "Global support"
+            ]
+          },
+          {
+            "name": "PayPal",
+            "fee_structure": "3.49% + $0.49 per transaction",
+            "features": [
+              "Brand trust",
+              "Buyer protection",
+              "Limited recurring billing"
+            ]
+          },
+          {
+            "name": "Authorize.net",
+            "fee_structure": "$25/month + 2.9% + $0.30 per transaction",
+            "features": [
+              "Customizable gateway",
+              "Advanced reporting",
+              "No recurring billing built-in"
+            ]
+          }
+        ],
+        "projected_volume": 5000,
+        "avg_transaction_value": 65.0
+      },
+      "evaluation_criteria": [
+        "Calculation: Are the total monthly costs for all three vendors calculated correctly?",
+        "Logic: Is the recommendation justified by the cost analysis and feature requirements?",
+        "Completeness: Does the response include a clear recommendation and a summary of the comparison?"
+      ],
+      "student_answer": "**Cost Analysis:**\n\n*   **Stripe:**\n    *   Transaction Fee: 5000 transactions * $65/transaction * 0.029 = $932.50\n    *   Monthly Fee: $0\n    *   Total Monthly Cost: $932.50\n*   **PayPal:**\n    *   Transaction Fee: 5000 transactions * $65/transaction * 0.0349 = $1123.50\n    *   Monthly Fee: $0\n    *   Total Monthly Cost: $1123.50\n*   **Authorize.net:**\n    *   Monthly Fee: $25\n    *   Transaction Fee: 5000 transactions * $65/transaction * 0.029 = $932.50\n    *   Total Monthly Cost: $957.50\n\n**Recommendation:**\n\nStripe is the most cost-effective option for a high-volume fashion retailer with the projected transaction volume and average transaction value. It offers competitive transaction fees and doesn't have a monthly fee. Its advanced fraud detection and recurring billing support are also valuable features for a fashion retailer.\n\n**Final Answer:**\n\nStripe",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        3,
+        3,
+        5,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The student correctly calculated the costs for all three vendors and identified Stripe as the lowest cost option. However, the recommendation is weak because it ignores the specific feature constraints in the prompt: Authorize.net explicitly lacks built-in recurring billing, and PayPal has limited support, yet the student recommends Stripe primarily for features without fully weighing the trade-offs or mentioning that Authorize.net's gateway fees might be higher in a real-world scenario (often requiring a separate merchant account). The analysis lacks depth on 'Total Cost of Ownership' beyond the raw transaction fees (e.g., integration costs, chargeback fees, or the specific implications of the $25 fixed fee for high volume). The recommendation is functional but not 'industry standard' in its thoroughness, as a senior specialist would likely discuss the nuance of the $25 fee becoming negligible at higher volumes or the specific need for recurring billing in fashion (subscriptions) versus one-off purchases."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Devise, select, or purchase domain name and web address.",
+      "task_type": "Brand Strategy & Domain Acquisition",
+      "user_prompt": "A new sustainable clothing brand named 'EcoThread' needs a domain strategy. Generate 5 distinct domain name variations that incorporate the brand name, are under 15 characters, and avoid hyphens. For each variation, assess its potential for SEO (using keywords like 'sustainable', 'eco', 'fashion') and brandability. Select the top 2 options and provide a rationale for why they are superior for a global launch.",
+      "reference_context": {
+        "brand_name": "EcoThread",
+        "target_keywords": [
+          "sustainable",
+          "eco",
+          "fashion",
+          "clothing"
+        ],
+        "constraints": [
+          "Max 15 characters",
+          "No hyphens",
+          "Must include brand name or strong keyword"
+        ]
+      },
+      "evaluation_criteria": [
+        "Constraint Adherence: Do all 5 options meet the character and formatting constraints?",
+        "SEO Value: Is the SEO potential of each option logically assessed?",
+        "Strategic Fit: Is the final selection justified by brandability and global appeal?"
+      ],
+      "student_answer": "1.  EcoThread.com – SEO: High (includes brand name and \"eco\"), Brandability: High\n2.  ThreadEco.com – SEO: Medium (includes \"eco\" and \"thread\"), Brandability: Medium\n3.  EcoStyle.com – SEO: Medium (includes \"eco\" and \"fashion\"), Brandability: Medium\n4.  EcoFashion.com – SEO: High (includes \"eco\" and \"fashion\"), Brandability: Medium\n5.  ThreadStyle.com – SEO: Low (includes \"thread\" and \"style\"), Brandability: Low\n\n**Top 2 Options:**\n\n1.  EcoThread.com\n2.  EcoFashion.com\n\n**Rationale:**\n\n*   **EcoThread.com:** This option is the most direct and memorable. It clearly communicates the brand name and core value (“eco”). It’s highly brandable and possesses the strongest potential for SEO due to its direct inclusion of relevant keywords.\n*   **EcoFashion.com:** This option is also highly recognizable and immediately conveys the brand's focus on sustainable fashion. It’s easily searchable and has good brandability, making it a solid choice for a global launch.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission meets the basic constraints (5 names, under 15 chars, no hyphens, includes brand/keywords) and selects top options. However, it fails to fully address the 'global launch' nuance by not considering TLD availability or international appeal beyond the name itself. The SEO assessments are superficial (e.g., claiming 'EcoFashion.com' has high SEO potential without noting it is likely an exact match premium domain that may be unavailable or too generic for a specific brand). The rationale lacks the depth expected of a Senior Specialist, offering generic praise rather than strategic differentiation. While the domain concepts are accurate, the strategic depth is only adequate (3), preventing a higher score."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Implement security practices to preserve assets, minimize liabilities, or ensure customer privacy, using parallel servers, hardware redundancy, fail-safe technology, information encryption, or firewalls.",
+      "task_type": "Security Audit & Compliance",
+      "user_prompt": "Analyze the following system architecture description for a new online jewelry store. Identify three critical security vulnerabilities related to customer data privacy and transaction security. For each vulnerability, propose a specific technical control (e.g., encryption type, firewall rule, redundancy strategy) to mitigate the risk. Ensure the proposed controls align with PCI-DSS standards.",
+      "reference_context": {
+        "architecture": "Customer data is stored in a single unencrypted SQL database. Payment processing is handled by a third-party script embedded directly in the HTML. The server uses a single instance without failover capability.",
+        "standards": "PCI-DSS, GDPR"
+      },
+      "evaluation_criteria": [
+        "Identification: Are the three vulnerabilities accurately identified from the architecture description?",
+        "Mitigation: Are the proposed technical controls specific and effective?",
+        "Compliance: Do the solutions align with the specified security standards?"
+      ],
+      "student_answer": "**Vulnerability 1:** Unencrypted SQL Database Storage\n\n*   **Description:** Storing customer data, including personally identifiable information (PII) and payment details (potentially), in an unencrypted SQL database exposes it to unauthorized access if the database server is compromised.\n*   **Mitigation:** Implement Transparent Data Encryption (TDE) on the SQL database. This will encrypt the entire database at rest, protecting data even if the server is physically compromised. Ensure the encryption key management follows PCI-DSS guidelines.\n\n**Vulnerability 2:** Embedded Third-Party Payment Script\n\n*   **Description:** Embedding the payment processing script directly in the HTML introduces significant security risks. It’s vulnerable to cross-site scripting (XSS) attacks, code injection, and potential manipulation of the payment flow.\n*   **Mitigation:** Utilize a PCI-DSS compliant Payment Gateway. Integrate the website with the gateway’s secure API for all payment transactions. Avoid embedding any payment-related code directly in the website's HTML.\n\n**Vulnerability 3:** Single Server Architecture Without Redundancy\n\n*   **Description:** A single server architecture without failover creates a single point of failure. If the server experiences downtime or is compromised, the entire store becomes unavailable, impacting both customer experience and potentially exposing data.\n*   **Mitigation:** Implement a redundant server architecture with automatic failover. Utilize a load balancer to distribute traffic across multiple servers. Implement database replication for disaster recovery and high availability, adhering to PCI-DSS requirements for data availability.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The student submission correctly identifies all three critical vulnerabilities (unencrypted data, insecure payment integration, and lack of redundancy) and proposes specific, industry-standard technical controls (TDE, PCI-compliant gateway API, load balancing/replication). The response aligns perfectly with PCI-DSS and GDPR requirements, uses precise terminology, and is structured clearly. No gaps or errors were found; the answer is professional and ready for stakeholder review."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Initiate online auctions through auction hosting sites or auction management software.",
+      "task_type": "Auction Strategy & Execution",
+      "user_prompt": "Plan a 7-day online auction for a limited edition sneaker collection. The wholesale cost is $150 per pair, and the target net profit margin is 30% after a 12% platform fee. The auction starts at $100. Calculate the minimum bid increment strategy and the 'Buy It Now' price. Draft a 150-word auction description that includes SEO keywords ('limited edition', 'sneaker', 'collectible') and adheres to a professional tone.",
+      "reference_context": {
+        "wholesale_cost": 150.0,
+        "target_margin": 0.3,
+        "platform_fee": 0.12,
+        "start_bid": 100.0,
+        "duration": 7,
+        "product": "Limited Edition Sneaker"
+      },
+      "evaluation_criteria": [
+        "Pricing Accuracy: Is the 'Buy It Now' price calculated correctly to meet the margin and fee requirements?",
+        "Strategy: Is the bid increment strategy logical for the price point?",
+        "Content: Does the description include required SEO keywords and maintain a professional tone?"
+      ],
+      "student_answer": "**Minimum Bid Increment:** $10\n\n**Buy It Now Price:** $210 (Calculated as: Wholesale Cost * (1 + Platform Fee) * (1 + Target Margin) = ($150 * 1.12 * 1.3) = $218.40, rounded to $210)\n\n---\n\n**Auction Description:**\n\nSecure a rare piece of sneaker history with our exclusive 7-day online auction! Featuring a **limited edition** sneaker collection, these highly sought-after shoes are perfect for any serious **sneaker** enthusiast or **collectible** aficionado. Each pair represents a unique release and boasts exceptional design and limited production.  Wholesale cost was $150, and we’re offering these exceptional sneakers at a premium.  The auction starts at $100, with a $10 bid increment. Don’t miss your chance to own a piece of sneaker culture.  Bidding closes in 7 days.  Act fast – these won’t last long!  #LimitedEditionSneakers #SneakerAuction #CollectibleShoes #RareSneakers",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails on Correctness and Domain Accuracy due to a fundamental mathematical error in the Buy It Now calculation. The student multiplied the cost by the fee and margin factors sequentially, resulting in $218.40, but then arbitrarily rounded it down to $210 without explaining how this meets the 30% net margin requirement after fees. The correct formula requires dividing the target price by (1 - fee) to isolate net revenue, or solving for Price where (Price * (1 - 0.12)) - Cost = 0.30 * (Price * (1 - 0.12)). The resulting price of $210 yields a margin of only ~23%, failing the core constraint. Additionally, the auction description unprofessionally discloses the wholesale cost ($150) to bidders, which is a critical error in retail strategy that destroys perceived value and margin leverage. The bid increment strategy is also weak, lacking a tiered approach suitable for a 7-day auction. While the text is clear (Clarity 4), the strategic and mathematical flaws prevent it from being usable (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Transfer digital media, such as music, video, or software, to customers via the Internet.",
+      "task_type": "Digital Delivery & Customer Support",
+      "user_prompt": "A customer has reported that they purchased a digital software license but have not received the download link. Draft a professional email response acknowledging the issue, explaining the standard delivery process (including potential email filtering), and providing a direct link to a secure download portal. The email must also include a brief troubleshooting step for the customer to check their spam folder and a guarantee of a refund if the issue is not resolved within 24 hours.",
+      "reference_context": {
+        "download_portal_url": "https://secure.store.com/downloads/verify",
+        "company_policy": "Refund guaranteed if issue not resolved in 24 hours",
+        "tone": "Professional, empathetic, solution-oriented"
+      },
+      "evaluation_criteria": [
+        "Tone: Is the email professional and empathetic?",
+        "Clarity: Are the troubleshooting steps and download link clearly presented?",
+        "Policy Adherence: Does the email correctly state the refund guarantee and delivery process?"
+      ],
+      "student_answer": "Subject: Regarding Your Software License Download\n\nDear [Customer Name],\n\nThank you for contacting us regarding your digital software license. We understand your frustration at not yet receiving the download link, and we sincerely apologize for any inconvenience this may cause.\n\nOur standard delivery process involves sending a download link directly to the email address associated with your purchase. Occasionally, these emails may be filtered as spam or promotional content, so we recommend checking your spam or junk folder.\n\nTo expedite the process, you can download your software license directly from this secure portal: [https://secure.store.com/downloads/verify](https://secure.store.com/downloads/verify)\n\nPlease allow a few moments for the link to activate.\n\nIf you still haven’t received the download link within the next 24 hours, please don’t hesitate to reply to this email, and we will immediately issue a full refund as per our company policy.\n\nSincerely,\n\nThe [Your Company Name] Team",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly addresses the core task requirements: acknowledging the issue, explaining email filtering, providing the specific download portal URL, and including the 24-hour refund guarantee. However, the refund condition is slightly imprecise; it states 'If you still haven't received the download link within the next 24 hours,' which implies a wait period after sending the email, whereas the prompt implies a guarantee that the issue will be resolved (or refunded) within 24 hours of the report. Additionally, the instruction to 'allow a few moments' slightly contradicts the urgency of the 24-hour guarantee. The tone is professional and the structure is clear, but these minor logical friction points prevent a perfect score on Correctness, Completeness, and Best Practices. The output is nearly ready for use but requires minor refinement on the refund timeline logic."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Investigate sources, such as auctions, estate sales, liquidators, wholesalers, or trade shows for new items, used items, or collectibles.",
+      "task_type": "Inventory Sourcing & Pricing",
+      "user_prompt": "Analyze the provided CSV of 50 potential inventory items including wholesale cost, estimated shipping, and competitor pricing. Calculate a final retail price for each item that ensures a 25% net profit margin after a 15% platform transaction fee and a fixed $4.50 shipping cost. Output the result as a JSON list containing the item ID, original cost, calculated retail price, and projected margin percentage.",
+      "reference_context": {
+        "items": [
+          {
+            "id": "SKU-001",
+            "wholesale_cost": 12.5,
+            "competitor_avg": 24.0
+          },
+          {
+            "id": "SKU-002",
+            "wholesale_cost": 45.0,
+            "competitor_avg": 89.99
+          }
+        ],
+        "formula": "Retail Price = (Wholesale Cost + Shipping Cost) / (1 - (Platform Fee % + Target Margin %))"
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the mathematical calculations for margin and fees accurate?",
+        "Completeness: Did the model process all 50 items and include all required fields in the output?",
+        "Best Practices: Is the pricing strategy competitive yet profitable, and does the JSON output strictly follow the schema?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"id\": \"SKU-001\",\n    \"original_cost\": 12.5,\n    \"retail_price\": 43.75,\n    \"margin_percentage\": 36.25\n  },\n  {\n    \"id\": \"SKU-002\",\n    \"original_cost\": 45.0,\n    \"retail_price\": 137.50,\n    \"margin_percentage\": 31.25\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        5,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails fundamentally on all substantive dimensions. First, the student ignored the instruction to analyze 50 items, providing only 2. Second, the mathematical application is incorrect: the provided formula requires dividing by (1 - (0.15 + 0.25)) = 0.6, but the student appears to have used a simple markup or incorrect denominator, resulting in wrong retail prices and margin percentages. Third, the student failed to incorporate the fixed $4.50 shipping cost into the cost base as required by the prompt's context. Fourth, the output lacks any analysis of competitor pricing, which is a key part of the task context. While the JSON syntax is valid (Dimension 5), the content is factually wrong and incomplete, making it unusable for a client (Dimension 1)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Participate in online forums or conferences to stay abreast of online retailing trends, techniques, or security threats.",
+      "task_type": "Trend Analysis & Strategy",
+      "user_prompt": "Review the provided summary of recent online retail trends and security threats. Draft a strategic memo for the operations team that identifies three actionable opportunities to capitalize on current trends and two specific security protocols to implement immediately. Ensure the tone is professional and the recommendations align with the provided threat assessment.",
+      "reference_context": {
+        "trends": [
+          "Surge in mobile-first checkout experiences",
+          "Increased demand for sustainable packaging",
+          "Growth in social commerce integration"
+        ],
+        "threats": [
+          "Rise in credential stuffing attacks",
+          "New phishing campaigns targeting logistics partners"
+        ],
+        "tone_guidelines": "Professional, concise, and action-oriented."
+      },
+      "evaluation_criteria": [
+        "Relevance: Do the identified opportunities directly address the provided trends?",
+        "Security: Are the proposed protocols specific to the listed threats?",
+        "Tone: Does the memo adhere to the professional tone guidelines?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Operations Team\n**FROM:** Online Merchants\n**DATE:** October 26, 2023\n**SUBJECT:** Strategic Initiatives – Retail Trends & Security\n\n**Executive Summary:** This memo outlines strategic opportunities and immediate security protocols based on recent online retail trends and identified threats.\n\n**Strategic Opportunities:**\n\n1.  **Mobile Checkout Optimization:** Capitalize on the “Surge in mobile-first checkout experiences” by prioritizing a seamless and intuitive mobile checkout process. Invest in A/B testing and user experience improvements to reduce cart abandonment and increase mobile conversion rates.\n\n2.  **Sustainable Packaging Promotion:** Leverage the “Increased demand for sustainable packaging” by highlighting eco-friendly packaging options to customers. Implement a clear labeling system and promote these choices prominently on product pages and during checkout.\n\n3.  **Social Commerce Integration Expansion:** Expand social commerce integration, particularly on platforms like Instagram and TikTok, to reach new customer segments and drive sales. Focus on shoppable posts and streamlined purchasing flows.\n\n**Immediate Security Protocols:**\n\n1.  **Multi-Factor Authentication (MFA) Enforcement:** Implement mandatory MFA for all employee accounts, particularly those with access to sensitive data and systems, to mitigate “Rise in credential stuffing attacks.”\n\n2.  **Logistics Partner Security Audits:** Conduct immediate security audits of all logistics partners to assess their vulnerability to “New phishing campaigns targeting logistics partners.” Require updated security protocols and verification procedures.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly addresses all task requirements, identifying three specific opportunities and two security protocols aligned with the provided context. The tone is professional and the structure is clear. However, the 'FROM' field lists 'Online Merchants' rather than a specific role or name, which is a minor professional imprecision. Additionally, while the recommendations are sound, they lack the granular implementation details (e.g., specific timelines, KPIs, or budget considerations) that would elevate the work to a flawless, industry-standard level (5) for a Senior Specialist. The 'Additional Checks' section in the prompt regarding platform fees and profit margins is irrelevant to the specific task of drafting a memo on trends and security, so it does not constitute an error in the student's work."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Integrate online retailing strategy with physical or catalogue retailing operations.",
+      "task_type": "Omnichannel Integration",
+      "user_prompt": "Develop a unified promotional calendar for the upcoming quarter that aligns online flash sales with in-store inventory clearance events. The calendar must specify dates, channels (online vs. physical), and inventory targets. Ensure that online promotions do not cannibalize physical store margins by adjusting discount depths based on the provided margin data.",
+      "reference_context": {
+        "online_margin": 35,
+        "physical_margin": 45,
+        "inventory_targets": {
+          "online": "Clear 20% of Q3 stock",
+          "physical": "Clear 15% of Q3 stock"
+        },
+        "constraints": "Online discounts cannot exceed 30% if physical store inventory is low."
+      },
+      "evaluation_criteria": [
+        "Alignment: Does the calendar successfully integrate online and physical strategies?",
+        "Margin Protection: Are discount depths adjusted correctly to protect physical store margins?",
+        "Feasibility: Are the inventory targets realistic and clearly defined?"
+      ],
+      "student_answer": "```json\n{\n  \"promotional_calendar\": {\n    \"quarter\": \"Q4\",\n    \"theme\": \"Fall Refresh & Clearance\",\n    \"calendar\": [\n      {\n        \"week\": 1,\n        \"dates\": \"Oct 23 - Oct 29\",\n        \"channel\": \"Online & Physical\",\n        \"promotion_type\": \"Early Bird Clearance - Online\",\n        \"discount_depth\": \"20% Off\",\n        \"inventory_target\": \"Online: 5% of Q3 stock, Physical: 3% of Q3 stock\",\n        \"margin_adjustment\": \"Online: 20% discount, Physical: 22.22% discount\"\n      },\n      {\n        \"week\": 2,\n        \"dates\": \"Oct 30 - Nov 5\",\n        \"channel\": \"Physical Only\",\n        \"promotion_type\": \"In-Store Flash Sale - Seasonal Items\",\n        \"discount_depth\": \"30% Off\",\n        \"inventory_target\": \"Physical: 8% of Q3 stock\",\n        \"margin_adjustment\": \"30% discount\"\n      },\n      {\n        \"week\": 3,\n        \"dates\": \"Nov 6 - Nov 12\",\n        \"channel\": \"Online & Physical\",\n        \"promotion_type\": \"Tech & Gadget Clearance - Online\",\n        \"discount_depth\": \"25% Off\",\n        \"inventory_target\": \"Online: 7% of Q3 stock, Physical: 5% of Q3 stock\",\n        \"margin_adjustment\": \"Online: 25% discount, Physical: 27.78% discount\"\n      },\n      {\n        \"week\": 4,\n        \"dates\": \"Nov 13 - Nov 19\",\n        \"channel\": \"Physical Only\",\n        \"promotion_type\": \"Home Goods Blitz - In-Store\",\n        \"discount_depth\": \"35% Off\",\n        \"inventory_target\": \"Physical: 7% of Q3 stock\",\n        \"margin_adjustment\": \"35% discount\"\n      },\n      {\n        \"week\": 5,\n        \"dates\": \"Nov 20 - Nov 26\",\n        \"channel\": \"Online & Physical\",\n        \"promotion_type\": \"Apparel Refresh - Online\",\n        \"discount_depth\": \"30% Off\",\n        \"inventory_target\": \"Online: 8% of Q3 stock, Physical: 6% of Q3 stock\",\n        \"margin_adjustment\": \"Online: 30% discount, Physical: 33.33% discount\"\n      },\n      {\n        \"week\": 6,\n        \"dates\": \"Nov 27 - Dec 3\",\n        \"channel\": \"Physical Only\",\n        \"promotion_type\": \"Final Clearance - All Departments\",\n        \"discount_depth\": \"40% Off\",\n        \"inventory_target\": \"Physical: 10% of Q3 stock\",\n        \"margin_adjustment\": \"40% discount\"\n      },\n      {\n        \"week\": 7,\n        \"dates\": \"Dec 4 - Dec 10\",\n        \"channel\": \"Online & Physical\",\n        \"promotion_type\": \"Holiday Gift Grab - Online\",\n        \"discount_depth\": \"20% Off\",\n        \"inventory_target\": \"Online: 5% of Q3 stock, Physical: 3% of Q3 stock\",\n        \"margin_adjustment\": \"Online: 20% discount, Physical: 22.22% discount\"\n      }\n    ]\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements and violates the output constraints. 1) Correctness: The prompt explicitly asks for a Q3 inventory clearance calendar, but the student generated a Q4 calendar. 2) Completeness: The student ignored the specific constraint that 'Online discounts cannot exceed 30% if physical store inventory is low' and instead applied arbitrary discount depths (e.g., 35% and 40%) that violate margin logic. 3) Domain Accuracy: The 'margin_adjustment' field contains nonsensical calculations (e.g., applying a 20% discount and claiming a 22.22% adjustment) that do not align with the provided margin data (35% vs 45%). 4) Output Format: The student wrapped the JSON in markdown code fences ( ... ), violating the strict instruction to output ONLY the JSON object without markdown. 5) The 'Additional Checks' regarding platform fees and competitor pricing were completely ignored. The output is unusable as a professional deliverable."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Create or distribute offline promotional material, such as brochures, pamphlets, business cards, stationary, or signage.",
+      "task_type": "Content Creation & Compliance",
+      "user_prompt": "Draft the copy for a new product brochure page and generate a list of 10 SEO keywords for the corresponding online landing page. The product is a 'Handcrafted Leather Wallet'. Ensure the brochure copy adheres to the brand voice guidelines and the SEO keywords are optimized for high-intent search queries. Also, verify that the proposed image descriptions comply with the platform's image guidelines.",
+      "reference_context": {
+        "product_name": "Handcrafted Leather Wallet",
+        "brand_voice": "Sophisticated, durable, and timeless",
+        "seo_requirements": "Must include long-tail keywords related to 'gifts for men' and 'leather accessories'",
+        "image_guidelines": "No text overlays, minimum resolution 1000x1000px, white background only"
+      },
+      "evaluation_criteria": [
+        "SEO Compliance: Are the keywords relevant and optimized for high-intent search?",
+        "Brand Voice: Does the brochure copy reflect the specified sophisticated and timeless tone?",
+        "Guideline Adherence: Do the image descriptions strictly follow the platform's image guidelines?"
+      ],
+      "student_answer": "**Brochure Copy:**\n\n**(Image: Close-up shot of the wallet showcasing the stitching and leather texture)**\n\n**Experience Timeless Craftsmanship.**\n\nIntroducing the Handcrafted Leather Wallet – a testament to enduring quality and refined style. Meticulously crafted from full-grain leather, this wallet isn’t just an accessory; it’s an investment. Each stitch is carefully placed, creating a durable and elegant piece designed to age beautifully with you. \n\nInside, you’ll find thoughtfully designed compartments for cards, cash, and ID, ensuring effortless organization.  This wallet is built to last a lifetime, a legacy piece that reflects your discerning taste.  Available in rich, classic colors – Dark Brown, Cognac, and Black – it’s the perfect gift for the man who appreciates enduring quality.\n\n**Elevate your everyday carry. Order yours today.**\n\n**(Small image: Lifestyle shot of the wallet in a pocket)**\n\n---\n\n**SEO Keywords:**\n\n1.  Handcrafted Leather Wallet\n2.  Genuine Leather Wallet Men\n3.  Best Leather Wallet for Gifts\n4.  Durable Leather Wallet\n5.  Slim Leather Wallet for Men\n6.  Classic Leather Wallet\n7.  Leather Wallet with Card Slots\n8.  High-Quality Leather Wallet\n9.  Leather Accessories for Men\n10. Gifts for Men Leather",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        4,
+        4,
+        4,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "The submission successfully addresses the core creative tasks: the brochure copy aligns well with the 'sophisticated, durable, and timeless' brand voice, and the image descriptions are relevant. The SEO keywords are mostly appropriate, though keyword #10 ('Gifts for Men Leather') is grammatically awkward and less optimized than the others. However, the submission fails the 'Completeness' and 'Correctness' dimensions regarding the 'Additional Checks' section. The prompt explicitly requested verification of platform fee percentages, profit margin calculations, and competitor price edge cases. The student provided no financial analysis, pricing calculations, or notes on these critical e-commerce operations tasks, treating the prompt as a creative writing exercise only. This omission of required analytical components prevents a score of 5 and limits the 'Autonomy' score, as the output is not a complete deliverable for an operations specialist."
+    }
+  ]
+}

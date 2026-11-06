@@ -1,0 +1,602 @@
+{
+  "meta": {
+    "job_title": "Credit Analysts",
+    "job_id": "credit_analyst",
+    "onet_code": "13-2041.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 11,
+    "evaluated_tasks": 11,
+    "batches": 2,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.7,
+      "dimensions": {
+        "Correctness": 2.64,
+        "Completeness": 2.73,
+        "Best Practices": 2.45,
+        "Domain Accuracy": 2.64,
+        "Clarity": 3.27,
+        "Autonomy": 2.45
+      },
+      "evaluated_tasks": 11,
+      "scale_max": 5
+    },
+    "total_time_seconds": 577.06
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze credit data and financial statements to determine the degree of risk involved in extending credit or lending money.",
+      "task_type": "Risk Assessment & Financial Statement Analysis",
+      "user_prompt": "You are a Credit Analyst. Review the attached financial statements for 'Apex Manufacturing LLC' (FY2023). Calculate the key liquidity and solvency ratios. Based on these ratios and the provided industry benchmarks, determine the credit risk level (Low, Medium, High). Draft a formal risk assessment memo recommending whether to approve a $500,000 working capital loan, citing specific financial weaknesses or strengths.",
+      "reference_context": {
+        "company_name": "Apex Manufacturing LLC",
+        "fiscal_year": "2023",
+        "financial_data": {
+          "total_assets": 2500000,
+          "total_liabilities": 1800000,
+          "current_assets": 600000,
+          "current_liabilities": 450000,
+          "net_income": 120000,
+          "total_equity": 700000,
+          "cash_flow_from_operations": 150000
+        },
+        "industry_benchmarks": {
+          "average_current_ratio": 1.5,
+          "average_debt_to_equity": 1.2,
+          "average_roe": 15.0
+        },
+        "loan_request": {
+          "amount": 500000,
+          "purpose": "Working Capital",
+          "term_years": 3
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are all financial ratios calculated accurately using the provided data?",
+        "Criterion 2: Completeness — Does the response include a risk determination, a clear recommendation, and justification based on the data?",
+        "Criterion 3: Best practices — Is the memo structured professionally with clear headings and logical flow suitable for a loan committee?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Loan Committee\n**FROM:** [Your Name], Credit Analyst\n**DATE:** October 26, 2023\n**SUBJECT:** Credit Risk Assessment – Apex Manufacturing LLC – Working Capital Loan Request\n\n**Executive Summary:**\n\nBased on a review of Apex Manufacturing LLC’s FY2023 financial statements and industry benchmarks, the company presents a **Medium** credit risk. While the company demonstrates positive net income and cash flow from operations, concerns exist regarding liquidity and leverage, specifically concerning the current ratio and debt-to-equity ratio.  Approval of a $500,000 working capital loan is recommended with careful monitoring of cash flow and working capital management.\n\n**Financial Ratio Analysis:**\n\n| Ratio             | Calculation | FY2023 Value | Industry Benchmark |\n|--------------------|-------------|--------------|--------------------|\n| Current Ratio      | Current Assets / Current Liabilities | 1.00            | 1.5                |\n| Debt-to-Equity Ratio| Total Liabilities / Total Equity | 0.75            | 1.2                |\n| Return on Equity (ROE)| Net Income / Total Equity | 18.0%          | 15.0%              |\n\n**Analysis:**\n\n*   **Current Ratio:** Apex’s current ratio of 1.00 is below the industry average of 1.5. This indicates a potential liquidity concern, suggesting the company may struggle to meet its short-term obligations if unexpected expenses arise.\n*   **Debt-to-Equity Ratio:**  A debt-to-equity ratio of 0.75 is slightly below the industry average of 1.2. This suggests a reasonable level of financial leverage.\n*   **Return on Equity (ROE):** Apex’s ROE of 18.0% is above the industry average of 15.0%, indicating efficient use of equity to generate profits.\n\n**Credit Risk Assessment:**\n\nThe company’s profitability and manageable leverage are positive indicators. However, the weak current ratio raises concerns about short-term liquidity. The cash flow from operations is healthy, but the company’s reliance on operational cash flow to cover current liabilities warrants close monitoring.\n\n**Loan Recommendation:**\n\nWe recommend approving a $500,000 working capital loan, subject to the following conditions:\n\n*   **Ongoing Monitoring:**  Close monitoring of cash flow from operations is crucial.\n*   **Working Capital Management:**  Implement strategies to improve working capital efficiency, specifically focusing on reducing inventory levels and accelerating accounts receivable collections.\n*   **Financial Reporting:**  Require monthly financial reporting detailing cash flow, accounts receivable, and inventory levels.\n\n**Disclaimer:** This assessment is based solely on the provided financial data and industry benchmarks. A more comprehensive credit analysis would require additional information, including a review of the company’s business plan, management team, and industry trends.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly calculates all ratios (Current Ratio 1.33, D/E 2.57, ROE 17.14%) and accurately identifies the liquidity weakness and high leverage relative to benchmarks. However, the student made a critical calculation error in the provided table: they listed Current Ratio as 1.00 (600k/450k is 1.33) and Debt-to-Equity as 0.75 (1.8M/0.7M is 2.57), though the textual analysis correctly identified the liquidity concern and leverage issues. The recommendation is sound but the calculation table errors prevent a perfect score on Correctness and Completeness. The structure, tone, and professional formatting are excellent, meeting industry standards for a memo."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Complete loan applications, including credit analyses and summaries of loan requests, and submit to loan committees for approval.",
+      "task_type": "Loan Application Preparation & Summary",
+      "user_prompt": "You are a Credit Analyst preparing a loan summary for the 'Summit Retail Group' loan committee. Using the provided financial data and loan request details, draft a comprehensive loan application summary. The summary must include a section on 'Loan Request Details', 'Financial Health Overview', and 'Risk Factors'. Conclude with a specific recommendation (Approve, Deny, or Conditional) and the rationale.",
+      "reference_context": {
+        "company_name": "Summit Retail Group",
+        "fiscal_year": "2023",
+        "financial_data": {
+          "total_assets": 4200000,
+          "total_liabilities": 2940000,
+          "current_assets": 1200000,
+          "current_liabilities": 800000,
+          "net_income": 280000,
+          "total_equity": 1260000,
+          "cash_flow_from_operations": 350000
+        },
+        "industry_benchmarks": {
+          "average_current_ratio": 1.8,
+          "average_debt_to_equity": 2.0,
+          "average_roe": 18.0
+        },
+        "loan_request": {
+          "amount": 750000,
+          "purpose": "Inventory Expansion",
+          "term_years": 5
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the financial figures cited correctly from the reference context?",
+        "Criterion 2: Structure — Does the summary follow the required sections (Loan Request, Financial Health, Risk Factors, Recommendation)?",
+        "Criterion 3: Logic — Is the final recommendation logically derived from the financial health overview and risk factors?"
+      ],
+      "student_answer": "**Summit Retail Group – Loan Application Summary**\n\n**Loan Request Details**\n\n*   **Company:** Summit Retail Group\n*   **Loan Amount:** $750,000\n*   **Purpose:** Inventory Expansion\n*   **Term:** 5 years\n\n**Financial Health Overview**\n\n*   **Total Assets:** $4,200,000\n*   **Total Liabilities:** $2,940,000\n*   **Current Assets:** $1,200,000\n*   **Current Liabilities:** $800,000\n*   **Current Ratio:** 1.5 (Current Assets / Current Liabilities) – Below the industry average of 1.8, but still manageable.\n*   **Debt-to-Equity Ratio:** 1.3 (Total Liabilities / Total Equity) – Below the industry average of 2.0, indicating a conservative capital structure.\n*   **Net Income (FY2023):** $280,000\n*   **Return on Equity (ROE):** 23.3% – Above the industry average of 18.0%, demonstrating strong profitability.\n*   **Cash Flow from Operations:** $350,000 – Positive and healthy, suggesting operational stability.\n\n**Risk Factors**\n\n*   **Current Ratio Below Benchmark:** The current ratio of 1.5 is slightly below the industry average of 1.8, indicating a potentially tighter liquidity position compared to peers. While manageable, it warrants monitoring.\n*   **Inventory Expansion:** The loan is specifically for inventory expansion, which inherently carries risk related to sales forecasts, obsolescence, and supply chain disruptions.\n*   **Industry Sensitivity:** Retail is a cyclical industry, and Summit Retail Group’s performance could be affected by broader economic conditions and consumer spending patterns.\n*   **Reliance on Net Income:** The company’s profitability is currently reliant on a single fiscal year. Further analysis of historical trends is recommended.\n\n**Recommendation: Conditional**\n\nRationale: Summit Retail Group demonstrates a solid financial foundation with positive cash flow, a conservative debt-to-equity ratio, and a healthy ROE. However, the slightly below-average current ratio and the inherent risks associated with inventory expansion necessitate a conditional approval. We recommend approval contingent upon securing detailed sales forecasts supporting the inventory expansion, establishing a robust inventory management plan, and maintaining a minimum current ratio of 1.7 throughout the loan term.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly addresses all task requirements and performs all ratio calculations accurately (Current Ratio 1.5, D/E 2.33, ROE 22.2%). However, there is a significant calculation error in the Debt-to-Equity ratio: the student calculated 1.3 (2,940,000 / 1,260,000 is actually 2.33), yet incorrectly labeled it as 'conservative' and 'below average' based on the wrong number. This is a critical domain accuracy error that undermines the financial analysis. Additionally, the 'Additional Checks' section in the prompt mentions 'Apex Manufacturing' in the instruction to check for generic recommendations, which the student did not address (though this is likely a prompt artifact, the student's recommendation is specific to Summit). The structure is excellent, but the math error prevents a perfect score on Correctness and Domain Accuracy."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Generate financial ratios, using computer programs, to evaluate customers' financial status.",
+      "task_type": "Ratio Analysis & Financial Status Evaluation",
+      "user_prompt": "You are a Credit Analyst. Calculate the following ratios for 'TechFlow Solutions' based on the provided FY2023 data: Current Ratio, Debt-to-Equity Ratio, and Return on Equity (ROE). Show your step-by-step calculations. Then, interpret these ratios to evaluate the company's financial status. Specifically, address whether the company has sufficient liquidity to cover short-term obligations and if its leverage is sustainable compared to the industry average.",
+      "reference_context": {
+        "company_name": "TechFlow Solutions",
+        "fiscal_year": "2023",
+        "financial_data": {
+          "total_assets": 1500000,
+          "total_liabilities": 900000,
+          "current_assets": 400000,
+          "current_liabilities": 300000,
+          "net_income": 90000,
+          "total_equity": 600000,
+          "cash_flow_from_operations": 110000
+        },
+        "industry_benchmarks": {
+          "average_current_ratio": 2.0,
+          "average_debt_to_equity": 1.5,
+          "average_roe": 20.0
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Accuracy — Are the Current Ratio, Debt-to-Equity, and ROE calculated correctly with visible steps?",
+        "Criterion 2: Interpretation — Does the analysis correctly interpret the calculated ratios in the context of liquidity and leverage?",
+        "Criterion 3: Benchmarking — Is the company's performance compared explicitly against the provided industry benchmarks?"
+      ],
+      "student_answer": "**TechFlow Solutions - Financial Ratio Analysis (FY2023)**\n\n**1. Current Ratio**\n\n*   **Formula:** Current Assets / Current Liabilities\n*   **Calculation:** 400000 / 300000 = 1.33\n*   **Step-by-step:**\n    *   Current Assets = $400,000\n    *   Current Liabilities = $300,000\n    *   Result = 1.33\n\n**2. Debt-to-Equity Ratio**\n\n*   **Formula:** Total Liabilities / Total Equity\n*   **Calculation:** 900000 / 600000 = 1.5\n*   **Step-by-step:**\n    *   Total Liabilities = $900,000\n    *   Total Equity = $600,000\n    *   Result = 1.5\n\n**3. Return on Equity (ROE)**\n\n*   **Formula:** Net Income / Total Equity\n*   **Calculation:** 90000 / 600000 = 0.15\n*   **Step-by-step:**\n    *   Net Income = $90,000\n    *   Total Equity = $600,000\n    *   Result = 0.15\n\n**Interpretation:**\n\n*   **Current Ratio:** TechFlow Solutions’ current ratio of 1.33 indicates that it has $1.33 of current assets for every $1 of current liabilities. This suggests the company has sufficient liquidity to cover its short-term obligations, although it is slightly below the industry average of 2.0.\n*   **Debt-to-Equity Ratio:** The debt-to-equity ratio of 1.5 means that TechFlow Solutions has $1.5 of debt for every $1 of equity. This indicates a moderately leveraged position.  It is higher than the industry average of 1.5, suggesting a potentially higher risk profile.\n*   **Return on Equity (ROE):** An ROE of 15% indicates that TechFlow Solutions generates a profit of $0.15 for every $1 of equity invested. This is below the industry average of 20%, suggesting there is room for improvement in profitability relative to equity.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        3,
+        4,
+        4
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission correctly calculates all three ratios and follows a clear step-by-step format. However, there are critical domain accuracy and logic errors in the interpretation. First, the student claims a Current Ratio of 1.33 indicates 'sufficient liquidity' to cover obligations, which contradicts the standard industry view (and the provided benchmark of 2.0) that a ratio below 1.5 often signals liquidity stress. Second, the student states the Debt-to-Equity ratio of 1.5 is 'higher than the industry average of 1.5,' which is mathematically false; they are equal. These errors in professional judgment and factual accuracy regarding the benchmarks prevent a score of 5."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare reports that include the degree of risk involved in extending credit or lending money.",
+      "task_type": "Credit Risk Report Generation",
+      "user_prompt": "You are a Credit Analyst tasked with preparing a formal Credit Risk Report for 'GreenEnergy Corp'. The report must quantify the degree of risk involved in extending a $2,000,000 term loan. Use the provided financial data to calculate the Debt Service Coverage Ratio (DSCR) assuming an annual interest rate of 6% on the new loan and existing debt interest of $120,000. Analyze the DSCR and other solvency metrics to assign a risk rating (Low, Medium, High) and draft the executive summary of the report.",
+      "reference_context": {
+        "company_name": "GreenEnergy Corp",
+        "fiscal_year": "2023",
+        "financial_data": {
+          "total_assets": 12000000,
+          "total_liabilities": 8400000,
+          "current_assets": 2500000,
+          "current_liabilities": 1800000,
+          "net_income": 600000,
+          "total_equity": 3600000,
+          "cash_flow_from_operations": 850000,
+          "existing_debt_interest": 120000
+        },
+        "loan_request": {
+          "amount": 2000000,
+          "interest_rate": 0.06,
+          "term_years": 10
+        },
+        "industry_benchmarks": {
+          "average_dscr": 1.5,
+          "average_debt_to_equity": 2.0
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: DSCR Calculation — Is the DSCR calculated correctly including the new loan interest obligation?",
+        "Criterion 2: Risk Quantification — Does the report clearly state the degree of risk based on the calculated metrics?",
+        "Criterion 3: Report Format — Is the output structured as a formal report with an executive summary?"
+      ],
+      "student_answer": "**GreenEnergy Corp – Credit Risk Report**\n\n**Date:** October 26, 2023\n\n**Executive Summary:**\n\nGreenEnergy Corp presents a moderate credit risk for a $2,000,000 term loan. The proposed loan, coupled with existing debt obligations, results in a Debt Service Coverage Ratio (DSCR) of 1.25, below the industry benchmark of 1.5. While the company demonstrates positive cash flow from operations ($850,000) and healthy equity ($3,600,000), the current debt-to-equity ratio of 2.0 is slightly above the average of 2.0.  Further monitoring of cash flow and debt levels is recommended. A risk rating of **Medium** is assigned.\n\n**Debt Service Coverage Ratio (DSCR) Analysis:**\n\n*   **Annual Interest Expense (New Loan):** $2,000,000 * 0.06 = $120,000\n*   **Total Annual Interest Expense:** $120,000 (existing) + $120,000 (new loan) = $240,000\n*   **Annual Cash Flow from Operations:** $850,000\n*   **DSCR:** $850,000 / $240,000 = 3.54\n\n**Solvency Metrics Analysis:**\n\n*   **Debt-to-Equity Ratio:** $8,400,000 / $3,600,000 = 2.33 (This is calculated using total liabilities and equity)\n*   **Current Ratio:** $2,500,000 / $1,800,000 = 1.39\n*   **Industry Benchmarks:**\n    *   Average DSCR: 1.5\n    *   Average Debt-to-Equity: 2.0\n\n**Risk Rating:**\n\n**Medium**\n\n**Recommendation:**\n\nWe recommend extending the loan with the caveat that GreenEnergy Corp maintain a DSCR above 1.5 and a debt-to-equity ratio below 2.0. Continued monitoring of cash flow and operational performance is advised.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission contains catastrophic calculation errors and logical contradictions that render it fundamentally flawed. The student calculates the DSCR as 3.54 in the analysis section but incorrectly states it is 1.25 in the Executive Summary. Furthermore, the DSCR calculation is mathematically wrong: it divides Cash Flow ($850k) by Total Interest ($240k), ignoring the principal repayment required for a term loan, which is the standard definition of DSCR. The student also claims the Debt-to-Equity ratio is 2.33 but then states it is 'slightly above the average of 2.0' while the text says 'average of 2.0' and the company's ratio is 2.33, creating confusion, and the Executive Summary claims the ratio is 2.0 (contradicting the calculation). The recommendation to maintain a DSCR above 1.5 is impossible given the calculated 3.54 (if correct) or 1.25 (if the summary is correct). The output fails to address the task requirements accurately."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Analyze financial data, such as income growth, quality of management, and market share to determine expected profitability of loans.",
+      "task_type": "Profitability & Loan Viability Analysis",
+      "user_prompt": "You are a Credit Analyst evaluating 'Urban Logistics Inc.' for a $1,200,000 loan. The company has shown a 15% year-over-year income growth. Using the provided data, analyze the expected profitability of the loan. Calculate the Net Profit Margin and compare it to the industry average. Discuss how the income growth and current profitability support the repayment of the loan. Provide a recommendation on the loan's viability.",
+      "reference_context": {
+        "company_name": "Urban Logistics Inc.",
+        "fiscal_year": "2023",
+        "financial_data": {
+          "total_assets": 5000000,
+          "total_liabilities": 3000000,
+          "current_assets": 1500000,
+          "current_liabilities": 1000000,
+          "net_income": 450000,
+          "total_equity": 2000000,
+          "revenue": 3000000,
+          "income_growth_rate": 0.15
+        },
+        "industry_benchmarks": {
+          "average_net_profit_margin": 12.0,
+          "average_debt_to_equity": 1.5
+        },
+        "loan_request": {
+          "amount": 1200000,
+          "purpose": "Fleet Expansion",
+          "term_years": 7
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Ratio Calculation — Is the Net Profit Margin calculated correctly (Net Income / Revenue)?",
+        "Criterion 2: Profitability Analysis — Does the response effectively link income growth and profit margins to loan repayment capability?",
+        "Criterion 3: Recommendation — Is the viability recommendation supported by the quantitative analysis of profitability?"
+      ],
+      "student_answer": "**Urban Logistics Inc. – Loan Viability Analysis**\n\n**Net Profit Margin:**\n\nThe company’s Net Profit Margin for 2023 is calculated as follows:\n\nNet Profit Margin = (Net Income / Revenue) * 100\nNet Profit Margin = ($450,000 / $3,000,000) * 100 = 15%\n\n**Comparison to Industry Average:**\n\nUrban Logistics Inc.’s Net Profit Margin of 15% is higher than the industry average of 12%. This indicates a stronger profitability position compared to its peers.\n\n**Income Growth and Profitability Support for Loan Repayment:**\n\nUrban Logistics Inc. demonstrates a robust 15% year-over-year income growth, coupled with a healthy 15% Net Profit Margin. This combination suggests a sustainable and improving financial performance. The increased revenue and profitability provide a strong foundation for servicing the $1,200,000 loan over the 7-year term.  The company’s current equity of $2,000,000 and total liabilities of $3,000,000 result in a Debt-to-Equity ratio of 1.5, which is within the industry average.\n\n**Recommendation:**\n\nBased on the company’s strong income growth, healthy profitability, and manageable debt-to-equity ratio, the loan is considered viable.  Approval of the $1,200,000 loan for fleet expansion is recommended, subject to ongoing monitoring of financial performance and adherence to the loan covenants.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly calculates the Net Profit Margin (15%) and compares it to the industry average. It identifies the Debt-to-Equity ratio correctly (1.5) and notes it matches the benchmark. However, the analysis lacks depth in 'Best Practices' and 'Completeness' because it fails to calculate the Interest Coverage Ratio or Debt Service Coverage Ratio, which are critical for a 7-year loan of this size ($1.2M vs $450k income). The recommendation is generic and does not explicitly address the specific risk of the 7-year term relative to the company's cash flow volatility. While the core math is correct, a professional credit analysis would require more rigorous stress testing or coverage ratio analysis to be truly industry-standard."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Compare liquidity, profitability, and credit histories of establishments being evaluated with those of similar establishments in the same industries and geographic locations.",
+      "task_type": "Comparative Industry Analysis",
+      "user_prompt": "You are a Credit Analyst. Perform a comparative analysis for 'Coastal Hospitality LLC' against the provided industry benchmarks for similar establishments in the same geographic location. Calculate the company's Current Ratio and Return on Assets (ROA). Compare these figures to the industry averages. Based on the comparison, identify if the company is underperforming or outperforming its peers in terms of liquidity and asset efficiency. Draft a brief analysis report highlighting these comparative findings.",
+      "reference_context": {
+        "company_name": "Coastal Hospitality LLC",
+        "fiscal_year": "2023",
+        "financial_data": {
+          "total_assets": 3500000,
+          "total_liabilities": 2100000,
+          "current_assets": 900000,
+          "current_liabilities": 600000,
+          "net_income": 175000,
+          "total_equity": 1400000,
+          "cash_flow_from_operations": 200000
+        },
+        "industry_benchmarks": {
+          "average_current_ratio": 1.4,
+          "average_roa": 5.0,
+          "average_debt_to_equity": 1.5
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Accuracy — Are the Current Ratio and ROA calculated correctly?",
+        "Criterion 2: Comparative Analysis — Does the response clearly contrast the company's metrics with the industry benchmarks?",
+        "Criterion 3: Insight — Does the analysis provide meaningful insight into the company's relative performance (under/over performing)?"
+      ],
+      "student_answer": "**Coastal Hospitality LLC – Comparative Financial Analysis (2023)**\n\n**Current Ratio:**\n\n*   Coastal Hospitality LLC’s Current Ratio: 900,000 / 600,000 = 1.5\n*   Industry Average: 1.4\n*   **Analysis:** Coastal Hospitality LLC’s current ratio of 1.5 exceeds the industry average of 1.4, indicating a stronger liquidity position compared to its peers.\n\n**Return on Assets (ROA):**\n\n*   Coastal Hospitality LLC’s ROA: 175,000 / 3,500,000 = 0.05 or 5.0%\n*   Industry Average: 5.0%\n*   **Analysis:** Coastal Hospitality LLC’s ROA of 5.0% aligns with the industry average of 5.0%.\n\n**Overall Assessment:**\n\nCoastal Hospitality LLC demonstrates a slightly stronger liquidity position (Current Ratio of 1.5 vs. Industry Average of 1.4) and maintains comparable asset efficiency (ROA of 5.0% vs. Industry Average of 5.0%).  The company is performing in line with its industry peers regarding liquidity and asset efficiency.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The student correctly calculated the Current Ratio (1.5) and ROA (5.0%) and accurately compared them to the benchmarks. The analysis correctly identifies that the company is outperforming in liquidity and performing in line in asset efficiency. The submission is clear, well-structured, and free of calculation errors. However, it scores a 4 on Best Practices and Autonomy because the analysis is somewhat superficial; a truly exceptional industry-standard report would likely discuss the implications of these metrics (e.g., the significance of a 0.1 difference in liquidity or the lack of margin for error in ROA) rather than just stating the comparison. Additionally, the prompt mentioned 'Apex Manufacturing' in the additional checks, which appears to be a template error in the prompt itself, but the student correctly focused on 'Coastal Hospitality LLC' as per the main task."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Evaluate customer records and recommend payment plans, based on earnings, savings data, payment history, and purchase activity.",
+      "task_type": "Payment Plan Structuring & Delinquency Management",
+      "user_prompt": "You are a Credit Analyst. Review the account history for 'Retail Solutions Inc.' which is 90 days delinquent. The customer has a total outstanding balance of $45,000. Their monthly net earnings are $12,000, and they have $3,000 in monthly fixed obligations (excluding this debt). They propose a lump-sum payment of $10,000 immediately. Calculate the Debt Service Coverage Ratio (DSCR) for the proposed new payment plan assuming the remaining balance is amortized over 12 months at 8% APR. Recommend a specific payment plan that maximizes recovery while ensuring the customer's DSCR remains above 1.2. Draft a formal proposal to the collection manager.",
+      "reference_context": {
+        "customer_name": "Retail Solutions Inc.",
+        "delinquency_days": 90,
+        "outstanding_balance": 45000,
+        "monthly_net_earnings": 12000,
+        "monthly_fixed_obligations": 3000,
+        "proposed_lump_sum": 10000,
+        "proposed_term_months": 12,
+        "interest_rate_apr": 8.0,
+        "target_dscr": 1.2
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the remaining balance and monthly payment calculations accurate using the amortization formula?",
+        "Criterion 2: Completeness — Does the response calculate the DSCR for the proposed plan and explicitly compare it to the 1.2 threshold?",
+        "Criterion 3: Best practices — Is the recommendation logical, prioritizing recovery while maintaining customer viability, and presented in a professional proposal format?"
+      ],
+      "student_answer": "**To:** Collection Manager\n**From:** Credit Analyst\n**Date:** October 26, 2023\n**Subject:** Credit Review and Proposed Payment Plan – Retail Solutions Inc.\n\n**Executive Summary:**\n\nRetail Solutions Inc. is currently 90 days delinquent with an outstanding balance of $45,000.  A lump-sum payment of $10,000 has been proposed.  Based on current financials and a proposed 12-month amortization at 8% APR, the Debt Service Coverage Ratio (DSCR) would be significantly below the required 1.2.  A revised payment plan is recommended to maximize recovery while maintaining a sustainable DSCR.\n\n**Analysis:**\n\n*   **Current Financials:** Monthly Net Earnings = $12,000; Monthly Fixed Obligations = $3,000; Available Funds for Debt Repayment = $9,000.\n*   **Proposed Lump-Sum Payment:** $10,000 (exceeds available funds).\n*   **Amortization Calculation:** With a remaining balance of $35,000 and an 8% APR over 12 months, the monthly payment would be approximately $3,088.\n*   **DSCR Calculation (Proposed):**  ($3,088 / $12,000) = 0.257. This is well below the target DSCR of 1.2.\n\n**Recommended Payment Plan:**\n\nTo achieve a DSCR above 1.2 and maximize recovery, the following payment plan is proposed:\n\n1.  **Lump-Sum Payment:** $5,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $3,000 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $40,000)\n3.  **Remaining Balance:** $5,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $3,000\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $6,000\n*   DSCR: ($3,000 / $12,000) = 0.25. This is still below the target.\n\n**Revised Payment Plan:**\n\n1.  **Lump-Sum Payment:** $7,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $2,500 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $38,000)\n3.  **Remaining Balance:** $3,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $2,500\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $7,500\n*   DSCR: ($2,500 / $12,000) = 0.208. This is still below the target.\n\n**Revised Payment Plan:**\n\n1.  **Lump-Sum Payment:** $10,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $2,000 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $35,000)\n3.  **Remaining Balance:** $5,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $2,000\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $7,000\n*   DSCR: ($2,000 / $12,000) = 0.167. This is still below the target.\n\n**Revised Payment Plan:**\n\n1.  **Lump-Sum Payment:** $12,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $1,000 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $33,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $1,000\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $8,000\n*   DSCR: ($1,000 / $12,000) = 0.083. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $15,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $1,000 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $28,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $1,000\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $8,000\n*   DSCR: ($1,000 / $12,000) = 0.083. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $18,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $800 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $22,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $800\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $9,200\n*   DSCR: ($800 / $12,000) = 0.067. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $20,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $700 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $18,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $700\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $9,300\n*   DSCR: ($700 / $12,000) = 0.058. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $22,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $600 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $16,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $600\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $9,600\n*   DSCR: ($600 / $12,000) = 0.05. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $25,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $500 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $13,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $500\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $9,800\n*   DSCR: ($500 / $12,000) = 0.042. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $28,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $400 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $11,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $400\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $10,000\n*   DSCR: ($400 / $12,000) = 0.033. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $30,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $300 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $9,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $300\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $10,200\n*   DSCR: ($300 / $12,000) = 0.025. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $33,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $200 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $7,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $200\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $10,400\n*   DSCR: ($200 / $12,000) = 0.017. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $35,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $100 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $5,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $100\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $10,600\n*   DSCR: ($100 / $12,000) = 0.008. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $38,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $50 (calculated to cover principal and interest over 12 months at 8% APR on the remaining balance of $2,000)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $50\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $10,800\n*   DSCR: ($50 / $12,000) = 0.004. This is still below the target.\n\n**Final Payment Plan Recommendation:**\n\nGiven the constraints, a revised plan is recommended:\n\n1.  **Lump-Sum Payment:** $40,000 (applied to the outstanding balance)\n2.  **Monthly Payment:** $0 (no further payments)\n3.  **Remaining Balance:** $2,000 (after the initial lump sum)\n\n**Revised DSCR Calculation:**\n\n*   Monthly Payment: $0\n*   Monthly Net Earnings: $12,000\n*   Monthly Fixed Obligations: $3,000\n*   Available Funds for Debt Repayment: $9,000\n*   DSCR: ($0 / $12,000) = 0.000. This is still below the target.\n\n**Recommendation:**\n\nDue to the customer's limited financial capacity, a full recovery of the $45,000 balance is unlikely with any payment plan.  The proposed plan of a $40,000 lump-sum payment and a remaining balance of $2,000 is the most realistic option.  Further collection efforts should focus on the remaining $2,000 balance.  Consider offering a settlement for $1,800 to avoid further legal action.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. It demonstrates a complete lack of understanding of the Debt Service Coverage Ratio (DSCR) formula, calculating it as Payment/Income (0.25) instead of Income/Debt Service (which would be >1.2). Consequently, the student incorrectly concludes that the target is impossible to meet, leading to a nonsensical iterative process where they propose paying off the entire debt to 'fix' the ratio. The submission contains massive repetition, hallucinated data (lump sums exceeding the total balance), and fails to perform the required amortization calculations correctly. It does not address the task requirements and is not usable."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Review individual or commercial customer files to identify and select delinquent accounts for collection.",
+      "task_type": "Portfolio Risk Segmentation & Collection Strategy",
+      "user_prompt": "You are a Credit Analyst. Analyze the provided dataset of 5 commercial accounts flagged for potential delinquency. Calculate the Probability of Default (PD) proxy for each account using the formula: PD = (Current Ratio / Industry Avg Current Ratio) * (Debt-to-Equity / Industry Avg D/E). Rank the accounts from highest risk to lowest risk. Select the top 2 accounts for immediate aggressive collection action based on a risk score threshold of 1.5. Justify your selection with the calculated scores and a brief analysis of their liquidity positions.",
+      "reference_context": {
+        "accounts": [
+          {
+            "id": "ACC-101",
+            "current_ratio": 0.8,
+            "debt_to_equity": 2.5
+          },
+          {
+            "id": "ACC-102",
+            "current_ratio": 1.6,
+            "debt_to_equity": 0.9
+          },
+          {
+            "id": "ACC-103",
+            "current_ratio": 0.6,
+            "debt_to_equity": 3.2
+          },
+          {
+            "id": "ACC-104",
+            "current_ratio": 1.2,
+            "debt_to_equity": 1.1
+          },
+          {
+            "id": "ACC-105",
+            "current_ratio": 0.9,
+            "debt_to_equity": 1.8
+          }
+        ],
+        "industry_benchmarks": {
+          "avg_current_ratio": 1.5,
+          "avg_debt_to_equity": 1.2
+        },
+        "risk_threshold": 1.5
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the PD proxy scores calculated accurately for all 5 accounts?",
+        "Criterion 2: Completeness — Does the response correctly rank the accounts and identify exactly the top 2 exceeding the threshold?",
+        "Criterion 3: Best practices — Is the selection logic clearly explained, and is the output formatted as a strategic briefing?"
+      ],
+      "student_answer": "```json\n{\n  \"PD_Analysis\": [\n    {\n      \"account_id\": \"ACC-101\",\n      \"PD\": 0.8 * 2.5 = 2.0,\n      \"rank\": 1,\n      \"recommendation\": \"Immediate aggressive collection action\"\n    },\n    {\n      \"account_id\": \"ACC-102\",\n      \"PD\": 1.6 * 0.9 = 1.44,\n      \"rank\": 2,\n      \"recommendation\": \"Immediate aggressive collection action\"\n    },\n    {\n      \"account_id\": \"ACC-103\",\n      \"PD\": 0.6 * 3.2 = 1.92,\n      \"rank\": 3,\n      \"recommendation\": \"Monitor closely\"\n    },\n    {\n      \"account_id\": \"ACC-104\",\n      \"PD\": 1.2 * 1.1 = 1.32,\n      \"rank\": 4,\n      \"recommendation\": \"Monitor closely\"\n    },\n    {\n      \"account_id\": \"ACC-105\",\n      \"PD\": 0.9 * 1.8 = 1.62,\n      \"rank\": 5,\n      \"recommendation\": \"Monitor closely\"\n    }\n  ],\n  \"Top_2_Accounts_for_Action\": [\n    \"ACC-101\",\n    \"ACC-102\"\n  ],\n  \"Justification\": \"ACC-101 and ACC-102 have the highest PD scores (2.0 and 1.44 respectively) due to their low current ratios and high debt-to-equity ratios relative to industry benchmarks. ACC-101's current ratio of 0.8 is significantly below the industry average of 1.5, and its debt-to-equity ratio of 2.5 is substantially higher. ACC-102 has a current ratio of 1.6, which is still below the industry average, and a debt-to-equity ratio of 0.9, which is also elevated. These factors indicate a heightened risk of default.\",\n  \"Liquidity_Analysis\": {\n    \"ACC-101\": \"Very weak liquidity position.  Low current ratio and high debt-to-equity suggest difficulty meeting short-term obligations.\",\n    \"ACC-102\": \"Weak liquidity position.  Below-average current ratio and elevated debt-to-equity indicate potential liquidity strain.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student ignored the explicit formula provided in the task (PD = (Current Ratio / Industry Avg) * (Debt-to-Equity / Industry Avg)) and instead calculated the raw product of the account's ratios (e.g., 0.8 * 2.5 = 2.0). This renders all PD scores, rankings, and the final selection of accounts incorrect. The justification incorrectly claims ACC-102 has a current ratio below average (it is 1.6 vs 1.5) and fails to apply the benchmark normalization. The output is mathematically invalid for the stated task."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Consult with customers to resolve complaints and verify financial and credit transactions.",
+      "task_type": "Dispute Resolution & Transaction Verification",
+      "user_prompt": "You are a Credit Analyst. A customer, 'TechStart Ventures', has filed a formal complaint disputing a $15,000 charge-off, claiming it was a duplicate payment processed in error. Review the transaction log provided below. Identify the two transactions in question. Calculate the net cash flow impact of the disputed transactions over the last 30 days. Verify if the charge-off was mathematically correct based on the net balance. Draft a response to the customer confirming the resolution, including a corrected statement of account balance if an error is found, or a justification if the charge-off stands.",
+      "reference_context": {
+        "customer_name": "TechStart Ventures",
+        "disputed_amount": 15000,
+        "transaction_log": [
+          {
+            "date": "2023-10-01",
+            "description": "Wire Transfer In",
+            "amount": 15000,
+            "type": "Credit"
+          },
+          {
+            "date": "2023-10-02",
+            "description": "Invoice Payment",
+            "amount": 15000,
+            "type": "Credit"
+          },
+          {
+            "date": "2023-10-05",
+            "description": "System Error Correction",
+            "amount": 15000,
+            "type": "Debit"
+          },
+          {
+            "date": "2023-10-10",
+            "description": "Charge-off",
+            "amount": 15000,
+            "type": "Debit"
+          }
+        ],
+        "opening_balance": 50000
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the transaction dates and amounts correctly identified as duplicates or errors?",
+        "Criterion 2: Completeness — Does the response calculate the net impact and determine the final correct balance?",
+        "Criterion 3: Best practices — Is the customer response professional, empathetic, and factually precise regarding the dispute outcome?"
+      ],
+      "student_answer": "**Transactions in Question:**\n\n*   Transaction 1: \"Wire Transfer In\" on 2023-10-01 for $15,000\n*   Transaction 2: \"System Error Correction\" on 2023-10-05 for $15,000\n\n**Net Cash Flow Impact (Last 30 Days):**\n\n*   Total Credits: $15,000 (Wire Transfer) + $15,000 (Invoice Payment) = $30,000\n*   Total Debits: $15,000 (System Error Correction) + $15,000 (Charge-off) = $30,000\n*   Net Cash Flow: $30,000 (Credits) - $30,000 (Debits) = $0\n\n**Verification and Resolution:**\n\nSubject: Regarding Dispute of $15,000 Charge-off\n\nDear TechStart Ventures,\n\nThank you for contacting us regarding the disputed $15,000 charge-off.  We have reviewed the transaction log and identified the two transactions in question: the $15,000 Wire Transfer In on October 1, 2023, and the subsequent $15,000 System Error Correction on October 5, 2023.\n\nOur investigation reveals that the System Error Correction was implemented to rectify a duplicate payment. The initial Wire Transfer In and Invoice Payment were processed correctly, and the System Error Correction was necessary to prevent over-crediting your account.\n\nAs a result, the $15,000 charge-off is incorrect.  We have reversed the charge-off and adjusted your account balance.\n\n**Corrected Statement of Account Balance:**\n\n*   Opening Balance: $50,000\n*   Credits: $30,000\n*   Debits: $0\n*   **New Balance: $80,000**\n\nWe apologize for any inconvenience this may have caused.  Please do not hesitate to contact us if you have any further questions.\n\nSincerely,\n\n[Your Name/Credit Analysis Department]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The student failed to correctly identify the disputed transactions, selecting the 'Wire Transfer' and 'System Error Correction' instead of the two 'Credit' transactions (Wire Transfer and Invoice Payment) that constitute the alleged duplicate. Consequently, the net cash flow calculation is flawed as it includes the charge-off in the debit total rather than isolating the disputed credits. The verification logic is incorrect; the student claims the charge-off is wrong because the error correction was necessary, but fails to mathematically prove the duplicate nature of the credits. The corrected balance calculation is erroneous ($80,000) because it incorrectly sets Debits to $0, ignoring the valid error correction debit. The response lacks professional rigor and contains fundamental calculation errors."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Confer with credit association and other business representatives to exchange credit information.",
+      "task_type": "Credit Intelligence Synthesis & Risk Scoring",
+      "user_prompt": "You are a Credit Analyst. Synthesize the following intelligence reports from three different credit associations regarding 'Global Logistics Corp.' to update their internal credit score. The current score is 650. Apply the following adjustment rules: +10 points for 'No Litigation', -20 points for 'Bankruptcy Filing', +5 points for 'Positive Trade References', -15 points for 'Late Payments > 60 days'. Calculate the new credit score. Based on the new score, determine if the company qualifies for a 'Prime' rating (Score > 700) or 'Subprime' (Score < 680). Draft a summary memo for the credit committee detailing the intelligence sources and the final rating recommendation.",
+      "reference_context": {
+        "current_score": 650,
+        "intelligence_reports": [
+          {
+            "source": "National Credit Bureau",
+            "finding": "No active litigation found."
+          },
+          {
+            "source": "Local Chamber of Commerce",
+            "finding": "Filed for Chapter 11 bankruptcy in 2022, currently in reorganization."
+          },
+          {
+            "source": "Trade Credit Association",
+            "finding": "3 out of 5 suppliers reported late payments > 60 days in Q3."
+          }
+        ],
+        "rating_thresholds": {
+          "prime_min": 700,
+          "subprime_max": 680
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the point adjustments applied correctly according to the rules provided?",
+        "Criterion 2: Completeness — Does the response clearly state the final score and the resulting rating category?",
+        "Criterion 3: Best practices — Is the memo structured to highlight the specific intelligence sources that drove the score change?"
+      ],
+      "student_answer": "**New Credit Score:** 630\n\n**Rating Recommendation:** Subprime\n\n---\n\n**Memorandum**\n\n**To:** Credit Committee\n**From:** Credit Analyst\n**Date:** October 26, 2023\n**Subject:** Credit Rating Update – Global Logistics Corp.\n\n**Executive Summary:**\n\nThis memo summarizes the updated credit rating for Global Logistics Corp. following a review of intelligence reports from the National Credit Bureau, Local Chamber of Commerce, and Trade Credit Association. The company’s current credit score of 650 has been adjusted based on recent findings, resulting in a final rating of 630 and a recommendation of a Subprime rating.\n\n**Intelligence Sources & Findings:**\n\n*   **National Credit Bureau:** Reported no active litigation against Global Logistics Corp.\n*   **Local Chamber of Commerce:** Confirmed a Chapter 11 bankruptcy filing in 2022, currently undergoing reorganization.\n*   **Trade Credit Association:** Indicates that 3 out of 5 suppliers reported late payments exceeding 60 days during Q3 2023.\n\n**Score Adjustment:**\n\n*   +10 points (No Litigation)\n*   -20 points (Bankruptcy Filing)\n*   +5 points (Positive Trade References – implied by Trade Credit Association report)\n*   -15 points (Late Payments > 60 days)\n\n**Calculated New Score:** 650 + 10 - 20 + 5 - 15 = 630\n\n**Rating Determination:**\n\nBased on the adjusted score of 630, Global Logistics Corp. does not meet the criteria for a Prime rating (Score > 700) and is classified as Subprime (Score < 680).\n\n**Recommendation:**\n\nWe recommend maintaining a Subprime rating for Global Logistics Corp. due to the ongoing bankruptcy proceedings and the reported late payment issues. Continued monitoring of the company’s financial performance and reorganization progress is advised.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails the primary calculation task. The prompt explicitly states to deduct 15 points for 'Late Payments > 60 days' (a condition met by 3 out of 5 suppliers). The student incorrectly applied a +5 point adjustment for 'Positive Trade References' which was not supported by the data (the data only showed late payments, not positive references). This results in a mathematically incorrect score (630 instead of the correct 625) and a logical error in applying the rules. Additionally, the 'Additional Checks' section in the prompt mentions 'Apex Manufacturing' and specific financial ratios (Current Ratio, etc.) which the student ignored, though this appears to be a copy-paste error in the prompt itself; however, the failure to correctly apply the provided adjustment rules is a critical domain accuracy failure. The output is a draft requiring significant rework to fix the logic and math."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Evaluate customer records and recommend payment plans, based on earnings, savings data, payment history, and purchase activity.",
+      "task_type": "Cash Flow Analysis & Restructuring Recommendation",
+      "user_prompt": "You are a Credit Analyst. A commercial client, 'Brewery Co.', is requesting a restructuring of their $200,000 line of credit due to seasonal cash flow dips. Their annual net income is $80,000, but their average monthly cash flow from operations is only $4,000. They have $20,000 in liquid savings. Calculate the 'Cash Flow Coverage Ratio' (Annual Net Income / Annual Debt Service) assuming the current annual debt service is $30,000. Propose a restructuring plan that reduces the annual debt service to a level where the ratio is at least 1.5, while utilizing their savings to cover immediate shortfalls. Present the plan with the new annual debt service figure and the required savings drawdown.",
+      "reference_context": {
+        "client_name": "Brewery Co.",
+        "current_credit_line": 200000,
+        "annual_net_income": 80000,
+        "monthly_operating_cash_flow": 4000,
+        "liquid_savings": 20000,
+        "current_annual_debt_service": 30000,
+        "target_coverage_ratio": 1.5
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the current Cash Flow Coverage Ratio calculated correctly?",
+        "Criterion 2: Completeness — Does the proposed plan mathematically achieve the target ratio of 1.5 and specify the savings usage?",
+        "Criterion 3: Best practices — Is the restructuring plan realistic, considering the client's seasonal cash flow constraints and savings buffer?"
+      ],
+      "student_answer": "**Cash Flow Coverage Ratio:**\n\n$80,000 / $30,000 = 2.67\n\n**Restructuring Plan:**\n\n*   **New Annual Debt Service:** $45,000\n*   **Required Savings Drawdown:** $15,000\n\nThis plan reduces the annual debt service to $45,000, resulting in a Cash Flow Coverage Ratio of $80,000 / $45,000 = 1.78, exceeding the target of 1.5. A drawdown of $15,000 from the $20,000 in liquid savings will cover the $15,000 difference between the new debt service and the annual net income.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission contains catastrophic calculation errors and logical failures. First, the proposed 'New Annual Debt Service' of $45,000 is higher than the current $30,000, which contradicts the task requirement to reduce debt service. Second, the logic for the savings drawdown is incoherent; it claims to cover the difference between new debt service ($45k) and net income ($80k), which is mathematically impossible as income exceeds debt. The student failed to calculate the correct target debt service ($80,000 / 1.5 = $53,333) or identify that the current debt service ($30,000) already meets the target ratio (2.67 > 1.5). The answer is fundamentally flawed and unusable."
+    }
+  ]
+}

@@ -1,0 +1,1175 @@
+{
+  "meta": {
+    "job_title": "Web Developers",
+    "job_id": "web_dev",
+    "onet_code": "15-1254.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 29,
+    "evaluated_tasks": 29,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.2,
+      "dimensions": {
+        "Correctness": 2.0,
+        "Completeness": 2.0,
+        "Best Practices": 1.93,
+        "Domain Accuracy": 2.34,
+        "Clarity": 2.97,
+        "Autonomy": 1.97
+      },
+      "evaluated_tasks": 29,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1444.13
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
+      "task_type": "Cross-Browser Compatibility Testing",
+      "user_prompt": "Analyze the provided CSS snippet for a responsive navigation bar. Identify three specific compatibility issues across Chrome, Firefox, and Safari regarding flexbox behavior and pseudo-elements. Propose a corrected CSS block that ensures consistent rendering on all three browsers while maintaining the original design intent.",
+      "reference_context": {
+        "original_css": ".nav-container { display: flex; justify-content: space-between; } .nav-item::before { content: ''; width: 10px; height: 10px; background: red; }",
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```css\n.nav-container {\n  display: flex;\n  justify-content: space-between;\n}\n\n.nav-item::before {\n  content: '';\n  width: 10px;\n  height: 10px;\n  background: red;\n  box-sizing: border-box; /* Ensures padding doesn't affect width */\n}\n\n/* Safari fix for pseudo-element positioning */\n.nav-container {\n  align-items: center; /* Ensures vertical alignment */\n}\n\n.nav-item::before {\n  position: relative; /* Ensures correct positioning */\n  left: -5px; /* Adjust left value as needed for consistent spacing */\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to identify the specific compatibility issues requested (it lists no issues). The proposed solution is technically flawed: it attempts to fix pseudo-element positioning using 'position: relative' and 'left' on the pseudo-element itself, which does not solve the fundamental issue of pseudo-elements inheriting the parent's flex context or lacking explicit positioning. It completely ignores the requirement to identify three specific issues across Chrome, Firefox, and Safari. Furthermore, it fails to include necessary vendor prefixes (like -webkit-) for older Safari versions or modern flexbox fixes, and the logic for 'left: -5px' is arbitrary without a defined layout context. The answer does not meet the task requirements for analysis or a robust solution."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Write supporting code for Web applications or Web sites.",
+      "task_type": "Robust Form Validation Implementation",
+      "user_prompt": "Develop a JavaScript function to validate a user registration form containing email, password, and phone number fields. The function must include input validation for format and length, implement error handling for network failures during submission, and ensure the UI updates correctly for both success and failure states across all major browsers.",
+      "reference_context": {
+        "form_fields": [
+          "email",
+          "password",
+          "phone_number"
+        ],
+        "validation_rules": {
+          "email": "RFC 5322 compliant",
+          "password": "Minimum 8 chars, 1 uppercase, 1 number",
+          "phone_number": "US format (10 digits)"
+        },
+        "target_browsers": [
+          "Chrome",
+          "Firefox",
+          "Safari",
+          "Edge"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Input Validation — are all rules correctly implemented?",
+        "Criterion 2: Error Handling — does the code catch and display network errors gracefully?",
+        "Criterion 3: Cross-Browser — does the code function identically in all target browsers?"
+      ],
+      "student_answer": "```javascript\nfunction validateRegistrationForm(form) {\n  let errors = {};\n  let isValid = true;\n\n  // Email Validation\n  const email = form.email.value;\n  const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\n  if (!emailRegex.test(email)) {\n    errors.email = \"Invalid email format.\";\n    isValid = false;\n  }\n\n  // Password Validation\n  const password = form.password.value;\n  if (password.length < 8) {\n    errors.password = \"Password must be at least 8 characters long.\";\n    isValid = false;\n  }\n  if (!/[A-Z]/.test(password)) {\n    errors.password = \"Password must contain at least one uppercase letter.\";\n    isValid = false;\n  }\n  if (!/[0-9]/.test(password)) {\n    errors.password = \"Password must contain at least one number.\";\n    isValid = false;\n  }\n\n  // Phone Number Validation\n  const phoneNumber = form.phone_number.value;\n  if (phoneNumber.length !== 10 || isNaN(phoneNumber)) {\n    errors.phone_number = \"Invalid phone number format. Please enter 10 digits.\";\n    isValid = false;\n  }\n\n  // Update UI based on validation results\n  if (Object.keys(errors).length > 0) {\n    displayErrors(errors);\n    return false;\n  } else {\n    // Simulate successful submission (replace with actual submission logic)\n    submitForm(form);\n    return true;\n  }\n\n  // Helper functions (can be moved to a separate utility file)\n  function displayErrors(errors) {\n    // Clear previous errors\n    for (const field in errors) {\n      const errorElement = document.getElementById(field + \"Error\");\n      if (errorElement) {\n        errorElement.textContent = errors[field];\n      }\n    }\n  }\n\n  function submitForm(form) {\n    // Simulate form submission\n    console.log(\"Form submitted successfully!\");\n    // Add UI updates for success state (e.g., display success message)\n    alert(\"Registration successful!\");\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails to meet the core requirements of the task. It completely ignores the requirement to implement error handling for network failures during submission, instead using a simulated console log. The email validation regex is weak and not RFC 5322 compliant. The phone validation logic is flawed (checking length and isNaN separately allows invalid formats like '1234567890a' if not strictly parsed, and doesn't handle US formatting nuances like dashes). It lacks cross-browser specific considerations (e.g., input type attributes, specific event handling) and does not handle the success/failure UI states robustly (using alert() is poor practice). The code structure is basic and requires significant rework to be production-ready."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
+      "task_type": "Legacy Browser Polyfill Integration",
+      "user_prompt": "A client requires a new landing page using modern CSS Grid and ES6 modules, but they must support Internet Explorer 11. Write the necessary polyfill scripts and fallback CSS to ensure the layout degrades gracefully in IE11 while remaining fully functional in modern browsers. Include error handling for missing polyfill resources.",
+      "reference_context": {
+        "modern_features": [
+          "CSS Grid",
+          "ES6 Modules",
+          "Arrow Functions"
+        ],
+        "legacy_requirement": "Internet Explorer 11",
+        "layout_structure": "Header, 3-column Grid, Footer"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the layout render correctly in IE11?",
+        "Criterion 2: Completeness — are all modern features polyfilled or deprecated?",
+        "Criterion 3: Best practices — is the code modular and error-handled?"
+      ],
+      "student_answer": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Landing Page</title>\n  <link rel=\"stylesheet\" href=\"style.css\">\n  <!-- Polyfill Scripts -->\n  <script src=\"polyfill/css-grid-polyfill.js\" id=\"cssGridPolyfill\"></script>\n  <script src=\"polyfill/es-modules-polyfill.js\" id=\"esModulesPolyfill\"></script>\n</head>\n<body>\n\n  <header>\n    <h1>My Awesome Landing Page</h1>\n  </header>\n\n  <main>\n    <div class=\"grid-container\">\n      <article class=\"column column-1\">\n        <h2>Column 1</h2>\n        <p>Content for column 1.</p>\n      </article>\n      <article class=\"column column-2\">\n        <h2>Column 2</h2>\n        <p>Content for column 2.</p>\n      </article>\n      <article class=\"column column-3\">\n        <h2>Column 3</h2>\n        <p>Content for column 3.</p>\n      </article>\n    </div>\n  </main>\n\n  <footer>\n    <p>&copy; 2023 My Company</p>\n  </footer>\n\n  <script>\n    // Check for polyfills\n    const cssGridPolyfillScript = document.getElementById('cssGridPolyfill');\n    const esModulesPolyfillScript = document.getElementById('esModulesPolyfill');\n\n    if (cssGridPolyfillScript) {\n      cssGridPolyfillScript.onload = function() {\n        // CSS Grid is available\n        console.log('CSS Grid polyfill loaded successfully.');\n      };\n    } else {\n      console.error('CSS Grid polyfill script not found.');\n    }\n\n    if (esModulesPolyfillScript) {\n      esModulesPolyfillScript.onload = function() {\n        // ES Modules polyfill loaded successfully\n        console.log('ES Modules polyfill loaded successfully.');\n      };\n    } else {\n      console.error('ES Modules polyfill script not found.');\n    }\n  </script>\n</body>\n</html>\n```\n\n```css\n/* style.css */\n\nbody {\n  margin: 0;\n  font-family: sans-serif;\n}\n\nheader {\n  background-color: #333;\n  color: white;\n  padding: 1em;\n  text-align: center;\n}\n\nmain {\n  padding: 20px;\n}\n\n.grid-container {\n  display: flex; /* Fallback for IE11 */\n}\n\n.grid-container > article {\n  flex: 1;\n  padding: 1em;\n  border: 1px solid #ccc;\n  margin: 0.5em;\n}\n\n.column-1 {\n  background-color: #f0f0f0;\n}\n\n.column-2 {\n  background-color: #e0e0e0;\n}\n\n.column-3 {\n  background-color: #d0d0d0;\n}\n\nfooter {\n  background-color: #333;\n  color: white;\n  text-align: center;\n  padding: 1em;\n}\n```\n\n```javascript\n// polyfill/css-grid-polyfill.js\n// Placeholder - Replace with actual CSS Grid polyfill\n// This is a minimal example, a real polyfill would be more comprehensive\nif (typeof CSSGridPolyfill === 'undefined') {\n  CSSGridPolyfill = {};\n  CSSGridPolyfill.polyfill = function() {\n    console.log(\"CSS Grid Polyfill running\");\n  };\n}\n```\n\n```javascript\n// polyfill/es-modules-polyfill.js\n// Placeholder - Replace with actual ES Modules polyfill\n// This is a minimal example, a real polyfill would be more comprehensive\nif (typeof ESModulesPolyfill === 'undefined') {\n  ESModulesPolyfill = {};\n  ESModulesPolyfill.polyfill = function() {\n    console.log(\"ES Modules Polyfill running\");\n  };\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to meet the core technical requirements. 1) Correctness: It uses Flexbox as a fallback for CSS Grid, which is a valid strategy, but it completely ignores the requirement to support ES6 Modules in IE11. IE11 does not support <script type=\"module\">, and the provided 'polyfill' is a dummy placeholder that does not enable module loading. 2) Completeness: The polyfill scripts are empty stubs, not functional code. 3) Best Practices: The error handling logic checks for the existence of the script tag but fails to handle the case where the script fails to load (network error) or where the polyfill itself is missing. 4) Domain Accuracy: The student misunderstands how to polyfill ES Modules in IE11 (which typically requires a bundler like Babel or a specific loader like SystemJS, not a simple JS file). 5) Clarity: The code is readable but misleading. 6) Autonomy: The solution is not usable; it requires significant rework to actually function in IE11."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Develop databases that support Web applications and Web sites.",
+      "task_type": "Secure API Endpoint with Input Sanitization",
+      "user_prompt": "Create a Node.js Express endpoint that accepts user search queries. Implement strict input validation to prevent SQL injection and XSS attacks. Ensure the database connection handles timeouts and connection errors gracefully. The solution must be compatible with Node.js LTS versions and handle concurrent requests without race conditions.",
+      "reference_context": {
+        "database_type": "PostgreSQL",
+        "framework": "Node.js Express",
+        "input_type": "Search query string",
+        "security_requirements": [
+          "SQL Injection Prevention",
+          "XSS Prevention"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Security — are injection attacks prevented?",
+        "Criterion 2: Error Handling — are database errors caught and logged?",
+        "Criterion 3: Compatibility — does the code run on standard LTS environments?"
+      ],
+      "student_answer": "```javascript\nconst express = require('express');\nconst { Pool } = require('pg');\n\nconst app = express();\nconst port = process.env.PORT || 3000;\n\n// Database Configuration\nconst pool = new Pool({\n  user: 'your_user',\n  host: 'your_host',\n  database: 'your_database',\n  password: 'your_password',\n  port: 5432,\n});\n\napp.use(express.json());\n\n// Middleware for input validation and sanitization\nconst validateAndSanitize = (req, res, next) => {\n  const query = req.query.q;\n\n  if (!query) {\n    return res.status(400).json({ error: 'Search query is required' });\n  }\n\n  // Sanitize input to prevent XSS\n  const sanitizedQuery = query.replace(/</g, '&lt;').replace(/>/g, '&gt;');\n\n  // Basic validation - can be expanded\n  if (sanitizedQuery.length > 255) {\n    return res.status(400).json({ error: 'Search query exceeds maximum length' });\n  }\n\n  next();\n};\n\napp.use(validateAndSanitize);\n\napp.get('/search', async (req, res) => {\n  const query = req.query.q;\n\n  try {\n    const result = await pool.query('SELECT * FROM your_table WHERE your_column LIKE $1', [\n      `%${query}%`,\n    ]);\n\n    res.json(result.rows);\n  } catch (err) {\n    console.error('Database error:', err);\n    res.status(500).json({ error: 'Database error occurred' });\n  }\n});\n\napp.listen(port, () => {\n  console.log(`Server listening on port ${port}`);\n});\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails critically on multiple dimensions. 1) Correctness: The SQL query uses a hardcoded string '%$%' instead of the parameterized variable, rendering the input validation useless and leaving the app vulnerable to SQL injection. 2) Completeness: The code contains placeholder credentials ('your_user') and a broken console log string interpolation (`$` instead of `${port}`). 3) Best Practices: XSS prevention is handled via naive string replacement rather than context-aware escaping or a library, and the SQL query logic is fundamentally broken. 4) Domain Accuracy: The parameter binding syntax is incorrect (using a literal string instead of the `query` variable). 5) Clarity: The code is confusing due to the broken interpolation and logic errors. 6) Autonomy: The code is non-functional and cannot be used without significant rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Select programming languages, design tools, or applications.",
+      "task_type": "Performance Optimization and Browser Caching Strategy",
+      "user_prompt": "Analyze a slow-loading product page and propose a code refactoring plan that includes implementing service workers for offline caching and optimizing image loading strategies. Provide the JavaScript code for the service worker with error handling for cache updates and ensure the strategy works across Chrome, Firefox, and Safari.",
+      "reference_context": {
+        "page_elements": [
+          "Product Images",
+          "Dynamic Content",
+          "Static Assets"
+        ],
+        "performance_goals": [
+          "Reduce load time by 40%",
+          "Enable offline access"
+        ],
+        "target_browsers": [
+          "Chrome",
+          "Firefox",
+          "Safari"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the service worker function as intended?",
+        "Criterion 2: Completeness — are all assets covered by caching strategies?",
+        "Criterion 3: Best practices — is error handling included for cache failures?"
+      ],
+      "student_answer": "```javascript\n// service-worker.js\n\nself.addEventListener('install', (event) => {\n  event.waitUntil(\n    __handle_promise(\n      __request(\n        fetch('/service-worker.js', {\n          cache: 'offline',\n        })\n      )\n    )\n  );\n});\n\nself.addEventListener('fetch', (event) => {\n  if (event.request.mode === 'navigate') {\n    event.respondWith(\n      __handle_promise(\n        __request(\n          fetch(event.request.url, {\n            cache: 'offline',\n          })\n        )\n      )\n    );\n  } else {\n    event.respondWith(\n      __handle_promise(\n        __request(\n          fetch(event.request.url, {\n            cache: 'offline',\n          })\n        )\n      )\n    );\n  }\n});\n\nself.addEventListener('message', (event) => {\n  if (event.data.action === 'updateCache') {\n    try {\n      const response = event.data.response;\n      const cache = caches.open('my-cache');\n      cache.put(event.request.url, response);\n      console.log('Cache updated successfully:', event.request.url);\n    } catch (error) {\n      console.error('Error updating cache:', error);\n    }\n  }\n});\n\n// ---  CSS/HTML Modifications (Conceptual - Requires integration into existing page) ---\n\n/*\n1.  Image Optimization:\n    - Use responsive images with the `<picture>` element and `srcset` attribute.\n    - Compress images using tools like ImageOptim or TinyPNG.\n    - Use WebP format for modern browsers.\n    - Lazy load images below the fold using Intersection Observer API.\n\n2.  Dynamic Content Optimization:\n    - Code splitting: Break down JavaScript into smaller chunks loaded on demand.\n    - Remove unused JavaScript code.\n    - Minimize JavaScript and CSS files.\n    - Use a CDN for static assets.\n\n3.  Caching Strategy:\n    - Cache static assets (CSS, JavaScript, images) using service workers.\n    - Implement a cache-first strategy.\n    - Utilize versioning for cache busting (e.g., adding a query parameter to asset URLs).\n\n4.  HTML Structure (Example - Adapt to your existing page):\n\n    <div id=\"product-container\">\n      <img src=\"image.jpg\" loading=\"lazy\" alt=\"Product Image\">\n      <div id=\"dynamic-content\">\n        <!-- Dynamic content here -->\n      </div>\n    </div>\n*/\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on correctness and completeness. The JavaScript code contains non-existent functions (__handle_promise, __request) and invalid Service Worker API usage (fetching the service worker itself inside the install event with 'offline' cache mode, which is invalid). It does not implement a real caching strategy (Cache First or Network First), nor does it handle the specific requirements for Chrome, Firefox, and Safari compatibility (e.g., proper cache versioning, error handling for fetch failures). The image optimization section is generic text rather than code. The solution is not runnable and demonstrates a lack of understanding of the core technology, requiring a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Back up files from Web sites to local directories for instant recovery in case of problems.",
+      "task_type": "Automated Backup and Recovery Script",
+      "user_prompt": "Write a Python script that automates the backup of a static website's HTML, CSS, and JS files to a local directory. The script must validate file integrity using checksums, handle file permission errors, and include a rollback mechanism to restore the site from the backup if a deployment fails. Ensure the script is cross-platform compatible (Windows/Linux/macOS).",
+      "reference_context": {
+        "source_directory": "/var/www/html",
+        "backup_directory": "/local/backup/site_v1",
+        "file_types": [
+          ".html",
+          ".css",
+          ".js"
+        ],
+        "integrity_method": "SHA-256"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the backup and restore process work?",
+        "Criterion 2: Completeness — are all file types and integrity checks included?",
+        "Criterion 3: Best practices — is error handling robust and cross-platform?"
+      ],
+      "student_answer": "```python\nimport os\nimport hashlib\nimport shutil\nimport logging\nfrom datetime import datetime\n\n# Configure logging\nlogging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')\n\ndef calculate_sha256(filepath):\n    \"\"\"Calculates the SHA-256 checksum of a file.\"\"\"\n    hasher = hashlib.sha256()\n    try:\n        with open(filepath, 'rb') as file:\n            while True:\n                chunk = file.read(4096)\n                if not chunk:\n                    break\n                hasher.update(chunk)\n        return hasher.hexdigest()\n    except FileNotFoundError:\n        logging.error(f\"File not found: {filepath}\")\n        return None\n    except PermissionError:\n        logging.error(f\"Permission error reading: {filepath}\")\n        return None\n\ndef backup_website(source_dir, backup_dir, file_types):\n    \"\"\"Backs up a website to a local directory with integrity checks and rollback.\"\"\"\n\n    if not os.path.exists(backup_dir):\n        os.makedirs(backup_dir)\n\n    for root, _, files in os.walk(source_dir):\n        for file in files:\n            if any(file.endswith(ext) for ext in file_types):\n                filepath = os.path.join(root, file)\n                relpath = os.path.relpath(filepath, source_dir)\n                backup_path = os.path.join(backup_dir, relpath)\n                os.makedirs(os.path.dirname(backup_path), exist_ok=True)\n\n                try:\n                    shutil.copy2(filepath, backup_path)  # copy2 preserves metadata\n                    checksum = calculate_sha256(filepath)\n                    if checksum:\n                        with open(os.path.join(backup_path, \".sha256\"), \"w\") as f:\n                            f.write(checksum)\n                        logging.info(f\"Backed up {filepath} to {backup_path} with SHA256: {checksum}\")\n                    else:\n                        logging.warning(f\"Failed to calculate SHA256 for {filepath}\")\n\n                except FileNotFoundError:\n                    logging.error(f\"File not found during backup: {filepath}\")\n                except PermissionError:\n                    logging.error(f\"Permission error during backup: {filepath}\")\n                except Exception as e:\n                    logging.error(f\"An unexpected error occurred during backup of {filepath}: {e}\")\n\ndef rollback_website(source_dir, backup_dir, file_types):\n    \"\"\"Rolls back the website to the latest backup.\"\"\"\n\n    if not os.path.exists(backup_dir):\n        logging.warning(f\"Backup directory not found: {backup_dir}\")\n        return\n\n    # Get the latest backup directory\n    backup_dirs = [d for d in os.listdir(backup_dir) if os.path.isdir(os.path.join(backup_dir, d))]\n    if not backup_dirs:\n        logging.warning(f\"No backup directories found in {backup_dir}\")\n        return\n\n    latest_backup_dir = max(backup_dirs, key=lambda d: datetime.strptime(d, '%Y%m%d'))\n    latest_backup_path = os.path.join(backup_dir, latest_backup_dir)\n\n    for root, _, files in os.walk(source_dir):\n        for file in files:\n            if any(file.endswith(ext) for ext in file_types):\n                filepath = os.path.join(root, file)\n                relpath = os.path.relpath(filepath, source_dir)\n                backup_path = os.path.join(latest_backup_path, relpath)\n\n                try:\n                    if os.path.exists(backup_path):\n                        checksum_file = os.path.join(backup_path, \".sha256\")\n                        if os.path.exists(checksum_file):\n                            with open(checksum_file, \"r\") as f:\n                                expected_checksum = f.read().strip()\n                            calculated_checksum = calculate_sha256(filepath)\n                            if calculated_checksum == expected_checksum:\n                                shutil.copy2(backup_path, filepath)\n                                logging.info(f\"Rolled back {filepath} from {latest_backup_dir}\")\n                            else:\n                                logging.warning(f\"Checksum mismatch for {filepath}.  Skipping rollback.\")\n                        else:\n                            shutil.copy2(backup_path, filepath)\n                            logging.info(f\"Rolled back {filepath} from {latest_backup_dir} (no checksum)\")\n                    else:\n                        logging.warning(f\"Backup file not found: {backup_path}\")\n\n                except FileNotFoundError:\n                    logging.error(f\"Backup file not found during rollback: {backup_path}\")\n                except PermissionError:\n                    logging.error(f\"Permission error during rollback: {backup_path}\")\n                except Exception as e:\n                    logging.error(f\"An unexpected error occurred during rollback of {filepath}: {e}\")\n\nif __name__ == \"__main__\":\n    source_directory = \"/var/www/html\"\n    backup_directory = \"/local/backup/site_v1\"\n    file_types = [\".html\", \".css\", \".js\"]\n\n    backup_website(source_directory, backup_directory, file_types)\n    rollback_website(source_directory, backup_directory, file_types)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        2,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical syntax errors where string formatting placeholders (e.g., f'Backed up to with SHA256: ') are missing the actual variable names, causing the script to fail at runtime. The rollback logic is fundamentally flawed: it attempts to find the latest backup by listing directories within the backup folder, but the backup function saves files directly into the root backup directory, not subdirectories, making the rollback search ineffective. Additionally, the rollback logic attempts to verify the integrity of the *source* file against the backup checksum before copying, which is the inverse of the intended safety check (it should verify the backup file's integrity before overwriting the source). The script also lacks a true atomic rollback mechanism (e.g., using temporary directories and renaming) and does not handle the case where the source directory is empty or the backup is corrupted. While the domain concepts (SHA-256, permissions) are recognized, the implementation is broken."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Perform Web site tests according to planned schedules, or after any Web site or product revision.",
+      "task_type": "Cross-Browser Compatibility Testing",
+      "user_prompt": "Analyze the provided CSS snippet for a responsive navigation bar. Identify three specific compatibility issues across Chrome, Firefox, and Safari regarding flexbox behavior and pseudo-elements. Propose a corrected CSS block that ensures consistent rendering on all three browsers while maintaining the original design intent.",
+      "reference_context": {
+        "original_css": ".nav-container { display: flex; justify-content: space-between; } .nav-item::before { content: ''; width: 10px; height: 10px; background: red; }",
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```css\n.nav-container {\n  display: flex;\n  justify-content: space-between;\n}\n\n.nav-item::before {\n  content: '';\n  width: 10px;\n  height: 10px;\n  background: red;\n  box-sizing: border-box; /* Ensures padding doesn't affect width */\n}\n\n/* Safari fix for pseudo-element positioning */\n.nav-container {\n  align-items: center; /* Ensures vertical alignment */\n}\n\n.nav-item::before {\n  position: relative; /* Ensures correct positioning */\n  left: -5px; /* Adjust left value as needed for consistent spacing */\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to identify the specific compatibility issues requested (e.g., Safari's lack of support for ::before on non-replaced elements without specific display properties, or flexbox alignment quirks). The proposed solution is technically flawed: adding 'position: relative' to a pseudo-element inside a flex container without a defined 'display' property on the parent or specific positioning context often breaks the intended layout rather than fixing it. Crucially, the student completely ignored the requirement to include vendor prefixes (like -webkit-) which are still relevant for specific Safari behaviors in modern contexts, and failed to address the 'three specific compatibility issues' prompt, offering a generic fix instead. The solution is not production-ready."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Analyze user needs to determine technical requirements.",
+      "task_type": "Technical Requirement Analysis and Validation",
+      "user_prompt": "A client requires a form that accepts email addresses and phone numbers, validating input in real-time and submitting data via AJAX. Write a JavaScript module that includes robust input validation, error handling for network failures, and ensures the form behaves consistently in Chrome, Firefox, and Safari. The solution must prevent XSS attacks and handle edge cases like empty inputs or malformed data.",
+      "reference_context": {
+        "form_fields": [
+          "email",
+          "phone"
+        ],
+        "submission_method": "AJAX POST",
+        "security_requirements": [
+          "XSS prevention",
+          "Input sanitization"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Validation Logic — are all input rules correctly implemented?",
+        "Criterion 2: Error Handling — does the code gracefully handle network and validation errors?",
+        "Criterion 3: Security — is the code protected against common vulnerabilities?"
+      ],
+      "student_answer": "```javascript\nconst FormValidator = {\n  email: (value) => {\n    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\n    if (!value) return \"Email is required.\";\n    if (!emailRegex.test(value)) return \"Invalid email format.\";\n    return null;\n  },\n  phone: (value) => {\n    const phoneRegex = /^\\d{10}$/;\n    if (!value) return \"Phone number is required.\";\n    if (!phoneRegex.test(value)) return \"Invalid phone number format (must be 10 digits).\";\n    return null;\n  },\n  validateForm: (form) => {\n    let errors = {};\n    form.email.value && (errors.email = FormValidator.email(form.email.value));\n    form.phone.value && (errors.phone = FormValidator.phone(form.phone.value));\n\n    if (Object.keys(errors).length > 0) {\n      alert(Object.values(errors).join(\"\\n\"));\n      return false;\n    }\n    return true;\n  },\n  submitForm: (form) => {\n    return new Promise((resolve, reject) => {\n      fetch(\"/submit\", {\n        method: \"POST\",\n        body: JSON.stringify(form),\n      })\n        .then((response) => {\n          if (!response.ok) {\n            throw new Error(`Network response was not ok: ${response.status}`);\n          }\n          return response.json();\n        })\n        .then((data) => {\n          resolve(data);\n        })\n        .catch((error) => {\n          reject(error);\n        });\n    });\n  },\n};\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails significantly on correctness and completeness. The phone validation regex (/^\\d$/) only matches a single digit, contradicting the error message claiming 10 digits are required. The solution lacks XSS prevention (no sanitization of inputs before submission or display), uses alert() for errors instead of DOM manipulation, and sends raw form objects via JSON.stringify which is insecure and prone to prototype pollution. It ignores the requirement for real-time validation logic and cross-browser consistency checks. While the code structure is clear (Dimension 5), the functional flaws prevent it from being used without major rework (Dimension 2)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Perform or direct Web site updates.",
+      "task_type": "Legacy Code Refactoring and Compatibility",
+      "user_prompt": "Refactor the following legacy JavaScript code to modern ES6+ standards while ensuring it functions correctly in older versions of Safari (iOS 12+) and Chrome. The code currently uses deprecated methods and lacks error handling. Add try-catch blocks, validate all inputs, and replace deprecated APIs with modern equivalents that maintain cross-browser compatibility.",
+      "reference_context": {
+        "legacy_code": "function processData(data) { var result = []; for (var i = 0; i < data.length; i++) { if (data[i] != null) { result.push(data[i].toUpperCase()); } } return result; }",
+        "target_browsers": [
+          "Safari 12+",
+          "Chrome 80+"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Modernization — are deprecated methods replaced with modern standards?",
+        "Criterion 2: Compatibility — does the code work in the specified older browser versions?",
+        "Criterion 3: Robustness — are error handling and input validation implemented?"
+      ],
+      "student_answer": "```javascript\nfunction processData(data) {\n  if (!Array.isArray(data)) {\n    throw new TypeError('Input must be an array.');\n  }\n\n  const result = [];\n\n  try {\n    for (const item of data) {\n      if (item != null) {\n        const upperCaseItem = String(item).toUpperCase();\n        result.push(upperCaseItem);\n      }\n    }\n  } catch (error) {\n    console.error(\"Error processing data:\", error);\n    return []; // Or handle the error as appropriate for your application\n  }\n\n  return result;\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails to meet the core requirement of refactoring to modern ES6+ standards using array methods (map/filter) instead of a manual for-loop, which is a significant gap for a 'Senior Architect' evaluation. It also incorrectly assumes String.prototype.toUpperCase is safe for all non-null inputs without checking if the input is actually a string, potentially causing runtime errors on numbers or objects. While it adds input validation and error handling, the logic inside the try-catch block is flawed (converting non-strings to strings blindly), and it does not address the specific browser compatibility constraints beyond basic ES6 syntax. The output is functional but lacks the precision and modern patterns expected for a 5."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Maintain understanding of current Web technologies or programming practices through continuing education, reading, or participation in professional conferences, workshops, or groups.",
+      "task_type": "API Integration and Error Handling",
+      "user_prompt": "Design a JavaScript service that fetches user data from a REST API. The service must handle rate limiting, network timeouts, and invalid responses. Ensure the implementation is compatible with Chrome, Firefox, and Safari, including proper handling of CORS errors. Include input validation for the user ID parameter and implement retry logic with exponential backoff.",
+      "reference_context": {
+        "api_endpoint": "https://api.example.com/users/{id}",
+        "rate_limit": "100 requests per minute",
+        "timeout": "5000ms"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Error Handling — are all edge cases (timeout, rate limit, CORS) handled?",
+        "Criterion 2: Compatibility — does the code work across all target browsers?",
+        "Criterion 3: Input Validation — is the user ID parameter validated before the request?"
+      ],
+      "student_answer": "```javascript\nclass UserDataService {\n  constructor(apiEndpoint, rateLimit, timeout) {\n    this.apiEndpoint = apiEndpoint;\n    this.rateLimit = rateLimit;\n    this.timeout = timeout;\n    this.retryCount = 0;\n    this.maxRetries = 3;\n  }\n\n  isValidUserId(userId) {\n    return typeof userId === 'number' && userId > 0;\n  }\n\n  async getUserData(userId) {\n    if (!this.isValidUserId(userId)) {\n      throw new Error(\"Invalid user ID. Must be a positive number.\");\n    }\n\n    const url = this.apiEndpoint.replace('{id}', userId);\n\n    return await this.fetchData(url);\n  }\n\n  async fetchData(url) {\n    try {\n      const response = await fetch(url, {\n        timeout: this.timeout,\n        mode: 'cors', // Explicitly set CORS mode\n      });\n\n      if (!response.ok) {\n        throw new Error(`HTTP error! Status: ${response.status}`);\n      }\n\n      const data = await response.json();\n      return data;\n    } catch (error) {\n      this.retry(url);\n      throw error;\n    }\n  }\n\n  retry(url) {\n    if (this.retryCount >= this.maxRetries) {\n      throw new Error(`Max retries (${this.maxRetries}) reached for ${url}`);\n    }\n\n    this.retryCount++;\n\n    setTimeout(() => {\n      this.fetchData(url);\n    }, this.exponentialBackoff(this.retryCount));\n  }\n\n  exponentialBackoff(attempt) {\n    const base = 1000; // milliseconds\n    const factor = 2;\n    return base * Math.pow(factor, attempt);\n  }\n}\n\n// Example Usage (for testing - not part of the service itself)\n// const service = new UserDataService(\n//   \"https://api.example.com/users/{id}\",\n//   \"100 requests per minute\",\n//   \"5000ms\"\n// );\n\n// try {\n//   const userData = await service.getUserData(123);\n//   console.log(userData);\n// } catch (error) {\n//   console.error(error);\n// }\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission contains critical functional errors that prevent it from working as intended. 1) The URL construction uses .replace('', userId) which does nothing, failing to append the ID to the endpoint. 2) The fetch API does not support a 'timeout' property in the options object; this requires AbortController, which is missing. 3) The retry logic is asynchronous but non-blocking; calling fetchData inside setTimeout without returning the promise or awaiting it means the caller receives no result and the retry mechanism is broken. 4) Rate limiting is mentioned in the constructor but no logic is implemented to enforce it. 5) CORS handling is superficial; setting mode: 'cors' does not handle preflight failures or browser-specific CORS errors. While the input validation and exponential backoff math are correct, the fundamental implementation flaws make the code unusable without significant rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Respond to user email inquiries, or set up automated systems to send responses.",
+      "task_type": "Automated Response System Implementation",
+      "user_prompt": "Create a serverless function (Node.js) that processes incoming email inquiries and sends automated responses. The function must validate the email format, sanitize input to prevent injection attacks, and handle errors gracefully. Ensure the function is compatible with AWS Lambda and works consistently across different runtime environments. Include logging for debugging and error tracking.",
+      "reference_context": {
+        "input_format": "JSON with 'email' and 'message' fields",
+        "output_format": "JSON with 'status' and 'response_id'",
+        "security_requirements": [
+          "Email validation",
+          "Input sanitization"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Validation — are email and message fields validated correctly?",
+        "Criterion 2: Security — is input sanitization implemented to prevent attacks?",
+        "Criterion 3: Reliability — are error handling and logging implemented for production use?"
+      ],
+      "student_answer": "```javascript\nconst validator = require('validator');\n\nexports.handler = async (event) => {\n  try {\n    if (!event || !event.email || !event.message) {\n      return {\n        status: 'error',\n        response_id: 'ERR_MISSING_INPUT',\n        message: 'Missing email or message in request body.',\n      };\n    }\n\n    const email = event.email;\n    const message = event.message;\n\n    if (!validator.isEmail(email)) {\n      return {\n        status: 'error',\n        response_id: 'ERR_INVALID_EMAIL',\n        message: 'Invalid email format.',\n      };\n    }\n\n    // Sanitize input - basic example, can be expanded\n    const sanitizedEmail = email.toLowerCase().trim();\n    const sanitizedMessage = message.toLowerCase().trim();\n\n    // Simulate sending an automated response\n    const responseId = Math.random().toString(36).substring(2, 15);\n    const responseMessage = `Thank you for your inquiry, ${sanitizedEmail}. We have received your message: ${sanitizedMessage}.  We will review your request and get back to you soon.`;\n\n    console.log(`Received inquiry: Email=${sanitizedEmail}, Message=${sanitizedMessage}`);\n    console.log(`Generated response ID: ${responseId}`);\n\n    return {\n      status: 'success',\n      response_id: responseId,\n      response_message: responseMessage,\n    };\n  } catch (error) {\n    console.error('Error processing email inquiry:', error);\n    return {\n      status: 'error',\n      response_id: 'ERR_INTERNAL',\n      message: 'An internal error occurred.',\n    };\n  }\n};\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        2,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness and Completeness due to critical syntax errors: template literals use '$' instead of '${}' for variable interpolation, rendering the response message and logs as literal strings containing '$' rather than the actual data. Security is weak (Score 2) because sanitization only lowercases and trims, failing to prevent injection attacks (e.g., XSS) or handle non-string inputs. Best Practices (Score 2) are violated by using a third-party library ('validator') without bundling instructions or handling its absence in a serverless environment, and the error handling is generic. While Domain Accuracy (Score 3) shows an understanding of the Lambda handler structure, the functional failures prevent it from being a viable solution. Clarity (Score 2) is poor due to the broken code. Autonomy (Score 2) is low because the code cannot run as intended and requires immediate fixing."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Renew domain name registrations.",
+      "task_type": "Domain Management and Validation",
+      "user_prompt": "Develop a utility function that validates domain names for renewal purposes. The function must check for valid TLDs, ensure the domain name follows RFC standards, and handle edge cases like internationalized domain names (IDNs). The solution must be compatible with Chrome, Firefox, and Safari, and include error handling for invalid inputs. Provide a test suite that covers common and edge cases.",
+      "reference_context": {
+        "validation_rules": [
+          "RFC 952/1123 compliance",
+          "TLD validation",
+          "IDN support"
+        ],
+        "target_browsers": [
+          "Chrome",
+          "Firefox",
+          "Safari"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — does the validation logic correctly identify valid and invalid domains?",
+        "Criterion 2: Compatibility — does the code work in all target browsers?",
+        "Criterion 3: Robustness — are error handling and edge cases covered?"
+      ],
+      "student_answer": "```python\nimport re\nfrom idna import convert_to_ascii\n\ndef validate_domain(domain):\n    \"\"\"\n    Validates a domain name for renewal purposes.\n\n    Args:\n        domain (str): The domain name to validate.\n\n    Returns:\n        bool: True if the domain is valid, False otherwise.\n    \"\"\"\n    if not isinstance(domain, str):\n        raise TypeError(\"Domain must be a string.\")\n\n    if not domain:\n        raise ValueError(\"Domain cannot be empty.\")\n\n    try:\n        # RFC 952/1123 compliance\n        if not re.match(r\"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$\", domain):\n            return False\n\n        # TLD validation\n        tld_parts = domain.split(\".\")\n        tld = tld_parts[-1]\n        valid_tlds = [\"com\", \"net\", \"org\", \"edu\", \"gov\", \"mil\", \"io\", \"co\", \"uk\", \"de\", \"fr\", \"ca\", \"jp\", \"cn\", \"ru\", \"au\", \"es\", \"it\", \"nl\", \"se\", \"ch\", \"be\", \"br\", \"mx\", \"ar\", \"pk\", \"in\", \"vn\", \"id\", \"com.au\", \"museum\", \"travel\", \"xyz\"]  # Add more TLDs as needed\n        if tld not in valid_tlds:\n            return False\n\n        # IDN support\n        try:\n            ascii_domain = convert_to_ascii(domain)\n        except Exception:\n            return False\n\n        # Re-validate with ASCII domain\n        if not re.match(r\"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,}$\", ascii_domain):\n            return False\n\n        return True\n\n    except Exception as e:\n        print(f\"Validation error: {e}\")\n        return False\n\n\n# Test Suite\nif __name__ == '__main__':\n    import unittest\n\n    class TestValidateDomain(unittest.TestCase):\n\n        def test_valid_domains(self):\n            self.assertTrue(validate_domain(\"example.com\"))\n            self.assertTrue(validate_domain(\"www.example.net\"))\n            self.assertTrue(validate_domain(\"sub.example.org\"))\n            self.assertTrue(validate_domain(\"example.co.uk\"))\n            self.assertTrue(validate_domain(\"example.museum\"))\n\n        def test_invalid_tld(self):\n            self.assertFalse(validate_domain(\"example.xyz\"))\n            self.assertFalse(validate_domain(\"example.invalidtld\"))\n\n        def test_invalid_format(self):\n            self.assertFalse(validate_domain(\"examplecom\"))\n            self.assertFalse(validate_domain(\"example.c\"))\n            self.assertFalse(validate_domain(\"example..com\"))\n            self.assertFalse(validate_domain(\"example-.com\"))\n\n        def test_empty_domain(self):\n            self.assertFalse(validate_domain(\"\"))\n\n        def test_non_string_input(self):\n            with self.assertRaises(TypeError):\n                validate_domain(123)\n\n        def test_idn_support(self):\n            self.assertTrue(validate_domain(\"إِزمير.com\"))  # Turkish domain\n            self.assertTrue(validate_domain(\"示例.com\")) # Chinese domain\n            self.assertTrue(validate_domain(\"उदाहरण.com\")) # Hindi domain\n\n        def test_invalid_idn(self):\n            self.assertFalse(validate_domain(\"إِزمير.invalid\"))\n\n    unittest.main()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. 1) Correctness: The TLD validation logic is fundamentally broken; it uses a hardcoded list that explicitly rejects valid TLDs like 'xyz' (which is in the list but the test case expects it to fail, creating a logical contradiction) and 'io', while failing to support the vast majority of real-world TLDs. 2) Completeness: The IDN handling is flawed; converting to ASCII before validation is correct, but the regex used does not account for the specific length constraints of IDN labels correctly in all contexts, and the logic flow is inefficient. 3) Best Practices: The code relies on a hardcoded TLD list instead of a dynamic source (like IANA data), which is unacceptable for a 'renewal' utility. 4) Domain Accuracy: The regex pattern is overly simplistic and fails to strictly adhere to RFC 952/1123 nuances (e.g., hyphen placement at start/end of labels is handled, but the TLD length check is arbitrary). 5) Clarity: The code is readable, but the logic is confusing due to the hardcoded list. 6) Autonomy: The solution cannot be used as-is because the TLD list is incomplete and the test cases contradict the implementation logic (e.g., 'example.xyz' is in the list but the test asserts it should be false). It requires significant rework to be functional."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Confer with management or development teams to prioritize needs, resolve conflicts, develop content criteria, or choose solutions.",
+      "task_type": "E-commerce Strategy Integration and Conflict Resolution",
+      "user_prompt": "You are a lead developer for an e-commerce site. Management has requested a new 'One-Click Checkout' feature that conflicts with the existing security protocol requiring 2FA for high-value orders. Analyze the provided requirements document and propose a technical solution that integrates the new strategy while resolving the security conflict. Your response must include a prioritized implementation plan, a risk assessment for bypassing 2FA, and a code snippet for the checkout API that enforces conditional 2FA logic with proper error handling.",
+      "reference_context": {
+        "requirements": "Implement One-Click Checkout for returning users. Security policy mandates 2FA for orders over $500. Current system uses JWT tokens.",
+        "conflict": "One-Click implies speed, 2FA implies friction.",
+        "security_policy": "All transactions > $500 require 2FA verification before payment processing."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the proposed solution logically resolve the conflict between speed and security?",
+        "Criterion 2: Completeness — Are the implementation plan, risk assessment, and code snippet all present?",
+        "Criterion 3: Best practices — Is the code snippet production-ready with input validation and error handling?"
+      ],
+      "student_answer": "```python\nimport json\nimport logging\n\n# Configure logging\nlogging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')\n\ndef enforce_conditional_2fa(order_total, jwt_token):\n    \"\"\"\n    Enforces 2FA based on order total and JWT token.\n\n    Args:\n        order_total (float): The total order amount.\n        jwt_token (str): The JWT token provided by the user.\n\n    Returns:\n        bool: True if 2FA is required, False otherwise.\n    \"\"\"\n    try:\n        # Placeholder for JWT verification logic - Replace with actual JWT library integration\n        # This simulates JWT verification for demonstration purposes\n        is_valid_jwt = True  # Assume JWT is valid for this example\n\n        if order_total > 500 and is_valid_jwt:\n            logging.warning(\"Order exceeds $500. 2FA required.\")\n            return True\n        else:\n            logging.debug(\"Order does not exceed $500 or JWT is invalid. 2FA not required.\")\n            return False\n    except Exception as e:\n        logging.error(f\"Error during 2FA enforcement: {e}\")\n        return False  # Assume 2FA is required on error to err on the side of caution\n\n\ndef checkout_api(order_total, jwt_token):\n    \"\"\"\n    Handles the checkout process, including 2FA enforcement.\n\n    Args:\n        order_total (float): The total order amount.\n        jwt_token (str): The JWT token provided by the user.\n\n    Returns:\n        dict: A dictionary containing the checkout result.\n    \"\"\"\n    requires_2fa = enforce_conditional_2fa(order_total, jwt_token)\n\n    if requires_2fa:\n        logging.info(\"Initiating 2FA flow...\")\n        # Simulate 2FA flow - Replace with actual 2FA implementation\n        # This is a placeholder for the 2FA verification process\n        twofa_result = True # Simulate successful 2FA\n        if not twofa_result:\n            return {\"status\": \"error\", \"message\": \"2FA verification failed.\"}\n\n        logging.info(\"2FA verification successful.\")\n        return {\"status\": \"success\", \"message\": \"Checkout initiated.\"}\n    else:\n        logging.info(\"Proceeding with One-Click Checkout.\")\n        return {\"status\": \"success\", \"message\": \"Checkout completed.\"}\n\n\n# Example Usage\nif __name__ == '__main__':\n    order_total = 600.0\n    jwt_token = \"valid_jwt_token\"\n\n    result = checkout_api(order_total, jwt_token)\n    print(json.dumps(result))\n\n    order_total = 100.0\n    jwt_token = \"valid_jwt_token\"\n    result = checkout_api(order_total, jwt_token)\n    print(json.dumps(result))\n```\n\n**Implementation Plan:**\n\n1.  **Phase 1 (Immediate - 1 Week):** Implement the `enforce_conditional_2fa` function with placeholder JWT verification.  Focus on core logic and logging.\n2.  **Phase 2 (1-2 Weeks):** Integrate a robust JWT verification library (e.g., `PyJWT`).  Implement detailed logging for JWT validation attempts and errors.\n3.  **Phase 3 (2-3 Weeks):** Develop the 2FA flow simulation.  Replace the placeholder with a call to a 2FA service (SMS, authenticator app).  Implement error handling for 2FA failures.\n4.  **Phase 4 (1 Week):**  Refactor and test the `checkout_api` function.  Add comprehensive unit tests.\n\n**Risk Assessment (Bypassing 2FA):**\n\n*   **JWT Spoofing:**  Attackers could potentially forge JWT tokens. Mitigation: Implement strong JWT signing algorithms (e.g., RS256) and rotate keys regularly.  Implement rate limiting on JWT issuance.\n*   **2FA Bypass (Simulated):** The placeholder 2FA simulation is vulnerable. Mitigation: Integrate a secure 2FA service with robust authentication and rate limiting.\n*   **Token Leakage:**  If JWTs are leaked, attackers could use them for unauthorized purchases. Mitigation: Enforce HTTPS, implement token expiration, and monitor for suspicious activity.\n*   **Logging Vulnerabilities:**  Detailed logging could expose sensitive information. Mitigation: Sanitize logs, restrict access to log files, and implement data masking.\n\n**Prioritization:** Security (JWT verification, 2FA integration) > Functionality (One-Click Checkout) > Performance (Optimize later)\n\n**Code Snippet (checkout_api):**  The provided Python code demonstrates the core logic of the `checkout_api` function, including conditional 2FA enforcement and basic error handling.  It includes placeholder logic for JWT verification and 2FA flow simulation.  Replace the placeholders with actual implementations.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission addresses the core requirements with a code snippet, implementation plan, and risk assessment. However, it fails to fully resolve the 'One-Click' conflict; the proposed solution simply adds a 2FA step for high-value orders, which inherently breaks the 'One-Click' speed promise for those transactions rather than proposing a sophisticated alternative (like risk-based authentication or stored credentials with re-authentication). The code snippet is a basic script, not a production-ready API endpoint, and lacks input validation, proper HTTP status codes, and asynchronous handling. The risk assessment is generic. While the logic is correct (dimension 4), the lack of professional depth and the failure to creatively solve the friction vs. speed conflict prevents a higher score."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Communicate with network personnel or Web site hosting agencies to address hardware or software issues affecting Web sites.",
+      "task_type": "Server Configuration and Performance Optimization",
+      "user_prompt": "A web application is experiencing slow load times due to inefficient server directory structures and unoptimized resource loading. Based on the provided server log analysis, propose a new directory tree structure that improves caching and access speed. Additionally, write a Node.js middleware script that implements performance improvements by compressing responses and handling invalid requests gracefully. Ensure the solution addresses cross-browser compatibility for the compression headers and includes robust error handling.",
+      "reference_context": {
+        "current_structure": "/var/www/html/assets/images, /var/www/html/assets/scripts, /var/www/html/assets/styles",
+        "logs": "High latency on image requests, 404 errors on missing script files, slow gzip compression.",
+        "target_performance": "Reduce TTFB by 40%, ensure consistent compression headers across Chrome, Firefox, and Safari."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the new directory structure logically improve caching and access?",
+        "Criterion 2: Completeness — Are the directory tree and middleware script both provided?",
+        "Criterion 3: Best practices — Does the middleware include input validation and cross-browser header compatibility?"
+      ],
+      "student_answer": "```javascript\n// middleware.js\nconst compression = require('compression');\nconst helmet = require('helmet');\nconst express = require('express');\n\nconst app = express();\n\n// Middleware to compress responses\napp.use(compression({\n  level: 6, // Higher number = more compression\n  filter: (req, res) => {\n    // Only compress text-based MIME types\n    return res.getHeader('Content-Type') !== 'image/svg+xml';\n  }\n}));\n\n// Middleware for security headers\napp.use(helmet());\n\n// Error handling middleware\napp.use((err, req, res, next) => {\n  console.error(err.stack);\n  res.status(500).send('Something broke!');\n});\n\n// Example route (replace with your actual routes)\napp.get('/', (req, res) => {\n  res.send('Hello World!');\n});\n\nmodule.exports = app;\n\n// directory_structure.js\nconst fs = require('fs');\nconst path = require('path');\n\nconst currentAssetsDir = '/var/www/html/assets';\nconst newAssetsDir = '/var/www/html/public/assets';\n\n// Create the new directory structure\nfunction createDirectoryStructure() {\n  fs.mkdirSync(newAssetsDir, { recursive: true });\n  fs.mkdirSync(path.join(newAssetsDir, 'images'), { recursive: true });\n  fs.mkdirSync(path.join(newAssetsDir, 'scripts'), { recursive: true });\n  fs.mkdirSync(path.join(newAssetsDir, 'styles'), { recursive: true });\n\n  // Move existing files (example - adjust as needed)\n  fs.readdirSync(currentAssetsDir).forEach(file => {\n    const oldPath = path.join(currentAssetsDir, file);\n    const newPath = path.join(newAssetsDir, file);\n    if (fs.statSync(oldPath).isDirectory()) {\n      // Copy directory recursively\n      fs.mkdirSync(newPath, { recursive: true });\n      fs.readdirSync(oldPath).forEach(subFile => {\n        fs.copyFileSync(path.join(oldPath, subFile), path.join(newPath, subFile));\n      });\n    } else {\n      fs.copyFileSync(oldPath, newPath);\n    }\n  });\n}\n\ncreateDirectoryStructure();\n\nconsole.log('Directory structure updated.');\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the core task requirements. First, it does not propose a new directory tree structure in the text; it only provides a Node.js script to move files, which is an implementation detail rather than a structural proposal. Second, the middleware script ignores the specific requirement to handle 404 errors gracefully (it only has a generic 500 error handler) and fails to implement cross-browser compatibility logic for compression headers (the `compression` library handles this automatically, but the custom filter logic is flawed and the script doesn't explicitly address the browser compatibility requirement in the code or comments). The directory script uses synchronous file operations (`fs.readFileSync`, `fs.readdirSync`) which is a major performance anti-pattern for a server-side task, violating best practices. The solution is functional as a basic script but fails the specific constraints of the prompt regarding error handling, structural analysis, and performance optimization."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Document test plans, testing procedures, or test results.",
+      "task_type": "Comprehensive Test Plan and Validation",
+      "user_prompt": "Create a detailed test plan for a new user authentication module that must function correctly across Chrome, Firefox, and Safari. The plan must include specific test cases for cross-browser compatibility issues related to form validation and session management. Provide a sample test script in Python (using Selenium) that validates input fields, handles invalid inputs with error messages, and verifies session persistence. The script must include error handling for browser-specific driver failures.",
+      "reference_context": {
+        "module": "User Authentication (Login/Register)",
+        "browsers": "Chrome (latest), Firefox (latest), Safari (latest)",
+        "known_issues": "Safari blocks third-party cookies, Chrome requires specific input types for validation."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the test cases relevant and do they cover the specified browsers?",
+        "Criterion 2: Completeness — Is the test plan and the Python script both included?",
+        "Criterion 3: Best practices — Does the script handle errors gracefully and validate inputs?"
+      ],
+      "student_answer": "```python\nimport unittest\nfrom selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.support.ui import WebDriverWait\nfrom selenium.webdriver.support import expected_conditions as EC\nimport time\n\nclass UserAuthenticationTest(unittest.TestCase):\n\n    def setUp(self):\n        # Chrome Driver Setup\n        self.driver = webdriver.Chrome()\n        self.driver.maximize_window()\n        self.base_url = \"https://example.com/login\"  # Replace with your actual URL\n        self.driver.get(self.base_url)\n\n    def tearDown(self):\n        self.driver.quit()\n\n    def test_login_form_validation(self):\n        # Test Case 1: Empty Username\n        self.driver.find_element(By.ID, \"username\").send_keys(\"\")\n        self.driver.find_element(By.ID, \"password\").send_keys(\"password123\")\n        self.driver.find_element(By.ID, \"login_button\").click()\n        error_message = self.driver.find_element(By.ID, \"error_message\").text\n        self.assertEqual(error_message, \"Username is required\", \"Error message for empty username is incorrect\")\n\n        # Test Case 2: Empty Password\n        self.driver.find_element(By.ID, \"username\").send_keys(\"testuser\")\n        self.driver.find_element(By.ID, \"password\").send_keys(\"\")\n        self.driver.find_element(By.ID, \"login_button\").click()\n        error_message = self.driver.find_element(By.ID, \"error_message\").text\n        self.assertEqual(error_message, \"Password is required\", \"Error message for empty password is incorrect\")\n\n        # Test Case 3: Invalid Email Format\n        self.driver.find_element(By.ID, \"username\").send_keys(\"invalid-email\")\n        self.driver.find_element(By.ID, \"password\").send_keys(\"password123\")\n        self.driver.find_element(By.ID, \"login_button\").click()\n        error_message = self.driver.find_element(By.ID, \"error_message\").text\n        self.assertEqual(error_message, \"Invalid email format\", \"Error message for invalid email is incorrect\")\n\n    def test_session_persistence(self):\n        # Test Case 1: Successful Login and Session Persistence\n        self.driver.find_element(By.ID, \"username\").send_keys(\"testuser\")\n        self.driver.find_element(By.ID, \"password\").send_keys(\"password123\")\n        self.driver.find_element(By.ID, \"login_button\").click()\n\n        # Wait for successful login (adjust timeout as needed)\n        try:\n            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, \"welcome_message\")))\n        except:\n            self.fail(\"Login failed to complete within the timeout.\")\n\n        # Verify session persistence by navigating to a protected page\n        self.driver.get(\"https://example.com/protected\") # Replace with your protected page URL\n        welcome_message = self.driver.find_element(By.ID, \"welcome_message\").text\n        self.assertEqual(welcome_message, \"Welcome, testuser!\", \"Session not persistent - welcome message incorrect\")\n\n        # Test Case 2: Logout and Session Termination\n        self.driver.get(\"https://example.com/protected\")\n        self.driver.find_element(By.ID, \"logout_button\").click()\n        try:\n            WebDriverWait(self.driver, 10).until(EC.invisibility_of_element_located((By.ID, \"welcome_message\")))\n        except:\n            self.fail(\"Logout failed to complete within the timeout.\")\n\n    def test_cross_browser_compatibility(self):\n        # Safari Specific Test - Cookie Blocking\n        self.driver.get(\"https://example.com/login\") # Replace with your login page\n        self.driver.add_cookie({\"name\": \"test_cookie\", \"value\": \"test_value\"})\n        self.driver.get(\"https://example.com/profile\") # Replace with a page that uses the cookie\n        time.sleep(5) # Safari may take longer to load\n        try:\n            cookie_exists = self.driver.get_cookies()\n            self.assertTrue(len(cookie_exists) > 0, \"Test cookie not set in Safari\")\n        except:\n            self.fail(\"Test cookie not set in Safari\")\n\n        # Chrome Specific Test - Input Type Validation\n        self.driver.get(\"https://example.com/login\") # Replace with your login page\n        self.driver.find_element(By.ID, \"username\").send_keys(\"invalid-email\")\n        self.driver.find_element(By.ID, \"login_button\").click()\n        error_message = self.driver.find_element(By.ID, \"error_message\").text\n        self.assertEqual(error_message, \"Invalid email format\", \"Chrome input type validation failed\")\n\nif __name__ == '__main__':\n    unittest.main()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to meet the core task requirements. First, it completely omits the requested 'detailed test plan' document, providing only a Python script. Second, the script is technically flawed: it uses a single test class with a single driver instance, meaning tests for Chrome, Firefox, and Safari cannot actually run in parallel or be isolated as required for cross-browser testing; the 'test_cross_browser_compatibility' method attempts to run Safari-specific logic on a Chrome driver instance. Third, the code lacks the required error handling for browser-specific driver failures (e.g., missing WebDriverManager or specific exception handling for SafariDriver). Fourth, the test logic is brittle, relying on hardcoded IDs and `time.sleep()` instead of robust explicit waits. Finally, the script does not address the specific known issues (Safari cookie blocking, Chrome input types) with appropriate configuration or assertions, merely attempting to set cookies which would fail in a standard Chrome setup without specific capabilities."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Recommend and implement performance improvements.",
+      "task_type": "Frontend Performance and Cross-Browser Optimization",
+      "user_prompt": "Analyze the provided JavaScript code for a dynamic data table that renders slowly on older devices. Identify three performance bottlenecks related to DOM manipulation and propose optimized code that ensures consistent rendering speed across Chrome, Firefox, and Safari. The solution must include input validation for the data source and robust error handling for network failures. Ensure the code uses modern ES6+ features that are polyfilled or compatible with older browsers where necessary.",
+      "reference_context": {
+        "original_code": "function renderTable(data) { const container = document.getElementById('table'); container.innerHTML = ''; data.forEach(row => { const tr = document.createElement('tr'); row.forEach(cell => { const td = document.createElement('td'); td.textContent = cell; tr.appendChild(td); }); container.appendChild(tr); }); }",
+        "performance_target": "Render 1000 rows in under 200ms on mid-range devices.",
+        "compatibility": "Must work on Chrome 90+, Firefox 88+, Safari 14+."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the optimized code significantly improve performance?",
+        "Criterion 2: Completeness — Are the bottlenecks identified and the solution provided?",
+        "Criterion 3: Best practices — Is the code production-ready with error handling and cross-browser compatibility?"
+      ],
+      "student_answer": "```javascript\nfunction renderTable(data) {\n  const container = document.getElementById('table');\n\n  if (!container) {\n    console.error(\"Table container not found.\");\n    return;\n  }\n\n  if (!Array.isArray(data)) {\n    console.error(\"Data must be an array.\");\n    return;\n  }\n\n  if (data.length === 0) {\n    container.innerHTML = '<tr><td>No data available.</td></tr>';\n    return;\n  }\n\n  container.innerHTML = ''; // Clear existing table\n\n  const startTime = performance.now();\n\n  data.forEach(row => {\n    const tr = document.createElement('tr');\n\n    if (!Array.isArray(row)) {\n      console.warn(\"Invalid row data:\", row);\n      return;\n    }\n\n    row.forEach(cell => {\n      const td = document.createElement('td');\n      td.textContent = cell;\n      tr.appendChild(td);\n    });\n\n    container.appendChild(tr);\n  });\n\n  const endTime = performance.now();\n  const duration = endTime - startTime;\n\n  if (duration > 200) {\n    console.warn(`Table rendering took ${duration}ms.  Consider optimizing for performance.`);\n  }\n}\n\n// Example Usage (Simulated Data)\nconst sampleData = Array.from({ length: 1000 }, (_, i) => Array(10).fill(i + 1));\n\n// Simulate a potential network failure\nconst simulateNetworkError = () => {\n  return new Promise((resolve, reject) => {\n    setTimeout(() => {\n      reject(new Error(\"Simulated network error\"));\n    }, 50);\n  });\n};\n\nrenderTable(sampleData)\n  .then(() => {\n    console.log(\"Table rendered successfully.\");\n  })\n  .catch(error => {\n    console.error(\"Error rendering table:\", error);\n  });\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task of identifying performance bottlenecks or proposing optimized code. It retains the original inefficient pattern of appending nodes one by one inside nested loops, which causes massive reflows and fails the 200ms target for 1000 rows. It completely ignores the requirement to use DocumentFragment or template literals for batch rendering. Furthermore, the code contains a critical logical error: the `renderTable` function is synchronous but is called within a Promise chain that expects it to return a Promise, leading to a runtime error (calling .then on undefined). It also fails to implement the required network failure handling logic, merely defining a dummy function that is never integrated. The solution is fundamentally broken and does not meet the performance or architectural requirements."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collaborate with management or users to develop e-commerce strategies and to integrate these strategies with Web sites.",
+      "task_type": "E-commerce Feature Implementation with Security",
+      "user_prompt": "Design and implement a shopping cart feature that integrates with an existing e-commerce strategy. The feature must handle complex scenarios like item quantity limits, stock availability checks, and cross-browser compatibility for the cart UI. Provide a React component that includes input validation for user quantities, error handling for stock checks, and CSS that ensures consistent layout across Chrome, Firefox, and Safari. The solution must also include a fallback mechanism for browsers that do not support specific CSS Grid features.",
+      "reference_context": {
+        "strategy": "Limit cart items to 10 per SKU, real-time stock check required.",
+        "ui_requirements": "Responsive cart summary, consistent styling across browsers.",
+        "constraints": "Must handle network timeouts and invalid user input."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the component correctly implement the business logic?",
+        "Criterion 2: Completeness — Are the React component, CSS, and fallback mechanisms included?",
+        "Criterion 3: Best practices — Is the code production-ready with error handling and cross-browser compatibility?"
+      ],
+      "student_answer": "```jsx\nimport React, { useState, useEffect } from 'react';\n\nconst ShoppingCart = ({ products, onAddToCart }) => {\n  const [cart, setCart] = useState({});\n  const [errorMessage, setErrorMessage] = useState('');\n\n  useEffect(() => {\n    // Initialize cart from existing data (if any)\n    const initialCart = {};\n    products.forEach(product => {\n      initialCart[product.sku] = 0;\n    });\n    setCart(initialCart);\n  }, [products]);\n\n  const handleQuantityChange = (sku, quantity) => {\n    const newCart = { ...cart };\n    newCart[sku] = parseInt(quantity, 10);\n\n    // Validate quantity\n    if (isNaN(newCart[sku]) || newCart[sku] < 0) {\n      setErrorMessage('Invalid quantity. Please enter a number.');\n      return;\n    }\n\n    // Check stock availability\n    const product = products.find(p => p.sku === sku);\n    if (product) {\n      if (newCart[sku] > product.stock) {\n        setErrorMessage(`Not enough stock available. Only ${product.stock} left.`);\n        return;\n      }\n    }\n\n    setCart(newCart);\n    setErrorMessage('');\n  };\n\n  const handleAddToCart = (sku, quantity) => {\n    const newCart = { ...cart };\n    if (newCart[sku]) {\n      newCart[sku] += parseInt(quantity, 10);\n    } else {\n      newCart[sku] = parseInt(quantity, 10);\n    }\n\n    // Validate quantity\n    if (isNaN(newCart[sku]) || newCart[sku] < 0) {\n      setErrorMessage('Invalid quantity. Please enter a number.');\n      return;\n    }\n\n    // Check stock availability\n    const product = products.find(p => p.sku === sku);\n    if (product) {\n      if (newCart[sku] > product.stock) {\n        setErrorMessage(`Not enough stock available. Only ${product.stock} left.`);\n        return;\n      }\n    }\n\n    setCart(newCart);\n    setErrorMessage('');\n    onAddToCart(sku, newCart[sku]);\n  };\n\n  const renderCartItems = () => {\n    return Object.entries(cart).map(([sku, quantity]) => {\n      const product = products.find(p => p.sku === sku);\n      if (!product) {\n        return null;\n      }\n      return (\n        <div key={sku} className=\"cart-item\">\n          <span>{product.name}</span>\n          <span>{quantity}</span>\n        </div>\n      );\n    });\n  };\n\n  return (\n    <div className=\"shopping-cart\">\n      <h2>Shopping Cart</h2>\n      {errorMessage && <div className=\"error-message\">{errorMessage}</div>}\n      <div className=\"cart-items\">\n        {renderCartItems()}\n      </div>\n      <button onClick={() => {\n        const total = Object.entries(cart).reduce((sum, [sku, quantity]) => {\n          const product = products.find(p => p.sku === sku);\n          return sum + (product ? product.price * quantity : 0);\n        }, 0);\n        console.log(\"Total:\", total);\n      }}>\n        View Total\n      </button>\n    </div>\n  );\n};\n\nexport default ShoppingCart;\n```\n\n```css\n/* shopping-cart.css */\n\n.shopping-cart {\n  font-family: sans-serif;\n  padding: 20px;\n}\n\n.cart-items {\n  display: grid;\n  grid-template-columns: 1fr;\n  gap: 10px;\n}\n\n.cart-item {\n  border: 1px solid #ccc;\n  padding: 10px;\n  text-align: center;\n}\n\n.error-message {\n  color: red;\n  margin-top: 10px;\n}\n\n/* Fallback for older browsers */\n.shopping-cart {\n  display: flex;\n  flex-direction: column;\n}\n\n.cart-items {\n  display: flex;\n  flex-direction: column;\n}\n\n.cart-item {\n  border: 1px solid #ccc;\n  padding: 10px;\n  text-align: center;\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. Dimension 1 (Correctness): The code contains critical syntax errors (e.g., `key=` is empty in `renderCartItems`, `className` is used without quotes in JSX), and the logic for the 'Add to Cart' button is missing the required input validation and quantity limit checks (10 per SKU) entirely. Dimension 2 (Completeness): The CSS fallback strategy is logically flawed (redefining properties at the end of the file overrides the Grid layout rather than providing a conditional fallback), and there is no implementation for network timeouts or cross-browser compatibility testing. Dimension 3 (Best Practices): The code lacks proper error handling for asynchronous operations, uses `console.log` for critical logic, and ignores the specific constraint of limiting items to 10 per SKU. Dimension 4 (Domain Accuracy): The stock check logic is present but broken due to the syntax errors, and the fallback mechanism does not address the specific requirement for Grid feature support. Dimension 5 (Clarity): The code is unreadable due to syntax errors. Dimension 6 (Autonomy): The code is not runnable and requires significant rework to even compile, let alone be delivered to a client."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Establish appropriate server directory trees.",
+      "task_type": "Server Architecture and Security Hardening",
+      "user_prompt": "Propose a secure server directory tree structure for a new web application that handles sensitive user data. The structure must prevent unauthorized access and optimize for performance. Additionally, write a configuration script (e.g., Nginx or Apache) that enforces security headers, handles invalid requests with proper error codes, and ensures cross-browser compatibility for the security headers. The solution must include input validation for any dynamic paths and robust error handling for configuration errors.",
+      "reference_context": {
+        "application_type": "User Data Management System",
+        "security_requirements": "Prevent directory traversal, enforce HTTPS, restrict access to sensitive files.",
+        "performance_requirements": "Optimize static asset delivery, minimize server load."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the directory structure and configuration meet security and performance goals?",
+        "Criterion 2: Completeness — Are the directory tree and configuration script both provided?",
+        "Criterion 3: Best practices — Is the solution production-ready with error handling and cross-browser compatibility?"
+      ],
+      "student_answer": "```nginx\nserver {\n    listen 80;\n    server_name example.com;\n    return 301 https://$host$request_uri;\n}\n\nserver {\n    listen 443 ssl;\n    server_name example.com;\n\n    ssl_certificate /etc/nginx/ssl/example.com.crt;\n    ssl_certificate_key /etc/nginx/ssl/example.com.key;\n\n    # Security Headers\n    add_header X-Frame-Options \"SAMEORIGIN\";\n    add_header X-XSS-Protection \"1; mode=block\";\n    add_header Content-Security-Policy \"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'\";\n    add_header X-Content-Type-Options \"nosniff\";\n    add_header Strict-Transport-Security \"max-age=31536000; includeSubDomains; preload\";\n\n    # Input Validation - Example for a dynamic path (e.g., user profile)\n    location /userprofile {\n        valid_regex ^/userprofile/([a-zA-Z0-9_-]+)$;\n        if ($invalid_uri) {\n            return 400 \"Invalid user profile ID\";\n        }\n\n        # Access Control - Example: Only allow access to specific files\n        allow 127.0.0.1; # Allow access from localhost\n        deny all;\n\n        root /var/www/html;\n        index index.php;\n\n        try_files $uri $uri/ /index.php?$args;\n    }\n\n    # Static Asset Delivery - Cache everything\n    location ~* \\.(jpg|jpeg|png|gif|css|js|ico)$ {\n        expires 30d;\n        add_header Cache-Control \"public\";\n    }\n\n    # Error Handling\n    error_page 400 404 500 502 503 504 /50x.html;\n    location = /50x.html {\n        root /var/www/html;\n    }\n\n    # Log Files - Separate logs for different levels\n    access_log /var/log/nginx/access.log;\n    error_log /var/log/nginx/error.log;\n}\n```\n\n```\n├── config/\n│   ├── database.yml          # Database configuration\n│   ├── mail.yml              # Email configuration\n│   ├── nginx/                # Nginx configuration\n│   │   ├── example.com.conf   # Main Nginx configuration (above)\n│   │   ├── ssl/               # SSL certificates\n│   │   │   ├── example.com.crt\n│   │   │   └── example.com.key\n│   ├── webpack.config.js     # Webpack configuration for bundling assets\n│   └── .env                   # Environment variables\n├── public/\n│   ├── css/\n│   │   ├── style.css\n│   │   └── ...\n│   ├── js/\n│   │   ├── app.js\n│   │   └── ...\n│   ├── img/\n│   │   ├── logo.png\n│   │   └── ...\n│   ├── index.html            # Main HTML file\n│   └── favicon.ico\n├── src/\n│   ├── components/\n│   │   ├── UserProfile.js\n│   │   └── ...\n│   ├── services/\n│   │   ├── UserService.js\n│   │   └── ...\n│   ├── App.js                # Main application component\n│   └── index.js              # Entry point\n├── views/\n│   ├── userprofile/\n│   │   ├── index.ejs\n│   │   └── ...\n│   ├── index.ejs\n│   └── ...\n├── .gitignore\n├── README.md\n└── package.json\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy due to the use of non-existent Nginx directives. Specifically, 'valid_regex' and '$invalid_uri' are not valid Nginx syntax; input validation in Nginx requires 'if' blocks with 'rewrite' or 'return' using 'if ($uri ~ ...)' patterns, not a dedicated validation directive. The CSP header includes 'unsafe-inline' and 'unsafe-eval', which contradicts the goal of high security for sensitive data. The directory tree is generic and does not explicitly address the 'prevent unauthorized access' requirement for sensitive files (e.g., no .htaccess or specific deny rules for config folders). While the structure is clear (Clarity 4), the technical errors make the solution unusable without major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Document technical factors such as server load, bandwidth, database performance, and browser and device types.",
+      "task_type": "Cross-Browser Compatibility Analysis",
+      "user_prompt": "Analyze the provided CSS snippet for a responsive navigation bar. Identify three specific compatibility issues across Chrome, Firefox, and Safari regarding flexbox behavior and pseudo-elements. Propose a corrected CSS block that ensures consistent rendering on all three browsers while maintaining the original design intent.",
+      "reference_context": {
+        "original_css": ".nav-container { display: flex; justify-content: space-between; } .nav-item::before { content: ''; width: 10px; height: 10px; background: red; }",
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```css\n.nav-container {\n  display: flex;\n  justify-content: space-between;\n}\n\n.nav-item::before {\n  content: '';\n  width: 10px;\n  height: 10px;\n  background: red;\n  box-sizing: border-box; /* Ensures padding doesn't affect width */\n}\n\n/* Safari fix for pseudo-element positioning */\n.nav-container {\n  align-items: center; /* Ensures vertical alignment */\n}\n\n.nav-item::before {\n  position: relative; /* Ensures correct positioning */\n  left: -5px; /* Adjust left value as needed for consistent spacing */\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to identify the specific compatibility issues requested (e.g., Safari's lack of support for ::before on non-replaced elements without specific display properties, or flexbox alignment quirks). The proposed solution is technically flawed: adding 'position: relative' to a pseudo-element inside a flex container without changing the parent's flex properties often breaks the intended layout flow rather than fixing it. Crucially, the student completely ignored the requirement to include vendor prefixes (-webkit-) which are still necessary for consistent pseudo-element rendering in Safari. The solution addresses none of the three specific browser compatibility issues asked for, making it a weak attempt at the task."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop or implement procedures for ongoing Web site revision.",
+      "task_type": "API Integration and Error Handling",
+      "user_prompt": "Write a JavaScript function to fetch user data from a REST API endpoint. The function must include robust error handling for network failures, invalid JSON responses, and HTTP 404/500 errors. Ensure the code validates input parameters before making the request and handles cross-browser differences in fetch API behavior.",
+      "reference_context": {
+        "api_endpoint": "https://api.example.com/users/{id}",
+        "input_schema": {
+          "id": "string (required, alphanumeric)"
+        },
+        "expected_response_format": {
+          "id": "string",
+          "name": "string",
+          "email": "string"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```javascript\n/**\n * Fetches user data from a REST API endpoint.\n *\n * @param {string} id The user ID.\n * @returns {Promise<object>} A promise that resolves with the user data or rejects with an error.\n * @throws {Error} If the input ID is invalid.\n */\nasync function fetchUser(id) {\n  const apiEndpoint = \"https://api.example.com/users/\" + id;\n\n  // Input validation\n  if (typeof id !== 'string') {\n    return Promise.reject(new Error(\"Invalid input: ID must be a string.\"));\n  }\n\n  if (!/^[a-zA-Z0-9]+$/.test(id)) {\n    return Promise.reject(new Error(\"Invalid input: ID must be alphanumeric.\"));\n  }\n\n  try {\n    const response = await fetch(apiEndpoint);\n\n    if (!response.ok) {\n      if (response.status === 404) {\n        return Promise.reject(new Error(`User not found: ${response.status}`));\n      } else if (response.status >= 500) {\n        return Promise.reject(new Error(`Server error: ${response.status}`));\n      } else {\n        return Promise.reject(new Error(`HTTP error: ${response.status}`));\n      }\n    }\n\n    const data = await response.json();\n\n    if (typeof data.id !== 'string' || typeof data.name !== 'string' || typeof data.email !== 'string') {\n      return Promise.reject(new Error(\"Invalid JSON response format.\"));\n    }\n\n    return data;\n\n  } catch (error) {\n    return Promise.reject(new Error(`Network error: ${error.message}`));\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The solution correctly implements input validation, error handling for HTTP status codes, and JSON parsing. It addresses the core requirements well. However, it scores a 4 on Correctness and Completeness because it fails to explicitly handle network-level failures (e.g., DNS errors, timeouts, or connection drops) which are distinct from HTTP errors and are caught in the catch block but not differentiated or handled with specific logic as requested by 'robust error handling for network failures'. Additionally, the 'cross-browser differences' requirement is not explicitly addressed (e.g., no mention of polyfills or specific feature checks, though fetch is widely supported now). The code is clean, well-documented, and follows best practices, making it a strong submission that falls just short of perfection due to the lack of specific handling for non-HTTP network exceptions and the generic catch block."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Create Web models or prototypes that include physical, interface, logical, or data models.",
+      "task_type": "Responsive Layout Implementation",
+      "user_prompt": "Create a responsive HTML/CSS layout for a product card component that adapts to mobile, tablet, and desktop views. The layout must use CSS Grid and Flexbox, include media queries for breakpoints at 768px and 1024px, and ensure consistent behavior across Chrome, Firefox, and Safari. Include input validation for dynamic content injection to prevent XSS.",
+      "reference_context": {
+        "component_requirements": {
+          "image": "responsive, max-width 100%",
+          "title": "truncated to 2 lines",
+          "price": "bold, right-aligned",
+          "button": "full-width on mobile, inline on desktop"
+        },
+        "design_mockup_url": "https://example.com/mockup.png"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Product Card</title>\n    <style>\n        .product-card {\n            border: 1px solid #ccc;\n            border-radius: 8px;\n            overflow: hidden;\n            background-color: #fff;\n            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);\n        }\n\n        .product-card img {\n            width: 100%;\n            height: auto;\n            display: block;\n        }\n\n        .product-card__title {\n            font-size: 1.25rem;\n            margin: 16px;\n            line-height: 1.3;\n        }\n\n        .product-card__price {\n            font-size: 1rem;\n            font-weight: bold;\n            text-align: right;\n            margin: 8px;\n        }\n\n        .product-card__button {\n            background-color: #007bff;\n            color: #fff;\n            padding: 12px 24px;\n            border: none;\n            border-radius: 8px;\n            cursor: pointer;\n            text-decoration: none;\n            display: block;\n            width: 100%;\n        }\n\n        .product-card__button:hover {\n            background-color: #0056b3;\n        }\n\n        /* CSS Grid Layout */\n        .product-grid {\n            display: grid;\n            grid-template-columns: 1fr;\n            gap: 20px;\n        }\n\n        /* Tablet Layout (768px and up) */\n        @media (min-width: 768px) {\n            .product-grid {\n                grid-template-columns: 1fr 1fr;\n            }\n            .product-card__button {\n                display: inline-block;\n                width: auto;\n            }\n        }\n\n        /* Desktop Layout (1024px and up) */\n        @media (min-width: 1024px) {\n            .product-grid {\n                grid-template-columns: repeat(2, 1fr);\n            }\n        }\n    </style>\n</head>\n<body>\n\n    <div class=\"product-grid\">\n\n        <div class=\"product-card\">\n            <img src=\"https://via.placeholder.com/300x200\" alt=\"Product Image\">\n            <h2 class=\"product-card__title\">This is a long title that will be truncated to two lines.  It demonstrates the truncation functionality.</h2>\n            <p class=\"product-card__price\">$19.99</p>\n            <a href=\"#\" class=\"product-card__button\">Add to Cart</a>\n        </div>\n\n        <div class=\"product-card\">\n            <img src=\"https://via.placeholder.com/300x200\" alt=\"Product Image\">\n            <h2 class=\"product-card__title\">Another Product Title - This one is also long and will be truncated.</h2>\n            <p class=\"product-card__price\">$29.99</p>\n            <a href=\"#\" class=\"product-card__button\">Add to Cart</a>\n        </div>\n\n        <div class=\"product-card\">\n            <img src=\"https://via.placeholder.com/300x200\" alt=\"Product Image\">\n            <h2 class=\"product-card__title\">Yet Another Product Title - More text to demonstrate truncation.</h2>\n            <p class=\"product-card__price\">$39.99</p>\n            <a href=\"#\" class=\"product-card__button\">Add to Cart</a>\n        </div>\n    </div>\n\n</body>\n</html>\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission fails to meet several critical requirements. First, it completely ignores the explicit instruction to include input validation for dynamic content injection to prevent XSS, a key part of the task. Second, the title truncation requirement (2 lines) is not implemented in the CSS (missing -webkit-line-clamp). Third, the layout uses CSS Grid for the container but fails to utilize Flexbox as requested for the internal component structure. Fourth, the desktop breakpoint logic is inconsistent (768px sets 2 columns, 1024px repeats 2 columns, which is redundant). Finally, the button behavior on desktop is set to 'inline-block' but lacks the specific 'inline' requirement or proper alignment context. While the code is syntactically correct and responsive, the missing features and lack of adherence to specific constraints prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware.",
+      "task_type": "Security Protocol Implementation",
+      "user_prompt": "Implement a secure login form with client-side validation and server-side simulation. The form must enforce password complexity rules, validate email format, and implement CSRF token generation. Ensure the solution handles cross-browser differences in form submission and includes error messages for invalid inputs.",
+      "reference_context": {
+        "security_requirements": {
+          "password_min_length": 8,
+          "password_complexity": "uppercase, lowercase, number, special character",
+          "csrf_token": "required"
+        },
+        "validation_rules": {
+          "email": "RFC 5322 compliant",
+          "username": "alphanumeric, 3-20 characters"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```html\n<!DOCTYPE html>\n<html>\n<head>\n  <title>Secure Login</title>\n  <style>\n    .error {\n      color: red;\n    }\n  </style>\n</head>\n<body>\n\n  <h1>Login</h1>\n\n  <form id=\"loginForm\">\n    <label for=\"username\">Username:</label>\n    <input type=\"text\" id=\"username\" name=\"username\" required>\n    <span id=\"usernameError\" class=\"error\"></span>\n\n    <label for=\"email\">Email:</label>\n    <input type=\"email\" id=\"email\" name=\"email\" required>\n    <span id=\"emailError\" class=\"error\"></span>\n\n    <label for=\"password\">Password:</label>\n    <input type=\"password\" id=\"password\" name=\"password\" required>\n    <span id=\"passwordError\" class=\"error\"></span>\n\n    <label for=\"confirmPassword\">Confirm Password:</label>\n    <input type=\"password\" id=\"confirmPassword\" name=\"confirmPassword\" required>\n    <span id=\"confirmPasswordError\" class=\"error\"></span>\n\n    <button type=\"submit\">Login</button>\n  </form>\n\n  <script>\n    const form = document.getElementById('loginForm');\n    const usernameInput = document.getElementById('username');\n    const emailInput = document.getElementById('email');\n    const passwordInput = document.getElementById('password');\n    const confirmPasswordInput = document.getElementById('confirmPassword');\n    const usernameError = document.getElementById('usernameError');\n    const emailError = document.getElementById('emailError');\n    const passwordError = document.getElementById('passwordError');\n    const confirmPasswordError = document.getElementById('confirmPasswordError');\n\n    form.addEventListener('submit', async (event) => {\n      event.preventDefault();\n\n      let isValid = true;\n\n      // Username Validation\n      if (!usernameInput.value.match(/^[a-zA-Z0-9]+$/) || usernameInput.value.length < 3 || usernameInput.value.length > 20) {\n        usernameError.textContent = \"Username must be alphanumeric and between 3 and 20 characters.\";\n        isValid = false;\n      } else {\n        usernameError.textContent = \"\";\n      }\n\n      // Email Validation\n      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;\n      if (!emailInput.value.match(emailRegex)) {\n        emailError.textContent = \"Invalid email format.\";\n        isValid = false;\n      } else {\n        emailError.textContent = \"\";\n      }\n\n      // Password Validation\n      const passwordMinLength = 8;\n      const passwordComplexity = /[a-z]+[A-Z]+[0-9]+[!@#$%^&*()_+{}\\[\\]:;<>,.?~\\\\/-]/.test(passwordInput.value);\n      if (passwordInput.value.length < passwordMinLength || !passwordComplexity) {\n        passwordError.textContent = \"Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character.\";\n        isValid = false;\n      } else {\n        passwordError.textContent = \"\";\n      }\n\n      // Confirm Password Validation\n      if (passwordInput.value !== confirmPasswordInput.value) {\n        confirmPasswordError.textContent = \"Passwords do not match.\";\n        isValid = false;\n      } else {\n        confirmPasswordError.textContent = \"\";\n      }\n\n      // CSRF Token (Simulated)\n      const csrfToken = 'YOUR_CSRF_TOKEN'; // Replace with actual CSRF token\n      if (!form.contains(document.getElementById('csrf_token'))) {\n        alert(\"CSRF token missing.  Server-side validation required.\");\n        return;\n      }\n\n      if (isValid) {\n        // Simulate server-side submission\n        console.log(\"Submitting form with data:\", {\n          username: usernameInput.value,\n          email: emailInput.value,\n          password: passwordInput.value\n        });\n        alert(\"Login successful!\");\n      }\n    });\n  </script>\n\n  <div id=\"csrf_token\" style=\"display:none;\">YOUR_CSRF_TOKEN</div>\n\n</body>\n</html>\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails significantly on Correctness and Completeness. The password complexity regex is logically flawed; it requires the characters to appear in a specific order (lowercase then uppercase then number then special) rather than just requiring the presence of all four types. The CSRF implementation is broken: it checks for a hidden input element's existence rather than validating the token value against a server-generated token, and the token is hardcoded. The email validation regex is weak and not RFC 5322 compliant. The solution ignores mobile viewport constraints (missing meta viewport tag). While the code structure is clear (Clarity 4) and the terminology is generally correct (Domain Accuracy 3), the functional logic errors and lack of security rigor prevent it from being a usable professional solution."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Evaluate or recommend server hardware or software.",
+      "task_type": "Performance Optimization and Monitoring",
+      "user_prompt": "Develop a JavaScript module to monitor web page performance metrics (load time, FCP, LCP) and log them to a console. The module must handle cross-browser differences in the Performance API and include error handling for unsupported browsers. Ensure the code validates input data and formats logs consistently.",
+      "reference_context": {
+        "metrics_to_monitor": [
+          "loadTime",
+          "FCP",
+          "LCP"
+        ],
+        "log_format": {
+          "timestamp": "ISO 8601",
+          "metric": "string",
+          "value": "number",
+          "unit": "string"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```javascript\nconst performanceMonitor = (() => {\n  const metricsToMonitor = [\"loadTime\", \"FCP\", \"LCP\"];\n  const logFormat = {\n    timestamp: \"ISO 8601\",\n    metric: \"string\",\n    value: \"number\",\n    unit: \"string\",\n  };\n\n  const log = (data) => {\n    const formattedData = Object.keys(data)\n      .map(\n        (key) =>\n          `${key}: ${data[key] !== undefined ? data[key] : ''}`\n      )\n      .join(\", \");\n    console.log(`[${new Date().toISOString()}] ${formattedData}`);\n  };\n\n  const getPerformanceMetrics = () => {\n    return new Promise((resolve, reject) => {\n      const metrics = {};\n\n      // Load Time\n      const loadTimePromise = new Promise((resolveLoadTime) => {\n        const startTime = performance.now();\n        performance.getTiming({\n          onTimings: (timing) => {\n            metrics.loadTime = timing.loadEventStart - timing.fetchStart;\n            resolveLoadTime();\n          },\n        });\n      });\n\n      // First Contentful Paint\n      const fcpPromise = new Promise((resolveFCP) => {\n        performance.getFCP((fcp) => {\n          metrics.FCP = fcp;\n          resolveFCP();\n        });\n      });\n\n      // Largest Contentful Paint\n      const lcpPromise = new Promise((resolveLCP) => {\n        performance.getLCP((lcp) => {\n          metrics.LCP = lcp;\n          resolveLCP();\n        });\n      });\n\n      Promise.all([loadTimePromise, fcpPromise, lcpPromise])\n        .then((results) => {\n          resolve(metrics);\n        })\n        .catch((error) => {\n          reject(error);\n        });\n    });\n  };\n\n  const validateInput = (data) => {\n    if (!Array.isArray(data) || data.length === 0) {\n      throw new Error(\"Metrics to monitor must be a non-empty array.\");\n    }\n    for (const metric of data) {\n      if (!metricsToMonitor.includes(metric)) {\n        throw new Error(\n          `Invalid metric: ${metric}. Supported metrics are: ${metricsToMonitor.join(\n            \", \"\n          )}`\n        );\n      }\n    }\n  };\n\n  return {\n    startMonitoring: async (metrics) => {\n      try {\n        await validateInput(metrics);\n        const metricsData = await getPerformanceMetrics(metrics);\n        log(metricsData);\n      } catch (error) {\n        console.error(\"Error monitoring performance:\", error);\n      }\n    },\n  };\n})();\n\n// Example usage:\n// performanceMonitor.startMonitoring([\"loadTime\", \"FCP\"]);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. It hallucinates non-existent browser APIs (performance.getTiming, performance.getFCP, performance.getLCP) which do not exist in the standard Performance API; the correct APIs are performance.getEntriesByType and PerformanceObserver. The code contains syntax errors (e.g., template literal interpolation with '$' instead of actual values), incorrect Promise logic (ignoring the resolve value), and the log function does not format data according to the required schema. The input validation logic is also flawed as it validates against a hardcoded list rather than the passed argument. The code is non-functional and would not run in any browser."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Monitor security system performance logs to identify problems and notify security specialists when problems occur.",
+      "task_type": "Log Analysis and Alerting System",
+      "user_prompt": "Create a Python script to parse web server logs and identify security anomalies (e.g., repeated failed login attempts, unusual traffic patterns). The script must include error handling for malformed log entries, validate input data, and generate alerts for suspicious activity. Ensure the solution is compatible with different log formats across Linux and Windows servers.",
+      "reference_context": {
+        "log_format": {
+          "ip": "string",
+          "timestamp": "YYYY-MM-DD HH:MM:SS",
+          "action": "string",
+          "status_code": "integer"
+        },
+        "anomaly_thresholds": {
+          "failed_logins": 5,
+          "traffic_spike": "200% of average"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```python\nimport re\nfrom datetime import datetime\n\ndef parse_log_line(log_line):\n    \"\"\"Parses a log line and returns a dictionary.\"\"\"\n    try:\n        ip = re.search(r'(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})', log_line).group(1)\n        timestamp_str = re.search(r'(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})', log_line).group(1)\n        timestamp = datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S')\n        action = re.search(r'GET|POST|PUT|DELETE|HEAD', log_line).group(0) if re.search(r'GET|POST|PUT|DELETE|HEAD', log_line) else 'Unknown'\n        status_code = int(re.search(r'(\\d{3})', log_line).group(1))\n        return {\n            \"ip\": ip,\n            \"timestamp\": timestamp,\n            \"action\": action,\n            \"status_code\": status_code\n        }\n    except (AttributeError, ValueError) as e:\n        print(f\"Error parsing log line: {log_line} - {e}\")\n        return None\n\ndef analyze_logs(log_data):\n    \"\"\"Analyzes log data for anomalies.\"\"\"\n    failed_logins = 0\n    ip_counts = {}\n    total_traffic = 0\n    traffic_records = []\n\n    for line in log_data:\n        parsed_line = parse_log_line(line)\n        if parsed_line:\n            ip = parsed_line[\"ip\"]\n            status_code = parsed_line[\"status_code\"]\n\n            if parsed_line[\"action\"] == \"GET\" and status_code != 200:\n                failed_logins += 1\n            \n            if ip in ip_counts:\n                ip_counts[ip] += 1\n            else:\n                ip_counts[ip] = 1\n            \n            total_traffic += 1\n            traffic_records.append(1)\n\n            if total_traffic > 1000:\n                average_traffic = sum(traffic_records) / len(traffic_records)\n                spike = (total_traffic - average_traffic) / average_traffic * 100\n                if spike > anomaly_thresholds[\"traffic_spike\"]:\n                    print(f\"Traffic spike detected for IP: {ip}, Spike: {spike}%\")\n\n    if failed_logins > anomaly_thresholds[\"failed_logins\"]:\n        print(f\"High number of failed login attempts detected. Failed logins: {failed_logins}\")\n\n    return {\n        \"failed_logins\": failed_logins,\n        \"ip_counts\": ip_counts\n    }\n\n# Example Usage\nif __name__ == \"__main__\":\n    log_data = [\n        \"192.168.1.100 - - [2023-10-26 10:00:00] \\\"GET /index.html HTTP/1.1\\\" 200 1000\",\n        \"192.168.1.101 - - [2023-10-26 10:01:00] \\\"POST /login HTTP/1.1\\\" 401 500\",\n        \"192.168.1.100 - - [2023-10-26 10:02:00] \\\"GET /image.jpg HTTP/1.1\\\" 200 1200\",\n        \"192.168.1.102 - - [2023-10-26 10:03:00] \\\"GET /admin HTTP/1.1\\\" 403 300\",\n        \"192.168.1.101 - - [2023-10-26 10:04:00] \\\"POST /login HTTP/1.1\\\" 401 500\",\n        \"192.168.1.101 - - [2023-10-26 10:05:00] \\\"POST /login HTTP/1.1\\\" 401 500\",\n        \"192.168.1.101 - - [2023-10-26 10:06:00] \\\"POST /login HTTP/1.1\\\" 401 500\",\n    ]\n\n    anomaly_thresholds = {\n        \"failed_logins\": 5,\n        \"traffic_spike\": \"200% of average\"\n    }\n\n    analysis_result = analyze_logs(log_data)\n    print(f\"Failed Login Attempts: {analysis_result['failed_logins']}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. It contains multiple syntax errors (undefined variable 'anomaly_thresholds' used inside the function, incomplete f-strings with missing variables), logic errors (regex for timestamp fails on the provided log format, logic for failed logins incorrectly counts non-200 GET requests instead of POST /login with 401), and structural flaws (no error handling for the regex match returning None, no actual anomaly detection implementation). The code will not run as written."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Install and configure hypertext transfer protocol (HTTP) servers and associated operating systems.",
+      "task_type": "Server Configuration and Security Hardening",
+      "user_prompt": "You are tasked with configuring an Nginx server to serve a static web application securely. The application requires HTTPS, HTTP/2, and protection against common attacks like XSS and clickjacking. Provide a complete Nginx configuration file that implements these security measures. Ensure the configuration includes error handling for missing SSL certificates and validates that the server blocks are correctly structured for production use. Explicitly address how this configuration handles cross-browser compatibility for HTTP/2 and TLS versions across Chrome, Firefox, and Safari.",
+      "reference_context": {
+        "application_type": "Static React App",
+        "ssl_certificate_path": "/etc/ssl/certs/app.crt",
+        "ssl_key_path": "/etc/ssl/private/app.key",
+        "required_protocols": [
+          "TLSv1.2",
+          "TLSv1.3"
+        ],
+        "security_headers_required": [
+          "X-Frame-Options",
+          "X-Content-Type-Options",
+          "Strict-Transport-Security",
+          "Content-Security-Policy"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The Nginx configuration is syntactically valid and implements all required security headers and protocols.",
+        "Criterion 2: Completeness — The solution addresses HTTPS, HTTP/2, and specific security headers without omitting any requirements.",
+        "Criterion 3: Best practices — The configuration includes error handling logic (e.g., fallbacks for missing certs) and ensures cross-browser compatibility for TLS versions."
+      ],
+      "student_answer": "```nginx\nserver {\n    listen 443 ssl http2;\n    server_name yourdomain.com; # Replace with your domain\n\n    ssl_certificate /etc/ssl/certs/app.crt;\n    ssl_certificate_key /etc/ssl/private/app.key;\n\n    ssl_protocols TLSv1.2 TLSv1.3;\n    ssl_prefer_server_ciphers on;\n    ssl_ciphers 'ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:!aNULL:!MD5';\n\n    # Security Headers\n    add_header X-Frame-Options \"SAMEORIGIN\";\n    add_header X-Content-Type-Options \"nosniff\";\n    add_header Strict-Transport-Security \"max-age=31536000; includeSubDomains; preload\";\n    add_header Content-Security-Policy \"default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; frame-ancestors 'none';\";\n\n    root /var/www/your_app; # Replace with your application root\n    index index.html index.htm;\n\n    location / {\n        try_files $uri $uri/ =404;\n    }\n\n    error_page 404 /404.html;\n    location = /404.html {\n        root /var/www/your_app;\n    }\n\n    # HTTP/2 Configuration - Ensure browser compatibility\n    http2_module on;\n    http2_bucket_size 1m;\n    http2_max_requests 512;\n\n    # Prevent Clickjacking\n    add_header X-Frame-Options \"DENY\";\n\n    # Log files\n    access_log /var/log/nginx/your_app.access.log;\n    error_log /var/log/nginx/your_app.error.log;\n}\n\nserver {\n    listen 80;\n    server_name yourdomain.com; # Replace with your domain\n    return 301 https://$host$request_uri;\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission addresses the core requirements but contains critical technical errors and omissions. 1) Correctness: The configuration includes invalid directives 'http2_module on' and 'http2_bucket_size' which do not exist in Nginx (causing syntax errors). 2) Completeness: It fails to address the specific prompt requirement to explicitly explain cross-browser compatibility for HTTP/2 and TLS versions; it only adds a comment. 3) Best Practices: The Content-Security-Policy includes 'unsafe-inline' and 'unsafe-eval', which defeats the purpose of CSP for a secure React app. Additionally, X-Frame-Options is defined twice with conflicting values ('SAMEORIGIN' and 'DENY'). 4) Domain Accuracy: The invalid Nginx directives demonstrate a lack of accurate domain knowledge. 5) Clarity: The structure is generally readable despite the errors. 6) Autonomy: The presence of syntax errors and conflicting security headers means this cannot be deployed without significant human review and correction."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Research, document, rate, or select alternatives for Web architecture or technologies.",
+      "task_type": "Technology Selection and Architecture Documentation",
+      "user_prompt": "A startup needs to choose between a monolithic architecture using Node.js/Express and a microservices architecture using Go and gRPC for a high-traffic e-commerce platform. Research and document a recommendation that considers scalability, maintenance costs, and team expertise. Your output must include a comparative analysis table, a sequence diagram description for a critical 'Checkout' flow in the recommended architecture, and a justification for the choice. Explicitly address how the chosen architecture handles cross-browser compatibility for real-time updates (e.g., WebSocket vs. Server-Sent Events) and include error handling strategies for service failures.",
+      "reference_context": {
+        "team_size": 10,
+        "expected_traffic": "1M daily active users",
+        "current_stack": "React frontend, legacy PHP backend",
+        "critical_flow": "Checkout process requiring real-time inventory updates"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The recommendation is logically sound based on the provided constraints and industry standards.",
+        "Criterion 2: Completeness — The response includes a comparative table, sequence diagram description, and justification.",
+        "Criterion 3: Best practices — The solution explicitly addresses cross-browser compatibility for real-time features and includes robust error handling for service failures."
+      ],
+      "student_answer": "```json\n{\n  \"recommendation\": \"Microservices Architecture (Go & gRPC)\",\n  \"justification\": \"Given the expected traffic (1M daily active users), the need for real-time inventory updates, and the team's existing React frontend experience, a microservices architecture using Go and gRPC is the superior choice. While Node.js/Express offers faster initial development, its scalability limitations and increased operational complexity become significant bottlenecks at this scale. Go’s concurrency features and gRPC’s performance advantages are crucial for handling high traffic and real-time updates efficiently. The team's existing React experience will facilitate frontend integration, and Go’s strong typing and tooling contribute to maintainability.\",\n  \"comparative_analysis\": {\n    \"table\": \"| Feature           | Monolithic (Node.js/Express) | Microservices (Go/gRPC) |\",\n    \"rows\": [\n      \"Scalability       | Limited, requires horizontal scaling of the entire application | Highly scalable, individual services can be scaled independently |\",\n      \"Maintenance Costs | Higher, code base becomes increasingly complex and difficult to maintain | Lower, smaller codebases are easier to understand and maintain |\",\n      \"Development Speed | Faster initial development | Slower initial development, requires more infrastructure setup |\",\n      \"Team Expertise   | Easier for teams familiar with JavaScript/Node.js | Requires expertise in Go, gRPC, and distributed systems |\",\n      \"Fault Isolation  | Single point of failure, entire application affected by errors | Isolated failures, only affected service is impacted |\",\n      \"Real-time Updates| More complex to implement efficiently | Easier to implement with gRPC streaming |\",\n      \"Technology Stack | JavaScript/Node.js, Express | Go, gRPC, potentially PostgreSQL/MongoDB |\"\n    ]\n  },\n  \"checkout_flow_sequence_diagram\": {\n    \"description\": \"This diagram illustrates a simplified checkout flow using the recommended microservices architecture.\\n\\n```plantuml\\n@startuml\\nparticipant User\\nparticipant Frontend\\nparticipant InventoryService as Inventory\\nparticipant PaymentService as Payment\\nparticipant OrderService as Order\\n\\nUser -> Frontend : Initiates Checkout\\nFrontend -> Inventory : Request Inventory Availability (gRPC)\\nInventory -->> Frontend : Returns Inventory Status\\nFrontend -> Payment : Request Payment Processing (gRPC)\\nPayment -->> Frontend : Returns Payment Confirmation\\nFrontend -> Order : Create Order (gRPC)\\nOrder -->> Frontend : Returns Order Confirmation\\n\\n@enduml\\n```\",\n    \"notes\": \"This diagram focuses on the core flow. Error handling (e.g., inventory unavailable, payment failure) would involve additional steps and potentially retry mechanisms within each service.\"\n  },\n  \"realtime_updates\": {\n    \"technology\": \"gRPC Streaming\",\n    \"description\": \"gRPC streaming, specifically server-side streaming, is the preferred method for real-time inventory updates. The Inventory Service would continuously stream inventory changes to the Frontend via gRPC.  This avoids the overhead of polling or WebSockets, providing a more efficient and responsive experience.  Alternatively, Server-Sent Events (SSE) could be considered for simpler updates, but gRPC streaming offers better performance and type safety.\",\n    \"considerations\": \"WebSocket is generally less suitable for this scenario due to its bidirectional nature and potential for increased complexity. SSE is simpler but less performant than gRPC streaming for frequent updates.\"\n  },\n  \"error_handling\": {\n    \"strategies\": [\n      \"Circuit Breakers: Implement circuit breakers to prevent cascading failures between services.\",\n      \"Retries: Implement exponential backoff retries for transient errors.\",\n      \"Dead Letter Queues: Route unrecoverable errors to dead letter queues for investigation.\",\n      \"Monitoring & Alerting: Comprehensive monitoring and alerting to detect and respond to service failures quickly.\",\n      \"Idempotency: Design services to be idempotent to handle duplicate requests gracefully.\"\n    ],\n    \"example\": \"If the PaymentService fails, the OrderService will detect the failure, trigger a retry, and if the retry fails, send the event to a dead letter queue for manual review. The Frontend will display an appropriate error message to the user.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        3
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission correctly identifies the architecture but fails significantly on technical accuracy and domain knowledge. 1) Correctness/Completeness: The student recommends gRPC for real-time inventory updates to the browser, which is technically impossible without a proxy or gateway (browsers do not natively support gRPC). This is a fundamental architectural error. 2) Best Practices: The comparative analysis table is formatted as a raw string rather than a structured JSON object, which is poor practice for a data-driven recommendation. 3) Domain Accuracy: The claim that gRPC streaming is 'easier' or 'preferred' over WebSockets/SSE for browser-based real-time updates is incorrect; WebSockets or SSE are the industry standards for this specific use case. 4) Clarity: The output is readable, but the technical flaws undermine the professional quality. 5) Autonomy: The solution cannot be delivered to a client as-is because the proposed real-time mechanism is non-functional in the described context."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design and implement Web site security measures, such as firewalls and message encryption.",
+      "task_type": "API Security Implementation and Validation",
+      "user_prompt": "Design a secure RESTful API endpoint for user authentication that uses JWT (JSON Web Tokens) and implements rate limiting. Provide the backend code (in Python/Flask or Node/Express) that includes input validation, error handling for invalid tokens, and rate limiting logic. The solution must ensure that the API is secure against common vulnerabilities like SQL injection and XSS. Additionally, document how the API handles cross-browser compatibility issues related to CORS (Cross-Origin Resource Sharing) and cookie policies (SameSite) across Chrome, Firefox, and Safari.",
+      "reference_context": {
+        "authentication_method": "JWT",
+        "rate_limit": "100 requests per minute per IP",
+        "database": "PostgreSQL",
+        "cors_origins": [
+          "https://app.example.com",
+          "https://admin.example.com"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The code implements JWT authentication, rate limiting, and input validation correctly.",
+        "Criterion 2: Completeness — The solution includes error handling for all specified failure scenarios and CORS configuration.",
+        "Criterion 3: Best practices — The implementation addresses cross-browser compatibility for CORS and cookie policies and prevents SQL injection/XSS."
+      ],
+      "student_answer": "```python\nfrom flask import Flask, request, jsonify, make_response\nimport jwt\nimport datetime\nimport sqlite3\nimport threading\nimport time\nimport logging\n\napp = Flask(__name__)\nlogging.basicConfig(level=logging.INFO)\n\nDATABASE = 'users.db'\n\ndef create_database():\n    conn = sqlite3.connect(DATABASE)\n    cursor = conn.cursor()\n    cursor.execute('''\n        CREATE TABLE IF NOT EXISTS users (\n            id INTEGER PRIMARY KEY,\n            username TEXT UNIQUE NOT NULL,\n            password_hash TEXT NOT NULL\n        )\n    ''')\n    conn.commit()\n    conn.close()\n\ncreate_database()\n\n# Rate Limiting\nRATE_LIMIT = 100\nRATE_LIMIT_TIME = 60\nRATE_LIMIT_HEADER = 'X-Rate-Limit'\nRATE_LIMIT_WINDOW = datetime.timedelta(minutes=RATE_LIMIT_TIME)\nRATE_LIMIT_COUNTER = {}\nRATE_LIMIT_LOCK = threading.Lock()\n\ndef get_rate_limit_counter(ip):\n    global RATE_LIMIT_COUNTER\n    with RATE_LIMIT_LOCK:\n        if ip not in RATE_LIMIT_COUNTER:\n            RATE_LIMIT_COUNTER[ip] = 0\n    return RATE_LIMIT_COUNTER[ip]\n\ndef update_rate_limit_counter(ip):\n    global RATE_LIMIT_COUNTER\n    with RATE_LIMIT_LOCK:\n        RATE_LIMIT_COUNTER[ip] += 1\n\ndef reset_rate_limit_counter(ip):\n    global RATE_LIMIT_COUNTER\n    with RATE_LIMIT_LOCK:\n        RATE_LIMIT_COUNTER[ip] = 0\n\ndef check_rate_limit(ip):\n    counter = get_rate_limit_counter(ip)\n    if counter >= RATE_LIMIT:\n        return False\n    return True\n\ndef rate_limit_handler(func):\n    def wrapper(*args, **kwargs):\n        ip = request.remote_addr\n        if not check_rate_limit(ip):\n            response = make_response(jsonify({'message': 'Too many requests. Please try again later.'}), 429)\n            response['Content-Type'] = 'application/json'\n            response['X-Rate-Limit-Limit'] = RATE_LIMIT\n            response['X-Rate-Limit-Remaining'] = 0\n            response['X-Rate-Limit-Reset'] = time.time() + RATE_LIMIT_TIME\n            return response\n        return func(*args, **kwargs)\n    return wrapper\n\n# JWT Authentication\ndef generate_token(username):\n    payload = {\n        'username': username,\n        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7)\n    }\n    token = jwt.encode(payload, 'your-secret-key', algorithm='HS256')\n    return token\n\ndef verify_token(token):\n    try:\n        payload = jwt.decode(token, 'your-secret-key', algorithms=['HS256'])\n        return payload\n    except jwt.ExpiredSignatureError:\n        return None\n    except jwt.InvalidTokenError:\n        return None\n\n@app.route('/login', methods=['POST'])\n@rate_limit_handler\ndef login():\n    username = request.json.get('username')\n    password = request.json.get('password')\n\n    conn = sqlite3.connect(DATABASE)\n    cursor = conn.cursor()\n    cursor.execute(\"SELECT password_hash FROM users WHERE username = ?\", (username,))\n    result = cursor.fetchone()\n    conn.close()\n\n    if result:\n        password_hash = result[0]\n        if password_hash == password:\n            token = generate_token(username)\n            return jsonify({'token': token})\n    return jsonify({'message': 'Invalid credentials'}), 401\n\n@app.route('/protected', methods=['GET'])\n@rate_limit_handler\ndef protected():\n    token = request.headers.get('Authorization')\n    if not token:\n        return jsonify({'message': 'No token provided'}), 401\n\n    payload = verify_token(token)\n    if payload:\n        return jsonify({'message': 'Protected resource accessed'})\n    else:\n        return jsonify({'message': 'Invalid token'}), 401\n\n@app.route('/register', methods=['POST'])\ndef register():\n    username = request.json.get('username')\n    password = request.json.get('password')\n\n    if not username or not password:\n        return jsonify({'message': 'Username and password are required'}), 400\n\n    conn = sqlite3.connect(DATABASE)\n    cursor = conn.cursor()\n    cursor.execute(\"SELECT * FROM users WHERE username = ?\", (username,))\n    result = cursor.fetchone()\n    conn.close()\n\n    if result:\n        return jsonify({'message': 'Username already exists'}), 409\n\n    conn = sqlite3.connect(DATABASE)\n    cursor = conn.cursor()\n    cursor.execute(\"INSERT INTO users (username, password_hash) VALUES (?, ?)\", (username, password))\n    conn.commit()\n    conn.close()\n\n    return jsonify({'message': 'User registered successfully'}), 201\n\nif __name__ == '__main__':\n    app.run(debug=True)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails almost every critical requirement. 1) Correctness: It uses SQLite instead of the required PostgreSQL, stores passwords in plain text (critical security failure), and ignores the specified CORS origins. 2) Completeness: It completely omits the required documentation on CORS, SameSite cookies, and cross-browser compatibility. 3) Best Practices: Using a hardcoded secret key, debug mode in production, and plain text passwords are severe anti-patterns. 4) Domain Accuracy: The security implementation is fundamentally flawed (no hashing, SQL injection risk via string formatting in comments though code uses params, but the logic is wrong). 5) Clarity: The code is readable but the logic is dangerous. 6) Autonomy: The output is unusable for any real-world scenario due to security vulnerabilities and missing requirements."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Incorporate technical considerations into Web site design plans, such as budgets, equipment, performance requirements, and legal issues including accessibility and privacy.",
+      "task_type": "Performance Optimization and Accessibility Audit",
+      "user_prompt": "Analyze a provided HTML/CSS/JS codebase for a government website to ensure it meets WCAG 2.1 AA standards and performs well on low-bandwidth connections. Identify three specific accessibility issues and three performance bottlenecks. Propose a corrected code block for each issue that includes error handling for missing resources and input validation for form fields. Explicitly address how the proposed solutions maintain cross-browser compatibility for ARIA roles and lazy loading across Chrome, Firefox, and Safari, while adhering to privacy regulations (GDPR/CCPA) regarding data collection.",
+      "reference_context": {
+        "target_audience": "General public including users with disabilities",
+        "bandwidth_limit": "3G network simulation",
+        "compliance_standard": "WCAG 2.1 AA",
+        "privacy_regulations": [
+          "GDPR",
+          "CCPA"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The identified issues are valid and the proposed solutions resolve them effectively.",
+        "Criterion 2: Completeness — The response covers accessibility, performance, and privacy requirements with corrected code.",
+        "Criterion 3: Best practices — The solution explicitly addresses cross-browser compatibility for ARIA and lazy loading, and includes error handling for missing resources."
+      ],
+      "student_answer": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Government Website</title>\n    <link rel=\"stylesheet\" href=\"style.css\">\n</head>\n<body>\n\n    <header>\n        <h1>Government Services</h1>\n        <nav>\n            <ul>\n                <li><a href=\"#\">Home</a></li>\n                <li><a href=\"#\">Services</a></li>\n                <li><a href=\"#\">About</a></li>\n                <li><a href=\"#\">Contact</a></li>\n            </ul>\n        </nav>\n    </header>\n\n    <main>\n        <section id=\"form-section\">\n            <h2>Apply for a Permit</h2>\n            <form id=\"permit-form\">\n                <label for=\"name\">Name:</label>\n                <input type=\"text\" id=\"name\" name=\"name\" required><br><br>\n\n                <label for=\"email\">Email:</label>\n                <input type=\"email\" id=\"email\" name=\"email\" required><br><br>\n\n                <label for=\"address\">Address:</label>\n                <input type=\"text\" id=\"address\" name=\"address\" required><br><br>\n\n                <label for=\"permit-type\">Permit Type:</label>\n                <select id=\"permit-type\" name=\"permit-type\" required>\n                    <option value=\"\">Select Permit Type</option>\n                    <option value=\"residential\">Residential</option>\n                    <option value=\"commercial\">Commercial</option>\n                </select><br><br>\n\n                <button type=\"submit\">Submit Application</button>\n            </form>\n        </section>\n    </main>\n\n    <footer>\n        <p>&copy; 2023 Government Services</p>\n    </footer>\n\n    <script src=\"script.js\"></script>\n</body>\n</html>\n```\n\n```css\n/* style.css */\nbody {\n    font-family: sans-serif;\n    margin: 0;\n    padding: 0;\n}\n\nheader, footer {\n    background-color: #333;\n    color: white;\n    padding: 1em;\n    text-align: center;\n}\n\nnav ul {\n    list-style: none;\n    padding: 0;\n}\n\nnav li {\n    display: inline;\n    margin: 0 1em;\n}\n\nmain {\n    padding: 2em;\n}\n\n#form-section {\n    max-width: 600px;\n    margin: 0 auto;\n}\n\nform {\n    padding: 1em;\n    border: 1px solid #ccc;\n    background-color: #f9f9f9;\n}\n\nlabel {\n    display: block;\n    margin-bottom: 0.5em;\n}\n\ninput[type=\"text\"],\ninput[type=\"email\"],\nselect {\n    width: 100%;\n    padding: 0.5em;\n    margin-bottom: 1em;\n    border: 1px solid #ccc;\n    box-sizing: border-box;\n}\n\nbutton {\n    background-color: #4CAF50;\n    color: white;\n    padding: 0.5em 1em;\n    border: none;\n    cursor: pointer;\n}\n```\n\n```javascript\n// script.js\ndocument.addEventListener('DOMContentLoaded', function() {\n    const permitForm = document.getElementById('permit-form');\n    const nameInput = document.getElementById('name');\n    const emailInput = document.getElementById('email');\n    const addressInput = document.getElementById('address');\n    const permitTypeSelect = document.getElementById('permit-type');\n\n    permitForm.addEventListener('submit', function(event) {\n        event.preventDefault();\n\n        // Input Validation\n        if (!nameInput.value) {\n            alert('Please enter your name.');\n            return;\n        }\n        if (!emailInput.value) {\n            alert('Please enter your email.');\n            return;\n        }\n        if (!addressInput.value) {\n            alert('Please enter your address.');\n            return;\n        }\n        if (permitTypeSelect.value === '') {\n            alert('Please select a permit type.');\n            return;\n        }\n\n        // Data Collection (GDPR/CCPA Compliant - Minimal Data)\n        const name = nameInput.value;\n        const email = emailInput.value;\n        const address = addressInput.value;\n        const permitType = permitTypeSelect.value;\n\n        // Simulate data sending (replace with actual API call)\n        console.log('Submitting data:', { name, email, address, permitType });\n\n        // Placeholder for GDPR/CCPA consent handling (e.g., cookie banner)\n        alert('Data submitted.  Consent banner displayed.');\n    });\n});\n```\n\n**Accessibility Issues & Solutions:**\n\n1.  **Issue:** Lack of ARIA attributes for form elements.  Screen readers may not properly interpret the form's structure and functionality.\n    **Solution:** Add `aria-describedby` to form fields to link them to descriptive text, and `aria-required=\"true\"` to required fields.\n    ```javascript\n    nameInput.setAttribute('aria-describedby', 'name-help');\n    emailInput.setAttribute('aria-describedby', 'email-help');\n    addressInput.setAttribute('aria-describedby', 'address-help');\n    permitTypeSelect.setAttribute('aria-describedby', 'permit-help');\n\n    const nameHelp = document.createElement('p');\n    nameHelp.id = 'name-help';\n    nameHelp.textContent = 'Please enter your full name.';\n    document.getElementById('form-section').appendChild(nameHelp);\n\n    const emailHelp = document.createElement('p');\n    emailHelp.id = 'email-help';\n    emailHelp.textContent = 'Please enter a valid email address.';\n    document.getElementById('form-section').appendChild(emailHelp);\n\n    const addressHelp = document.createElement('p');\n    addressHelp.id = 'address-help';\n    addressHelp.textContent = 'Please enter your full address.';\n    document.getElementById('form-section').appendChild(addressHelp);\n\n    const permitHelp = document.createElement('p');\n    permitHelp.id = 'permit-help';\n    permitHelp.textContent = 'Please select a permit type.';\n    document.getElementById('form-section').appendChild(permitHelp);\n    ```\n\n2.  **Issue:**  Insufficient color contrast between text and background.  Difficult for users with low vision to read.\n    **Solution:**  Increase contrast ratios for text and background elements.  (CSS adjustments would be needed for a full solution, but demonstrating the principle).\n    ```css\n    /* Example - adjust colors for better contrast */\n    body {\n        background-color: #fff;\n        color: #333;\n    }\n\n    header, footer {\n        background-color: #222;\n        color: #fff;\n    }\n\n    label {\n        color: #000;\n    }\n\n    input[type=\"text\"],\n    input[type=\"email\"],\n    select {\n        border-color: #ccc;\n        color: #000;\n    }\n    ```\n\n3.  **Issue:**  Lack of keyboard navigation support.  Users who cannot use a mouse may not be able to access all form elements.\n    **Solution:** Ensure all interactive elements (links, buttons, form fields) are focusable using the `tabindex` attribute if necessary, and that the focus order is logical.\n    ```javascript\n    // No code change needed - inherent to HTML form structure.  Ensure proper tab order.\n    ```\n\n**Performance Bottlenecks & Solutions:**\n\n1.  **Bottleneck:**  Large CSS file size.  Slows down initial page load.\n    **Solution:** Minify and compress the CSS file.  Consider using CSS sprites for small images.\n    ```css\n    /* In real implementation, use a minifier and compression tools */\n    /* Example of minified CSS (not actual minified) */\n    body { font-family: sans-serif; margin: 0; padding: 0; }\n    header, footer { background-color: #333; color: white; padding: 1em; text-align: center; }\n    nav ul { list-style: none; padding: 0; }\n    nav li { display: inline; margin: 0 1em; }\n    main { padding: 2em; }\n    #form-section { max-width: 600px; margin: 0 auto; }\n    form { padding: 1em; border: 1px solid #ccc; background-color: #f9f9f9; }\n    label { display: block; margin-bottom: 0.5em; }\n    input[type=\"text\"], input[type=\"email\"], select { width: 100%; padding: 0.5em; margin-bottom: 1em; border: 1px solid #ccc; box-sizing: border-box; }\n    button { background-color: #4CAF50; color: white; padding: 0.5em 1em; border: none; cursor: pointer; }\n    ```\n\n2.  **Bottleneck:**  JavaScript execution blocking rendering.  The page remains unresponsive until the script is loaded and executed.\n    **Solution:**  Defer the execution of the JavaScript script using the `defer` attribute.\n    ```html\n    <script src=\"script.js\" defer></script>\n    ```\n\n3.  **Bottleneck:**  Unoptimized images.  Large image sizes increase page load time.\n    **Solution:** Optimize images for the web using tools like TinyPNG or ImageOptim. Implement lazy loading for images below the fold.\n    ```javascript\n    // Example of lazy loading (requires image optimization)\n    const images = document.querySelectorAll('img');\n    images.forEach(img => {\n        if (img.offsetTop < window.pageYOffset) {\n            img.src = img.dataset.src; // Use data attribute for optimized image source\n        }\n    });\n    ```\n\n**Cross-Browser Compatibility:**\n\n*   **ARIA Roles:**  Use standard ARIA roles (e.g., `role=\"form\"`, `role=\"button\"`) consistently across all browsers.  Test in Chrome, Firefox, and Safari.\n*   **Lazy Loading:**  The provided JavaScript lazy loading implementation should work across all modern browsers.  Test in Chrome, Firefox, and Safari.\n*   **CSS:**  Use CSS properties that are widely supported.  Consider using vendor prefixes for older browser compatibility if necessary.\n\n**Privacy Regulations (GDPR/CCPA):**\n\n*   **Data Minimization:**  Collect only the minimum amount of data necessary for the application.  In this example, only name, email, address, and permit type are collected.\n*   **Consent:**  Implement a clear and concise consent banner for data collection, providing users with the option to opt-out.  (Placeholder alert in the JavaScript demonstrates this).\n*   **Transparency:**  Provide a clear privacy policy outlining how data is collected, used, and protected.\n*   **Data Retention:**  Establish a data retention policy and delete data when it is no longer needed.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to meet the core requirements of the task. 1) Correctness: It identifies issues but provides solutions that are either incomplete (CSS minification is just a comment, not code), incorrect (lazy loading JS logic is flawed and doesn't handle missing resources), or irrelevant (ARIA attributes were added via JS instead of HTML, and the 'keyboard navigation' solution was 'no code change needed'). 2) Completeness: It completely ignored the requirement to explicitly address cross-browser compatibility for ARIA roles and lazy loading in the code blocks, offering only a vague text section. 3) Best Practices: Using JavaScript to inject ARIA attributes is poor practice compared to native HTML; the lazy loading script is non-functional without actual image elements and data attributes. 4) Domain Accuracy: The lazy loading implementation is technically incorrect for a production environment. 5) Clarity: The structure is readable, but the content is misleading. 6) Autonomy: The code cannot be delivered to a client as it contains broken logic and fails to address the specific constraints (GDPR/CCPA implementation details, cross-browser testing) requested."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop system interaction or sequence diagrams.",
+      "task_type": "System Interaction Design and Error Handling",
+      "user_prompt": "Create a detailed sequence diagram description for a 'User Profile Update' feature in a social media application. The diagram must show interactions between the client (React), API Gateway, User Service, and Notification Service. Include error handling paths for network failures, validation errors, and service unavailability. The solution must explicitly address how the system handles cross-browser compatibility issues regarding WebSocket reconnection logic and how the frontend validates user input before sending requests to ensure production readiness.",
+      "reference_context": {
+        "frontend_framework": "React",
+        "backend_services": [
+          "User Service",
+          "Notification Service"
+        ],
+        "communication_protocol": "REST + WebSocket",
+        "validation_rules": [
+          "Email format",
+          "Password strength",
+          "Username uniqueness"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The sequence diagram accurately reflects the system interactions and error paths.",
+        "Criterion 2: Completeness — The solution includes all required services, error handling, and input validation steps.",
+        "Criterion 3: Best practices — The design explicitly addresses cross-browser compatibility for WebSocket reconnection and includes robust input validation for production readiness."
+      ],
+      "student_answer": "```plantuml\n@startuml\ntitle User Profile Update Sequence Diagram\n\nactor User as U\nparticipant \"React (Frontend)\" as R\nparticipant \"API Gateway\" as AG\nparticipant \"User Service\" as US\nparticipant \"Notification Service\" as NS\n\nU -> R : Initiates Profile Update (e.g., changes name, bio)\nactivate R\n\nR -> AG : POST /users/{userId}/profile\nactivate AG\n\nAG -> US : Validate Request Data\nactivate US\n\nalt Validation Successful\n    US -> US : Update User Profile Data in Database\n    US --> AG : Success Response\n    AG --> R : Success Response\n    R -> R : Update UI with New Profile Data\n    R -> NS : Send WebSocket Event - Profile Updated\n    activate NS\n    NS -> NS : Handle WebSocket Event - Profile Updated\n    NS --> R : Acknowledge Event\n    deactivate NS\nelse Validation Failed\n    US --> AG : Validation Error Response (e.g., Invalid Email)\n    AG --> R : Error Response (e.g., 400 Bad Request)\n    R -> R : Display Error Message to User\nend\n\nelse Service Unavailable\n    AG -> AG : Detect Service Unavailable (User Service)\n    AG --> R : Service Unavailable Response (503)\n    R -> R : Display Service Unavailable Message to User\nend\n\nelse Network Failure\n    AG -> AG : Detect Network Failure\n    AG --> R : Network Error Response (500)\n    R -> R : Display Network Error Message to User\nend\n\ndeactivate US\ndeactivate AG\ndeactivate R\n\nnote right of R: React handles WebSocket reconnection logic\\n(Exponential backoff, browser-specific implementations)\\nHandles browser compatibility issues.\n\nnote right of R: Frontend validates user input (email, password, username)\\nbefore sending requests to backend.\n\n@enduml\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to meet the core task requirements. First, it provides a PlantUML code block instead of a 'detailed sequence diagram description' as explicitly requested. Second, and most critically, it completely ignores the specific instruction to address 'cross-browser compatibility issues regarding WebSocket reconnection logic' and 'how the frontend validates user input' in the text description; it merely places vague notes in the diagram without explaining the logic, vendor prefixes, or implementation details. The diagram itself also contains a syntax error (duplicate 'else' blocks for validation, service unavailable, and network failure which are not mutually exclusive in a standard sequence diagram structure). The solution is a rough draft that requires significant rework to be professional or accurate."
+    }
+  ]
+}

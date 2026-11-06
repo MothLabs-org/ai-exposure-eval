@@ -1,0 +1,1339 @@
+{
+  "meta": {
+    "job_title": "Loan Officers",
+    "job_id": "loan_officer",
+    "onet_code": "13-2072.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 30,
+    "evaluated_tasks": 30,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.56,
+      "dimensions": {
+        "Correctness": 2.4,
+        "Completeness": 2.5,
+        "Best Practices": 2.27,
+        "Domain Accuracy": 2.3,
+        "Clarity": 3.57,
+        "Autonomy": 2.33
+      },
+      "evaluated_tasks": 30,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1319.91
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze applicants' financial status, credit, and property evaluations to determine feasibility of granting loans.",
+      "task_type": "Financial Analysis & Feasibility",
+      "user_prompt": "You are a Loan Officer reviewing a mortgage application for a self-employed applicant. The applicant has provided the following data: Gross annual income of $120,000 (verified via tax returns), monthly debt obligations of $2,500, and a requested loan amount of $450,000 with a 20% down payment. The property is appraised at $562,500. Calculate the Debt-to-Income (DTI) ratio and Loan-to-Value (LTV) ratio. Determine if the loan meets the standard underwriting criteria (DTI < 43%, LTV < 80%) and draft a recommendation memo including any required conditions for approval.",
+      "reference_context": {
+        "applicant_profile": {
+          "employment_type": "Self-Employed",
+          "gross_annual_income": 120000,
+          "monthly_debt_obligations": 2500,
+          "requested_loan_amount": 450000,
+          "down_payment_percentage": 20
+        },
+        "property_data": {
+          "appraised_value": 562500
+        },
+        "underwriting_policy": {
+          "max_dti": 0.43,
+          "max_ltv": 0.8
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the DTI and LTV calculations mathematically accurate to two decimal places?",
+        "Completeness: Does the response include a formal recommendation memo with specific conditions?",
+        "Best practices: Is the recommendation aligned with standard banking policies and risk management principles?"
+      ],
+      "student_answer": "**Memo**\n\n**To:** Underwriting Committee\n**From:** [Your Name], Loan Officer\n**Date:** October 26, 2023\n**Subject:** Mortgage Application Review – [Applicant Name]\n\n**Analysis:**\n\n*   **Gross Annual Income:** $120,000\n*   **Monthly Gross Income:** $10,000\n*   **Monthly Debt Obligations:** $2,500\n*   **Requested Loan Amount:** $450,000\n*   **Down Payment:** $108,000 (20% of $562,500)\n*   **Loan-to-Value (LTV):** 80% ($450,000 / $562,500)\n*   **Debt-to-Income (DTI):** 25% ($2,500 / $10,000)\n\n**Recommendation:**\n\nThe loan application meets the standard underwriting criteria. The DTI ratio (25%) is below the maximum allowed of 43%, and the LTV ratio (80%) is below the maximum allowed of 80%.\n\n**Conditions for Approval:**\n\n*   Provide three months of recent bank statements to verify income stability.\n*   Submit a Profit and Loss statement for the past two years.\n*   Confirm business license and EIN.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly calculates the DTI (25%) and LTV (80%) and identifies the applicant as meeting the criteria. However, the recommendation section contains a logical flaw: it states the LTV is 'below' 80% when it is exactly 80%, and the policy states 'LTV < 80%', which technically excludes an 80% LTV. A professional would note this boundary condition or clarify if the policy is inclusive (<=). Additionally, the conditions for approval are generic and do not specifically address the 'self-employed' complexity mentioned in the prompt (e.g., requiring 2 years of tax returns rather than just P&L statements). The memo is well-structured but lacks the precision required for a flawless, industry-standard document."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Review loan agreements to ensure that they are complete and accurate according to policy.",
+      "task_type": "Compliance & Document Review",
+      "user_prompt": "You are a Loan Officer reviewing a commercial loan agreement for a client seeking a $2.5 million line of credit. The draft agreement includes a variable interest rate tied to the Prime Rate plus 2.5%, a prepayment penalty of 3% if paid off within the first 24 months, and a covenant requiring a minimum debt service coverage ratio of 1.25x. Identify three potential compliance risks or missing disclosures required under the Truth in Lending Act (TILA) and the Real Estate Settlement Procedures Act (RESPA) for this specific commercial product. Draft a revision memo correcting these issues and ensuring the prepayment penalty is clearly disclosed as a 'Yield Protection Fee' if applicable.",
+      "reference_context": {
+        "loan_details": {
+          "amount": 2500000,
+          "type": "Commercial Line of Credit",
+          "interest_structure": "Prime + 2.5%",
+          "prepayment_clause": "3% penalty within 24 months",
+          "covenant": "DSCR >= 1.25x"
+        },
+        "regulatory_framework": [
+          "Truth in Lending Act (TILA)",
+          "Real Estate Settlement Procedures Act (RESPA)",
+          "Dodd-Frank Wall Street Reform and Consumer Protection Act"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the identified compliance risks specific to the provided loan terms and regulations?",
+        "Precision: Are the proposed corrections legally sound and clearly articulated?",
+        "Completeness: Does the memo address all three required risks and include the specific disclosure language?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Loan Committee\n**FROM:** [Your Name], Loan Officer\n**DATE:** October 26, 2023\n**SUBJECT:** Commercial Line of Credit – Compliance Review and Revision Recommendations\n\n**Regarding:** Draft Commercial Loan Agreement – $2.5 Million Line of Credit\n\nThis memo outlines potential compliance risks and required disclosures under TILA and RESPA for the proposed commercial line of credit.\n\n**Potential Compliance Risks & Missing Disclosures:**\n\n1.  **TILA – Insufficient Disclosure of Variable Rate Structure:** The agreement currently states “Prime + 2.5%.”  TILA requires a clear and conspicuous disclosure of the variable rate structure, including the index (Prime Rate), the margin (2.5%), and the method for determining the interest rate.  The disclosure must be readily understandable to the borrower.\n\n2.  **RESPA – Failure to Provide Loan Estimate:**  A complete Loan Estimate, as required by RESPA, is missing. This document must include all loan terms, including the interest rate, APR, fees, and prepayment penalty, within three business days of loan application.\n\n3.  **TILA & RESPA – Prepayment Penalty Disclosure:** The 3% prepayment penalty within the first 24 months is not adequately disclosed.  Under TILA, this penalty must be clearly identified as a “Yield Protection Fee” or similar term, and its calculation method must be explicitly stated. RESPA requires a detailed breakdown of all closing costs, including the prepayment penalty.\n\n**Proposed Revision:**\n\nI recommend the following revisions to the loan agreement:\n\n*   **Section 3.1 (Interest Rate):**  Amend to state: “The interest rate on the Line of Credit shall be Prime Rate plus 2.5%, as determined on the last day of each month.  The Prime Rate is defined as [Insert Source of Prime Rate Definition, e.g., Wall Street Journal].”\n*   **Appendix A (Loan Disclosure Schedule):** Add a detailed breakdown of the prepayment penalty, clearly labeled as a “Yield Protection Fee,” outlining the calculation method (3% of the outstanding principal balance) and the timeframe (first 24 months).\n*   **Attachment 1 (Loan Estimate):**  Develop and provide a comprehensive Loan Estimate to the borrower within three business days of application, including all required disclosures under TILA and RESPA.\n\nPlease review and approve these revisions prior to finalizing the loan agreement.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamentally on domain accuracy and correctness. The core premise is flawed: TILA and RESPA generally do not apply to commercial loans (like a $2.5M line of credit) unless they are secured by a dwelling, which is not stated. The student incorrectly asserts these regulations apply and mandates a 'Loan Estimate' (a consumer form) for a commercial product. Furthermore, the student invents a requirement to label a prepayment penalty as a 'Yield Protection Fee' under TILA, which is not a standard TILA disclosure term for commercial loans. The submission ignores the specific regulatory framework context (Dodd-Frank) which often exempts commercial loans from these specific consumer protections. The advice is legally dangerous for a commercial context."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Meet with applicants to obtain information for loan applications and to answer questions about the process.",
+      "task_type": "Client Consultation & Strategy",
+      "user_prompt": "You are a Loan Officer meeting with a couple, the Smiths, who have a combined gross annual income of $180,000, a credit score of 640, and $45,000 in savings. They wish to purchase a home listed at $420,000 but are concerned about their high student loan debt of $35,000. Explain the impact of their credit score on their interest rate options under current market conditions. Calculate the maximum loan amount they can qualify for assuming a 30-year fixed rate at 6.5% and a maximum DTI of 43%, including estimated property taxes and insurance ($1,200/month). Provide a strategic recommendation on whether they should pay down student loans before applying or proceed with a loan that includes a higher interest rate, citing the long-term cost implications.",
+      "reference_context": {
+        "applicant_profile": {
+          "combined_income": 180000,
+          "credit_score": 640,
+          "savings": 45000,
+          "student_debt": 35000,
+          "target_property_price": 420000
+        },
+        "market_conditions": {
+          "estimated_property_tax_insurance": 1200,
+          "max_dti": 0.43,
+          "base_interest_rate": 0.065
+        }
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the maximum loan amount calculated correctly based on the DTI formula and provided expenses?",
+        "Clarity: Is the explanation of credit score impact clear and actionable for the client?",
+        "Strategy: Is the recommendation supported by a comparative cost analysis of the two options?"
+      ],
+      "student_answer": "**Interest Rate Impact:**\n\nWith a credit score of 640, you’ll likely qualify for a higher interest rate than borrowers with scores in the excellent range (740+). Currently, rates for a 30-year fixed mortgage are fluctuating, but a rate of 6.5% to 7.5% is typical for borrowers with a 640 credit score. This will significantly impact your monthly payments and the total cost of the loan.\n\n**Maximum Loan Qualification:**\n\nLet’s calculate your potential loan amount:\n\n1.  **Monthly Income:** $180,000 / 12 = $15,000\n2.  **Maximum Allowable Principal & Interest Payment:** $15,000 * 0.43 = $6,450\n3.  **Estimated Monthly Property Taxes & Insurance:** $1,200\n4.  **Total Maximum Monthly Housing Payment:** $6,450 + $1,200 = $7,650\n5.  **Maximum Loan Amount:** $7,650 / 0.065 = $117,923 (approximately)\n\nConsidering your $45,000 in savings, you could realistically finance around $113,000 - $117,000.\n\n**Strategic Recommendation:**\n\nGiven your student loan debt and credit score, I recommend prioritizing paying down a portion of your student loans before aggressively pursuing a mortgage. While a loan including a higher interest rate might be necessary to reach your desired home price, the long-term cost implications are significant. A higher interest rate on your mortgage will result in substantially more interest paid over the life of the loan, potentially costing you tens of thousands of dollars.\n\nPaying down student loan debt will:\n\n*   Lower your overall debt-to-income ratio (DTI), potentially securing a lower interest rate on the mortgage.\n*   Reduce your monthly debt obligations, freeing up cash flow for other financial goals.\n*   Improve your overall financial health and security.\n\nI suggest exploring options like refinancing your student loans to a lower interest rate if possible, or allocating a portion of your savings towards debt reduction. Once you’ve made progress on your student loans, we can revisit your mortgage options and explore strategies to minimize your interest costs.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission fails fundamentally on Correctness and Domain Accuracy due to a catastrophic calculation error. The student calculated the maximum loan amount by dividing the total monthly housing payment ($7,650) by the interest rate (0.065), resulting in ~$117k. This is mathematically incorrect; the correct method requires calculating the Principal & Interest portion ($6,450 - $1,200 = $5,250) and using the mortgage payment formula (PMT) to derive the loan principal, which would be approximately $800,000+. The student's result ($117k) is less than the down payment required for the $420k home, rendering the qualification analysis useless. Additionally, the student ignored the $35,000 student loan debt in the DTI calculation, which is a critical omission for a 43% DTI limit. The recommendation is generic and lacks the specific approval/denial/referral status requested in the additional checks."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Approve loans within specified limits, and refer loan applications outside those limits to management for approval.",
+      "task_type": "Authorization & Escalation",
+      "user_prompt": "You are a Loan Officer with an approval authority limit of $500,000. You have received an application for a $750,000 investment property loan. The applicant has a net worth of $2.5 million, a credit score of 720, and a rental income history showing 120% coverage of the proposed mortgage payment. The property is appraised at $800,000. Determine if the loan can be approved under your authority. If not, draft a formal referral memo to the Credit Committee justifying the request. The memo must include a risk assessment of the investment property, a calculation of the Loan-to-Value (LTV) ratio, and a specific risk mitigation strategy involving a higher down payment or additional collateral to reduce the bank's exposure.",
+      "reference_context": {
+        "officer_authority": 500000,
+        "application_details": {
+          "loan_amount": 750000,
+          "property_type": "Investment",
+          "applicant_net_worth": 2500000,
+          "credit_score": 720,
+          "rental_coverage_ratio": 1.2
+        },
+        "property_data": {
+          "appraised_value": 800000
+        }
+      },
+      "evaluation_criteria": [
+        "Decision Logic: Is the determination to escalate correct based on the authority limit?",
+        "Analysis: Is the LTV ratio calculated accurately and the risk assessment specific to investment properties?",
+        "Mitigation: Are the proposed risk mitigation strategies concrete and tailored to the specific credit profile?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Credit Committee\n**FROM:** [Your Name], Loan Officer\n**DATE:** October 26, 2023\n**SUBJECT:** Referral – Investment Property Loan Application – $750,000\n\n**Recommendation:** Referral for Credit Committee Review\n\n**Loan Details:**\n\n*   Loan Amount: $750,000\n*   Property Appraised Value: $800,000\n*   Applicant Net Worth: $2,500,000\n*   Applicant Credit Score: 720\n*   Rental Coverage Ratio: 1.2 (120% of proposed mortgage payment)\n\n**Analysis:**\n\nThe requested loan amount ($750,000) exceeds my individual approval authority of $500,000. While the applicant demonstrates strong financial standing with a high net worth ($2.5 million) and a good credit score (720), the loan amount is significantly higher than my limit. The rental coverage ratio of 1.2 is positive and suggests the property is likely to generate sufficient income to cover the mortgage. However, the Loan-to-Value (LTV) ratio is 93.75% ($750,000 / $800,000), which is considered a higher risk profile.\n\n**Risk Assessment:**\n\n*   **Property Risk:** The appraised value of $800,000 is slightly above the market value, which is a positive indicator. However, the investment property market is subject to fluctuations, and potential vacancies or decreased rental income could impact cash flow.\n*   **Applicant Risk:** The applicant’s strong net worth mitigates some risk, but the large loan amount relative to their net worth warrants careful consideration.\n*   **Market Risk:** General economic conditions and local rental market trends could affect property value and rental income.\n\n**Loan-to-Value (LTV) Ratio:**\n\n*   LTV Ratio: 93.75% – This level of LTV increases the bank’s exposure to potential losses if the property value declines or the borrower defaults.\n\n**Risk Mitigation Strategy:**\n\nTo reduce the bank’s risk exposure, I recommend the following:\n\n1.  **Increased Down Payment:** Require an additional down payment of $75,000, bringing the total down payment to $100,000 (12.5% of the appraised value). This would reduce the LTV to 87.5%, lowering the bank’s risk.\n2.  **Additional Collateral:** Consider accepting additional collateral, such as a personal guarantee or other liquid assets, to further secure the loan.\n\nI believe that addressing the LTV ratio through a higher down payment or additional collateral is crucial to ensure the loan aligns with prudent lending practices and protects the bank’s interests. I respectfully request the Credit Committee review this application and consider the proposed risk mitigation strategy.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the authority limit breach and calculates the LTV ratio accurately. However, it fails to fully address the task requirements in several ways: 1) It does not explicitly state the final decision (approved/denied/referral) in a definitive manner before the memo, though it implies referral. 2) The risk mitigation strategy is weak; suggesting a down payment that reduces the loan amount to $700,000 (still above the $500k limit) does not solve the authority issue, and the math for the proposed mitigation is flawed (adding $75k to a $750k loan doesn't reduce the loan amount, it increases the equity, but the student implies reducing the LTV by increasing the down payment without clarifying if the loan amount changes or if the borrower pays more cash). 3) The risk assessment is generic and lacks specific industry-standard depth regarding investment property risks (e.g., vacancy rates, interest rate sensitivity). 4) The student missed the instruction to explicitly state the approval status based on ratios in the opening. The output is a decent draft but requires substantive edits to be industry-ready."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Explain to customers the different types of loans and credit options that are available, as well as the terms of those services.",
+      "task_type": "Product Education & Comparison",
+      "user_prompt": "A small business owner is asking for a loan to expand their inventory. They have a strong cash flow but limited collateral. Compare a Traditional SBA 7(a) Loan, a Business Line of Credit, and a Merchant Cash Advance for a $150,000 need. For each option, calculate the estimated monthly payment or cost of capital assuming a 7% interest rate for the SBA loan (10-year term), a 10% APR for the line of credit (interest-only payments), and a factor rate of 1.3 for the MCA (repaid over 6 months). Explain the pros and cons of each regarding the Truth in Lending Act disclosure requirements and the impact on the business's debt-to-income ratio. Recommend the best option based on the client's need for flexibility and low monthly burden.",
+      "reference_context": {
+        "loan_need": 150000,
+        "client_profile": {
+          "cash_flow": "Strong",
+          "collateral": "Limited"
+        },
+        "product_options": {
+          "sba_7a": {
+            "rate": 0.07,
+            "term_years": 10
+          },
+          "line_of_credit": {
+            "apr": 0.1,
+            "payment_structure": "Interest Only"
+          },
+          "mca": {
+            "factor_rate": 1.3,
+            "term_months": 6
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the cost calculations for each product type mathematically precise?",
+        "Regulatory Knowledge: Are TILA disclosure requirements correctly identified for each product type?",
+        "Recommendation: Is the final recommendation logically derived from the client's specific financial profile and needs?"
+      ],
+      "student_answer": "**SBA 7(a) Loan:**\n\n*   **Estimated Monthly Payment:** $1,499.74\n*   **Pros:** Compliance with Truth in Lending Act (TILA) requirements, predictable monthly payments, potential for longer repayment terms.\n*   **Cons:** Strict collateral requirements, extensive documentation, potential for lengthy approval process. Impacts debt-to-income ratio significantly due to the large monthly payment.\n\n**Business Line of Credit:**\n\n*   **Estimated Monthly Payment:** $1,224.22 (Interest Only)\n*   **Pros:** Flexibility to draw funds as needed, interest-only payments reduce immediate cash flow burden, TILA compliance.\n*   **Cons:** Higher overall cost of capital due to interest-only payments, potential for variable interest rates, may not be suitable for a fixed funding amount. Impacts debt-to-income ratio less than the SBA loan, but still a factor.\n\n**Merchant Cash Advance (MCA):**\n\n*   **Estimated Monthly Payment:** $30,000 (Repaid over 6 months)\n*   **Pros:** Quick funding, minimal documentation, no collateral required.\n*   **Cons:** Very high cost of capital (factor rate of 1.3 effectively multiplies the loan amount), complex TILA disclosures, significant impact on debt-to-income ratio, potential for aggressive collection practices.\n\n**Recommendation:**\n\nGiven the client’s strong cash flow and limited collateral, and prioritizing flexibility and a low monthly burden, a **Business Line of Credit** is the most suitable option. While the overall cost of capital is higher than the SBA 7(a) loan, the interest-only payments provide greater short-term cash flow relief. The MCA is generally not recommended due to its excessively high cost and potential negative impact on the business’s financial health. The SBA 7(a) loan, while compliant, presents a significant monthly payment burden and stringent collateral requirements that are not ideal for this client’s situation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains critical calculation errors and conceptual misunderstandings. First, the Business Line of Credit payment is calculated as $1,224.22, which implies a principal repayment component; however, the prompt explicitly specified 'interest-only payments,' which should be $1,250 ($150,000 * 10% / 12). Second, the Merchant Cash Advance monthly payment is listed as $30,000, which is mathematically incorrect for a $150,000 loan with a 1.3 factor rate repaid over 6 months (Total cost $195,000 / 6 = $32,500). Third, the student fails to address the specific requirement to distinguish between self-employed and W-2 income verification complexities regarding DTI. Fourth, the recommendation does not explicitly state an approval, denial, or referral status as requested in the additional checks. While the structure is clear, the fundamental errors in financial modeling and the omission of specific compliance nuances regarding the client profile reduce the quality significantly."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Submit applications to credit analysts for verification and recommendation.",
+      "task_type": "Risk Assessment & Verification",
+      "user_prompt": "You are preparing a loan file for a credit analyst review. The applicant is a sole proprietor with a credit score of 680. Their tax returns show a net profit of $95,000 for the last two years, but their bank statements show significant cash deposits that are not reflected in the tax returns. The requested loan is $200,000 for equipment purchase. Identify the specific red flags regarding income verification under the Dodd-Frank Act and the Ability-to-Repay rule. Calculate the Debt-to-Income ratio using the verified tax income versus the bank statement income (assuming the bank statement income is $130,000). Draft a summary for the credit analyst highlighting the discrepancy, the potential risk of income inflation, and a specific verification strategy (e.g., requesting a profit and loss statement signed by a CPA) to resolve the issue before final approval.",
+      "reference_context": {
+        "applicant_profile": {
+          "credit_score": 680,
+          "employment_type": "Sole Proprietor",
+          "tax_income_2yr_avg": 95000,
+          "bank_statement_income": 130000
+        },
+        "loan_request": {
+          "amount": 200000,
+          "purpose": "Equipment Purchase"
+        },
+        "regulatory_constraints": [
+          "Dodd-Frank Act",
+          "Ability-to-Repay Rule"
+        ]
+      },
+      "evaluation_criteria": [
+        "Risk Identification: Are the red flags regarding income verification specific to the regulatory framework?",
+        "Calculation: Are the DTI ratios calculated correctly for both income scenarios?",
+        "Actionability: Is the proposed verification strategy practical and sufficient to satisfy compliance requirements?"
+      ],
+      "student_answer": "**Red Flags – Income Verification & Dodd-Frank/Ability-to-Repay**\n\nThe significant discrepancy between reported tax income ($95,000 over two years) and bank statement income ($130,000) raises concerns regarding the applicant’s income verification and potential violations of the Dodd-Frank Act and the Ability-to-Repay rule. Specifically, the unexplained difference could indicate income inflation, misrepresentation, or an incomplete income picture. The Ability-to-Repay rule requires lenders to assess the applicant’s capacity to repay the loan, considering their income and other obligations.  Failure to accurately verify income jeopardizes this assessment.\n\n**Debt-to-Income Ratio Calculation**\n\n*   **Verified Tax Income:** $95,000\n*   **Bank Statement Income:** $130,000\n*   **Monthly Verified Tax Income:** $95,000 / 24 = $3958.33\n*   **Monthly Bank Statement Income:** $130,000 / 24 = $5416.67\n*   **Debt-to-Income Ratio (using Tax Income):** ($200,000 / $3958.33) * 100 = 506.16%\n*   **Debt-to-Income Ratio (using Bank Statement Income):** ($200,000 / $5416.67) * 100 = 370.63%\n\n**Credit Analyst Summary & Verification Strategy**\n\n**Subject:** Loan File – [Applicant Name] – Potential Income Discrepancy\n\n**Summary:** This loan file presents a potential risk due to a significant discrepancy between the applicant’s reported tax income and bank statement income. The bank statement income of $130,000, significantly higher than the $95,000 reported on tax returns, warrants further investigation. This discrepancy raises concerns about potential income inflation and the accuracy of the applicant’s financial disclosures. The high Debt-to-Income ratio, calculated using both verified tax income and bank statement income, indicates a substantial repayment burden.\n\n**Recommended Verification Strategy:**  Request a detailed Profit and Loss (P&L) statement signed and stamped by a Certified Public Accountant (CPA). This P&L should clearly outline all sources of income, including cash deposits not reflected in the tax returns, and provide a comprehensive breakdown of business expenses.  The CPA’s attestation will provide independent verification of the applicant’s financial performance and address the identified income discrepancy.  Further investigation into the nature of the unexplained cash deposits is also required.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamentally on domain accuracy and correctness. The student calculated the Debt-to-Income (DTI) ratio incorrectly by dividing the total loan amount ($200,000) by monthly income, resulting in nonsensical ratios of 506% and 370%. A proper DTI calculation requires the monthly debt service (principal, interest, taxes, insurance) divided by monthly gross income. Additionally, the student failed to address the specific regulatory red flags regarding the Dodd-Frank Act and Ability-to-Repay rule beyond generic statements, and did not provide a specific recommendation on the loan status (approve/deny/refer) as requested in the additional checks. The output is mathematically invalid and professionally inadequate for a credit file."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze applicants' financial status, credit, and property evaluations to determine feasibility of granting loans.",
+      "task_type": "Financial Analysis & Feasibility",
+      "user_prompt": "You are a Loan Officer reviewing a mortgage application for a self-employed applicant. The applicant has provided the following data: Gross annual income of $120,000 (verified via tax returns), monthly debt obligations of $2,500, and a requested loan amount of $450,000 with a 20% down payment. The property is appraised at $562,500. Calculate the Debt-to-Income (DTI) ratio and Loan-to-Value (LTV) ratio. Determine if the loan meets the standard underwriting criteria (DTI < 43%, LTV < 80%) and draft a recommendation memo including any required conditions for approval.",
+      "reference_context": {
+        "applicant_profile": {
+          "employment_type": "Self-Employed",
+          "gross_annual_income": 120000,
+          "monthly_debt_obligations": 2500,
+          "requested_loan_amount": 450000,
+          "down_payment_percentage": 20
+        },
+        "property_data": {
+          "appraised_value": 562500
+        },
+        "underwriting_policy": {
+          "max_dti": 0.43,
+          "max_ltv": 0.8
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the DTI and LTV calculations mathematically accurate?",
+        "Completeness: Does the response include the recommendation memo and all required conditions?",
+        "Best practices: Is the recommendation aligned with standard banking policies and risk management principles?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Underwriting Committee\n**FROM:** [Your Name], Loan Officer\n**DATE:** October 26, 2023\n**SUBJECT:** Mortgage Application Review – [Applicant Name]\n\n**Analysis:**\n\n*   **Gross Annual Income:** $120,000\n*   **Monthly Gross Income:** $10,000\n*   **Monthly Debt Obligations:** $2,500\n*   **Requested Loan Amount:** $450,000\n*   **Down Payment:** $108,000 (20% of $562,500)\n*   **Loan-to-Value (LTV):** 80% ($450,000 / $562,500)\n*   **Debt-to-Income (DTI):** 25% ($2,500 / $10,000)\n\n**Recommendation:**\n\nThe loan application meets the standard underwriting criteria.\n\n*   **DTI Ratio:** 25% (less than 43%)\n*   **LTV Ratio:** 80% (less than 80%)\n\n**Conditions for Approval:**\n\n1.  Verification of all income sources as outlined in the tax returns.\n2.  Review of business financial statements (profit and loss statements, balance sheets) for the past three years.\n3.  Confirmation of consistent self-employment history.\n\n**END OF MEMORANDUM**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        5,
+        3
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission correctly calculates the DTI (25%) and LTV (80%) and identifies the applicant's self-employed status. However, the recommendation section contains a critical logical error: it states the LTV is 'less than 80%' when the calculated value is exactly 80%. Since the policy requires LTV < 80%, the applicant technically fails this specific criterion, yet the recommendation concludes the loan 'meets' the criteria. This is a significant domain accuracy and judgment error. Additionally, the conditions for approval are generic and do not specifically address the complexities of self-employment verification (e.g., adding back non-recurring expenses or calculating average income over two years) which is a best practice gap. The formatting is professional, but the logical flaw in the final recommendation prevents a perfect score."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Obtain and compile copies of loan applicants' credit histories, corporate financial statements, and other financial information.",
+      "task_type": "Credit File Compilation & Verification",
+      "user_prompt": "You are a Loan Officer preparing a credit file for a commercial loan applicant, 'Apex Manufacturing LLC'. The applicant has a FICO score of 680, a current debt-to-equity ratio of 2.5, and a history of two late payments in the last 24 months. Compile a summary report that identifies the specific regulatory requirements under the Equal Credit Opportunity Act (ECOA) regarding the notification of adverse action if the loan is denied based on these factors. Additionally, list the specific financial documents required to verify the debt-to-equity ratio and explain how the late payments impact the risk assessment under the Dodd-Frank Act's ability-to-repay rules.",
+      "reference_context": {
+        "applicant_profile": {
+          "entity_name": "Apex Manufacturing LLC",
+          "credit_score": 680,
+          "debt_to_equity_ratio": 2.5,
+          "payment_history": "Two late payments in last 24 months"
+        },
+        "regulatory_framework": {
+          "ecoa_requirements": "Notification of adverse action",
+          "dodd_frank_rules": "Ability-to-repay verification"
+        }
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the regulatory citations (ECOA, Dodd-Frank) correctly applied to the scenario?",
+        "Detail: Does the response list specific documents needed for verification?",
+        "Logic: Is the impact of late payments on the ability-to-repay assessment clearly explained?"
+      ],
+      "student_answer": "**Apex Manufacturing LLC – Credit File Summary & Regulatory Compliance**\n\n**I. Adverse Action Notification (ECOA)**\n\nBased on the provided information – a FICO score of 680, a debt-to-equity ratio of 2.5, and two late payments within the last 24 months – denial of this loan application triggers specific ECOA notification requirements.  The applicant must receive a written adverse action notice within 30 calendar days of making a decision. This notice must include:\n\n*   **Clear Reason for Denial:** The notice must state the specific reason(s) for the denial, referencing the factors contributing to the decision (credit score, debt-to-equity ratio, and late payments).\n*   **Right to Request a Copy of Disclosing Creditor’s Reasons:** The notice must inform the applicant of their right to request a copy of the creditor’s reasons for the adverse action.\n*   **Right to Obtain a Free Credit Report:** The notice must inform the applicant of their right to obtain a free copy of their credit report from each of the three major credit bureaus within 60 days.\n*   **Right to Dispute Inaccurate Information:** The notice must inform the applicant of their right to dispute any inaccurate information on their credit report.\n\n**II. Debt-to-Equity Ratio Verification**\n\nTo verify the debt-to-equity ratio of 2.5, the following financial documents are required:\n\n*   **Audited Financial Statements (Balance Sheet):**  A current audited balance sheet is crucial to accurately determine the company’s total debt and total equity.\n*   **Tax Returns (Business):**  Three years of business tax returns are needed to assess historical financial performance and debt levels.\n*   **Bank Statements:**  Statements for all business bank accounts covering the past six months to confirm current debt obligations.\n*   **Loan Agreements:** Copies of all existing loan agreements, including terms, interest rates, and repayment schedules.\n*   **Accounts Payable Ledger:** A detailed list of all outstanding accounts payable.\n\n**III. Impact of Late Payments on Risk Assessment (Dodd-Frank Ability-to-Repay)**\n\nThe two late payments within the last 24 months negatively impact the risk assessment under the Dodd-Frank Act’s ability-to-repay rules. Specifically:\n\n*   **Negative Credit History:** Late payments are considered a negative credit history, indicating a higher risk of default.\n*   **Increased Risk-Based Pricing:** The late payments will likely result in increased interest rates or fees to compensate for the elevated risk.\n*   **Potential for Higher Collateral Requirements:**  The lender may require additional collateral to mitigate the increased risk associated with the late payments.\n*   **Scoring Model Adjustment:** The late payments will be factored into the credit scoring model, further reducing the applicant’s overall creditworthiness score.  The exact impact will depend on the scoring model used.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies ECOA notification requirements and lists relevant financial documents for verification. However, it fails to address the specific regulatory nuance of the Dodd-Frank Act's Ability-to-Repay (ATR) rule for commercial loans, which generally exempts them from the strict ATR verification requirements applicable to residential mortgages (a significant domain accuracy gap). Additionally, the submission does not explicitly state a final decision (approve/deny/refer) as requested by the task and additional checks, nor does it address the DTI calculation distinction mentioned in the prompt. The content is professional and clear but lacks the critical regulatory precision and final decision-making component required for a 5."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Work with clients to identify their financial goals and to find ways of reaching those goals.",
+      "task_type": "Client Financial Planning & Strategy",
+      "user_prompt": "A client, Sarah Jenkins, wishes to purchase a vacation home in 5 years but currently has $15,000 in savings and a monthly surplus of $800. She has a high-risk credit profile with a credit utilization rate of 85%. Develop a 5-year financial roadmap that addresses her goal while mitigating her credit risk. Calculate the projected savings balance assuming a 4% annual return, and propose specific strategies to lower her credit utilization to under 30% before applying for a loan. Cite relevant consumer protection guidelines regarding the disclosure of interest rates and fees for high-risk borrowers.",
+      "reference_context": {
+        "client_profile": {
+          "name": "Sarah Jenkins",
+          "goal": "Purchase vacation home in 5 years",
+          "current_savings": 15000,
+          "monthly_surplus": 800,
+          "credit_utilization": 0.85
+        },
+        "assumptions": {
+          "annual_return_rate": 0.04,
+          "target_utilization": 0.3
+        }
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the projected savings balance accurate to two decimal places?",
+        "Strategy: Are the credit utilization reduction steps specific and actionable?",
+        "Compliance: Are consumer protection guidelines regarding high-risk disclosures correctly cited?"
+      ],
+      "student_answer": "**Sarah Jenkins – 5-Year Financial Roadmap**\n\n**Executive Summary:**\n\nThis roadmap outlines a strategy for Sarah Jenkins to achieve her goal of purchasing a vacation home in five years, considering her current financial situation and high-risk credit profile. It focuses on aggressive savings growth, credit utilization reduction, and proactive financial planning.\n\n**Phase 1: Immediate Action (Year 1)**\n\n*   **Credit Utilization Reduction:**  Immediately prioritize reducing credit utilization.  Strategies include:\n    *   Paying down credit card balances aggressively, focusing on the highest interest rates.\n    *   Negotiating lower payment plans with creditors.\n    *   Considering a balance transfer to a card with a lower interest rate (carefully evaluating transfer fees).\n*   **Savings Acceleration:**  Allocate the full $800 monthly surplus to savings.\n*   **Credit Monitoring:**  Establish credit monitoring services to track progress and identify potential issues.\n\n**Phase 2: Stabilization & Growth (Years 2-3)**\n\n*   **Continued Credit Reduction:** Maintain aggressive debt repayment, aiming for a credit utilization rate below 30% by the end of Year 3.\n*   **Savings Growth:** Continue allocating $800/month to savings. Project a savings balance of approximately $97,870 after 3 years, assuming a 4% annual return. (Calculation: $15,000 * (1 + 0.04)^3 = $97,870.31)\n*   **Explore Credit Counseling:**  Consider seeking guidance from a non-profit credit counseling agency to develop a personalized debt management plan.\n\n**Phase 3: Loan Preparation (Years 4-5)**\n\n*   **Maintain Low Utilization:**  Ensure credit utilization remains consistently below 30%.\n*   **Increase Savings:** Continue saving, aiming to build a substantial down payment.  A target down payment of 20% of the vacation home's purchase price should be established.\n*   **Research Loan Options:**  Begin researching mortgage lenders specializing in borrowers with less-than-ideal credit profiles.\n\n**Financial Projections (Estimated):**\n\n| Year | Starting Balance | Annual Return (4%) | Ending Balance |\n|------|------------------|--------------------|----------------|\n| 1    | $15,000          | $600               | $15,600         |\n| 2    | $15,600          | $624               | $16,224         |\n| 3    | $16,224          | $648               | $16,872         |\n| 4    | $16,872          | $672               | $17,544         |\n| 5    | $17,544          | $696               | $18,240         |\n\n**Important Considerations & Consumer Protection:**\n\n*   **Truth in Lending Act (TILA):**  Lenders are required to disclose the Annual Percentage Rate (APR), which includes interest rates and fees, to all borrowers.  High-risk borrowers may face significantly higher APRs.\n*   **Fair Credit Reporting Act (FCRA):**  Sarah has the right to access her credit report and dispute any inaccuracies.\n*   **Equal Credit Opportunity Act (ECOA):**  Lenders cannot discriminate against borrowers based on race, religion, national origin, sex, marital status, or age.\n*   **Disclosure of Fees:** Lenders must clearly disclose all loan fees, including origination fees, appraisal fees, and closing costs.  High-risk borrowers should carefully review these fees.\n\n**Disclaimer:** *These projections are based on assumptions and are not guarantees. Actual results may vary.  Sarah should consult with a qualified financial advisor for personalized advice.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails critically on Correctness, Completeness, and Domain Accuracy. First, the financial calculation is fundamentally wrong: the student calculated the future value of the initial lump sum only ($15,000 * 1.04^3), completely ignoring the $800 monthly contributions which are the primary driver of savings growth. The table provided in the submission also ignores monthly contributions, showing only interest on the principal. Second, the submission fails to address the specific requirement to calculate the projected savings balance at the 5-year mark (it only shows a 3-year calculation in the text and a 5-year table that is mathematically incorrect). Third, it fails to cite specific consumer protection guidelines regarding the disclosure of interest rates and fees specifically for *high-risk* borrowers (e.g., HOEPA or specific TILA-RESPA integration nuances), offering only generic act names. Finally, it does not address the additional check regarding DTI calculations, income verification, or a specific loan approval/denial recommendation. The output is a rough draft with fatal mathematical errors."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Handle customer complaints and take appropriate action to resolve them.",
+      "task_type": "Complaint Resolution & Compliance",
+      "user_prompt": "A customer, John Doe, has filed a formal complaint stating that his loan application was denied without a specific reason, despite his credit score being 720. He claims discrimination based on his age. As the Loan Officer, draft a formal response letter that addresses his complaint. The response must explain the actual reason for denial (insufficient income documentation) and outline the steps taken to ensure compliance with the Fair Housing Act and the Equal Credit Opportunity Act (ECOA). Include the specific timeline for providing the adverse action notice as required by regulation.",
+      "reference_context": {
+        "complaint_details": {
+          "applicant_name": "John Doe",
+          "credit_score": 720,
+          "alleged_reason": "Age discrimination",
+          "actual_reason": "Insufficient income documentation"
+        },
+        "regulatory_requirements": {
+          "fair_housing_act": "Prohibition of discrimination",
+          "ecoa": "Adverse action notice requirements"
+        }
+      },
+      "evaluation_criteria": [
+        "Tone: Is the response professional and empathetic?",
+        "Compliance: Are the specific regulatory timelines and requirements for adverse action notices correctly stated?",
+        "Clarity: Is the distinction between the alleged and actual reasons for denial clear?"
+      ],
+      "student_answer": "[Your Bank Letterhead]\n\n[Date]\n\nJohn Doe\n[John Doe’s Address]\n\n**Subject: Regarding Your Loan Application Denial**\n\nDear Mr. Doe,\n\nThank you for contacting us regarding the denial of your recent loan application. We understand your concern about the lack of specific information provided and appreciate you bringing this matter to our attention.\n\nWe want to clarify the reason for the denial. After a thorough review of your application, we determined that your application was not approved due to insufficient income documentation. We require complete and accurate documentation to verify your ability to repay the loan, and unfortunately, the information provided did not meet our established requirements.\n\nWe take all allegations of discrimination very seriously. To ensure compliance with the Fair Housing Act and the Equal Credit Opportunity Act (ECOA), we have implemented comprehensive policies and procedures to prevent discrimination based on age, race, religion, national origin, marital status, sex, or receipt of public assistance. Our underwriting guidelines are applied consistently to all applicants, and we regularly review our practices to ensure fairness and non-discrimination.  We conduct ongoing training for our staff on ECOA and Fair Housing Act compliance.  Our loan decisions are based solely on financial criteria, including creditworthiness, income, and debt-to-income ratio.\n\nAs required by ECOA, we are obligated to provide you with an adverse action notice within 60 calendar days of the date of the adverse action. This notice was mailed to you on [Date of Mailing]. It details the reasons for the denial and your right to request a copy of the specific reasons for denial.\n\nWe value your interest in [Your Bank Name] and encourage you to improve your application by providing complete and accurate income documentation.  You can find information on required documentation on our website at [Bank Website Address].\n\nSincerely,\n\n[Your Name]\n\nLoan Officer\n\n[Your Bank Name]\n\n[Your Contact Information]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task of drafting a response letter and correctly identifies the actual reason for denial (insufficient income documentation) and the relevant regulations (ECOA, Fair Housing Act). However, it fails to meet the 'Additional Checks' requirements regarding specific DTI calculations, self-employed vs. W-2 distinctions, and explicit approval/denial status based on ratios, as the task was a letter draft rather than a calculation exercise, but the letter lacks the specific regulatory detail expected of a 'Senior' level response (e.g., specific ECOA adverse action notice timelines are often 30 days, not 60, for the initial notice, and the letter is vague on the specific steps taken beyond general policy statements). The letter is professional and clear (Clarity 4) but lacks the precision and specific regulatory citations required for a flawless, industry-standard document (Correctness/Completeness/Best Practices/Domain Accuracy 3). It requires minor review to ensure regulatory accuracy regarding the specific timeline and specific compliance steps, preventing a score of 5."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Stay abreast of new types of loans and other financial services and products to better meet customers' needs.",
+      "task_type": "Product Innovation & Suitability Analysis",
+      "user_prompt": "A small business owner, 'GreenTech Solutions', is interested in a new 'Green Energy Loan' product that offers a 1.5% interest rate reduction if the business achieves a specific carbon footprint reduction target. Analyze the suitability of this product for a client with a volatile revenue stream but strong long-term growth potential. Calculate the break-even point for the client to justify the administrative effort of tracking carbon metrics. Discuss the regulatory implications under the Truth in Lending Act (TILA) regarding the disclosure of variable terms tied to non-financial performance metrics.",
+      "reference_context": {
+        "product_details": {
+          "name": "Green Energy Loan",
+          "interest_reduction": 0.015,
+          "condition": "Carbon footprint reduction target"
+        },
+        "client_profile": {
+          "business_name": "GreenTech Solutions",
+          "revenue_profile": "Volatile with strong growth potential"
+        }
+      },
+      "evaluation_criteria": [
+        "Analysis: Is the break-even calculation logical and precise?",
+        "Suitability: Is the recommendation tailored to the client's specific revenue volatility?",
+        "Regulatory: Are the TILA disclosure requirements for variable terms correctly identified?"
+      ],
+      "student_answer": "**Analysis of Green Energy Loan Suitability for GreenTech Solutions**\n\n**Interest Rate Reduction Calculation:**\n\nTo determine the potential interest rate reduction, we need to estimate GreenTech Solutions’ current interest rate. Assuming a standard small business loan rate of 7.5% (a common benchmark), the interest rate reduction would be 7.5% * 0.015 = 0.1125%, resulting in a new interest rate of 7.3875%.\n\n**Break-Even Carbon Footprint Reduction:**\n\nTo calculate the break-even point, we need to determine the level of carbon footprint reduction required to offset the administrative costs of tracking and reporting. Let’s assume the annual administrative cost of tracking carbon metrics is $2,000.  We’ll also estimate a conservative carbon footprint reduction of 1 metric ton of CO2 equivalent per year.\n\nBreak-Even Point (in terms of carbon reduction) = Administrative Costs / Carbon Reduction Value\n\nBreak-Even Point = $2,000 / 1 metric ton = 2,000 metric tons of CO2 equivalent reduction per year.\n\n**Suitability Assessment:**\n\nGiven GreenTech Solutions’ volatile revenue stream, the loan’s success hinges on consistent, measurable carbon footprint reduction. The break-even point of 2,000 metric tons is substantial.  The business must demonstrate a sustained ability to achieve this level of reduction to realize the interest rate benefit. The strong long-term growth potential is a positive factor, suggesting the business is likely to invest in sustainability initiatives that could drive carbon reduction. However, the volatility requires a robust tracking system and potentially contingency planning for revenue fluctuations impacting the ability to meet the target.\n\n**Regulatory Implications (TILA & Variable Terms):**\n\n*   **TILA Disclosure Requirements:** The interest rate reduction tied to a non-financial performance metric (carbon footprint) triggers TILA disclosure obligations.  The loan must be classified as a “variable rate” loan because the interest rate is subject to change based on the client’s performance.\n*   **Specific Disclosures:**  TILA requires clear and conspicuous disclosure of the following:\n    *   The interest rate is variable and can change.\n    *   The factors that could cause the interest rate to change (specifically, the achievement of the carbon footprint reduction target).\n    *   A description of the method used to determine the interest rate adjustment (e.g., a formula or a defined threshold).\n    *   The potential range of interest rates, if possible.\n*   **Good Faith and Reasonableness:** The carbon footprint reduction target must be reasonable and achievable.  The loan terms should not be unduly burdensome or exploitative.\n*   **Ongoing Monitoring:** Loan officers must continuously monitor the client’s carbon footprint and adjust the interest rate accordingly, documenting all changes.\n\n**Disclaimer:** *This analysis is based on provided information and assumptions. A comprehensive loan application and due diligence process are required to determine final loan terms and assess risk.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness and Domain Accuracy. The break-even calculation is logically flawed: it divides administrative costs by a hypothetical reduction volume (1 ton) to derive a required reduction of 2,000 tons, which is a dimensional error (Cost/Volume != Volume). It fails to calculate the actual financial break-even point (e.g., interest savings vs. admin costs). It incorrectly classifies the loan as a 'variable rate' loan under TILA; a rate reduction based on performance is a contingent term, not a variable rate tied to an index. The submission also ignores the specific instruction to provide an explicit approval/denial recommendation. While the structure is clear (Clarity 3), the fundamental errors in calculation and regulatory interpretation prevent it from being a usable professional output."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Market bank products to individuals and firms, promoting bank services that may meet customers' needs.",
+      "task_type": "Strategic Marketing & Risk Assessment",
+      "user_prompt": "You are tasked with designing a marketing campaign for a new 'Business Expansion Line of Credit' targeting firms in the renewable energy sector. Identify three key risk factors specific to this sector that must be disclosed in the marketing materials to comply with the Dodd-Frank Act's consumer protection standards. Create a sample marketing script that highlights the benefits of the product while explicitly stating these risks and the requirement for a full credit review. Ensure the script avoids any misleading claims about approval rates.",
+      "reference_context": {
+        "target_sector": "Renewable Energy",
+        "product": "Business Expansion Line of Credit",
+        "regulatory_constraints": {
+          "dodd_frank": "Consumer protection and disclosure of risks"
+        }
+      },
+      "evaluation_criteria": [
+        "Risk Identification: Are the three risk factors specific to the renewable energy sector?",
+        "Compliance: Does the script explicitly state risks and avoid misleading claims as per Dodd-Frank?",
+        "Effectiveness: Is the marketing message persuasive yet compliant?"
+      ],
+      "student_answer": "**Risk Factors to Disclose:**\n\n1.  **Technological Obsolescence:** Rapid advancements in renewable energy technologies can render existing projects or equipment outdated, impacting future revenue streams and potentially affecting repayment capacity.\n2.  **Regulatory and Policy Uncertainty:** Changes in government subsidies, tax incentives, environmental regulations, and permitting processes can significantly impact the profitability and viability of renewable energy projects.\n3.  **Intermittency of Renewable Resources:** Solar and wind energy generation are dependent on weather conditions, leading to fluctuating revenue and potentially impacting cash flow stability.\n\n**Sample Marketing Script:**\n\n**(Intro - Upbeat, professional music)**\n\n“Are you a renewable energy firm looking to scale your operations and capture new opportunities? [Bank Name] understands the unique challenges and rewards of this dynamic sector. We’re excited to introduce our Business Expansion Line of Credit, designed to fuel your growth.”\n\n**(Benefit Highlight - Visuals of successful renewable energy projects)**\n\n“This flexible line of credit provides access to capital for strategic investments – expanding your team, upgrading equipment, pursuing new projects, or managing working capital. It offers competitive rates and tailored terms to support your specific needs.”\n\n**(Risk Disclosure - Clear and direct)**\n\n“However, we want to be completely transparent. The renewable energy sector presents specific risks.  First, **technological advancements** can quickly make existing investments less competitive. Second, **regulatory and policy changes** – including shifts in government support – can significantly impact project profitability. And third, the **intermittency of renewable resources** like solar and wind can create fluctuations in revenue.  It’s crucial to understand these factors when assessing your business’s financial health.”\n\n**(Compliance Statement)**\n\n“At [Bank Name], we are committed to complying with all applicable regulations, including the Dodd-Frank Act.  Therefore, **every application for this line of credit will undergo a thorough and comprehensive credit review.**  This review will assess your business’s financial history, projected cash flows, and a detailed understanding of the risks specific to your renewable energy operations.  We will provide you with a clear and detailed credit analysis outlining the potential risks and rewards.”\n\n**(Call to Action)**\n\n“Don’t let uncertainty hold you back.  Contact a Business Lending Specialist at [Phone Number] or visit [Website Address] to schedule a consultation and learn more about how our Business Expansion Line of Credit can help you achieve your growth goals.  *Approval is not guaranteed and is subject to credit review.*”\n\n**(Outro - Bank Logo and Tagline)**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies three relevant risk factors and provides a structured marketing script. However, it fails on Correctness and Domain Accuracy regarding the regulatory constraint: the Dodd-Frank Act primarily governs consumer financial products (like mortgages and credit cards) and does not typically apply to commercial business lines of credit for firms. The student incorrectly frames the disclosure requirements as a Dodd-Frank mandate for a B2B product. Additionally, the script lacks specific quantitative risk disclosures (e.g., variable rate implications, specific collateral requirements) often required for commercial lending compliance. The 'Additional Checks' section in the prompt regarding DTI calculations is irrelevant to this specific task (which asks for a script, not a loan decision), but the failure to distinguish between consumer and commercial regulations is a significant domain error. The output is usable but requires substantive legal/compliance review to be accurate."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze applicants' financial status, credit, and property evaluations to determine feasibility of granting loans.",
+      "task_type": "Financial Analysis & Feasibility",
+      "user_prompt": "You are a Loan Officer reviewing a mortgage application for a self-employed applicant. The applicant has provided the following data: Gross annual income of $120,000 (verified via tax returns), monthly debt obligations of $2,500, and a requested loan amount of $450,000 with a 20% down payment. The property is appraised at $562,500. Calculate the Debt-to-Income (DTI) ratio and Loan-to-Value (LTV) ratio. Determine if the loan meets the standard underwriting criteria (DTI < 43%, LTV < 80%) and draft a recommendation memo including any required conditions for approval.",
+      "reference_context": {
+        "applicant_profile": {
+          "employment_type": "Self-Employed",
+          "gross_annual_income": 120000,
+          "monthly_debt_obligations": 2500,
+          "requested_loan_amount": 450000,
+          "down_payment_percentage": 20
+        },
+        "property_data": {
+          "appraised_value": 562500
+        },
+        "underwriting_policy": {
+          "max_dti": 0.43,
+          "max_ltv": 0.8
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the DTI and LTV calculations mathematically accurate to two decimal places?",
+        "Completeness: Does the response include the recommendation memo and all required conditions?",
+        "Best practices: Is the recommendation aligned with standard banking policies and risk management principles?"
+      ],
+      "student_answer": "**Memo**\n\n**To:** Underwriting Committee\n**From:** [Your Name], Loan Officer\n**Date:** October 26, 2023\n**Subject:** Mortgage Application Review – [Applicant Name]\n\n**Analysis:**\n\n*   **Gross Annual Income:** $120,000\n*   **Monthly Gross Income:** $10,000\n*   **Monthly Debt Obligations:** $2,500\n*   **Requested Loan Amount:** $450,000\n*   **Down Payment:** $108,000 (20% of $562,500)\n*   **Loan-to-Value (LTV):** 80% ($450,000 / $562,500)\n*   **Debt-to-Income (DTI):** 25% ($2,500 / $10,000)\n\n**Recommendation:**\n\nThe loan application meets the standard underwriting criteria. The DTI ratio (25%) is below the maximum allowable of 43%, and the LTV ratio (80%) is below the maximum allowable of 80%.\n\n**Conditions for Approval:**\n\n*   Provide three months of recent bank statements to verify income consistency.\n*   Submit a Profit and Loss statement for the last two years.\n*   Confirm business licenses and insurance documentation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        5,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly calculates the DTI (25%) and LTV (80%) and identifies the ratios against the policy limits. However, the recommendation contains a logical flaw: it states the LTV is 'below' the maximum of 80% when it is exactly equal to 80%. While often acceptable, strict phrasing requires precision. Additionally, the conditions for approval are generic and do not fully address the specific complexities of self-employed income verification (e.g., requiring 2 years of tax returns rather than just a P&L, or addressing the specific nature of self-employment income volatility). The memo is well-structured and clear, but the minor logical imprecision in the recommendation and the generic nature of the conditions prevent a perfect score."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Compute payment schedules.",
+      "task_type": "Payment Schedule & Disclosure Compliance",
+      "user_prompt": "You are a Loan Officer preparing a Truth in Lending Act (TILA) disclosure for a fixed-rate mortgage. The loan details are: Principal $300,000, Annual Interest Rate 6.5%, Term 30 years. Calculate the monthly principal and interest payment. Generate the first three months of the amortization schedule showing the breakdown of principal, interest, and remaining balance. Ensure the Annual Percentage Rate (APR) calculation logic accounts for a $3,000 origination fee and $1,500 in closing costs, and explain how these fees impact the APR compared to the note rate.",
+      "reference_context": {
+        "loan_details": {
+          "principal": 300000,
+          "annual_interest_rate": 0.065,
+          "term_years": 30
+        },
+        "fees": {
+          "origination_fee": 3000,
+          "closing_costs": 1500
+        },
+        "regulatory_framework": "Truth in Lending Act (TILA) and Regulation Z"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the monthly payment and amortization figures correct to two decimal places?",
+        "Regulatory Compliance: Does the response correctly apply TILA/Regulation Z requirements for APR disclosure?",
+        "Clarity: Is the amortization schedule clearly formatted and logically derived?"
+      ],
+      "student_answer": "```json\n{\n  \"TILA_Disclosure\": {\n    \"Loan_Details\": {\n      \"Principal\": 300000.00,\n      \"Annual_Interest_Rate\": 0.065,\n      \"Term_Years\": 30,\n      \"Loan_Type\": \"Fixed-Rate Mortgage\"\n    },\n    \"Fees\": {\n      \"Origination_Fee\": 3000.00,\n      \"Closing_Costs\": 1500.00\n    },\n    \"APR_Calculation\": {\n      \"Note_Rate\": 0.065,\n      \"Origination_Fee_Impact\": 0.003,\n      \"Closing_Costs_Impact\": 0.0015,\n      \"Total_Fees\": 4500.00,\n      \"APR\": 0.07005,\n      \"Explanation\": \"The APR is calculated by adding the origination fee and closing costs to the note rate and dividing by the number of payments over the loan term.  The origination fee and closing costs increase the effective interest rate, resulting in a higher APR than the stated note rate.  The APR reflects the total cost of the loan, including these fees, as required by TILA.\"\n    },\n    \"Monthly_Payment\": 1,773.28,\n    \"Amortization_Schedule\": [\n      {\n        \"Month\": 1,\n        \"Payment\": 1773.28,\n        \"Principal\": 662.96,\n        \"Interest\": 1110.32,\n        \"Remaining_Balance\": 299337.04\n      },\n      {\n        \"Month\": 2,\n        \"Payment\": 1773.28,\n        \"Principal\": 663.34,\n        \"Interest\": 1110.00,\n        \"Remaining_Balance\": 299273.70\n      },\n      {\n        \"Month\": 3,\n        \"Payment\": 1773.28,\n        \"Principal\": 663.71,\n        \"Interest\": 1109.57,\n        \"Remaining_Balance\": 299207.00\n      }\n    ]\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy due to a fundamental error in APR calculation. The student incorrectly calculated the APR by simply adding fee percentages to the note rate (0.065 + 0.003 + 0.0015 = 0.0695, though they wrote 0.07005), rather than using the internal rate of return (IRR) method required by Regulation Z, which accounts for the time value of money over the loan term. The explanation provided ('adding... and dividing by the number of payments') is mathematically and legally incorrect for TILA disclosures. While the monthly payment and amortization schedule are calculated correctly, the core regulatory requirement (APR) is wrong, making the output unusable for a real TILA disclosure. Additionally, the submission ignores the 'Additional Checks' regarding DTI, income verification, and approval recommendations, which were part of the broader context provided."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Prepare reports to send to customers whose accounts are delinquent, and forward irreconcilable accounts for collector action.",
+      "task_type": "Delinquency Management & Regulatory Reporting",
+      "user_prompt": "A commercial loan account is 90 days past due. The borrower has not responded to three previous notices. Draft a formal delinquency notice that complies with the Fair Debt Collection Practices Act (FDCPA) and the Fair Credit Reporting Act (FCRA). The notice must state the exact amount due, the deadline for payment to avoid legal action, and the borrower's right to dispute the debt. Additionally, outline the specific steps to take if the account remains irreconcilable after 120 days, including the criteria for forwarding the account to a third-party collector.",
+      "reference_context": {
+        "account_status": "90 Days Past Due",
+        "previous_actions": "Three notices sent, no response",
+        "regulatory_constraints": [
+          "Fair Debt Collection Practices Act (FDCPA)",
+          "Fair Credit Reporting Act (FCRA)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Compliance: Does the draft notice strictly adhere to FDCPA and FCRA requirements?",
+        "Specificity: Are the steps for forwarding to a collector based on the 120-day irreconcilable criteria?",
+        "Tone: Is the communication professional, clear, and legally sound?"
+      ],
+      "student_answer": "**DELINQUENCY NOTICE**\n\n**Date:** October 26, 2023\n\n**To:** [Borrower Name]\n[Borrower Address]\n\n**From:** [Your Bank Name]\n[Your Bank Address]\n[Your Bank Phone Number]\n[Your Bank Email Address]\n\n**RE: Account Number: [Account Number] – Past Due**\n\nThis letter serves as formal notification that your account, number [Account Number], is currently 90 days past due. As of today’s date, the outstanding balance is **$[Exact Amount Due]**. This amount includes principal, accrued interest, and any associated fees as outlined in your original loan agreement.\n\n**Previous Attempts to Contact:** We have previously attempted to contact you regarding this delinquency through three notices dated [Date of Notice 1], [Date of Notice 2], and [Date of Notice 3]. Despite these attempts, we have received no response.\n\n**Action Required:** You are hereby required to remit the full outstanding balance of **$[Exact Amount Due]** on or before **November 26, 2023**. Failure to do so will result in further action, including, but not limited to, the commencement of legal proceedings to recover the debt, reporting of this delinquency to credit reporting agencies in accordance with the Fair Credit Reporting Act (FCRA), and referral to a third-party collection agency.\n\n**Your Rights Under the Fair Debt Collection Practices Act (FDCPA):** You have the right to dispute the accuracy of this debt or the information contained within. If you believe this debt is in error or not yours, you must contact us within **30 days** of the date of this notice to request verification of the debt.  You may request verification of the debt in writing to the address listed above.  We are required to investigate any such dispute and provide you with verification of the debt within a reasonable time.\n\n**Account Reconciliation After 120 Days:** If the account remains irreconcilable (i.e., no payment received) after 120 days from the date of this notice (November 26, 2023), the account will be forwarded to a third-party collection agency.  At that time, you may receive further communications from the collection agency.  The criteria for forwarding to a third-party collector include, but are not limited to:  a 90-day delinquency, lack of communication from the borrower, and the balance exceeding $[Dollar Amount Threshold – e.g., $500].\n\nWe urge you to contact us immediately to discuss payment options and resolve this matter.\n\nSincerely,\n\n[Your Name]\nLoan Officer\n[Your Bank Name]\n\n**Disclaimer:** *This notice is for informational purposes only and does not constitute legal advice. Please consult with an attorney for advice regarding your specific situation.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task of drafting a delinquency notice but contains significant regulatory and structural gaps. First, the FDCPA citation is legally inaccurate; the FDCPA generally applies to third-party debt collectors, not the original creditor (the bank) sending the initial notice, whereas the FCRA applies to credit reporting. The letter incorrectly attributes FDCPA rights (like the 30-day dispute window) to the original creditor in a context where they may not strictly apply in the same manner as for collectors. Second, the prompt asked for specific steps to take if the account remains irreconcilable after 120 days, but the letter only states the outcome (forwarding to a collector) rather than outlining the internal steps or criteria process requested. Third, the 'Account Reconciliation' section is vague regarding the specific criteria for forwarding, using placeholders like '$[Dollar Amount Threshold]' without defining the logic. While the tone is professional and the structure is clear (Clarity 4), the legal precision and adherence to the specific prompt requirements regarding the 120-day process reduce the scores for Correctness, Completeness, Best Practices, and Domain Accuracy to 3. Autonomy is 3 because a legal review would be mandatory before sending due to the FDCPA misapplication."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Set credit policies, credit lines, procedures and standards in conjunction with senior managers.",
+      "task_type": "Policy Development & Risk Strategy",
+      "user_prompt": "You are tasked with updating the credit policy for small business loans in a high-volatility sector. Current policy allows a maximum Debt Service Coverage Ratio (DSCR) of 1.25x. Propose a revised policy that incorporates a dynamic risk mitigation strategy based on sector volatility. The new policy must define specific thresholds for DSCR, Loan-to-Value (LTV), and a minimum credit score. Justify your proposed changes by referencing the Dodd-Frank Act's requirements for sound underwriting standards and explain how the new policy reduces the probability of default while maintaining market competitiveness.",
+      "reference_context": {
+        "current_policy": {
+          "max_dscr": 1.25,
+          "sector": "High-Volatility Retail"
+        },
+        "regulatory_context": "Dodd-Frank Wall Street Reform and Consumer Protection Act"
+      },
+      "evaluation_criteria": [
+        "Strategic Alignment: Are the proposed thresholds logical for the high-volatility sector?",
+        "Regulatory Adherence: Does the policy explicitly address Dodd-Frank underwriting standards?",
+        "Risk Mitigation: Are the strategies specific to the identified credit profile rather than generic?"
+      ],
+      "student_answer": "**Revised Credit Policy: Small Business Loans – High-Volatility Retail**\n\n**Effective Date:** [Insert Date]\n\n**I. Executive Summary:**\n\nThis revised policy addresses the increased risk associated with lending to small businesses in the High-Volatility Retail sector. It incorporates a dynamic risk mitigation strategy, adjusting key lending parameters based on sector volatility assessments. This policy aligns with Dodd-Frank Act requirements for sound underwriting standards and aims to reduce default probability while maintaining a competitive lending environment.\n\n**II. Key Lending Parameters:**\n\n*   **Debt Service Coverage Ratio (DSCR):**\n    *   **Baseline:** 1.15x\n    *   **Volatility Threshold 1 (Moderate):** 1.00x – 1.15x (Triggered by sector volatility index exceeding 70%)\n    *   **Volatility Threshold 2 (High):** Below 1.00x (Triggered by sector volatility index exceeding 90%)\n*   **Loan-to-Value (LTV):**\n    *   **Baseline:** 70%\n    *   **Volatility Threshold 1:** 60% – 70%\n    *   **Volatility Threshold 2:** Below 60%\n*   **Minimum Credit Score:** 680\n*   **Collateral Requirements:** Enhanced collateral requirements will be considered, particularly at Volatility Threshold 2. This may include requiring a higher percentage of equity or securing assets with a more stringent valuation process.\n\n**III. Sector Volatility Assessment:**\n\n*   A sector volatility index will be calculated monthly, based on publicly available data (e.g., retail sales figures, consumer confidence indices, industry reports) and expert analysis. The index will be categorized as Low, Moderate, or High.\n*   The volatility index will be determined by [Specify Methodology – e.g., a weighted average of relevant economic indicators].\n\n**IV. Justification & Dodd-Frank Compliance:**\n\nThis revised policy directly addresses Dodd-Frank’s requirement for “sound underwriting practices” (Section 516). By dynamically adjusting lending parameters based on sector volatility, we move beyond a static risk assessment and implement a more responsive and prudent approach. Lowering the DSCR threshold in periods of high volatility reflects a heightened risk profile, while maintaining a minimum credit score ensures borrower creditworthiness. The adjusted LTV limits further constrain exposure during periods of increased risk. Requiring enhanced collateral strengthens the loan’s security. This policy mitigates default probability by proactively reducing leverage and increasing the buffer against adverse economic conditions, aligning with the Act’s goal of protecting consumers and the financial system.\n\n**V. Ongoing Monitoring & Review:**\n\nThis policy will be reviewed and updated quarterly to ensure its effectiveness and alignment with evolving market conditions and regulatory guidance. The sector volatility index will be continuously monitored and adjusted as needed.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails the 'Correctness' and 'Completeness' criteria by proposing a policy that lowers the DSCR threshold to 1.00x or below during high volatility. In credit risk management, a DSCR below 1.00x indicates negative cash flow and an immediate inability to service debt, making this a fundamental error in underwriting logic rather than a valid dynamic strategy. Additionally, the submission ignores the 'Additional Checks' instruction to explicitly state approval/denial logic based on ratios and to address self-employed income verification complexities. While the structure is clear and the Dodd-Frank reference is relevant, the core financial logic is flawed, preventing the output from being used without significant rework (Autonomy score 3)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Analyze potential loan markets and develop referral networks to locate prospects for loans.",
+      "task_type": "Market Analysis & Network Strategy",
+      "user_prompt": "Develop a strategic plan to expand the loan portfolio in the residential real estate market of a specific metropolitan area. Analyze the current market trends (hypothetical data: 5% YoY price growth, 30% increase in inventory) and identify three specific types of referral partners (e.g., real estate agents, mortgage brokers, builders) that would yield the highest quality leads. For each partner type, define the value proposition and the compliance safeguards required under the Real Estate Settlement Procedures Act (RESPA) to avoid kickback violations. Outline a 6-month timeline for launching this network.",
+      "reference_context": {
+        "market_data": {
+          "price_growth_yoy": 0.05,
+          "inventory_change": "30% increase"
+        },
+        "regulatory_constraint": "Real Estate Settlement Procedures Act (RESPA)"
+      },
+      "evaluation_criteria": [
+        "Market Insight: Is the analysis of market trends accurate and relevant to the strategy?",
+        "Compliance: Are the RESPA safeguards clearly defined and specific to the referral partners?",
+        "Feasibility: Is the 6-month timeline realistic and actionable?"
+      ],
+      "student_answer": "**Strategic Plan: Residential Loan Portfolio Expansion – Metro City**\n\n**Executive Summary:** Metro City’s residential real estate market presents an opportunity for portfolio expansion driven by moderate price growth and increased inventory. This plan focuses on strategic referral partnerships to generate high-quality leads while strictly adhering to RESPA regulations.\n\n**I. Market Analysis:**\n\n*   **Trend:** 5% YoY price growth indicates continued demand, albeit at a slower pace than previous years. A 30% increase in inventory suggests increased competition and potential for price adjustments.\n*   **Opportunity:** Leveraging this environment by targeting first-time homebuyers and those seeking to upgrade within the expanding inventory.\n\n**II. Referral Partner Strategy:**\n\n1.  **Real Estate Agents:**\n    *   **Value Proposition:** Provide agents with access to competitive loan rates, streamlined application processes, and dedicated loan officer support. Offer a performance-based incentive program (e.g., lead generation fee, bonus for closed loans).\n    *   **RESPA Safeguards:**  Strictly prohibit any form of compensation or benefit that could be construed as an inducement to refer business.  All referrals must be based solely on the client’s needs and financial situation.  Maintain detailed records of all referrals, including the client’s information and the agent’s referral source.  Implement a “no-referral” clause in all agreements, explicitly stating that compensation is not tied to referrals.\n\n2.  **Mortgage Brokers:**\n    *   **Value Proposition:**  Offer brokers a higher spread on loans originated through our institution, provide access to a wider range of loan products, and offer marketing materials to support their business.\n    *   **RESPA Safeguards:**  Similar to real estate agents, avoid any compensation tied to referrals.  Focus on providing brokers with competitive rates and product options.  Implement a “no-referral” clause.  Maintain detailed records of all broker referrals.  Ensure all loan products offered are compliant with RESPA.\n\n3.  **New Home Builders:**\n    *   **Value Proposition:** Partner with builders to offer attractive financing options to new homebuyers, including rate locks, flexible down payment options, and construction loan programs. Provide marketing support to promote our loan products to builder clients.\n    *   **RESPA Safeguards:**  Avoid any compensation based on the volume of homes sold through our loan products.  Focus on providing builders with competitive financing solutions.  Implement a “no-referral” clause.  Ensure all loan products offered are compliant with RESPA.  Clearly disclose all loan terms and conditions to homebuyers.\n\n**III. 6-Month Launch Timeline:**\n\n*   **Month 1:** Legal review of referral agreements to ensure RESPA compliance. Develop marketing materials for each referral partner type. Establish tracking system for leads and referrals.\n*   **Month 2:** Recruit initial pilot group of real estate agents and mortgage brokers. Train loan officers on referral processes and compliance requirements.\n*   **Month 3:** Launch pilot referral program with the initial partners. Monitor lead generation and conversion rates.\n*   **Month 4:** Expand referral network based on pilot program results. Develop builder partnership program.\n*   **Month 5:** Refine referral strategies based on performance data. Implement ongoing training for loan officers.\n*   **Month 6:** Full-scale launch of referral network across all target partner types. Ongoing monitoring and optimization of the program.\n\n**IV. Compliance Monitoring:**\n\n*   Regular audits of referral activities to ensure compliance with RESPA.\n*   Ongoing training for loan officers on RESPA regulations.\n*   Implementation of a robust complaint handling process.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        3
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission correctly identifies the market trends and outlines a timeline, but it fails critically on domain accuracy and best practices regarding RESPA. The student explicitly suggests 'performance-based incentive programs' (e.g., bonuses for closed loans) for real estate agents and 'higher spreads' for brokers. Under RESPA Section 8, these are illegal kickbacks; compensation must be for bona fide services rendered and cannot be tied to the volume or value of referrals. This fundamental error renders the core strategy non-compliant and dangerous. Additionally, the submission ignores the 'Additional Checks' instruction regarding DTI calculations, income verification distinctions, and specific approval/denial logic, which were part of the prompt's context for a credit risk evaluation. While the structure is clear (Clarity 4), the content is legally flawed (Correctness 3, Best Practices 2, Domain Accuracy 2)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Assist in selection of financial award candidates using electronic databases to certify loan eligibility.",
+      "task_type": "Eligibility Certification & Database Analysis",
+      "user_prompt": "You are reviewing a batch of 50 loan applications for a government-backed affordable housing program. Using the provided electronic database criteria (hypothetical: income must be below 80% of Area Median Income, credit score >= 640, no recent bankruptcies), identify which applicants are eligible. For the three applicants who are marginally ineligible (e.g., credit score 638 or income 81% AMI), propose a specific risk mitigation strategy to bring them into compliance or justify their denial based on the program's strict eligibility rules. Ensure your analysis references the relevant regulatory framework for government-backed loans.",
+      "reference_context": {
+        "program_criteria": {
+          "max_aml_percentage": 0.8,
+          "min_credit_score": 640,
+          "bankruptcy_restriction": "No recent bankruptcies"
+        },
+        "sample_applicants": [
+          {
+            "id": "A001",
+            "ami_percentage": 75,
+            "credit_score": 650,
+            "bankruptcy": "None"
+          },
+          {
+            "id": "A002",
+            "ami_percentage": 81,
+            "credit_score": 645,
+            "bankruptcy": "None"
+          },
+          {
+            "id": "A003",
+            "ami_percentage": 78,
+            "credit_score": 638,
+            "bankruptcy": "None"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the eligibility determinations correct based on the provided criteria?",
+        "Risk Mitigation: Are the strategies for marginally ineligible applicants specific and actionable?",
+        "Regulatory Context: Is the analysis grounded in the requirements for government-backed loans?"
+      ],
+      "student_answer": "```json\n{\n  \"eligible_applicants\": [\n    {\n      \"id\": \"A001\",\n      \"ami_percentage\": 75,\n      \"credit_score\": 650,\n      \"bankruptcy\": \"None\",\n      \"status\": \"Eligible\"\n    }\n  ],\n  \"marginally_ineligible_applicants\": [\n    {\n      \"id\": \"A002\",\n      \"ami_percentage\": 81,\n      \"credit_score\": 645,\n      \"bankruptcy\": \"None\",\n      \"risk_mitigation_strategy\": \"Due to an AMI percentage of 81% exceeding the program’s maximum of 80%, this applicant is marginally ineligible. To mitigate risk, we propose a temporary income supplementation program, contingent upon the applicant’s ability to demonstrate a sustained income reduction of at least 1% over the next six months. This would bring their AMI below the 80% threshold. Alternatively, denial is justified based on the program’s strict adherence to the Area Median Income (AMI) limit, as outlined in the Department of Housing and Urban Development (HUD) regulations (42 U.S.C. § 5372).\",\n      \"status\": \"Marginally Ineligible\"\n    },\n    {\n      \"id\": \"A003\",\n      \"ami_percentage\": 78,\n      \"credit_score\": 638,\n      \"bankruptcy\": \"None\",\n      \"risk_mitigation_strategy\": \"Applicant A003’s credit score of 638 falls below the minimum requirement of 640.  Furthermore, their AMI of 78% is slightly above the allowable limit.  Given the program’s focus on affordability and risk mitigation, denial is recommended.  The HUD regulations (42 U.S.C. § 5372) prioritize ensuring loan recipients can afford the mortgage payments, and a credit score below 640 presents a significant risk of default.  A risk mitigation strategy is not feasible in this instance.\",\n      \"status\": \"Marginally Ineligible\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission correctly identifies Applicant A001 as eligible. However, it fails significantly on domain accuracy and correctness regarding the marginally ineligible applicants. First, it incorrectly classifies Applicant A003 as 'marginally' ineligible; a credit score of 638 against a 640 minimum is a hard failure, not a marginal one, and the applicant's AMI (78%) is actually within the 80% limit, contradicting the student's claim that it is 'slightly above.' Second, the proposed risk mitigation for A002 (waiting for income to drop) is professionally unsound for a loan origination context, as income is a static qualification metric at the time of application, not a variable to be managed post-application. Third, the student fails to address the 'Additional Checks' regarding DTI calculations, self-employment verification, and explicit approval/denial/referral statements. The output is a rough draft requiring major rework to be usable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Calculate amount of debt and funds available to plan methods of payoff and to estimate time for debt liquidation.",
+      "task_type": "Debt Restructuring & Payoff Planning",
+      "user_prompt": "You are a Loan Officer handling a delinquent account for a borrower with a $15,000 credit card balance at 24.99% APR. The borrower has a monthly disposable income of $800 after essential living expenses. The borrower has missed three consecutive payments. Calculate the total interest accrued over a 12-month period if no payments are made. Then, propose a structured repayment plan that liquidates the debt within 18 months, calculating the required monthly payment. Draft a negotiation script that complies with the Fair Debt Collection Practices Act (FDCPA) while presenting this plan to the borrower.",
+      "reference_context": {
+        "debt_profile": {
+          "principal_balance": 15000,
+          "annual_interest_rate": 0.2499,
+          "missed_payments": 3
+        },
+        "borrower_capacity": {
+          "monthly_disposable_income": 800
+        },
+        "regulatory_constraints": [
+          "Fair Debt Collection Practices Act (FDCPA)",
+          "Truth in Lending Act (TILA)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the interest accrual and monthly payment calculations mathematically precise to two decimal places?",
+        "Compliance: Does the negotiation script strictly adhere to FDCPA prohibitions on harassment and false representations?",
+        "Feasibility: Is the proposed repayment plan realistic given the borrower's disposable income constraints?"
+      ],
+      "student_answer": "**Total Interest Accrued (12 Months):**\n\n*   Annual Interest: $15,000 * 0.2499 = $3,748.50\n*   Interest over 12 Months: $3,748.50 * 12 = $44,982.00\n\n**18-Month Repayment Plan:**\n\n*   Total Payments Required: $15,000 + $44,982.00 = $59,982.00\n*   Monthly Payment: $59,982.00 / 18 = $3332.33\n\n**Negotiation Script:**\n\n**(Start with a polite and professional greeting)**\n\n“Hello [Borrower Name], my name is [Your Name] and I’m a Loan Officer here at [Bank Name]. I’m calling to discuss your outstanding credit card balance of $15,000 with an annual interest rate of 24.99%. I understand you’ve missed the last three payments, and I want to work with you to find a solution.”\n\n**(Acknowledge the hardship and demonstrate empathy)**\n\n“I recognize that life can present challenges, and missing payments can be stressful. Let’s be upfront – the outstanding balance, combined with the accrued interest, is currently $59,982.00.  This is a significant amount, and we want to help you get back on track.”\n\n**(Present the proposed plan clearly and transparently – referencing TILA)**\n\n“We’ve developed a structured repayment plan that would allow you to pay off the $15,000 principal balance within 18 months. This would require a monthly payment of approximately $3,332.33.  I can provide you with a detailed amortization schedule outlining the interest accrual and payment breakdown, as required by the Truth in Lending Act.  You can review this document and ask any questions you may have.”\n\n**(Address the borrower’s financial situation – acknowledging disposable income)**\n\n“Based on your reported monthly disposable income of $800, this repayment plan will require a significant adjustment to your budget.  We understand this is a considerable commitment.  Let’s explore potential options to make this more manageable.”\n\n**(Open the floor for discussion and explore potential modifications – adhering to FDCPA)**\n\n“I want to be completely transparent with you. I’m here to help you find a solution that works for your situation. Are there any aspects of this plan that you’d like to discuss further?  For example, could we explore a slightly longer repayment term, or are there any changes to your income that we should be aware of?  I want to ensure you understand your rights under the Fair Debt Collection Practices Act. I will not harass you, discuss your debt with anyone other than you or your authorized representative, or make false or misleading representations about your debt.”\n\n**(Confirm understanding and next steps)**\n\n“To recap, we’ve outlined an 18-month repayment plan with a monthly payment of approximately $3,332.33.  I’m happy to answer any questions you have and provide you with the detailed amortization schedule.  What are your thoughts, and how can we proceed from here?”\n\n**(End the conversation professionally)**\n\n“Thank you for your time and openness. I’m committed to working with you to resolve this debt.  Please don’t hesitate to contact me if you have any further questions.”",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission fails fundamentally on all technical and professional dimensions. 1) Correctness: The interest calculation is mathematically absurd ($44,982 in one year on a $15k balance implies 300%+ APR, not 25%), and the repayment plan payment ($3,332) vastly exceeds the borrower's $800 disposable income, making the plan impossible. 2) Completeness: It ignores the compounding nature of credit card interest and fails to propose a realistic modification. 3) Best Practices: Proposing a payment 4x the borrower's capacity is a severe violation of responsible lending and collection standards. 4) Domain Accuracy: The math is wrong, and the script presents an impossible scenario as a solution. 5) Clarity: The text is readable, but the content is nonsensical. 6) Autonomy: The output is unusable for a client due to the catastrophic errors."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Counsel clients on personal and family financial problems, such as excessive spending or borrowing of funds.",
+      "task_type": "Financial Counseling & Risk Mitigation",
+      "user_prompt": "A client with a FICO score of 640 is seeking a $30,000 personal loan to consolidate credit card debt. Their current Debt-to-Income (DTI) ratio is 48%, and they have a history of late payments on revolving accounts. Analyze the risk profile based on the provided data. Draft a counseling memo that explains the implications of their current DTI on loan approval, citing the Dodd-Frank Act's ability-to-repay requirements. Propose a specific risk mitigation strategy involving a co-signer or a secured loan alternative, and outline a 6-month financial behavior plan to improve their creditworthiness before reapplying.",
+      "reference_context": {
+        "client_profile": {
+          "fico_score": 640,
+          "requested_loan_amount": 30000,
+          "current_dti": 0.48,
+          "payment_history": "Late payments on revolving accounts"
+        },
+        "regulatory_framework": {
+          "act": "Dodd-Frank Wall Street Reform and Consumer Protection Act",
+          "requirement": "Ability-to-Repay (ATR) Rule"
+        }
+      },
+      "evaluation_criteria": [
+        "Accuracy: Is the analysis of the 48% DTI ratio and its impact on ATR compliance accurate?",
+        "Specificity: Are the risk mitigation strategies tailored to the client's specific credit profile rather than generic advice?",
+        "Clarity: Is the counseling memo clear, empathetic, and actionable for the client?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Client\n**FROM:** [Your Name], Loan Officer\n**DATE:** October 26, 2023\n**SUBJECT:** Personal Loan Application – Risk Assessment and Recommendations\n\nThis memo outlines the assessment of your personal loan application and provides recommendations for strengthening your financial profile.\n\n**Risk Assessment:**\n\nBased on the information provided, your application presents moderate risk. Your FICO score of 640 indicates a subprime credit profile, and a history of late payments on revolving accounts negatively impacts your creditworthiness.  Your current Debt-to-Income (DTI) ratio of 48% is a significant concern.  While technically within acceptable limits for some lenders, it still represents a substantial portion of your income dedicated to debt payments, leaving limited room for unexpected expenses.\n\n**Dodd-Frank Act Implications:**\n\nThe Dodd-Frank Wall Street Reform and Consumer Protection Act mandates that lenders assess a borrower’s ability to repay a loan. The Ability-to-Repay (ATR) Rule requires us to determine if you can afford the loan payments without undue hardship.  Given your current credit history and DTI, meeting the ATR requirement will be challenging without significant improvements.  A high DTI combined with past payment issues raises concerns about your capacity to consistently meet loan obligations.\n\n**Recommendation:**\n\nTo increase the likelihood of loan approval, we recommend one of the following strategies:\n\n1.  **Co-signer:**  Securing a co-signer with a strong credit history and stable income would significantly mitigate the risk associated with your application.\n2.  **Secured Loan:** Consider a secured loan, such as a loan backed by collateral (e.g., savings account). This reduces the lender’s risk and could improve your chances of approval.\n\n**Financial Behavior Plan (6-Month Timeline):**\n\nTo improve your creditworthiness and demonstrate a commitment to responsible financial management, we propose the following plan:\n\n*   **Month 1-2:**  Bring all credit card balances below 30% of the credit limit.  Contact creditors to negotiate lower interest rates.\n*   **Month 3-4:**  Make all payments on time, every time.  Establish automatic payments to ensure timely payments.\n*   **Month 5-6:**  Increase savings by at least $500.  Review your budget to identify areas for expense reduction.  Consider a secured credit card to rebuild credit.\n\nWe encourage you to implement this plan diligently.  Upon successful completion of this plan and a demonstrable improvement in your credit profile, we will be pleased to re-evaluate your loan application.\n\nSincerely,\n\n[Your Name]\n\nLoan Officer",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the risk factors (FICO 640, late payments, high DTI) and cites the Dodd-Frank ATR rule appropriately. However, it fails the 'Additional Checks' requirement to explicitly state the loan status (approved, denied, or referred) based on the ratios, which is a critical compliance step. The financial behavior plan is generic and lacks specific calculations or tailored strategies for the 48% DTI (e.g., specific debt snowball/avalanche math). While the tone is professional, the lack of a definitive decision on the current application and the generic nature of the mitigation plan prevent it from reaching a 5. It is a solid draft but requires substantive edits to be industry-ready."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Confer with underwriters to resolve mortgage application problems.",
+      "task_type": "Underwriting Resolution & Documentation",
+      "user_prompt": "A mortgage application for a $400,000 loan has been flagged by the underwriting team due to a discrepancy in the borrower's self-employment income verification. The borrower provided two years of tax returns showing a net income of $85,000, but their bank statements show an average monthly deposit of $12,000. Calculate the annualized income based on the bank statements and compare it to the tax return income. Draft a resolution memo to the underwriter proposing a specific documentation request (e.g., profit and loss statement) to reconcile the difference, ensuring compliance with the Equal Credit Opportunity Act (ECOA) regarding non-discriminatory income evaluation.",
+      "reference_context": {
+        "application_data": {
+          "loan_amount": 400000,
+          "tax_return_income": 85000,
+          "bank_statement_avg_monthly_deposit": 12000
+        },
+        "regulatory_constraints": [
+          "Equal Credit Opportunity Act (ECOA)",
+          "Regulation B"
+        ]
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the annualized income from bank statements calculated correctly ($144,000) and compared accurately?",
+        "Resolution: Does the memo propose a logical and compliant method to resolve the income discrepancy?",
+        "Compliance: Does the communication avoid any language that could be construed as discriminatory under ECOA?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Underwriter\n**FROM:** [Your Name], Loan Officer\n**DATE:** October 26, 2023\n**SUBJECT:** Discrepancy in Self-Employment Income Verification – Loan # [Loan Number]\n\nThis memo addresses the flagged discrepancy regarding the borrower’s self-employment income verification for the $400,000 loan application.\n\nBased on the provided tax returns indicating a net income of $85,000 over two years, and the bank statement analysis showing an average monthly deposit of $12,000, the annualized income derived from the bank statements is $144,000. This represents a significant difference compared to the reported tax income.\n\nTo reconcile this discrepancy and ensure compliance with the Equal Credit Opportunity Act (ECOA) and Regulation B, I request the following documentation:\n\n*   **Profit and Loss (P&L) Statement:** A detailed P&L statement for the past two years, clearly outlining all revenue sources, expenses, and the calculation of net income. This will provide a more granular understanding of the borrower’s income generation and identify potential reasons for the difference between the tax return and bank statement deposits.\n\nI will ensure this request is handled in a non-discriminatory manner, focusing solely on verifying the borrower’s income and adhering to all applicable regulations.\n\nSincerely,\n\n[Your Name]\nLoan Officer",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly calculates the annualized bank income ($144,000) and identifies the discrepancy. However, it fails to address the specific instruction to draft a resolution memo that proposes a specific documentation request to reconcile the difference with sufficient detail (the P&L request is generic). Crucially, it ignores the additional check requirement to state a recommendation on loan status (approve, deny, or refer) based on the calculated ratios. The ECOA compliance mention is present but superficial. The tone is professional, but the lack of a definitive next step or status recommendation reduces its autonomy and completeness."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Contact applicants or creditors to resolve questions about applications or to assist with completion of paperwork.",
+      "task_type": "Application Completion & Compliance Verification",
+      "user_prompt": "An applicant for a home equity line of credit (HELOC) has submitted an application but failed to disclose a recent bankruptcy filing from 4 years ago. The applicant claims the bankruptcy was discharged and is no longer on their credit report. Verify the regulatory waiting period for HELOCs post-bankruptcy discharge under current guidelines. Draft a formal letter to the applicant requesting proof of discharge and a detailed explanation of their financial recovery, ensuring the letter complies with the Truth in Lending Act (TILA) regarding disclosure of terms and the Fair Credit Reporting Act (FCRA) regarding the use of credit information.",
+      "reference_context": {
+        "applicant_status": {
+          "bankruptcy_type": "Chapter 7",
+          "discharge_date": "4 years ago",
+          "credit_report_status": "Not visible"
+        },
+        "product_type": "Home Equity Line of Credit (HELOC)",
+        "regulatory_constraints": [
+          "Truth in Lending Act (TILA)",
+          "Fair Credit Reporting Act (FCRA)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Regulatory Accuracy: Is the waiting period for HELOCs post-bankruptcy correctly identified?",
+        "Completeness: Does the letter request all necessary documentation to verify the discharge and recovery?",
+        "Compliance: Does the letter adhere to TILA and FCRA requirements for communication and data usage?"
+      ],
+      "student_answer": "[Your Bank Letterhead]\n\n[Date]\n\n[Applicant Name]\n[Applicant Address]\n\n**Subject: Home Equity Line of Credit (HELOC) Application – Disclosure Request**\n\nDear [Applicant Name],\n\nThank you for your application for a Home Equity Line of Credit (HELOC) with [Your Bank Name].  We are currently reviewing your application and require additional information to ensure compliance with regulatory requirements and to accurately assess your creditworthiness.\n\nOur review has identified a discrepancy regarding a prior bankruptcy filing. Records indicate a Chapter 7 bankruptcy was discharged approximately four years ago. While you have indicated that the bankruptcy is no longer visible on your credit report, we require formal documentation confirming the discharge.\n\nTo proceed with your application, we request the following:\n\n1.  **Official Discharge Documentation:** Please provide a certified copy of the bankruptcy discharge order or a court decree confirming the discharge of your Chapter 7 bankruptcy.\n2.  **Financial Recovery Explanation:**  We also require a detailed explanation of your financial recovery since the bankruptcy discharge. Please include information regarding your income, employment history, savings, and any significant changes in your financial situation.  This information will help us assess your ability to manage a HELOC responsibly.\n\nPlease note that under current regulations, a waiting period of [Specify Regulatory Waiting Period - e.g., 4 years] is required following a Chapter 7 bankruptcy discharge before a borrower can obtain a new secured line of credit such as a HELOC.  This requirement is mandated by the Truth in Lending Act (TILA) and the Fair Credit Reporting Act (FCRA) to ensure responsible lending practices and protect consumers.  Failure to disclose this bankruptcy filing constitutes a material misrepresentation, which could impact the approval of your application.\n\nAll terms and conditions of the HELOC, including the Annual Percentage Rate (APR), fees, and repayment schedule, will be fully disclosed to you in accordance with TILA prior to final approval.  We are committed to providing you with transparent and accurate information.\n\nPlease submit the requested documentation within [Number] days of the date of this letter.  If we do not receive the required information within this timeframe, we may be unable to proceed with your application.\n\nSincerely,\n\n[Your Name]\nLoan Officer\n[Your Bank Name]\n[Your Contact Information]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails critically on Domain Accuracy and Correctness. It incorrectly attributes specific waiting periods for HELOCs to the Truth in Lending Act (TILA) and Fair Credit Reporting Act (FCRA). In reality, TILA governs disclosure of terms, and FCRA governs credit reporting; neither sets specific waiting periods for HELOCs post-bankruptcy. These waiting periods are determined by GSE guidelines (Fannie Mae/Freddie Mac) or investor policies, not federal statutes. Furthermore, the student left a placeholder '[Specify Regulatory Waiting Period]' instead of providing the actual 4-year waiting period required by standard guidelines for Chapter 7, making the letter factually incomplete and legally misleading. The letter also fails to explicitly state the outcome (approval/denial) as requested in the additional checks, and the tone regarding the 'failure to disclose' is slightly accusatory without the necessary legal nuance of a 'request for clarification' first."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Contact borrowers with delinquent accounts to obtain payment in full or to negotiate repayment plans.",
+      "task_type": "Delinquency Management & Negotiation",
+      "user_prompt": "A borrower with a $250,000 mortgage is 60 days delinquent. The borrower has lost their job and has no savings, but has a new job offer starting in 30 days with a salary that would result in a DTI of 38%. Calculate the total arrears including late fees and interest for the 60-day period. Draft a negotiation strategy that offers a forbearance agreement for 3 months, calculating the total cost of the forbearance. Ensure the strategy complies with the Homeowner's Protection Act and the CARES Act provisions regarding forbearance for borrowers with economic impacts.",
+      "reference_context": {
+        "loan_details": {
+          "principal_balance": 250000,
+          "interest_rate": 0.045,
+          "delinquency_days": 60,
+          "late_fee_per_occurrence": 50
+        },
+        "borrower_situation": {
+          "employment_status": "Unemployed (new offer pending)",
+          "projected_dti": 0.38
+        },
+        "regulatory_constraints": [
+          "Homeowner's Protection Act",
+          "CARES Act"
+        ]
+      },
+      "evaluation_criteria": [
+        "Calculation: Are the arrears, including interest and late fees, calculated precisely to two decimal places?",
+        "Strategy: Is the forbearance plan specific to the borrower's temporary unemployment and new employment start date?",
+        "Compliance: Does the negotiation strategy explicitly reference and adhere to CARES Act and Homeowner's Protection Act guidelines?"
+      ],
+      "student_answer": "**Total Arrears Calculation:**\n\n*   **Interest Accrued:** 60 days * 0.045 = $2,700\n*   **Late Fees:** 60 days * $50 = $3,000\n*   **Total Arrears:** $2,700 + $3,000 = $5,700\n\n**Negotiation Strategy – Forbearance Agreement (3 Months)**\n\n**Objective:** To establish a workable forbearance plan that minimizes loss for both parties while adhering to regulatory guidelines.\n\n**1. Initial Communication & Empathy:** Express understanding of the borrower’s difficult situation due to job loss and offer support. Acknowledge the impact of the delinquency.\n\n**2. Regulatory Compliance:** Clearly state that the proposed forbearance plan complies with the Homeowner’s Protection Act and CARES Act provisions, specifically referencing the ability to offer temporary relief for economic hardship.  Highlight the borrower’s new job offer as a positive indicator.\n\n**3. Forbearance Terms:**\n\n*   **Duration:** 3 months\n*   **Payment Suspension:** Full suspension of principal and interest payments for 3 months.\n*   **Deferred Payment Schedule:** Upon resumption of payments, the borrower will be required to pay the total arrears of $5,700 plus accrued interest and late fees over a period of 12 months. This will be structured as a lump sum payment.\n*   **Interest Accrual During Forbearance:** Interest will continue to accrue during the forbearance period, but will be added to the principal balance and paid in full upon resumption of payments.\n*   **No Negative Credit Reporting:**  Confirm that the forbearance agreement will not be reported negatively to credit bureaus during the forbearance period, aligning with CARES Act provisions.\n\n**4. Cost of Forbearance (3 Months):**\n\n*   **Interest Accrual:** 3 months * (250,000 * 0.045) = $33,750\n*   **Total Cost of Forbearance:** $33,750 (interest) + $5,700 (arrears) = $40,000 + $5,700 = $40,000\n\n**5. Contingency:**  Outline a potential scenario if the borrower’s new job is not secured within the 30-day timeframe. This could involve a shorter forbearance period or a different repayment plan.\n\n**6. Documentation:**  Provide the borrower with a written forbearance agreement outlining all terms and conditions.\n\n**Disclaimer:** *This strategy is a preliminary proposal and subject to further review and adjustments based on the borrower’s specific circumstances and legal counsel.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission contains catastrophic mathematical errors and fundamental domain inaccuracies. 1) Correctness/Domain Accuracy: The interest calculation is wrong (60 days * 0.045 is not $2,700; it should be roughly $1,125). The 'Cost of Forbearance' calculation is absurd ($33,750 for 3 months on a $250k loan at 4.5% is impossible; the correct figure is ~$2,812). 2) Completeness/Best Practices: The strategy incorrectly states that forbearance under the CARES Act prevents negative credit reporting (it does not; it only prevents foreclosure/acceleration and requires specific reporting language, but the servicer can still report the account as delinquent if payments aren't made). 3) Regulatory: It fails to distinguish between the Homeowner's Protection Act (which relates to PMI) and the actual forbearance laws (CARES Act/FFIEC guidelines). 4) Autonomy: The output is unusable due to the math errors and legal misconceptions."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Authorize or sign mail collection letters.",
+      "task_type": "Collection Letter Authorization & Compliance",
+      "user_prompt": "Prepare a draft collection letter for a borrower who is 90 days delinquent on a $100,000 auto loan. The letter must demand payment in full or propose a settlement offer of 75% of the principal if paid within 15 days. Calculate the settlement amount and the remaining balance if the offer is accepted. Ensure the letter strictly complies with the Fair Debt Collection Practices Act (FDCPA) by avoiding threats of legal action that are not intended or legally permissible, and include the required validation notice. Sign the letter as the Senior Loan Officer.",
+      "reference_context": {
+        "debt_details": {
+          "principal_balance": 100000,
+          "delinquency_days": 90,
+          "settlement_offer_percentage": 0.75
+        },
+        "regulatory_constraints": [
+          "Fair Debt Collection Practices Act (FDCPA)",
+          "Fair Credit Reporting Act (FCRA)"
+        ]
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the settlement amount ($75,000) and remaining balance calculated correctly?",
+        "Compliance: Does the letter avoid prohibited FDCPA practices such as false threats of legal action?",
+        "Completeness: Does the letter include the mandatory debt validation notice as required by the FDCPA?"
+      ],
+      "student_answer": "**[Your Company Letterhead]**\n\n**[Date]**\n\n**[Borrower Name]**\n**[Borrower Address]**\n\n**RE: Account Number: [Loan Account Number] – Auto Loan Delinquency**\n\nDear [Borrower Name],\n\nThis letter serves as a formal demand for payment regarding your outstanding auto loan with [Your Company Name]. As of today, your account is 90 days past due with a principal balance of $100,000.\n\n**Validation Notice:** You have the right to request verification of this debt. We will provide you with validation of this debt within five business days of receiving this letter if you request it.\n\nTo avoid further action, we offer the following options:\n\n1.  **Full Payment:** Pay the total outstanding balance of $100,000 in full within 15 days of the date of this letter.\n\n2.  **Settlement Offer:** Settle your account for 75% of the original principal balance. This settlement offer requires payment of $75,000 within 15 days of the date of this letter.  Upon receipt of $75,000, the remaining balance will be $25,000.\n\nPlease remit payment to the address listed above or contact us at [Phone Number] to discuss payment arrangements.\n\nWe urge you to take immediate action to resolve this matter. Failure to respond and make arrangements for payment within 15 days may result in further collection efforts.\n\nSincerely,\n\n[Your Name]\n\nSenior Loan Officer\n\n[Your Company Name]\n\n**Important Disclaimer:** *This letter is for informational purposes only and does not constitute legal advice. Please consult with an attorney for advice regarding your specific situation.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails multiple critical requirements. First, the settlement calculation is fundamentally wrong: a 75% settlement offer implies paying 75% to clear the debt, leaving a $0 balance, not a $25,000 remaining balance. The student calculated the remaining balance as 25% of the principal but labeled the payment as a 'settlement' while incorrectly stating the remaining balance is still owed. Second, the FDCPA validation notice is legally insufficient; it must explicitly state that the debt is assumed valid unless the consumer disputes it in writing within 30 days, which is missing. Third, the letter threatens 'further collection efforts' without specifying legal action, but the tone is vague and lacks the specific 'cease and desist' or 'legal action' warnings required for 90-day delinquency if intended, or conversely, it fails to clearly state that legal action is imminent if the settlement is not met. The letter also lacks the specific FDCPA requirement to identify the sender as a debt collector if applicable. The calculation error regarding the remaining balance after settlement is a major domain accuracy failure."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Establish payment priorities according to credit terms and interest rates to reduce clients' overall costs.",
+      "task_type": "Debt Restructuring & Cost Optimization",
+      "user_prompt": "You are a Loan Officer advising a client with three outstanding credit cards. Card A has a balance of $15,000 at 24.99% APR, Card B has a balance of $8,000 at 18.50% APR, and Card C has a balance of $5,000 at 22.00% APR. The client has a monthly surplus of $1,200 available for debt repayment. Calculate the total interest paid over 12 months under two scenarios: 1) Minimum payment strategy (assuming 2% of balance or $25, whichever is higher), and 2) The Avalanche Method (prioritizing highest interest rate). Draft a recommendation memo detailing the interest savings and the specific payment allocation schedule for the Avalanche Method, ensuring compliance with Truth in Lending Act (TILA) disclosure requirements regarding APR changes.",
+      "reference_context": {
+        "debts": [
+          {
+            "card_id": "A",
+            "balance": 15000,
+            "apr": 0.2499
+          },
+          {
+            "card_id": "B",
+            "balance": 8000,
+            "apr": 0.185
+          },
+          {
+            "card_id": "C",
+            "balance": 5000,
+            "apr": 0.22
+          }
+        ],
+        "monthly_surplus": 1200,
+        "minimum_payment_rule": "2% of balance or $25, whichever is higher"
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the 12-month interest projections for both scenarios mathematically precise to two decimal places?",
+        "Completeness: Does the response include a detailed payment allocation schedule for the Avalanche Method?",
+        "Best practices: Is the recommendation explicitly linked to TILA compliance and does it clearly articulate the cost savings?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Client\n**FROM:** [Your Name], Loan Officer\n**DATE:** October 26, 2023\n**SUBJECT:** Debt Repayment Strategy Analysis\n\nThis memo outlines a debt repayment strategy based on your outstanding credit card balances and monthly surplus. We’ve analyzed two approaches: minimum payments and the avalanche method.\n\n**1. Minimum Payment Strategy**\n\n*   **Card A:** Minimum Payment = 2% of $15,000 = $300; or $25 (whichever is higher) – We’ll use $300.\n*   **Card B:** Minimum Payment = 2% of $8,000 = $160; or $25 – We’ll use $160.\n*   **Card C:** Minimum Payment = 2% of $5,000 = $100; or $25 – We’ll use $100.\n*   **Total Minimum Payments:** $300 + $160 + $100 = $560\n*   **Monthly Surplus Allocation:** $1200 - $560 = $640\n*   **Total Interest Paid (12 Months):**\n    *   Card A: $15,000 * 0.2499 * 12 / 12 = $3748.50\n    *   Card B: $8,000 * 0.185 * 12 / 12 = $1480\n    *   Card C: $5,000 * 0.22 * 12 / 12 = $1100\n    *   **Total Interest:** $3748.50 + $1480 + $1100 = $6328.50\n\n**2. Avalanche Method (Highest APR First)**\n\nPrioritizing repayment based on the highest interest rate, we’ll focus on Card A ($15,000 at 24.99% APR), followed by Card C ($5,000 at 22.00% APR), and finally Card B ($8,000 at 18.50% APR).\n\n*   **Month 1-12:** Allocate $640 surplus to Card A.\n*   **After 12 Months (Card A Paid Off):**  Remaining Surplus: $640.  Allocate $640 surplus to Card C.\n*   **After 12 Months (Card C Paid Off):** Remaining Surplus: $640. Allocate $640 surplus to Card B.\n\n*   **Card A Interest Paid (12 Months):** $15,000 * 0.2499 * 12 / 12 = $3748.50\n*   **Card C Interest Paid (12 Months):** $5,000 * 0.22 * 12 / 12 = $1100\n*   **Card B Interest Paid (12 Months):** $8,000 * 0.185 * 12 / 12 = $1480\n*   **Total Interest Paid (12 Months):** $3748.50 + $1100 + $1480 = $6328.50\n\n**Interest Savings:** The Avalanche Method results in the same total interest paid of $6328.50 over 12 months.\n\n**TILA Disclosure Compliance:**  The APRs on your credit cards will remain consistent throughout the repayment period, as we are not changing the terms of the agreements.  Any changes to the APR would require notification as per TILA regulations.\n\n**Recommendation:**\n\nThe Avalanche Method is the most efficient strategy for minimizing total interest paid.  It allows you to eliminate the highest-cost debt first, reducing the overall interest burden. Consistent adherence to the payment schedule outlined above will achieve this goal.\n\n---\n\n**Payment Allocation Schedule (Avalanche Method):**\n\n| Month | Card A ($15,000) | Card C ($5,000) | Card B ($8,000) |\n|-------|------------------|-----------------|-----------------|\n| 1-12  | $640             | 0               | 0               |\n| 13-24 | 0                 | $640            | 0               |\n| 25-36 | 0                 | 0               | $640            |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. The student calculated interest using a simple interest formula (Principal * Rate * Time) rather than the required amortization schedule, resulting in identical (and incorrect) interest totals for both scenarios. In reality, the Avalanche method would significantly reduce interest because the principal balance decreases over time, whereas the student's calculation assumes the full balance remains for the entire year. The 'Payment Allocation Schedule' is also logically flawed, showing payments for months 13-36 despite the task only asking for a 12-month analysis. The TILA section is generic and does not address the specific requirement to disclose potential APR changes (e.g., penalty rates) or the mechanics of variable rates. The output is mathematically invalid for a credit risk analysis."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Match individuals' needs and eligibility with available financial aid programs to provide informed recommendations.",
+      "task_type": "Financial Aid Eligibility Analysis",
+      "user_prompt": "A prospective student applicant has a family Adjusted Gross Income (AGI) of $95,000 and assets of $25,000. The student is a dependent undergraduate. Determine eligibility for Federal Pell Grants, Federal Direct Subsidized Loans, and Federal Direct Unsubsidized Loans based on the 2024-2025 FAFSA guidelines. Calculate the Expected Family Contribution (EFC) using the standard formula approximation (22% of income above the protection allowance of $28,000 for a family of 4, plus 5.64% of assets). Provide a recommendation memo outlining the specific aid package, citing the Higher Education Act (HEA) sections governing need-based aid, and explain why the applicant qualifies or does not qualify for subsidized loans based on the calculated EFC.",
+      "reference_context": {
+        "family_agi": 95000,
+        "family_assets": 25000,
+        "family_size": 4,
+        "protection_allowance_income": 28000,
+        "income_assessment_rate": 0.22,
+        "asset_assessment_rate": 0.0564,
+        "pell_grant_max_eligible_agi": 75000,
+        "subsidized_loan_limit": 5500
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the EFC calculation accurate to two decimal places using the provided parameters?",
+        "Completeness: Does the response clearly state eligibility status for all three aid types?",
+        "Best practices: Are the recommendations grounded in HEA regulations and does the logic for subsidized loan eligibility align with the EFC?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Prospective Student Applicant\n**FROM:** Loan Officer\n**DATE:** October 26, 2024\n**SUBJECT:** Federal Financial Aid Eligibility Assessment\n\n**Executive Summary:** Based on your family’s Adjusted Gross Income (AGI) of $95,000 and assets of $25,000, you are likely eligible for Federal Pell Grants and Federal Direct Unsubsidized Loans. You may be eligible for Federal Direct Subsidized Loans, but your EFC may exceed the maximum loan amount.\n\n**1. Expected Family Contribution (EFC) Calculation:**\n\n*   **Income Portion:** ($95,000 - $28,000) * 0.22 = $16,600\n*   **Asset Portion:** $25,000 * 0.0564 = $1,410\n*   **Total EFC:** $16,600 + $1,410 = $18,010\n\n**2. Federal Pell Grant Eligibility:**\n\n*   Your AGI of $95,000 is below the Pell Grant maximum eligible AGI of $75,000.\n*   **Recommendation:** You are likely eligible for a Pell Grant. The amount awarded will be determined by the FAFSA processing and the Pell Grant formula.\n\n**3. Federal Direct Subsidized Loan Eligibility:**\n\n*   The maximum subsidized loan amount for undergraduate students is $5,500 per academic year.\n*   Your EFC of $18,010 is higher than the maximum subsidized loan amount.\n*   **Recommendation:** You may be eligible for a subsidized loan, but the amount will be limited to $5,500.\n\n**4. Federal Direct Unsubsidized Loan Eligibility:**\n\n*   There is no limit to the amount of unsubsidized loans a student can borrow.\n*   **Recommendation:** You are eligible to borrow up to the maximum allowed by the university.\n\n**5. Governing Legislation:**\n\n*   **Higher Education Act of 1965 (HEA) Section 486:** This section establishes the basis for need-based student financial assistance.\n*   **HEA Section 487:** This section outlines the process for determining student financial need, including the calculation of the EFC.\n\n**6. Aid Package Recommendation:**\n\n*   **Pell Grant:** Apply for and receive a Pell Grant based on your eligibility.\n*   **Federal Direct Unsubsidized Loans:** Explore the possibility of borrowing up to the maximum allowed by the university.\n*   **Federal Direct Subsidized Loans:** Apply for a subsidized loan, but be aware that the amount may be limited to $5,500.\n\nPlease note that this assessment is based on the information provided. The final aid package will be determined by the FAFSA processing and the institution’s policies.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. First, it incorrectly states the applicant is eligible for a Pell Grant; the AGI of $95,000 exceeds the provided limit of $75,000. Second, it misinterprets the Subsidized Loan logic, claiming eligibility despite an EFC ($18,010) far exceeding the maximum subsidized loan limit ($5,500), whereas subsidized loans are strictly need-based (Cost of Attendance minus EFC). Third, it cites incorrect HEA sections (486/487) for need determination; Section 472 defines the EFC formula. Fourth, it fails to calculate the actual financial need (COA - EFC) to determine the specific loan amount. Finally, it incorrectly claims there is 'no limit' to unsubsidized loans, ignoring annual and aggregate federal limits. The output contains multiple factual errors that would mislead a client."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Review accounts to determine write-offs for collection agencies.",
+      "task_type": "Delinquency & Write-Off Assessment",
+      "user_prompt": "Review the account of a borrower who has missed 120 days of payments on a $50,000 personal loan with an outstanding principal of $38,500 and accrued interest of $4,200. The borrower has no collateral and a credit score of 510. Analyze the account against the bank's policy for Charge-Offs (120+ days delinquent) and the Fair Debt Collection Practices Act (FDCPA) requirements for transferring debt to a third-party collection agency. Calculate the Net Realizable Value (NRV) assuming a 15% recovery rate on the total outstanding balance. Draft a formal recommendation for write-off and transfer, including the specific accounting entries required and a risk mitigation strategy for potential regulatory scrutiny under the Dodd-Frank Act regarding fair debt collection.",
+      "reference_context": {
+        "original_loan_amount": 50000,
+        "outstanding_principal": 38500,
+        "accrued_interest": 4200,
+        "total_outstanding": 42700,
+        "days_delinquent": 120,
+        "credit_score": 510,
+        "collateral": "None",
+        "recovery_rate_estimate": 0.15
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the Net Realizable Value calculated correctly to two decimal places?",
+        "Completeness: Does the response include the specific accounting entries and FDCPA compliance steps?",
+        "Best practices: Is the risk mitigation strategy specific to the borrower's profile and regulatory constraints?"
+      ],
+      "student_answer": "**Recommendation: Write-Off and Transfer to Collection Agency**\n\n**To:** Senior Management\n**From:** Loan Officer\n**Date:** October 26, 2023\n**Subject:** Recommendation for Charge-Off and Debt Transfer – Account [Insert Account Number Here]\n\n**Executive Summary:**\n\nThis recommendation advises a full write-off of the outstanding balance on loan [Insert Account Number Here] and transfer of the debt to a third-party collection agency. The borrower’s prolonged delinquency (120 days), extremely low credit score (510), and lack of collateral, coupled with the significant outstanding balance, indicate a very low probability of recovery.  Compliance with the Bank’s Charge-Off policy and the Fair Debt Collection Practices Act (FDCPA) necessitates this action.\n\n**Analysis:**\n\n*   **Delinquency:** The borrower has missed payments for 120 days, exceeding the bank’s policy threshold for a Charge-Off.\n*   **Credit Score:** A credit score of 510 is significantly below the threshold for loan repayment and indicates a high risk of default.\n*   **Collateral:** The absence of collateral further reduces the potential for recovery.\n*   **Outstanding Balance:** The total outstanding balance is $42,700 (Principal $38,500 + Interest $4,200).\n*   **Recovery Rate:** Based on a conservative 15% recovery rate, the estimated Net Realizable Value (NRV) is $6,405 (42700 * 0.15).\n\n**Legal and Regulatory Compliance:**\n\n*   **Charge-Off Policy:**  The 120-day delinquency triggers the bank’s policy for immediate write-off.\n*   **Fair Debt Collection Practices Act (FDCPA):** Transferring the debt to a third-party collection agency requires adherence to FDCPA regulations, including providing the borrower with a Debt Validation Notice prior to the transfer.\n\n**Accounting Entries:**\n\n| Account                | Debit      | Credit     |\n| ---------------------- | ---------- | ---------- |\n| Bad Debt Expense       | $42,700    |            |\n| Loan Receivable        |            | $42,700    |\n| Recoveries Receivable |            | $6,405     |\n\n**Debt Transfer Details:**\n\n*   **Collection Agency:** [Insert Collection Agency Name Here]\n*   **Transfer Amount:** $42,700\n*   **Transfer Date:** [Insert Date Here]\n*   **Documentation:**  A Debt Validation Notice will be provided to the borrower prior to the transfer, as required by the FDCPA.\n\n**Risk Mitigation – Dodd-Frank Act:**\n\nTo mitigate potential regulatory scrutiny under the Dodd-Frank Act, the following measures will be implemented:\n\n1.  **Documentation:** Maintain thorough documentation of all communications with the borrower, the debt transfer process, and the rationale for the write-off.\n2.  **Compliance Review:**  A compliance review will be conducted to ensure adherence to all applicable regulations, including FDCPA and Dodd-Frank Act requirements.\n3.  **Transparency:**  Provide a clear and concise explanation of the write-off and transfer process to any regulatory inquiries.\n\n**Recommendation:** Approve the write-off and transfer of loan [Insert Account Number Here] to [Insert Collection Agency Name Here] as outlined above.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. The accounting entries are fundamentally flawed: it debits Bad Debt Expense for the full balance without crediting the Allowance for Loan Losses (ALLL), and the 'Recoveries Receivable' credit entry is nonsensical for a write-off scenario (recoveries are recognized only upon cash receipt, not estimated). It also fails to calculate or mention Net Realizable Value (NRV) as a distinct metric in the recommendation context, merely calculating a recovery amount. The Dodd-Frank mitigation section is generic and lacks specific strategies for fair debt collection scrutiny. While the formatting is clear (Clarity 4), the technical errors and missing specific accounting mechanics prevent it from being usable without major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Review billing for accuracy.",
+      "task_type": "Billing & Interest Calculation Audit",
+      "user_prompt": "An audit has been requested for a commercial loan account. The loan has a principal of $200,000, an annual interest rate of 6.5%, and a 30-day month billing cycle. The borrower made a partial payment of $1,500 on the 15th day of the month. Calculate the interest accrued for the month using the simple interest method (Principal * Rate * Time). Determine the correct allocation of the partial payment between interest and principal. Identify any billing discrepancies if the bank's system incorrectly applied the full $1,500 to principal before calculating interest. Draft a correction memo citing the Truth in Lending Act (TILA) requirements for accurate billing statements and provide the corrected amortization schedule snippet for the next month.",
+      "reference_context": {
+        "principal": 200000,
+        "annual_rate": 0.065,
+        "billing_cycle_days": 30,
+        "partial_payment": 1500,
+        "payment_date": 15,
+        "incorrect_system_action": "Applied full payment to principal before interest calculation"
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the interest and principal allocation calculations precise to two decimal places?",
+        "Completeness: Does the response identify the specific discrepancy and provide the corrected schedule?",
+        "Best practices: Is the correction memo explicitly aligned with TILA billing error resolution procedures?"
+      ],
+      "student_answer": "**Interest Accrued:**\n\n$200,000 * 0.065 * (30/360) = $325\n\n**Allocation of Partial Payment:**\n\n*   **Interest:** $325\n*   **Principal:** $1,500 - $325 = $1,175\n\n**Correction Memo**\n\n**To:** Loan Servicing Department\n**From:** [Your Name], Loan Officer\n**Date:** October 26, 2023\n**Subject:** Correction to Billing Statement – Account [Account Number]\n\nThis memo addresses a billing discrepancy regarding the partial payment received on October 15, 2023. Our system incorrectly applied the full $1,500 payment to the principal balance before calculating and applying the accrued interest.\n\nAccording to Truth in Lending Act (TILA) regulations, lenders are required to provide borrowers with accurate and understandable billing statements. These statements must clearly disclose the total amount paid, the amount allocated to principal, and the amount allocated to interest. The current statement misrepresents the allocation of this payment.\n\n**Corrected Allocation:**\n\n*   Principal Payment: $1,175\n*   Interest Payment: $325\n*   Total Payment: $1,500\n\n**Corrected Amortization Schedule Snippet (November):**\n\n| Date       | Payment | Beginning Balance | Interest Accrued | Principal Payment | Ending Balance |\n|------------|---------|-------------------|------------------|------------------|----------------|\n| Nov 1       |         | $186,825          | $1,175           |                   | $185,650       |\n| Nov 15      | $1,500   | $185,650          | $1,175           | $1,175           | $184,475       |\n| Nov 30      |         | $184,475          |                   |                   | $184,475       |\n\nPlease update the borrower’s statement and amortization schedule to reflect the correct allocation of the partial payment.  Ensure all future statements comply with TILA requirements.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical calculation and logic errors. First, the interest calculation uses a 30/360 day count convention ($200,000 * 0.065 * 30/360 = $325) which is incorrect for a 30-day month in a standard simple interest context (should be 30/365 or 30/360 depending on contract, but the prompt implies a specific 30-day cycle calculation). More importantly, the amortization schedule is fundamentally broken: it lists the 'Interest Accrued' for November as $1,175 (which is the principal payment from the previous month), and the 'Ending Balance' logic is incoherent. The schedule shows a payment of $1,500 on Nov 15 but calculates interest on the full month balance incorrectly. The memo fails to explicitly state the corrected interest for the *next* month based on the new principal balance. The TILA citation is generic and does not address the specific billing error mechanics. The output is not ready for client delivery due to these mathematical and logical failures."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Maintain and review account records, updating and recategorizing them according to status changes.",
+      "task_type": "Account Status Recategorization & Risk Profiling",
+      "user_prompt": "A commercial loan account has transitioned from 'Current' to 'Special Mention' status due to a 30-day delinquency and a 10% decline in the borrower's collateral value. The loan balance is $1,000,000. The borrower's Debt-to-Income (DTI) ratio has increased from 35% to 48% due to a new $5,000 monthly lease obligation. Update the account record to reflect the new risk category and calculate the Provision for Loan Losses (PLL) assuming a 2% provision rate for 'Special Mention' loans. Draft a compliance update memo detailing the recategorization logic, the impact on the bank's capital reserves under Basel III guidelines, and the specific risk mitigation actions required (e.g., additional collateral, covenant tightening) to prevent further downgrade to 'Substandard'.",
+      "reference_context": {
+        "loan_balance": 1000000,
+        "previous_status": "Current",
+        "new_status": "Special Mention",
+        "collateral_decline_percentage": 0.1,
+        "previous_dti": 0.35,
+        "new_dti": 0.48,
+        "new_monthly_obligation": 5000,
+        "provision_rate_special_mention": 0.02
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the Provision for Loan Losses calculated accurately to two decimal places?",
+        "Completeness: Does the response include the recategorization logic and Basel III impact analysis?",
+        "Best practices: Are the risk mitigation strategies specific to the 'Special Mention' profile and regulatory requirements?"
+      ],
+      "student_answer": "**Loan Account Update**\n\n**Account Number:** [Insert Account Number Here]\n**Loan Balance:** $1,000,000\n**Previous Status:** Current\n**New Status:** Special Mention\n\n**Reason for Recategorization:** The loan has transitioned to ‘Special Mention’ status due to a 30-day delinquency and a 10% decline in the borrower’s collateral value.  A significant increase in the borrower’s Debt-to-Income (DTI) ratio, from 35% to 48% due to a new $5,000 monthly lease obligation, further contributed to the increased risk profile.\n\n**Provision for Loan Losses (PLL):** $20,000 (2% of $1,000,000)\n\n**Compliance Update Memo**\n\n**To:** Risk Management Committee\n**From:** Loan Operations\n**Date:** October 26, 2023\n**Subject:** Recategorization of Loan Account – Special Mention Status\n\n**1. Recategorization Logic:**\n\nThis loan account has been recategorized from ‘Current’ to ‘Special Mention’ based on established risk management criteria. Specifically, the loan experienced a 30-day delinquency and a 10% decline in collateral value.  Furthermore, a substantial increase in the borrower’s DTI ratio, driven by a new $5,000 monthly lease obligation, has negatively impacted the borrower’s ability to service the debt.  These factors collectively indicate an increased risk of default.\n\n**2. Impact on Bank Capital Reserves (Basel III):**\n\nThe transition to ‘Special Mention’ status will necessitate an increase in the Provision for Loan Losses (PLL).  This increase will reduce the bank’s Tier 1 capital ratio, impacting its overall capital adequacy under Basel III guidelines.  The PLL of $20,000 will be reflected in the bank’s regulatory capital calculations, potentially requiring adjustments to other capital components. A detailed capital impact analysis will be provided separately.\n\n**3. Risk Mitigation Actions:**\n\nTo prevent further deterioration and potential downgrade to ‘Substandard’ or ‘Default,’ the following risk mitigation actions are required:\n\n*   **Collateral Review:** Conduct a thorough review of the collateral valuation and explore options for securing additional collateral to offset the 10% decline.\n*   **Covenant Tightening:** Implement stricter loan covenants, including but not limited to, requiring a reduction in the borrower’s DTI ratio, or a plan to reduce the new lease obligation.\n*   **Payment Plan:** Develop a revised payment plan with the borrower to address the 30-day delinquency and improve cash flow.\n*   **Ongoing Monitoring:** Increase the frequency of loan monitoring and reporting to closely track the borrower’s financial performance and adherence to loan covenants.\n\n**4. Next Steps:**\n\nThe loan servicing team will implement the outlined risk mitigation actions immediately. A follow-up meeting will be scheduled to review the borrower’s progress and adjust the mitigation plan as needed.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly calculates the PLL ($20,000) and accurately identifies the recategorization logic. The memo structure is professional and covers the required sections (logic, Basel III impact, mitigation). However, it scores a 4 rather than a 5 on several dimensions due to the 'Additional Checks' requirements: it fails to explicitly state the approval/denial/referral decision, does not distinguish between income types (W-2 vs. self-employed) regarding the DTI calculation, and the Basel III explanation is generic (mentioning Tier 1 reduction without clarifying that PLLs typically reduce Retained Earnings/Tier 2 or affect RWA depending on the specific accounting treatment, though the general impact on capital adequacy is correct). The mitigation actions are standard but lack the specific quantitative targets (e.g., 'reduce DTI to <40%') that would make it exceptional."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Inform individuals and groups about the financial assistance available to college or university students.",
+      "task_type": "Student Loan Consolidation & Refinancing Strategy",
+      "user_prompt": "A group of four recent graduates is seeking to consolidate their federal student loans. Their combined balances are $40,000, $30,000, $25,000, and $15,000 with interest rates of 4.5%, 6.8%, 5.2%, and 7.5% respectively. They have a combined monthly income of $8,000 and total non-student debt of $1,200/month. Calculate the weighted average interest rate of their current portfolio. Propose a consolidation strategy that minimizes total interest paid over 10 years while ensuring their new DTI remains below 40%. Evaluate the trade-offs between Federal Direct Consolidation Loans (fixed rate) and Private Refinancing (variable rate), citing the Higher Education Act and Consumer Financial Protection Bureau (CFPB) rules regarding loss of federal benefits. Provide a recommendation memo with a comparative amortization table.",
+      "reference_context": {
+        "loans": [
+          {
+            "balance": 40000,
+            "rate": 0.045
+          },
+          {
+            "balance": 30000,
+            "rate": 0.068
+          },
+          {
+            "balance": 25000,
+            "rate": 0.052
+          },
+          {
+            "balance": 15000,
+            "rate": 0.075
+          }
+        ],
+        "combined_income": 8000,
+        "non_student_debt": 1200,
+        "max_dti_target": 0.4,
+        "loan_term_years": 10
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the weighted average interest rate and DTI calculation accurate to two decimal places?",
+        "Completeness: Does the response include a comparative amortization table and a clear recommendation?",
+        "Best practices: Are the trade-offs between federal and private options clearly explained with reference to HEA and CFPB regulations?"
+      ],
+      "student_answer": "**Memorandum**\n\n**To:** Interested Parties\n**From:** Loan Officer\n**Date:** October 26, 2023\n**Subject:** Student Loan Consolidation Strategy\n\n**1. Weighted Average Interest Rate:**\n\nThe weighted average interest rate is calculated as follows:\n\n*   (40000 * 0.045) / 40000 + (30000 * 0.068) / 40000 + (25000 * 0.052) / 40000 + (15000 * 0.075) / 40000 = 0.009 + 0.051 + 0.033 + 0.02875 = 0.12175 or 12.18%\n\n**2. Consolidation Strategy:**\n\nGiven the current rates and income, a Federal Direct Consolidation Loan is the recommended strategy.  A 10-year term will result in a monthly payment of approximately $887.67.  With a combined income of $8,000 and non-student debt of $1,200, their current Debt-to-Income (DTI) ratio is ($8,000 + $1,200) / $8,000 = 0.2 or 20%.  The consolidated loan will maintain this DTI below the target of 40%.\n\n**3. Federal vs. Private Refinancing:**\n\n*   **Federal Direct Consolidation Loans:** Offer income-driven repayment plans, potential for loan forgiveness (subject to Higher Education Act stipulations), and protection from certain economic hardship waivers. Loss of deferment and forbearance benefits is possible.\n*   **Private Refinancing:**  Typically offers lower interest rates, but eliminates access to federal programs.  The Consumer Financial Protection Bureau (CFPB) rules emphasize the importance of understanding the implications of losing federal benefits before refinancing.\n\n**4. Amortization Table (10 Years):**\n\n| Loan             | Balance   | Rate    | Payment     | Interest   | Principal |\n| ---------------- | --------- | ------- | ----------- | ---------- | --------- |\n| Loan 1           | $40,000   | 4.5%    | $887.67     | $1,833.00  | $694.67   |\n| Loan 2           | $30,000   | 6.8%    | $887.67     | $2,053.00  | $694.67   |\n| Loan 3           | $25,000   | 5.2%    | $887.67     | $1,365.00  | $522.67   |\n| Loan 4           | $15,000   | 7.5%    | $887.67     | $1,917.50  | $694.67   |\n| **Total**        | **$110,000** |         | **$3,557.01** | **$6,000.00** | **$2,557.01** |\n\n*Note: This table is a simplified illustration. Actual amortization schedules may vary slightly.*\n\n**5. Recommendation:**\n\nI recommend pursuing a Federal Direct Consolidation Loan. This approach balances affordability with the potential for income-driven repayment and the preservation of existing federal protections.  The DTI remains well within the acceptable range, and the 10-year term provides a manageable repayment schedule.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails catastrophically on all technical and analytical dimensions. 1) Correctness: The weighted average interest rate calculation is mathematically wrong (it sums the rates incorrectly, resulting in 12.18% instead of ~5.8%). The DTI calculation is also wrong (it adds income to debt instead of dividing debt by income). 2) Completeness: The amortization table is nonsensical; it lists the same monthly payment for all four distinct loans and fails to calculate total interest over 10 years, instead showing a single month's breakdown. 3) Best Practices: A professional would never present a table with identical payments for loans of different balances and rates. 4) Domain Accuracy: The math errors render the financial advice invalid. 5) Clarity: The output is confusing due to the contradictory data. 6) Autonomy: The output is unusable for a client due to fundamental calculation errors."
+    }
+  ]
+}

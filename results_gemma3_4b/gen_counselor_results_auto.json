@@ -1,0 +1,520 @@
+{
+  "meta": {
+    "job_title": "Genetic Counselors",
+    "job_id": "gen_counselor",
+    "onet_code": "29-9092.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 19,
+    "evaluated_tasks": 13,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.58,
+      "dimensions": {
+        "Correctness": 3.54,
+        "Completeness": 3.46,
+        "Best Practices": 3.31,
+        "Domain Accuracy": 3.69,
+        "Clarity": 4.23,
+        "Autonomy": 3.23
+      },
+      "evaluated_tasks": 13,
+      "scale_max": 5
+    },
+    "total_time_seconds": 651.48
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze genetic information to identify patients or families at risk for specific disorders or syndromes.",
+      "task_type": "Clinical Risk Assessment",
+      "user_prompt": "Given the following family pedigree and patient history, identify the most likely mode of inheritance for the observed condition and calculate the recurrence risk for the patient's future children. Provide a summary of the reasoning based on the provided data.",
+      "reference_context": {
+        "patient_age": 34,
+        "family_history": "Patient's mother diagnosed with Breast Cancer at 45. Patient's maternal aunt diagnosed with Ovarian Cancer at 48. Patient's father has no history of cancer. Patient has two healthy children.",
+        "lab_results": "BRCA1 sequencing pending; Family history suggests high risk.",
+        "pedigree_data": "3 generations, 2 affected females on maternal side, no male affected."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the identified inheritance pattern match the clinical data?",
+        "Criterion 2: Completeness — Did it address recurrence risk, mode of inheritance, and reasoning?",
+        "Criterion 3: Best practices — Is the tone appropriate for a clinical report and does it cite standard guidelines?"
+      ],
+      "student_answer": "**Mode of Inheritance:**\n\nLikely autosomal dominant.\n\n**Recurrence Risk:**\n\nAssuming the BRCA1 mutation is pathogenic and confers a high risk of breast and ovarian cancer, the recurrence risk for the patient’s future children is approximately 50%.\n\n**Summary of Reasoning:**\n\nThe patient’s family history reveals two affected females (mother and maternal aunt) with breast and ovarian cancer at relatively young ages. The absence of affected males suggests an autosomal inheritance pattern. Given the family history, a BRCA1 mutation is highly suspected. Autosomal dominant inheritance would explain the presence of affected individuals in both sexes, with each child inheriting the mutation from one affected parent.  Since the patient is a carrier, there is a 50% chance of passing the mutation on to each child.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the likely mode of inheritance (autosomal dominant) and the recurrence risk (50%). However, it fails to meet industry standards for a clinical genetics review in several ways: 1) It states 'Autosomal dominant inheritance would explain the presence of affected individuals in both sexes' despite the prompt explicitly stating 'no male affected,' creating a logical contradiction in the reasoning. 2) It lacks necessary nuance regarding penetrance and variable expressivity, which are critical for BRCA1 counseling. 3) It does not explicitly state that the 50% risk is conditional on the patient actually carrying the mutation, which is currently unconfirmed ('pending'). 4) The reasoning section is slightly circular and imprecise regarding the pedigree data. While the core numbers are correct, the professional judgment and logical consistency are insufficient for a score of 5."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Discuss testing options and the associated risks, benefits and limitations with patients and families to assist them in making informed decisions.",
+      "task_type": "Informed Consent and Counseling",
+      "user_prompt": "Draft a counseling script for a couple expecting their first child who are both carriers of Cystic Fibrosis (CF). Explain the testing options available for prenatal diagnosis, the risks and benefits of each, and the potential outcomes. Ensure the script addresses their anxiety and cultural background regarding disability.",
+      "reference_context": {
+        "patient_status": "Both partners confirmed as heterozygous carriers for CFTR mutation DeltaF508.",
+        "pregnancy_stage": "12 weeks gestation.",
+        "cultural_context": "Family values natural birth and has concerns about termination of pregnancy based on religious beliefs.",
+        "testing_options": [
+          "Chorionic Villus Sampling (CVS)",
+          "Amniocentesis",
+          "Non-invasive Prenatal Testing (NIPT) for single gene disorders"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the risks of CVS and amniocentesis (e.g., miscarriage rates) stated correctly?",
+        "Criterion 2: Empathy — Does the script demonstrate sensitivity to the couple's religious and emotional concerns?",
+        "Criterion 3: Clarity — Are the limitations of NIPT for single gene disorders clearly explained?"
+      ],
+      "student_answer": "**Counseling Script: CF Carrier Couple – 12 Weeks Gestation**\n\n**(Start – Initial Connection & Validation)**\n\n“Welcome, both of you. Thank you for coming in today. I understand this is a lot to process, and it’s completely normal to feel anxious when facing a potential genetic condition for your baby. It takes courage to address this proactively, and I appreciate you being so open and engaged. I want to acknowledge that your family values natural birth and has concerns about terminating a pregnancy based on religious beliefs. We’ll respect those values throughout this discussion, and my role is to provide you with the information you need to make informed decisions that align with your beliefs.”\n\n**(Review of Genetic Status)**\n\n“As we discussed, both of you are confirmed carriers of the DeltaF508 CFTR mutation, which is the most common CF mutation. This means you each carry one normal copy of the CFTR gene and one copy with the mutation. Because you’re both carriers, there’s a 25% chance with each pregnancy that your baby will inherit two copies of the mutated gene and be affected by Cystic Fibrosis. There’s also a 50% chance your baby will inherit one copy of each gene, making them a carrier like yourselves, and a 25% chance your baby will inherit two normal copies and be unaffected.”\n\n**(Discussion of Prenatal Testing Options)**\n\n“Now, let’s talk about options for learning your baby’s status. We have three primary choices: Chorionic Villus Sampling (CVS), Amniocentesis, and Non-invasive Prenatal Testing (NIPT) specifically for single gene disorders like CF.”\n\n*   **Chorionic Villus Sampling (CVS):** “CVS involves taking a small sample of the placenta tissue, typically between 10 and 13 weeks. It’s highly accurate – about 99% – at detecting CF. It’s usually offered earlier in pregnancy. *Risk:* There’s a small risk of miscarriage, approximately 0.5-1%, and a small risk of infection. *Benefit:* Provides a definitive diagnosis.”\n\n*   **Amniocentesis:** “Amniocentesis involves taking a small sample of amniotic fluid, usually around 15-20 weeks. It’s also very accurate, around 97-99%, at detecting CF. *Risk:* Similar to CVS, there’s a small risk of miscarriage, around 0.2-0.3%, and a small risk of infection. *Benefit:* Provides a definitive diagnosis.”\n\n*   **Non-invasive Prenatal Testing (NIPT) for single gene disorders:** “NIPT analyzes fetal DNA circulating in the mother’s blood. It’s currently less accurate for CF than CVS or amniocentesis – around 85-95% – but it’s non-invasive. *Risk:* Very low risk – primarily related to blood draw complications. *Benefit:* Avoids the invasive procedures and offers a preliminary indication of increased risk.”\n\n**(Addressing Anxiety & Cultural Values)**\n\n“I understand your anxiety about this diagnosis. It’s natural to worry about your child’s health and future. Let’s acknowledge that CF can present with a wide range of severity. Some individuals live relatively normal, healthy lives with careful management, while others face significant challenges.  We can explore resources and support networks for families affected by CF, regardless of the outcome of testing.  Regarding your family’s values around natural birth and the concern about termination, we can discuss how each testing option aligns with those beliefs. CVS and amniocentesis carry a small risk of miscarriage, which may be a significant consideration for you. NIPT provides information without invasive procedures, allowing you to proceed with your pregnancy while understanding the potential risk.”\n\n**(Decision-Making & Support)**\n\n“There’s no right or wrong answer here. The best choice depends on your comfort level with risk, your desire for a definitive diagnosis, and your family’s values. I’m here to help you weigh the pros and cons of each option and support you in making a decision you feel confident in. Would you like to discuss the timing of each test, potential costs, or explore resources for families affected by CF further?”\n\n**(Concluding Questions)**\n\n“Do you have any questions for me at this point? Is there anything specific you’d like to discuss further today?”\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly applies Mendelian genetics (25% risk) and uses appropriate terminology. However, it fails to fully address the 'testing options' requirement regarding NIPT for single-gene disorders. The script describes NIPT as a 'preliminary indication' with 85-95% accuracy, which is misleading for a clinical counseling script; NIPT for CF is a screening test that requires confirmation via invasive testing (CVS/Amnio) for a definitive diagnosis, and presenting it as a standalone option with that specific accuracy range without emphasizing the mandatory confirmatory step is a significant gap in best practices. Additionally, the script does not explicitly mention Preimplantation Genetic Testing (PGT) as a future option for family planning, which is a standard part of comprehensive CF carrier counseling, though the prompt focused on prenatal diagnosis. The handling of cultural values is empathetic but could be more specific on how to navigate the conflict between invasive testing risks and religious beliefs regarding pregnancy loss. The script is clear and well-structured but requires professional review to correct the NIPT description and ensure all standard counseling points are covered before being delivered to a client."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Interpret laboratory results and communicate findings to patients or physicians.",
+      "task_type": "Result Interpretation and Communication",
+      "user_prompt": "A referring physician has sent a report for a 5-year-old boy with developmental delay and dysmorphic features. The lab result shows a de novo 22q11.2 deletion. Write a consultation letter to the physician summarizing the clinical implications, recommended surveillance, and potential phenotypic variability, while also drafting a patient-friendly summary for the parents.",
+      "reference_context": {
+        "patient_age": 5,
+        "symptoms": "Mild intellectual disability, speech delay, cleft palate history (repaired), recurrent ear infections.",
+        "lab_result": "Microarray: 22q11.2 deletion (DiGeorge/Velocardiofacial syndrome).",
+        "family_history": "Parents are unaffected; no family history of similar issues."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Clinical Accuracy — Are the key features of 22q11.2 deletion syndrome (cardiac, immune, endocrine) mentioned?",
+        "Criterion 2: Audience Appropriateness — Is the physician letter technical and the parent summary accessible?",
+        "Criterion 3: Actionability — Does the response include specific surveillance recommendations (e.g., calcium, cardiac echo)?"
+      ],
+      "student_answer": "**To:** Dr. [Referring Physician’s Name]\n**From:** [Your Name], Genetic Counselor\n**Date:** October 26, 2023\n**Subject:** Genetic Counseling – 22q11.2 Deletion – [Patient’s Name]\n\n**Summary for Physician:**\n\nThis letter summarizes the genetic findings and implications for [Patient’s Name]. A recent microarray analysis revealed a de novo 22q11.2 deletion, consistent with the DiGeorge/Velocardiofacial syndrome.  The patient’s presentation – including mild intellectual disability, speech delay, and a history of cleft palate repair and recurrent ear infections – aligns with the typical phenotypic spectrum associated with this deletion. \n\nGiven the de novo nature of the deletion, there is no family history to draw upon.  The clinical significance can vary considerably, even within individuals with the same deletion. \n\n**Recommended Surveillance:**\n\nWe recommend the following ongoing surveillance:\n\n*   **Cardiac Evaluation:**  Echocardiogram annually to assess for bicuspid aortic valve and conduction abnormalities.\n*   **Endocrinology:**  Regular monitoring for hypocalcemia, hypothyroidism, and growth hormone deficiency.  Baseline T4 and PTH levels are recommended.\n*   **Audiology:** Annual hearing screenings.\n*   **Developmental Monitoring:** Continued close monitoring of cognitive and speech development with regular evaluations by a developmental pediatrician or speech-language pathologist.\n*   **Dental Evaluation:**  Increased vigilance for dental issues, including tooth agenesis.\n*   **Psychiatric Evaluation:** Consider referral for psychiatric evaluation if behavioral concerns arise.\n\n**Potential Phenotypic Variability:**\n\nIt is crucial to understand that the 22q11.2 deletion presents with a wide range of phenotypes. While the patient’s symptoms are consistent with the syndrome, the severity and specific manifestations can vary significantly. Some individuals with this deletion may have more pronounced intellectual disability, while others have milder presentations.  The presence of dysmorphic features, such as a short stature, hooded eyes, or subtle facial differences, should also be monitored.\n\n---\n\n**To:** [Parents’ Names]\n**From:** [Your Name], Genetic Counselor\n**Date:** October 26, 2023\n**Subject:** Understanding Your Child’s Genetic Results\n\nWe’ve received some important information about [Patient’s Name] that can help us understand his development and provide the best possible care. A recent test called a microarray showed that he has a small piece missing from chromosome 22 – this is called a 22q11.2 deletion.\n\n**What does this mean?**\n\nThink of chromosomes as instructions for building your body. This deletion is like a small part of those instructions is missing. This can sometimes affect how a child develops.\n\n**What might [Patient’s Name] experience?**\n\nMany children with this deletion have some challenges, such as:\n\n*   **Learning:** He might learn things a little slower than other children, and he may have some difficulty with speaking and understanding language.\n*   **Health:** He may be more prone to ear infections and have a slightly increased risk of heart problems. It’s important for him to have regular checkups with a cardiologist.\n*   **Other things:** Some children also have problems with their teeth or with their thyroid gland.\n\n**Important things to know:**\n\n*   **It’s new:** This deletion happened randomly and wasn’t inherited from either of you.\n*   **It varies:** Not all children with this deletion have the same problems. Some have mild challenges, while others have more significant difficulties.\n*   **We can help:** We’ll work with you and [Patient’s Name] to monitor his development, address any health concerns, and provide support.\n\n**What happens next?**\n\nWe’ll be scheduling regular appointments to monitor [Patient’s Name]’s growth and development. We’ll also recommend some specific tests, like an echocardiogram (to check his heart) and hearing tests.\n\nWe understand this information can be overwhelming. Please don’t hesitate to ask any questions you may have. We are here to support you and [Patient’s Name] every step of the way.\n\nSincerely,\n\n[Your Name]\nGenetic Counselor\n[Contact Information]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task of drafting letters but contains significant professional omissions. For Correctness and Completeness (3), the physician letter fails to explicitly state the recurrence risk (typically <1% for de novo, but requires parental testing to confirm), which is a critical component of a genetic consultation. The surveillance recommendations are generic; for a 5-year-old, specific cardiac screening (e.g., for conduction defects or aortic root dilation) and immune function assessment (T-cell function) are missing or under-emphasized. Domain Accuracy (3) is impacted by the lack of specific immune workup details and the vague phrasing regarding phenotypic variability without citing specific high-risk associations (e.g., schizophrenia risk in adolescence). Best Practices (3) are not fully met because the patient summary lacks a clear definition of 'de novo' in the context of parental testing (mosaicism) and the physician letter lacks a formal closing with contact details for follow-up. Clarity (4) is good, with the patient summary being accessible. Autonomy (3) is limited because a real genetic counselor would never send a letter without specifying the recurrence risk calculation based on parental testing results or explicitly stating that parental testing is recommended to rule out germline mosaicism."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Provide counseling to patient and family members by providing information, education, or reassurance.",
+      "task_type": "Psychosocial Support and Education",
+      "user_prompt": "A 28-year-old woman has just tested positive for a pathogenic variant in the Huntington's disease gene (HTT). She is asymptomatic but has a strong family history of early-onset HD. She is requesting counseling on how to tell her 6-year-old daughter and her 30-year-old brother who is currently pregnant. Provide a structured counseling plan that addresses the ethical dilemma of predictive testing in minors and the psychological impact on the family.",
+      "reference_context": {
+        "patient_status": "Presymptomatic positive for CAG repeat expansion >40.",
+        "family_members": "6-year-old daughter (minor), 30-year-old brother (pregnant).",
+        "ethical_constraints": "Guidelines generally advise against predictive testing for minors for adult-onset conditions.",
+        "patient_emotional_state": "High anxiety, fear of passing it on, guilt."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Ethical Adherence — Does the plan correctly advise against testing the minor?",
+        "Criterion 2: Communication Strategy — Are specific scripts or steps provided for disclosing to the brother and daughter?",
+        "Criterion 3: Support Resources — Does the response include referrals for psychological support and support groups?"
+      ],
+      "student_answer": "**Counseling Plan: Huntington’s Disease – Family Disclosure**\n\n**I. Initial Meeting (60-90 minutes)**\n\n*   **Establish Rapport & Validate Emotions:** Begin by acknowledging the patient’s distress, anxiety, and guilt. Validate her feelings – this is a profoundly difficult situation. Express empathy and understanding.\n*   **Review Diagnosis & Risk:** Briefly reiterate the pathogenic variant, the expanded CAG repeat, and the implications for HD.  Emphasize that this is a *definite* diagnosis, not a prediction.\n*   **Discuss Ethical Considerations:**  Explain the ethical guidelines regarding predictive testing for minors.  Specifically, highlight that while she has a positive test, her daughter is currently too young for predictive testing, and the potential psychological impact of such testing is significant.  Frame this as a protective measure for her daughter.\n*   **Family Member Assessment:**  Explore the patient’s understanding of HD, her concerns about her daughter and brother, and her preferred approach to disclosure. Assess her brother’s current emotional state and openness to information.\n*   **Psychoeducation:** Provide a concise overview of Huntington’s disease – symptoms, progression, and variability.  Focus on the fact that onset varies significantly.\n\n**II. Disclosure Strategy – Daughter (6 years old)**\n\n*   **Delayed Disclosure (Initially):**  Recommend a delayed, phased approach.  Do *not* disclose the information directly at this time.\n*   **Focus on Health & Wellness:**  Continue to discuss general health and wellness with the daughter – healthy eating, exercise, and regular check-ups.\n*   **Age-Appropriate Language (Future):** When the daughter is older (adolescence), initiate a conversation about genes and how they influence our bodies.  Introduce the concept of inherited conditions in a simple, neutral way.  If/when the time comes, frame the conversation around “some families have a tendency to have certain health conditions, and we’re learning more about that.” Avoid using the word “Huntington’s disease” initially.\n*   **Reassure of Love & Security:**  Reinforce that her health and well-being are the top priority, and that the family will always be there for her.\n\n**III. Disclosure Strategy – Brother (30 years old, Pregnant)**\n\n*   **Offer Information, Not Pressure:**  Present the information about her own diagnosis as factual, not as a prediction for her brother.  Explain that she carries the gene and that her brother has a 50% risk of inheriting it.\n*   **Discuss Predictive Testing (Optional):**  Explain the availability of predictive testing for him, emphasizing the potential psychological impact of a positive result.  Offer to provide resources for him to explore this option *if* he chooses.  Do not pressure him.\n*   **Support During Pregnancy:**  Acknowledge the increased anxiety associated with pregnancy and HD risk. Offer resources for prenatal support and genetic counseling specifically for pregnant individuals.\n*   **Shared Decision-Making:**  Emphasize that the decision about testing is entirely his.\n\n**IV. Ongoing Support & Resources**\n\n*   **Individual Therapy:**  Recommend individual therapy for the patient to address her anxiety, guilt, and grief.\n*   **Family Therapy:**  Suggest family therapy to facilitate communication and address family dynamics.\n*   **Support Groups:**  Provide information about Huntington’s disease support groups (online and in-person).\n*   **Genetic Counselor Follow-Up:** Schedule a follow-up appointment in 1-2 months to assess progress and address any new concerns.\n*   **Resource List:** Provide a comprehensive list of resources including:\n    *   The Huntington’s Disease Society of America (HDSA)\n    *   The Huntington’s Disease Foundation\n    *   Local support groups\n    *   Mental health professionals specializing in genetic disorders\n\n**V. Documentation**\n\n*   Detailed record of all discussions, recommendations, and resources provided.\n*   Patient’s expressed wishes regarding disclosure and testing.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission is professionally structured and addresses the core ethical dilemma of testing minors correctly by recommending against it. It accurately applies Mendelian genetics (50% risk) and uses appropriate terminology. However, it scores a 4 rather than a 5 on Correctness, Completeness, and Best Practices because it lacks specific, actionable scripts for the 'phased disclosure' to the 6-year-old (e.g., how to explain the mother's condition without revealing the genetic status prematurely) and does not explicitly address the 'right not to know' for the brother or the specific ethical conflict of the pregnant sister regarding prenatal testing options (which is a critical nuance in HD counseling). The Autonomy score is 4 because a real-world client would need specific guidance on how to phrase the conversation with the brother to avoid coercion, which is only briefly mentioned as 'offer information' without the necessary depth on managing family pressure."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Write detailed consultation reports to provide information on complex genetic concepts to patients or referring physicians.",
+      "task_type": "Complex Report Writing",
+      "user_prompt": "Compose a detailed genetic consultation report for a patient with a family history of Lynch Syndrome. The patient has a family history of colorectal cancer (father at 42, sister at 38) and endometrial cancer (mother at 50). The patient underwent MMR immunohistochemistry which showed loss of MLH1 and PMS2, but no BRAF mutation was found. Interpret these findings, discuss the likelihood of Lynch Syndrome vs. sporadic cancer, and outline the management plan.",
+      "reference_context": {
+        "patient_age": 35,
+        "family_history": "Father (CRC 42), Sister (CRC 38), Mother (Endometrial 50).",
+        "lab_results": "IHC: Loss of MLH1/PMS2. BRAF V600E: Negative. MSI-High: Positive.",
+        "germline_testing": "Pending."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Diagnostic Reasoning — Does the report correctly interpret the negative BRAF as supporting Lynch Syndrome over sporadic?",
+        "Criterion 2: Management — Are surveillance recommendations (colonoscopy frequency) aligned with NCCN guidelines?",
+        "Criterion 3: Structure — Is the report logically organized with clear sections for history, findings, and recommendations?"
+      ],
+      "student_answer": "**Genetic Consultation Report**\n\n**Patient Name:** [Patient Name]\n**Patient ID:** [Patient ID]\n**Date:** October 26, 2023\n\n**1. Introduction**\n\nThis report summarizes the genetic consultation following review of your family history and laboratory results suggestive of Lynch Syndrome (LS).  We have discussed your concerns regarding the increased risk of cancer based on your family history and the findings of your immunohistochemistry (IHC) testing.\n\n**2. Family History**\n\nYou report a significant family history of cancer, specifically:\n\n*   **Father:** Colorectal Cancer (CRC) at age 42.\n*   **Sister:** CRC at age 38.\n*   **Mother:** Endometrial Cancer at age 50.\n\nThis constellation of cancers, occurring at relatively young ages in multiple family members, raises a strong suspicion for Lynch Syndrome.\n\n**3. Laboratory Findings**\n\n*   **Immunohistochemistry (IHC):**  The IHC results demonstrate loss of expression of MLH1 and PMS2 proteins. This is a highly suggestive indicator of Lynch Syndrome.\n*   **BRAF V600E Mutation:**  BRAF V600E mutation testing was performed and found to be negative.  This rules out a common pathogenic variant associated with sporadic CRC.\n*   **MSI-High:**  The results indicate Microsatellite Instability-High (MSI-H), which is a hallmark of Lynch Syndrome.\n\n**4. Interpretation and Likelihood of Lynch Syndrome**\n\nThe combination of your family history and the laboratory findings strongly suggests Lynch Syndrome. Specifically:\n\n*   **Family History:** The clustering of colorectal and endometrial cancers in multiple family members, at relatively young ages, is characteristic of LS.\n*   **IHC Results:** Loss of MLH1 and PMS2 expression is a consistent finding in Lynch Syndrome due to inactivation of the mismatch repair (MMR) genes (MLH1, MSH2, MSH6, PMS2).\n*   **BRAF V600E Negative:**  The absence of a BRAF V600E mutation reduces the likelihood of sporadic colorectal cancer.\n*   **MSI-H:** MSI-H confirms the underlying defect in DNA mismatch repair, further supporting the diagnosis of Lynch Syndrome.\n\nWhile the absence of a BRAF mutation reduces the probability of sporadic CRC, it does not eliminate the possibility. However, the strong clinical and laboratory evidence overwhelmingly points towards Lynch Syndrome. Germline testing is now crucial to confirm the diagnosis.\n\n**5. Management Plan**\n\nGiven the high suspicion for Lynch Syndrome, the following management plan is recommended:\n\n*   **Germline Testing:**  We will proceed with comprehensive germline genetic testing to identify the causative MMR gene mutation. This will definitively confirm or rule out Lynch Syndrome.\n*   **Surveillance Recommendations (Pending Germline Results):**  Until germline testing results are available, the following surveillance recommendations are advised:\n    *   **Colorectal Cancer:** Colonoscopy every 3-5 years, starting at age 45.\n    *   **Endometrial Cancer:** Transvaginal ultrasound every 1-3 years, starting at age 35.  Consider hysteroscopy if ultrasound is abnormal.\n    *   **Ovarian Cancer:**  Consider CA-125 testing every 6-12 months, starting at age 35.\n    *   **Other Cancers:** Increased risk of other cancers (e.g., gastric, small bowel, ureter, brain) should be discussed with your primary care physician.\n*   **Family Screening:**  Inform at-risk relatives (parents, siblings, children) about the possibility of Lynch Syndrome and encourage them to undergo genetic testing.\n*   **Genetic Counseling:** Continued genetic counseling is essential to address any questions or concerns you may have regarding your diagnosis, prognosis, and family planning.\n\n**6. Next Steps**\n\nWe will order the necessary germline genetic testing.  You will receive detailed information about the testing process, potential results, and their implications.  Please schedule a follow-up appointment to discuss the results and refine your long-term management plan.\n\n**Disclaimer:** This report provides a preliminary assessment based on the information available. The final diagnosis and management plan will be determined after completion of germline testing and a thorough discussion with your healthcare team.\n\n**Genetic Counselor:** [Genetic Counselor Name]\n[Genetic Counselor Credentials]\n[Contact Information]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission is professionally structured and correctly interprets the IHC/BRAF/MSI findings as highly suggestive of Lynch Syndrome while appropriately deferring to germline testing for confirmation. However, it falls short of 'Exceptional' (5) in several areas. First, the surveillance recommendations are outdated; current NCCN guidelines recommend colonoscopy every 1-2 years starting at age 20-25 (or 2-5 years prior to the youngest diagnosis), not every 3-5 years starting at 45. Second, the management plan lacks specific details on aspirin chemoprevention, which is a standard recommendation for LS. Third, the recurrence risk calculation is vague; it mentions informing relatives but does not explicitly state the 50% autosomal dominant transmission risk to the patient's offspring or the specific cascade testing protocol for the father's side. These gaps in clinical guidelines and risk quantification prevent a perfect score."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Provide genetic counseling in specified areas of clinical genetics, such as obstetrics, pediatrics, oncology and neurology.",
+      "task_type": "Oncology Risk Management",
+      "user_prompt": "A 40-year-old female with a history of triple-negative breast cancer diagnosed at age 32 presents for counseling. She has no known family history of cancer. She is considering risk-reducing salpingo-oophorectomy (RRSO). Analyze her risk profile, discuss the potential benefit of germline testing (specifically for BRCA1/2 and PALB2), and provide a recommendation on the timing of RRSO based on her cancer history and potential genetic findings.",
+      "reference_context": {
+        "patient_age": 40,
+        "diagnosis": "Triple-negative breast cancer at age 32.",
+        "family_history": "Negative for breast/ovarian cancer in first-degree relatives.",
+        "current_status": "Post-treatment, considering RRSO.",
+        "guidelines": "NCCN Guidelines for Genetic/Familial High-Risk Assessment: Breast, Ovarian, and Pancreatic."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Risk Stratification — Does the response recognize the high likelihood of a germline mutation despite negative family history?",
+        "Criterion 2: Guideline Adherence — Is the recommendation for RRSO timing consistent with guidelines for BRCA carriers or high-risk patients?",
+        "Criterion 3: Comprehensive Care — Does the response address the psychological aspects of risk reduction and the importance of genetic testing before surgery?"
+      ],
+      "student_answer": "**Risk Profile Analysis:**\n\nThe patient’s history of triple-negative breast cancer at a young age (32) significantly elevates her risk for future breast and ovarian cancer. Triple-negative breast cancer is often associated with a higher risk of recurrence and mortality compared to other subtypes.  Her age (40) places her in a critical window for risk reduction, as she is approaching the age where ovarian cancer incidence increases. The absence of family history is reassuring, but does not negate the impact of her personal cancer history.\n\n**Germline Testing Recommendation:**\n\nGiven her personal history of triple-negative breast cancer and her age, germline testing for *BRCA1/2* and *PALB2* is strongly recommended. *BRCA1/2* mutations are the most common genetic causes of increased breast and ovarian cancer risk. *PALB2* mutations are often found in individuals with *BRCA1*-associated cancers and can impair DNA repair, further increasing risk. Testing should be performed using a clinical-grade assay.\n\n**Potential Benefit of Testing:**\n\n*   **Increased Risk Stratification:**  A positive *BRCA1/2* or *PALB2* result would confirm a heightened genetic predisposition to both breast and ovarian cancer.\n*   **Personalized Risk Assessment:**  The results will allow for a more precise assessment of her lifetime risk, factoring in the specific mutation identified.\n*   **Treatment Decisions:**  Knowledge of a mutation can inform decisions about adjuvant therapies, such as PARP inhibitors, if she develops future cancer.\n\n**Recommendation on Timing of RRSO:**\n\nConsidering her history of triple-negative breast cancer and the potential for *BRCA1/2* or *PALB2* mutations, I recommend proceeding with a risk-reducing salpingo-oophorectomy (RRSO) **now**.  The benefits of RRSO in reducing the risk of both breast and ovarian cancer outweigh the potential risks, particularly given her young age and personal cancer history. Delaying the procedure would not significantly alter her overall risk profile.  The surgery should be performed before the onset of menopause to maximize its effectiveness in reducing ovarian cancer risk.\n\n**Disclaimer:** *This recommendation is based solely on the provided information and does not constitute a complete medical evaluation. A thorough discussion with a surgical oncologist and other relevant specialists is essential before making a final decision.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission correctly identifies the high-risk nature of early-onset triple-negative breast cancer and recommends germline testing. However, it fails significantly on Best Practices and Domain Accuracy regarding the timing of RRSO. The student recommends performing RRSO 'now' (at age 40) without waiting for genetic test results. Current NCCN guidelines and clinical standards dictate that for a patient with no known family history and no confirmed mutation, RRSO timing should be individualized based on the specific mutation status (e.g., BRCA1 carriers at 35-40, BRCA2 at 40-45). Recommending immediate surgery without a confirmed pathogenic variant ignores the nuance of risk stratification and the potential for the patient to be a non-carrier, which would alter the risk/benefit analysis. Additionally, the recommendation to perform surgery 'before menopause' is clinically imprecise as RRSO induces surgical menopause; the goal is to perform it before natural menopause, but the phrasing is awkward. The response lacks the critical step of discussing the implications of a negative test result on the decision to proceed with surgery. Due to these significant clinical judgment gaps, the Autonomy score is low as a clinician could not use this as a final plan without correction."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Determine or coordinate treatment plans by requesting laboratory services, reviewing genetics or counseling literature, and considering histories or diagnostic data.",
+      "task_type": "Clinical Risk Assessment",
+      "user_prompt": "Given the following family pedigree and patient history, identify the most likely mode of inheritance for the observed condition and calculate the recurrence risk for the patient's future children. Provide a summary of the reasoning based on the provided data.",
+      "reference_context": {
+        "patient_age": 34,
+        "family_history": "Patient's mother diagnosed with Breast Cancer at 45. Patient's maternal aunt diagnosed with Ovarian Cancer at 48. Patient's father has no history of cancer. Patient has two healthy children.",
+        "lab_results": "BRCA1 sequencing pending; Family history suggests high risk.",
+        "pedigree_data": "3 generations, 2 affected females on maternal side, no male affected."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the identified inheritance pattern match the clinical data?",
+        "Criterion 2: Completeness — Did it address recurrence risk, mode of inheritance, and reasoning?",
+        "Criterion 3: Best practices — Is the tone appropriate for a clinical report and does it cite standard guidelines?"
+      ],
+      "student_answer": "**Mode of Inheritance:**\n\nLikely autosomal dominant.\n\n**Recurrence Risk:**\n\nAssuming the BRCA1 mutation is pathogenic and confers a significant risk of breast and ovarian cancer, the recurrence risk for the patient’s future children is approximately 50%.\n\n**Summary of Reasoning:**\n\nThe pedigree demonstrates a pattern of cancer (breast and ovarian) concentrated on the maternal side across two generations. The absence of affected males suggests an autosomal inheritance pattern. Given the family history of breast and ovarian cancer, and the pending BRCA1 sequencing, a high risk is anticipated.  If a pathogenic BRCA1 mutation is identified, the risk of the patient's children inheriting the mutation and developing cancer is approximately 50% for each child, assuming the mutation is fully penetrant.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the likely mode of inheritance (autosomal dominant) and the 50% recurrence risk for offspring. However, it fails to meet industry standards for a clinical genetics review in several ways: 1) It does not explicitly state that the diagnosis is presumptive pending the BRCA1 sequencing, which is a critical safety constraint. 2) The reasoning regarding 'absence of affected males' is imprecise; while BRCA1 is AD, the lack of male cases is due to the specific cancer phenotypes (breast/ovarian) rather than the inheritance mechanism itself (which affects males too, albeit with different risks). 3) It fails to mention the specific penetrance issues or the fact that the patient's risk is not 100% (she is currently healthy), which complicates the risk calculation for her children (conditional probability). 4) It lacks the nuance of discussing the patient's own risk status before calculating offspring risk. These gaps prevent it from being a 5 or even a solid 4, as a professional would provide more rigorous caveats and conditional logic."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Interview patients or review medical records to obtain comprehensive patient or family medical histories, and document findings.",
+      "task_type": "History Synthesis and Documentation",
+      "user_prompt": "Review the provided patient interview transcript and medical records. Synthesize a comprehensive family history summary that identifies potential red flags for hereditary conditions. Document the findings in a structured format suitable for a genetic counselor's case file, ensuring all relevant relatives and ages of onset are captured.",
+      "reference_context": {
+        "patient_name": "Jane Doe (Pseudonym)",
+        "interview_transcript": "Patient reports father died of heart attack at 52. Maternal grandfather had colon cancer at 60. Maternal grandmother had breast cancer at 55. Patient's sister has type 2 diabetes. Patient is 42 and asymptomatic.",
+        "medical_records": "Colonoscopy normal at 40. Lipid panel elevated. No prior genetic testing.",
+        "social_history": "Patient is a non-smoker, lives with husband and two children."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are all family members and conditions correctly transcribed from the transcript?",
+        "Criterion 2: Synthesis — Does the summary highlight specific hereditary patterns (e.g., Lynch syndrome, familial hypercholesterolemia)?",
+        "Criterion 3: Documentation — Is the output structured professionally and free of unverified diagnoses?"
+      ],
+      "student_answer": "**Family History Summary – Jane Doe**\n\n**Patient:** Jane Doe\n**Age:** 42\n**Date:** October 26, 2023\n\n**I. Personal History:**\n\n*   Asymptomatic at age 42.\n*   Elevated lipid panel.\n*   Colonoscopy normal at age 40.\n\n**II. Family History:**\n\n*   **Father:** Deceased at 52 due to myocardial infarction (heart attack).\n*   **Maternal Grandfather:** Colon cancer at age 60.\n*   **Maternal Grandmother:** Breast cancer at age 55.\n*   **Sister:** Type 2 diabetes (age of onset unknown).\n\n**III. Potential Red Flags & Considerations:**\n\n*   **Cardiovascular Disease:** Early onset of father’s MI (52) suggests a potential genetic predisposition to cardiovascular disease.\n*   **Colorectal Cancer:** Maternal grandfather’s colon cancer at 60 increases risk for patient.\n*   **Breast Cancer:** Maternal grandmother’s breast cancer at 55 increases risk for patient.\n*   **Type 2 Diabetes:** Sister’s diagnosis raises concern for familial aggregation and potential genetic component.\n*   **Elevated Lipids:**  The patient’s elevated lipid panel warrants further investigation, potentially linked to genetic factors or lifestyle.\n\n**IV. Recommendations:**\n\n*   Consider genetic counseling for family risk assessment.\n*   Recommend further evaluation for cardiovascular risk factors.\n*   Discuss screening recommendations for colorectal and breast cancer based on family history and guidelines.\n*   Explore family history of diabetes in more detail, including age of onset and any known genetic testing.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        3,
+        4,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly identifies the patient's history and family members (Correctness: 4). However, it lacks completeness regarding the specific ages of onset for the sister's diabetes and the patient's own lipid levels, and it fails to explicitly map the pedigree structure (e.g., noting the lack of paternal cancer history) which is crucial for a comprehensive summary (Completeness: 3). The terminology is professional and follows industry standards for a summary (Best Practices: 4, Domain Accuracy: 4). The structure is clear and easy to read (Clarity: 4). The output is not ready for immediate client delivery without human review because it lacks a formal pedigree diagram, specific risk stratification based on guidelines (e.g., NCCN), and a more detailed differential diagnosis discussion (Autonomy: 3)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Assess patients' psychological or emotional needs, such as those relating to stress, fear of test results, financial issues, and marital conflicts to make referral recommendations or assist patients in managing test outcomes.",
+      "task_type": "Psychosocial Assessment and Support",
+      "user_prompt": "Based on the patient's expressed concerns and family dynamics, draft a psychosocial assessment note. Identify specific emotional stressors and potential barriers to care. Recommend appropriate referrals or support strategies that demonstrate empathy and cultural sensitivity.",
+      "reference_context": {
+        "patient_profile": "32-year-old female, recently received positive carrier status for Cystic Fibrosis. Husband is also a carrier.",
+        "expressed_concerns": "Patient is anxious about pregnancy, fears financial burden of potential treatment, and is hesitant to discuss results with her conservative religious family.",
+        "family_dynamics": "Patient's husband is supportive but overwhelmed. Patient's mother is critical and dismissive of genetic testing.",
+        "cultural_context": "Patient belongs to a community where genetic conditions are often stigmatized."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Empathy — Does the response acknowledge and validate the patient's emotional state?",
+        "Criterion 2: Cultural Sensitivity — Are recommendations tailored to the patient's cultural and religious context?",
+        "Criterion 3: Actionability — Are specific, realistic referrals (e.g., social work, support groups) provided?"
+      ],
+      "student_answer": "**Psychosocial Assessment Note**\n\n**Patient:** [Patient Name]\n**Date:** October 26, 2023\n\n**Presenting Concerns:** Ms. [Patient Name] presented with significant anxiety related to her recent positive carrier status for Cystic Fibrosis (CF) and her husband’s carrier status. She is experiencing distress regarding the potential impact on future pregnancies, the substantial financial implications of potential CF treatment, and reluctance to share this information with her family due to their conservative religious beliefs and her mother’s critical attitude.\n\n**Emotional Stressors:**\n\n*   **Anxiety regarding fertility:** The possibility of having a child with CF is a primary source of anxiety.\n*   **Financial Burden:** Concerns about the high cost of CF care are significant and contribute to her distress.\n*   **Family Conflict:** Hesitation to disclose the diagnosis due to a critical and dismissive mother and potential conflict with family members is creating emotional strain.\n*   **Stigma and Shame:**  Awareness of the stigmatization of genetic conditions within her community is contributing to feelings of shame and isolation.\n\n**Potential Barriers to Care:**\n\n*   **Family Resistance:**  The patient’s mother’s negative attitude may impede her ability to seek support and information.\n*   **Cultural Stigma:**  The community’s perception of genetic conditions could lead to feelings of isolation and reluctance to engage in care.\n*   **Emotional Distress:**  High levels of anxiety may interfere with her ability to process information and make informed decisions.\n*   **Husband’s Overwhelm:** While supportive, the husband’s own distress may limit his capacity to fully engage in decision-making and provide consistent support.\n\n**Recommendations & Support Strategies:**\n\n1.  **Individual Counseling:** Recommend individual counseling to address anxiety, explore coping mechanisms, and facilitate emotional processing. Cognitive Behavioral Therapy (CBT) techniques may be beneficial.\n2.  **Family Support:**  Suggest a phased approach to family disclosure, prioritizing the husband’s support and potentially involving a neutral third party (e.g., a religious leader or counselor familiar with genetic conditions) to facilitate communication.\n3.  **Financial Counseling:** Referral to a financial counselor specializing in chronic illness management to assess the potential costs of CF care and explore available resources.\n4.  **Genetic Counseling Support:** Continued genetic counseling to provide comprehensive information about CF inheritance, carrier testing, and reproductive options.\n5.  **Community Resources:**  Connect the patient with CF support groups or organizations that offer culturally sensitive resources and peer support within her community. Explore faith-based organizations that may offer compassionate support.\n6.  **Culturally Sensitive Approach:**  Acknowledge and validate the patient’s cultural context and concerns regarding stigma. Frame discussions about CF in a way that respects her beliefs and values.\n\n**Empathy & Cultural Sensitivity:**  Recognize the significant emotional impact of this diagnosis within the context of her family and community. Approach the patient with compassion, respect, and a commitment to providing culturally appropriate support.\n\n**Clinician:** [Your Name/Credentials]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission is a well-structured and empathetic psychosocial assessment that accurately identifies emotional stressors, barriers, and appropriate referrals. It demonstrates strong domain accuracy regarding CF genetics (carrier status) and avoids diagnostic errors. However, it scores a 4 rather than a 5 on Correctness, Completeness, Best Practices, and Autonomy because it lacks specific, actionable details expected in a professional note. For instance, the 'Family Support' recommendation is vague on the 'phased approach' without outlining specific steps, and the 'Financial Counseling' section does not mention specific resources like the Cystic Fibrosis Foundation or specific insurance navigation strategies. Additionally, while it mentions the husband's overwhelm, it does not explicitly recommend couple's counseling or specific strategies to support him, which is a minor gap in a comprehensive plan. The output is high quality but requires minor professional refinement to be truly industry-standard without further input."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Provide patients with information about the inheritance of conditions such as cardiovascular disease, Alzheimer's disease, diabetes, and various forms of cancer.",
+      "task_type": "Patient Education and Communication",
+      "user_prompt": "Create a patient-friendly educational handout explaining the inheritance pattern of Familial Hypercholesterolemia (FH) to a patient with a family history of early heart disease. Use clear, non-technical language, include a simple diagram description, and address common misconceptions about lifestyle vs. genetics.",
+      "reference_context": {
+        "condition": "Familial Hypercholesterolemia (FH)",
+        "inheritance_pattern": "Autosomal Dominant",
+        "patient_background": "45-year-old male with LDL cholesterol of 220 mg/dL. Father had a heart attack at 50. Patient is worried about passing it to his children.",
+        "key_misconceptions": "Believes diet alone caused his high cholesterol; thinks children are safe if they exercise."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Clarity — Is the language accessible to a layperson without medical training?",
+        "Criterion 2: Accuracy — Is the autosomal dominant pattern explained correctly with a 50% recurrence risk?",
+        "Criterion 3: Engagement — Does the handout effectively address the patient's specific misconceptions?"
+      ],
+      "student_answer": "**Understanding Familial Hypercholesterolemia (FH)**\n\n**What is Familial Hypercholesterolemia?**\n\nYou’ve noticed your cholesterol is very high (220 mg/dL), and your father had a heart attack at a young age. This could be due to a condition called Familial Hypercholesterolemia (FH). FH is a genetic disorder that causes very high levels of “bad” cholesterol (LDL) in your blood, starting at a young age. This high cholesterol significantly increases your risk of heart disease, like your father experienced.\n\n**How Does FH Run in Families?**\n\nFH follows an **autosomal dominant** inheritance pattern. This means that if *one* of your parents has FH, there’s a 50% chance that each of their children will inherit the condition. It doesn’t matter if it’s your mother or father who carries the gene – the risk is the same.\n\n**A Simple Diagram**\n\n```\n      Parent 1 (FH)       Parent 2 (Normal)\n      |                   |\n      +-------+             +-------+\n      |       |             |       |\n      |  Gene  |             |  Gene  |\n      | (FH)   |             | (Normal)|\n      +-------+             +-------+\n          |                     |\n          +---------------------+\n                |\n                V\n            Child 1 (50% chance)\n          (May have FH or be a carrier)\n```\n\n*   **FH:** Represents the gene that causes FH.\n*   **Normal:** Represents a gene that does *not* cause FH.\n*   A child inheriting the FH gene from one parent will likely develop FH themselves.\n*   A child inheriting the normal gene from both parents will not develop FH.\n*   A child can also inherit one copy of the FH gene and be a *carrier*. Carriers don’t usually have high cholesterol themselves, but they can pass the gene on to their children.\n\n**Lifestyle vs. Genetics – It’s Both!**\n\nIt’s important to understand that FH is largely determined by your genes, but lifestyle choices still play a significant role. You can’t simply “out-exercise” or “out-diet” FH.\n\n*   **Genetics:** The FH gene makes your body less able to remove LDL cholesterol from your blood.\n*   **Lifestyle:** While a healthy diet and regular exercise are *crucial* for everyone to manage their cholesterol, they may not be enough to control the high cholesterol associated with FH.\n\n**What Can You Do?**\n\n*   **Medication:** Because of your high cholesterol, you likely need medication to help lower it.\n*   **Regular Monitoring:** We’ll need to monitor your cholesterol levels regularly to ensure your treatment is working.\n*   **Family Screening:** It’s important to talk to your relatives about getting tested for FH. Knowing who carries the gene allows for informed family planning.\n\n**Regarding Your Children:**\n\nEven if you have FH, your children are not guaranteed to inherit it. However, because it’s an autosomal dominant condition, there’s a 50% chance each child will inherit the gene.  Early diagnosis and treatment can help manage their cholesterol levels and reduce their risk of heart disease.\n\n**Disclaimer:** *This handout provides general information and should not be considered medical advice. Please discuss your specific situation and treatment options with your healthcare provider.*\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails significantly on Domain Accuracy (Score 2) and Correctness (Score 3) due to a fundamental error in explaining Autosomal Dominant inheritance. The text states that a child inheriting one copy of the FH gene can be a 'carrier' who 'doesn't usually have high cholesterol.' In Autosomal Dominant conditions like FH, there are no asymptomatic carriers; inheriting the mutation typically results in the phenotype (high cholesterol). This misconception directly contradicts the task's requirement to address the patient's worry about children being safe if they exercise, as the text implies a carrier state exists where the child might not have high cholesterol. The diagram description reinforces this error. While the tone is empathetic and the structure is clear (Clarity 4), the medical inaccuracy regarding the definition of the inheritance pattern and the existence of carriers makes the content unsafe for a patient handout without major revision (Autonomy 3). The disclaimer is good, but the core genetic explanation is flawed."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Read current literature, talk with colleagues, or participate in professional organizations or conferences to keep abreast of developments in genetics.",
+      "task_type": "Literature Review and Clinical Application",
+      "user_prompt": "Summarize the latest clinical guidelines regarding the management of patients with pathogenic variants in the TP53 gene (Li-Fraumeni Syndrome). Compare the current recommendations with those from 5 years ago, focusing on surveillance protocols and risk-reducing surgeries. Provide a brief recommendation for a 25-year-old patient with a confirmed variant.",
+      "reference_context": {
+        "patient_status": "25-year-old female, confirmed TP53 pathogenic variant, no current cancer diagnosis.",
+        "current_guidelines": "NCCN Guidelines for Genetic/Familial High-Risk Assessment: Breast, Colon, and Other Cancers (2023-2024).",
+        "historical_context": "Previous guidelines (2018) had less emphasis on whole-body MRI and more on breast MRI only.",
+        "key_updates": "Introduction of whole-body MRI, consideration of risk-reducing mastectomy at younger ages, and avoidance of ionizing radiation."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Currency — Does the summary reflect the most recent NCCN guidelines?",
+        "Criterion 2: Comparison — Is the evolution of guidelines from 5 years ago clearly articulated?",
+        "Criterion 3: Application — Is the recommendation for the specific patient logical and safe?"
+      ],
+      "student_answer": "**Summary of Current Clinical Guidelines for TP53 Pathogenic Variants (Li-Fraumeni Syndrome)**\n\nThe 2023-2024 NCCN Guidelines emphasize a proactive, multi-organ surveillance approach for individuals with pathogenic TP53 variants. Key recommendations include:\n\n*   **Surveillance:**\n    *   **Annual MRI:** Whole-body MRI (WBMRI) is now routinely recommended starting at age 18, with frequency adjusted based on findings.\n    *   **Breast MRI:** Annual breast MRI is still recommended.\n    *   **Colonoscopy:** Initiated at age 25, with frequency determined by clinical assessment and surveillance findings.\n    *   **Ophthalmologic Exams:** Annual dilated eye exams to screen for retinoblastoma and other ocular abnormalities.\n    *   **Skin Exams:** Regular self-skin exams and dermatologist evaluations.\n    *   **Consideration of other cancers:** Surveillance for other cancers based on family history and individual risk factors.\n*   **Risk-Reducing Surgery:**\n    *   **Risk-Reducing Mastectomy (RRM):** RRM is increasingly considered at younger ages (e.g., 25-35 years) based on individual risk assessment, family history, and patient preference.\n    *   **Prophylactic Salpingo-oophorectomy (PSOO):** Considered, but not routinely recommended, due to potential impact on long-term health.\n\n**Comparison to 2018 Guidelines:**\n\nFive years ago (2018), guidelines focused primarily on breast MRI and limited whole-body imaging. The current guidelines represent a significant shift towards more comprehensive surveillance, incorporating WBMRI to detect early-stage cancers across multiple organ systems.  There was less emphasis on considering RRM at younger ages.  Ionizing radiation avoidance is a key principle in the updated guidelines.\n\n**Recommendation for a 25-Year-Old Patient with a Confirmed TP53 Variant:**\n\nInitiate annual WBMRI and annual breast MRI. Begin colonoscopy surveillance at age 25.  Discuss the option of risk-reducing mastectomy with the patient, considering her family history, personal preferences, and risk assessment.  Schedule annual ophthalmologic exams.  Emphasize the importance of regular self-skin exams and dermatologist evaluations.  Provide genetic counseling and support.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission is well-structured and addresses all parts of the prompt. However, it lacks the precision expected of an industry-standard response. Specifically, it fails to explicitly mention the critical avoidance of ionizing radiation (CT scans, X-rays) in the surveillance section, which is the most vital safety constraint for TP53 patients. It also omits the specific recommendation for annual brain MRI, a standard component of LFS surveillance. The comparison section is somewhat vague regarding the specific changes in 2018 guidelines. While the content is accurate and professional, these omissions prevent it from being a flawless, 5-star clinical guideline summary."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Prepare or provide genetics-related educational materials to patients or medical personnel.",
+      "task_type": "Educational Material Development",
+      "user_prompt": "Develop a concise briefing document for primary care physicians regarding the interpretation of Polygenic Risk Scores (PRS) for Type 2 Diabetes. Explain the limitations of PRS, the importance of integrating it with traditional risk factors, and provide a template for how to discuss these results with patients.",
+      "reference_context": {
+        "target_audience": "Primary Care Physicians",
+        "topic": "Polygenic Risk Scores (PRS) for Type 2 Diabetes",
+        "key_limitations": "PRS varies by ancestry, does not replace lifestyle assessment, and has lower predictive value in non-European populations.",
+        "clinical_context": "PCPs often misinterpret PRS as a definitive diagnosis rather than a risk stratification tool."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Relevance — Does the content address the specific needs of primary care providers?",
+        "Criterion 2: Accuracy — Are the limitations of PRS (ancestry, predictive value) accurately described?",
+        "Criterion 3: Utility — Is the discussion template practical and easy to implement in a clinical setting?"
+      ],
+      "student_answer": "## Polygenic Risk Scores (PRS) for Type 2 Diabetes: Briefing for Primary Care Physicians\n\n**Purpose:** To provide a concise overview of PRS for Type 2 Diabetes, emphasizing appropriate interpretation and patient communication.\n\n**What is a PRS?** A Polygenic Risk Score (PRS) estimates an individual’s genetic predisposition to a disease (in this case, Type 2 Diabetes) based on the combined effect of many common genetic variants. It’s calculated using genome-wide association studies (GWAS) data.\n\n**PRS Interpretation – Key Points:**\n\n*   **Risk Stratification, Not Diagnosis:** PRS provides an *estimate* of risk, not a definitive diagnosis. It indicates a person’s likelihood of developing Type 2 Diabetes, but doesn’t guarantee it will happen.\n*   **Integrate with Traditional Risk Factors:** PRS should *always* be interpreted alongside established risk factors: family history, BMI, ethnicity, sedentary lifestyle, dietary habits, and existing conditions (e.g., hypertension, prediabetes).\n*   **Ancestry Matters:** PRS accuracy varies significantly by ancestry. Scores are generally more reliable in European populations. Scores in other populations (African, Asian, Hispanic) have lower predictive value and should be interpreted with caution.  Consider ancestry when selecting and interpreting PRS tools.\n*   **Lifestyle Remains Paramount:** PRS does *not* replace the importance of lifestyle interventions (diet, exercise, weight management).\n*   **Limited Predictive Value:** PRS has a moderate, but not perfect, predictive value. A high score doesn’t mean diabetes is inevitable, and a low score doesn’t guarantee protection.\n\n**Template for Patient Discussion:**\n\n1.  **Explain PRS Briefly:** “We’ve recently been able to assess your genetic risk for Type 2 Diabetes using a Polygenic Risk Score. This score combines information from many genes to give us an idea of your overall genetic predisposition.”\n2.  **Present the Score:** “Your PRS score is [Score Value]. This suggests [Low/Moderate/High] genetic risk.” (Use clear, non-technical language).\n3.  **Contextualize the Score:** “It’s important to remember that this score is just one piece of the puzzle. It’s combined with other factors like your family history, weight, diet, and activity level.”\n4.  **Discuss Implications:** “Based on your overall risk profile, we recommend [Specific recommendations – e.g., lifestyle modifications, closer monitoring, earlier screening].”\n5.  **Address Patient Concerns:** “Do you have any questions or concerns about this information?”\n\n**Resources:**\n\n*   [Link to relevant professional society guidelines on PRS interpretation]\n*   [Link to a reputable PRS calculator/tool]\n\n---\n\n**Disclaimer:** *This briefing is for informational purposes only and does not constitute medical advice. Consult with relevant guidelines and resources for specific patient care decisions.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly addresses the core task of briefing PCPs on PRS limitations, integration with traditional factors, and patient communication. It accurately highlights ancestry disparities and the non-diagnostic nature of PRS. However, it scores a 4 rather than 5 on Correctness, Completeness, Best Practices, and Domain Accuracy because it lacks specific quantitative context (e.g., mentioning that PRS typically adds modest incremental value over clinical scores like QDiabetes or ADA risk scores) and the patient template is generic without addressing specific scenarios like incidental findings or direct-to-consumer testing contexts. The Clarity is excellent (5). Autonomy is 4 because while the content is sound, a real-world briefing would likely require specific institutional links or a more detailed disclaimer regarding regulatory status (e.g., CLIA vs. LDT) to be truly ready for immediate clinical deployment without review."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Identify funding sources and write grant proposals for eligible programs or services.",
+      "task_type": "Grant Proposal Development",
+      "user_prompt": "Draft a comprehensive grant proposal section for a new community-based genetic counseling program aimed at increasing access to hereditary cancer screening for underserved populations. The proposal must identify specific funding sources, outline the program's objectives, and justify the need based on the provided community health data. Ensure the tone is persuasive and aligns with federal grant requirements.",
+      "reference_context": {
+        "program_name": "Hereditary Cancer Access Initiative",
+        "target_population": "Low-income families in rural counties with no local genetic counselors",
+        "community_health_data": "Incidence of late-stage breast and ovarian cancer is 40% higher than state average; 85% of eligible patients lack insurance coverage for genetic testing",
+        "potential_funding_sources": [
+          "National Institutes of Health (NIH) R01 Grant",
+          "Patient-Centered Outcomes Research Institute (PCORI)",
+          "State Department of Health Innovation Fund"
+        ],
+        "program_objectives": [
+          "Provide 500 free genetic counseling sessions annually",
+          "Reduce time to diagnosis by 6 months",
+          "Increase insurance coverage for genetic testing by 25%"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Funding Alignment - Does the proposal clearly match the specific requirements and goals of the identified funding sources?",
+        "Criterion 2: Justification - Is the need for the program convincingly supported by the provided community health data?",
+        "Criterion 3: Feasibility - Are the program objectives specific, measurable, and achievable within the proposed scope?"
+      ],
+      "student_answer": "## Hereditary Cancer Access Initiative: Grant Proposal – Section 3: Needs Statement and Program Objectives\n\n**3.1 Needs Statement**\n\nThe Hereditary Cancer Access Initiative (HCAI) addresses a critical and persistent health disparity within [Specify Rural County Names], characterized by alarmingly high rates of late-stage breast and ovarian cancer. Community health data reveals a concerning 40% disparity in incidence compared to the state average, indicating a significant unmet need for proactive cancer screening. This elevated incidence is inextricably linked to a profound lack of access to preventative genetic counseling and testing.  A staggering 85% of eligible patients within these counties lack insurance coverage for genetic testing, effectively barring them from identifying and mitigating inherited cancer risks.  The absence of local genetic counselors exacerbates this issue, creating a substantial geographic barrier to care.  Currently, residents in these underserved rural communities face significantly longer wait times for specialized healthcare services, leading to delayed diagnoses and poorer patient outcomes.  This proposal directly confronts this critical gap, aiming to reduce morbidity and mortality associated with hereditary cancers through targeted, accessible genetic counseling and support.\n\n**3.2 Program Objectives**\n\nThe HCAI is designed to systematically improve access to hereditary cancer screening and support for low-income families in [Specify Rural County Names].  The following objectives will be achieved within a three-year funding period:\n\n1.  **Provide 500 Free Genetic Counseling Sessions Annually:**  The program will offer 500 comprehensive genetic counseling sessions, delivered via telehealth and, where feasible, in-person visits at designated community centers, to eligible individuals.  Counseling will include family history review, risk assessment, genetic testing options, and personalized risk reduction strategies.\n\n2.  **Reduce Time to Diagnosis by 6 Months:**  By facilitating early identification of genetic predispositions, the HCAI will aim to reduce the average time to diagnosis of hereditary cancers by six months compared to the current baseline.  This will be measured through pre- and post-intervention patient data collection.\n\n3.  **Increase Insurance Coverage for Genetic Testing by 25%:**  The program will actively engage with local healthcare providers and insurance companies to advocate for expanded coverage for genetic testing.  Furthermore, HCAI will provide resources and support to patients navigating the insurance process, ultimately aiming to increase insurance coverage for genetic testing by 25% within the target population.\n\n**3.3 Justification of Need**\n\nThe confluence of high cancer incidence, limited insurance coverage, and the absence of local genetic counselors creates a perfect storm of inequity within [Specify Rural County Names].  The current situation represents a significant public health challenge, demanding immediate and targeted intervention.  The HCAI directly addresses this need by providing a comprehensive, accessible, and culturally sensitive program designed to empower individuals with the knowledge and resources necessary to proactively manage their cancer risk.  Failure to address this disparity will perpetuate a cycle of late-stage diagnoses, increased morbidity, and preventable mortality within these vulnerable communities.  This initiative aligns directly with federal priorities for health equity and aims to improve the health and well-being of underserved populations.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the core task requirements and uses appropriate professional tone. However, it fails to fully address the 'comprehensive grant proposal' requirement by omitting the specific funding sources (NIH, PCORI, State Fund) requested in the prompt, instead leaving placeholders like '[Specify Rural County Names]' which reduces completeness and usability. The justification section is persuasive but lacks the specific alignment with federal grant requirements (e.g., specific NIH priorities or PCORI methodology) that a senior-level proposal would include. While domain accuracy regarding genetic counseling concepts is good, the failure to integrate the provided funding data and the presence of unedited placeholders prevent it from being an industry-standard, autonomous deliverable."
+    }
+  ]
+}

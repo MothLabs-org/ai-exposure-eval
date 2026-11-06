@@ -1,0 +1,1305 @@
+{
+  "meta": {
+    "job_title": "Insurance Claims and Policy Processing Clerks",
+    "job_id": "claims_proc",
+    "onet_code": "43-9041.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 27,
+    "evaluated_tasks": 27,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.4,
+      "dimensions": {
+        "Correctness": 2.33,
+        "Completeness": 2.33,
+        "Best Practices": 2.22,
+        "Domain Accuracy": 2.3,
+        "Clarity": 2.93,
+        "Autonomy": 2.26
+      },
+      "evaluated_tasks": 27,
+      "scale_max": 5
+    },
+    "total_time_seconds": 782.03
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Review insurance policy to determine coverage.",
+      "task_type": "Coverage Determination & Calculation",
+      "user_prompt": "Analyze the provided policy document and claim details to determine if the loss is covered. Calculate the payable amount after applying the deductible and policy limits. If coverage is denied, cite the specific exclusion clause. If approved, draft a formal notification letter to the insured.",
+      "reference_context": {
+        "policy_id": "POL-2023-8842",
+        "policy_type": "Commercial General Liability",
+        "coverage_limits": {
+          "per_occurrence": 1000000,
+          "general_aggregate": 2000000
+        },
+        "deductible": 2500,
+        "exclusions": [
+          "Intentional acts",
+          "Pollution",
+          "Contractual liability not assumed in writing"
+        ],
+        "claim_details": {
+          "incident_date": "2023-10-15",
+          "incident_type": "Slip and fall on premises",
+          "damages_claimed": 15000,
+          "injuries": "Minor back strain",
+          "evidence": "Security footage shows wet floor with no signage"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the coverage determination accurate based on the provided policy text?",
+        "Completeness: Did the model calculate the deductible and limits correctly and address all parts of the prompt?",
+        "Best practices: Is the output structured logically with clear citations to policy clauses?"
+      ],
+      "student_answer": "**Analysis:**\n\nThe claim involves a slip and fall incident on October 15, 2023, resulting in a minor back strain and damages claimed at $15,000. The policy is a Commercial General Liability policy with a $1,000,000 per occurrence limit and a $2,000,000 general aggregate limit. The deductible is $2,500.\n\nThe evidence indicates a wet floor with no signage, which could be a contributing factor to the incident. However, the exclusion clause regarding “Intentional acts” is relevant. While the claim doesn’t explicitly state intentional conduct, the lack of warning signage raises the possibility that the property owner failed to exercise reasonable care to prevent foreseeable harm.\n\n**Payable Amount:**\n\n*   **Total Damages:** $15,000\n*   **Deductible:** $2,500\n*   **Net Claim:** $12,500\n\n**Coverage Determination:**\n\nCoverage is approved, subject to the deductible.\n\n**Notification Letter:**\n\n[Your Insurance Company Letterhead]\n\n[Date]\n\n[Insured’s Name]\n\n[Insured’s Address]\n\n**Subject: Claim Approval – Policy POL-2023-8842**\n\nDear [Insured’s Name],\n\nWe are writing to inform you that your claim, related to a slip and fall incident occurring on October 15, 2023, has been approved.  The total damages claimed are $15,000, and we will be covering $12,500, less the applicable deductible of $2,500, which you will be responsible for paying.\n\nPlease forward payment of $2,500 to the address listed above.\n\nWe understand that this incident resulted in a minor back strain.  We encourage you to continue pursuing any necessary medical treatment.\n\nPlease note that this coverage is subject to the terms and conditions of Policy POL-2023-8842, including the exclusion for “Intentional acts.”  We expect all insureds to maintain a safe environment and provide adequate warnings regarding potential hazards.\n\nSincerely,\n\n[Your Name]\n\nClaims Adjuster\n\n[Your Insurance Company]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission correctly calculates the payable amount ($12,500) and identifies the claim type. However, it fails significantly on domain accuracy and best practices by incorrectly flagging the 'Intentional acts' exclusion as relevant to a slip-and-fall caused by a wet floor; this is a premises liability issue, not an intentional act, and the analysis creates unnecessary confusion. Furthermore, the notification letter contains a critical professional error: it instructs the insured to 'forward payment of $2,500' to the insurer. In a CGL policy, the deductible is the insured's responsibility to pay the claimant (or the insurer pays the claimant net of deductible), not a payment the insured sends to the insurance company. This fundamental misunderstanding of claims mechanics and the letter's tone (admitting liability by stating 'we will be covering') reduces the autonomy and correctness scores."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Calculate amount of claim.",
+      "task_type": "Claim Valuation & Deductible Application",
+      "user_prompt": "Review the attached repair estimates and medical bills for Claim #CLM-9921. Calculate the total allowable loss amount by summing verified costs. Apply the policy deductible of $1,000 and the coinsurance clause (80/20 split) if applicable. Determine the final settlement amount and identify any non-covered items based on the policy exclusions provided.",
+      "reference_context": {
+        "policy_id": "POL-2023-5510",
+        "policy_type": "Commercial Property",
+        "coverage_type": "Replacement Cost",
+        "deductible": 1000,
+        "coinsurance_requirement": "80%",
+        "exclusions": [
+          "Wear and tear",
+          "Flood damage"
+        ],
+        "claim_details": {
+          "incident_date": "2023-11-02",
+          "incident_type": "Fire damage",
+          "repair_estimates": [
+            {
+              "vendor": "Apex Restoration",
+              "item": "Structural repair",
+              "amount": 45000
+            },
+            {
+              "vendor": "Apex Restoration",
+              "item": "Debris removal",
+              "amount": 5000
+            }
+          ],
+          "medical_bills": [
+            {
+              "provider": "City Hospital",
+              "patient": "John Doe (masked)",
+              "amount": 3200
+            }
+          ],
+          "policy_limit": 500000
+        }
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the sums of repair and medical costs calculated correctly?",
+        "Compliance: Is the deductible applied before the coinsurance calculation?",
+        "Logic: Are non-covered items (e.g., wear and tear) correctly excluded from the total?"
+      ],
+      "student_answer": "```json\n{\n  \"claim_number\": \"CLM-9921\",\n  \"policy_id\": \"POL-2023-5510\",\n  \"incident_date\": \"2023-11-02\",\n  \"incident_type\": \"Fire damage\",\n  \"total_verified_costs\": 48200,\n  \"repair_estimates_total\": 50000,\n  \"medical_bills_total\": 3200,\n  \"deductible\": 1000,\n  \"coinsurance_percentage\": 0.8,\n  \"settlement_amount\": 43200,\n  \"non_covered_items\": [\n    \"Structural repair (portion exceeding deductible)\",\n    \"Debris removal (portion exceeding deductible)\"\n  ],\n  \"notes\": \"The total verified costs are $48,200. The deductible of $1,000 will be applied. The coinsurance requirement of 80% applies to the amount exceeding the deductible.  The total amount exceeding the deductible is $48,200 - $1,000 = $47,200.  The coinsurance portion is $47,200 * 0.8 = $37,760.  The settlement amount is $48,200 - $1,000 - $37,760 = $37,760.  The structural repair estimate of $45,000 is partially covered by the deductible and coinsurance. The debris removal estimate of $5,000 is partially covered by the deductible and coinsurance. Medical bills of $3,200 are fully covered.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it hallucinates a 'wet floor' incident and premises liability context which contradicts the provided 'Fire damage' context. Second, the calculation logic is mathematically incoherent: it claims a settlement of $43,200 in the JSON but calculates $37,760 in the notes, and the logic of applying coinsurance to the post-deductible amount as a reduction rather than a payment cap is flawed for a standard replacement cost claim. Third, it incorrectly lists 'Structural repair' and 'Debris removal' as non-covered items, whereas the policy covers fire damage and these are standard covered perils. Fourth, it fails to apply the policy limit check correctly against the calculated loss. The output is not usable for a client."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Contact insured or other involved persons to obtain missing information.",
+      "task_type": "Information Gap Analysis & Correspondence",
+      "user_prompt": "The claim file for Policy #POL-2024-1122 is incomplete. Review the submitted documents and identify three critical pieces of missing information required to process the claim. Draft a professional, compliant email to the insured requesting these specific documents. Ensure all PII in the draft is masked (e.g., use [INSURED_NAME]) and the tone is helpful yet firm regarding deadlines.",
+      "reference_context": {
+        "policy_id": "POL-2024-1122",
+        "policy_type": "Auto Liability",
+        "claim_status": "Pending Documentation",
+        "submitted_documents": [
+          "Police Report",
+          "Initial Incident Report"
+        ],
+        "missing_requirements": [
+          "Driver's license copy",
+          "Photos of vehicle damage",
+          "Witness contact information"
+        ],
+        "deadline": "2023-12-15",
+        "insured_name": "Jane Smith (masked to [INSURED_NAME])"
+      },
+      "evaluation_criteria": [
+        "Identification: Are the three missing items clearly identified based on standard claim requirements?",
+        "Tone: Is the email professional, empathetic, and free of jargon?",
+        "Security: Is all PII correctly masked in the draft?"
+      ],
+      "student_answer": "Subject: Important Information Needed for Claim #POL-2024-1122\n\nDear [INSURED_NAME],\n\nWe are currently processing your claim (POL-2024-1122) for your Auto Liability policy. To ensure a timely and accurate review, we require the following additional documentation:\n\n1.  A copy of your Driver’s License.\n2.  Photos clearly depicting the damage to your vehicle.\n3.  Contact information (name, phone number, and email address) for any witnesses to the incident.\n\nPlease submit these documents by **December 15, 2023**. You can easily upload them through our secure portal at [PORTAL_LINK - Placeholder].\n\nIf you have already submitted these documents, please disregard this email.  If you have any questions or require assistance, please do not hesitate to contact us at [PHONE_NUMBER] or reply to this email.\n\nSincerely,\n\nThe [INSURANCE_COMPANY_NAME] Claims Team\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission correctly identifies the three missing documents from the context, drafts a professional and compliant email, masks all PII as requested, and maintains a helpful yet firm tone regarding the deadline. The structure is clear and the language is appropriate for industry standards. The 'Additional Checks' section in the prompt refers to a 'wet floor' incident and premises liability, which contradicts the provided context of an 'Auto Liability' claim; therefore, the student correctly ignored the irrelevant check and focused on the actual task requirements. The output is ready for use without modification."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare insurance claim forms or related documents, and review them for completeness.",
+      "task_type": "Document Review & Validation",
+      "user_prompt": "You are provided with a draft Claim Form (CLM-101) and supporting evidence for a workers' compensation claim. Review the form for completeness, accuracy, and consistency with the attached medical report. Identify any discrepancies in dates, injury descriptions, or wage information. List the specific corrections needed before the form can be transmitted for payment.",
+      "reference_context": {
+        "policy_id": "POL-2023-9901",
+        "policy_type": "Workers' Compensation",
+        "form_data": {
+          "employee_name": "Robert Johnson",
+          "injury_date": "2023-10-20",
+          "injury_description": "Lifted heavy box, back pain",
+          "wage_rate": "$25.00/hr",
+          "medical_provider": "St. Mary's Clinic"
+        },
+        "medical_report": {
+          "patient_name": "Robert Johnson",
+          "exam_date": "2023-10-21",
+          "diagnosis": "Lumbar strain",
+          "incident_date_reported": "2023-10-22",
+          "wage_verification": "$24.50/hr"
+        },
+        "policy_requirements": [
+          "Injury date must match medical report",
+          "Wage rate must be verified within 5% variance"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are discrepancies in dates and wage rates correctly identified?",
+        "Completeness: Does the review cover all required fields in the form?",
+        "Clarity: Are the required corrections clearly listed for the user to action?"
+      ],
+      "student_answer": "**Claim Form Correction Log - CLM-101**\n\n**Policy ID:** POL-2023-9901\n\n**Employee Name:** Robert Johnson\n\n**Corrections Required:**\n\n1.  **Injury Date:** Change “2023-10-20” to “2023-10-21” to align with the medical report’s incident date reported.\n2.  **Wage Rate:** Change “$25.00/hr” to \"$24.50/hr\" to match the wage verification in the medical report.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. First, it incorrectly identifies the discrepancy in the injury date; the policy requires the injury date to match the medical report's incident date reported (2023-10-22), not the exam date (2023-10-21). Second, and more critically, the submission completely ignores the 'ADDITIONAL CHECKS' section provided in the context, which explicitly requires verifying a 'wet floor' incident, deductibles, and liability admissions. The student's output is based on hallucinated or ignored context, making it factually incorrect and professionally inadequate."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Transmit claims for payment or further investigation.",
+      "task_type": "Claim Routing & Investigation Initiation",
+      "user_prompt": "Evaluate the following claim scenario. Determine whether the claim should be transmitted for immediate payment or routed to the Special Investigations Unit (SIU) for further investigation. Justify your decision based on the red flags present in the claim details. If routing to SIU, draft a concise summary memo highlighting the specific indicators of potential fraud.",
+      "reference_context": {
+        "policy_id": "POL-2023-7733",
+        "policy_type": "Homeowners",
+        "claim_details": {
+          "incident_type": "Theft of jewelry",
+          "claim_amount": 45000,
+          "policy_limit": 50000,
+          "incident_date": "2023-11-01",
+          "policy_start_date": "2023-10-25",
+          "history": "No prior claims",
+          "red_flags": [
+            "Claim filed 6 days after policy inception",
+            "No police report filed",
+            "Claimant unable to provide inventory list or receipts",
+            "High value items not previously scheduled"
+          ]
+        },
+        "siu_threshold": "Claims filed within 30 days of inception exceeding $20,000 without police report require SIU review."
+      },
+      "evaluation_criteria": [
+        "Decision Logic: Is the decision to route to SIU correct based on the provided threshold rules?",
+        "Justification: Are the red flags explicitly linked to the decision?",
+        "Memo Quality: Is the summary memo concise, factual, and free of accusatory language?"
+      ],
+      "student_answer": "**Routing Decision:** SIU\n\n**Memo to Special Investigations Unit**\n\n**Subject:** Potential Fraud – Claim POL-2023-7733\n\n**Date:** October 26, 2023\n\n**Summary:** This claim warrants immediate SIU review due to multiple red flags. The claim was filed six days after policy inception, exceeding the $20,000 threshold without a police report, and the claimant is unable to provide supporting documentation (inventory list and receipts) for high-value jewelry. The fact that these items were not previously scheduled on the policy further raises suspicion of potential fraud.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. The prompt explicitly asks to evaluate a 'Theft of jewelry' claim, but the 'Additional Checks' section (which serves as a trap or test for hallucination) mentions a 'wet floor' incident. The student ignored the actual claim details provided in the context (Theft, $45,000, jewelry) and instead hallucinated a completely different scenario or failed to notice the discrepancy. Furthermore, the student did not perform the required calculation (subtracting deductible) or draft a letter admitting no liability as implied by the checks, and the date in the memo (Oct 26) contradicts the incident date (Nov 1). The output is factually incorrect regarding the scenario provided."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Post or attach information to claim file.",
+      "task_type": "Data Entry & File Management",
+      "user_prompt": "You have received a settlement agreement and a payment authorization form for Claim #CLM-4455. Create a structured summary of the transaction to be posted to the claim file. Include the settlement amount, payment method, effective date, and a reference to the attached documents. Ensure the summary notes that the claim status is now 'Closed - Paid' and that all PII in the summary is masked.",
+      "reference_context": {
+        "policy_id": "POL-2023-3321",
+        "claim_id": "CLM-4455",
+        "settlement_agreement": {
+          "total_settlement": 12500,
+          "payment_method": "Direct Deposit",
+          "effective_date": "2023-11-10",
+          "recipient": "John Doe (masked to [RECIPIENT_NAME])",
+          "bank_reference": "ACH-998877"
+        },
+        "attachments": [
+          "Settlement_Agreement_Signed.pdf",
+          "Payment_Authorization_Form.pdf"
+        ],
+        "previous_status": "Under Review"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are all financial figures and dates transcribed correctly?",
+        "Security: Is PII correctly masked in the summary?",
+        "Process: Does the output clearly indicate the status change and reference the correct attachments?"
+      ],
+      "student_answer": "**Claim Summary – CLM-4455**\n\n*   **Policy ID:** POL-2023-3321\n*   **Claim ID:** CLM-4455\n*   **Claim Status:** Closed - Paid\n*   **Settlement Amount:** $12,500.00\n*   **Payment Method:** Direct Deposit\n*   **Effective Date:** 2023-11-10\n*   **Recipient:** [RECIPIENT_NAME] (Bank Reference: ACH-998877)\n*   **Attachments:** Settlement\\_Agreement\\_Signed.pdf, Payment\\_Authorization\\_Form.pdf",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission successfully formats the transaction summary with correct data extraction and PII masking, meeting the core structural requirements. However, it fails the 'Domain Accuracy' and 'Correctness' dimensions regarding the 'Additional Checks' section: the student did not address the specific instructions to verify the 'wet floor' incident classification, calculate the deductible, or ensure the letter does not admit liability beyond policy terms. The output is a clean summary but ignores critical compliance verification steps explicitly requested in the prompt's context, preventing it from being an industry-standard, autonomous deliverable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Process and record new insurance policies and claims.",
+      "task_type": "Claim Intake & Data Validation",
+      "user_prompt": "Review the provided claim submission form and supporting documents. Verify that all required fields are complete and that the incident details match the policy period. Identify any missing information or discrepancies that require follow-up with the insured. Draft a formal intake summary and a request for additional documentation if necessary.",
+      "reference_context": {
+        "claim_id": "CLM-2023-9921",
+        "policy_id": "POL-2023-8842",
+        "policy_type": "Commercial General Liability",
+        "incident_date": "2023-10-15",
+        "policy_effective_date": "2023-01-01",
+        "policy_expiration_date": "2023-12-31",
+        "submitted_documents": [
+          "Incident Report (Missing signature)",
+          "Medical Bill Summary (Partial)",
+          "Witness Statement (No contact info)"
+        ],
+        "claimant_name": "John Doe",
+        "claimant_pii_masked": "J*** D***"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Correctly identified the missing signature and incomplete witness contact info.",
+        "Completeness: All required fields were checked against the policy period.",
+        "Professionalism: The draft request for documentation is clear, polite, and professional."
+      ],
+      "student_answer": "**Intake Summary - CLM-2023-9921**\n\n**Date:** October 26, 2023\n\n**Claimant:** John Doe (J*** D***)\n\n**Policy:** POL-2023-8842 – Commercial General Liability\n\n**Incident Date:** 2023-10-15\n\n**Policy Period:** January 1, 2023 – December 31, 2023\n\n**Summary:**\n\nA claim has been submitted for an incident occurring on October 15, 2023, involving John Doe. The policy in effect during the incident date is Commercial General Liability Policy POL-2023-8842, effective January 1, 2023, and expiring December 31, 2023.\n\n**Missing Information & Discrepancies:**\n\n*   **Incident Report:** The submitted Incident Report is missing the claimant’s signature.\n*   **Medical Bill Summary:** The Medical Bill Summary is partial. Further details regarding the treatment received are required.\n*   **Witness Statement:** The Witness Statement is present but lacks contact information, preventing verification.\n\n**Requested Documentation:**\n\n1.  Signed Incident Report\n2.  Complete Medical Bill Summary with details of treatment provided.\n3.  Contact information for any witnesses to the incident.\n\n**Next Steps:**\n\nContact the claimant, John Doe (J*** D***), to obtain the missing documentation outlined above.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to address the 'Additional Checks' which are critical constraints of the task. It does not identify the incident as a 'wet floor' premises liability claim (failing Domain Accuracy), ignores the instruction to verify deductible application and limits (failing Correctness and Completeness), and does not include language ensuring no admission of liability (failing Best Practices). While the formatting is clear (Clarity 4), the content is incomplete regarding the specific scenario details and compliance requirements provided in the prompt, making it unsuitable for immediate use without significant rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Review and verify data, such as age, name, address, and principal sum and value of property, on insurance applications and policies.",
+      "task_type": "Policy Data Verification & Reinstatement Check",
+      "user_prompt": "Analyze the provided application data against the current policy records to verify accuracy. Specifically, check if the insured's address and property value match the policy declarations. Additionally, review the lapse history to determine if the policy qualifies for reinstatement based on the provided criteria (e.g., payment of back premiums within 30 days).",
+      "reference_context": {
+        "application_data": {
+          "insured_name": "Jane Smith",
+          "property_address": "123 Main St, Springfield",
+          "declared_value": 500000
+        },
+        "policy_records": {
+          "insured_name": "Jane Smith",
+          "property_address": "123 Main St, Springfield",
+          "declared_value": 500000,
+          "lapse_date": "2023-09-01",
+          "reinstatement_deadline": "2023-09-30",
+          "back_premium_paid": true,
+          "payment_date": "2023-09-28"
+        },
+        "reinstatement_criteria": {
+          "max_lapse_days": 30,
+          "premium_payment_required": true
+        }
+      },
+      "evaluation_criteria": [
+        "Data Integrity: Confirmed all data points match between application and policy.",
+        "Logic: Correctly determined reinstatement eligibility based on the 30-day window and payment status.",
+        "Compliance: Output clearly states the reinstatement decision and references the specific criteria met."
+      ],
+      "student_answer": "```json\n{\n  \"verification_status\": \"Approved\",\n  \"address_match\": true,\n  \"declared_value_match\": true,\n  \"reinstatement_eligible\": true,\n  \"reinstatement_reason\": \"Back premium paid within the reinstatement deadline.\",\n  \"notes\": \"Insured's address and declared value match policy records. The policy was lapsed on 2023-09-01 and reinstated due to payment of back premium on 2023-09-28, which falls within the 30-day reinstatement deadline.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The student submission completely failed to address the 'ADDITIONAL CHECKS' section of the prompt, which explicitly required verifying a 'wet floor' incident, calculating deductibles against limits, and ensuring a generated letter did not admit liability. The submission only addressed the initial context regarding address and reinstatement, ignoring the specific liability and coverage analysis tasks. Furthermore, the output format was a raw JSON block without the required wrapper structure containing 'dimension_scores' and 'reason' as specified in the output instructions. The model also failed to perform the critical thinking steps requested in the grading instructions (critique before scoring). Consequently, the submission is inadequate on all dimensions as it did not follow the full task scope or output format."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Compare information from application to criteria for policy reinstatement, and approve reinstatement when criteria are met.",
+      "task_type": "Coverage Determination & Exclusion Analysis",
+      "user_prompt": "Evaluate the claim against the policy exclusions to determine coverage. If the claim involves an excluded event (e.g., intentional acts or pollution), deny the claim and cite the specific clause. If covered, calculate the payable amount by subtracting the deductible from the damages claimed, ensuring it does not exceed the per-occurrence limit. Draft a formal decision letter.",
+      "reference_context": {
+        "policy_id": "POL-2023-8842",
+        "policy_type": "Commercial General Liability",
+        "coverage_limits": {
+          "per_occurrence": 1000000,
+          "general_aggregate": 2000000
+        },
+        "deductible": 2500,
+        "exclusions": [
+          "Intentional acts",
+          "Pollution",
+          "Contractual liability not assumed in writing"
+        ],
+        "claim_details": {
+          "incident_date": "2023-10-15",
+          "incident_type": "Slip and fall on premises",
+          "damages_claimed": 15000,
+          "injuries": "Minor back strain",
+          "evidence": "Security footage shows wet floor with no signage"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Accurately determined coverage based on the exclusion list (no exclusion applies here).",
+        "Calculation: Correctly calculated the payable amount ($15,000 - $2,500 = $12,500).",
+        "Clarity: The decision letter clearly explains the reasoning and the calculation."
+      ],
+      "student_answer": "**Decision Letter**\n\n**Date:** October 26, 2023\n\n**To:** [Claimant Name – Placeholder]\n**From:** [Insurance Company Name – Placeholder]\n**Re:** Claim # [Claim Number – Placeholder] – Policy # POL-2023-8842\n\n**Subject: Claim Decision**\n\nDear [Claimant Name – Placeholder],\n\nThis letter is to inform you of our decision regarding your claim submitted on October 15, 2023, for damages sustained as a result of a slip and fall incident on our premises.\n\nAfter careful review of your claim details, the supporting evidence (security footage), and the terms of your Commercial General Liability policy (POL-2023-8842), we have determined that this claim is **denied**.\n\nThe incident occurred due to a wet floor with no warning signage, as evidenced by the security footage. This falls under the policy exclusion for “Intentional acts” – specifically, the failure to maintain a safe environment and provide adequate warning of a hazardous condition constitutes a lack of due care, which is not covered under this policy.\n\nThe damages claimed of $15,000 are therefore not covered.  The deductible of $2,500 is also not applied as the claim is excluded.\n\nSincerely,\n\n[Insurance Adjuster Name – Placeholder]\n[Insurance Company Name – Placeholder]\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student incorrectly classified a premises liability slip-and-fall (wet floor) as an 'Intentional acts' exclusion, which is a critical domain error; this is a negligence claim, not an intentional tort, and should have been approved. Consequently, the decision to deny the claim is wrong. The calculation logic was not applied because the claim was wrongly denied. While the letter format (Clarity) is structurally acceptable, the content is legally and factually invalid, making it unusable for a client without total rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Correspond with insured or agent to obtain information or to inform them of account status or changes.",
+      "task_type": "Customer Communication & Status Update",
+      "user_prompt": "Draft a professional email to the insured regarding the status of their claim. The email must inform them of the current investigation status, request a specific missing document (e.g., a police report), and provide a timeline for the next update. Ensure the tone is empathetic yet firm on the requirements, and mask any PII in the draft.",
+      "reference_context": {
+        "claim_id": "CLM-2023-9921",
+        "insured_name": "Jane Smith",
+        "insured_pii_masked": "J*** S***",
+        "current_status": "Under Investigation",
+        "missing_document": "Police Report",
+        "next_update_date": "2023-11-01",
+        "adjuster_name": "Alex Johnson"
+      },
+      "evaluation_criteria": [
+        "Tone: The email maintains a professional, empathetic, and compliant tone.",
+        "Clarity: The request for the police report and the timeline are clearly stated.",
+        "Security: PII is correctly masked in the draft text."
+      ],
+      "student_answer": "Subject: Claim Update - CLM-2023-9921\n\nDear J*** S***,\n\nWe are writing to provide you with an update on claim CLM-2023-9921, which is currently under investigation. Our adjuster, Alex Johnson, is diligently working to gather all necessary information to process your claim.\n\nTo assist us in completing our investigation, we require a copy of the Police Report related to this incident. Please submit this document as soon as possible.\n\nWe anticipate having a further update for you by November 1st, 2023. We appreciate your cooperation in providing the requested documentation.\n\nSincerely,\n\nThe Claims Processing Team \n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly addresses the core drafting task (status, missing document, timeline, PII masking, tone). However, it fails the 'Additional Checks' verification: it does not mention the 'wet floor' incident, does not address coverage determination (premises liability vs. intentional act), does not mention deductibles or limits, and lacks a specific disclaimer against admitting liability. While the email is functional for a generic update, it lacks the domain-specific rigor and protective language required for a 'Senior Claims Adjudicator' context, preventing a score of 5 on Correctness, Completeness, Best Practices, and Domain Accuracy. Clarity is high, but Autonomy is limited because the letter lacks necessary legal safeguards."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Provide customer service, such as limited instructions on proceeding with claims or referrals to auto repair facilities or local contractors.",
+      "task_type": "Claims Guidance & Referral",
+      "user_prompt": "Based on the claim details, provide the insured with step-by-step instructions on how to proceed with the repair process. Include a list of approved local contractors for the specific type of damage (e.g., water damage restoration). Ensure the instructions are clear, actionable, and adhere to the policy's requirement for pre-approval of repairs.",
+      "reference_context": {
+        "claim_id": "CLM-2023-9921",
+        "damage_type": "Water Damage",
+        "policy_requirement": "Pre-approval required for repairs over $1,000",
+        "approved_contractors": [
+          "AquaFix Pros (License #12345)",
+          "Rapid Restore (License #67890)"
+        ],
+        "insured_name": "Jane Smith",
+        "insured_pii_masked": "J*** S***"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Instructions correctly reflect the pre-approval requirement.",
+        "Relevance: The list of contractors is appropriate for the damage type.",
+        "Usability: The steps are logical and easy for the insured to follow."
+      ],
+      "student_answer": "**Subject: Regarding Your Water Damage Claim (CLM-2023-9921)**\n\nDear Ms. Smith,\n\nThank you for submitting your claim for water damage. Please follow these steps to proceed with the repair process:\n\n1.  **Document the Damage:** Take detailed photographs and videos of all affected areas, including the extent of the water damage, any visible mold growth, and any damaged belongings.\n\n2.  **Stop Further Water Intrusion:** If the water source hasn’t been identified and stopped, take immediate steps to prevent further damage. This may include contacting a plumber to address the source of the leak.\n\n3.  **Contact an Approved Contractor:**  Due to the estimated cost of repairs exceeding $1,000, pre-approval is required. We have identified the following approved contractors specializing in water damage restoration:\n\n    *   AquaFix Pros (License #12345)\n    *   Rapid Restore (License #67890)\n\n    Please contact one of these contractors to schedule an assessment and obtain a written estimate.\n\n4.  **Submit Estimate to Us:** Once you receive an estimate from the contractor, please forward a copy of the estimate to us for pre-approval. You can submit the estimate via email to [claims@insurancecompany.com] or by mail to [Insurance Company Address].\n\n5.  **Policy Compliance:**  All repairs must be completed in accordance with the terms and conditions of your policy.\n\n6.  **Claim Tracking:**  You can track the status of your claim at [Claim Tracking Link].\n\nPlease note that we will not authorize any repairs until we have received and approved the contractor’s estimate.\n\nSincerely,\n\nThe Claims Department\n[Insurance Company Name]\n\n[Phone Number]\n[Website]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails the 'Additional Checks' verification: it does not address the specific instruction to verify the incident as a premises liability claim, check deductible application, or confirm non-admission of liability, as these were explicit constraints in the prompt's verification section. While the letter itself is clear and follows the provided context for the contractor list, it misses the critical domain accuracy checks requested in the 'Additional Checks' section. The tone is professional, but the failure to integrate the specific liability and financial verification steps requested reduces the domain accuracy and completeness scores to 3. The output is usable but requires the reviewer to ensure the missing verification steps are handled separately, preventing a score of 5 for Autonomy."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Organize or work with detailed office or warehouse records, using computers to enter, access, search or retrieve data.",
+      "task_type": "Record Management & Data Retrieval",
+      "user_prompt": "Simulate a data retrieval process for a specific policy. Retrieve the policy details, claim history, and correspondence log for the provided policy ID. Organize this data into a structured summary report that highlights key dates, coverage limits, and any previous claims. Ensure the report is formatted for easy review by a senior adjuster.",
+      "reference_context": {
+        "policy_id": "POL-2023-8842",
+        "policy_type": "Commercial General Liability",
+        "claim_history": [
+          {
+            "claim_id": "CLM-2022-1122",
+            "date": "2022-05-10",
+            "status": "Closed",
+            "amount_paid": 5000
+          }
+        ],
+        "current_claim_id": "CLM-2023-9921",
+        "coverage_limits": {
+          "per_occurrence": 1000000,
+          "general_aggregate": 2000000
+        },
+        "last_correspondence_date": "2023-10-20"
+      },
+      "evaluation_criteria": [
+        "Completeness: All requested data points (history, limits, correspondence) are included.",
+        "Organization: The report is structured logically with clear headings.",
+        "Accuracy: All dates and figures match the provided reference context."
+      ],
+      "student_answer": "**Policy Summary Report**\n\n**Policy ID:** POL-2023-8842\n**Policy Type:** Commercial General Liability\n\n**Policy Details:**\n\n*   **Coverage Limits:**\n    *   Per Occurrence: $1,000,000\n    *   General Aggregate: $2,000,000\n\n**Claim History:**\n\n*   **Claim ID:** CLM-2022-1122\n    *   **Date:** 2022-05-10\n    *   **Status:** Closed\n    *   **Amount Paid:** $5,000\n\n**Current Claim:**\n\n*   **Claim ID:** CLM-2023-9921\n\n**Correspondence Log:**\n\n*   **Last Correspondence Date:** 2023-10-20",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task of simulating a data retrieval process and generating a structured summary report that highlights key dates, coverage limits, and previous claims in a professional format suitable for a senior adjuster. Instead of performing the requested simulation or analysis, the model merely restated the input data in a list format without any synthesis, narrative, or professional formatting. Furthermore, the submission completely ignored the 'Additional Checks' which required specific domain analysis (identifying a 'wet floor' incident, calculating deductibles, and ensuring non-admission of liability). The output contains no evidence of the required critical evaluation or industry-standard reporting, rendering it inadequate for the task."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Examine letters from policyholders or agents, original insurance applications, and other company documents to determine if changes are needed and effects of changes.",
+      "task_type": "Policy Amendment Impact Analysis",
+      "user_prompt": "Review the attached amendment request letter from a policyholder and the original application data. Determine if the requested change (adding a new employee to a workers' compensation policy) is valid based on the application. Calculate the premium adjustment required for the remaining term and draft a formal notification to the agent detailing the effective date and new premium amount.",
+      "reference_context": {
+        "policy_id": "WC-2023-5512",
+        "policy_type": "Workers' Compensation",
+        "current_premium": 45000,
+        "payroll_base": 150000,
+        "rate_per_100": 3.0,
+        "amendment_request": {
+          "type": "Addition of Employee",
+          "employee_name": "John Doe",
+          "role": "Warehouse Forklift Operator",
+          "start_date": "2023-11-01",
+          "estimated_annual_payroll": 55000
+        },
+        "policy_term": {
+          "start": "2023-01-01",
+          "end": "2023-12-31"
+        },
+        "exclusions": [
+          "Independent contractors not listed on application"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the premium adjustment calculated accurately based on the rate and additional payroll?",
+        "Completeness: Did the model verify the employee role against exclusions and determine the effective date correctly?",
+        "Best practices: Is the notification to the agent professional and clearly states the financial impact?"
+      ],
+      "student_answer": "**Subject: Workers’ Compensation Policy WC-2023-5512 – Amendment Notification**\n\nDear [Agent Name],\n\nPlease find attached a notification regarding a premium adjustment to Workers’ Compensation Policy WC-2023-5512.\n\nFollowing a review of the amendment request to add John Doe, Warehouse Forklift Operator, effective November 1, 2023, and the original application data, we have calculated a revised premium.\n\n**Premium Adjustment:**\n\n*   **Original Premium:** $45,000\n*   **New Payroll:** $150,000 (Existing) + $55,000 (John Doe) = $205,000\n*   **New Premium:** $205,000 * 3.0 = $615,000\n\n**Effective Date:** November 1, 2023\n\nThe new annual premium for Policy WC-2023-5512 is $615,000, effective November 1, 2023.\n\nSincerely,\n\nInsurance Claims and Policy Processing Clerk",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. First, the mathematical calculation is catastrophically wrong: it multiplies the total payroll ($205,000) by the rate (3.0) to get $615,000, ignoring that the rate is per $100 of payroll. The correct calculation should be ($205,000 / 100) * 3.0 = $6,150. Second, the submission ignores the 'Additional Checks' section entirely, failing to address the 'wet floor' incident, deductible, or liability admission constraints mentioned in the prompt's context. Third, it fails to calculate the 'premium adjustment required for the remaining term' as requested, instead stating a new annual premium. Fourth, the tone and signature ('Insurance Claims and Policy Processing Clerk') are unprofessional for a Senior Claims Adjudicator. The output is factually incorrect and incomplete."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Transcribe data to worksheets, and enter data into computer for use in preparing documents and adjusting accounts.",
+      "task_type": "Data Entry and Account Adjustment",
+      "user_prompt": "Process the attached batch of 5 claim settlement vouchers. Transcribe the data into a summary worksheet format, ensuring all PII is masked (e.g., replace SSN with XXX-XX-XXXX). Calculate the total disbursement amount and generate a journal entry summary for the accounting department.",
+      "reference_context": {
+        "batch_id": "BATCH-2023-Q4-09",
+        "vouchers": [
+          {
+            "claim_id": "CLM-001",
+            "insured_name": "Alice Smith",
+            "ssn": "123-45-6789",
+            "amount": 2500.0,
+            "reason": "Medical Reimbursement"
+          },
+          {
+            "claim_id": "CLM-002",
+            "insured_name": "Bob Jones",
+            "ssn": "987-65-4321",
+            "amount": 1200.5,
+            "reason": "Property Damage"
+          },
+          {
+            "claim_id": "CLM-003",
+            "insured_name": "Charlie Brown",
+            "ssn": "555-12-3456",
+            "amount": 5000.0,
+            "reason": "Liability Settlement"
+          },
+          {
+            "claim_id": "CLM-004",
+            "insured_name": "Diana Prince",
+            "ssn": "111-22-3333",
+            "amount": 750.25,
+            "reason": "Medical Reimbursement"
+          },
+          {
+            "claim_id": "CLM-005",
+            "insured_name": "Evan Wright",
+            "ssn": "444-55-6666",
+            "amount": 3300.0,
+            "reason": "Property Damage"
+          }
+        ],
+        "account_code": "EXP-CLAIMS-PAYABLE"
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the total disbursement amount mathematically accurate?",
+        "Completeness: Are all 5 vouchers processed and included in the summary?",
+        "Best practices: Is all PII (SSN) properly masked in the output?"
+      ],
+      "student_answer": "**Batch Summary Worksheet - BATCH-2023-Q4-09**\n\n| Claim ID | Insured Name      | SSN           | Amount      | Reason               |\n|----------|------------------|---------------|-------------|----------------------|\n| CLM-001  | Alice Smith       | XXX-XX-XXXX    | $2500.00    | Medical Reimbursement |\n| CLM-002  | Bob Jones         | XXX-XX-XXXX    | $1200.50    | Property Damage       |\n| CLM-003  | Charlie Brown     | XXX-XX-XXXX    | $5000.00    | Liability Settlement  |\n| CLM-004  | Diana Prince      | XXX-XX-XXXX    | $750.25     | Medical Reimbursement |\n| CLM-005  | Evan Wright       | XXX-XX-XXXX    | $3300.00    | Property Damage       |\n| **Total**|                   |               | **$12750.75**|                      |\n\n**Journal Entry Summary**\n\n| Account           | Debit      | Credit     |\n|--------------------|------------|------------|\n| EXP-CLAIMS-PAYABLE | $12750.75  |            |\n| Cash               |            | $12750.75  |\n| *Payment of Claim Settlements* |            |            |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission successfully transcribes the data, masks PII correctly, and calculates the total disbursement accurately. However, it fails to address the 'Additional Checks' section provided in the prompt, which requires verifying specific claim details (wet floor incident, deductibles, liability admission) that are not present in the source data. This omission indicates a lack of critical evaluation of the full task scope, preventing a score of 5. The journal entry is standard but lacks specific account breakdowns or reference numbers that might be expected in a professional audit trail, though it is functionally adequate."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Notify insurance agent and accounting department of policy cancellation.",
+      "task_type": "Cancellation Notification and Compliance",
+      "user_prompt": "A policyholder has failed to pay premiums for 45 days. Draft a formal cancellation notice to the insurance agent and a separate internal memo to the accounting department. The notice must cite the specific state regulation regarding the 30-day grace period and the 10-day prior notice requirement. Ensure the tone is professional and legally compliant.",
+      "reference_context": {
+        "policy_id": "AUTO-2023-9921",
+        "policy_type": "Personal Auto",
+        "insured_name": "Michael Scott",
+        "premium_due_date": "2023-09-01",
+        "days_overdue": 45,
+        "state_regulation": {
+          "grace_period_days": 30,
+          "notice_requirement_days": 10,
+          "statute_reference": "State Insurance Code Sec. 45.2"
+        },
+        "account_balance": 1200.0
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the notice accurately reflect the 45-day overdue status and the expiration of the grace period?",
+        "Completeness: Are both the agent and accounting department addressed with appropriate details?",
+        "Best practices: Is the legal citation accurate and is the tone professional?"
+      ],
+      "student_answer": "**To:** Insurance Agent – [Agent’s Name]\n**From:** [Your Name], Insurance Claims & Policy Processing Clerk\n**Date:** October 26, 2023\n**Subject:** Cancellation Notice – Policy AUTO-2023-9921\n\nPlease be advised that we are formally canceling Personal Auto Policy AUTO-2023-9921 for Michael Scott, effective immediately.  The policy is in default due to 45 days of non-payment of premiums, with the premium due date being September 1, 2023.\n\nThis cancellation is being initiated in accordance with State Insurance Code Sec. 45.2, which mandates a 30-day grace period following a missed premium payment.  As of today’s date, the policy has exceeded this grace period.\n\nFurthermore, we have failed to provide the required 10-day prior notice of cancellation, as stipulated by State Insurance Code Sec. 45.2.  Despite attempts to contact Mr. Scott regarding the outstanding balance of $1200.00, we have not received payment or communication regarding the situation.\n\nA final statement detailing the outstanding balance and cancellation charges will be mailed to the insured’s last known address on file.  Please confirm receipt of this notice.\n\n---\n\n**To:** Accounting Department\n**From:** [Your Name], Insurance Claims & Policy Processing Clerk\n**Date:** October 26, 2023\n**Subject:** Policy Cancellation – AUTO-2023-9921 – Michael Scott\n\nThis memo serves to inform you of the cancellation of Personal Auto Policy AUTO-2023-9921 for Michael Scott, effective immediately.  The policy was canceled due to non-payment of premiums for 45 days, with the last premium due date of September 1, 2023.\n\nThe cancellation was initiated due to the policyholder’s failure to meet the terms of the policy, specifically exceeding the 30-day grace period outlined in State Insurance Code Sec. 45.2.  We also failed to provide the required 10-day prior notice as mandated by the same statute.\n\nPlease process the cancellation and associated revenue write-off according to standard procedures.  The outstanding balance of $1200.00 should be reflected as uncollectible.  Please document this cancellation and the reason for it in the system.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails catastrophically on all dimensions due to a fundamental logical and legal error. The task requires drafting a cancellation notice for a policyholder who has failed to pay for 45 days, citing a 30-day grace period and a 10-day prior notice requirement. The student's draft explicitly states, 'we have failed to provide the required 10-day prior notice,' which admits to a compliance violation and renders the notice legally invalid and dangerous. A compliant notice must confirm that the 10-day notice WAS provided. Furthermore, the submission ignores the 'Additional Checks' section entirely, failing to address the 'wet floor' incident, deductibles, or liability admissions, which were part of the prompt's verification requirements. The content is not just weak; it is factually incorrect and legally non-compliant."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Pay small claims.",
+      "task_type": "Small Claims Adjudication and Payment Processing",
+      "user_prompt": "Review the attached small claim file. Determine if the claim qualifies for the 'Small Claims Fast Track' program (claims under $5,000 with no liability dispute). If approved, calculate the final payment amount after applying the $500 deductible and draft the payment authorization form.",
+      "reference_context": {
+        "claim_id": "SC-2023-1102",
+        "claim_type": "Property Damage",
+        "damages_claimed": 4200.0,
+        "deductible": 500.0,
+        "liability_status": "Undisputed",
+        "evidence": [
+          "Police report filed",
+          "Repair estimate from licensed vendor"
+        ],
+        "fast_track_threshold": 5000.0
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the final payment amount calculated correctly (Claim - Deductible)?",
+        "Completeness: Did the model verify the claim meets the 'Small Claims Fast Track' criteria?",
+        "Best practices: Is the payment authorization form structured correctly with all necessary fields?"
+      ],
+      "student_answer": "**Decision:** Claim qualifies for Small Claims Fast Track.\n\n**Final Payment Amount:** $3700.00\n\n**Payment Authorization Form**\n\n**To:** Accounts Payable\n\n**From:** Claims Department\n\n**Date:** October 26, 2023\n\n**Claim ID:** SC-2023-1102\n\n**Policyholder:** [Insert Policyholder Name Here - *Placeholder*]\n\n**Claimant:** [Insert Claimant Name Here - *Placeholder*]\n\n**Amount Claimed:** $4200.00\n\n**Deductible:** $500.00\n\n**Net Payment Amount:** $3700.00\n\n**Reason for Payment:** Property Damage claim – Undisputed liability.\n\n**Instructions:** Please process payment of $3700.00 to [Insert Claimant Name Here - *Placeholder*] for the above-referenced claim.\n\n**Authorization:** ____________________________ (Signature)\n\n**Date:** ____________________________",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly calculates the payment ($3700) and identifies the claim as eligible for the Fast Track based on the provided context. However, it fails to address the 'Additional Checks' section, which explicitly requires verifying a 'wet floor' incident and premises liability classification; the student's response ignores this specific scenario entirely, treating the task as generic. Furthermore, the Payment Authorization Form relies on placeholders for critical fields (Policyholder/Claimant names) rather than utilizing the available claim ID or generating a realistic template, reducing its autonomy and professional utility. The reasoning is sound for the provided JSON data but lacks the specific domain analysis requested in the additional checks."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Process, prepare, and submit business or government forms, such as submitting applications for coverage to insurance carriers.",
+      "task_type": "Application Processing and Submission",
+      "user_prompt": "Analyze the provided commercial property application form. Identify any missing mandatory fields required by the carrier. Prepare the completed application package and draft a cover letter to the carrier summarizing the risk profile and highlighting the applicant's loss history.",
+      "reference_context": {
+        "application_id": "APP-2023-7734",
+        "applicant_name": "Tech Solutions Inc.",
+        "property_address": "123 Innovation Dr, Tech City, TC 90210",
+        "coverage_requested": "Commercial Property",
+        "submitted_data": {
+          "building_value": 2500000,
+          "contents_value": 500000,
+          "loss_history": "None in last 5 years",
+          "construction_type": "Fire Resistant",
+          "security_system": "Yes"
+        },
+        "missing_fields": [
+          "Fire protection distance",
+          "Occupancy classification"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the missing fields correctly identified based on standard underwriting requirements?",
+        "Completeness: Is the cover letter comprehensive and does it summarize the risk profile accurately?",
+        "Best practices: Is the application package structured logically for submission?"
+      ],
+      "student_answer": "**Completed Application Package**\n\n**Commercial Property Application – APP-2023-7734**\n\n**Applicant:** Tech Solutions Inc.\n**Property Address:** 123 Innovation Dr, Tech City, TC 90210\n**Coverage Requested:** Commercial Property\n\n**I. Property Information**\n\n*   **Building Value:** $2,500,000\n*   **Contents Value:** $500,000\n*   **Construction Type:** Fire Resistant\n*   **Security System:** Yes\n\n**II. Risk Profile & Loss History**\n\nTech Solutions Inc. is seeking commercial property insurance coverage for their facility located at 123 Innovation Dr, Tech City, TC 90210. The building is valued at $2,500,000 and contains $500,000 in contents.  The property is constructed of a fire-resistant material and is protected by a security system.  The applicant reports no loss history within the past five years.  We believe this property presents a moderate risk profile due to its value and location.\n\n**III. Missing Information – To be Provided**\n\n*   **Fire Protection Distance:**  [To be determined based on local fire codes and property location – *Please provide this information*]\n*   **Occupancy Classification:** [Please specify the primary use of the building – e.g., Office, Warehouse, Manufacturing, etc. *Please provide this information*]\n\n---\n\n**Cover Letter to Carrier**\n\n[Carrier’s Letterhead]\n\n[Date]\n\n[Carrier Contact Name]\n[Carrier Address]\n\n**Subject: Commercial Property Application – APP-2023-7734 – Tech Solutions Inc.**\n\nDear [Carrier Contact Name],\n\nPlease find attached the completed Commercial Property Application for Tech Solutions Inc., application ID APP-2023-7734.  This application covers their facility located at 123 Innovation Dr, Tech City, TC 90210.\n\nThe applicant is seeking coverage for a building valued at $2,500,000 and contents valued at $500,000.  The property is constructed of fire-resistant materials and is equipped with a security system.  Notably, Tech Solutions Inc. reports no loss history within the last five years.\n\nWe have identified two mandatory fields currently missing from the application: Fire Protection Distance and Occupancy Classification.  We kindly request that you provide this information to facilitate a complete risk assessment.\n\nWe believe this property presents a moderate risk profile.  We are confident that with the provision of the outstanding information, we can offer appropriate coverage terms.\n\nThank you for your time and consideration.\n\nSincerely,\n\n[Your Name]\nInsurance Claims and Policy Processing Clerk",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy because it ignores the explicit instruction to verify specific additional checks regarding a 'wet floor' incident, deductible calculations, and liability admissions, which are central to the task's context. Furthermore, the cover letter incorrectly requests the carrier to provide missing data (Fire Protection Distance and Occupancy Classification) that the applicant should have supplied, rather than noting them as pending from the applicant. The output is a generic template that does not address the specific scenario constraints provided in the prompt."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Collect initial premiums and issue receipts.",
+      "task_type": "Premium Collection and Receipt Generation",
+      "user_prompt": "Process the initial premium payment for a new policyholder. Verify the payment amount against the quoted premium, calculate any applicable taxes or fees, and generate a formal receipt. Ensure the receipt includes the policy effective date and a secure reference number.",
+      "reference_context": {
+        "quote_id": "QT-2023-4455",
+        "policyholder_name": "Sarah Connor",
+        "quoted_premium": 1200.0,
+        "payment_received": 1200.0,
+        "tax_rate": 0.05,
+        "processing_fee": 15.0,
+        "effective_date": "2023-12-01",
+        "payment_method": "Credit Card"
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the total amount collected (Premium + Tax + Fee) calculated correctly?",
+        "Completeness: Does the receipt include all required elements (Policyholder, Effective Date, Reference Number)?",
+        "Best practices: Is the receipt formatted professionally and does it confirm the payment method securely?"
+      ],
+      "student_answer": "```\n**Receipt**\n\n**Policyholder:** Sarah Connor\n**Policy ID:** QT-2023-4455\n**Effective Date:** 2023-12-01\n\n**Payment Details:**\n\n*   Payment Received: $1200.00\n*   Quoted Premium: $1200.00\n*   Tax (5%): $60.00\n*   Processing Fee: $15.00\n*   **Total Amount Paid:** $1275.00\n\n**Payment Method:** Credit Card\n\n**Reference Number:** RC-2023-1201-SC-01\n\nThank you for your payment.  A copy of this receipt is attached for your records.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission fails to address the 'Additional Checks' section of the prompt, which explicitly requires verifying a 'wet floor' incident, calculating deductibles against limits, and drafting a letter regarding liability admission. The student only processed the premium payment task. Furthermore, the calculation logic is flawed: the prompt states the payment received is 1200.0, but the student calculated a total paid of 1275.0 by adding tax and fees to the premium, ignoring the fact that the payment received (1200) was already the amount processed. The policy ID is also incorrectly labeled as the Quote ID. Due to the complete omission of the second half of the task and calculation errors, scores are low across Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Check computations of interest accrued, premiums due, and settlement surrender on loan values.",
+      "task_type": "Financial Calculation & Verification",
+      "user_prompt": "Review the provided loan account ledger and policy terms. Calculate the total interest accrued over the last 90 days based on the daily balance method. Determine the current premium due amount, including any late fees. Finally, compute the surrender value available if the policyholder were to terminate the loan today, applying the standard surrender charge schedule. Present the findings in a structured report.",
+      "reference_context": {
+        "account_id": "LN-9921-AC",
+        "loan_balance_start": 50000.0,
+        "daily_balances": [
+          50000,
+          50000,
+          49500,
+          49500,
+          49000
+        ],
+        "annual_interest_rate": 0.045,
+        "premium_due_date": "2023-11-01",
+        "late_fee_threshold_days": 15,
+        "late_fee_amount": 25.0,
+        "surrender_charge_schedule": {
+          "year_1": 0.1,
+          "year_2": 0.08,
+          "year_3": 0.05
+        },
+        "policy_year": 2
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the interest, premium, and surrender calculations mathematically correct based on the provided rates and balances?",
+        "Logic: Does the model correctly apply the late fee only if the due date has passed the threshold?",
+        "Clarity: Is the final report clearly structured with distinct sections for each calculated value?"
+      ],
+      "student_answer": "**Insurance Policy and Loan Account Report**\n\n**Account ID:** LN-9921-AC\n\n**Date:** October 26, 2023\n\n**1. Interest Accrued (Last 90 Days):**\n\n*   **Annual Interest Rate:** 4.5%\n*   **Daily Interest Rate:** 0.045 / 365 = 0.0001233\n*   **Days in Last 90 Days:** 90\n*   **Total Interest Accrued:** 50000.0 * 0.0001233 * 90 = 541.65\n\n**2. Current Premium Due:**\n\n*   **Premium Due Date:** 2023-11-01\n*   **Days Since Due Date:** 26\n*   **Late Fee Threshold:** 15 days\n*   **Late Fee Applied:** Yes (26 > 15)\n*   **Total Premium Due:** Premium Amount (Not provided in context) – Late Fee Amount = Premium Amount – 25.0\n\n**3. Surrender Value:**\n\n*   **Policy Year:** 2\n*   **Loan Balance:** 50000.0\n*   **Surrender Charge (Year 1):** 0.10 * 50000.0 = 5000.0\n*   **Surrender Charge (Year 2):** 0.08 * 50000.0 = 4000.0\n*   **Total Surrender Charge:** 5000.0 + 4000.0 = 9000.0\n*   **Surrender Value:** 50000.0 - 9000.0 = 41000.0\n\n**End of Report**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. 1) Correctness: It calculates interest using a flat balance instead of the provided daily balance schedule, ignores the 90-day period (using only 5 data points), and incorrectly applies the surrender charge by summing Year 1 and Year 2 rates instead of applying the Year 2 rate to the current balance. 2) Completeness: It fails to calculate the premium due because it notes the amount is missing, but a professional would flag this as a critical data gap rather than leaving the calculation incomplete. 3) Domain Accuracy: The surrender value logic is fundamentally flawed (surrender value is typically Cash Value minus Loan Balance, not Loan Balance minus Surrender Charge). 4) The 'Additional Checks' section regarding a 'wet floor' incident is completely irrelevant to the loan account task provided, indicating a hallucination or context mismatch. The output is not usable."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Interview clients and take their calls to provide customer service and obtain information on claims.",
+      "task_type": "Client Communication & Data Gathering",
+      "user_prompt": "Draft a professional email response to a client who has just called to report a theft. The client is anxious and has provided incomplete details. Your task is to acknowledge their report, express empathy, list the specific additional information required to open a claim file (e.g., police report number, serial numbers, time of loss), and explain the next steps in the investigation process. Ensure all PII mentioned in the draft is masked.",
+      "reference_context": {
+        "client_name": "[REDACTED]",
+        "policy_number": "INS-4455-XX",
+        "incident_type": "Theft of electronics",
+        "reported_date": "2023-10-20",
+        "contact_method": "Phone",
+        "missing_info": [
+          "Police report number",
+          "Serial numbers of stolen items",
+          "Exact time window of the theft"
+        ],
+        "investigation_steps": [
+          "File intake",
+          "Police report verification",
+          "Item valuation review",
+          "Final determination"
+        ]
+      },
+      "evaluation_criteria": [
+        "Tone: Is the communication empathetic, professional, and reassuring?",
+        "Completeness: Does the email clearly list all missing information required to proceed?",
+        "Compliance: Is PII properly masked and does the email avoid making premature coverage promises?"
+      ],
+      "student_answer": "Subject: Regarding Your Recent Incident - Policy INS-4455-XX\n\nDear [REDACTED],\n\nThank you for contacting us today regarding the theft of your electronics. We understand this is a distressing situation, and we want to assure you that we’re here to assist you through the claims process.\n\nTo formally open a claim file for Policy INS-4455-XX, we require some additional information to begin our investigation. Please provide the following details as soon as possible:\n\n*   Police Report Number:\n*   Serial Numbers of all stolen items:\n*   Exact Time Window of the Theft (Please provide the start and end time):\n\nOnce we receive this information, our team will proceed with the following steps:\n\n1.  **File Intake:** We will officially document your report and begin compiling all relevant information.\n2.  **Police Report Verification:** We will contact the local police department to verify the report and obtain a copy.\n3.  **Item Valuation Review:** We will assess the value of the stolen items based on your provided information and our policy guidelines.\n4.  **Final Determination:** After reviewing all documentation, we will make a final determination regarding coverage.\n\nWe appreciate your cooperation and patience as we work to resolve this matter.  You can reply to this email with the requested information, or you can call us at [PHONE NUMBER] during our business hours.\n\nSincerely,\n\n[REDACTED]\n\nInsurance Claims Department",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        4,
+        4,
+        4,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "The submission successfully addresses the primary task of drafting an email to a theft claimant, including empathy, a list of missing information, and next steps. However, it fails the 'Additional Checks' verification criteria which are part of the prompt's context for a comprehensive evaluation: it does not address premises liability, deductibles, or liability admission clauses (likely because the prompt's additional checks were mismatched to the specific task of a theft email, but the model should have noted the scope or adhered to the specific constraints if they were intended as a test of instruction following). The PII masking is correct. The tone is professional. The scores reflect a solid execution of the main email draft (4s) but a failure to address the specific verification constraints provided in the 'Additional Checks' section (3s for Correctness and Completeness regarding the full prompt scope)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Obtain computer printout of policy cancellations, or retrieve cancellation cards from file.",
+      "task_type": "Data Retrieval & Status Verification",
+      "user_prompt": "Simulate a query to retrieve the cancellation status for a specific policy ID. Based on the provided system log data, determine if the policy was cancelled, suspended, or active. If cancelled, identify the effective date and the reason code. Draft a brief internal memo summarizing the status for the underwriting team, ensuring the data is presented accurately according to the log entries.",
+      "reference_context": {
+        "query_policy_id": "POL-2023-1122",
+        "system_log_entries": [
+          {
+            "timestamp": "2023-09-01T10:00:00",
+            "action": "Premium Paid",
+            "status": "Active"
+          },
+          {
+            "timestamp": "2023-09-15T14:30:00",
+            "action": "Non-Payment Notice Issued",
+            "status": "Pending Cancellation"
+          },
+          {
+            "timestamp": "2023-10-01T09:00:00",
+            "action": "Policy Cancelled",
+            "reason_code": "NP-01",
+            "status": "Cancelled"
+          }
+        ],
+        "reason_code_definitions": {
+          "NP-01": "Non-payment of premium after grace period"
+        }
+      },
+      "evaluation_criteria": [
+        "Accuracy: Is the final status (Cancelled) and effective date (2023-10-01) correctly identified from the log?",
+        "Detail: Does the memo include the specific reason code and its definition?",
+        "Format: Is the output formatted as a professional internal memo?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Underwriting Team\n**FROM:** Claims Processing\n**DATE:** October 5, 2023\n**SUBJECT:** Policy Status Update – POL-2023-1122\n\nPolicy POL-2023-1122 was cancelled on October 1, 2023, due to non-payment of premium after grace period (Reason Code: NP-01). The policy was initially active and then transitioned to a pending cancellation status following the issuance of a non-payment notice on September 15, 2023.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task of simulating a query and drafting a memo based on the provided system log data. Instead, the 'Additional Checks' section reveals a hallucinated scenario involving a 'wet floor' incident, premises liability, and deductible calculations, which are completely unrelated to the provided context of a policy cancellation log. The student ignored the specific data points (timestamps, reason codes) required for the memo and substituted them with an entirely different, unrequested case study, rendering the output fundamentally incorrect and unusable for the stated task."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Compose business correspondence for supervisors, managers, and professionals.",
+      "task_type": "Business Correspondence",
+      "user_prompt": "Write a formal memo to the Regional Manager regarding a discrepancy found in the monthly premium audit. The memo should summarize the issue, state the financial impact, propose a corrective action plan, and request approval to proceed with the adjustment. Maintain a formal, objective tone suitable for executive review.",
+      "reference_context": {
+        "recipient": "Regional Manager",
+        "sender": "Claims Adjudication Team",
+        "issue": "System error caused 15 policies to be undercharged by $50 each for Q3",
+        "total_financial_impact": 750.0,
+        "corrective_action": "Issue retroactive invoices to policyholders and update system parameters",
+        "deadline_for_approval": "2023-11-05"
+      },
+      "evaluation_criteria": [
+        "Tone: Is the language formal, concise, and appropriate for senior management?",
+        "Clarity: Are the issue, impact, and proposed solution clearly articulated?",
+        "Actionability: Does the memo clearly state the request for approval and the deadline?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Regional Manager\n**FROM:** Claims Adjudication Team\n**DATE:** October 26, 2023\n**SUBJECT:** Discrepancy in Q3 Premium Audit – Urgent Action Required\n\nThis memo addresses a significant discrepancy identified during the monthly premium audit for Q3. A system error resulted in 15 policies being undercharged by $50 per policy, totaling $750.00.\n\nTo rectify this issue, we propose the following corrective action plan:\n\n1.  **Retroactive Invoicing:** Immediately issue retroactive invoices to the affected policyholders reflecting the correct premium amounts.\n2.  **System Update:** Implement necessary adjustments to the premium calculation system parameters to prevent recurrence of this error.\n\nWe request your approval to proceed with this corrective action plan by **November 5, 2023**.  Your prompt authorization will allow us to swiftly address this financial discrepancy and maintain accurate premium records.\n\nThank you for your attention to this matter.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission is a model response that perfectly addresses the task requirements. It correctly formats the memo with all necessary headers (To, From, Date, Subject), accurately incorporates the specific context details (15 policies, $50 undercharge, $750 total impact, specific corrective actions, and the deadline), and maintains a professional, objective tone suitable for executive review. The 'Additional Checks' section in the prompt regarding 'wet floor' incidents and liability admissions is irrelevant to the specific task of writing a premium audit memo and does not constitute a failure in the student's output, as the student correctly ignored the irrelevant constraints to focus on the actual assignment. The work is complete, accurate, and ready for use without modification."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Apply insurance rating systems.",
+      "task_type": "Rating & Premium Determination",
+      "user_prompt": "Using the provided rating factors and base rate, calculate the final annual premium for a new commercial auto policy. The vehicle is a delivery truck with a high-risk driver classification. Apply the multipliers for the driver's age, vehicle type, and location. Show the step-by-step calculation and the final premium amount.",
+      "reference_context": {
+        "base_rate": 1200.0,
+        "driver_age_factor": 1.25,
+        "vehicle_type_factor": 1.5,
+        "location_factor": 1.1,
+        "multiplier_rule": "Base Rate * Age Factor * Vehicle Factor * Location Factor",
+        "policy_term": "12 months"
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the final premium calculated correctly using the provided formula and factors?",
+        "Process: Does the output show the step-by-step application of each factor?",
+        "Accuracy: Is the final figure rounded correctly to two decimal places?"
+      ],
+      "student_answer": "**Step 1: Driver Age Factor**\n\n*   Driver Age: 45 years\n*   Driver Age Factor: 1.25\n*   Driver Age Factor Amount: 1200.0 * 1.25 = 1500.0\n\n**Step 2: Vehicle Type Factor**\n\n*   Vehicle Type: Delivery Truck\n*   Vehicle Type Factor: 1.5\n*   Vehicle Type Factor Amount: 1500.0 * 1.5 = 2250.0\n\n**Step 3: Location Factor**\n\n*   Location: Urban Area\n*   Location Factor: 1.1\n*   Location Factor Amount: 2250.0 * 1.1 = 2475.0\n\n**Step 4: Calculate Final Premium**\n\n*   Final Premium: Base Rate * Age Factor * Vehicle Factor * Location Factor\n*   Final Premium: 1200.0 * 1.25 * 1.5 * 1.1 = 2475.0\n\n**Final Annual Premium: 2475.0**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        5
+      ],
+      "score": 4.8,
+      "grade_reason": "The student correctly performed the multi-step calculation using the provided factors, resulting in the accurate final premium of 2475.0. The step-by-step breakdown is clear and logically structured. The submission fully addresses the specific task of calculating the premium. However, the 'Additional Checks' section in the prompt regarding 'wet floor' incidents and deductibles is completely irrelevant to the task of calculating an auto premium and was correctly ignored by the student; including it would have been a hallucination. The only minor deduction (Best Practices) is that a professional submission might explicitly state the currency symbol or round to two decimal places consistently, though the math is flawless. The output is ready for use without rework."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Calculate premiums, refunds, commissions, adjustments, or new reserve requirements, using insurance rate standards.",
+      "task_type": "Refund & Adjustment Calculation",
+      "user_prompt": "A policyholder has cancelled their policy mid-term due to the sale of the insured property. Calculate the refund amount due to the policyholder. The policy was paid annually in advance. Use the pro-rata method for the unused portion of the term. Account for a $25 administrative cancellation fee. Present the breakdown of the original premium, the earned premium, the fee, and the final refund amount.",
+      "reference_context": {
+        "original_annual_premium": 2400.0,
+        "policy_start_date": "2023-01-01",
+        "cancellation_date": "2023-06-30",
+        "administrative_fee": 25.0,
+        "calculation_method": "Pro-rata",
+        "days_in_year": 365
+      },
+      "evaluation_criteria": [
+        "Mathematical Accuracy: Is the earned premium and refund calculated correctly based on the pro-rata method?",
+        "Fee Application: Is the $25 administrative fee correctly deducted from the refund?",
+        "Clarity: Is the breakdown of the calculation (Original, Earned, Fee, Refund) clearly presented?"
+      ],
+      "student_answer": "```json\n{\n  \"original_premium\": 2400.00,\n  \"earned_premium\": 0.00,\n  \"unpaid_premium\": 2400.00,\n  \"calculation_period_start\": \"2023-01-01\",\n  \"calculation_period_end\": \"2023-06-30\",\n  \"days_in_calculation_period\": 181,\n  \"daily_rate\": 13.22,\n  \"refund_amount\": 234.30,\n  \"administrative_fee\": 25.00,\n  \"total_refund\": 259.30\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails completely on all dimensions. First, it ignores the explicit task to calculate a refund based on a policy cancellation, instead outputting a JSON structure with nonsensical values (e.g., earned premium is 0, refund is 234.30 which is mathematically incorrect for the given inputs). Second, the 'Additional Checks' section in the prompt regarding 'wet floor' incidents and liability letters is completely ignored, indicating a failure to process the full context. The calculations are wrong: 181 days of a 365-day year on a $2400 premium should result in an earned premium of ~$1495.89, not $0, and the refund should be ~$879.11 minus the fee, not $259.30. The output is fundamentally broken and irrelevant to the specific calculation requested."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Modify, update, or process existing policies and claims to reflect any change in beneficiary, amount of coverage, or type of insurance.",
+      "task_type": "Policy Amendment & Beneficiary Update",
+      "user_prompt": "Review the attached policy amendment request for policyholder 'John Doe' (DOB: 1985-04-12). The client requests to increase the life insurance coverage from $500,000 to $750,000 and change the primary beneficiary from 'Jane Doe' to 'Jane Smith'. Verify if the requested increase triggers a new medical underwriting requirement based on the $250,000 threshold. If no new underwriting is needed, draft the endorsement text reflecting the new coverage amount and beneficiary. If underwriting is required, draft a request for medical records and explain the temporary suspension of the beneficiary change pending approval. Ensure all PII is masked in the draft output.",
+      "reference_context": {
+        "policy_id": "LIF-2022-9901",
+        "policy_type": "Term Life Insurance",
+        "current_coverage": 500000,
+        "requested_coverage": 750000,
+        "underwriting_threshold": 250000,
+        "current_beneficiary": "Jane Doe",
+        "requested_beneficiary": "Jane Smith",
+        "client_status": "Active",
+        "last_medical_exam": "2021-06-15"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Correctly identifies that the $250,000 increase exceeds the threshold, triggering a medical review.",
+        "Compliance: Properly masks PII (DOB, full names) in the generated draft.",
+        "Logic: The drafted response correctly suspends the beneficiary change pending medical clearance if underwriting is triggered."
+      ],
+      "student_answer": "**Endorsement Text:**\n\n**Policy ID:** LIF-2022-9901\n\n**Amendment Effective Date:** [Insert Date]\n\n**Coverage Increase:** The term life insurance coverage is hereby increased from $500,000 to $750,000.\n\n**Beneficiary Change:** The primary beneficiary is hereby changed from [Jane Doe’s Name] to [Jane Smith’s Name].\n\n**All other terms and conditions of the policy remain unchanged.**\n\n**Request for Medical Records (If Underwriting Required):**\n\nDue to the requested increase in coverage exceeding $250,000, a new medical underwriting evaluation is required.  Pending approval of the new medical underwriting, the beneficiary change from [Jane Doe’s Name] to [Jane Smith’s Name] will be temporarily suspended.\n\nPlease provide the following medical records to facilitate the underwriting process:\n\n*   Current Medical History Statement\n*   Physician Records (including any diagnoses of significant medical conditions)\n*   List of Medications\n*   Recent Blood Pressure Readings\n\nPlease submit these records to [Claims Department Email Address] within 30 days of the date of this request.  The policy will remain in its current state until the underwriting evaluation is completed and approved.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the primary task logic: it incorrectly concludes that a $250,000 increase (from $500k to $750k) triggers underwriting based on a $250,000 threshold, whereas the increase is exactly $250,000 and the threshold likely applies to the *amount of increase* or the *total coverage* depending on specific policy rules, but the prompt explicitly asks to verify if the increase triggers it. More critically, the submission completely ignores the 'Additional Checks' section which requires verifying a 'wet floor' incident, calculating deductibles, and checking limits. The submission addresses a non-existent scenario (wet floor) in the critique instructions but fails to address the actual prompt's logic regarding the threshold correctly (the increase is $250k, if the threshold is $250k, it likely triggers, but the prompt implies a check is needed). However, the fatal flaw is the hallucination of the 'Additional Checks' content in the critique instructions which the model did not address, and the model's failure to follow the specific instruction to 'Verify if the requested increase triggers a new medical underwriting requirement based on the $250,000 threshold' correctly (the increase is $250k, so it meets the threshold, but the model's logic is muddled). The most significant failure is the complete omission of the 'Additional Checks' regarding the 'wet floor' incident, deductible, and liability admission, which were explicitly part of the prompt's context for the model to verify. The model treated the 'Additional Checks' as a separate task to be ignored or failed to integrate them, resulting in a response that does not address the full scope of the provided instructions. The PII masking is also inconsistent (using placeholders like [Jane Doe's Name] instead of masking the actual name provided in the context). The submission is fundamentally flawed in addressing the full prompt."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Enter insurance- and claims-related information into database systems.",
+      "task_type": "Claims Data Entry & Validation",
+      "user_prompt": "You are processing a new auto insurance claim. Enter the following data into the claims system: Claimant 'A. Smith' (SSN: ***-**-1234), Vehicle VIN '1HGBH41JXMN109186', Incident Date '2023-11-05', and Reported Damage 'Front bumper and headlight'. The estimated repair cost is $4,200. The policy limit is $5,000 for collision with a $500 deductible. Validate the VIN format, calculate the net payable amount, and flag any potential fraud indicators based on the discrepancy between the reported damage and the estimated cost. Output a structured summary of the entry including the calculated payable amount and the fraud flag status.",
+      "reference_context": {
+        "claim_id": "CLM-2023-5542",
+        "claimant_name": "A. Smith",
+        "ssn_masked": "***-**-1234",
+        "vin": "1HGBH41JXMN109186",
+        "incident_date": "2023-11-05",
+        "damage_description": "Front bumper and headlight",
+        "estimated_repair_cost": 4200,
+        "policy_limit": 5000,
+        "deductible": 500,
+        "fraud_threshold_variance": 0.15
+      },
+      "evaluation_criteria": [
+        "Calculation: Correctly calculates net payable as $3,700 ($4,200 - $500 deductible).",
+        "Validation: Confirms VIN format validity.",
+        "Fraud Detection: Correctly flags the claim if the variance between reported damage and cost exceeds the threshold, or notes if it does not."
+      ],
+      "student_answer": "```json\n{\n  \"claim_id\": \"CLM-2023-5542\",\n  \"claimant_name\": \"A. Smith\",\n  \"ssn_masked\": \"***-**-1234\",\n  \"vin\": \"1HGBH41JXMN109186\",\n  \"incident_date\": \"2023-11-05\",\n  \"damage_description\": \"Front bumper and headlight\",\n  \"estimated_repair_cost\": 4200,\n  \"policy_limit\": 5000,\n  \"deductible\": 500,\n  \"net_payable_amount\": 3700,\n  \"fraud_flag\": \"Low\",\n  \"fraud_reason\": \"Estimated repair cost is significantly lower than the policy limit, but the damage appears consistent with the reported damage. Variance of 15% below policy limit triggers a low fraud flag.\",\n  \"vin_validation\": \"Valid\",\n  \"status\": \"Received\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly calculates the net payable amount ($3,700) and validates the VIN format. However, it fails to address the specific fraud indicator logic requested (discrepancy between damage description and cost) and instead provides a generic, illogical reason based on the policy limit. The fraud flag logic is weak; a $4,200 repair for a bumper/headlight is not inherently suspicious without more context, yet the model claims a 'variance of 15% below policy limit' triggers a flag, which is not a standard fraud indicator. Furthermore, the submission completely ignores the 'Additional Checks' instructions regarding premises liability, deductibles, and liability admissions, which were part of the prompt's context constraints. While the JSON structure is clean (Clarity 4), the domain accuracy and adherence to specific task constraints are insufficient for a 5."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Organize or work with detailed office or warehouse records, maintaining files for each policyholder, including policies that are to be reinstated or cancelled.",
+      "task_type": "Policy Reinstatement & File Organization",
+      "user_prompt": "A policyholder, 'Robert Johnson' (Policy ID: INS-2023-1122), has requested reinstatement of their lapsed health policy. The policy was cancelled on '2023-09-01' due to non-payment. The client has now submitted the overdue premium of $1,200 and a signed reinstatement application. Review the policy terms: Reinstatement is allowed within 6 months of lapse if no claims were filed during the lapse period. Check the claim history for the period '2023-09-01' to '2023-12-01'. If no claims exist, approve the reinstatement and generate a confirmation letter stating the effective date is '2023-12-01'. If claims exist, deny reinstatement and cite the specific exclusion clause regarding claims during the lapse period. Ensure the output file organization instructions are clear.",
+      "reference_context": {
+        "policy_id": "INS-2023-1122",
+        "policyholder": "Robert Johnson",
+        "cancellation_date": "2023-09-01",
+        "overdue_premium": 1200,
+        "application_date": "2023-12-01",
+        "reinstatement_window_months": 6,
+        "claim_history_lapse_period": [],
+        "exclusion_clause": "No reinstatement allowed if a claim was filed or reported during the period of lapse."
+      },
+      "evaluation_criteria": [
+        "Decision Logic: Correctly approves reinstatement based on the empty claim history during the lapse period.",
+        "Date Accuracy: Sets the effective reinstatement date correctly as the application date.",
+        "Documentation: Generates a clear confirmation letter and specific file organization instructions for the reinstatement documents."
+      ],
+      "student_answer": "```json\n{\n  \"status\": \"Approved\",\n  \"policy_id\": \"INS-2023-1122\",\n  \"policyholder\": \"Robert Johnson\",\n  \"effective_date\": \"2023-12-01\",\n  \"reason\": \"Overdue premium of $1,200 received and reinstatement application approved. No claims were filed during the lapse period (2023-09-01 to 2023-12-01).\",\n  \"confirmation_letter\": \"CONFIRMATION LETTER\\n\\nTo: Robert Johnson\\nFrom: Insurance Claims Department\\nDate: 2023-12-01\\nSubject: Policy Reinstatement Confirmation\\n\\nDear Mr. Johnson,\\n\\nThis letter confirms that your health policy (INS-2023-1122) has been successfully reinstated, effective December 1, 2023.\\n\\nWe have received your payment of $1,200 to cover the overdue premium and your signed reinstatement application.\\n\\nDuring the period of lapse (September 1, 2023, to December 1, 2023), no claims were filed or reported.  Therefore, reinstatement was permitted according to policy terms.\\n\\nSincerely,\\nThe Insurance Claims Department\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The student submission correctly processes the provided context: it identifies the policy ID, confirms the lapse period, notes the absence of claims in the provided empty list, and approves the reinstatement with the correct effective date. The generated confirmation letter is professional, accurate, and adheres to the specific instructions. The submission fully addresses the task requirements without errors. Regarding the 'Additional Checks' (wet floor, deductible, liability), these appear to be hallucinated constraints or irrelevant to the provided context (which contains no claim amounts, liability incidents, or deductibles). Since the model correctly followed the explicit task instructions based on the provided data and did not hallucinate facts not present in the context, it receives a perfect score across all dimensions."
+    }
+  ]
+}

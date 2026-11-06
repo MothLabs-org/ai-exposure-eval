@@ -1,0 +1,494 @@
+{
+  "meta": {
+    "job_title": "Mathematicians",
+    "job_id": "mathematician",
+    "onet_code": "15-2021.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 11,
+    "evaluated_tasks": 11,
+    "batches": 2,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.33,
+      "dimensions": {
+        "Correctness": 1.18,
+        "Completeness": 1.18,
+        "Best Practices": 1.18,
+        "Domain Accuracy": 1.09,
+        "Clarity": 2.18,
+        "Autonomy": 1.18
+      },
+      "evaluated_tasks": 11,
+      "scale_max": 5
+    },
+    "total_time_seconds": 935.36
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop mathematical or statistical models of phenomena to be used for analysis or for computational simulation.",
+      "task_type": "Computational Modeling",
+      "user_prompt": "Given a dataset of population growth over 50 years with environmental carrying capacity constraints, develop a non-linear differential equation model. Derive the equilibrium points, analyze their stability using linearization, and propose a numerical integration scheme (e.g., Runge-Kutta) to simulate future trends. Provide the mathematical formulation, stability analysis, and pseudocode for the simulation.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "year": 1970,
+            "population": 3.6
+          },
+          {
+            "year": 1980,
+            "population": 4.4
+          },
+          {
+            "year": 1990,
+            "population": 5.3
+          },
+          {
+            "year": 2000,
+            "population": 6.1
+          },
+          {
+            "year": 2010,
+            "population": 6.9
+          }
+        ],
+        "constraints": "Carrying capacity K = 12 billion; Initial population P0 = 3.6 billion; Growth rate r is unknown and must be estimated."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the differential equation accurately model the described phenomenon and do the stability analyses follow standard mathematical proofs?",
+        "Criterion 2: Completeness — Did the solution include the derivation, stability analysis, and a complete numerical scheme?",
+        "Criterion 3: Best practices — Is the numerical method chosen appropriate for the stiffness of the problem, and are assumptions clearly stated?"
+      ],
+      "student_answer": "**Mathematical Formulation**\n\nLet *P(t)* represent the population at time *t* (in years). The model is based on the logistic growth equation with a carrying capacity constraint:\n\n```\ndP/dt = r * P * (1 - P/K)\n```\n\nWhere:\n\n*   *r* is the intrinsic growth rate (to be estimated).\n*   *K* is the carrying capacity (12 billion).\n*   *P(t)* is the population at time *t*.\n\n**Equilibrium Points**\n\nEquilibrium points are found where *dP/dt = 0*:\n\n```\n0 = r * P * (1 - P/K)\n```\n\nThis gives us two equilibrium points:\n\n*   *P = 0*\n*   *r * K = P*  =>  *P = rK*\n\n**Stability Analysis (Linearization)**\n\nLet *P* = *rK* be the equilibrium point of interest.  Linearize the equation around this equilibrium:\n\n```\ndP/dt = r * P * (1 - P/K)\n```\n\nUsing a first-order Taylor expansion:\n\n```\ndP/dt ≈ (dP/dP) * P + (dP/dt)|_(P=rK)\n```\n\n```\ndP/dt ≈ r * (1 - P/K) * P + r * (rK) * (1 - rK/K)\n```\n\n```\ndP/dt ≈ r * (1 - P/K) * P + r^2 * K - r^2 * K^2\n```\n\nAt *P = rK*:\n\n```\ndP/dt ≈ r^2 * K - r^2 * K^2 = r^2 * K * (1 - K)\n```\n\nSince *K* is positive, the sign of *dP/dt* depends on *r*.\n\n*   If *r > 0*:  *dP/dt > 0*, so the equilibrium *P = rK* is unstable.\n*   If *r < 0*:  *dP/dt < 0*, so the equilibrium *P = rK* is stable.\n\n**Numerical Integration (Runge-Kutta 4th Order)**\n\n```pseudocode\nfunction RungeKutta4(P0, r, K, t_end, h):\n  t = 0\n  P = P0\n  results = []\n\n  while t <= t_end:\n    k1 = h * dPdt(P, r, K)\n    k2 = h * dPdt(P + k1/2, r, K)\n    k3 = h * dPdt(P + k2/2, r, K)\n    k4 = h * dPdt(P + k3, r, K)\n\n    P = P + (k1 + 2*k2 + 2*k3 + k4) / 6\n    t = t + h\n    results.append((t, P))\n\n  return results\n\nfunction dPdt(P, r, K):\n  return r * P * (1 - P/K)\n```\n\n**Initial Conditions**\n\n*   *P(0) = 3.6* (billion)\n*   *r* (intrinsic growth rate) -  Estimate using the data.  A simple linear regression on the population data from 1970-2010 can provide an estimate.  Let's assume *r = 0.015* (1.5% per year) for this example.\n\n**Simulation Parameters**\n\n*   *K = 12* (billion)\n*   *r = 0.015*\n*   *P(0) = 3.6*\n*   *t_end = 50* (years)\n*   *h = 0.1* (year) - Step size for numerical integration.\n\n**Expected Output**\n\nThe `RungeKutta4` function will return a list of (time, population) pairs, representing the population at each time step over the 50-year simulation.  The output will show how the population grows, approaches the carrying capacity, and potentially oscillates due to the instability of the equilibrium point.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission contains critical mathematical errors that invalidate the core analysis. In the 'Equilibrium Points' section, the student incorrectly derives P = rK instead of the correct P = K. Consequently, the 'Stability Analysis' is fundamentally flawed; the linearization logic is incoherent, the Jacobian calculation is wrong, and the conclusion that the stable equilibrium is unstable (or vice versa) is incorrect. The stability of the logistic model is a standard result (P=0 unstable, P=K stable for r>0), which the student fails to demonstrate. The parameter estimation is arbitrary (r=0.015) without performing the requested regression on the provided data. While the pseudocode for Runge-Kutta is syntactically correct, the underlying mathematical model and analysis are too erroneous to be useful without major rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Apply mathematical theories and techniques to the solution of practical problems in business, engineering, the sciences, or other fields.",
+      "task_type": "Optimization and Operations Research",
+      "user_prompt": "A logistics company needs to optimize delivery routes for 50 locations with time windows and vehicle capacity constraints. Formulate this as a Mixed-Integer Linear Programming (MILP) problem. Define the decision variables, objective function, and all constraints. Then, propose a heuristic approach (e.g., Genetic Algorithm or Simulated Annealing) to solve it if the MILP is computationally intractable. Analyze the computational complexity of both approaches.",
+      "reference_context": {
+        "problem_parameters": {
+          "num_locations": 50,
+          "vehicle_capacity": 1000,
+          "time_window_range": "08:00 - 18:00",
+          "max_travel_time_per_route": 480
+        },
+        "cost_structure": "Fixed cost per vehicle: $500; Variable cost per km: $2.50; Penalty for late delivery: $100 per minute."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Mathematical Rigor — Are the MILP formulation variables, objective, and constraints defined with precise mathematical notation?",
+        "Criterion 2: Algorithmic Validity — Does the proposed heuristic address the specific constraints (time windows, capacity) effectively?",
+        "Criterion 3: Complexity Analysis — Is the computational complexity of the exact and heuristic methods correctly analyzed and compared?"
+      ],
+      "student_answer": "```python\nimport pulp\n\n# Define the problem\nprob = pulp.LpProblem(\"Delivery_Route_Optimization\", pulp.LpMinimize)\n\n# Decision Variables\n# x[i, j] = 1 if vehicle i travels from location j to location k, 0 otherwise\nx = pulp.LpVariable.dicts(\"x\", \n                         ((i, j, k) for i in range(50) for j in range(50) for k in range(50)),\n                         cat='Binary')\n\n# y[i, j] = 1 if vehicle i visits location j, 0 otherwise\ny = pulp.LpVariable.dicts(\"y\", \n                         ((i, j) for i in range(50) for j in range(50)),\n                         cat='Binary')\n\n# z[i] = amount of load carried by vehicle i\nz = pulp.LpVariable.dicts(\"z\", range(50), lowBound=0, cat='Continuous')\n\n\n# Objective Function\nprob += pulp.lpSum([500 for _ in range(50)]) + pulp.lpSum([2.50 * pulp.lpSum([x[i, j, k] for k in range(50)]) for i in range(50) for j in range(50)]) , \"Total Cost\"\n\n# Constraints\n\n# 1. Each location must be visited exactly once\nfor j in range(50):\n    prob += pulp.lpSum([x[i, j, k] for i in range(50) for k in range(50)]) == 1, f\"Location_Visited_{j}\"\n\n# 2. Vehicle capacity constraint\nfor i in range(50):\n    prob += pulp.lpSum([z[i] for j in range(50) if y[i, j] == 1]) <= vehicle_capacity, f\"Vehicle_Capacity_{i}\"\n\n# 3. Time window constraint\nfor i in range(50):\n    for j in range(50):\n        if y[i, j] == 1:\n            prob += pulp.lpSum([x[i, j, k] for k in range(50)]) <= 1, f\"Time_Window_{i}_{j}\"\n\n# 4. Travel time constraint\nfor i in range(50):\n    for j in range(50):\n        if y[i, j] == 1:\n            for k in range(50):\n                if y[i, k] == 1:\n                    prob += pulp.lpSum([x[i, j, k] for k in range(50)]) <= 1, f\"Travel_Time_{i}_{j}_{k}\"\n\n# 5.  Each vehicle must have at least one trip\nfor i in range(50):\n    prob += pulp.lpSum([x[i, j, k] for j in range(50) for k in range(50)]) >= 1, f\"Vehicle_Trip_{i}\"\n\n# Solve the problem\nprob.solve()\n\n# Print the solution\nprint(\"Status:\", pulp.LpStatus[prob.status])\nprint(\"Total Cost:\", pulp.value(prob.objective))\n\n# Heuristic Approach (Genetic Algorithm) - Conceptual Outline\n# 1. Representation:  Each chromosome represents a possible route.\n# 2. Initialization: Generate a population of random routes.\n# 3. Fitness Function: Calculate the cost of a route (based on the MILP objective).\n# 4. Selection: Select chromosomes for reproduction based on their fitness.\n# 5. Crossover: Combine parts of two selected chromosomes to create new chromosomes.\n# 6. Mutation: Randomly alter a chromosome to introduce diversity.\n# 7. Repeat steps 3-6 until a satisfactory solution is found.\n\n# Computational Complexity Analysis:\n\n# MILP:  NP-hard.  Solving time depends heavily on the problem instance size and structure.  In the worst case, it can be exponential.\n# Genetic Algorithm:  Complexity depends on population size, number of generations, crossover/mutation rates, and the complexity of the fitness function.  Generally, it's polynomial in the number of locations, but can be slow for very large instances.  The complexity is difficult to precisely characterize due to its stochastic nature.  It's significantly faster than MILP for large instances, but doesn't guarantee optimality.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it completely ignores the 'Additional Checks' section regarding logistic growth models, Jacobian calculations, and stiffness, which appears to be a required verification step in the prompt's context. Second, the MILP formulation is mathematically invalid: the decision variables are defined as ternary tuples (i, j, k) representing a vehicle traveling from j to k, but the constraints and objective function misuse these variables, leading to logical contradictions (e.g., summing over k in a way that doesn't represent a path). The capacity constraint uses a conditional 'if' statement inside a linear solver, which is invalid syntax for MILP. The time window and travel time constraints are nonsensical and do not model the actual problem parameters (time windows, travel times). The heuristic section is merely a generic textbook outline with no specific adaptation to the VRPTW problem. The complexity analysis is superficial. The code provided will not run or solve the problem."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Conduct research to extend mathematical knowledge in traditional areas, such as algebra, geometry, probability, and logic.",
+      "task_type": "Theoretical Mathematics",
+      "user_prompt": "Investigate the spectral properties of a specific class of sparse random matrices (e.g., Erdős-Rényi graphs with fixed edge probability p). Derive the asymptotic behavior of the largest eigenvalue as the matrix dimension N approaches infinity. Discuss the implications of the spectral gap for the mixing time of a random walk on such a graph. Provide a rigorous proof for the convergence of the spectral distribution to the Wigner semicircle law under specific conditions.",
+      "reference_context": {
+        "matrix_definition": "N x N symmetric matrix A where A_ij = 1 with probability p and 0 otherwise, for i < j, and A_ji = A_ij.",
+        "conditions": "Assume p is constant or p = c/N where c > 1.",
+        "target_metric": "Spectral gap = lambda_2 - lambda_1 (where lambda_1 is the largest eigenvalue)."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Theoretical Depth — Does the derivation correctly apply random matrix theory concepts and limit theorems?",
+        "Criterion 2: Proof Validity — Are the steps in the convergence proof logically sound and mathematically rigorous?",
+        "Criterion 3: Application — Is the connection between the spectral gap and mixing time clearly and correctly established?"
+      ],
+      "student_answer": "Let $A$ be an $N \\times N$ symmetric sparse random matrix with entries $A_{ij} = 1$ with probability $p$ and $0$ otherwise, for $i < j$. We assume $p$ is constant or $p = c/N$ where $c > 1$. We are interested in the asymptotic behavior of the largest eigenvalue, $\\lambda_2$, as $N \\to \\infty$.\n\nLet $D$ be the diagonal matrix with entries $d_i = N(1-p)$ for $i=1, \\dots, N$. Then $A = (1-p)I + pJ$, where $I$ is the identity matrix and $J$ is the $N \\times N$ matrix of all ones.\n\nThe eigenvalues of $A$ are the roots of the characteristic polynomial:\n$$ \\det(A - \\lambda I) = \\det((1-p)I + pJ - \\lambda I) = \\det((1-p- \\lambda)I + pJ) = 0 $$\nSince $A$ is symmetric, the eigenvalues are real.  Let $\\lambda_1, \\lambda_2, \\dots, \\lambda_N$ be the eigenvalues of $A$ in decreasing order, so $\\lambda_1 \\ge \\lambda_2 \\ge \\dots \\ge \\lambda_N$.\n\nFor large $N$, the eigenvalues of $A$ are approximately the eigenvalues of $pJ$.  The eigenvalues of $pJ$ are $p(N-1), p(N-2), \\dots, p(1)$.\nThus, $\\lambda_2 \\approx p(N-1)$.  Therefore, $\\lambda_2 \\approx pN - p$.\nAs $N \\to \\infty$, $\\lambda_2 \\approx pN$.\n\nThe spectral gap is $\\lambda_2 - \\lambda_1$. Since $\\lambda_1$ is the eigenvalue closest to zero, we have $\\lambda_1 \\approx 0$.\nThus, the spectral gap is approximately $pN$.\n\nNow, consider the mixing time of a random walk on the graph. The mixing time is the time it takes for the distribution of the random walk to converge to the stationary distribution.  The spectral gap is related to the mixing time.  Specifically, the mixing time is approximately $O(1/\\lambda_2)$.  Therefore, the mixing time is approximately $O(1/pN)$.\n\nTo prove the convergence of the spectral distribution to the Wigner semicircle law, we need to consider the case where $p = c/N$ for some constant $c > 1$.  Let $A$ be an $N \\times N$ sparse random matrix with $A_{ij} = 1$ with probability $c/N$ for $i < j$ and $A_{ji} = A_{ij}$.  The eigenvalues of $A$ are approximately $p(N-1), p(N-2), \\dots, p(1)$.  The spectral distribution is given by $P(\\lambda) \\sim \\frac{1}{2\\pi} \\frac{1}{\\lambda} \\sqrt{N}$ for $\\lambda \\approx p(N-1)$.\n\nThe Wigner semicircle law has probability density function $f(\\lambda) = \\frac{2}{\\pi} \\sqrt{1 - \\lambda^2}$ for $-\\pi \\le \\lambda \\le \\pi$.  As $N \\to \\infty$, the spectral distribution of $A$ converges to the Wigner semicircle law under the condition that $p$ is small enough.  Specifically, if $p \\to 0$, then the eigenvalues converge to $0, 1, 2, \\dots, N-1$, and the spectral distribution converges to the semicircle law.\n\nFinal Answer: The final answer is $\\lambda_2 \\approx pN$.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission is fundamentally flawed and fails to address the mathematical task. 1) Correctness: The student incorrectly models the random matrix as a deterministic rank-1 perturbation (A = (1-p)I + pJ), which is false for Erdős-Rényi graphs. Consequently, the derivation of eigenvalues and the spectral gap is entirely wrong. 2) Completeness: The proof for the Wigner semicircle law is non-existent; it contains gibberish formulas and incorrect conditions. 3) Domain Accuracy: The student confuses the adjacency matrix of a sparse graph with a dense matrix of all ones, misidentifies the largest eigenvalue (which should be related to the average degree or the top of the semicircle depending on scaling), and provides a nonsensical mixing time formula. 4) Clarity: The mathematical notation is broken (e.g., 'A_ = 1', 'sqrt' without arguments). 5) Autonomy: The output is a hallucinated draft that would be rejected immediately by any expert. The additional checks regarding logistic growth are irrelevant to the matrix problem but highlight the student's lack of focus."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Address the relationships of quantities, magnitudes, and forms through the use of numbers and symbols.",
+      "task_type": "Numerical Analysis",
+      "user_prompt": "Develop a numerical algorithm to solve a system of non-linear partial differential equations (PDEs) describing fluid flow in a porous medium. The system involves the Darcy-Forchheimer equation. Discretize the spatial domain using Finite Element Method (FEM) and time using an implicit scheme. Analyze the numerical stability of the scheme using Von Neumann analysis. Discuss the condition number of the resulting linear system and propose a preconditioner to improve convergence.",
+      "reference_context": {
+        "domain": "2D rectangular domain [0, 1] x [0, 1]",
+        "boundary_conditions": "Dirichlet on left/right, Neumann on top/bottom",
+        "parameters": {
+          "permeability": 1e-12,
+          "porosity": 0.3,
+          "viscosity": 0.001
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Discretization Accuracy — Is the FEM formulation and time-stepping scheme correctly derived and consistent?",
+        "Criterion 2: Stability Analysis — Is the Von Neumann analysis correctly applied to determine the stability region?",
+        "Criterion 3: Numerical Efficiency — Is the proposed preconditioner justified and does it address the ill-conditioning of the system?"
+      ],
+      "student_answer": "```python\nimport numpy as np\nfrom scipy.sparse import csr_matrix\nfrom scipy.sparse.linalg import spsolve\n\ndef solve_porous_flow(permeability, porosity, viscosity, dt, nu):\n    \"\"\"\n    Solves a system of non-linear PDEs describing fluid flow in a porous medium\n    using the Finite Element Method with an implicit scheme and Von Neumann analysis.\n\n    Args:\n        permeability (float): Permeability of the porous medium.\n        porosity (float): Porosity of the porous medium.\n        viscosity (float): Viscosity of the fluid.\n        dt (float): Time step size.\n        nu (int): Number of time steps.\n\n    Returns:\n        numpy.ndarray: Solution at the final time step.\n    \"\"\"\n\n    # Spatial domain and boundary conditions\n    Lx, Ly = 1.0, 1.0\n    x = np.linspace(0, Lx, 100)\n    y = np.linspace(0, Ly, 100)\n    X, Y = np.meshgrid(x, y)\n\n    # Define the Darcy-Forchheimer equation\n    def darcy_forchheimer(u, v, x, y):\n        k = permeability\n        mu = viscosity\n        alpha = 0.5  # Forchheimer coefficient (adjust as needed)\n        \n        dudx = np.gradient(u, x)\n        dudy = np.gradient(u, y)\n        dvdx = np.gradient(v, x)\n        dvdy = np.gradient(v, y)\n\n        dudx2 = np.gradient(dudx, x)\n        dudy2 = np.gradient(dudy, y)\n        dvdx2 = np.gradient(dvdx, x)\n        dvdy2 = np.gradient(dvdy, y)\n\n        dudx_term = k * (dudx + dvdx) / (mu * (1 + alpha * (dudx**2 + dudy**2)))\n        dudy_term = k * (dudy + dvdy) / (mu * (1 + alpha * (dudx**2 + dudy**2)))\n\n        return dudx_term, dudy_term\n\n    # Finite Element discretization (simplified 1D approximation for 2D)\n    # This is a placeholder and needs to be replaced with a proper FEM implementation\n    # For simplicity, we'll use a central difference approximation.\n    u = np.copy(X)\n    v = np.copy(Y)\n\n    # Implicit time integration (backward Euler)\n    for _ in range(nu):\n        u_new = u - dt * (dudx, dudy)  # Assuming dudx, dudy are functions of u, v\n        v_new = v - dt * (dvdx, dvdy)  # Assuming dvdx, dvdy are functions of u, v\n        u, v = u_new, v_new\n\n    return u\n\n# Example usage\npermeability = 1e-12\nporosity = 0.3\nviscosity = 0.001\ndt = 1e-4\nnu = 100\n\nsolution = solve_porous_flow(permeability, porosity, viscosity, dt, nu)\n\nprint(solution)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails to address the core task requirements. It provides a Python script that attempts to solve a PDE using finite differences (explicitly stated as a 'simplified 1D approximation for 2D' and using np.gradient) rather than the requested Finite Element Method (FEM). The code contains critical syntax errors (e.g., unpacking a tuple into a variable in the update step: `u_new = u - dt * (dudx, dudy)`), logical flaws (the Darcy-Forchheimer equation is not properly formulated as a system of PDEs, and the time-stepping loop does not solve a linear system), and completely lacks the required Von Neumann stability analysis, condition number discussion, and preconditioner proposal. The 'Additional Checks' section references a 'logistic growth model' which is irrelevant to the fluid flow task, indicating a hallucinated or mismatched context. The code is non-functional and the theoretical components are entirely missing."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Disseminate research by writing reports, publishing papers, or presenting at professional conferences.",
+      "task_type": "Statistical Analysis and Reporting",
+      "user_prompt": "Analyze a dataset of clinical trial results comparing two treatment groups. The data includes continuous outcomes with non-normal distributions and censored data (survival analysis). Perform a non-parametric hypothesis test (e.g., Wilcoxon rank-sum) and a Cox proportional hazards model. Interpret the results in the context of the clinical trial, including confidence intervals and effect sizes. Write a summary report section that explains the methodology and findings to a non-technical audience.",
+      "reference_context": {
+        "dataset_summary": {
+          "group_a_size": 150,
+          "group_b_size": 145,
+          "outcome_variable": "Time to event (days)",
+          "censoring_rate": "20%"
+        },
+        "significance_level": 0.05
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Methodological Appropriateness — Are the chosen statistical tests suitable for the data characteristics (non-normal, censored)?",
+        "Criterion 2: Interpretation Accuracy — Are the p-values, confidence intervals, and hazard ratios interpreted correctly?",
+        "Criterion 3: Communication — Is the summary report clear, accurate, and accessible to a non-technical audience?"
+      ],
+      "student_answer": "```\n**Report: Clinical Trial Outcome Analysis**\n\n**Introduction:**\n\nThis report presents the analysis of clinical trial data comparing two treatment groups (Group A and Group B) regarding “Time to event (days)”. The primary objective was to determine if there was a statistically significant difference in the time to event between the two groups.  We employed both a non-parametric Wilcoxon rank-sum test and a Cox proportional hazards model to assess this difference, considering the non-normal distribution of the outcome variable and the presence of censored data.\n\n**Methodology:**\n\n1.  **Wilcoxon Rank-Sum Test:** A Wilcoxon rank-sum test (also known as the Mann-Whitney U test) was conducted to compare the distributions of “Time to event (days)” between Group A and Group B. This test is appropriate for continuous outcomes that are not normally distributed and may contain censored data. The test assesses whether the two samples come from the same distribution.\n\n2.  **Cox Proportional Hazards Model:** A Cox proportional hazards model was fitted to analyze the time-to-event data. This model allows us to assess the effect of the treatment group (Group A vs. Group B) on the hazard rate (the instantaneous risk of an event occurring). The model accounts for censoring, providing a more accurate estimate of the treatment effect than a simple survival analysis.\n\n3.  **Statistical Software:** The analyses were performed using R statistical software.\n\n**Results:**\n\n*   **Wilcoxon Rank-Sum Test:** The Wilcoxon rank-sum test yielded a p-value of 0.03. This indicates a statistically significant difference between the two groups (p < 0.05). The median time to event for Group A was 180 days, while for Group B it was 220 days.\n\n*   **Cox Proportional Hazards Model:** The Cox model revealed a statistically significant hazard ratio (HR) of 1.35 (95% Confidence Interval: 1.12 - 1.63) for Group B compared to Group A. This suggests that individuals in Group B experienced an approximately 35% higher hazard of the event occurring compared to those in Group A. The p-value associated with the hazard ratio was 0.01.\n\n*   **Effect Size:** The hazard ratio of 1.35 represents the relative risk of the event occurring in Group B compared to Group A.  This indicates a clinically meaningful difference, suggesting that the treatment in Group B was associated with a faster time to event.\n\n**Interpretation:**\n\nThe results of both the Wilcoxon rank-sum test and the Cox proportional hazards model indicate that there is a statistically significant difference in “Time to event (days)” between Group A and Group B.  The Cox model provides a more nuanced understanding of this difference, demonstrating that individuals receiving treatment in Group B experienced a higher hazard rate for the event of interest. The hazard ratio of 1.35 suggests that the treatment in Group B was associated with a 35% increase in the risk of the event occurring over time compared to Group A.\n\n**Summary for Non-Technical Audience:**\n\nThis study compared the effectiveness of two different treatments for a specific condition, measured by the time it took for an event to occur.  We found that patients receiving treatment in one group experienced the event, on average, sooner than patients receiving the other treatment.  While both tests (a statistical comparison of the distributions of the data and a more complex model accounting for incomplete data) showed a significant difference, the results suggest that the treatment in one group was associated with a faster rate of the event occurring.  The findings provide evidence to support the consideration of this treatment as potentially more effective.\n\n**Limitations:**\n\nThe analysis is based on observational data from a clinical trial.  While the Cox model accounts for censoring, potential confounding factors not included in the dataset could still influence the results.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy due to a critical methodological error: the student explicitly states that the Wilcoxon rank-sum test is appropriate for 'censored data.' This is false; the standard Wilcoxon rank-sum test cannot handle censored observations (survival data), which invalidates the primary non-parametric analysis requested. Additionally, the 'Additional Checks' section in the prompt regarding logistic growth models and Jacobian calculations is completely ignored, indicating a failure to address the full context or a hallucination of the task requirements. The submission also lacks specific effect size calculations (e.g., median difference with CI) and misinterprets the clinical context by suggesting a 'faster time to event' is 'more effective' without defining the event (e.g., death vs. recovery). While the writing is clear (Clarity 3), the statistical content is dangerously flawed for a professional report."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Maintain knowledge in the field by reading professional journals, talking with other mathematicians, and attending professional conferences.",
+      "task_type": "Applied Cryptography and Number Theory",
+      "user_prompt": "Evaluate the security of a proposed cryptographic protocol based on the discrete logarithm problem over a finite field. The protocol uses a prime modulus p of 2048 bits. Analyze the potential vulnerabilities against the Number Field Sieve (NFS) algorithm. Calculate the estimated computational cost in terms of operations and compare it to current state-of-the-art capabilities. Propose modifications to the protocol parameters to ensure security against future quantum computing threats (e.g., Shor's algorithm) or classical advances.",
+      "reference_context": {
+        "protocol_type": "Diffie-Hellman Key Exchange variant",
+        "current_modulus": "2048-bit prime",
+        "threat_model": "Classical adversary with 2^128 security margin; Quantum adversary with Shor's algorithm"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Security Analysis — Is the assessment of the NFS complexity and current security margins accurate?",
+        "Criterion 2: Quantum Resistance — Are the implications of Shor's algorithm correctly identified and addressed?",
+        "Criterion 3: Parameter Recommendations — Are the proposed modifications to the protocol parameters mathematically sound and sufficient for long-term security?"
+      ],
+      "student_answer": "```\nSecurity Assessment: Discrete Logarithm Protocol\n\n**1. Baseline Security Analysis (Classical)**\n\n*   **Problem:** The protocol relies on the difficulty of the discrete logarithm problem (DLP) over a finite field defined by a 2048-bit prime modulus *p*.\n*   **Vulnerability:** The Number Field Sieve (NFS) is the most efficient classical algorithm for solving DLP.\n*   **NFS Cost Estimate:**  The cost of NFS scales approximately as O(p^(1/3) * n^(2/3)), where *n* is the order of the group.  With a 2048-bit prime, *p* is approximately 2^2048.  Assuming a reasonable group order *n*, the NFS cost is estimated to be around 2^128 operations.\n*   **Security Margin:**  A 2^128 security margin provides a reasonable defense against current classical attacks, but is increasingly vulnerable to algorithmic improvements.\n\n**2. Quantum Threat Analysis (Shor's Algorithm)**\n\n*   **Threat:** Shor's algorithm can solve DLP in polynomial time on a quantum computer.\n*   **Impact:** A sufficiently large quantum computer would render the protocol insecure.\n*   **Quantum Cost Estimate:** Shor's algorithm has a complexity of approximately O(exp( (log n)^3 / (3 * (log q)^2 ) )), where *n* is the order of the group and *q* is the number of bits in the modulus.  For a 2048-bit prime, *q* = 2048.  This translates to roughly O(2^(924)) operations.\n\n**3. Parameter Modifications for Post-Quantum Security**\n\n*   **Recommendation 1: Lattice-Based Cryptography:** Migrate to a lattice-based cryptography scheme (e.g., CRYSTALS-Kyber, NTRU). These schemes are believed to be resistant to both classical and quantum attacks.\n*   **Recommendation 2: Larger Modulus:** If remaining with DLP, significantly increase the modulus size. A 4096-bit or 1024-bit modulus would provide a substantial increase in security against Shor's algorithm, though the NFS cost would also increase proportionally.  However, this is a diminishing return.\n*   **Recommendation 3: Hybrid Approach:** Combine a post-quantum scheme with a traditional DLP-based scheme for a layered defense.\n*   **Recommendation 4:  Use a Group with a Larger Order:**  Employ a group with a larger order, making Shor's algorithm more computationally expensive.  However, this needs careful consideration as larger orders can impact performance.\n\n**4. Estimated Computational Cost Comparison (Post-Quantum)**\n\n| Algorithm           | Estimated Cost (Operations) |\n| ------------------- | -------------------------- |\n| NFS (2048-bit prime) | 2^128                      |\n| Shor's Algorithm    | 2^924                      |\n| CRYSTALS-Kyber      | ~10^200 (variable)          |\n\n**5. Conclusion**\n\nThe current 2048-bit prime-based Diffie-Hellman variant is vulnerable to Shor's algorithm.  Immediate migration to post-quantum cryptography is strongly recommended.  While increasing the modulus size offers some temporary protection, it is not a sustainable solution.  Lattice-based cryptography provides the most promising path forward.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. First, it completely ignores the 'ADDITIONAL CHECKS' section which explicitly requires verifying a logistic growth model, Jacobian calculation, and numerical stiffness analysis; the student provided a cryptographic analysis instead. Second, the cryptographic content contains severe domain errors: it claims Shor's algorithm has a complexity of O(2^924) (it is polynomial, roughly O(n^3), and breaks 2048-bit DH instantly), and it suggests increasing the modulus size to 1024 bits (a decrease) to improve security. The student also hallucinates a cost for CRYSTALS-Kyber as 10^200 operations. The response is factually incorrect and irrelevant to the specific constraints in the additional checks."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Perform computations and apply methods of numerical analysis to data.",
+      "task_type": "Numerical Analysis and Simulation",
+      "user_prompt": "Given a dataset of population growth over 50 years with environmental carrying capacity constraints, develop a non-linear differential equation model. Derive the equilibrium points, analyze their stability using linearization, and propose a numerical integration scheme (e.g., Runge-Kutta) to simulate future trends. Provide the mathematical formulation, stability analysis, and pseudocode for the simulation.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "year": 1970,
+            "population": 3.6
+          },
+          {
+            "year": 1980,
+            "population": 4.4
+          },
+          {
+            "year": 1990,
+            "population": 5.3
+          },
+          {
+            "year": 2000,
+            "population": 6.1
+          },
+          {
+            "year": 2010,
+            "population": 6.9
+          }
+        ],
+        "constraints": "Carrying capacity K = 12 billion; Initial population P0 = 3.6 billion; Growth rate r is unknown and must be estimated using least squares on the provided data points."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the differential equation accurately model the described phenomenon and do the stability analyses follow standard mathematical proofs?",
+        "Criterion 2: Completeness — Did the solution include the derivation, stability analysis, and a complete numerical scheme?",
+        "Criterion 3: Best practices — Is the numerical method chosen appropriate for the stiffness of the problem, and are assumptions clearly stated?"
+      ],
+      "student_answer": "**Mathematical Formulation**\n\nLet *P(t)* be the population at time *t* (in years). The model is based on the logistic growth equation with environmental constraints:\n\n```\ndP/dt = rP(1 - P/K)\n```\n\nwhere:\n\n*   *r* is the growth rate (to be estimated)\n*   *K* is the carrying capacity (12 billion)\n*   *P* is the population\n\n**Estimating the Growth Rate (r)**\n\nUsing the least squares method to estimate *r*:\n\nWe want to minimize the sum of squared errors between the observed population and the predicted population:\n\n```\nSum_i = Σ [P_observed(t_i) - P_predicted(t_i)]^2\n```\n\nWhere *P_predicted(t_i) = P0 * e^(r*t_i)*\n\nThis leads to the following equation to solve for *r*:\n\n```\nr = (1/P0) * ln(Sum_i / P0)\n```\n\n**Equilibrium Points**\n\nEquilibrium points occur when *dP/dt = 0*:\n\n```\n0 = rP(1 - P/K)\n```\n\nThis gives us two equilibrium points:\n\n*   *P = 0*\n*   *P = K = 12*\n\n**Stability Analysis (Linearization)**\n\nNear *P = 0*, the equation becomes:\n\n```\ndP/dt = rP\n```\n\nThis is an exponential growth, so *P = 0* is an unstable equilibrium.\n\nNear *P = K*, the equation becomes:\n\n```\ndP/dt = -rKP\n```\n\nThis is an exponential decay, so *P = K* is a stable equilibrium.\n\n**Numerical Integration Scheme (Runge-Kutta 4th Order)**\n\n```pseudocode\nfunction RungeKutta4(P, t, dt, r, K):\n  h = dt\n  k1 = r * P\n  k2 = r * (P + k1/2)\n  k3 = r * (P + k2/2)\n  k4 = r * (P + k3)\n  P_new = P + h * (k1 + 2*k2 + 2*k3 + k4)\n  return P_new, t + dt\n```\n\n**Simulation Pseudocode**\n\n```pseudocode\nfunction SimulatePopulation(P0, r, K, initial_year, final_year, dt):\n  P = P0\n  t = initial_year\n  years = []\n  populations = []\n\n  while t <= final_year:\n    years.append(t)\n    populations.append(P)\n\n    P, t = RungeKutta4(P, t, dt, r, K)\n\n  return years, populations\n```\n\n**Example Usage**\n\n```python\n# Assuming P0 = 3.6, K = 12, r estimated from data\nyears, populations = SimulatePopulation(3.6, r, 12, 1970, 2020, 0.1)\n\n# Plot the results\nimport matplotlib.pyplot as plt\nplt.plot(years, populations)\nplt.xlabel(\"Year\")\nplt.ylabel(\"Population (Billions)\")\nplt.title(\"Population Growth Model\")\nplt.show()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on fundamental mathematical correctness. First, the growth rate estimation is completely wrong; the student uses the exponential growth formula (P = P0*exp(rt)) instead of the logistic solution, and the derived formula for 'r' is mathematically nonsensical. Second, the stability analysis is flawed; the linearization near K is incorrect (it should yield -r, not -rK), and the student fails to explicitly calculate the Jacobian or eigenvalue. Third, the Runge-Kutta 4 implementation is incorrect; it ignores the (1 - P/K) term in the differential equation, effectively simulating exponential growth rather than logistic growth. While the structure is clear (Dimension 5), the core mathematical content is invalid, requiring significant rework (Dimension 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Assemble sets of assumptions, and explore the consequences of each set.",
+      "task_type": "Scenario Analysis and Sensitivity",
+      "user_prompt": "A logistics company needs to optimize delivery routes for a fleet of 50 vehicles across a city grid. Develop a mathematical framework to explore three distinct sets of assumptions regarding traffic congestion, fuel costs, and driver availability. For each set, formulate the objective function and constraints, then analyze the consequences on total cost and delivery time. Discuss the trade-offs and identify the robust solution.",
+      "reference_context": {
+        "parameters": {
+          "vehicle_count": 50,
+          "max_delivery_time_hours": 8,
+          "base_fuel_cost_per_km": 0.15,
+          "city_grid_size_km": 20
+        },
+        "assumption_sets": [
+          {
+            "id": "A1",
+            "description": "High traffic, low fuel cost, standard driver availability"
+          },
+          {
+            "id": "A2",
+            "description": "Low traffic, high fuel cost, reduced driver availability"
+          },
+          {
+            "id": "A3",
+            "description": "Variable traffic, moderate fuel cost, optimal driver availability"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Logical Consistency — Are the assumptions clearly defined and do the consequences logically follow from the mathematical formulation?",
+        "Criterion 2: Completeness — Does the response cover all three assumption sets with distinct analyses and a comparative summary?",
+        "Criterion 3: Practicality — Are the trade-offs identified actionable for a logistics manager, and are the constraints (time, fleet size) respected?"
+      ],
+      "student_answer": "```python\nimport pulp\n\ndef solve_delivery_optimization(assumption_set):\n    \"\"\"\n    Solves the delivery optimization problem for a given assumption set.\n\n    Args:\n        assumption_set (dict): A dictionary containing the assumption parameters.\n\n    Returns:\n        tuple: A tuple containing the optimal route assignment, total cost, and total delivery time.\n    \"\"\"\n\n    # Problem Setup\n    prob = pulp.LpProblem(\"Delivery_Optimization\", pulp.LpMinimize)\n\n    # Decision Variables\n    routes = range(50)\n    x = pulp.LpVariable.dicts(\"Route\", routes, cat='Binary')\n\n    # Objective Function\n    if assumption_set['id'] == 'A1':\n        prob += pulp.lpSum([base_fuel_cost_per_km * 20 * x[i] for i in routes])\n    elif assumption_set['id'] == 'A2':\n        prob += pulp.lpSum([high_fuel_cost_per_km * 20 * x[i] for i in routes])\n    elif assumption_set['id'] == 'A3':\n        prob += pulp.lpSum([moderate_fuel_cost_per_km * 20 * x[i] for i in routes])\n    else:\n        raise ValueError(\"Invalid assumption set.\")\n\n    # Constraints\n    # Each vehicle must be assigned to exactly one route\n    for i in routes:\n        prob += x[i] == 1\n\n    # Solve the problem\n    prob.solve()\n\n    # Extract Results\n    optimal_routes = [i for i in routes if x[i].varValue == 1]\n    total_cost = pulp.value(prob.objective)\n    total_delivery_time = max_delivery_time_hours * len(optimal_routes)  # Assuming each route takes max_delivery_time_hours\n\n    return optimal_routes, total_cost, total_delivery_time\n\n# Define Parameters\nvehicle_count = 50\nmax_delivery_time_hours = 8\nbase_fuel_cost_per_km = 0.15\ncity_grid_size_km = 20\n\n# Define Assumption Sets\nassumption_sets = [\n    {\n        'id': 'A1',\n        'description': 'High traffic, low fuel cost, standard driver availability',\n        'traffic': 'high',\n        'fuel_cost': 'low',\n        'driver_availability': 'standard'\n    },\n    {\n        'id': 'A2',\n        'description': 'Low traffic, high fuel cost, reduced driver availability',\n        'traffic': 'low',\n        'fuel_cost': 'high',\n        'driver_availability': 'reduced'\n    },\n    {\n        'id': 'A3',\n        'description': 'Variable traffic, moderate fuel cost, optimal driver availability',\n        'traffic': 'variable',\n        'fuel_cost': 'moderate',\n        'driver_availability': 'optimal'\n    }\n]\n\n# Solve for each assumption set\nfor assumption_set in assumption_sets:\n    optimal_routes, total_cost, total_delivery_time = solve_delivery_optimization(assumption_set)\n    print(f\"Assumption Set: {assumption_set['id']}\")\n    print(f\"Optimal Routes: {optimal_routes}\")\n    print(f\"Total Cost: {total_cost}\")\n    print(f\"Total Delivery Time: {total_delivery_time}\")\n    print(\"-\" * 30)\n```\n\n```\nAssumption Set: A1\nOptimal Routes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]\nTotal Cost: 7500.0\nTotal Delivery Time: 80\n------------------------------\nAssumption Set: A2\nOptimal Routes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]\nTotal Cost: 11250.0\nTotal Delivery Time: 80\n------------------------------\nAssumption Set: A3\nOptimal Routes: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49]\nTotal Cost: 9375.0\nTotal Delivery Time: 80\n------------------------------\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical and task-specific requirements. 1) Correctness: The code implements a trivial assignment problem (assigning 50 vehicles to 50 dummy routes) rather than a Vehicle Routing Problem (VRP). It ignores the city grid, traffic congestion, and delivery locations entirely. 2) Completeness: It does not formulate distinct objective functions for the three assumption sets (the logic is hardcoded and incomplete), nor does it analyze trade-offs or identify a robust solution. 3) Best Practices: The mathematical model is non-existent; it is just a linear assignment with no constraints linking routes to demands or time windows. 4) Domain Accuracy: The 'Additional Checks' section in the prompt mentions logistic growth and Jacobians, which are irrelevant to VRP, but the student's failure to address the actual VRP context (traffic, fuel, drivers) renders the domain accuracy zero. 5) Clarity: The output is a raw code dump with no analysis or discussion. 6) Autonomy: The solution is unusable for a client as it solves a non-existent problem. The 'Additional Checks' regarding logistic growth appear to be a hallucination or mismatch in the prompt's evaluation criteria, but even ignoring that, the student failed the core VRP task."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop new principles and new relationships between existing mathematical principles to advance mathematical science.",
+      "task_type": "Theoretical Derivation",
+      "user_prompt": "Investigate the relationship between the spectral radius of a non-negative irreducible matrix and the convergence rate of a specific iterative method (e.g., Jacobi or Gauss-Seidel) applied to a system of linear equations derived from a discretized partial differential equation. Propose a new theoretical bound for the convergence rate under a specific class of matrix perturbations. Provide a rigorous proof of this new relationship.",
+      "reference_context": {
+        "matrix_properties": "Non-negative, irreducible, row-stochastic",
+        "perturbation_type": "Additive noise bounded by epsilon in each entry",
+        "target_method": "Gauss-Seidel Iteration"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Rigor — Are the mathematical steps logically sound, using standard theorems (e.g., Perron-Frobenius) correctly?",
+        "Criterion 2: Novelty — Does the proposed bound represent a meaningful extension or clarification of existing theory?",
+        "Criterion 3: Clarity — Is the proof structured clearly with defined lemmas and a coherent conclusion?"
+      ],
+      "student_answer": "Let $A$ be a non-negative, irreducible, row-stochastic matrix. Consider the system of linear equations $Ax = b$, where $x \\in \\mathbb{R}^n$ and $b \\in \\mathbb{R}^n$. We apply the Gauss-Seidel iteration to this system, defined as:\n\n$x_{i}^{k+1} = \\frac{1}{\\alpha_i} \\sum_{j=1}^n A_{ij} x_{j}^{k+1}$, for $i = 1, \\dots, n$, where $\\alpha_i = \\sum_{j=1}^n A_{ij}$.\n\nLet $\\rho(A)$ denote the spectral radius of $A$, i.e., $\\rho(A) = \\max_{1 \\leq i \\leq n} \\sigma_i(A)$, where $\\sigma_i(A)$ are the eigenvalues of $A$.  We assume that $0 \\leq \\sigma_i(A) \\leq 1$ for all $i$.\n\nNow, consider the case where $A$ is perturbed by additive noise, bounded by $\\epsilon$ in each entry.  Let $A^\\epsilon$ be the perturbed matrix, where $A^\\epsilon_{ij} = A_{ij} + \\epsilon \\delta_{ij}$, and $\\delta_{ij}$ is the Kronecker delta.\n\nWe want to find a bound on the convergence rate of the Gauss-Seidel iteration for $A^\\epsilon$.  Let $x^k$ be the sequence of iterates generated by the Gauss-Seidel method. We want to find a bound on the error $||x^k - x||_2$ as $k \\to \\infty$.\n\n**Theorem:**  If $A$ is a non-negative, irreducible, row-stochastic matrix, and $0 \\leq \\epsilon \\leq 1$, then for any $x^0$ and $k$ sufficiently large, we have:\n\n$||x^k - x||_2 \\leq \\frac{\\epsilon}{\\rho(A)} ||x^0 - x||_2$\n\n**Proof:**\n\nLet $r_k = ||x^k - x||_2$.  We will show that $r_k \\leq \\frac{\\epsilon}{\\rho(A)} r_0$.\n\nAt each iteration $k$, we have $x_{i}^{k+1} = \\frac{1}{\\alpha_i} \\sum_{j=1}^n A_{ij}^\\epsilon x_{j}^{k+1}$.  Since $A^\\epsilon_{ij} = A_{ij} + \\epsilon \\delta_{ij}$, we can rewrite this as:\n\n$x_{i}^{k+1} = \\frac{1}{\\alpha_i} \\sum_{j=1}^n (A_{ij} + \\epsilon \\delta_{ij}) x_{j}^{k+1} = \\frac{1}{\\alpha_i} \\sum_{j=1}^n A_{ij} x_{j}^{k+1} + \\frac{1}{\\alpha_i} \\sum_{j=1}^n \\epsilon \\delta_{ij} x_{j}^{k+1} = \\frac{1}{\\alpha_i} \\sum_{j=1}^n A_{ij} x_{j}^{k+1} + \\epsilon x_i^{k+1}$.\n\nThis implies that $x_{i}^{k+1} - x_{i}^{k} = \\frac{1}{\\alpha_i} \\sum_{j=1}^n A_{ij}^\\epsilon (x_{j}^{k+1} - x_{j}^{k})$.\n\nNow, consider the error $r_{k+1} = ||x^{k+1} - x||_2 = ||(x^{k+1} - x) + (x - x)||_2 \\leq ||x^{k+1} - x||_2 + ||x - x||_2 = r_k + 0 = r_k$.\n\nWe can write $r_{k+1} \\leq \\frac{1}{\\alpha_i} \\sum_{j=1}^n |A_{ij}^\\epsilon| |x_{j}^{k+1} - x_{j}^{k}|$.  Since $A_{ij}^\\epsilon = A_{ij} + \\epsilon \\delta_{ij}$, we have $|A_{ij}^\\epsilon| = |A_{ij} + \\epsilon \\delta_{ij}| \\leq |A_{ij}| + \\epsilon$.  Therefore,\n\n$r_{k+1} \\leq \\frac{1}{\\alpha_i} \\sum_{j=1}^n (|A_{ij}| + \\epsilon) |x_{j}^{k+1} - x_{j}^{k}| \\leq \\frac{1}{\\alpha_i} \\sum_{j=1}^n |A_{ij}| |x_{j}^{k+1} - x_{j}^{k}| + \\frac{\\epsilon}{\\alpha_i} \\sum_{j=1}^n |x_{j}^{k+1} - x_{j}^{k}|$.\n\nSince $A$ is row-stochastic, $\\sum_{j=1}^n A_{ij} = 1$ for all $i$.  Thus, $\\alpha_i = 1$.  Then,\n\n$r_{k+1} \\leq \\sum_{j=1}^n |A_{ij}| r_k + \\epsilon r_k = (1 + \\epsilon) r_k$.\n\nTherefore, $r_{k+1} \\leq (1 + \\epsilon) r_k$.  This implies $r_k \\leq (1 + \\epsilon)^k r_0$.\n\nHowever, we want to show that $r_k \\leq \\frac{\\epsilon}{\\rho(A)} r_0$.  Since $\\rho(A) = \\max_i \\sigma_i(A)$, and $\\sigma_i(A) \\leq 1$, we have $\\rho(A) \\leq 1$.  Thus, $\\frac{\\epsilon}{\\rho(A)} \\geq \\epsilon$.\n\nWe have $r_k \\leq (1 + \\epsilon)^k r_0$.  If $k$ is sufficiently large, then $(1 + \\epsilon)^k \\approx e^{k\\epsilon}$.  Therefore, $r_k \\leq e^{k\\epsilon} r_0$.  We want to show that $e^{k\\epsilon} \\leq \\frac{\\epsilon}{\\rho(A)}$.  This is equivalent to $k\\epsilon \\leq \\ln(\\frac{\\epsilon}{\\rho(A)})$.  So $k \\leq \\frac{\\ln(\\frac{\\epsilon}{\\rho(A)})}{\\epsilon}$.  This is only true if $\\epsilon$ is small enough.\n\nThe above argument is not rigorous. A more refined analysis is needed.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. 1) Correctness: The student defines the Gauss-Seidel iteration incorrectly (mixing indices and variables), misdefines the spectral radius as the maximum singular value instead of eigenvalue, and proposes a theorem that is mathematically impossible (error bound decreasing with epsilon while the derived inequality shows error growth). 2) Completeness: The proof is abandoned mid-stream with 'This is only true if...' and 'The above argument is not rigorous,' failing to provide the requested new theoretical bound or proof. 3) Best Practices: The notation is incoherent (e.g., 'A_', 'x_'), and the logic is circular. 4) Domain Accuracy: The student confuses spectral radius with singular values, misapplies the Kronecker delta for general noise, and misunderstands the convergence properties of row-stochastic matrices. 5) Clarity: The text is disjointed and contains broken LaTeX syntax. 6) Autonomy: The output is a rough draft that admits failure and contains fatal errors, requiring a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Develop computational methods for solving problems that occur in areas of science and engineering or that come from applications in business or industry.",
+      "task_type": "Algorithm Design and Complexity",
+      "user_prompt": "Design a computational method to solve a large-scale sparse linear system arising from a finite element analysis of a bridge structure. The system has 10^6 variables. Your solution must include the algorithm choice, a complexity analysis (time and space), and a discussion on numerical stability regarding the condition number. Provide pseudocode and justify why your method is superior to direct solvers for this specific scale.",
+      "reference_context": {
+        "system_size": "10^6 variables",
+        "matrix_type": "Sparse, symmetric positive definite",
+        "hardware_constraint": "Memory limit of 16GB RAM",
+        "accuracy_requirement": "Relative error < 10^-6"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Efficiency — Is the algorithm complexity (e.g., O(N log N) or O(N)) appropriate for the problem scale?",
+        "Criterion 2: Stability — Does the solution address numerical stability and condition number issues explicitly?",
+        "Criterion 3: Feasibility — Is the proposed method implementable within the given memory constraints?"
+      ],
+      "student_answer": "```pseudocode\nAlgorithm: Krylov Subspace Iteration with Preconditioning (GMRES with ILU(k))\n\n1.  **Initialization:**\n    *   `A`: Sparse symmetric positive definite matrix (10^6 x 10^6).\n    *   `b`: Right-hand side vector (10^6).\n    *   `x0`: Initial guess vector (e.g., all zeros).\n    *   `tolerance = 1e-6`: Convergence tolerance.\n    *   `max_iterations = 1000`: Maximum number of iterations.\n    *   `k = 1`: ILU preconditioner parameter.  Start with k=1.\n\n2.  **Preconditioning:**\n    *   Compute ILU(k) preconditioner `P` from `A`.  ILU(k) is defined as:\n        *   `P = I - L - D^-1`, where `L` is the lower triangular part of `A` with non-zero entries, and `D` is the diagonal of `A`.\n        *   `P` is constructed iteratively:\n            *   For each diagonal element `A[i,i]`:\n                *   Find the smallest non-zero element `A[i,j]` in the column `i` of `A` (where `j > i`).\n                *   If `A[i,j]` is non-zero, set `P[i,i] = 1 - A[i,j] / A[i,i]`.  Otherwise, `P[i,i] = 1`.\n    *   `Ap = Pb`  (Solve `Ap = Pb` to obtain an approximate solution `p`)\n\n3.  **Krylov Subspace Iteration (GMRES):**\n    *   Initialize Krylov subspace: `K0 = {b, x0}`\n    *   For `iteration = 1 to max_iterations`:\n        *   Compute the Arnoldi process to find the optimal Krylov basis vector `v_k`.\n        *   Compute `Ak = A * k`\n        *   Solve `Ak * w = b - Ap` for `w` using a direct solver (e.g., LU decomposition) – this is the preconditioner step.\n        *   `x_k+1 = x_k + gamma * v_k` where `gamma = - (w^T * v_k) / (v_k^T * Ak * v_k)`\n        *   Check for convergence: `||x_k+1 - x_k|| / ||x_k+1|| < tolerance`\n        *   If converged, break.\n        *   Increase `k` (e.g., `k = k + 1`) and recompute `P` with the new `k`.\n\n4.  **Output:** `x_k+1`\n\nComplexity Analysis:\n\n*   **Time Complexity:**  The time complexity is dominated by the Krylov subspace iteration.  GMRES with ILU(k) has a complexity of approximately O(M<sup>3</sup> / m), where M is the matrix size (10<sup>6</sup>) and m is the condition number of A.  The ILU preconditioning adds a factor of O(M<sup>2</sup>) for constructing the preconditioner.  The direct solver used in the preconditioner step (LU) has a complexity of O(M<sup>3</sup>).  Therefore, the overall time complexity is approximately O(M<sup>3</sup> / m + M<sup>2</sup>).  With a large, sparse matrix, the dominant term is O(M<sup>3</sup> / m).\n\n*   **Space Complexity:** The space complexity is primarily determined by the Krylov subspace.  GMRES requires storing the Krylov basis vectors, which has a complexity of O(M).  The ILU preconditioner requires storing the sparse matrix `P`, which also has a complexity of O(M<sup>2</sup>).  Therefore, the overall space complexity is O(M<sup>2</sup>).  Given the 16GB RAM constraint, this is manageable.\n\nNumerical Stability:\n\n*   **Condition Number:** The condition number of `A` significantly impacts the convergence rate.  A large condition number indicates a poor-conditioned matrix, leading to slow convergence and potential instability.  ILU preconditioning aims to reduce the condition number by approximately a factor of `k`.  Choosing a suitable `k` is crucial.  Starting with `k=1` and increasing it iteratively if the convergence rate is slow is a common strategy.  The ILU(k) method can exacerbate the condition number if `k` is too large, so careful tuning is required.\n\n*   **Robustness:**  The choice of tolerance and maximum iterations needs to be carefully considered.  A smaller tolerance leads to higher accuracy but may require more iterations.  The algorithm is generally robust, but issues can arise with ill-conditioned matrices.\n\nJustification for Superiority over Direct Solvers:\n\nDirect solvers (e.g., LU decomposition) have a time complexity of O(M<sup>3</sup>), which is significantly worse than the O(M<sup>3</sup> / m) complexity of GMRES with ILU(k) for large, sparse matrices.  The memory requirements of direct solvers are also typically higher.  For a matrix of size 10<sup>6</sup>, the direct solver would quickly exceed available memory.  GMRES, combined with efficient sparse matrix storage and preconditioning, offers a much more scalable solution, particularly when the matrix is sparse and well-conditioned (or when the condition number can be effectively reduced through preconditioning). The iterative nature of GMRES also allows it to handle very large matrices that would be impossible to solve directly. The 16GB RAM constraint is more easily met by this approach.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it ignores the explicit context that the matrix is Symmetric Positive Definite (SPD), recommending GMRES (for general non-symmetric matrices) instead of the optimal Conjugate Gradient (CG) method. Second, the pseudocode is mathematically incoherent: the ILU(k) definition is fabricated, the Arnoldi process description is nonsensical, and the update step formula is incorrect for any standard iterative solver. Third, the complexity analysis is hallucinated, claiming O(M^3) for sparse operations and providing incorrect formulas for space complexity. Fourth, the 'Additional Checks' section in the prompt regarding logistic growth is completely ignored, indicating a failure to read the full context or a severe hallucination of the problem domain. The solution is not usable and contains no valid professional content."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Design, analyze, and decipher encryption systems designed to transmit military, political, financial, or law-enforcement-related information in code.",
+      "task_type": "Cryptographic Analysis",
+      "user_prompt": "Analyze a hypothetical encryption scheme based on a modified RSA algorithm where the modulus N is the product of two large primes p and q, but the public exponent e is chosen dynamically based on the sum of the digits of p and q. Analyze the security of this system against a known-plaintext attack. Determine if the dynamic exponent choice introduces vulnerabilities related to the factorization of N or the predictability of e. Propose a mathematical countermeasure if a vulnerability exists.",
+      "reference_context": {
+        "modulus_n": "Product of two 1024-bit primes",
+        "exponent_generation": "e = sum_of_digits(p) + sum_of_digits(q)",
+        "attack_vector": "Known-plaintext attack with 1000 message-ciphertext pairs",
+        "security_goal": "Ensure semantic security and resistance to factorization"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Security Analysis — Is the analysis of the dynamic exponent's impact on security rigorous and mathematically grounded?",
+        "Criterion 2: Vulnerability Identification — Does the solution correctly identify if the scheme is vulnerable to factorization or other attacks?",
+        "Criterion 3: Countermeasure — If a vulnerability is found, is the proposed mathematical countermeasure sound and effective?"
+      ],
+      "student_answer": "```\nLet N = p * q, where p and q are 1024-bit primes. Let e = sum_of_digits(p) + sum_of_digits(q).  A known-plaintext attack uses 1000 message-ciphertext pairs (M, C).\n\n**Analysis:**\n\nThe dynamic choice of 'e' based on the digit sums of p and q introduces a significant vulnerability.  The sum of digits function is highly predictable.  Given M and C, an attacker can deduce the digit sums of p and q.  Specifically, if the attacker has 1000 pairs (M, C), they can compute:\n\nC = M<sup>e</sup> mod N\n\nSince e is determined by the digit sums of p and q, and the digit sums are predictable, 'e' is also predictable.  This allows the attacker to compute the prime factors of N.  The attacker can then compute the private key d by finding the modular multiplicative inverse of e modulo φ(N) = (p-1)(q-1).  Because 'e' is predictable, the factorization of N becomes feasible.\n\n**Vulnerability:** Predictable exponent leads to factorization.\n\n**Countermeasure:**\n\nImplement a randomized component to the exponent generation.  Instead of e = sum_of_digits(p) + sum_of_digits(q), define e as:\n\ne = sum_of_digits(p) + sum_of_digits(q) + r\n\nwhere 'r' is a randomly chosen integer between 1 and k (e.g., k=10).  This introduces randomness into the exponent, making it no longer directly dependent on the prime factors.  The attacker still has the message-ciphertext pairs, but the randomness in 'r' makes the factorization significantly more difficult.  The value of 'k' should be chosen such that the resulting 'e' remains within a reasonable range for efficient modular exponentiation.  The security of the system now depends on the difficulty of factoring N given the randomized 'e'.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The student submission is fundamentally flawed and fails to address the task correctly. 1) Correctness: The student claims that a known-plaintext attack allows an attacker to deduce the digit sums of p and q from the ciphertext equation C = M^e mod N. This is mathematically impossible without knowing e or factoring N first; the student confuses the attack vector. 2) Domain Accuracy: The proposed countermeasure (adding a small random integer r) is cryptographically insufficient. In RSA, e must be coprime to φ(N) and typically large; adding a small random number does not prevent factorization if the base 'sum of digits' is small or predictable, nor does it address the core issue that e is derived from the secret primes. 3) Completeness: The submission ignores the specific constraints of RSA (e.g., gcd(e, φ(N))=1) and provides a non-existent proof that e is predictable from plaintext/ciphertext pairs. 4) The 'Additional Checks' section in the prompt regarding logistic growth and Jacobians is irrelevant to the RSA task, but the student's failure to even attempt a valid RSA analysis results in a score of 1 for all technical dimensions. The output is not usable as-is."
+    }
+  ]
+}

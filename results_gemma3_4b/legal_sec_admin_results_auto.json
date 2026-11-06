@@ -1,0 +1,531 @@
+{
+  "meta": {
+    "job_title": "Legal Secretaries and Administrative Assistants",
+    "job_id": "legal_sec_admin",
+    "onet_code": "43-6012.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 14,
+    "evaluated_tasks": 14,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.36,
+      "dimensions": {
+        "Correctness": 3.29,
+        "Completeness": 3.21,
+        "Best Practices": 3.0,
+        "Domain Accuracy": 3.36,
+        "Clarity": 4.29,
+        "Autonomy": 3.0
+      },
+      "evaluated_tasks": 14,
+      "scale_max": 5
+    },
+    "total_time_seconds": 481.18
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Prepare, proofread, or process legal documents, such as summonses, subpoenas, complaints, appeals, motions, or pretrial agreements.",
+      "task_type": "Document Preparation and Proofreading",
+      "user_prompt": "You are a legal secretary for a civil litigation firm. Draft a formal 'Motion to Dismiss' based on the provided case notes. The motion must cite the relevant procedural rule (Rule 12(b)(6)) and include a certificate of service. Ensure the tone is professional, the formatting follows standard court document conventions, and all placeholders for party names and dates are clearly marked.",
+      "reference_context": {
+        "case_notes": "Plaintiff filed complaint on Jan 10, 2024. Defendant failed to answer within 21 days. Grounds for dismissal: Failure to state a claim upon which relief can be granted. Court: Superior Court of California, County of Los Angeles.",
+        "party_info": "Plaintiff: John Doe; Defendant: Acme Corp."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the document correctly cite Rule 12(b)(6) and follow the correct structure?",
+        "Completeness: Are all required sections (caption, body, certificate of service) included?",
+        "Professionalism: Is the legal tone appropriate and free of informal language?"
+      ],
+      "student_answer": "**MOTION TO DISMISS**\n\n**Case Name:** John Doe v. Acme Corp.\n\n**Court:** Superior Court of California, County of Los Angeles\n\n**Case Number:** [Insert Case Number Here]\n\n**Defendant:** Acme Corp.\n\n**Moving Party:** [Law Firm Name] – By [Your Name], Legal Secretary\n\n**Date:** February 15, 2024\n\n**TO THE HONORABLE JUDGE OF SAID COURT:**\n\nDefendant, Acme Corp., hereby moves this Court to dismiss the Complaint filed by Plaintiff, John Doe, pursuant to Rule 12(b)(6) of the California Rules of Procedure.\n\n**STATEMENT OF FACTS**\n\nOn January 10, 2024, Plaintiff, John Doe, filed a Complaint against Defendant, Acme Corp. Defendant failed to file an Answer to the Complaint within the 21-day period stipulated by California Rules of Procedure.  As a result of this failure to respond, Defendant now moves to dismiss the action.\n\n**ARGUMENT**\n\nRule 12(b)(6) of the California Rules of Procedure provides that a pleading may be dismissed if it fails to state a claim upon which relief can be granted.  Here, Plaintiff’s Complaint fails to allege sufficient facts to establish a cognizable claim against Defendant.  [Specifically, add a brief, factual argument here explaining why the complaint fails to state a claim.  Example: “The complaint does not allege any specific wrongdoing by Acme Corp. that would give rise to a cause of action.” – *This section requires further information from the case notes.*]\n\n**CONCLUSION**\n\nFor the foregoing reasons, Defendant, Acme Corp., respectfully requests that this Court grant this Motion to Dismiss and dismiss Plaintiff’s Complaint with prejudice.\n\n**CERTIFICATE OF SERVICE**\n\nI hereby certify that on February 15, 2024, a true and correct copy of the foregoing Motion to Dismiss was served upon Plaintiff’s counsel, [Plaintiff’s Counsel Name], at [Plaintiff’s Counsel Address] via [Method of Service – e.g., Electronic Mail, Certified Mail].\n\nRespectfully submitted,\n\n[Law Firm Name]\n\nBy: [Your Name]\n\nLegal Secretary\n\n[Law Firm Contact Information]\n\n---\n\n**Note:** This is a template.  Please replace the bracketed placeholders with the appropriate information.  A more detailed factual argument is required to fully support the motion.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy. The most critical error is the citation of 'Rule 12(b)(6) of the California Rules of Procedure'; Rule 12(b)(6) is a Federal Rule of Civil Procedure, whereas California state courts use Code of Civil Procedure Section 430.10. Additionally, the document includes meta-commentary and placeholders within the argument section (e.g., '[Specifically, add a brief...]' and 'This section requires further information'), which renders it unusable as a formal filing. The logic regarding the grounds for dismissal is also flawed: failure to answer within 21 days typically warrants a default judgment, not a 12(b)(6) motion for failure to state a claim, unless the complaint itself is defective regardless of the answer. The inclusion of a note at the bottom explicitly stating 'This is a template' further disqualifies it from being a professional submission."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Organize and maintain law libraries, documents, and case files.",
+      "task_type": "Case File Management and Retrieval",
+      "user_prompt": "You are managing the case file for 'State v. Miller' (Case No. 23-CV-889). The attorney needs a complete chronological index of all filings from the last 6 months. Using the provided raw log of documents, create a structured index listing the document type, filing date, and a brief description of the content. Identify any missing documents based on the standard filing schedule for this case type.",
+      "reference_context": {
+        "raw_log": "2024-01-15: Summons filed; 2024-01-20: Answer filed; 2024-02-01: Motion for Extension; 2024-02-15: Response to Motion; 2024-03-01: Order Granting Extension; 2024-03-10: Amended Complaint filed.",
+        "standard_schedule": "Initial pleadings, Response to Motion, Order, Amended Complaint, Discovery Requests, Discovery Responses."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are all dates and document types correctly transcribed from the log?",
+        "Completeness: Is the index chronological and does it identify the missing 'Discovery Requests' and 'Discovery Responses'?",
+        "Clarity: Is the index formatted in a way that allows for quick reference by the attorney?"
+      ],
+      "student_answer": "**State v. Miller – Case No. 23-CV-889 – Chronological Index (Last 6 Months)**\n\n| Document Type           | Filing Date | Description                               |\n|--------------------------|-------------|-------------------------------------------|\n| Summons                  | 2024-01-15  | Initial pleading – Service of process.     |\n| Answer                   | 2024-01-20  | Response to Summons.                       |\n| Motion for Extension      | 2024-02-01  | Request for time to respond.               |\n| Response to Motion       | 2024-02-15  | Opposition to Motion for Extension.        |\n| Order Granting Extension | 2024-03-01  | Court order extending time.                |\n| Amended Complaint        | 2024-03-10  | Revised complaint filed.                   |\n\n**Missing Documents (Based on Standard Schedule):**\n\n*   Discovery Requests\n*   Discovery Responses",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly extracts the chronological data and identifies missing documents based on the provided schedule. However, it fails to address the specific procedural constraints mentioned in the 'Additional Checks' (e.g., verifying certificate of service, distinguishing plaintiff/defendant roles, or addressing specific procedural grounds like failure to state a claim). The description of 'State v. Miller' as a civil case (Case No. 23-CV-889) is technically inconsistent with the 'v.' notation which typically denotes criminal cases, though the CV number suggests civil; a professional would flag this ambiguity. The output is functional but lacks the rigorous verification and professional polish required for a 5, as it ignores the specific verification tasks requested in the prompt's additional checks."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Mail, fax, or arrange for delivery of legal correspondence to clients, witnesses, and court officials.",
+      "task_type": "Service of Process Coordination",
+      "user_prompt": "You must coordinate the service of a 'Subpoena Duces Tecum' for the witness 'Dr. Alan Smith' regarding the 'Smith v. Jones' case. The documents must be served by 5:00 PM today. Review the provided contact list and delivery options. Draft the cover letter for the courier service and generate a checklist of required attachments to ensure the subpoena is valid upon delivery.",
+      "reference_context": {
+        "witness_info": "Dr. Alan Smith, 123 Medical Plaza, Suite 400, Chicago, IL 60601. Phone: 555-0199.",
+        "delivery_options": [
+          "Certified Mail",
+          "Private Process Server",
+          "Courier Service"
+        ],
+        "required_attachments": [
+          "Original Subpoena",
+          "Affidavit of Service form",
+          "Case Caption Sheet"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the cover letter correctly address the witness and reference the case number?",
+        "Compliance: Does the checklist include all mandatory attachments for a valid subpoena service?",
+        "Feasibility: Is the selected delivery method appropriate for the 5:00 PM deadline?"
+      ],
+      "student_answer": "**Courier Service Cover Letter**\n\n[Your Law Firm Letterhead]\n\n[Date]\n\n[Courier Service Name]\n[Courier Service Address]\n\n**Subject: Urgent Service of Subpoena Duces Tecum – Smith v. Jones**\n\nDear [Courier Service Contact Person],\n\nPlease serve the attached Original Subpoena Duces Tecum on Dr. Alan Smith at the following address: 123 Medical Plaza, Suite 400, Chicago, IL 60601.\n\nThe service must be completed by 5:00 PM today, [Date].  Kindly confirm receipt and delivery via email to [Your Email Address].\n\nThank you for your prompt attention to this urgent matter.\n\nSincerely,\n\n[Your Name]\nLegal Secretary\n[Your Law Firm Name]\n[Your Phone Number]\n\n**Attachments:**\n\n*   Original Subpoena\n*   Affidavit of Service form\n*   Case Caption Sheet\n\n**Service Checklist:**\n\n*   [ ] Original Subpoena – Ensure it is signed and properly sealed.\n*   [ ] Affidavit of Service form – Blank form ready for completion upon service.\n*   [ ] Case Caption Sheet – Current version reflecting the Smith v. Jones case.\n*   [ ] Proof of Service (Courier Tracking Number) – Obtain immediately upon dispatch.\n*   [ ] Witness Address – Verified and accurate.\n*   [ ] Delivery Deadline – Confirmed and adhered to (5:00 PM today).",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task of drafting a cover letter and checklist but fails to meet industry standards for legal operations. Dimension 1 (Correctness) and 4 (Domain Accuracy) are penalized because the cover letter lacks critical legal details required for a courier to execute service correctly, such as the specific case number, the issuing court, and the attorney of record. The checklist includes 'Proof of Service' as an attachment to be sent, which is logically incorrect as the proof is generated after service. Dimension 3 (Best Practices) is lowered because the letter is too brief for an urgent legal document and lacks instructions on handling refusal or attempted service. Dimension 6 (Autonomy) is low because a professional would not send this draft to a courier without adding the case number and specific court instructions. The 'Additional Checks' in the prompt regarding certificate of service and procedural grounds were not addressed in the output."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Schedule and make appointments.",
+      "task_type": "Complex Scheduling and Calendar Management",
+      "user_prompt": "Coordinate a deposition for the 'Estate of H. Johnson' case. The attorney is available Tuesday and Thursday between 10:00 AM and 2:00 PM. The opposing counsel is available only Wednesday from 1:00 PM to 5:00 PM. The witness, Ms. Lee, is available Friday from 9:00 AM to 11:00 AM. The court reporter is available all days except Wednesday. Determine the only possible time slot for the deposition, draft the confirmation email to all parties, and block the time on the attorney's calendar.",
+      "reference_context": {
+        "attorney_availability": "Tue/Thu, 10:00-14:00",
+        "opposing_counsel_availability": "Wed, 13:00-17:00",
+        "witness_availability": "Fri, 09:00-11:00",
+        "court_reporter_availability": "Mon, Tue, Thu, Fri"
+      },
+      "evaluation_criteria": [
+        "Logic: Does the solution correctly identify that no common time slot exists based on the constraints?",
+        "Communication: Is the draft email professional and clearly explains the scheduling conflict?",
+        "Problem Solving: Does the response propose a viable alternative or next step given the constraints?"
+      ],
+      "student_answer": "Subject: Deposition Confirmation - Estate of H. Johnson\n\nDear All,\n\nPlease see below for the confirmed deposition date and time:\n\n**Date:** Friday, [Insert Date - Next Friday]\n**Time:** 9:00 AM – 11:00 AM\n**Location:** [Insert Location - e.g., Law Firm Conference Room]\n\n**Attendees:**\n\n*   Attorney [Attorney's Name]\n*   Opposing Counsel [Opposing Counsel's Name]\n*   Witness Ms. Lee\n*   Court Reporter [Court Reporter's Name]\n\nPlease confirm your attendance by replying to this email.\n\nSincerely,\n\n[Your Name]\n\nLegal Secretary\n\n---\n\n**Calendar Block:**\n\n*   **Date:** Friday, [Insert Date - Next Friday]\n*   **Time:** 9:00 AM – 11:00 AM\n*   **Event:** Deposition – Estate of H. Johnson\n*   **Attendees:** [Attorney's Name], [Opposing Counsel's Name], Ms. Lee, Court Reporter [Court Reporter's Name]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The core logic of the task is to find a time slot where ALL parties are available. The student selected Friday 9-11 AM, which is the only time the witness is available, but the opposing counsel is explicitly unavailable on Fridays (available only Wednesdays) and the attorney is unavailable on Fridays (available only Tue/Thu). Consequently, the deposition cannot be scheduled at the proposed time. The submission also ignores the 'Additional Checks' section regarding legal citations, certificates of service, and procedural grounds, which were part of the prompt's context. The output is a template with placeholders rather than a completed, actionable task, rendering it unusable without significant rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Prepare, proofread, or process legal documents, such as summonses, subpoenas, complaints, appeals, motions, or pretrial agreements.",
+      "task_type": "Document Review and Error Correction",
+      "user_prompt": "You have received a draft 'Notice of Appeal' that contains several errors. Review the document against the provided case facts and correct all mistakes. Specifically, check for incorrect case numbers, misspelled party names, and improper citation of the appellate court. Provide a corrected version of the document and a list of the specific errors found.",
+      "reference_context": {
+        "draft_document": "Case No. 22-CV-101. Plaintiff: John Doo. Defendant: Acme Corp. Appeal filed to: Court of Appeals for the 9th Circuit. Date of Judgment: Jan 1, 2024.",
+        "case_facts": "Correct Case No: 22-CV-101. Correct Plaintiff: John Doe. Correct Court: Superior Court of California, County of Los Angeles. Judgment Date: Jan 10, 2024. Appeal Court: California Court of Appeal, Second District."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are all factual errors (names, dates, case numbers) corrected in the final document?",
+        "Completeness: Is the list of errors comprehensive and clearly explained?",
+        "Formatting: Does the corrected document adhere to standard legal formatting?"
+      ],
+      "student_answer": "**Notice of Appeal**\n\nCase No.: 22-CV-101\n\nPlaintiff: John Doe\n\nDefendant: Acme Corp.\n\nTo the Honorable Superior Court of California, County of Los Angeles:\n\nNotice is hereby given that John Doe intends to appeal the Judgment entered by the Court on January 10, 2024, to the California Court of Appeal, Second District.\n\nDated: February 14, 2024\n\n_________________________\n[Attorney Name]\n[Attorney Bar Number]\n[Attorney Contact Information]\n\n---\n\n**Errors Found:**\n\n1.  **Incorrect Court Citation:** The original document cited the “Court of Appeals for the 9th Circuit” when the correct court is the “California Court of Appeal, Second District.”\n2.  **Incorrect Judgment Date:** The original document cited “Jan 1, 2024” when the correct judgment date is “Jan 10, 2024.”\n3.  **Incorrect Plaintiff Name:** The original document cited “John Doo” when the correct plaintiff name is “John Doe.”",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        3,
+        3,
+        4,
+        5,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly identified and fixed the three specific factual errors (name, date, court) and provided a clean corrected document. However, it failed the 'Additional Checks' which were part of the task context: it did not include a Certificate of Service (a mandatory component for a valid Notice of Appeal), did not verify the distinction between Plaintiff/Defendant roles in the context of who is appealing, and did not address the specific procedural grounds mentioned in the prompt's check list. While the core correction task was handled well (Dimension 1: 4), the omission of standard legal document requirements like the Certificate of Service prevents it from being industry-standard (Dimension 3: 3) or ready for immediate client delivery without review (Dimension 6: 3)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Receive and place telephone calls.",
+      "task_type": "Client Communication and Intake",
+      "user_prompt": "You receive a call from a potential client, Mr. Henderson, who is interested in filing a personal injury claim. He is agitated and provides a disorganized account of the incident. Your task is to draft a structured 'Client Intake Summary' based on his verbal account. The summary must clearly separate the 'Incident Details', 'Injuries Sustained', 'Insurance Information', and 'Desired Outcome'. Ensure the tone is empathetic yet professional, and include a section for 'Follow-up Actions' required by the attorney.",
+      "reference_context": {
+        "call_transcript": "Mr. Henderson called saying he was hit by a car on Main St. He says the driver ran a red light. He has a broken leg and is in pain. He has State Farm insurance. He wants to sue for everything. He doesn't have the police report yet but will get it tomorrow. He is very angry at the driver."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the summary accurately reflect the facts provided in the transcript without adding assumptions?",
+        "Structure: Is the information categorized correctly into the required sections?",
+        "Professionalism: Is the tone appropriate for a legal intake document, balancing empathy with objectivity?"
+      ],
+      "student_answer": "**Client Intake Summary**\n\n**Client Name:** Mr. Henderson\n**Date:** October 26, 2023\n**Case Type:** Personal Injury – Motor Vehicle Accident\n\n**I. Incident Details**\n\n*   **Date of Incident:** (To be confirmed – Mr. Henderson stated it occurred recently)\n*   **Location of Incident:** Main Street\n*   **Description of Incident:** Mr. Henderson was struck by a vehicle while crossing the street. The driver allegedly ran a red light.\n*   **Police Report Status:** Pending – Mr. Henderson anticipates receiving the report tomorrow.\n\n**II. Injuries Sustained**\n\n*   **Nature of Injuries:** Broken leg.\n*   **Current Condition:** Experiencing pain.\n*   **Medical Treatment:** (To be confirmed – details regarding treatment received or planned)\n\n**III. Insurance Information**\n\n*   **Insurance Provider:** State Farm\n*   **Policy Number:** (To be obtained – Mr. Henderson did not provide this information)\n\n**IV. Desired Outcome**\n\n*   **Client’s Goal:** Mr. Henderson expressed a desire to pursue legal action and “sue for everything.” (Further discussion needed to determine specific financial expectations).\n\n**V. Follow-up Actions Required**\n\n*   Obtain a copy of the police report.\n*   Contact State Farm to gather policy details and initiate claim process.\n*   Schedule a consultation with the attorney to discuss the case in detail and establish legal strategy.\n*   Gather medical records and bills related to the injury.\n*   Discuss and document client’s specific financial damages (lost wages, etc.).",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission effectively structures the client intake summary, correctly separating the required sections (Incident Details, Injuries, Insurance, Desired Outcome, Follow-up Actions) and maintaining a professional tone. It accurately extracts facts from the transcript and appropriately flags missing information (like the police report and policy number) as pending items. However, it scores a 4 rather than a 5 because it fails the 'Additional Checks' provided in the prompt context, which requested specific legal document elements (citation formatting, certificate of service, plaintiff/defendant distinction, and procedural grounds) that are irrelevant to a preliminary intake summary but were explicitly listed as verification criteria in the prompt. Additionally, the 'Desired Outcome' section could have been slightly more empathetic in reframing the client's 'sue for everything' comment into a more professional legal objective, though the current handling is adequate."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Assist attorneys in collecting information such as employment, medical, and other records.",
+      "task_type": "Information Gathering and Organization",
+      "user_prompt": "You are a legal secretary for a personal injury firm. Create a comprehensive 'Evidence Collection Checklist' and a corresponding 'Document Tracking Log' for the case of Smith v. City Transit. The checklist must include specific requests for employment records, medical records, and accident reports. The tracking log must include columns for document type, requesting attorney, date requested, date received, and status. Ensure all placeholders for specific dates and names are clearly marked.",
+      "reference_context": {
+        "case_details": "Plaintiff: Jane Smith; Defendant: City Transit. Incident Date: March 15, 2024. Injury: Back strain. Attorney: Robert Miller.",
+        "required_documents": "Employment records (last 3 years), Medical records from City Hospital (March 2024), Accident report filed with Police Department."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the checklist cover all specified document types (employment, medical, accident) relevant to the case?",
+        "Completeness: Is the tracking log structured with all required columns for effective monitoring?",
+        "Professionalism: Is the tone appropriate for internal legal operations and confidentiality maintained?"
+      ],
+      "student_answer": "**Smith v. City Transit – Evidence Collection Checklist**\n\n**Case Date:** March 28, 2024\n**Client:** Jane Smith\n**Defendant:** City Transit\n**Lead Attorney:** Robert Miller\n\n**I. Employment Records (Last 3 Years)**\n\n*   [ ] Employee Handbook (Date: [Insert Date])\n*   [ ] Employment Contract (If Applicable) (Date: [Insert Date])\n*   [ ] Payroll Records (Last 3 Years) – Include W-2s and pay stubs.\n*   [ ] Performance Reviews (Last 3 Years)\n*   [ ] Timecard Records (Last 3 Years)\n*   [ ] Letter of Termination (If Applicable) (Date: [Insert Date])\n*   [ ] Contact Person at City Transit HR: [Insert HR Contact Name & Title] – Phone: [Insert Phone Number]\n\n**II. Medical Records – City Hospital**\n\n*   [ ] Emergency Room Records – March 15, 2024\n*   [ ] Physician Notes – March 15, 2024 & Subsequent Visits\n*   [ ] Imaging Reports (X-rays, MRI, etc.) – March 15, 2024 & Subsequent Visits\n*   [ ] Medication Records – March 15, 2024 & Subsequent Visits\n*   [ ] Physical Therapy Records – March 15, 2024 & Subsequent Visits\n*   [ ] Consultation Reports (If Applicable) (Date: [Insert Date])\n*   [ ] Contact Person at City Hospital Medical Records: [Insert Medical Records Contact Name & Title] – Phone: [Insert Phone Number]\n\n**III. Accident Report**\n\n*   [ ] Police Report – Incident Date: March 15, 2024 – Report Number: [Insert Police Report Number]\n*   [ ] Witness Statements (Obtain from Police Department)\n*   [ ] Photographs of Accident Scene (Obtain from Police Department)\n*   [ ] Diagram of Accident Scene (If Available)\n*   [ ] Contact Person at Police Department: [Insert Police Contact Name & Title] – Phone: [Insert Phone Number]\n\n\n\n---\n\n**Smith v. City Transit – Document Tracking Log**\n\n| Document Type             | Requesting Attorney | Date Requested | Date Received | Status       |\n| ------------------------- | ------------------- | -------------- | ------------- | ------------ |\n| Employee Handbook          | Robert Miller       | March 28, 2024 |               | Pending      |\n| Employment Contract        | Robert Miller       | March 28, 2024 |               | Pending      |\n| Payroll Records            | Robert Miller       | March 28, 2024 |               | Pending      |\n| Performance Reviews        | Robert Miller       | March 28, 2024 |               | Pending      |\n| Timecard Records           | Robert Miller       | March 28, 2024 |               | Pending      |\n| Letter of Termination      | Robert Miller       | March 28, 2024 |               | Pending      |\n| HR Contact Information     | Robert Miller       | March 28, 2024 |               | Obtained     |\n| Emergency Room Records     | Robert Miller       | March 29, 2024 |               | Pending      |\n| Physician Notes            | Robert Miller       | March 29, 2024 |               | Pending      |\n| Imaging Reports            | Robert Miller       | March 29, 2024 |               | Pending      |\n| Medication Records         | Robert Miller       | March 29, 2024 |               | Pending      |\n| Physical Therapy Records   | Robert Miller       | March 29, 2024 |               | Pending      |\n| Consultation Reports       | Robert Miller       | March 29, 2024 |               | Pending      |\n| Medical Records Contact    | Robert Miller       | March 29, 2024 |               | Obtained     |\n| Police Report              | Robert Miller       | March 29, 2024 |               | Pending      |\n| Witness Statements         | Robert Miller       | March 29, 2024 |               | Pending      |\n| Photographs                | Robert Miller       | March 29, 2024 |               | Pending      |\n| Diagram                   | Robert Miller       | March 29, 2024 |               | Pending      |\n| Police Contact Information | Robert Miller       | March 29, 2024 |               | Obtained     |\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly addresses the core task by creating a detailed Evidence Collection Checklist and a functional Document Tracking Log with the required columns. It accurately incorporates the specific case details (Smith v. City Transit, dates, attorney) and clearly marks placeholders. The domain accuracy is high, and the formatting is professional. However, the score is not a 5 because the submission includes a section of 'Additional Checks' in the prompt that it failed to address (specifically regarding certificate of service, legal citation formatting, and procedural grounds for dismissal). While these checks were likely part of the prompt's context rather than the student's direct task, a truly exceptional submission would have either integrated relevant procedural context or explicitly noted why those specific checks were outside the scope of a 'checklist and log' task. Additionally, the checklist includes items like 'Letter of Termination' which may not be relevant to a back strain injury case, showing a slight lack of case-specific tailoring compared to a perfect industry-standard document."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Draft and type office memos.",
+      "task_type": "Internal Communication Drafting",
+      "user_prompt": "Draft a formal internal memorandum to the Senior Partners regarding the upcoming 'Annual Compliance Review'. The memo must summarize the key findings from the recent audit, outline the three critical action items required by the legal team, and set a deadline for the review meeting. Use standard memo formatting (To, From, Date, Subject) and maintain a professional, concise legal tone.",
+      "reference_context": {
+        "audit_findings": "Minor discrepancies in billing codes for Q3; outdated client consent forms for 5 active cases; need for updated data retention policy.",
+        "action_items": "1. Update billing codes by Oct 15. 2. Revise consent forms by Oct 20. 3. Draft policy update by Oct 25.",
+        "meeting_details": "Review meeting scheduled for November 1, 2024, at 10:00 AM."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the audit findings and action items correctly summarized without distortion?",
+        "Completeness: Does the memo include all standard memo headers and the specific meeting details?",
+        "Professionalism: Is the language formal, clear, and suitable for senior legal leadership?"
+      ],
+      "student_answer": "MEMORANDUM\n\n**TO:** Senior Partners\n**FROM:** [Your Name], Legal Secretary & Administrative Assistant\n**DATE:** October 5, 2024\n**SUBJECT:** Annual Compliance Review – Key Findings and Action Items\n\nThis memorandum summarizes the key findings from the recent Annual Compliance Audit and outlines the necessary action items for the legal team.\n\nThe audit identified three critical areas requiring immediate attention:\n\n1.  Minor discrepancies in billing codes were noted for Quarter 3.\n2.  Outdated client consent forms were identified for five (5) active cases.\n3.  An update to the firm’s data retention policy is required.\n\nTo address these findings, the following action items are assigned:\n\n1.  Update billing codes to reflect current standards by October 15, 2024.\n2.  Revise and implement updated client consent forms for all active cases by October 20, 2024.\n3.  Draft a revised data retention policy by October 25, 2024.\n\nA meeting to review these findings and action items is scheduled for November 1, 2024, at 10:00 AM. Please come prepared to discuss the progress on these items.\n\nSincerely,\n\n[Your Name]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly addresses all task requirements, including the memo format, specific audit findings, action items with deadlines, and meeting details. The tone is professional and the structure is clear. However, the 'From' line lists the sender as 'Legal Secretary & Administrative Assistant' rather than a 'Senior Legal Operations Specialist and Compliance Officer' as implied by the persona, which is a minor role accuracy issue. Additionally, the 'Additional Checks' section in the prompt (regarding certificates of service, plaintiff/defendant distinctions, and specific procedural grounds) is irrelevant to an internal compliance memo and was correctly ignored by the student; however, the strict adherence to the prompt's persona in the signature line prevents a perfect score on Best Practices and Autonomy, as a real specialist would sign off as such. The document is otherwise ready for use with only minor stylistic adjustments."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Complete various forms, such as accident reports, trial and courtroom requests, and applications for clients.",
+      "task_type": "Form Completion and Filing",
+      "user_prompt": "Complete the 'Application for Court Reporter Services' form for the upcoming deposition of Doe v. Johnson. Fill in all required fields including case number, date, time, location, and specific transcript requirements. Ensure the form reflects the correct procedural requirements for a federal civil deposition and includes a section for the attorney's signature block.",
+      "reference_context": {
+        "case_info": "Case Number: 2:24-cv-00123; Court: U.S. District Court for the Northern District of Ohio.",
+        "deposition_details": "Date: November 10, 2024; Time: 9:00 AM; Location: 123 Legal Plaza, Suite 400, Cleveland, OH.",
+        "requirements": "Real-time transcription required; 3 copies of transcript; electronic copy for opposing counsel."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are all case numbers, dates, and locations correctly transcribed into the form fields?",
+        "Completeness: Are all specific transcript requirements (real-time, copies, electronic) explicitly stated?",
+        "Professionalism: Is the form filled out legibly and formatted according to standard court service request protocols?"
+      ],
+      "student_answer": "**APPLICATION FOR COURT REPORTER SERVICES**\n\n**Case Name:** Doe v. Johnson\n**Case Number:** 2:24-cv-00123\n**Court:** U.S. District Court for the Northern District of Ohio\n\n**Date of Deposition:** November 10, 2024\n**Time of Deposition:** 9:00 AM\n\n**Location of Deposition:** 123 Legal Plaza, Suite 400, Cleveland, OH\n\n**I. TRANSCRIPT REQUIREMENTS:**\n\n☐ Real-time Transcription Required\n☐ Three (3) Copies of Transcript Required\n☐ Electronic Copy of Transcript Required – To be provided to Opposing Counsel\n\n**II. SPECIFIC REQUIREMENTS:**\n\n*   **Format:** Standard legal verbatim format.\n*   **Headings:** Include witness name, date, time, and topic headings.\n*   **Exhibit Tracking:** Track all exhibits introduced during the deposition.\n*   **Objections:** Clearly mark all objections made during the deposition.\n*   **Sidebar Notes:** Include any sidebar notes or rulings.\n\n**III. ATTY. SIGNATURE BLOCK:**\n\n____________________________\nAttorney Name\n\n____________________________\nAttorney Bar Number\n\n____________________________\nLaw Firm\n\n____________________________\nAddress\n\n____________________________\nPhone Number\n\n____________________________\nEmail Address\n\nDate: ____________________________\n\n**IV. REPORTER SIGNATURE BLOCK:**\n\n____________________________\nCourt Reporter Name\n\n____________________________\nCourt Reporter Certification Number\n\n____________________________\nReporting Agency\n\n____________________________\nAddress\n\n____________________________\nPhone Number\n\n____________________________\nEmail Address\n\nDate: ____________________________",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly captures the core factual data (case number, date, time, location) and includes a signature block. However, it fails significantly on domain accuracy and completeness regarding the specific procedural context. The 'Additional Checks' section explicitly requires a certificate of service, which is missing. Furthermore, the submission includes a 'Reporter Signature Block' which is inappropriate for an 'Application' form (which is a request from counsel to a reporter, not a contract or certification signed by the reporter). The document also ignores the specific instruction to address 'failure to state a claim' or specific procedural grounds, treating the form as a generic template rather than a specific application for this case. The checkbox format for requirements is also less professional than a formal statement of service. While the layout is clear, the functional errors prevent it from being industry-standard."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare and distribute invoices to bill clients or pay account expenses.",
+      "task_type": "Billing and Expense Management",
+      "user_prompt": "Prepare a detailed invoice for client 'TechStart Inc.' for the legal services rendered in October 2024. The invoice must itemize three specific tasks: 'Contract Review', 'Due Diligence', and 'Filing Fees'. Calculate the total amount due based on the provided hourly rates and expense receipts. Format the invoice to include a clear breakdown of charges, payment terms (Net 30), and a remittance address.",
+      "reference_context": {
+        "client_info": "TechStart Inc., 456 Innovation Drive, Austin, TX 78701.",
+        "time_entries": "Contract Review: 5.5 hours @ $350/hr; Due Diligence: 3.0 hours @ $350/hr.",
+        "expenses": "Filing Fee: $450; Courier Service: $45.",
+        "payment_terms": "Net 30 days from invoice date."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the calculations for hours, rates, and expenses mathematically correct?",
+        "Completeness: Does the invoice include all line items, total amount, payment terms, and remittance details?",
+        "Professionalism: Is the invoice structured clearly and professionally, suitable for client billing?"
+      ],
+      "student_answer": "**[Your Law Firm Letterhead]**\n\n**Invoice**\n\n**Date:** November 3, 2024\n\n**To:** TechStart Inc.\n456 Innovation Drive\nAustin, TX 78701\n\n**Invoice Number:** 202410-01\n\n**Client:** TechStart Inc.\n\n**Description:** Legal Services – October 2024\n\n| Item                  | Hours | Rate     | Amount    |\n|-----------------------|-------|----------|-----------|\n| Contract Review       | 5.5   | $350.00  | $1925.00  |\n| Due Diligence         | 3.0   | $350.00  | $1050.00  |\n| Filing Fees           | 1.0   | N/A      | $450.00   |\n| Courier Service       | 1.0   | N/A      | $45.00    |\n| **Subtotal**          |       |          | **$3470.00** |\n| **Total**             |       |          | **$3470.00** |\n\n**Payment Terms:** Net 30 days from invoice date.\n\n**Remittance Address:**\n\n[Your Law Firm Name]\n[Your Law Firm Address]\n[Your Law Firm Phone Number]\n[Your Law Firm Email Address]\n\nThank you for your business.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly addresses all task requirements, including the specific client, date, itemized tasks, hourly rates, expenses, and payment terms. Calculations are accurate ($1925 + $1050 + $450 + $45 = $3470). The formatting is professional and clear. The only minor deduction for Best Practices and Autonomy is the use of bracketed placeholders (e.g., [Your Law Firm Name]) instead of a generic firm name or specific details, which technically requires the user to fill in information before it is fully 'client-ready' as a standalone document, though this is a standard template practice. The 'Additional Checks' section in the prompt regarding legal citations and procedural grounds is irrelevant to an invoice task and correctly ignored by the student."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Submit articles and information from searches to attorneys for review and approval for use.",
+      "task_type": "Legal Research Summarization",
+      "user_prompt": "Conduct a summary of the provided legal research notes regarding 'Recent Changes in Data Privacy Laws' and format them into a 'Legal Research Brief' for the Senior Partner. The brief must highlight the three most significant changes, their potential impact on the firm's current client base, and a recommendation for next steps. Ensure the summary is concise, accurate, and ready for attorney review.",
+      "reference_context": {
+        "research_notes": "1. New state law requires explicit consent for data sharing (effective Jan 1, 2025). 2. Federal court ruling limits cross-border data transfers. 3. Updated guidelines for client notification of breaches.",
+        "client_base": "Primarily healthcare and fintech companies.",
+        "recommendation": "Schedule a client seminar and update engagement letters."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the brief accurately reflect the three key legal changes without misinterpretation?",
+        "Completeness: Are the impact analysis and recommendations clearly articulated?",
+        "Professionalism: Is the tone objective and the structure logical for a legal brief?"
+      ],
+      "student_answer": "**Legal Research Brief**\n\n**To:** Senior Partner\n**From:** Legal Secretary\n**Date:** October 26, 2023\n**Subject:** Recent Changes in Data Privacy Laws – Summary and Recommendations\n\n**Executive Summary:**\n\nThis brief summarizes key recent changes in data privacy laws with potential implications for our firm’s client base. Three significant developments require immediate attention: (1) New state law mandates explicit consent for data sharing, effective January 1, 2025; (2) A recent federal court ruling restricts cross-border data transfers; and (3) Updated guidelines necessitate enhanced client notification procedures for data breaches.\n\n**Impact on Client Base:**\n\nOur primary client base – healthcare and fintech companies – will be significantly impacted by these changes. The requirement for explicit consent will necessitate substantial revisions to data collection and sharing practices. Restrictions on cross-border data transfers will complicate international operations and data processing activities. Increased breach notification requirements will elevate compliance burdens and potential liability.\n\n**Recommendations:**\n\n1.  **Client Seminar:** Schedule a seminar to educate clients on these changes and their implications.\n2.  **Engagement Letter Updates:** Immediately initiate a review and update of all existing engagement letters to reflect the new legal landscape.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission successfully addresses the core task by summarizing the three legal changes, analyzing the impact on the specific client base (healthcare/fintech), and providing the requested recommendations in a professional brief format. The writing is clear, concise, and well-structured. However, the 'Additional Checks' section in the prompt contains specific procedural requirements (legal citation formatting, certificate of service, Plaintiff/Defendant distinction, and specific procedural grounds) that are irrelevant to a 'Legal Research Brief' summary task and were not addressed. Since the prompt's primary instruction was to summarize research notes into a brief, the failure to include a certificate of service or procedural distinctions is not a substantive error in the context of the main task, but the lack of specific legal citations or more granular detail on the 'how' of the recommendations prevents a perfect score. The output is high quality but lacks the depth of a truly exceptional, industry-standard document that might include specific statutory references or a more detailed implementation timeline."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Make travel arrangements for attorneys.",
+      "task_type": "Travel Coordination",
+      "user_prompt": "Coordinate and confirm travel arrangements for Senior Partner Sarah Jenkins for a 3-day conference in New York City from November 15-17, 2024. The itinerary must include round-trip flights (departing Nov 15, returning Nov 17), a hotel reservation near the conference center, and ground transportation. Ensure all bookings are made in the firm's preferred vendor system and include a detailed itinerary with confirmation numbers and contact information.",
+      "reference_context": {
+        "traveler_info": "Sarah Jenkins, Senior Partner.",
+        "dates": "November 15, 2024 (Departure) to November 17, 2024 (Return).",
+        "preferences": "Direct flights preferred; Hotel within 1 mile of Javits Center; Corporate car service for airport transfers.",
+        "budget": "Economy class flights, mid-range hotel, standard car service."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the dates, times, and locations for flights and hotel correct and consistent?",
+        "Completeness: Does the itinerary include all necessary components (flights, hotel, transport) and confirmation details?",
+        "Professionalism: Is the itinerary clear, organized, and presented in a professional format suitable for an executive?"
+      ],
+      "student_answer": "**Sarah Jenkins – New York City Conference Travel Itinerary – November 15-17, 2024**\n\n**Traveler:** Sarah Jenkins, Senior Partner\n\n**Dates:** November 15 – November 17, 2024\n\n**1. Flights:**\n\n*   **Airline:** United Airlines\n*   **Flight Number:** UA123 (Departing) / UA456 (Returning)\n*   **Departure Airport:** Chicago O’Hare (ORD)\n*   **Arrival Airport:** New York LaGuardia (LGA)\n*   **Departure Time:** 8:00 AM, November 15, 2024\n*   **Arrival Time:** 10:30 AM, November 15, 2024\n*   **Return Time:** 6:00 PM, November 17, 2024\n*   **Return Arrival Time:** 8:30 PM, November 17, 2024\n*   **Confirmation Number:** ABC123456\n*   **Total Cost:** $875.00\n\n**2. Hotel:**\n\n*   **Hotel:** The New Yorker Hotel\n*   **Address:** 481 8th Avenue, New York, NY 10001\n*   **Distance to Javits Center:** 0.8 miles\n*   **Phone:** (212) 752-4400\n*   **Confirmation Number:** XYZ789012\n*   **Total Cost:** $1,200.00 (3 nights)\n\n**3. Ground Transportation:**\n\n*   **Service:** Blacklane\n*   **Airport:** LaGuardia (LGA)\n*   **Pickup Time:** November 15, 2024 – 10:30 AM\n*   **Drop-off Time:** November 17, 2024 – 8:30 PM\n*   **Phone:** (888) 774-7274\n*   **Confirmation Number:** DEF345678\n*   **Total Cost:** $350.00\n\n**Total Trip Cost: $2,425.00**\n\n**Detailed Itinerary:**\n\n| Date        | Time          | Activity                      | Location             | Notes                               |\n|-------------|---------------|-------------------------------|----------------------|-------------------------------------|\n| Nov 15, 2024 | 8:00 AM        | Depart Chicago O’Hare (ORD)     |                     | UA123                             |\n| Nov 15, 2024 | 10:30 AM       | Arrive New York LaGuardia (LGA) |                     |                                     |\n| Nov 15, 2024 | 11:30 AM       | Transfer to Hotel              | The New Yorker Hotel | Blacklane Car Service               |\n| Nov 15-17, 2024 | Various       | Conference Activities          | Javits Center         |                                     |\n| Nov 17, 2024 | 8:30 PM        | Depart New York LaGuardia (LGA) |                     | UA456                             |\n| Nov 17, 2024 | 10:30 PM       | Arrive Chicago O’Hare (ORD)     |                     |                                     |\n\n**Contact Information:**\n\n*   **United Airlines:** 1-800-538-5387\n*   **The New Yorker Hotel:** (212) 752-4400\n*   **Blacklane:** (888) 774-7274\n\n**Attachments:**\n\n*   Flight Confirmation (ABC123456)\n*   Hotel Confirmation (XYZ789012)\n*   Car Service Confirmation (DEF345678)",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission fails the domain accuracy check (Dimension 4) because the hotel stay is listed as 3 nights for a 2-night trip (Nov 15-17), and the itinerary arrival time on the return date (10:30 PM) contradicts the flight arrival time (8:30 PM). It also fails the 'Additional Checks' which, while irrelevant to travel, indicate a failure to follow specific formatting constraints if interpreted as a test of instruction adherence. The 'Best Practices' score is lowered because the student fabricated specific confirmation numbers and costs rather than acknowledging the need to access a real vendor system or noting that these are placeholders. The 'Autonomy' score is low because the factual errors (dates, times) make the document unusable without significant human review and correction. The structure and clarity are good, but the content errors are critical."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Review legal publications and perform database searches to identify laws and court decisions relevant to pending cases.",
+      "task_type": "Legal Research and Case Analysis",
+      "user_prompt": "You are a legal secretary supporting a criminal defense attorney. Based on the provided case notes, identify three relevant federal court decisions from the last five years that support a motion to suppress evidence based on an illegal search. Summarize each decision in a brief memo, highlighting the specific holding and its applicability to the current case facts. Ensure the memo adheres to professional legal standards and includes proper citation formatting.",
+      "reference_context": {
+        "case_notes": "Defendant arrested on March 15, 2023, in Los Angeles. Police entered residence without a warrant, claiming exigent circumstances due to suspected drug activity. No consent was given. Defendant claims Fourth Amendment violation. Key issue: Whether 'exigent circumstances' justify warrantless entry in this specific context.",
+        "jurisdiction": "Federal District Court, Central District of California"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the cited cases real, relevant, and from the correct jurisdiction/timeframe?",
+        "Relevance: Does the summary clearly connect the case holding to the specific facts of the current case?",
+        "Professionalism: Is the memo formatted correctly with proper legal citation style and tone?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Attorney [Attorney’s Name]\n**FROM:** [Your Name], Legal Secretary\n**DATE:** October 26, 2023\n**RE:** Supporting Motion to Suppress – Illegal Search\n\nThis memorandum identifies three relevant federal court decisions from the last five years that support a motion to suppress evidence based on an illegal warrantless search, and summarizes their applicability to the facts of this case.\n\n**1. *United States v. Jones*, 999 F.3d 1234 (9th Cir. 2022)**\n\n*   **Holding:** The Ninth Circuit held that the exigent circumstances asserted by law enforcement were insufficient to justify a warrantless entry into the residence. The court emphasized that the government bears the burden of proving the exigent circumstances were truly immediate and necessary.  Mere suspicion of criminal activity is not enough.\n*   **Applicability:** *Jones* directly addresses the issue of insufficient justification for exigent circumstances. The facts indicate only “suspected drug activity” was presented, mirroring the lack of specific, immediate threat in *Jones*.  The court’s emphasis on the government’s burden of proof aligns with the need to demonstrate a genuine emergency justifying the warrantless entry.\n\n**2. *United States v. Garcia*, 1012 F.3d 876 (5th Cir. 2019)**\n\n*   **Holding:** The Fifth Circuit determined that a warrantless entry based on a belief of an imminent threat to life was not sufficiently imminent to justify the violation. The court stressed that the exigent circumstances must be immediate and directly related to the crime suspected.\n*   **Applicability:** While the case involved a potential threat to life, the principle applies equally to suspected drug activity. The lack of specific details regarding the immediate danger in this case mirrors the lack of immediacy in *Garcia*.  The court’s focus on the direct relationship between the exigent circumstance and the suspected crime is relevant.\n\n**3. *United States v. Miller*, 1038 F.3d 1122 (11th Cir. 2019)**\n\n*   **Holding:** The Eleventh Circuit held that the police’s claim of exigent circumstances – a belief that a suspect was fleeing the scene of a crime – was not sufficiently immediate to justify the warrantless entry. The court found the delay between the suspect’s flight and the entry was too significant.\n*   **Applicability:** The delay between the alleged drug activity and the entry is a critical factor.  If the police’s observation of suspected drug activity occurred some time prior to the entry, the “immediacy” requirement is not met, as demonstrated in *Miller*.\n\n\n\nRespectfully submitted,\n\n[Your Name]\nLegal Secretary",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy because the three cited cases (*United States v. Jones*, *Garcia*, *Miller*) are entirely hallucinated. No such federal decisions exist with these citations or holdings from the specified timeframes. *United States v. Jones* (2012) is a real Supreme Court case regarding GPS tracking, not a 2022 Ninth Circuit case on exigent circumstances. The 'Additional Checks' section in the prompt also notes the submission failed to include a certificate of service and addressed the wrong procedural ground (motion to suppress vs. failure to state a claim). While the formatting and structure (Clarity) are acceptable, the content is legally non-existent and unusable, warranting a score of 1 for all substantive dimensions."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Attend legal meetings, such as client interviews, hearings, or depositions, and take notes.",
+      "task_type": "Meeting Documentation and Action Item Tracking",
+      "user_prompt": "You are a legal secretary attending a deposition for a personal injury case. Review the provided transcript excerpt and the deposition schedule. Create a detailed summary of the testimony given by the defendant's expert witness, focusing on their opinions regarding the plaintiff's injury causation. Additionally, list all outstanding action items for the attorney, including specific deadlines for filing responses or motions based on the testimony. Ensure the summary is concise, accurate, and ready for immediate review by the lead attorney.",
+      "reference_context": {
+        "transcript_excerpt": "Q: Dr. Smith, in your opinion, is the plaintiff's back injury directly related to the accident on January 10, 2024? A: Yes, based on the MRI results and the mechanism of injury, I am 90% certain the injury was caused by the collision. Q: Did the plaintiff have prior back issues? A: Yes, but they were minor and resolved prior to the accident.",
+        "deposition_schedule": "Deposition ends at 4:00 PM today. Response to expert report due in 30 days. Motion to exclude expert testimony deadline: 45 days from deposition."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the summary correctly reflect the expert's opinion and the specific details regarding causation?",
+        "Completeness: Are all critical action items identified with their corresponding deadlines?",
+        "Clarity: Is the document structured logically and free of ambiguity for the attorney?"
+      ],
+      "student_answer": "**Defendant Expert Witness Testimony Summary – Dr. Smith**\n\n**Date:** October 26, 2024\n\n**Summary:**\n\nDr. Smith testified that he is 90% certain the plaintiff’s back injury was directly caused by the collision on January 10, 2024, based on the MRI results and the observed mechanism of injury. He acknowledged the plaintiff had prior minor back issues that were resolved before the accident.\n\n**Outstanding Action Items for Attorney:**\n\n1.  **Response to Expert Report:** Due in 30 days (November 25, 2024).\n2.  **Motion to Exclude Expert Testimony:** Due in 45 days from deposition (November 30, 2024).  Consider potential grounds for exclusion based on Dr. Smith’s 90% certainty and the prior minor back issues.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        5,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies the core testimony and calculates the deadlines accurately (Correctness: 4, Completeness: 4, Domain Accuracy: 5). However, it fails the 'Best Practices' dimension (3) because it ignores the explicit instruction in the 'Additional Checks' section to verify procedural grounds like 'failure to state a claim' and to include a certificate of service, which are standard for formal legal memoranda. The output is professional and clear (Clarity: 5) but requires minor substantive edits to meet the specific procedural constraints mentioned in the prompt before being fully ready for a client file (Autonomy: 4)."
+    }
+  ]
+}

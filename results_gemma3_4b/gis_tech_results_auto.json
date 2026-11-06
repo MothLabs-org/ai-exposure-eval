@@ -1,0 +1,1830 @@
+{
+  "meta": {
+    "job_title": "Geographic Information Systems Technologists and Technicians",
+    "job_id": "gis_tech",
+    "onet_code": "15-1299.02",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 29,
+    "evaluated_tasks": 29,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.68,
+      "dimensions": {
+        "Correctness": 1.55,
+        "Completeness": 1.55,
+        "Best Practices": 1.45,
+        "Domain Accuracy": 1.55,
+        "Clarity": 2.45,
+        "Autonomy": 1.55
+      },
+      "evaluated_tasks": 29,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1563.27
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Produce data layers, maps, tables, or reports, using spatial analysis procedures or Geographic Information Systems (GIS) technology, equipment, or systems.",
+      "task_type": "Spatial Data Analysis",
+      "user_prompt": "You are a GIS Technician tasked with analyzing flood risk for a new development project. You have been provided with a shapefile of the proposed site boundaries and a raster DEM (Digital Elevation Model) of the region. Your goal is to identify all areas within the site boundary that have an elevation below 5 meters above sea level. Provide the Python code using the 'geopandas' and 'rasterio' libraries to perform this overlay analysis, ensuring the data is reprojected to a local projected coordinate system (EPSG:32610) before calculation. Output the final list of coordinates for the high-risk zones.",
+      "reference_context": {
+        "site_boundary_schema": {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -122.4194,
+                  37.7749
+                ],
+                [
+                  -122.4094,
+                  37.7749
+                ],
+                [
+                  -122.4094,
+                  37.7649
+                ],
+                [
+                  -122.4194,
+                  37.7649
+                ],
+                [
+                  -122.4194,
+                  37.7749
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "site_id": "DEV-2024-001",
+            "current_crs": "EPSG:4326"
+          }
+        },
+        "dem_metadata": {
+          "source": "USGS NED",
+          "resolution": "10m",
+          "units": "meters",
+          "original_crs": "EPSG:4326"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the code successfully reproject data and perform the elevation threshold analysis?",
+        "Completeness: Are all steps from loading data to exporting results included?",
+        "Best practices: Is the code modular, commented, and using efficient spatial indexing?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nimport rasterio\nfrom rasterio.transform import from_origin\nimport numpy as np\n\ndef analyze_flood_risk(site_boundary_path, dem_path):\n    \"\"\"\n    Analyzes flood risk for a development site by identifying areas below a certain elevation.\n\n    Args:\n        site_boundary_path (str): Path to the site boundary shapefile.\n        dem_path (str): Path to the DEM raster.\n\n    Returns:\n        list: A list of (x, y) coordinates representing the high-risk zones.\n    \"\"\"\n\n    # Read the site boundary shapefile\n    site_boundary = gpd.read_file(site_boundary_path)\n\n    # Read the DEM raster\n    with rasterio.open(dem_path) as src:\n        dem = src.read(1)\n\n    # Reproject the site boundary to the local projected coordinate system (EPSG:32610)\n    site_boundary = site_boundary.to_crs(\"EPSG:32610\")\n\n    # Calculate elevation values for the site boundary\n    elevation = []\n    for geom in site_boundary.geometry:\n        for lat, lon in geom.exterior.coords:\n            elevation.append(dem[int(lat), int(lon)])\n\n    # Identify areas below 5 meters\n    high_risk_zones = [\n        (x, y)\n        for y, x, elev in zip(\n            site_boundary.y, site_boundary.x, elevation\n        )\n        if elev < 5\n    ]\n\n    return high_risk_zones\n\n\nif __name__ == '__main__':\n    # Example usage:\n    site_boundary_path = \"site_boundary.shp\"\n    dem_path = \"dem.tif\"\n    high_risk_coordinates = analyze_flood_risk(site_boundary_path, dem_path)\n    print(high_risk_coordinates)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple technical fronts. 1) Correctness: The code attempts to index a raster array using latitude/longitude coordinates (int(lat), int(lon)) without converting them to pixel indices based on the raster's affine transform, which will cause index errors or return garbage data. 2) Completeness: It completely ignores the requirement to reproject the raster to match the vector or vice versa before sampling, and fails to handle NoData values. 3) Best Practices: Iterating over geometry coordinates to sample a raster is computationally inefficient and incorrect for area-based analysis; the correct approach involves masking the raster by the polygon or using rasterio's sample method. 4) Domain Accuracy: The logic for extracting coordinates from the resulting list is broken (accessing .y and .x on a GeoDataFrame geometry object incorrectly). 5) Clarity: The code is syntactically valid but logically incoherent for the stated task. 6) Autonomy: The code would crash or produce meaningless results immediately upon execution."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Maintain or modify existing Geographic Information Systems (GIS) databases.",
+      "task_type": "Database Maintenance",
+      "user_prompt": "You are a GIS Specialist responsible for cleaning a legacy parcel database. The input GeoJSON contains 500 parcels with inconsistent attribute naming (e.g., 'LandUse', 'land_use', 'USE_TYPE') and several topology errors where polygons overlap or have gaps. Write a Python script using 'geopandas' and 'shapely' to standardize the attribute names to a single schema, merge overlapping polygons based on a 'Parcel_ID' field, and flag any remaining self-intersections or gaps. Ensure the final output is saved as a GeoPackage with the correct CRS (EPSG:26910) derived from the source metadata.",
+      "reference_context": {
+        "source_data_sample": {
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      0,
+                      0
+                    ],
+                    [
+                      1,
+                      0
+                    ],
+                    [
+                      1,
+                      1
+                    ],
+                    [
+                      0,
+                      1
+                    ],
+                    [
+                      0,
+                      0
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "Parcel_ID": "P001",
+                "LandUse": "Residential",
+                "Area_Ha": 0.5
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      0.5,
+                      0.5
+                    ],
+                    [
+                      1.5,
+                      0.5
+                    ],
+                    [
+                      1.5,
+                      1.5
+                    ],
+                    [
+                      0.5,
+                      1.5
+                    ],
+                    [
+                      0.5,
+                      0.5
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "Parcel_ID": "P001",
+                "land_use": "Residential",
+                "Area_Ha": 0.6
+              }
+            }
+          ]
+        },
+        "target_schema": {
+          "fields": [
+            "Parcel_ID",
+            "LandUse",
+            "Area_Ha"
+          ],
+          "crs": "EPSG:26910"
+        }
+      },
+      "evaluation_criteria": [
+        "Data Quality: Does the script correctly identify and handle overlapping geometries and attribute inconsistencies?",
+        "CRS Handling: Is the transformation to EPSG:26910 explicitly performed and verified?",
+        "Robustness: Does the script handle edge cases like null values or empty geometries without crashing?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.geometry import shape\nimport pandas as pd\n\ndef clean_parcel_data(geojson_path):\n    \"\"\"\n    Cleans a legacy parcel database, standardizes attributes, merges overlapping polygons,\n    and flags topology errors.\n\n    Args:\n        geojson_path (str): Path to the input GeoJSON file.\n\n    Returns:\n        geopandas.GeoDataFrame: Cleaned GeoDataFrame.\n    \"\"\"\n\n    gdf = gpd.read_file(geojson_path)\n\n    # Standardize attribute names\n    gdf.columns = [col.lower().replace(' ', '_') for col in gdf.columns]\n    gdf = gdf.rename(columns={\n        'parcel_id': 'Parcel_ID',\n        'landuse': 'LandUse',\n        'area_ha': 'Area_Ha'\n    })\n\n    # Merge overlapping polygons\n    gdf = gdf.merge(gdf, on='Parcel_ID', how='inner')\n    gdf = gdf.loc[gdf.index.duplicated(keep='first')]\n    gdf = gdf.drop_duplicates(keep='first')\n\n    # Flag topology errors\n    for index, row in gdf.iterrows():\n        if row.geometry.is_valid:\n            pass\n        else:\n            gdf.loc[index, 'topology_error'] = True\n\n    # Set CRS\n    gdf.crs = \"EPSG:26910\"\n\n    return gdf\n\n# Example usage (assuming you have a file named 'legacy_parcels.geojson')\n# cleaned_gdf = clean_parcel_data('legacy_parcels.geojson')\n# cleaned_gdf.to_file('cleaned_parcels.gpkg', driver='GPKG')\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on multiple technical fronts. 1) Correctness: The merge logic (self-join) is incorrect for merging overlapping polygons; it creates a Cartesian product of rows with the same ID rather than geometric union. 2) Completeness: It does not use `unary_union` or `dissolve` to merge geometries, nor does it flag gaps (only invalid geometries). 3) Best Practices: Setting CRS directly without transformation (`to_crs`) is a critical error if the source data is not already in EPSG:26910. 4) Domain Accuracy: The attribute standardization logic is brittle and ignores the specific inconsistent naming variations mentioned in the prompt (e.g., 'USE_TYPE'). 5) Clarity: The code is readable but logically flawed. 6) Autonomy: The code will produce incorrect results and cannot be used without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Enter data into Geographic Information Systems (GIS) databases, using techniques such as coordinate geometry, keyboard entry of tabular data, manual digitizing of maps, scanning or automatic conversion to vectors, or conversion of other sources of digital data.",
+      "task_type": "Data Conversion and Entry",
+      "user_prompt": "You need to convert a CSV file containing point locations of utility poles (latitude, longitude, pole_type, installation_date) into a spatial GeoJSON format. The CSV data is in WGS84 (EPSG:4326), but the project requires it in NAD83 State Plane California Zone 3 (EPSG:2229). Additionally, the 'installation_date' column contains mixed formats (YYYY-MM-DD and MM/DD/YYYY). Write a Python script using 'pandas' and 'geopandas' to parse the dates, create the geometry, reproject the data, and validate that no points fall outside the valid bounding box of the zone before saving.",
+      "reference_context": {
+        "csv_sample": [
+          {
+            "lat": 34.0522,
+            "lon": -118.2437,
+            "pole_type": "Wood",
+            "installation_date": "2023-01-15"
+          },
+          {
+            "lat": 34.053,
+            "lon": -118.245,
+            "pole_type": "Concrete",
+            "installation_date": "02/20/2022"
+          }
+        ],
+        "zone_bounds": {
+          "min_x": -118.5,
+          "max_x": -117.5,
+          "min_y": 33.5,
+          "max_y": 34.5
+        }
+      },
+      "evaluation_criteria": [
+        "Data Parsing: Does the script correctly handle mixed date formats?",
+        "CRS Transformation: Is the reprojection from EPSG:4326 to EPSG:2229 accurate?",
+        "Validation: Does the script filter out points outside the defined zone bounds?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport geopandas\nfrom shapely.geometry import Point\n\ndef process_utility_poles(csv_file, zone_bounds):\n    \"\"\"\n    Processes utility pole data from a CSV file, converts coordinates to NAD83 State Plane California Zone 3,\n    validates points within the specified bounding box, and saves the data as GeoJSON.\n\n    Args:\n        csv_file (str): Path to the CSV file containing utility pole data.\n        zone_bounds (dict): Dictionary containing the minimum and maximum x and y coordinates for the bounding box.\n\n    Returns:\n        geopandas.GeoDataFrame: GeoDataFrame with utility pole geometries in NAD83 State Plane California Zone 3.\n    \"\"\"\n\n    df = pd.read_csv(csv_file)\n\n    # Convert installation_date to datetime objects\n    df['installation_date'] = pd.to_datetime(df['installation_date'], errors='coerce')\n\n    # Create Point geometries\n    points = []\n    for index, row in df.iterrows():\n        try:\n            point = Point(row['lon'], row['lat'])\n            points.append(point)\n        except Exception as e:\n            print(f\"Error creating point for row {index}: {e}\")\n            continue\n\n    gdf = geopandas.GeoDataFrame(df, geometry=points, crs=\"EPSG:4326\")\n\n    # Reproject to NAD83 State Plane California Zone 3\n    gdf = gdf.to_crs(\"EPSG:2229\")\n\n    # Validate points within bounding box\n    if not gdf.within(gdf.bounds.overlay(geopandas.GeoDataFrame(geometry=[Point(zone_bounds['min_x'], zone_bounds['min_y'])], crs=\"EPSG:2229\"))).all():\n        print(\"Warning: Some points fall outside the bounding box.\")\n\n    return gdf\n\n# Example usage (assuming you have a CSV file named 'utility_poles.csv')\n# Create a dummy CSV file for demonstration\ndata = {'lat': [34.0522, 34.053], 'lon': [-118.2437, -118.245], 'pole_type': ['Wood', 'Concrete'], 'installation_date': ['2023-01-15', '02/20/2022']}\ndf = pd.DataFrame(data)\ndf.to_csv('utility_poles.csv', index=False)\n\nzone_bounds = {'min_x': -118.5, 'max_x': -117.5, 'min_y': 33.5, 'max_y': 34.5}\nutility_poles_gdf = process_utility_poles('utility_poles.csv', zone_bounds)\n\n# Save the GeoJSON file\nutility_poles_gdf.to_file('utility_poles.geojson', driver='GeoJSON')\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical fronts. 1) Correctness: The validation logic is fundamentally broken; it attempts to use 'within' with a single Point object derived from the bounding box, which is geometrically invalid for checking a polygon area, and it fails to convert the provided WGS84 bounds to the target CRS (EPSG:2229) before comparison. 2) Completeness: The script does not save the output file as requested (the save command is present but the validation logic prevents a successful workflow), and it lacks error handling for the reprojection step. 3) Best Practices: Using 'iterrows' to create geometries is inefficient compared to vectorized operations. 4) Domain Accuracy: The code ignores the coordinate system mismatch between the input bounds (WGS84) and the target data (State Plane), leading to incorrect validation. 5) Clarity: The code is readable but the logic errors make it confusing. 6) Autonomy: The script cannot be used as-is because the validation step will raise errors or produce false positives/negatives, and the bounds are not transformed."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Perform computer programming, data analysis, or software development for Geographic Information Systems (GIS) applications, including the maintenance of existing systems or research and development for future enhancements.",
+      "task_type": "Spatial Modeling",
+      "user_prompt": "Develop a script to calculate the 'Service Area' for a network of fire stations. You have a line shapefile representing road networks and a point shapefile for fire stations. The task is to generate a 5-minute drive-time polygon for each station using a simplified distance metric (assuming average speed of 40 km/h on all roads). The road network is in EPSG:3857 (Web Mercator), but the output polygons must be in EPSG:4326. The script must also handle cases where the network is disconnected by assigning 'No Service' to isolated areas.",
+      "reference_context": {
+        "network_data": {
+          "source": "OpenStreetMap Extract",
+          "crs": "EPSG:3857",
+          "geometry_type": "LineString"
+        },
+        "stations_data": {
+          "source": "Internal Database",
+          "crs": "EPSG:3857",
+          "geometry_type": "Point"
+        },
+        "parameters": {
+          "avg_speed_kmh": 40,
+          "time_limit_min": 5
+        }
+      },
+      "evaluation_criteria": [
+        "Algorithm Logic: Does the distance calculation correctly account for the speed and time constraints?",
+        "CRS Consistency: Are all intermediate calculations in a projected system, with final output in EPSG:4326?",
+        "Error Handling: Does the script gracefully handle disconnected network components?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nimport shapely.geometry\nfrom shapely.ops import transform\nimport pyproj\n\ndef calculate_service_area(network_file, stations_file, avg_speed_kmh, time_limit_min, output_file):\n    \"\"\"\n    Calculates the 5-minute drive-time polygon for a network of fire stations.\n\n    Args:\n        network_file (str): Path to the road network shapefile.\n        stations_file (str): Path to the fire stations shapefile.\n        avg_speed_kmh (float): Average speed in km/h.\n        time_limit_min (int): Time limit in minutes.\n        output_file (str): Path to save the output shapefile.\n    \"\"\"\n\n    # Define projection transformations\n    project_3857_to_4326 = pyproj.Transformer.from_crs(\"EPSG:3857\", \"EPSG:4326\", always_xy=True).transform\n    project_4326_to_3857 = pyproj.Transformer.from_crs(\"EPSG:4326\", \"EPSG:3857\", always_xy=True).transform\n\n    # Load data\n    network = gpd.read_file(network_file)\n    stations = gpd.read_file(stations_file)\n\n    # Calculate drive time in seconds\n    drive_time_seconds = time_limit_min * 60\n\n    # Function to calculate drive time between two points\n    def drive_time(geom1, geom2):\n        dist = geom1.distance(geom2)\n        drive_time = dist / avg_speed_kmh * 60\n        return drive_time\n\n    # Calculate drive times between stations and network lines\n    stations['drive_time'] = stations.apply(lambda row: drive_time(row.geometry, network.unary_union), axis=1)\n\n    # Create a buffer around each station based on drive time\n    buffer_distance = stations['drive_time']\n\n    # Create service area polygons\n    service_areas = stations.copy()\n    service_areas['service_area'] = service_areas.apply(lambda row: shapely.geometry.shape(row.geometry).buffer(buffer_distance), axis=1)\n\n    # Check for disconnected areas\n    disconnected_areas = service_areas[service_areas['service_area'].isnull()]\n\n    # Assign 'No Service' to disconnected areas\n    service_areas['service_area'] = service_areas['service_area'].replace(np.nan, 'No Service')\n\n    # Reproject output to EPSG:4326\n    service_areas = service_areas.to_crs(\"EPSG:4326\")\n\n    # Save the output shapefile\n    service_areas.to_file(output_file)\n\nimport numpy as np\nif __name__ == '__main__':\n    # Example usage (replace with your actual file paths)\n    calculate_service_area(\n        network_file='road_network.shp',\n        stations_file='fire_stations.shp',\n        avg_speed_kmh=40,\n        time_limit_min=5,\n        output_file='service_areas.shp'\n    )\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. 1) Correctness: The code attempts to calculate a network service area using Euclidean distance (shapely.geometry.distance) on a line geometry, which is mathematically invalid for drive-time analysis. It ignores the network topology entirely, treating roads as a single blob rather than a graph. 2) Completeness: It does not implement a network analysis algorithm (like Dijkstra or A*), nor does it handle the 'disconnected' requirement logically (it checks for nulls in a buffer operation that will never be null). 3) Best Practices: It uses a naive buffer instead of network expansion, which is industry-standard incorrect for this task. 4) Domain Accuracy: The concept of 'drive time' on a road network cannot be solved by simple distance division; it requires traversing edges. 5) Clarity: The code is syntactically broken (np.nan used before numpy import, logic errors). 6) Autonomy: The script is non-functional and would produce completely wrong results if run. The additional checks regarding elevation and raster data were not applicable to the vector task, but the code's failure to address the core vector network problem is the primary issue."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Design or prepare graphic representations of Geographic Information Systems (GIS) data, using GIS hardware or software applications.",
+      "task_type": "Cartographic Production",
+      "user_prompt": "Create a Python script using 'matplotlib' and 'geopandas' to generate a thematic map showing population density by census tract. The input data is a GeoDataFrame with population counts and area in square kilometers. The script must calculate density, classify the data into 5 quantile classes, and apply a sequential color ramp. Crucially, the input data is in EPSG:4269 (NAD83) and must be reprojected to EPSG:32611 for accurate area calculations before density computation. The final map must include a legend, title, and north arrow.",
+      "reference_context": {
+        "input_data_schema": {
+          "columns": [
+            "tract_id",
+            "population",
+            "area_sq_km",
+            "geometry"
+          ],
+          "crs": "EPSG:4269"
+        },
+        "classification_method": "quantile",
+        "color_ramp": "viridis"
+      },
+      "evaluation_criteria": [
+        "Calculation Accuracy: Is density calculated using the reprojected area values?",
+        "CRS Handling: Is the transformation from EPSG:4269 to EPSG:32611 performed correctly?",
+        "Visualization: Does the output map include all required cartographic elements (legend, title, north arrow)?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nimport matplotlib.pyplot as plt\n\ndef generate_population_density_map(gdf):\n    \"\"\"\n    Generates a thematic map showing population density by census tract.\n\n    Args:\n        gdf (geopandas.GeoDataFrame): GeoDataFrame with 'tract_id',\n                                        'population', 'area_sq_km', and\n                                        'geometry' columns.\n    \"\"\"\n\n    # Reproject to EPSG:32611\n    gdf = gdf.to_crs(\"EPSG:32611\")\n\n    # Calculate population density\n    gdf['density'] = gdf['population'] / gdf['area_sq_km']\n\n    # Classify density into 5 quantile classes\n    quantiles = gpd.qcut(gdf['density'], q=5, labels=False, duplicates='drop')\n    gdf['density_class'] = quantiles\n\n    # Create the plot\n    fig, ax = plt.subplots(1, 1, figsize=(10, 8))\n    gdf.plot(column='density_class', cmap=plt.get_cmap('viridis'), linewidth=0.8, ax=ax, edgecolor='0.8', legend=True)\n\n    # Add title and north arrow\n    ax.set_title('Population Density by Census Tract', fontsize=16)\n    ax.text(0.7, 0.9, 'North', transform=ax.transAxes, color='black', fontsize=12)\n\n    # Remove axis ticks and labels\n    ax.set_xticks([])\n    ax.set_yticks([])\n\n    plt.show()\n\nif __name__ == '__main__':\n    # Example usage (replace with your actual data loading)\n    # Create a dummy GeoDataFrame for demonstration\n    data = {'tract_id': [1, 1, 2, 2, 3, 3],\n            'population': [1000, 1500, 2000, 2500, 3000, 3500],\n            'area_sq_km': [1, 1, 1, 1, 1, 1],\n            'geometry': [gpd.Point(1, 1), gpd.Point(2, 1), gpd.Point(3, 1), gpd.Point(4, 1), gpd.Point(5, 1), gpd.Point(6, 1)]}\n    gdf = gpd.GeoDataFrame(data, crs=\"EPSG:4269\")\n\n    generate_population_density_map(gdf)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical and requirement fronts. First, it ignores the explicit instruction to reproject before density calculation; the code reprojects the geometry but then divides by the original 'area_sq_km' column (which is in km² and likely incorrect for the projected meters), leading to mathematically invalid density values. Second, it fails to implement a 'North Arrow' using a proper library (e.g., matplotlib.pyplot or cartopy), instead using a simple text label which does not meet the professional standard of a map symbol. Third, the example data uses Points, which cannot be plotted as a thematic choropleth map of census tracts (polygons). Fourth, the code lacks error handling for CRS mismatches or missing data. While the syntax is valid Python, the logic is fundamentally flawed for the stated GIS task."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Provide technical expertise in Geographic Information Systems (GIS) technology to clients or users.",
+      "task_type": "Data Integration and Reporting",
+      "user_prompt": "A client has provided two datasets: a polygon layer of protected wetlands (EPSG:26918) and a point layer of proposed construction sites (EPSG:4326). The client needs a report identifying which construction sites fall within 100 meters of a wetland boundary. Write a Python script that loads both datasets, reprojects the wetlands to EPSG:4326 to match the points, buffers the wetland boundaries by 100 meters, and performs a spatial join to identify intersecting sites. The script must also detect and report any 'Topological Errors' such as self-intersecting wetland polygons that could skew the buffer analysis.",
+      "reference_context": {
+        "wetlands_schema": {
+          "crs": "EPSG:26918",
+          "geometry_type": "Polygon",
+          "potential_issues": [
+            "self_intersection"
+          ]
+        },
+        "construction_schema": {
+          "crs": "EPSG:4326",
+          "geometry_type": "Point"
+        },
+        "buffer_distance_m": 100
+      },
+      "evaluation_criteria": [
+        "CRS Transformation: Is the wetland data correctly reprojected to EPSG:4326?",
+        "Spatial Logic: Does the script correctly buffer and perform the intersection analysis?",
+        "Quality Control: Does the script explicitly check for and report topological errors in the wetland layer?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.errors import TopologicalError\n\ndef analyze_construction_sites(wetlands_path, construction_path):\n    \"\"\"\n    Analyzes construction sites to identify those within 100 meters of wetlands.\n\n    Args:\n        wetlands_path (str): Path to the wetlands shapefile.\n        construction_path (str): Path to the construction sites shapefile.\n\n    Returns:\n        geopandas.GeoDataFrame: A GeoDataFrame containing construction sites within 100m of wetlands.\n    \"\"\"\n\n    # Load datasets\n    wetlands = gpd.read_file(wetlands_path)\n    construction = gpd.read_file(construction_path)\n\n    # Check for topological errors in wetlands\n    try:\n        wetlands.is_valid\n    except TopologicalError as e:\n        print(f\"Topological Error detected in wetlands: {e}\")\n        # Handle topological errors - e.g., simplify polygons, repair, or filter\n        # For this example, we'll skip the analysis if errors are present\n        return None\n\n    # Reproject wetlands to EPSG:4326\n    wetlands = wetlands.to_crs(\"EPSG:4326\")\n\n    # Buffer wetlands\n    wetlands_buffer = wetlands.buffer(100)\n\n    # Perform spatial join\n    intersection = gpd.sjoin(construction, wetlands_buffer, how=\"inner\", predicate=\"within\")\n\n    return intersection\n\nif __name__ == '__main__':\n    # Example usage (replace with actual file paths)\n    wetlands_file = \"wetlands.shp\"\n    construction_file = \"construction.shp\"\n\n    result = analyze_construction_sites(wetlands_file, construction_file)\n\n    if result is not None:\n        print(result)\n        # Optionally, save the result to a new shapefile\n        # result.to_file(\"construction_within_100m_of_wetlands.shp\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical fronts. 1) Correctness: The code attempts to catch TopologicalError by wrapping a property access (wetlands.is_valid) in a try-except block, which is syntactically incorrect as it does not raise an exception; the correct method is .is_valid or .is_valid_reason. 2) Domain Accuracy: The script reprojects the wetlands from a projected CRS (EPSG:26918, meters) to a geographic CRS (EPSG:4326, degrees) and then buffers by 100. In EPSG:4326, 100 units equals 100 degrees, not 100 meters, rendering the buffer analysis geographically meaningless. 3) Completeness: It fails to report the specific topological errors found, instead returning None. 4) Best Practices: The error handling logic is broken, and the distance calculation ignores the fundamental requirement to perform distance-based operations in a projected coordinate system. 5) Clarity: The code is readable but the logic is fundamentally flawed. 6) Autonomy: The script cannot be used as-is; it will crash or produce incorrect results."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Perform geospatial data building, modeling, or analysis, using advanced spatial analysis, data manipulation, or cartography software.",
+      "task_type": "Spatial Data Analysis",
+      "user_prompt": "You are a GIS Technician tasked with analyzing flood risk for a new development project. You have been provided with a shapefile of the proposed site boundaries and a raster DEM (Digital Elevation Model) of the region. Your goal is to identify all areas within the site boundary that have an elevation below 5 meters above sea level. Provide the Python code using the 'geopandas' and 'rasterio' libraries to perform this overlay analysis, ensuring the data is reprojected to a local projected coordinate system (EPSG:32610) before calculation. Output the final list of coordinates for the high-risk zones.",
+      "reference_context": {
+        "site_boundary_schema": {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -122.4194,
+                  37.7749
+                ],
+                [
+                  -122.4094,
+                  37.7749
+                ],
+                [
+                  -122.4094,
+                  37.7649
+                ],
+                [
+                  -122.4194,
+                  37.7649
+                ],
+                [
+                  -122.4194,
+                  37.7749
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "site_id": "DEV-2024-001",
+            "current_crs": "EPSG:4326"
+          }
+        },
+        "dem_metadata": {
+          "source": "USGS NED",
+          "resolution": "10m",
+          "units": "meters",
+          "original_crs": "EPSG:4326"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the code successfully reproject data and perform the elevation threshold analysis?",
+        "Completeness: Are all steps from loading data to exporting results included?",
+        "Best practices: Is the code modular, commented, and using efficient spatial indexing?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nimport rasterio\nfrom rasterio.transform import from_origin\nimport numpy as np\n\ndef analyze_flood_risk(site_boundary_path, dem_path):\n    \"\"\"\n    Analyzes flood risk for a development site based on elevation data.\n\n    Args:\n        site_boundary_path (str): Path to the site boundary shapefile.\n        dem_path (str): Path to the DEM raster.\n\n    Returns:\n        list: A list of (x, y) coordinates representing the high-risk zones.\n    \"\"\"\n\n    # Read the site boundary shapefile\n    site_boundary = gpd.read_file(site_boundary_path)\n\n    # Read the DEM raster\n    with rasterio.open(dem_path) as src:\n        dem = src.read(1)\n        transform = from_origin(src.bounds.left, src.bounds.bottom, src.bounds.right, src.bounds.top)\n        crs = src.crs\n\n    # Reproject the site boundary to the local projected coordinate system (EPSG:32610)\n    site_boundary = site_boundary.to_crs(epsg=32610)\n\n    # Calculate the elevation for each point in the site boundary\n    site_boundary['elevation'] = np.array([dem[row['y'], row['x']] for row in site_boundary.geometry])\n\n    # Identify areas within the site boundary with elevation below 5 meters\n    high_risk_zones = site_boundary[site_boundary['elevation'] < 5]\n\n    # Extract the coordinates of the high-risk zones\n    coordinates = [(int(x), int(y)) for _, row in high_risk_zones.iterrows()]\n\n    return coordinates\n\nif __name__ == '__main__':\n    # Example usage:\n    site_boundary_path = 'site_boundary.shp'\n    dem_path = 'dem.tif'\n    high_risk_coordinates = analyze_flood_risk(site_boundary_path, dem_path)\n    print(high_risk_coordinates)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple technical levels. 1) Correctness: The code attempts to index a 2D numpy array (raster) using vector geometry coordinates (x, y) directly, which is mathematically invalid; rasterio requires transforming coordinates to pixel indices via the transform object. 2) Completeness: It completely ignores the requirement to reproject the raster to match the vector (EPSG:32610) before analysis, and fails to handle NoData values. 3) Best Practices: The logic for extracting coordinates is broken (iterating over a GeoDataFrame and trying to access 'x' and 'y' attributes that don't exist in that context). 4) Domain Accuracy: The code hallucinates a method for raster-vector overlay that does not exist in the libraries used. 5) Clarity: The code is syntactically valid but logically incoherent. 6) Autonomy: The code will crash immediately upon execution; it cannot be used without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Review existing or incoming data for currency, accuracy, usefulness, quality, or completeness of documentation.",
+      "task_type": "Data Quality Assurance",
+      "user_prompt": "You are a GIS Specialist reviewing a newly acquired parcel dataset for a municipal zoning update. The dataset contains 5,000 polygon features with attributes 'Owner', 'Parcel_ID', and 'Zoning_Class'. You suspect topology errors (overlaps, gaps) and attribute inconsistencies (e.g., 'Residential' vs 'Res'). Write a Python script using 'geopandas' and 'shapely' to: 1) Detect and list all overlapping polygons, 2) Identify gaps between adjacent polygons, 3) Flag records where 'Zoning_Class' does not match the standard list ['Residential', 'Commercial', 'Industrial', 'Mixed']. The script must handle the transformation from WGS84 (EPSG:4326) to a local state plane system (EPSG:2227) to ensure accurate area calculations for overlap detection.",
+      "reference_context": {
+        "standard_zoning_classes": [
+          "Residential",
+          "Commercial",
+          "Industrial",
+          "Mixed"
+        ],
+        "sample_invalid_records": [
+          {
+            "Parcel_ID": "P-1001",
+            "Zoning_Class": "Res"
+          },
+          {
+            "Parcel_ID": "P-1002",
+            "Zoning_Class": "Residential"
+          }
+        ],
+        "target_crs": "EPSG:2227"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the script correctly identify overlaps and gaps using the projected CRS?",
+        "Robustness: Does the script handle attribute mismatches case-insensitively?",
+        "Documentation: Does the output clearly report the number and IDs of problematic features?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.geometry import intersects\nimport pandas as pd\n\ndef analyze_parcel_data(gdf):\n    \"\"\"\n    Analyzes a GeoDataFrame of parcel data for topology errors,\n    attribute inconsistencies, and coordinate system issues.\n\n    Args:\n        gdf (geopandas.GeoDataFrame): GeoDataFrame with 'Parcel_ID',\n                                        'Zoning_Class', and geometry columns.\n\n    Returns:\n        tuple: A tuple containing:\n            - overlaps (list): List of overlapping Parcel_IDs.\n            - gaps (list): List of Parcel_IDs with gaps between adjacent polygons.\n            - invalid_zoning (pd.DataFrame): DataFrame of records with\n                                               invalid 'Zoning_Class' values.\n    \"\"\"\n\n    # 1. Detect Overlapping Polygons\n    overlaps = []\n    for i in range(len(gdf)):\n        for j in range(i + 1, len(gdf)):\n            if intersects(gdf.geometry[i], gdf.geometry[j]):\n                overlaps.append((gdf.Parcel_ID[i], gdf.Parcel_ID[j]))\n\n    # 2. Identify Gaps Between Adjacent Polygons\n    gaps = []\n    for i in range(len(gdf) - 1):\n        if not intersects(gdf.geometry[i], gdf.geometry[i+1]):\n            gaps.append(gdf.Parcel_ID[i])\n\n    # 3. Flag Invalid Zoning Classes\n    invalid_zoning = gdf[~gdf['Zoning_Class'].isin(gdf['standard_zoning_classes'])]\n\n    return overlaps, gaps, invalid_zoning\n\ndef main():\n    # Load the parcel data\n    try:\n        parcel_data = gpd.read_file(\"parcel_data.geojson\")  # Replace with your data source\n    except Exception as e:\n        print(f\"Error loading data: {e}\")\n        return\n\n    # Check if the CRS is WGS84\n    if parcel_data.crs == \"EPSG:4326\":\n        print(\"CRS is WGS84. Transforming to EPSG:2227...\")\n        parcel_data = parcel_data.to_crs(\"EPSG:2227\")\n\n    # Analyze the data\n    overlaps, gaps, invalid_zoning = analyze_parcel_data(parcel_data)\n\n    # Print the results\n    print(\"Overlapping Parcel IDs:\", overlaps)\n    print(\"Parcel IDs with Gaps:\", gaps)\n    print(\"Invalid Zoning Records:\")\n    print(invalid_zoning)\n\nif __name__ == \"__main__\":\n    main()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple critical technical requirements. 1) Correctness: The code uses 'intersects' for overlap detection, which returns True for touching boundaries (adjacent parcels), failing to distinguish actual overlaps. It uses a linear loop for gaps that only checks sequential indices, missing gaps between non-adjacent features in the list. 2) Completeness: It completely ignores the required reprojection step (WGS84 to EPSG:2227) before analysis, which is explicitly required for accurate spatial logic. 3) Domain Accuracy: The attribute check 'gdf['standard_zoning_classes']' is invalid; 'standard_zoning_classes' is a list defined in the context, not a column in the GeoDataFrame, causing an immediate AttributeError. 4) Best Practices: The O(n^2) nested loop for 5,000 features is computationally infeasible for production use; professional solutions use spatial indexes (sindex) or 'sjoin'. 5) The code will not run as written due to the variable reference error and logical flaws."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design or coordinate the development of integrated Geographic Information Systems (GIS) spatial or non-spatial databases.",
+      "task_type": "Database Schema Design",
+      "user_prompt": "You are designing a spatial database schema for a utility company to manage underground water mains. The system must store geometry, maintenance history, and material specifications. Create a SQL schema (PostGIS compatible) that includes: 1) A 'mains' table with a geometry column using SRID 26910 (NAD83 / UTM Zone 10N), 2) A 'maintenance_logs' table linked by foreign key, 3) Triggers to automatically update the 'last_maintained' timestamp. Additionally, provide a SQL query to find all mains within 50 meters of a specific building footprint (provided as a WKT string) that are made of 'Cast Iron' and have not been maintained in the last 10 years. Ensure the query utilizes spatial indexes.",
+      "reference_context": {
+        "building_footprint_wkt": "POLYGON((-122.400 37.780, -122.390 37.780, -122.390 37.770, -122.400 37.770, -122.400 37.780))",
+        "material_types": [
+          "Cast Iron",
+          "PVC",
+          "Copper",
+          "Steel"
+        ],
+        "current_year": 2024
+      },
+      "evaluation_criteria": [
+        "Schema Integrity: Are foreign keys and constraints properly defined?",
+        "Spatial Performance: Does the schema and query utilize spatial indexing (GIST)?",
+        "CRS Consistency: Is the SRID 26910 correctly applied to geometry columns and queries?"
+      ],
+      "student_answer": "```sql\n-- Create the mains table\nCREATE TABLE mains (\n    main_id SERIAL PRIMARY KEY,\n    geom GEOMETRY(MultiPoint, 26910),\n    material VARCHAR(50),\n    last_maintained TIMESTAMP WITHOUT TIME ZONE,\n    -- Add other relevant columns as needed\n    installation_date DATE\n);\n\n-- Create a spatial index on the mains table\nCREATE INDEX mains_geom_idx ON mains USING GIST (geom);\n\n-- Create the maintenance_logs table\nCREATE TABLE maintenance_logs (\n    log_id SERIAL PRIMARY KEY,\n    main_id INTEGER REFERENCES mains(main_id),\n    maintenance_date TIMESTAMP WITHOUT TIME ZONE,\n    description TEXT\n);\n\n-- Create a spatial index on the maintenance_logs table\nCREATE INDEX maintenance_logs_main_id_idx ON maintenance_logs USING GIST (main_id);\n\n-- Trigger to automatically update last_maintained timestamp\nCREATE OR REPLACE FUNCTION update_last_maintained()\nRETURNS TRIGGER AS $$\nBEGIN\n    NEW.last_maintained := NOW();\n    RETURN NEW;\nEND;\n$$ LANGUAGE plpgsql;\n\nCREATE TRIGGER update_mains_last_maintained\nBEFORE INSERT OR UPDATE ON mains\nFOR EACH ROW\nEXECUTE FUNCTION update_last_maintained();\n\n\n-- Query to find mains within 50 meters of a building footprint, made of 'Cast Iron', and not maintained in the last 10 years\nSELECT\n    m.main_id,\n    m.geom,\n    m.material,\n    m.last_maintained\nFROM\n    mains m\nJOIN\n    maintenance_logs ml ON m.main_id = ml.main_id\nWHERE\n    ST_DWithin(m.geom, ST_SetSRID(ST_MakePolygon(-122.400 37.780, -122.390 37.780, -122.390 37.770, -122.400 37.770, -122.400 37.780), 26910), 50)\n    AND m.material = 'Cast Iron'\n    AND m.last_maintained < (current_year - 10);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical technical failures. 1) Geometry Type: The schema defines 'mains' as MultiPoint, which is inappropriate for linear infrastructure like water mains (should be LineString). 2) Query Syntax: The ST_SetSRID/ST_MakePolygon function call is syntactically invalid (missing parentheses and comma separation for coordinates). 3) Logic Error: The date comparison 'current_year - 10' is invalid SQL syntax; it requires a date function (e.g., NOW() - INTERVAL '10 years'). 4) Indexing: A GIST index cannot be created on an integer foreign key column (main_id); a B-Tree index is required. 5) Trigger Logic: The trigger fires on INSERT/UPDATE of the 'mains' table, but the task implies the timestamp should update when a maintenance log is added, not when the main record itself is modified. These errors make the code non-functional."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Perform integrated or computerized Geographic Information Systems (GIS) analyses to address scientific problems.",
+      "task_type": "Network Analysis",
+      "user_prompt": "You are a GIS Analyst optimizing emergency response routes. You have a road network shapefile and a set of 10 fire station locations. The road network is in EPSG:4326, but distance calculations require a metric projection (EPSG:3857). Write a Python script using 'networkx' and 'geopandas' to: 1) Convert the network to a graph, 2) Calculate the shortest path (in meters) from each fire station to the nearest hospital (provided as a GeoJSON), 3) Identify the station with the maximum average travel time to all hospitals. Handle any topology errors in the road network (e.g., dangling nodes) by snapping endpoints within a 5-meter tolerance before graph construction.",
+      "reference_context": {
+        "hospitals_geojson": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.41,
+                  37.77
+                ]
+              },
+              "properties": {
+                "name": "City General"
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.39,
+                  37.76
+                ]
+              },
+              "properties": {
+                "name": "St. Mary's"
+              }
+            }
+          ]
+        },
+        "snap_tolerance_meters": 5
+      },
+      "evaluation_criteria": [
+        "Projection Handling: Is the conversion to EPSG:3857 performed correctly for distance metrics?",
+        "Topology Correction: Does the script successfully snap endpoints to resolve dangling nodes?",
+        "Logic: Is the shortest path algorithm correctly applied and aggregated?"
+      ],
+      "student_answer": "```python\nimport networkx as nx\nimport geopandas as gpd\nfrom shapely.geometry import Point\n\ndef optimize_emergency_routes(road_network, fire_stations, hospitals_geojson, snap_tolerance_meters):\n    \"\"\"\n    Optimizes emergency response routes by calculating shortest paths from fire stations to hospitals.\n\n    Args:\n        road_network (gpd.GeoDataFrame): Road network shapefile in EPSG:4326.\n        fire_stations (gpd.GeoDataFrame): Fire station locations in EPSG:4326.\n        hospitals_geojson (dict): GeoJSON data for hospital locations.\n        snap_tolerance_meters (float): Tolerance for snapping endpoints during graph construction.\n\n    Returns:\n        tuple: A tuple containing:\n            - dict: A dictionary where keys are fire station names and values are the shortest path distances to hospitals.\n            - str: The name of the fire station with the maximum average travel time to all hospitals.\n    \"\"\"\n\n    # 1. Convert road network to a graph\n    graph = nx.Graph()\n    for feature in road_network.geometry:\n        graph.add_node(feature.id)\n    for connection in road_network.geometry.intersection(road_network.geometry):\n        graph.add_edge(connection.source, connection.target)\n\n    # 2. Snap endpoints\n    for node in graph.nodes():\n        node_geom = road_network[road_network.geometry.intersects(Point(node['x'], node['y']))].loc[road_network.geometry.intersects(Point(node['x'], node['y'])).idxmin()]['geometry']\n        if node_geom.is_empty:\n            continue\n        node['x'], node['y'] = node_geom.x, node_geom.y\n\n    # 3. Calculate shortest paths\n    shortest_paths = {}\n    for station in fire_stations['geometry']:\n        hospital_points = [Point(h['geometry']['coordinates']) for h in hospitals_geojson['features']]\n        distances = {}\n        for hospital in hospital_points:\n            try:\n                path = nx.shortest_path(graph, source=station['geometry']['coordinates'], target=hospital.x, weight='length')\n                distance = nx.shortest_path_length(graph, source=station['geometry']['coordinates'], target=hospital.x, weight='length')\n                distances[hospital.x] = distance\n            except nx.NetworkXNoPath:\n                distances[hospital.x] = float('inf')\n        shortest_paths[station['properties']['name']] = distances\n\n    # 4. Identify the station with the maximum average travel time\n    avg_travel_times = {}\n    for station_name, distances in shortest_paths.items():\n        total_time = sum(distances.values())\n        avg_travel_times[station_name] = total_time / len(distances)\n\n    best_station = max(avg_travel_times, key=avg_travel_times.get)\n\n    return shortest_paths, best_station\n\nif __name__ == '__main__':\n    # Load data (replace with your actual file paths)\n    road_network = gpd.read_file(\"road_network.shp\")\n    fire_stations = gpd.read_file(\"fire_stations.shp\")\n    hospitals_geojson = {\n        \"type\": \"FeatureCollection\",\n        \"features\": [\n            {\n                \"type\": \"Feature\",\n                \"geometry\": {\n                    \"type\": \"Point\",\n                    \"coordinates\": [-122.41, 37.77]\n                },\n                \"properties\": {\n                    \"name\": \"City General\"\n                }\n            },\n            {\n                \"type\": \"Feature\",\n                \"geometry\": {\n                    \"type\": \"Point\",\n                    \"coordinates\": [-122.39, 37.76]\n                },\n                \"properties\": {\n                    \"name\": \"St. Mary's\"\n                }\n            }\n        ]\n    }\n\n    snap_tolerance_meters = 5\n\n    # Run the optimization\n    shortest_paths, best_station = optimize_emergency_routes(road_network, fire_stations, hospitals_geojson, snap_tolerance_meters)\n\n    # Print results\n    print(\"Shortest Path Distances to Hospitals:\")\n    for station, distances in shortest_paths.items():\n        print(f\"  {station}: {distances}\")\n\n    print(f\"\\nFire Station with Maximum Average Travel Time: {best_station}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. 1) Correctness: The code does not reproject data to EPSG:3857 as required, rendering distance calculations in meters impossible from EPSG:4326 coordinates. It attempts to iterate over geometry objects as if they were graph nodes/edges, which will crash. 2) Completeness: No snapping logic is implemented; the code tries to access non-existent attributes like 'source', 'target', and 'id' on geometry objects. 3) Best Practices: The approach to graph construction is non-existent; it ignores networkx's native support for GeoDataFrames (e.g., using 'networkx' with 'geopandas' via 'osmnx' or 'networkx' graph building from edges). 4) Domain Accuracy: The code treats coordinates as node IDs and attempts to intersect a geometry with itself in a loop that makes no sense. 5) Clarity: The code is syntactically broken and logically incoherent. 6) Autonomy: The script cannot run, let alone be delivered to a client."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Select cartographic elements needed for effective presentation of information.",
+      "task_type": "Cartographic Visualization",
+      "user_prompt": "You are creating a thematic map for a public hearing on urban heat islands. You have a land cover raster (EPSG:4326) and a point layer of temperature sensors (EPSG:4326). The goal is to produce a map showing temperature anomalies relative to the mean. Write a Python script using 'matplotlib' and 'geopandas' to: 1) Clip the raster to the city boundary, 2) Calculate the mean temperature, 3) Generate a choropleth-style visualization where points are colored by deviation from the mean, 4) Add a legend, scale bar, and north arrow. Ensure the final map is exported in a projected CRS (EPSG:32610) to maintain accurate visual proportions, and handle any missing temperature data by interpolating using Inverse Distance Weighting (IDW) within a 1km radius.",
+      "reference_context": {
+        "city_boundary_wkt": "POLYGON((-122.5 37.7, -122.3 37.7, -122.3 37.8, -122.5 37.8, -122.5 37.7))",
+        "sensor_data_sample": [
+          {
+            "id": "S01",
+            "lat": 37.75,
+            "lon": -122.45,
+            "temp": 28.5
+          },
+          {
+            "id": "S02",
+            "lat": 37.76,
+            "lon": -122.46,
+            "temp": null
+          }
+        ],
+        "interpolation_radius_km": 1
+      },
+      "evaluation_criteria": [
+        "Visual Accuracy: Are the colors and scale correctly representing the data anomalies?",
+        "Data Handling: Is missing data interpolated correctly before visualization?",
+        "Cartographic Standards: Does the output include all required map elements (legend, scale, north arrow)?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nimport matplotlib.pyplot as plt\nfrom shapely.geometry import Point\nfrom scipy.interpolate import griddata\nimport numpy as np\n\n# Load data\ncity_boundary = gpd.GeoDataFrame.from_wkt(\n    {\"geometry\": [(\"POLYGON((-122.5 37.7, -122.3 37.7, -122.3 37.8, -122.5 37.8, -122.5 37.7))\")],\n     \"properties\": {}}\n)\n\nsensor_data = [\n    {\"id\": \"S01\", \"lat\": 37.75, \"lon\": -122.45, \"temp\": 28.5},\n    {\"id\": \"S02\", \"lat\": 37.76, \"lon\": -122.46, \"temp\": None},\n]\n\ninterpolation_radius_km = 1\n\n# Create a grid\nlatitudes = np.linspace(37.7, 37.8, 50)\nlongitudes = np.linspace(-122.5, -122.3, 50)\ngrid_x, grid_y = np.meshgrid(longitudes, latitudes)\n\n# Prepare data for interpolation\ntemp_values = [d[\"temp\"] for d in sensor_data if d[\"temp\"] is not None]\nif not temp_values:\n    temp_values = [28.5]  # Default value if no data\n\n# Interpolate temperature values\ngrid_temp = griddata((grid_x, grid_y), temp_values, (grid_x, grid_y), method='linear')\n\n# Calculate mean temperature\nmean_temp = np.mean(grid_temp)\n\n# Calculate temperature anomalies\nanomalies = grid_temp - mean_temp\n\n# Clip raster (dummy raster for demonstration)\n# Replace with actual raster loading and clipping\nraster_data = np.random.rand(100, 100)  # Dummy raster data\nclipped_raster = gpd.GeoDataFrame({'raster': raster_data}, geometry=gpd.points_from_xy(np.arange(100), np.arange(100)), crs=\"EPSG:4326\")\n\n# Reproject to EPSG:32610\nclipped_raster = clipped_raster.to_crs(\"EPSG:32610\")\n\n# Create the plot\nfig, ax = plt.subplots(figsize=(10, 8))\nax.imshow(clipped_raster['raster'], cmap='viridis', extent=[-122.5, -122.3, 37.7, 37.8], transform=clipped_raster.crs)\n\n# Add anomalies as color\nax.imshow(anomalies, cmap='coolwarm', extent=[-122.5, -122.3, 37.7, 37.8], alpha=0.5, transform=clipped_raster.crs)\n\n# Add legend\nsm = plt.cm.ScalarMappable(cmap='coolwarm', norm=plt.Normalize(vmin=-5, vmax=5))\nsm.set_array([])\ncbar = fig.colorbar(sm)\ncbar.set_label('Temperature Anomaly (°C)')\n\n# Add scale bar (dummy)\nax.plot([0, 0], [37.7, 37.8], 'k-', linewidth=0.5)\nax.text(-122.4, 37.75, '1 km', ha='right', va='center')\n\n# Add north arrow (dummy)\nax.arrow(\n    -122.4, 37.7, 0, 1, head_width=0.05, head_length=0.1, fc='k', ec='k'\n)\n\n# Set plot title and labels\nax.set_title('Urban Heat Island Analysis')\nax.set_xlabel('Longitude')\nax.set_ylabel('Latitude')\n\n# Show the plot\nplt.tight_layout()\nplt.show()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails to address the core task requirements in multiple critical ways. 1) It ignores the explicit instruction to use Inverse Distance Weighting (IDW), instead using linear interpolation via scipy. 2) It completely fails to implement the 1km radius constraint for interpolation. 3) It hallucinates a raster clipping process using dummy random data rather than processing the provided land cover raster. 4) It ignores the specific context of handling missing temperature data (None) correctly for IDW. 5) The visualization code is fundamentally broken: it attempts to use `imshow` with a CRS transform on a GeoDataFrame that was incorrectly constructed, and the scale bar/north arrow are drawn as arbitrary lines/arrows in data coordinates without proper projection handling or scaling. 6) It fails to address the 'Additional Checks' regarding elevation thresholds and NoData values. The code is not runnable as a solution to the prompt and demonstrates a lack of domain understanding."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Provide technical support to users or clients regarding the maintenance, development, or operation of Geographic Information Systems (GIS) databases, equipment, or applications.",
+      "task_type": "Data Integration & Troubleshooting",
+      "user_prompt": "A client reports that their web GIS application is failing to render layers correctly. The issue appears to be a mismatch between the client's expected CRS (EPSG:3857) and the server's data (EPSG:4326). You have a GeoJSON file containing 500 points and a WMS service URL. Write a Python script that: 1) Downloads the GeoJSON, 2) Reprojects the data to EPSG:3857, 3) Validates that the reprojected coordinates fall within the valid bounds of the Web Mercator projection, 4) Generates a corrected GeoJSON file and a summary report of any features that were clipped or discarded due to invalid coordinates. Include error handling for network timeouts during the download.",
+      "reference_context": {
+        "wms_url": "https://example.com/wms",
+        "expected_crs": "EPSG:3857",
+        "source_crs": "EPSG:4326",
+        "web_mercator_bounds": {
+          "min_x": -20037508.34,
+          "max_x": 20037508.34,
+          "min_y": -20037508.34,
+          "max_y": 20037508.34
+        }
+      },
+      "evaluation_criteria": [
+        "CRS Transformation: Is the reprojection to EPSG:3857 accurate?",
+        "Validation: Does the script correctly identify and report out-of-bounds features?",
+        "Resilience: Does the script handle network errors gracefully?"
+      ],
+      "student_answer": "```python\nimport requests\nimport json\nimport shapely.geometry\nimport numpy as np\n\ndef process_geojson(wms_url, expected_crs, source_crs, web_mercator_bounds, geojson_file=\"input.geojson\"):\n    \"\"\"\n    Downloads GeoJSON, reprojects to expected CRS, validates coordinates,\n    and generates a corrected GeoJSON with a summary report.\n    \"\"\"\n    try:\n        # 1. Download GeoJSON\n        response = requests.get(wms_url, timeout=10)\n        response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)\n        geojson_data = response.json()\n\n        # 2. Reproject GeoJSON to expected CRS\n        reprojected_features = []\n        clipped_features = []\n        for feature in geojson_data['features']:\n            try:\n                geom = shapely.geometry.shape(feature['geometry'])\n                if not geom.within(web_mercator_bounds):\n                    clipped_features.append(feature)\n                else:\n                    reprojected_geom = geom.transform(\n                        (3857, 4326)\n                    )\n                    reprojected_feature = {\"type\": feature['type'],\n                                          \"geometry\": {\"type\": reprojected_geom.type,\n                                                        \"coordinates\": reprojected_geom.wkt}\n                                          }\n                    reprojected_features.append(reprojected_feature)\n            except Exception as e:\n                print(f\"Error reprojecting feature: {feature['id']} - {e}\")\n                clipped_features.append(feature)\n\n        # 3. Validate coordinates\n        # (Already done in the reprojection step)\n\n        # 4. Generate corrected GeoJSON and report\n        corrected_geojson = {\"type\": \"FeatureCollection\", \"features\": reprojected_features}\n\n        report = {\n            \"total_features\": len(geojson_data['features']),\n            \"reprojected_features\": len(reprojected_features),\n            \"clipped_features\": len(clipped_features),\n            \"clipped_feature_ids\": [feature['id'] for feature in clipped_features]\n        }\n\n        with open(\"output.geojson\", \"w\") as f:\n            json.dump(corrected_geojson, f, indent=2)\n\n        with open(\"report.json\", \"w\") as f:\n            json.dump(report, f, indent=2)\n\n        print(\"Corrected GeoJSON generated: output.geojson\")\n        print(\"Report generated: report.json\")\n\n    except requests.exceptions.Timeout:\n        print(\"Network timeout during GeoJSON download.\")\n    except requests.exceptions.HTTPError as e:\n        print(f\"HTTP error: {e}\")\n    except Exception as e:\n        print(f\"An unexpected error occurred: {e}\")\n\n\nif __name__ == '__main__':\n    # Example Usage (replace with actual values)\n    wms_url = \"https://example.com/wms\"\n    expected_crs = \"EPSG:3857\"\n    source_crs = \"EPSG:4326\"\n    web_mercator_bounds = {\n        \"min_x\": -20037508.34,\n        \"max_x\": 20037508.34,\n        \"min_y\": -20037508.34,\n        \"max_y\": 20037508.34\n    }\n\n    process_geojson(wms_url, expected_crs, source_crs, web_mercator_bounds)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple technical fronts. 1) Correctness: The code attempts to download a GeoJSON from a WMS URL (which returns raster images, not vector GeoJSON), uses `shapely` for reprojection (which lacks native CRS transformation capabilities without `pyproj`), and attempts to check if a geometry is 'within' a dictionary of bounds rather than a spatial object. 2) Completeness: It does not actually perform the required reprojection or validation logic correctly. 3) Best Practices: It ignores the `pyproj` library, which is the industry standard for CRS operations. 4) Domain Accuracy: It confuses WMS (raster) with GeoJSON (vector) and misunderstands how to handle coordinate transformations. 5) Clarity: The code is syntactically valid but logically nonsensical for the task. 6) Autonomy: The code will crash or produce incorrect results immediately; it cannot be used without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Collect, compile, or integrate Geographic Information Systems (GIS) data, such as remote sensing or cartographic data for inclusion in map manuscripts.",
+      "task_type": "Data Integration and Quality Assurance",
+      "user_prompt": "You are a GIS Technician tasked with integrating a new parcel dataset with an existing city zoning map. The parcel data is in EPSG:4326, while the zoning map is in EPSG:26910. The parcel data contains topology errors (self-intersecting polygons) and attribute mismatches (e.g., 'Zoning' field contains 'Res' instead of 'R1'). Write a Python script using 'geopandas' and 'shapely' to: 1) Reproject the parcel data to EPSG:26910, 2) Fix topology errors by applying a buffer of 0.0001 degrees then converting back, 3) Standardize the 'Zoning' attribute values, and 4) Export the cleaned data as a GeoJSON file.",
+      "reference_context": {
+        "parcel_data_sample": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -122.4194,
+                      37.7749
+                    ],
+                    [
+                      -122.4094,
+                      37.7749
+                    ],
+                    [
+                      -122.4094,
+                      37.7649
+                    ],
+                    [
+                      -122.4194,
+                      37.7649
+                    ],
+                    [
+                      -122.4194,
+                      37.7749
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "parcel_id": "P-001",
+                "zoning": "Res"
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -122.4194,
+                      37.7749
+                    ],
+                    [
+                      -122.4094,
+                      37.7749
+                    ],
+                    [
+                      -122.4194,
+                      37.7649
+                    ],
+                    [
+                      -122.4194,
+                      37.7749
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "parcel_id": "P-002",
+                "zoning": "Com"
+              }
+            }
+          ]
+        },
+        "zoning_map_crs": "EPSG:26910",
+        "target_crs": "EPSG:26910",
+        "attribute_mapping": {
+          "Res": "R1",
+          "Com": "C1"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the script successfully reproject from EPSG:4326 to EPSG:26910?",
+        "Data Quality: Does the script detect and fix the self-intersecting polygon in P-002?",
+        "Attribute Handling: Are the zoning codes correctly mapped according to the provided dictionary?",
+        "Output: Is the final output a valid GeoJSON file with the correct CRS?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.geometry import shape\nimport pandas as pd\n\ndef clean_parcel_data(parcel_data_sample):\n    \"\"\"\n    Cleans parcel data by reprojecting, fixing topology, standardizing attributes,\n    and exporting as GeoJSON.\n\n    Args:\n        parcel_data_sample (dict): A dictionary containing the parcel data\n                                    in FeatureCollection format.\n\n    Returns:\n        str: A GeoJSON string representing the cleaned parcel data.\n    \"\"\"\n\n    gdf = gpd.GeoDataFrame.from_features(parcel_data_sample['features'], crs=\"EPSG:4326\")\n\n    # 1. Reproject to EPSG:26910\n    gdf = gdf.to_crs(epsg=26910)\n\n    # 2. Fix Topology\n    gdf = gdf.buffer(0.0001)\n    gdf = gdf.make_valid()\n\n    # 3. Standardize Zoning Attribute\n    gdf['zoning'] = gdf['zoning'].map(attribute_mapping)\n\n    # 4. Export as GeoJSON\n    cleaned_geojson = gdf.to_json(orient=\"records\")\n\n    return cleaned_geojson\n\n# Define the attribute mapping\nattribute_mapping = {\n    \"Res\": \"R1\",\n    \"Com\": \"C1\"\n}\n\n# Example usage with the provided sample data\nparcel_data_sample = {\n    \"type\": \"FeatureCollection\",\n    \"features\": [\n        {\n            \"type\": \"Feature\",\n            \"geometry\": {\n                \"type\": \"Polygon\",\n                \"coordinates\": [\n                    [\n                        [\n                            -122.4194,\n                            37.7749\n                        ],\n                        [\n                            -122.4094,\n                            37.7749\n                        ],\n                        [\n                            -122.4094,\n                            37.7649\n                        ],\n                        [\n                            -122.4194,\n                            37.7649\n                        ],\n                        [\n                            -122.4194,\n                            37.7749\n                        ]\n                    ]\n                ]\n            },\n            \"properties\": {\n                \"parcel_id\": \"P-001\",\n                \"zoning\": \"Res\"\n            }\n        },\n        {\n            \"type\": \"Feature\",\n            \"geometry\": {\n                \"type\": \"Polygon\",\n                \"coordinates\": [\n                    [\n                        [\n                            -122.4194,\n                            37.7749\n                        ],\n                        [\n                            -122.4094,\n                            37.7749\n                        ],\n                        [\n                            -122.4194,\n                            37.7649\n                        ],\n                        [\n                            -122.4194,\n                            37.7749\n                        ]\n                    ]\n                ]\n            },\n            \"properties\": {\n                \"parcel_id\": \"P-002\",\n                \"zoning\": \"Com\"\n            }\n        }\n    ]\n}\n\ncleaned_geojson_data = clean_parcel_data(parcel_data_sample)\nprint(cleaned_geojson_data)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical and logical fronts. 1) Correctness: The topology fix logic is fundamentally flawed; applying a buffer of 0.0001 degrees to data reprojected to EPSG:26910 (meters) is a unit mismatch error that will produce nonsensical geometry distortions. 2) Completeness: The code attempts to use 'attribute_mapping' before it is defined in the function scope, causing a runtime error. 3) Best Practices: The solution ignores the specific instruction to 'convert back' after buffering and fails to handle the 'NoData' or 'elevation' checks mentioned in the additional context (though the prompt context was slightly inconsistent, the code should at least be robust). 4) Domain Accuracy: Buffering in degrees on a projected CRS is a major GIS error. 5) Clarity: The code structure is readable but logically broken. 6) Autonomy: The code will crash immediately due to the undefined variable and produce incorrect spatial results, requiring significant rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Interpret aerial or ortho photographs.",
+      "task_type": "Remote Sensing Analysis",
+      "user_prompt": "You are a GIS Specialist analyzing a recent orthophoto to identify changes in vegetation cover compared to a historical image. You have two GeoTIFFs: 'ortho_2023.tif' (EPSG:32610) and 'ortho_2010.tif' (EPSG:32610). Both have 1m resolution. Calculate the Normalized Difference Vegetation Index (NDVI) for both years using the Red and Near-Infrared bands. Then, create a change detection map where pixels with an NDVI decrease greater than 0.2 are flagged as 'Vegetation Loss'. Ensure the final output is a GeoTIFF with the same CRS and resolution as the input, handling any nodata values appropriately.",
+      "reference_context": {
+        "ortho_2023_metadata": {
+          "path": "/data/ortho_2023.tif",
+          "crs": "EPSG:32610",
+          "bands": [
+            "Blue",
+            "Green",
+            "Red",
+            "NIR"
+          ],
+          "nodata": 0
+        },
+        "ortho_2010_metadata": {
+          "path": "/data/ortho_2010.tif",
+          "crs": "EPSG:32610",
+          "bands": [
+            "Blue",
+            "Green",
+            "Red",
+            "NIR"
+          ],
+          "nodata": 0
+        },
+        "ndvi_formula": "(NIR - Red) / (NIR + Red)"
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the NDVI formula applied correctly to the specific bands?",
+        "CRS Handling: Are both rasters processed in the same projected coordinate system (EPSG:32610)?",
+        "Data Integrity: Are nodata values handled to prevent division by zero or invalid calculations?",
+        "Output: Is the change detection map generated with the correct classification threshold (>0.2 decrease)?"
+      ],
+      "student_answer": "```python\nimport rasterio\nimport numpy as np\n\ndef calculate_ndvi(red_band, nir_band):\n    \"\"\"Calculates NDVI from Red and NIR bands.\"\"\"\n    ndvi = (nir_band - red_band) / (nir_band + red_band)\n    return ndvi\n\ndef detect_vegetation_loss(ndvi_2023, ndvi_2010, threshold=0.2):\n    \"\"\"Detects vegetation loss based on NDVI change.\"\"\"\n    ndvi_change = ndvi_2023 - ndvi_2010\n    vegetation_loss = np.where(ndvi_change < -threshold, 1, 0)\n    return vegetation_loss\n\ndef main():\n    \"\"\"Main function to perform NDVI calculation and change detection.\"\"\"\n    ndvi_2010_path = \"/data/ortho_2010.tif\"\n    ndvi_2023_path = \"/data/ortho_2023.tif\"\n    output_path = \"/data/vegetation_loss.tif\"\n\n    with rasterio.open(ndvi_2010_path) as src_2010:\n        ndvi_2010 = src_2010.read(3)  # Red band\n        transform_2010 = src_2010.transform\n\n    with rasterio.open(ndvi_2023_path) as src_2023:\n        ndvi_2023 = src_2023.read(3)  # Red band\n        transform_2023 = src_2023.transform\n\n    ndvi_2010 = np.ma.masked_where(ndvi_2010 == 0, ndvi_2010)\n    ndvi_2023 = np.ma.masked_where(ndvi_2023 == 0, ndvi_2023)\n\n    ndvi_2010 = ndvi_2010.astype(np.float32)\n    ndvi_2023 = ndvi_2023.astype(np.float32)\n\n    ndvi_2010 = calculate_ndvi(ndvi_2010, ndvi_2023)\n    ndvi_2023 = calculate_ndvi(ndvi_2023, ndvi_2023)\n\n    vegetation_loss = detect_vegetation_loss(ndvi_2023, ndvi_2010)\n\n    with rasterio.open(output_path, 'W',\n                       driver='GTiff',\n                       height=src_2023.height,\n                       width=src_2023.width,\n                       count=1,\n                       dtype=rasterio.uint8,\n                       crs=src_2023.crs,\n                       transform=transform_2023) as dst:\n        dst.write(vegetation_loss, 1)\n\nif __name__ == \"__main__\":\n    main()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The code reads only the Red band (index 3) for both inputs, ignoring the Near-Infrared band required for NDVI calculation. It then attempts to calculate NDVI by passing the Red band as both arguments (e.g., calculate_ndvi(ndvi_2010, ndvi_2023) is called incorrectly, and the second call uses ndvi_2023 for both arguments), resulting in a mathematically invalid NDVI (always 0 or NaN). 2) Completeness: The code does not read the NIR bands, does not handle nodata values correctly for the final output (writes 0/1 without setting a nodata value), and does not write the final NDVI change map or the vegetation loss mask with proper metadata. 3) Best Practices: The logic for reading bands is broken; the variable naming is confusing (reading Red but calling variables ndvi_2010); and the output driver configuration is incomplete. 4) Domain Accuracy: The NDVI formula is applied to the wrong data (Red vs Red instead of NIR vs Red). 5) Clarity: The code is syntactically valid but logically incoherent. 6) Autonomy: The code cannot be run to produce the requested result; it requires a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Document, design, code, or test Geographic Information Systems (GIS) models, internet mapping solutions, or other applications.",
+      "task_type": "Spatial Modeling and Scripting",
+      "user_prompt": "Design and implement a Python script to automate the creation of a 500-meter buffer zone around a set of critical infrastructure points (water treatment plants). The input shapefile 'plants.shp' is in EPSG:4326. The output shapefile 'buffers.shp' must be in EPSG:26910. The script must also calculate the area of each buffer in square kilometers and add this as a new attribute 'area_km2'. Ensure the script handles cases where the input geometry might be invalid by using a validation step before buffering.",
+      "reference_context": {
+        "input_data_schema": {
+          "file": "plants.shp",
+          "crs": "EPSG:4326",
+          "geometry_type": "Point",
+          "attributes": [
+            "plant_id",
+            "capacity"
+          ]
+        },
+        "output_requirements": {
+          "file": "buffers.shp",
+          "crs": "EPSG:26910",
+          "buffer_distance": 500,
+          "buffer_unit": "meters",
+          "new_attribute": "area_km2"
+        }
+      },
+      "evaluation_criteria": [
+        "CRS Transformation: Does the script correctly transform from EPSG:4326 to EPSG:26910 before calculating area?",
+        "Geometry Validation: Does the script check for and handle invalid geometries?",
+        "Calculation: Is the area calculated correctly in square kilometers after buffering?",
+        "Completeness: Does the script produce the final shapefile with all required attributes?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.validation import make_valid\n\ndef create_buffer_zones(input_shape, output_shape, buffer_distance, crs_output):\n    \"\"\"\n    Creates a buffer zone around points in a shapefile and calculates the area of each buffer.\n\n    Args:\n        input_shape (str): Path to the input shapefile.\n        output_shape (str): Path to the output shapefile.\n        buffer_distance (float): Buffer distance in meters.\n        crs_output (str): EPSG code for the output CRS.\n    \"\"\"\n    try:\n        # Read the input shapefile\n        gdf = gpd.read_file(input_shape, crs=\"EPSG:4326\")\n\n        # Validate geometries and fix invalid geometries\n        gdf['geometry'] = gdf['geometry'].apply(make_valid)\n\n        # Create the buffer zone\n        gdf['buffer'] = gdf.geometry.buffer(buffer_distance)\n\n        # Reproject to the output CRS\n        gdf = gdf.to_crs(crs_output)\n\n        # Calculate the area of each buffer in square kilometers\n        gdf['area_km2'] = gdf['area'] / 1000000\n\n        # Write the output shapefile\n        gdf.to_file(output_shape)\n\n    except Exception as e:\n        print(f\"An error occurred: {e}\")\n\nif __name__ == '__main__':\n    create_buffer_zones('plants.shp', 'buffers.shp', 500, 'EPSG:26910')\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The solution fails on critical technical requirements. First, it calculates area in the source CRS (EPSG:4326, degrees) before reprojecting, resulting in mathematically meaningless area values (square degrees, not square kilometers). Second, it attempts to buffer in meters while the data is in a geographic CRS (degrees), which is invalid; the buffer distance must be applied after reprojection or the distance must be converted to degrees. Third, the error handling is incomplete (prints nothing on failure). Fourth, the code does not handle the specific attribute requirements or schema validation. The 'Additional Checks' section regarding elevation and raster data is irrelevant to this vector task, but the code's fundamental failure to handle CRS correctly for distance and area calculations renders it non-functional for the stated goal."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Create, analyze, report, convert, or transfer data, using specialized applications program software.",
+      "task_type": "Data Conversion and Transformation",
+      "user_prompt": "You need to convert a large CSV file containing GPS coordinates (latitude, longitude) into a GeoJSON file. The CSV has a header 'lat,lon,timestamp,device_id'. The coordinates are in WGS84 (EPSG:4326). However, the downstream system requires the data in Web Mercator (EPSG:3857). Write a Python script using 'pandas' and 'geopandas' to: 1) Read the CSV, 2) Create a GeoDataFrame, 3) Reproject to EPSG:3857, 4) Filter out any records where the timestamp is missing, and 5) Export to GeoJSON. Include error handling for rows with non-numeric coordinate values.",
+      "reference_context": {
+        "csv_sample": [
+          {
+            "lat": 37.7749,
+            "lon": -122.4194,
+            "timestamp": "2023-10-01",
+            "device_id": "D01"
+          },
+          {
+            "lat": 37.775,
+            "lon": -122.4195,
+            "timestamp": null,
+            "device_id": "D02"
+          },
+          {
+            "lat": "invalid",
+            "lon": -122.4196,
+            "timestamp": "2023-10-02",
+            "device_id": "D03"
+          }
+        ],
+        "source_crs": "EPSG:4326",
+        "target_crs": "EPSG:3857"
+      },
+      "evaluation_criteria": [
+        "Data Cleaning: Does the script correctly filter out rows with missing timestamps and non-numeric coordinates?",
+        "CRS Transformation: Is the reprojection from EPSG:4326 to EPSG:3857 performed correctly?",
+        "Output Format: Is the final output a valid GeoJSON file?",
+        "Robustness: Does the script handle the 'invalid' coordinate entry without crashing?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport geopandas as gpd\n\ndef csv_to_geojson(csv_file, geojson_file):\n    \"\"\"\n    Converts a CSV file with GPS coordinates to a GeoJSON file,\n    reprojecting to Web Mercator (EPSG:3857) and handling errors.\n    \"\"\"\n    try:\n        df = pd.read_csv(csv_file)\n        \n        # Convert latitude and longitude to numeric, handling errors\n        df['lat'] = pd.to_numeric(df['lat'], errors='coerce')\n        df['lon'] = pd.to_numeric(df['lon'], errors='coerce')\n        \n        # Drop rows with missing or invalid coordinates\n        df = df.dropna(subset=['lat', 'lon'])\n        \n        # Filter out rows with missing timestamps\n        df = df[df['timestamp'].notna()]\n        \n        # Create GeoDataFrame\n        gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df['lon'], df['lat']), crs=\"EPSG:4326\")\n        \n        # Reproject to Web Mercator (EPSG:3857)\n        gdf = gdf.to_crs(\"EPSG:3857\")\n        \n        # Export to GeoJSON\n        gdf.to_file(geojson_file, driver='GeoJSON')\n        \n    except Exception as e:\n        print(f\"An error occurred: {e}\")\n\nif __name__ == '__main__':\n    csv_file = 'input.csv'\n    geojson_file = 'output.geojson'\n    csv_to_geojson(csv_file, geojson_file)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        5,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The solution correctly implements the core workflow: reading CSV, converting coordinates to numeric with error handling (coerce), filtering missing timestamps, creating a GeoDataFrame, reprojecting to EPSG:3857, and exporting. Domain accuracy is high regarding CRS definitions and coordinate order (lon, lat). However, the error handling in the 'except' block is incomplete (it prints a generic message without re-raising or logging details), which reduces the 'Best Practices' and 'Autonomy' scores as a production script should handle or report specific failures more robustly. The 'Additional Checks' in the prompt regarding elevation thresholds and raster data are irrelevant to this specific vector conversion task and were correctly ignored by the student."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Confer with users to analyze, configure, or troubleshoot applications.",
+      "task_type": "Spatial Query and Troubleshooting",
+      "user_prompt": "A client reports that a query to find all schools within 1km of a river is returning no results, even though they know schools exist nearby. The river layer is in EPSG:26910 (meters) and the school layer is in EPSG:4326 (degrees). Write a Python script that performs the spatial join correctly by first reprojecting the school layer to EPSG:26910. The script should then calculate the distance from each school to the nearest river segment and filter for those within 1000 meters. Output the list of school IDs and their distances.",
+      "reference_context": {
+        "river_layer": {
+          "file": "river.shp",
+          "crs": "EPSG:26910",
+          "geometry_type": "LineString"
+        },
+        "school_layer": {
+          "file": "schools.shp",
+          "crs": "EPSG:4326",
+          "geometry_type": "Point",
+          "attributes": [
+            "school_id",
+            "name"
+          ]
+        },
+        "threshold": 1000,
+        "threshold_unit": "meters"
+      },
+      "evaluation_criteria": [
+        "CRS Alignment: Does the script explicitly reproject the school layer to match the river layer's CRS?",
+        "Spatial Logic: Is the distance calculation performed in the projected coordinate system (meters)?",
+        "Filtering: Are only schools within 1000 meters included in the final output?",
+        "Output: Does the script return the correct school IDs and calculated distances?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.ops import nearest_points\n\ndef find_schools_near_river(river_file, school_file, threshold_meters):\n    \"\"\"\n    Finds schools within a specified distance of a river.\n\n    Args:\n        river_file (str): Path to the river shapefile.\n        school_file (str): Path to the school shapefile.\n        threshold_meters (float): Distance threshold in meters.\n\n    Returns:\n        pandas.DataFrame: DataFrame containing school IDs and distances to the nearest river segment.\n    \"\"\"\n\n    # Read the river layer\n    river = gpd.read_file(river_file)\n\n    # Read the school layer\n    schools = gpd.read_file(school_file)\n\n    # Reproject the school layer to the river's CRS\n    schools = schools.to_crs(river.crs)\n\n    # Find the nearest river segment to each school\n    nearest_rivers = schools.sjoin(river, how='left', predicate='within')\n\n    # Calculate the distance from each school to the nearest river segment\n    schools_with_distances = schools.merge(nearest_rivers, how='left', on='geometry')\n    schools_with_distances['distance'] = schools_with_distances.geometry.distance\n\n    # Filter for schools within the threshold distance\n    schools_within_threshold = schools_with_distances[schools_with_distances['distance'] <= threshold_meters]\n\n    # Select the school ID and distance\n    result = schools_within_threshold[['school_id', 'distance']]\n\n    return result\n\nif __name__ == '__main__':\n    river_file = \"river.shp\"\n    school_file = \"schools.shp\"\n    threshold_meters = 1000\n\n    schools_near_river = find_schools_near_river(river_file, school_file, threshold_meters)\n    print(schools_near_river)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. The student attempts to solve a distance-based query using a spatial join with the predicate 'within' (sjoin), which only identifies schools that physically overlap the river line, not those within a 1km buffer. Consequently, the subsequent distance calculation using the '.distance' attribute on the joined geometry is logically flawed and will not yield the correct nearest-neighbor distances. The code also hallucinates a 'school_id' column without verifying its existence in the input schema and ignores the 'Additional Checks' regarding NoData and CRS validation. While the syntax is valid Python, the spatial logic is incorrect for the stated task, requiring a complete rework to use proper buffering or nearest_points logic."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Meet with clients to discuss topics such as technical specifications, customized solutions, or operational problems.",
+      "task_type": "Custom Solution Development",
+      "user_prompt": "A client needs a customized solution to merge two overlapping land use polygons into a single feature, keeping the attribute of the polygon with the larger area. The input data is in EPSG:4326. The script must: 1) Reproject the data to a local projected CRS (EPSG:32610) to ensure accurate area calculations, 2) Dissolve overlapping geometries, 3) Calculate the area of the resulting merged features, 4) Assign the 'owner' attribute from the feature with the largest area, and 5) Export the result back to EPSG:4326. Handle any topology errors that arise during the dissolve operation.",
+      "reference_context": {
+        "input_data": {
+          "file": "land_use.shp",
+          "crs": "EPSG:4326",
+          "attributes": [
+            "owner",
+            "area_sq_m"
+          ]
+        },
+        "target_crs_for_calc": "EPSG:32610",
+        "target_crs_for_export": "EPSG:4326"
+      },
+      "evaluation_criteria": [
+        "CRS Strategy: Does the script use a projected CRS for area calculation and dissolve, then reproject back?",
+        "Logic: Does the script correctly identify the owner of the largest area after merging?",
+        "Topology: Does the script handle potential topology errors during the dissolve process?",
+        "Output: Is the final dataset in the correct CRS (EPSG:4326) with the correct attributes?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.ops import cascaded_union\n\ndef merge_overlapping_land_use(input_file, target_crs_for_calc, target_crs_for_export):\n    \"\"\"\n    Merges overlapping land use polygons, prioritizing larger area,\n    reprojects to a local CRS for accurate area calculation,\n    and exports back to EPSG:4326.\n    \"\"\"\n    gdf = gpd.read_file(input_file)\n\n    # 1. Reproject to local CRS\n    gdf = gdf.to_crs(target_crs_for_calc)\n\n    # 2. Dissolve overlapping geometries\n    try:\n        merged_gdf = gdf.dissolve(by='owner')\n    except Exception as e:\n        print(f\"Topology error during dissolve: {e}\")\n        merged_gdf = gdf.copy()  # Return original if dissolve fails\n\n    # 3. Calculate area\n    merged_gdf['area_sq_m'] = merged_gdf.geometry.area\n\n    # 4. Assign 'owner' attribute from the feature with the largest area\n    merged_gdf['owner'] = merged_gdf.groupby('geometry')['owner'].transform('first')\n\n    # 5. Export to EPSG:4326\n    merged_gdf.to_file(\"merged_land_use.shp\", driver=\"ESRI Shapefile\")\n\nif __name__ == '__main__':\n    merge_overlapping_land_use(\n        input_data[\"file\"],\n        input_data[\"target_crs_for_calc\"],\n        input_data[\"target_crs_for_export\"]\n    )\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple technical and logical levels. 1) Correctness: The code attempts to access 'input_data' which is undefined in the script scope (it is provided in the context, not the code). 2) Completeness: It ignores the requirement to handle topology errors by actually fixing them (e.g., using make_valid) and instead just returns the original data. 3) Best Practices: It uses the deprecated 'cascaded_union' import but never uses it, and 'dissolve(by='owner')' merges all polygons with the same owner, failing to merge overlapping polygons regardless of ownership as implied by the task (or if the task implies merging all overlaps, the logic is wrong). 4) Domain Accuracy: The logic to assign the owner from the largest area is completely broken; it groups by geometry and takes the first owner, which does not solve the 'keep attribute of larger area' requirement. 5) Clarity: The code is syntactically valid but logically incoherent. 6) Autonomy: The code will crash immediately due to the undefined variable and cannot be used without significant rework."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design, program, or model Geographic Information Systems (GIS) applications or procedures.",
+      "task_type": "Spatial Data Analysis",
+      "user_prompt": "You are a GIS Technician tasked with analyzing flood risk for a new development project. You have been provided with a shapefile of the proposed site boundaries and a raster DEM (Digital Elevation Model) of the region. Your goal is to identify all areas within the site boundary that have an elevation below 5 meters above sea level. Provide the Python code using the 'geopandas' and 'rasterio' libraries to perform this overlay analysis, ensuring the data is reprojected to a local projected coordinate system (EPSG:32610) before calculation. Output the final list of coordinates for the high-risk zones.",
+      "reference_context": {
+        "site_boundary_schema": {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -122.4194,
+                  37.7749
+                ],
+                [
+                  -122.4094,
+                  37.7749
+                ],
+                [
+                  -122.4094,
+                  37.7649
+                ],
+                [
+                  -122.4194,
+                  37.7649
+                ],
+                [
+                  -122.4194,
+                  37.7749
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "site_id": "DEV-2024-001",
+            "current_crs": "EPSG:4326"
+          }
+        },
+        "dem_metadata": {
+          "source": "USGS NED",
+          "resolution": "10m",
+          "units": "meters",
+          "original_crs": "EPSG:4326"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the code successfully reproject data and perform the elevation threshold analysis?",
+        "Completeness: Are all steps from loading data to exporting results included?",
+        "Best practices: Is the code modular, commented, and using efficient spatial indexing?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nimport rasterio\nfrom rasterio.transform import from_origin\nimport numpy as np\n\ndef analyze_flood_risk(site_boundary_path, dem_path):\n    \"\"\"\n    Analyzes flood risk for a development site by identifying areas below a certain elevation.\n\n    Args:\n        site_boundary_path (str): Path to the site boundary shapefile.\n        dem_path (str): Path to the DEM raster.\n\n    Returns:\n        list: A list of (x, y) coordinates representing the high-risk zones.\n    \"\"\"\n\n    # Read the site boundary shapefile\n    site_boundary = gpd.read_file(site_boundary_path)\n\n    # Read the DEM raster\n    with rasterio.open(dem_path) as src:\n        dem = src.read(1)\n\n    # Reproject the site boundary to the local projected coordinate system (EPSG:32610)\n    site_boundary = site_boundary.to_crs(\"EPSG:32610\")\n\n    # Calculate elevation values for the site boundary\n    elevation = np.array([dem[row[1], row[0]] for row in site_boundary.geometry.values])\n\n    # Identify high-risk zones (elevation below 5 meters)\n    high_risk_zones = site_boundary[site_boundary['elevation'] < 5]\n\n    # Extract coordinates of high-risk zones\n    coordinates = [(int(x), int(y)) for x, y in zip(high_risk_zones.geometry.x, high_risk_zones.geometry.y)]\n\n    return coordinates\n\nif __name__ == '__main__':\n    # Example usage:\n    site_boundary_path = 'site_boundary.shp'\n    dem_path = 'dem.tif'\n    high_risk_coordinates = analyze_flood_risk(site_boundary_path, dem_path)\n    print(high_risk_coordinates)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple technical levels. 1) Correctness: The code attempts to index a 2D raster array using vector coordinates directly (dem[row[1], row[0]]), which is invalid without converting coordinates to pixel indices via a transform. 2) Completeness: It completely ignores the requirement to reproject the raster to match the vector or vice versa before sampling, and fails to handle NoData values. 3) Best Practices: It does not use rasterio's built-in sampling methods (like rasterio.sample) or proper transform calculations. 4) Domain Accuracy: The logic for extracting coordinates from a polygon geometry (geometry.x, geometry.y) is incorrect for a polygon feature; it would return the centroid or fail, not the boundary coordinates. 5) Clarity: The code is syntactically valid but logically broken. 6) Autonomy: The code will crash or produce garbage results immediately upon execution."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop specialized computer software routines, internet-based Geographic Information Systems (GIS) databases, or business applications to customize geographic information.",
+      "task_type": "Database Development",
+      "user_prompt": "You are a GIS Specialist building a custom database for a utility company. You have a CSV file containing 50,000 water main segments with attributes 'segment_id', 'length_ft', 'material', and 'install_date'. The coordinates are in WGS84 (EPSG:4326). Write a Python script using 'pandas' and 'geopandas' to load this data, validate topology (ensuring no self-intersections or duplicate geometries), transform the coordinates to State Plane California Zone 3 (EPSG:2227), and calculate the total length of copper pipes in kilometers. Handle any null values in the 'material' field by defaulting to 'Unknown'.",
+      "reference_context": {
+        "csv_sample": [
+          {
+            "segment_id": "WM-101",
+            "length_ft": 150.5,
+            "material": "Copper",
+            "install_date": "2015-03-12",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  -122.0,
+                  37.0
+                ],
+                [
+                  -122.001,
+                  37.001
+                ]
+              ]
+            }
+          },
+          {
+            "segment_id": "WM-102",
+            "length_ft": null,
+            "material": "PVC",
+            "install_date": "2018-07-22",
+            "geometry": {
+              "type": "LineString",
+              "coordinates": [
+                [
+                  -122.001,
+                  37.001
+                ],
+                [
+                  -122.002,
+                  37.002
+                ]
+              ]
+            }
+          }
+        ],
+        "target_crs": "EPSG:2227"
+      },
+      "evaluation_criteria": [
+        "Data Integrity: Does the script handle null values and topology errors correctly?",
+        "CRS Accuracy: Is the transformation from EPSG:4326 to EPSG:2227 performed accurately?",
+        "Calculation: Is the length conversion from feet to kilometers correct for the projected CRS?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport geopandas as gpd\n\ndef process_water_main_data(csv_file):\n    \"\"\"\n    Loads water main data, validates topology, transforms coordinates,\n    handles null values, and calculates the total length of copper pipes in kilometers.\n\n    Args:\n        csv_file (str): Path to the CSV file containing water main data.\n\n    Returns:\n        float: Total length of copper pipes in kilometers.\n    \"\"\"\n\n    # Load data\n    df = pd.read_csv(csv_file)\n\n    # Handle null values in 'material'\n    df['material'] = df['material'].fillna('Unknown')\n\n    # Create GeoSeries\n    water_main_geometries = gpd.GeoSeries(df['geometry'])\n\n    # Reproject to State Plane California Zone 3\n    water_main_geometries = water_main_geometries.to_crs(\"EPSG:2227\")\n\n    # Validate topology\n    water_main_geodataframe = gpd.GeoDataFrame(df, geometry=water_main_geometries)\n    water_main_geodataframe.is_valid = water_main_geodataframe.geometry.is_valid\n    water_main_geodataframe = water_main_geodataframe[water_main_geodataframe.is_valid]\n    water_main_geodataframe = water_main_geodataframe.drop_duplicates(subset=['segment_id'], keep='first')\n\n    # Calculate total length of copper pipes in kilometers\n    copper_length_ft = df[(df['material'] == 'Copper')]['length_ft'].sum()\n    copper_length_km = copper_length_ft * 0.3048\n\n    return copper_length_km\n\nif __name__ == '__main__':\n    # Example usage\n    csv_file = 'water_main_data.csv'  # Replace with your CSV file path\n    total_copper_length = process_water_main_data(csv_file)\n    print(f\"Total length of copper pipes: {total_copper_length:.2f} km\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical logical and technical errors. 1) Correctness: The code calculates length in feet and multiplies by 0.3048 (converting feet to meters), not kilometers (which requires dividing by 3280.84 or multiplying by 0.0003048). 2) Completeness: It fails to validate topology for self-intersections or duplicate geometries properly; it only filters based on a boolean column assignment rather than using `has_z` or `is_valid` methods correctly to drop invalid features before calculation. 3) Best Practices: It creates a GeoSeries, reprojects it, then creates a GeoDataFrame from the original un-reprojected dataframe, leading to a mismatch between the geometry column and the CRS if the dataframe wasn't updated. 4) Domain Accuracy: The unit conversion is mathematically wrong for the requested output (km). 5) Clarity: The code is readable but the logic is flawed. 6) Autonomy: The script would return incorrect results and cannot be used without significant rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Make recommendations regarding upgrades, considering implications of new or revised Geographic Information Systems (software), equipment, or applications.",
+      "task_type": "System Recommendation",
+      "user_prompt": "A municipality is currently using a legacy desktop GIS that struggles with large raster datasets and lacks web integration. They have a dataset of 500GB of historical aerial imagery in GeoTIFF format and a vector layer of parcel boundaries. Analyze the requirements for a modern cloud-based GIS solution. Provide a technical report comparing three potential solutions (e.g., ArcGIS Online, QGIS Server, GeoServer) focusing on their ability to handle the data volume, support for dynamic projection on the fly, and cost implications for a team of 20 users. Include a specific recommendation on how to migrate the legacy data to the new system, addressing potential data quality issues like missing metadata.",
+      "reference_context": {
+        "legacy_system": "ArcGIS Desktop 10.5",
+        "data_volume": "500GB Raster, 2GB Vector",
+        "user_count": 20,
+        "current_issues": [
+          "Slow rendering of large rasters",
+          "No web access",
+          "Missing coordinate system metadata on some layers"
+        ]
+      },
+      "evaluation_criteria": [
+        "Feasibility: Are the recommended solutions capable of handling the specified data volume?",
+        "Technical Depth: Does the report address CRS on-the-fly projection and data migration strategies?",
+        "Clarity: Is the recommendation justified by the specific constraints and data quality issues?"
+      ],
+      "student_answer": "## Technical Report: Cloud-Based GIS Solution Analysis\n\n**Date:** October 26, 2023\n\n**To:** Municipality Planning Department\n\n**From:** Geographic Information Systems Technologists & Technicians\n\n**Subject:** Analysis and Recommendation for Modern GIS Solution\n\n**1. Executive Summary:**\n\nThis report analyzes the requirements for a modern cloud-based GIS solution to address the limitations of the current ArcGIS Desktop 10.5 system.  Three potential solutions – ArcGIS Online, QGIS Server, and GeoServer – were evaluated based on data volume handling, dynamic projection support, and cost implications for a team of 20 users.  A migration strategy is proposed, incorporating data quality assessment and remediation.  The recommendation is to implement ArcGIS Online, leveraging its scalability, integrated features, and established ecosystem.\n\n**2. Requirements Analysis:**\n\nBased on the provided context, the following requirements have been identified:\n\n*   **Data Volume:**  The 500GB raster dataset and 2GB vector layer necessitate a solution capable of handling large geospatial datasets efficiently.\n*   **Web Integration:**  Access to GIS data and functionality via a web interface is crucial for broader departmental use and public access.\n*   **Performance:**  Rapid rendering of large rasters is essential for timely analysis and decision-making.\n*   **Dynamic Projection:**  Support for on-the-fly coordinate system transformations is required to accommodate diverse data sources and analysis needs.\n*   **User Base:**  A solution must accommodate 20 users with appropriate licensing and collaboration features.\n*   **Data Quality:** Addressing missing metadata and potential inconsistencies in the legacy data is critical for data integrity.\n\n**3. Solution Comparison:**\n\n| Feature             | ArcGIS Online | QGIS Server | GeoServer |\n|----------------------|---------------|-------------|-----------|\n| **Data Volume Handling** | Excellent     | Good        | Good      |\n| **Raster Performance** | Excellent     | Good        | Good      |\n| **Dynamic Projection** | Excellent     | Excellent   | Excellent |\n| **Web Interface**      | Excellent     | Good        | Good      |\n| **User Management**    | Excellent     | Good        | Good      |\n| **Cost (20 Users)**    | Moderate-High | Low-Moderate| Low       |\n| **Ease of Use**        | Good          | Good        | Moderate  |\n| **Ecosystem/Plugins** | Excellent     | Good        | Good      |\n\n**Detailed Analysis:**\n\n*   **ArcGIS Online:** Offers superior performance with large rasters, robust web mapping capabilities, and a comprehensive ecosystem of tools and extensions.  Licensing costs are higher but include a wide range of functionalities.\n*   **QGIS Server:** A cost-effective open-source solution with strong dynamic projection support. Raster performance is good, but may require more optimization than ArcGIS Online.  User management and administration require more technical expertise.\n*   **GeoServer:**  A dedicated open-source server for serving geospatial data.  Excellent dynamic projection support and cost-effective.  Requires more configuration and integration with front-end mapping tools.\n\n**4. Data Migration Strategy:**\n\n1.  **Data Assessment:** Conduct a thorough assessment of the 500GB raster dataset and 2GB vector layer.  Identify missing metadata, inconsistent coordinate systems, and potential data quality issues.\n2.  **Metadata Remediation:**  Develop a process to populate missing metadata, including coordinate system definitions, data source information, and quality control flags. Utilize automated tools where possible.\n3.  **Coordinate System Standardization:**  Transform all data to a common, well-defined coordinate system (e.g., WGS 84) using ArcGIS Pro or QGIS.\n4.  **Raster Conversion:** Convert GeoTIFF rasters to a format compatible with the chosen cloud GIS (e.g., GeoParquet for ArcGIS Online).\n5.  **Vector Data Conversion:** Convert vector data to a format supported by the chosen cloud GIS (e.g., Shapefile, GeoJSON).\n6.  **Data Upload:** Upload the converted data to the cloud GIS platform.\n7.  **Validation:**  Perform rigorous validation to ensure data integrity and accuracy after migration.\n\n**5. Recommendation:**\n\n**Recommend ArcGIS Online** as the optimal solution for the municipality.  Its scalability, robust raster performance, comprehensive web mapping capabilities, and established ecosystem align perfectly with the identified requirements. While licensing costs are higher, the long-term benefits in terms of efficiency, collaboration, and data accessibility outweigh the initial investment.\n\n**6. Cost Estimate (Illustrative):**\n\n*   **ArcGIS Online Licensing (20 Users):** $12,000 - $24,000 annually (depending on subscription level)\n*   **Data Migration & Remediation:** $5,000 - $10,000 (depending on data complexity and effort)\n*   **Training:** $2,000 - $4,000\n\n**7. Conclusion:**\n\nTransitioning to a cloud-based GIS solution is critical for the municipality to overcome the limitations of the legacy system and unlock the full potential of its geospatial data. ArcGIS Online provides the most comprehensive and scalable solution, facilitating efficient data management, web access, and improved decision-making capabilities.  A well-defined data migration strategy, coupled with proactive data quality management, will ensure a successful and sustainable implementation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails to address the specific constraints in the 'Additional Checks' section, which explicitly required verifying reprojection logic for area/distance calculations, handling CRS mismatches, addressing a specific 5m elevation threshold, and managing NoData values. The student's migration strategy contains a critical technical error by suggesting 'GeoParquet' for raster data in ArcGIS Online (GeoParquet is for vector/tabular data; rasters require Cloud Optimized GeoTIFFs or similar). The cost estimates are generic and lack the depth of a professional architectural proposal. While the structure is clear and the general comparison is adequate, the omission of the specific technical requirements and the inclusion of incorrect format recommendations prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Assist users in formulating Geographic Information Systems (GIS) requirements or understanding the implications of alternatives.",
+      "task_type": "Requirements Analysis",
+      "user_prompt": "A city planning department needs to create a public-facing map showing zoning changes. They have requested a map that allows users to toggle between 'Current Zoning' and 'Proposed Zoning' layers. The data sources are two separate shapefiles with different attribute schemas and coordinate systems (one in NAD83, one in WGS84). Draft a requirements document that outlines the necessary data processing steps to harmonize these layers, the specific user interface features needed for the web application, and the potential risks of displaying mismatched data. Include a section on how to handle topology errors that might arise when overlaying the two zoning layers.",
+      "reference_context": {
+        "layer_1": {
+          "name": "Current Zoning",
+          "crs": "EPSG:26910",
+          "schema": [
+            "ZONE_CODE",
+            "AREA_HA"
+          ]
+        },
+        "layer_2": {
+          "name": "Proposed Zoning",
+          "crs": "EPSG:4326",
+          "schema": [
+            "ZONING",
+            "HECTARES"
+          ]
+        },
+        "platform": "Web-based Viewer"
+      },
+      "evaluation_criteria": [
+        "Data Harmonization: Does the plan address CRS transformation and schema mapping?",
+        "User Experience: Are the UI requirements clear and aligned with the data capabilities?",
+        "Risk Assessment: Does the document identify and propose solutions for topology and alignment issues?"
+      ],
+      "student_answer": "```markdown\n# Zoning Change Map Requirements Document\n\n**Project:** Public-Facing Zoning Change Map\n\n**Version:** 1.0\n\n**Date:** October 26, 2023\n\n**1. Introduction**\n\nThis document outlines the requirements for a web-based map application displaying current and proposed zoning changes. The application will allow users to toggle between layers representing these zoning designations and will address potential data inconsistencies and topology issues.\n\n**2. Data Processing Requirements**\n\n*   **Coordinate System Transformation:**\n    *   Layer 1 (Current Zoning) – CRS: EPSG:26910 (NAD83)\n    *   Layer 2 (Proposed Zoning) – CRS: EPSG:4326 (WGS84)\n    *   **Action:** Transform Layer 2 to match the coordinate system of Layer 1 (EPSG:26910) using a suitable transformation (e.g., Transverse Mercator).  Verify the transformation accuracy using a small test area.\n*   **Attribute Schema Harmonization:**\n    *   `ZONE_CODE` (Layer 1)  <-> `ZONING` (Layer 2) –  Develop a mapping between the two codes.  A lookup table will be required.  Consider potential for non-unique codes and implement a strategy (e.g., assigning a unique ID to each zoning type).\n    *   `AREA_HA` (Layer 1) <-> `HECTARES` (Layer 2) – Convert hectares to hectares (no transformation needed).\n*   **Data Cleaning:**\n    *   Identify and address any missing values in either dataset.  Implement a strategy for handling missing data (e.g., imputation, exclusion).\n    *   Validate data types for each attribute to ensure consistency.\n*   **Topology Analysis & Correction:**\n    *   **Initial Analysis:** Perform a topology analysis on both shapefiles to identify potential errors (gaps, overlaps, self-intersections).\n    *   **Overlay:** Overlay the transformed and harmonized layers.\n    *   **Error Handling:** Implement a strategy for handling topology errors:\n        *   **Gaps:** Attempt to connect gaps using appropriate spatial algorithms (e.g., Douglas-Peucker simplification, network analysis). Document the simplification parameters.\n        *   **Overlaps:**  Investigate the cause of overlaps.  If the overlaps are due to data errors, attempt to correct them. If the overlaps are legitimate, document the situation and consider alternative visualization strategies.\n        *   **Self-Intersections:**  Attempt to correct self-intersections. If correction is not possible, document the issue and consider alternative visualization strategies.\n\n**3. User Interface (UI) Requirements**\n\n*   **Toggle Layer Control:** A prominent toggle button or switch to switch between \"Current Zoning\" and \"Proposed Zoning\" layers.\n*   **Layer Titles:** Clear and concise layer titles indicating the zoning designation.\n*   **Legend:** A legend explaining the zoning codes and their corresponding designations.\n*   **Scale Bar:** A scale bar to provide context for the map.\n*   **North Arrow:** A north arrow to indicate direction.\n*   **Search Functionality (Optional):**  A search bar to allow users to search for specific addresses or parcel IDs.\n*   **Data Source Attribution:** Clearly display the data sources used for each layer.\n*   **Responsive Design:** The map should be responsive and adapt to different screen sizes.\n\n**4. Potential Risks & Mitigation**\n\n*   **Data Mismatch:** Differences in zoning codes and attribute names between the two datasets can lead to incorrect visualizations. *Mitigation:* Thorough attribute mapping and validation.\n*   **Coordinate System Discrepancies:** Inaccurate coordinate transformations can result in misaligned layers. *Mitigation:*  Verify transformation accuracy and document the transformation process.\n*   **Topology Errors:**  Topology errors can create visual artifacts and inaccurate spatial analysis. *Mitigation:*  Implement a robust topology analysis and correction process.\n*   **Data Quality Issues:**  Inaccurate or incomplete data in either dataset can lead to misleading visualizations. *Mitigation:*  Perform data quality checks and implement data cleaning procedures.\n*   **Performance Issues:** Large datasets can impact map performance. *Mitigation:* Optimize data storage and retrieval, consider data simplification techniques.\n\n**5. Technology Stack (Recommendation)**\n\n*   **GIS Software:** QGIS or ArcGIS Pro\n*   **Web Mapping Library:** Leaflet or Mapbox GL JS\n*   **Server-Side Technology:** Python (Flask/Django) or Node.js\n\n**6. Data Quality Assessment**\n\n*   Conduct a thorough data quality assessment of both shapefiles before commencing processing. Document findings, including data completeness, accuracy, and consistency.\n\n**7. Documentation**\n\n*   Maintain detailed documentation of all data processing steps, transformations, and decisions.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission addresses the general task but fails significantly on domain accuracy and best practices. Specifically, it suggests using 'Transverse Mercator' as a transformation method between NAD83 and WGS84, which is a projection type, not a datum transformation method (e.g., NADCON or Molodensky). It also incorrectly suggests using 'Douglas-Peucker simplification' to fix topology gaps, which is a line simplification algorithm that reduces detail rather than filling spatial voids. The response ignores the 'Additional Checks' regarding elevation thresholds and raster NoData values, though the prompt context was vector-based, the failure to address the specific topology correction logic (e.g., snapping, buffer, or polygon union) professionally lowers the score. The UI section is generic and lacks specific implementation details for the 'toggle' requirement beyond a button description. While the structure is clear (Clarity 4), the technical errors prevent it from being industry-standard (Best Practices 2, Domain Accuracy 3)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Create visual representations of geospatial data, using complex procedures such as analytical modeling, three-dimensional renderings, or plot creation.",
+      "task_type": "3D Visualization",
+      "user_prompt": "You are tasked with creating a 3D visualization of a proposed wind farm. You have a vector layer of turbine locations (points) and a DEM raster. The turbine locations are in EPSG:4326, and the DEM is in EPSG:32610. Write a Python script using 'matplotlib' and 'pyvista' to generate a 3D plot. The script must reproject the turbine points to match the DEM's CRS, extract elevation values at the turbine locations, and extrude the points to represent the turbine height (100m). Ensure the final visualization correctly displays the terrain and turbine heights in a single coordinate system.",
+      "reference_context": {
+        "turbine_locations": [
+          {
+            "id": "WT-01",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -122.0,
+                37.0
+              ]
+            },
+            "height_m": 100
+          },
+          {
+            "id": "WT-02",
+            "geometry": {
+              "type": "Point",
+              "coordinates": [
+                -122.005,
+                37.005
+              ]
+            },
+            "height_m": 100
+          }
+        ],
+        "dem_source": "USGS NED",
+        "dem_crs": "EPSG:32610"
+      },
+      "evaluation_criteria": [
+        "CRS Consistency: Are the points and DEM correctly aligned in the same projected coordinate system?",
+        "Visualization Accuracy: Does the 3D plot accurately represent the terrain and extruded heights?",
+        "Code Robustness: Does the script handle the coordinate transformation and data extraction efficiently?"
+      ],
+      "student_answer": "```python\nimport pyvista as pv\nimport numpy as np\n\ndef visualize_wind_farm(turbine_locations, dem_source=\"USGS NED\", dem_crs=\"EPSG:32610\"):\n    \"\"\"\n    Generates a 3D visualization of a wind farm with terrain and turbine heights.\n\n    Args:\n        turbine_locations (list): A list of dictionaries, each containing turbine\n                                  information (id, geometry, height_m).\n        dem_source (str): Source of the DEM data.\n        dem_crs (str): Coordinate Reference System of the DEM data.\n    \"\"\"\n\n    # Load DEM data\n    try:\n        dem = pv.read(dem_source)\n    except Exception as e:\n        print(f\"Error loading DEM: {e}\")\n        return\n\n    # Reproject turbine locations to DEM CRS\n    turbine_points = []\n    for turbine in turbine_locations:\n        lon, lat = turbine[\"geometry\"][\"coordinates\"]\n        x, y = pv.transform_point(np.array([lon, lat]), source=dem_crs, destination='crs')\n        turbine_points.append([x, y])\n\n    turbine_points = np.array(turbine_points)\n\n    # Extrude turbine points to represent height\n    turbines = pv.MultiPoint(turbine_points)\n    extruded_turbines = turbines.extrude(height=turbine_locations[0][\"height_m\"])\n\n    # Combine terrain and turbines\n    plotter = pv.Plotter()\n    plotter.add_mesh(dem, show_edges=False)\n    plotter.add_mesh(extruded_turbines, color=\"orange\", opacity=0.8)\n    plotter.show()\n\nif __name__ == '__main__':\n    turbine_locations = [\n        {\n            \"id\": \"WT-01\",\n            \"geometry\": {\n                \"type\": \"Point\",\n                \"coordinates\": [\n                    -122.0,\n                    37.0\n                ]\n            },\n            \"height_m\": 100\n        },\n        {\n            \"id\": \"WT-02\",\n            \"geometry\": {\n                \"type\": \"Point\",\n                \"coordinates\": [\n                    -122.005,\n                    37.005\n                ]\n            },\n            \"height_m\": 100\n        }\n    ]\n\n    visualize_wind_farm(turbine_locations)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. 1) Correctness: The code uses non-existent pyvista methods (pv.transform_point does not exist; pyproj or rasterio is required for reprojection). It attempts to read a string 'USGS NED' as a file path, which will fail. 2) Completeness: It does not extract elevation values from the DEM at the turbine locations, nor does it use them to position the base of the turbines. 3) Best Practices: It ignores the specific CRS mismatch (EPSG:4326 vs EPSG:32610) by using invalid transformation logic. 4) Domain Accuracy: It hallucinates API capabilities and fails to handle coordinate systems correctly. 5) Clarity: The code is syntactically valid Python but logically incoherent for the stated task. 6) Autonomy: The script cannot run or produce the requested visualization without complete rewriting."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Transfer or rescale information from original photographs onto maps or other photographs.",
+      "task_type": "Image Georeferencing",
+      "user_prompt": "You have received a scanned aerial photograph from 1980 that needs to be georeferenced to a modern map for a historical analysis project. The photo has no embedded geospatial data. You have a set of 10 Ground Control Points (GCPs) with known coordinates in EPSG:4326. Write a Python script using 'rasterio' and 'gdal' to perform the georeferencing. The script must apply a polynomial transformation, calculate the Root Mean Square Error (RMSE) for the GCPs, and resample the image to a 1-meter resolution using nearest neighbor interpolation. Report the final RMSE and the geotransform matrix.",
+      "reference_context": {
+        "gcp_source": [
+          {
+            "pixel_x": 100,
+            "pixel_y": 200,
+            "geo_x": -122.1,
+            "geo_y": 37.1
+          },
+          {
+            "pixel_x": 500,
+            "pixel_y": 300,
+            "geo_x": -122.0,
+            "geo_y": 37.2
+          }
+        ],
+        "target_resolution": "1 meter",
+        "target_crs": "EPSG:4326"
+      },
+      "evaluation_criteria": [
+        "Georeferencing Accuracy: Is the polynomial transformation applied correctly and is the RMSE calculated?",
+        "Resampling: Is the image resampled to the correct resolution and interpolation method?",
+        "Output: Does the script generate the correct geotransform matrix and handle the CRS correctly?"
+      ],
+      "student_answer": "```python\nimport rasterio\nimport gdal\nfrom rasterio.transform import from_origin\n\ndef georeference_image(gcp_source, target_resolution, target_crs):\n    \"\"\"\n    Georeferences a raster image using GCPs, calculates RMSE, and resamples.\n\n    Args:\n        gcp_source (list): List of GCPs with pixel and geo coordinates.\n        target_resolution (str): Target resolution in meters.\n        target_crs (str): Target CRS (EPSG code).\n\n    Returns:\n        tuple: A tuple containing the final RMSE and the geotransform matrix.\n    \"\"\"\n\n    # Create a temporary file to store the georeferenced image\n    output_file = \"georeferenced_image.tif\"\n\n    # Read the input raster\n    input_raster = rasterio.open(\"input.tif\")  # Assuming input image is named 'input.tif'\n\n    # Define the transformation parameters\n    in_crs = input_raster.crs\n    out_transform = from_origin(input_raster.bounds.left, input_raster.bounds.top, input_raster.width, input_raster.height)\n\n    # Perform the polynomial transformation\n    warp_options = {\n        'src_crs': in_crs,\n        'tgt_crs': target_crs,\n        'src_envelope': input_raster.bounds,\n        'tgt_envelope': input_raster.bounds,\n        'crop_to_window': None,\n        'fill': 0,\n        'boundary': 0,\n        'num_tiles': 1,\n        'output_file': output_file,\n        'transform': out_transform,\n        'resampling_algorithm': 'nearest',\n        'interpolation_factor': 1.0,\n        'target_resolution': target_resolution\n    }\n\n    # Apply the transformation\n    warp_options['output_transform'] = out_transform\n    warp_options['resampling'] = 'nearest'\n    warp_options['target_resolution'] = target_resolution\n\n    try:\n        import osisimage\n        import osisimage.warp as ow\n        warp = ow.Warp(input_raster, output_file, options=warp_options)\n        warp.run()\n    except ImportError:\n        print(\"Error: osisimage is not installed. Please install it using 'pip install osisimage'\")\n        return None, None\n\n    # Read the georeferenced raster\n    output_raster = rasterio.open(output_file)\n\n    # Calculate RMSE for GCPs\n    rmse = 0.0\n    for gcp in gcp_source:\n        pixel_x = gcp[\"pixel_x\"]\n        pixel_y = gcp[\"pixel_y\"]\n        geo_x = gcp[\"geo_x\"]\n        geo_y = gcp[\"geo_y\"]\n\n        # Get the pixel coordinates in the output raster\n        x, y = output_raster.index(pixel_x, pixel_y)\n\n        # Calculate the RMSE\n        rmse += ((geo_x - output_raster.xy(x, y)[0])**2 + (geo_y - output_raster.xy(x, y)[1])**2)**0.5\n\n    rmse /= len(gcp_source)\n\n    # Get the geotransform matrix\n    geotransform = output_raster.transform\n\n    # Close the raster files\n    output_raster.close()\n    input_raster.close()\n\n    return rmse, geotransform\n\n\nif __name__ == \"__main__\":\n    gcp_source = [\n        {\n            \"pixel_x\": 100,\n            \"pixel_y\": 200,\n            \"geo_x\": -122.1,\n            \"geo_y\": 37.1\n        },\n        {\n            \"pixel_x\": 500,\n            \"pixel_y\": 300,\n            \"geo_x\": -122.0,\n            \"geo_y\": 37.2\n        }\n    ]\n    target_resolution = \"1 meter\"\n    target_crs = \"EPSG:4326\"\n\n    rmse, geotransform = georeference_image(gcp_source, target_resolution, target_crs)\n\n    if rmse is not None and geotransform is not None:\n        print(f\"Final RMSE: {rmse}\")\n        print(f\"Geotransform Matrix: {geotransform}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The code imports a non-existent library 'osisimage' instead of using 'rasterio.warp' or 'gdal.Warp', making the script non-functional. It also attempts to use 'gdal' but never imports or uses it. 2) Completeness: It does not implement a polynomial transformation using the provided GCPs; instead, it attempts a naive warp with a static transform. It fails to calculate RMSE correctly (it divides by N instead of sqrt(sum/N^2) or similar, and the logic is flawed). 3) Best Practices: It ignores the requirement to use GCPs for the transformation, which is the core of the task. 4) Domain Accuracy: It treats the target resolution string '1 meter' as a direct parameter without converting it to a pixel size based on the CRS, and it attempts to calculate distance in degrees (EPSG:4326) without reprojection, which is mathematically invalid for distance. 5) Clarity: The code is confusing and relies on hallucinated libraries. 6) Autonomy: The code will crash immediately upon execution due to the missing library import."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Conduct research, data analysis, systems design, or support for software such as Geographic Information Systems (GIS) or Global Positioning Systems (GPS) mapping software.",
+      "task_type": "Spatial Data Analysis",
+      "user_prompt": "You are a GIS Technician tasked with analyzing flood risk for a new development project. You have been provided with a shapefile of the proposed site boundaries and a raster DEM (Digital Elevation Model) of the region. Your goal is to identify all areas within the site boundary that have an elevation below 5 meters above sea level. Provide the Python code using the 'geopandas' and 'rasterio' libraries to perform this overlay analysis, ensuring the data is reprojected to a local projected coordinate system (EPSG:32610) before calculation. Output the final list of coordinates for the high-risk zones.",
+      "reference_context": {
+        "site_boundary_schema": {
+          "type": "Feature",
+          "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+              [
+                [
+                  -122.4194,
+                  37.7749
+                ],
+                [
+                  -122.4094,
+                  37.7749
+                ],
+                [
+                  -122.4094,
+                  37.7649
+                ],
+                [
+                  -122.4194,
+                  37.7649
+                ],
+                [
+                  -122.4194,
+                  37.7749
+                ]
+              ]
+            ]
+          },
+          "properties": {
+            "site_id": "DEV-2024-001",
+            "current_crs": "EPSG:4326"
+          }
+        },
+        "dem_metadata": {
+          "source": "USGS NED",
+          "resolution": "10m",
+          "units": "meters",
+          "original_crs": "EPSG:4326"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the code successfully reproject data and perform the elevation threshold analysis?",
+        "Completeness: Are all steps from loading data to exporting results included?",
+        "Best practices: Is the code modular, commented, and using efficient spatial indexing?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nimport rasterio\nfrom rasterio.transform import from_origin\nimport numpy as np\n\ndef analyze_flood_risk(site_boundary_path, dem_path):\n    \"\"\"\n    Analyzes flood risk for a development site by identifying areas below a certain elevation.\n\n    Args:\n        site_boundary_path (str): Path to the site boundary shapefile.\n        dem_path (str): Path to the DEM raster.\n\n    Returns:\n        list: A list of (x, y) coordinates representing the high-risk zones.\n    \"\"\"\n\n    # Read the site boundary shapefile\n    site_boundary = gpd.read_file(site_boundary_path)\n\n    # Read the DEM raster\n    with rasterio.open(dem_path) as src:\n        dem = src.read(1)\n\n    # Reproject the site boundary to the local projected coordinate system (EPSG:32610)\n    site_boundary = site_boundary.to_crs(\"EPSG:32610\")\n\n    # Calculate elevation values for the site boundary\n    elevation = np.array([dem[row[1], row[0]] for row in site_boundary.geometry.values])\n\n    # Identify high-risk zones (elevation below 5 meters)\n    high_risk_zones = site_boundary[site_boundary['elevation'] < 5]\n\n    # Extract coordinates of high-risk zones\n    coordinates = [(int(x), int(y)) for x, y in zip(high_risk_zones.geometry.x, high_risk_zones.geometry.y)]\n\n    return coordinates\n\nif __name__ == '__main__':\n    # Example usage:\n    site_boundary_path = 'site_boundary.shp'\n    dem_path = 'dem.tif'\n    high_risk_coordinates = analyze_flood_risk(site_boundary_path, dem_path)\n    print(high_risk_coordinates)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple technical fronts. 1) Correctness: The code attempts to index a 2D numpy array (raster) using vector coordinates directly without converting pixel coordinates or handling the raster transform, which will cause runtime errors. 2) Completeness: It completely ignores the requirement to reproject the raster to match the vector's CRS (EPSG:32610) before analysis. 3) Best Practices: It lacks error handling for NoData values, which are critical in DEM analysis. 4) Domain Accuracy: The logic for extracting elevation values is mathematically invalid for raster data. 5) Clarity: The code is syntactically valid but logically incoherent. 6) Autonomy: The code cannot be executed to produce the requested result; it requires a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Apply three-dimensional (3D) or four-dimensional (4D) technologies to geospatial data to allow for new or different analyses or applications.",
+      "task_type": "3D Visualization and Modeling",
+      "user_prompt": "You are a GIS Specialist preparing a 3D visualization for a city planning presentation. You have a vector dataset of building footprints (EPSG:4326) and a LiDAR-derived DSM (Digital Surface Model) in a local projected CRS (EPSG:26910). Your task is to generate a Python script that extrudes the building footprints to their respective heights derived from the DSM, reprojecting the vector data to match the raster CRS. The script must handle cases where building centroids fall outside the DSM extent by assigning a default height of 0. Output the final 3D GeoJSON file.",
+      "reference_context": {
+        "building_footprints_schema": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -122.41,
+                      37.78
+                    ],
+                    [
+                      -122.4,
+                      37.78
+                    ],
+                    [
+                      -122.4,
+                      37.77
+                    ],
+                    [
+                      -122.41,
+                      37.77
+                    ],
+                    [
+                      -122.41,
+                      37.78
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "building_id": "BLDG-001",
+                "current_crs": "EPSG:4326"
+              }
+            }
+          ]
+        },
+        "dsm_metadata": {
+          "source": "City LiDAR 2023",
+          "resolution": "1m",
+          "units": "meters",
+          "original_crs": "EPSG:26910",
+          "extent": {
+            "minx": -122.5,
+            "miny": 37.7,
+            "maxx": -122.3,
+            "maxy": 37.8
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "CRS Handling: Does the script correctly transform the vector data to EPSG:26910 before extraction?",
+        "Logic: Does the script correctly extract height values and handle out-of-bounds centroids?",
+        "Output: Is the resulting GeoJSON valid and contains 3D geometry (Z-coordinates)?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nimport rasterio\nfrom rasterio.transform import from_origin\nimport pyproj\nimport json\n\ndef extrude_buildings(building_footprints_file, dsm_file, output_file):\n    \"\"\"\n    Extrudes building footprints to their heights from a DSM and outputs a 3D GeoJSON.\n\n    Args:\n        building_footprints_file (str): Path to the building footprints GeoJSON file.\n        dsm_file (str): Path to the DSM raster file.\n        output_file (str): Path to the output 3D GeoJSON file.\n    \"\"\"\n\n    # Read building footprints\n    buildings = gpd.read_file(building_footprints_file)\n    buildings = buildings.to_crs(buildings.crs)\n\n    # Read DSM\n    with rasterio.open(dsm_file) as src:\n        dsm_crs = src.crs\n        dsm_transform = from_origin(src.bounds[0], src.bounds[1], src.width, src.height)\n        dsm_data = src.read(1)\n\n    # Project building footprints to DSM CRS\n    project_wkt = buildings.crs\n    project = pyproj.Transformer.from_crs(project_wkt, dsm_crs, always_xy=True)\n    buildings_projected = buildings.to_crs(dsm_crs)\n\n    # Calculate building heights\n    buildings_projected['height'] = None\n    for index, row in buildings_projected.iterrows():\n        x, y = row.geometry.x, row.geometry.y\n        try:\n            height = dsm_data[y, x]\n            buildings_projected.loc[index, 'height'] = height\n        except IndexError:\n            buildings_projected.loc[index, 'height'] = 0.0\n\n    # Extrude building footprints\n    buildings_extruded = buildings_projected.copy()\n    buildings_extruded['geometry'] = buildings_extruded.apply(\n        lambda row: row.geometry.buffer(row['geometry'], resolution=0.5), axis=1\n    )\n\n    # Save to 3D GeoJSON\n    buildings_extruded.to_file(output_file, driver='GeoJSON', encoding=\"utf-8\")\n\n\nif __name__ == '__main__':\n    # Example Usage (replace with your actual file paths)\n    building_footprints_file = 'building_footprints.geojson'\n    dsm_file = 'dsm.tif'\n    output_file = 'buildings_3d.geojson'\n\n    extrude_buildings(building_footprints_file, dsm_file, output_file)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple critical technical fronts. 1) Correctness: The code attempts to index a 2D numpy array using 2D coordinates (y, x) directly, which causes a crash; it requires converting coordinates to pixel indices using the raster transform. 2) Completeness: It completely ignores the requirement to handle NoData values, which would result in invalid heights. 3) Best Practices: The logic for 'extruding' is incorrect; it uses `geometry.buffer()` which expands the footprint area rather than creating a 3D volume (PolyhedralSurface) required for 3D GeoJSON. 4) Domain Accuracy: It hallucinates a solution that does not produce 3D geometry. 5) Clarity: The code is syntactically valid but logically nonsensical for the stated goal. 6) Autonomy: The script will crash immediately upon execution and cannot be used."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Recommend procedures, equipment, or software upgrades to increase data accessibility or ease of use.",
+      "task_type": "Data Quality and Topology Repair",
+      "user_prompt": "You are a GIS Data Architect reviewing a newly acquired parcel dataset for a municipal land registry. The dataset contains topology errors such as slivers, gaps between adjacent parcels, and self-intersecting polygons. The data is currently in EPSG:4326. Your task is to write a Python script using 'geopandas' and 'shapely' to clean the data. The script must: 1) Reproject to a metric CRS (EPSG:32610) for accurate area calculations, 2) Fix self-intersections, 3) Dissolve adjacent parcels that share a common boundary to eliminate slivers, and 4) Report the number of features fixed. The script must handle attribute mismatches by preserving the 'owner_id' from the majority of the dissolved features.",
+      "reference_context": {
+        "parcel_data_sample": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -122.41,
+                      37.77
+                    ],
+                    [
+                      -122.4,
+                      37.77
+                    ],
+                    [
+                      -122.4,
+                      37.76
+                    ],
+                    [
+                      -122.41,
+                      37.76
+                    ],
+                    [
+                      -122.41,
+                      37.77
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "parcel_id": "P001",
+                "owner_id": "OWNER_A",
+                "area_sqm": 1000
+              }
+            },
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -122.4,
+                      37.77
+                    ],
+                    [
+                      -122.39,
+                      37.77
+                    ],
+                    [
+                      -122.39,
+                      37.76
+                    ],
+                    [
+                      -122.4,
+                      37.76
+                    ],
+                    [
+                      -122.4,
+                      37.77
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "parcel_id": "P002",
+                "owner_id": "OWNER_A",
+                "area_sqm": 1000
+              }
+            }
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "Topology: Does the script successfully resolve self-intersections and slivers?",
+        "CRS: Is the reprojection to EPSG:32610 performed correctly for metric calculations?",
+        "Attribute Logic: Does the script correctly handle attribute preservation during dissolution?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.validation import make_valid\n\ndef clean_parcel_data(parcel_data):\n    \"\"\"\n    Cleans a parcel dataset by reprojecting, fixing self-intersections,\n    dissolving adjacent parcels, and reporting the number of features fixed.\n\n    Args:\n        parcel_data (geopandas.GeoDataFrame): The input parcel data.\n\n    Returns:\n        geopandas.GeoDataFrame: The cleaned parcel data.\n    \"\"\"\n\n    # 1. Reproject to EPSG:32610\n    parcel_data = parcel_data.to_crs(\"EPSG:32610\")\n\n    # 2. Fix self-intersections\n    parcel_data = parcel_data.geometry.buffer(0).reset_index(drop=True)\n\n    # 3. Dissolve adjacent parcels\n    parcel_data = parcel_data.dissolve(by='parcel_id', limit_simplex=True)\n\n    # 4. Handle attribute mismatches\n    parcel_data['owner_id'] = parcel_data.groupby('parcel_id')['owner_id'].transform(\n        lambda x: x.mode()[0] if not x.mode().nunique() == 1 else x.mode()[0]\n    )\n\n    # Count the number of features fixed\n    num_fixed = parcel_data.shape[0] - parcel_data.geometry.count()\n\n    return parcel_data, num_fixed\n\n\nif __name__ == '__main__':\n    # Sample data (replace with your actual data)\n    parcel_data_sample = {\n        \"type\": \"FeatureCollection\",\n        \"features\": [\n            {\n                \"type\": \"Feature\",\n                \"geometry\": {\n                    \"type\": \"Polygon\",\n                    \"coordinates\": [\n                        [\n                            [\n                                -122.41,\n                                37.77\n                            ],\n                            [\n                                -122.4,\n                                37.77\n                            ],\n                            [\n                                -122.4,\n                                37.76\n                            ],\n                            [\n                                -122.41,\n                                37.76\n                            ],\n                            [\n                                -122.41,\n                                37.77\n                            ]\n                        ]\n                    ]\n                },\n                \"properties\": {\n                    \"parcel_id\": \"P001\",\n                    \"owner_id\": \"OWNER_A\",\n                    \"area_sqm\": 1000\n                }\n            },\n            {\n                \"type\": \"Feature\",\n                \"geometry\": {\n                    \"type\": \"Polygon\",\n                    \"coordinates\": [\n                        [\n                            [\n                                -122.4,\n                                37.77\n                            ],\n                            [\n                                -122.39,\n                                37.77\n                            ],\n                            [\n                                -122.39,\n                                37.76\n                            ],\n                            [\n                                -122.4,\n                                37.76\n                            ],\n                            [\n                                -122.4,\n                                37.77\n                            ]\n                        ]\n                    ]\n                },\n                \"properties\": {\n                    \"parcel_id\": \"P002\",\n                    \"owner_id\": \"OWNER_A\",\n                    \"area_sqm\": 1000\n                }\n            }\n        ]\n    }\n\n    # Clean the data\n    cleaned_parcel_data, num_fixed = clean_parcel_data(gpd.GeoDataFrame(parcel_data_sample['features'], crs=\"EPSG:4326\"))\n\n    # Print the cleaned data\n    print(cleaned_parcel_data.to_json())\n    print(f\"Number of features fixed: {num_fixed}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements and contains fundamental technical errors. 1) It does not reproject the input data to EPSG:32610 before processing; the sample data is created with EPSG:4326 but the function assumes the input is already a GeoDataFrame without checking or converting the CRS if it were different, and the sample code in the main block creates the GeoDataFrame with the wrong CRS for the logic intended (it passes 4326 but the function expects to reproject, yet the sample data creation is flawed). 2) The self-intersection fix uses `buffer(0)` which is a valid heuristic but the code does not use `make_valid` as suggested in the imports, and `buffer(0)` can alter geometry topology in unintended ways for slivers. 3) The dissolve logic is incorrect: it dissolves by `parcel_id`, which would dissolve each unique parcel into itself (no change), rather than dissolving adjacent parcels (which requires spatial adjacency or a different grouping key). 4) The attribute handling logic is nonsensical: it groups by `parcel_id` (which is unique per row before dissolve) and tries to find the mode, which is trivial and incorrect for merging adjacent parcels with different owners. 5) The 'features fixed' calculation is mathematically impossible (`shape[0] - geometry.count()` is always zero or negative depending on implementation, as `geometry.count()` returns the number of geometries, not a scalar count of features). 6) The code does not handle the specific requirement to preserve 'owner_id' from the majority of dissolved features because it never actually dissolves adjacent features. 7) The 'Additional Checks' section in the prompt mentions elevation thresholds and raster data, which are completely irrelevant to this vector task, but the student's code also ignores the specific instruction to handle attribute mismatches correctly during the dissolve. The code is syntactically runnable but logically fails to solve the problem."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare training materials for, or make presentations to, Geographic Information Systems (GIS) users.",
+      "task_type": "Spatial Data Preparation and Documentation",
+      "user_prompt": "You are a GIS Trainer creating a dataset for a workshop on network analysis. You have a raw CSV file of street intersections and a shapefile of road segments. The CSV contains coordinates in EPSG:4326, while the shapefile is in EPSG:26910. Your task is to write a Python script that: 1) Reads the CSV and converts it to a GeoDataFrame, 2) Reprojects the CSV points to EPSG:26910, 3) Buffers the road segments by 5 meters to create a 'network zone', 4) Identifies which CSV points fall within this zone, and 5) Generates a summary report (as a dictionary) listing the count of valid points and the total length of the network zone. The script must handle missing coordinate values in the CSV by dropping those rows.",
+      "reference_context": {
+        "csv_sample": [
+          {
+            "id": 1,
+            "lat": 37.7749,
+            "lon": -122.4194
+          },
+          {
+            "id": 2,
+            "lat": 37.775,
+            "lon": -122.4195
+          },
+          {
+            "id": 3,
+            "lat": null,
+            "lon": null
+          }
+        ],
+        "road_shapefile_metadata": {
+          "source": "City Streets",
+          "crs": "EPSG:26910",
+          "units": "meters"
+        }
+      },
+      "evaluation_criteria": [
+        "Data Cleaning: Does the script correctly drop rows with missing coordinates?",
+        "CRS Transformation: Is the reprojection from EPSG:4326 to EPSG:26910 accurate?",
+        "Spatial Logic: Does the script correctly perform the buffer and intersection operations?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.geometry import Point\n\ndef analyze_network(csv_file, shapefile_path):\n    \"\"\"\n    Analyzes a CSV of intersections and a shapefile of road segments to create a network zone.\n\n    Args:\n        csv_file (str): Path to the CSV file containing intersection coordinates.\n        shapefile_path (str): Path to the shapefile containing road segments.\n\n    Returns:\n        dict: A dictionary containing the count of valid points and the total length of the network zone.\n    \"\"\"\n\n    # 1. Read CSV and convert to GeoDataFrame\n    try:\n        df = gpd.read_csv(csv_file)\n    except Exception as e:\n        print(f\"Error reading CSV: {e}\")\n        return {}\n\n    # Handle missing values\n    df = df.dropna(subset=['lat', 'lon'])\n\n    # 2. Reproject CSV to EPSG:26910\n    try:\n        gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df['lon'], df['lat']), crs=\"EPSG:4326\")\n        gdf = gdf.to_crs(\"EPSG:26910\")\n    except Exception as e:\n        print(f\"Error reprojecting CSV: {e}\")\n        return {}\n\n    # 3. Buffer road segments\n    road_shape = gpd.read_file(shapefile_path)\n    road_shape.geometry = road_shape.geometry.buffer(5)\n\n    # 4. Identify points within the network zone\n    intersection_within_zone = gpd.overlay(gdf, road_shape.geometry, how='intersection')\n\n    # 5. Generate summary report\n    valid_point_count = len(intersection_within_zone)\n    network_zone_length = road_shape.length\n\n    report = {\n        \"valid_points\": valid_point_count,\n        \"network_zone_length\": network_zone_length\n    }\n\n    return report\n\nif __name__ == '__main__':\n    # Example usage with dummy data\n    csv_data = [\n        {'id': 1, 'lat': 37.7749, 'lon': -122.4194},\n        {'id': 2, 'lat': 37.775, 'lon': -122.4195},\n        {'id': 3, 'lat': None, 'lon': None}\n    ]\n    csv_file = 'intersections.csv'\n    with open(csv_file, 'w') as f:\n        f.write('id,lat,lon\\n')\n        for row in csv_data:\n            f.write(f'{row[\"id\"]},{row[\"lat\"]},{row[\"lon\"]}\\n')\n\n    shapefile_path = 'roads.shp'\n    road_shape = gpd.read_file(shapefile_path)\n    road_shape.geometry = road_shape.geometry.buffer(5)\n    road_shape.to_file(shapefile_path)\n\n    report = analyze_network(csv_file, shapefile_path)\n    print(report)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical technical errors that prevent it from being a valid solution. 1) Correctness/Completeness: The code attempts to read a shapefile using `gpd.read_file` inside the `if __name__ == '__main__'` block without ensuring the file exists, and then overwrites the original shapefile with buffered geometries, destroying the original data needed for the analysis. 2) Domain Accuracy: The calculation of `network_zone_length` uses `road_shape.length` on a GeoDataFrame of buffered polygons, which returns the sum of perimeters, not the length of the original road network as implied by 'network zone' context (though the prompt asks for length of the zone, the logic is flawed). More importantly, `gpd.overlay` with `how='intersection'` on a GeoDataFrame and a geometry column (not a GeoDataFrame) is incorrect usage; it requires two GeoDataFrames. 3) Best Practices: The script modifies the input shapefile in place (destructive operation) rather than creating a new one, which is a major professional error. 4) Autonomy: The script will fail immediately in a real environment due to the missing file check and the destructive overwrite logic. It requires significant rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Read current literature, talk with colleagues, continue education, or participate in professional organizations or conferences to keep abreast of developments in Geographic Information Systems (GIS) technology, equipment, or systems.",
+      "task_type": "Advanced Spatial Query and Optimization",
+      "user_prompt": "You are a GIS Analyst optimizing a large-scale environmental monitoring system. You have a massive point dataset (1 million points) of sensor readings in EPSG:4326 and a polygon dataset of protected zones in EPSG:32610. Your task is to write a Python script that efficiently queries which sensor points fall within the protected zones. The script must: 1) Reproject the sensor points to EPSG:32610, 2) Use spatial indexing (e.g., R-tree) to optimize the query performance, 3) Handle potential coordinate reference system mismatches by validating the CRS before processing, and 4) Output the count of points per zone and the total number of points flagged. The script must include error handling for cases where the projection transformation fails due to invalid coordinates.",
+      "reference_context": {
+        "sensor_data_schema": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Point",
+                "coordinates": [
+                  -122.4194,
+                  37.7749
+                ]
+              },
+              "properties": {
+                "sensor_id": "S001",
+                "value": 45.2,
+                "crs": "EPSG:4326"
+              }
+            }
+          ]
+        },
+        "protected_zones_schema": {
+          "type": "FeatureCollection",
+          "features": [
+            {
+              "type": "Feature",
+              "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [
+                      -122.42,
+                      37.77
+                    ],
+                    [
+                      -122.41,
+                      37.77
+                    ],
+                    [
+                      -122.41,
+                      37.78
+                    ],
+                    [
+                      -122.42,
+                      37.78
+                    ],
+                    [
+                      -122.42,
+                      37.77
+                    ]
+                  ]
+                ]
+              },
+              "properties": {
+                "zone_id": "ZONE_A",
+                "crs": "EPSG:32610"
+              }
+            }
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "Performance: Does the script utilize spatial indexing for efficient querying?",
+        "CRS Validation: Does the script check and handle CRS mismatches explicitly?",
+        "Robustness: Does the script include error handling for projection failures?"
+      ],
+      "student_answer": "```python\nimport geopandas as gpd\nfrom shapely.geometry import Point\n\ndef analyze_sensor_zones(sensor_data, protected_zones):\n    \"\"\"\n    Analyzes sensor points to identify those within protected zones.\n\n    Args:\n        sensor_data (FeatureCollection): Sensor point data with CRS.\n        protected_zones (FeatureCollection): Protected zone polygons with CRS.\n\n    Returns:\n        tuple: A tuple containing:\n            - dict: A dictionary of point counts per zone.\n            - int: The total number of points flagged as within a zone.\n    \"\"\"\n\n    try:\n        # Validate CRS\n        sensor_crs = sensor_data.crs\n        protected_crs = protected_zones.crs\n        if sensor_crs != protected_crs:\n            print(f\"CRS mismatch: Sensor CRS ({sensor_crs}) != Protected Zone CRS ({protected_crs}).\")\n            return {}, 0\n\n        # Reproject sensor data to protected zone CRS\n        protected_zones_proj = protected_zones.to_crs(sensor_crs)\n        sensor_points = gpd.GeoDataFrame(sensor_data, crs=sensor_crs)\n        sensor_points['geometry'] = sensor_points['geometry'].apply(Point)\n        sensor_points_proj = sensor_points.to_crs(protected_crs)\n\n        # Spatial query\n        zone_counts = {}\n        total_flagged = 0\n        for zone in protected_zones_proj.zones.unique():\n            points_in_zone = sensor_points_proj[sensor_points_proj.geometry.within(protected_zones_proj[zone])]\n            zone_counts[zone] = len(points_in_zone)\n            total_flagged += len(points_in_zone)\n\n        return zone_counts, total_flagged\n\n    except Exception as e:\n        print(f\"An error occurred: {e}\")\n        return {}, 0\n\nif __name__ == '__main__':\n    # Example Usage (replace with your actual data loading)\n    sensor_data = {\n        \"type\": \"FeatureCollection\",\n        \"features\": [\n            {\n                \"type\": \"Feature\",\n                \"geometry\": {\n                    \"type\": \"Point\",\n                    \"coordinates\": [-122.4194, 37.7749]\n                },\n                \"properties\": {\n                    \"sensor_id\": \"S001\",\n                    \"value\": 45.2,\n                    \"crs\": \"EPSG:4326\"\n                }\n            },\n            {\n                \"type\": \"Feature\",\n                \"geometry\": {\n                    \"type\": \"Point\",\n                    \"coordinates\": [-122.4194, 37.7749]\n                },\n                \"properties\": {\n                    \"sensor_id\": \"S002\",\n                    \"value\": 45.2,\n                    \"crs\": \"EPSG:4326\"\n                }\n            }\n        ]\n    }\n    protected_zones = {\n        \"type\": \"FeatureCollection\",\n        \"features\": [\n            {\n                \"type\": \"Feature\",\n                \"geometry\": {\n                    \"type\": \"Polygon\",\n                    \"coordinates\": [\n                        [\n                            [-122.42, 37.77],\n                            [-122.41, 37.77],\n                            [-122.41, 37.78],\n                            [-122.42, 37.78],\n                            [-122.42, 37.77]\n                        ]\n                    ]\n                },\n                \"properties\": {\n                    \"zone_id\": \"ZONE_A\",\n                    \"crs\": \"EPSG:32610\"\n                }\n            }\n        ]\n    }\n\n    zone_counts, total_flagged = analyze_sensor_zones(sensor_data, protected_zones)\n\n    print(\"Point counts per zone:\", zone_counts)\n    print(\"Total points flagged:\", total_flagged)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical requirements. 1) Correctness: The code does not reproject the data (it checks for equality and returns early if mismatched, which is the opposite of the requirement to reproject). It attempts to iterate over 'zones.unique()' on a GeoDataFrame which is invalid syntax for this context. 2) Completeness: It completely ignores the requirement to use spatial indexing (R-tree) for performance optimization on 1 million points. 3) Best Practices: It treats raw dictionaries as GeoDataFrames without conversion, leading to immediate runtime errors. 4) Domain Accuracy: The logic for handling CRS mismatches is inverted (it aborts instead of transforming). 5) Clarity: The code is syntactically broken and logically incoherent. 6) Autonomy: The code cannot run as written; it requires a complete rewrite."
+    }
+  ]
+}

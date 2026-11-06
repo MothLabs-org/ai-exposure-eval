@@ -1,0 +1,813 @@
+{
+  "meta": {
+    "job_title": "Database Architects",
+    "job_id": "db_architect",
+    "onet_code": "15-1243.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 25,
+    "evaluated_tasks": 25,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.69,
+      "dimensions": {
+        "Correctness": 2.56,
+        "Completeness": 2.6,
+        "Best Practices": 2.28,
+        "Domain Accuracy": 2.6,
+        "Clarity": 3.68,
+        "Autonomy": 2.44
+      },
+      "evaluated_tasks": 25,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1143.65
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design databases to support business applications, ensuring system scalability, security, performance, and reliability.",
+      "task_type": "Partitioning and Indexing Strategy",
+      "user_prompt": "Design a partitioning strategy and indexing plan for a transactional table 'orders' with 50 million rows. The table has columns: order_id, customer_id, order_date, status, total_amount. Queries frequently filter by order_date range and status, and join by customer_id. The system must support 500 concurrent writes per second. Provide the SQL for partitioning, specific index definitions, and a brief justification for your choices.",
+      "reference_context": "Table Schema: CREATE TABLE orders (order_id BIGINT PRIMARY KEY, customer_id INT, order_date DATE, status VARCHAR(20), total_amount DECIMAL(10,2)); Current Load: 50M rows, 500 WPS, 2000 RPS read-heavy on date ranges.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the partitioning and indexing logic work for the specified query patterns?",
+        "Criterion 2: Completeness — did it handle all requirements including write throughput and read patterns?",
+        "Criterion 3: Best practices — is it production-ready and scalable?"
+      ],
+      "student_answer": "```sql\n-- Partitioning Strategy:\n-- Partition by order_date. This aligns with the frequent date range queries.\n-- Monthly partitioning is a good balance between granularity and manageability.\n\nALTER TABLE orders\nPARTITION BY RANGE (YEAR(order_date), MONTH(order_date)) (\n    PARTITION p202401 VALUES LESS THAN (2024, 02),\n    PARTITION p202402 VALUES LESS THAN (2024, 03),\n    PARTITION p202403 VALUES LESS THAN (2024, 04),\n    PARTITION p202404 VALUES LESS THAN (2024, 05),\n    PARTITION p202405 VALUES LESS THAN (2024, 06),\n    PARTITION p202406 VALUES LESS THAN (2024, 07),\n    PARTITION p202407 VALUES LESS THAN (2024, 08),\n    PARTITION p202408 VALUES LESS THAN (2024, 09),\n    PARTITION p202409 VALUES LESS THAN (2024, 10),\n    PARTITION p202410 VALUES LESS THAN (2024, 11),\n    PARTITION p202411 VALUES LESS THAN (2024, 12),\n    PARTITION p202412 VALUES LESS THAN (2024, 01)\n);\n\n-- Indexing Plan:\n\n-- 1. Primary Key Index (already exists, but confirmed)\n--    order_id BIGINT PRIMARY KEY\n\n-- 2. Customer ID Index (for joins)\nCREATE INDEX idx_customer_id ON orders (customer_id);\n\n-- 3. Order Date Range Index (for filtering)\nCREATE INDEX idx_order_date_status ON orders (order_date, status);\n\n-- 4. Status Index (for filtering)\nCREATE INDEX idx_status ON orders (status);\n\n-- 5. Composite Index for common query pattern (date range and status)\nCREATE INDEX idx_order_date_status_customer_id ON orders (order_date, status, customer_id);\n\n-- Justification:\n\n-- Partitioning by month allows for efficient querying of specific time periods and simplifies data management.\n-- The customer_id index is crucial for join operations, which are expected to be frequent.\n-- The order_date and status index is optimized for the primary query pattern (date range and status filtering).\n-- The status index is added for potential alternative filtering scenarios.\n-- The composite index combines date range, status, and customer_id to improve performance for queries that filter on all three columns.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission contains critical technical errors. The SQL syntax for partitioning is invalid for MySQL (the implied engine based on syntax style), using a tuple syntax (YEAR, MONTH) that is not supported in standard RANGE partitioning definitions. The partition definitions are logically flawed, with the final partition wrapping around to 2024-01, creating a circular and impossible range. The indexing strategy is poor for a write-heavy system (500 WPS); it proposes five separate indexes, including redundant single-column indexes (status) and a composite index that likely duplicates the utility of the date-status index while adding unnecessary overhead for writes. A professional solution would use a single composite index (order_date, status, customer_id) or rely on the partition key, and would provide syntactically correct SQL."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop data models for applications, metadata tables, views or related database structures.",
+      "task_type": "Data Modeling for Metadata",
+      "user_prompt": "Design a metadata table structure to support a multi-tenant SaaS application with 10 million tenant records. The system requires rapid lookup of tenant configurations by 'tenant_id' and 'feature_flag'. Propose a schema that includes a JSONB column for flexible feature flags, a specific composite index for tenant lookups, and a materialized view strategy to aggregate usage statistics without locking the main table. Justify how this design supports 10,000 concurrent reads.",
+      "reference_context": "Requirements: Multi-tenant isolation, dynamic feature flags, high read concurrency. Existing constraints: No schema changes allowed during peak hours.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the schema support the required dynamic features and lookups?",
+        "Criterion 2: Completeness — does the solution address concurrency and isolation requirements?",
+        "Criterion 3: Scalability — does the indexing and view strategy handle 10M+ rows efficiently?"
+      ],
+      "student_answer": "```sql\nCREATE TABLE tenant_configurations (\n    tenant_id UUID NOT NULL,\n    feature_flags JSONB NOT NULL,\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),\n    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),\n    PRIMARY KEY (tenant_id)\n);\n\nCREATE INDEX tenant_id_feature_flags_idx ON tenant_configurations (tenant_id, feature_flags);\n\nCREATE MATERIALIZED VIEW tenant_usage_stats AS\nSELECT\n    tenant_id,\n    COUNT(*) AS total_records,\n    SUM(some_usage_metric) AS total_usage\nFROM\n    tenant_configurations\nGROUP BY\n    tenant_id;\n\n-- Populate materialized view periodically (e.g., nightly)\nREFRESH MATERIALIZED VIEW tenant_usage_stats;\n\n-- Consider partitioning tenant_configurations by tenant_id for further performance optimization if needed.\n-- This can be done during future schema changes outside peak hours.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical fronts. 1) Correctness: The composite index on (tenant_id, feature_flags) is invalid for the requirement of rapid lookup by 'feature_flag' because the index cannot be used to search the JSONB column efficiently without a GIN index or expression index. 2) Completeness: The materialized view query references 'some_usage_metric' which does not exist in the table schema, making the solution non-functional. 3) Best Practices: The solution ignores the '10 million records' scale by not addressing partitioning or specific JSONB indexing strategies (GIN) required for high concurrency. 4) Domain Accuracy: The proposed index structure does not support the stated query patterns for feature flags. 5) Clarity: The SQL is readable but logically flawed. 6) Autonomy: The code cannot be used as-is due to the non-existent column and ineffective indexing strategy."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop database architectural strategies at the modeling, design and implementation stages to address business or industry requirements.",
+      "task_type": "Architectural Strategy for Data Transfer",
+      "user_prompt": "Propose an architecture for a data transfer mechanism moving 500GB of daily logs from an operational database to a data warehouse. The source system cannot tolerate locks. Design a staging table structure with specific partitioning by date, a change data capture (CDC) index strategy, and a trigger or log-based mechanism to ensure zero data loss. Explain how this handles the 500GB daily volume within a 4-hour window.",
+      "reference_context": "Source: Operational DB with 100M+ daily inserts. Constraint: No DDL locks allowed on source tables. Target: Data Warehouse with 100TB capacity.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the CDC mechanism ensure data integrity?",
+        "Criterion 2: Completeness — does the solution address the 4-hour window and volume constraints?",
+        "Criterion 3: Best practices — is the staging design optimized for bulk loading?"
+      ],
+      "student_answer": "```sql\n-- Architecture: Near Real-Time Data Transfer with CDC and Staging\n\n-- 1. Overall Strategy: Change Data Capture (CDC) with Staging and Batch Loading\n\n--   * CDC: Capture changes in the operational database without locking.\n--   * Staging: Temporarily store changes in a dedicated staging area.\n--   * Batch Loading: Periodically load staged data into the data warehouse.\n\n-- 2. CDC Implementation (Debezium or similar)\n\n--   * Tool: Debezium (preferred for its minimal impact and broad connector support)\n--   * Capture: Debezium will monitor the operational database's transaction logs (binlog for MySQL, logstream for PostgreSQL, etc.)\n--   * Events: Debezium publishes change events (INSERT, UPDATE, DELETE) to a message queue (Kafka).\n--   * Schema Evolution: Debezium handles schema changes automatically.\n\n-- 3. Message Queue (Kafka)\n\n--   * Broker Cluster:  Minimum 3 brokers for fault tolerance.\n--   * Topic: Dedicated topic for operational database changes (e.g., `operational_db_changes`).\n--   * Partitioning: Partition the topic by date (e.g., `YYYYMMDD`) to facilitate parallel processing.\n\n-- 4. Staging Table Structure\n\n--   * Table Name: `staging_logs`\n--   * Schema:  `data_warehouse.staging_logs`\n--   * Partitioning:  **Crucial for 500GB daily volume.** Partition by date (e.g., `log_date` - `YYYYMMDD` data type).  Consider partitioning granularity of daily or hourly depending on query patterns.\n--   * Columns:\n--     * `log_id` (BIGINT, AUTO_INCREMENT, PRIMARY KEY) – Unique identifier for each log event.\n--     * `event_type` (VARCHAR(20)) – 'INSERT', 'UPDATE', 'DELETE'\n--     * `table_name` (VARCHAR(255)) – Name of the table in the operational database.\n--     * `operation_time` (TIMESTAMP) – Timestamp of the change event.\n--     * `data` (TEXT) – JSON or serialized representation of the changed data.  Use JSON for flexibility.\n--     * `cdc_source` (VARCHAR(255)) –  Identifier for the CDC system (e.g., 'Debezium').\n--     * `log_date` (DATE) – Date of the log event (partition key).\n\n-- 5. CDC Index Strategy\n\n--   * **Change Data Capture Index (CDC Index):**  A small, lightweight index on `log_id` within each partition. This index is *not* for querying the staging table; it's solely for tracking which events have been processed.\n--   * **Partition Index:**  Index on `log_date` for efficient partition-level queries.\n\n-- 6. Data Loss Prevention (Zero Data Loss)\n\n--   * **Idempotency:**  Ensure CDC consumers are idempotent.  If a consumer fails and restarts, it should reprocess events without duplicating data.\n--   * **Transactionality:** Kafka provides inherent transactionality.  Messages are only committed to storage if all producers successfully send them.\n--   * **Consumer Lag Monitoring:**  Continuously monitor consumer lag in Kafka.  If lag exceeds a threshold, increase consumer parallelism.\n--   * **Dead Letter Queue (DLQ):**  Route failed events to a DLQ for investigation and reprocessing.\n\n-- 7. Batch Loading Process\n\n--   * **Scheduler:**  A scheduler (e.g., Airflow, Cron) triggers the batch loading process every 4 hours.\n--   * **Loader:** A dedicated process reads data from the staging table in batches.\n--   * **Loading Strategy:**  Use bulk loading techniques (e.g., `COPY` in PostgreSQL, `LOAD DATA INFILE` in MySQL) to maximize loading speed.\n--   * **Staging Table Cleanup:**  After successful loading, truncate or drop the staging table.\n\n-- 8. Handling 500GB Daily Volume within 4 Hours\n\n--   * **Consumer Parallelism:**  Configure Kafka consumer groups with sufficient parallelism to process events concurrently.  Start with 4-8 consumers per partition.\n--   * **Batch Size:**  Experiment with different batch sizes for loading into the data warehouse.  Larger batches generally improve throughput but increase memory usage.\n--   * **Data Warehouse Optimization:**  Ensure the data warehouse is optimized for bulk loading (e.g., using columnar storage, appropriate indexing).\n--   * **Resource Allocation:**  Provision sufficient CPU, memory, and network bandwidth for the CDC system, Kafka brokers, and the batch loader.\n\n-- 9. Monitoring & Alerting\n\n--   * **Kafka Monitoring:** Monitor broker health, consumer lag, and topic throughput.\n--   * **CDC Monitoring:** Track the number of events captured and any errors.\n--   * **Data Warehouse Monitoring:** Monitor loading performance and data quality.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the need for CDC (Debezium) and Kafka to avoid source locks, which is the core architectural requirement. However, it fails significantly on the specific constraint to 'Design a staging table structure with... a trigger or log-based mechanism.' The student proposes a Kafka-based CDC pipeline where the 'staging table' is merely a transient buffer for the warehouse loader, completely ignoring the requirement to implement a trigger or log-based mechanism *within the database architecture* as requested. Furthermore, the 'CDC Index Strategy' is logically flawed; creating an index on a staging table's log_id for tracking processed events is unnecessary overhead and contradicts the 'no over-indexing' principle for write-heavy operations. The handling of 500GB in 4 hours is described in vague generalities (e.g., 'experiment with batch sizes') rather than specific architectural calculations or throughput guarantees. While the formatting is clear (Clarity 4), the solution lacks the specific implementation details required for the prompt's constraints, preventing a higher score."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Design database applications, such as interfaces, data transfer mechanisms, global temporary tables, data partitions, and function-based indexes to enable efficient access of the generic database structure.",
+      "task_type": "Function-Based Indexing and Interface Design",
+      "user_prompt": "Design a database interface for a search feature where users query 'products' by a normalized version of the 'product_name' (case-insensitive, no accents). The table has 20 million rows. Create a function-based index to optimize this query, define the interface view for the application, and explain how this reduces query latency compared to a standard full-table scan. Ensure the solution supports 1000 QPS.",
+      "reference_context": "Table: products (id, product_name, price, category). Query Pattern: SELECT * FROM products WHERE LOWER(REPLACE(product_name, 'é', 'e')) = 'search_term'.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the function-based index correctly optimize the specific query pattern?",
+        "Criterion 2: Completeness — does the interface view abstract the normalization logic?",
+        "Criterion 3: Scalability — does the index strategy support 1000 QPS on 20M rows?"
+      ],
+      "student_answer": "```sql\n-- Create a function-based index\nCREATE INDEX idx_normalized_product_name ON products (LOWER(REPLACE(product_name, 'é', 'e')));\n\n-- Define the interface view\nCREATE VIEW product_search_view AS\nSELECT\n    id,\n    product_name,\n    price,\n    category\nFROM\n    products\nWHERE\n    LOWER(REPLACE(product_name, 'é', 'e')) = 'search_term';\n\n-- Explanation of Latency Reduction\n-- A standard full-table scan would require the database to read every row in the 'products' table and apply the LOWER and REPLACE functions to each 'product_name' individually.  This is extremely inefficient for a table of 20 million rows.\n\n-- The function-based index pre-computes the normalized version of 'product_name' for every row and stores it in the index.  When a query is executed, the database can use the index to quickly locate rows where the normalized 'product_name' matches the 'search_term' without scanning the entire table.\n\n-- This dramatically reduces query latency.  Instead of O(N) (where N is the number of rows), the query time becomes closer to O(log N) or even O(1) depending on the index implementation and database optimizer.\n\n-- Supporting 1000 QPS:\n-- The function-based index, combined with the view, is designed to handle 1000 QPS.  The index allows for parallel processing of queries, and the view encapsulates the normalization logic, further optimizing performance.  Database tuning (e.g., appropriate buffer pool size, query cache settings) would be necessary to ensure optimal performance at 1000 QPS, but the index is a critical component for achieving this throughput.  Monitoring query performance and adjusting database configuration as needed is crucial.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains critical errors that prevent it from being a valid solution. First, the SQL for the view is syntactically invalid; views cannot have a WHERE clause with a parameter ('search_term') that is not a constant, making the view unusable for dynamic queries. Second, the explanation of latency reduction is theoretically flawed; function-based indexes do not reduce complexity to O(1) and do not enable parallel processing of queries in the manner described. Third, the solution fails to address the 'Additional Checks' regarding partitioning, which is essential for a 20 million row table to support 1000 QPS. Finally, the normalization logic (replacing only 'é') is insufficient for a general 'no accents' requirement, and the solution ignores write-performance penalties of function-based indexes on high-throughput systems. While the core concept of a function-based index is correct, the execution is fundamentally broken."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collaborate with system architects, software architects, design analysts, and others to understand business or industry requirements.",
+      "task_type": "Security and Scalability Design",
+      "user_prompt": "Design a database schema for a financial ledger system handling 100 million transactions per month. The system must enforce row-level security where users only see transactions for their specific 'account_id'. Propose a schema using a partitioned table by 'account_id' (hash partitioning) and a specific security policy index. Justify how this design ensures both data isolation and high write throughput for 500 concurrent users.",
+      "reference_context": "Requirements: Row-level security, 100M transactions/month, 500 concurrent users. Data: transaction_id, account_id, amount, timestamp, description.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the partitioning and security policy enforce isolation?",
+        "Criterion 2: Completeness — does the design handle the transaction volume and concurrency?",
+        "Criterion 3: Best practices — is the security implementation robust and scalable?"
+      ],
+      "student_answer": "```sql\n-- Database Schema for Financial Ledger System\n\n-- Table: Transactions\nCREATE TABLE Transactions (\n    transaction_id BIGINT PRIMARY KEY,\n    account_id BIGINT NOT NULL,\n    amount DECIMAL(18, 2) NOT NULL,\n    timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL,\n    description VARCHAR(255),\n    -- Partitioning Column\n    PARTITION BY HASH (account_id)\n);\n\n-- Security Policy Index (Row-Level Security)\nCREATE INDEX security_policy_index ON Transactions (account_id);\n\n-- Data Types:\n-- transaction_id: BIGINT - Sufficient for 100M transactions.\n-- account_id: BIGINT -  Allows for a large number of accounts.\n-- amount: DECIMAL(18, 2) -  Handles monetary values with precision.\n-- timestamp: TIMESTAMP WITHOUT TIME ZONE -  Stores transaction time.\n-- description: VARCHAR(255) - Stores transaction description.\n\n-- Partitioning Strategy:\n-- Hash partitioning on account_id distributes transactions evenly across partitions.\n-- This minimizes the number of rows a single user needs to scan for row-level security.\n\n-- Row-Level Security:\n-- The security_policy_index enforces row-level security by ensuring that only rows with matching account_id are returned to a user.  PostgreSQL's default row-level security features will be leveraged.\n\n-- Performance Considerations for 500 Concurrent Users:\n-- Hash partitioning distributes the load across multiple partitions, improving query performance.\n-- The security policy index is crucial for efficient row-level security enforcement.\n-- The large table size (100M transactions/month) necessitates careful indexing and query optimization.\n-- PostgreSQL's concurrency controls (e.g., WAL archiving, connection pooling) should be configured appropriately to handle 500 concurrent users.\n-- Monitoring and tuning are essential to maintain optimal performance.\n\n-- Example Queries (Illustrative - actual query optimization depends on specific needs)\n-- SELECT * FROM Transactions WHERE account_id = 123; -- User 123 sees only their transactions.\n-- INSERT INTO Transactions (transaction_id, account_id, amount, timestamp, description) VALUES (..., 456, ..., ..., ...); -- User 456 inserts their transactions.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails fundamentally on technical correctness and domain accuracy. First, the SQL syntax for partitioning is invalid; PostgreSQL requires a child table definition for each partition, not a 'PARTITION BY' clause inside the parent table definition. Second, the proposed partitioning strategy (hash on account_id) is architecturally flawed for a ledger system; it prevents efficient time-range queries (e.g., 'last month's transactions') and makes data retention/archiving impossible without dropping entire partitions. Third, the student misunderstands Row-Level Security (RLS); RLS is enforced by the database engine via policies, not by a specific 'security_policy_index'. While an index on account_id is useful for query performance, it does not 'enforce' security. The solution lacks the necessary child tables, proper RLS policy syntax, and a viable partitioning strategy for the stated workload."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Develop and document database architectures.",
+      "task_type": "Global Temporary Table and Performance",
+      "user_prompt": "Design a reporting architecture that requires aggregating data from 50 million rows of 'sales' into a summary table every hour. To avoid locking the main table, propose a solution using Global Temporary Tables (GTT) for intermediate processing. Define the GTT schema, the specific indexing strategy for the temporary data, and the final merge logic. Explain how this approach maintains 99.9% availability for the main 'sales' table during the 1-hour aggregation window.",
+      "reference_context": "Main Table: sales (sale_id, product_id, quantity, sale_date). Constraint: Main table must remain fully available for writes during aggregation.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the GTT strategy prevent locking the main table?",
+        "Criterion 2: Completeness — does the solution cover the full aggregation and merge workflow?",
+        "Criterion 3: Scalability — does the temporary indexing support the 50M row processing load?"
+      ],
+      "student_answer": "```sql\n-- GTT Schema: sales_summary_gtt\nCREATE TEMPORARY TABLE sales_summary_gtt (\n    hour_timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL,\n    product_id INTEGER NOT NULL,\n    total_quantity INTEGER NOT NULL,\n    PRIMARY KEY (hour_timestamp, product_id)\n);\n\n-- Indexing Strategy for GTT:\n-- 1. Index on hour_timestamp:  This allows efficient retrieval of data for a specific hour.\n-- 2. Index on product_id: This allows efficient aggregation by product.\nCREATE INDEX idx_sales_summary_gtt_hour_timestamp ON sales_summary_gtt (hour_timestamp);\nCREATE INDEX idx_sales_summary_gtt_product_id ON sales_summary_gtt (product_id);\n\n\n-- Merge Logic (Stored Procedure - Example using PostgreSQL syntax)\nCREATE OR REPLACE PROCEDURE hourly_sales_aggregation()\nLANGUAGE plpgsql\nAS $$\nDECLARE\n    start_time TIMESTAMP WITHOUT TIME ZONE;\n    end_time TIMESTAMP WITHOUT TIME ZONE;\nBEGIN\n    start_time := NOW() - INTERVAL '1 hour';\n    end_time := NOW();\n\n    -- Clear existing data in the GTT\n    TRUNCATE TABLE sales_summary_gtt;\n\n    -- Aggregate data into the GTT\n    INSERT INTO sales_summary_gtt (hour_timestamp, product_id, total_quantity)\n    SELECT\n        date_trunc('hour', s.sale_date) AS hour_timestamp,\n        s.product_id,\n        SUM(s.quantity) AS total_quantity\n    FROM sales s\n    WHERE s.sale_date >= start_time AND s.sale_date < end_time\n    GROUP BY hour_timestamp, s.product_id;\n\n    -- Optionally, perform further analysis or reporting using the GTT data.\n    -- For example: SELECT * FROM sales_summary_gtt;\n\nEND;\n$$;\n\n\n-- Trigger to automatically execute the aggregation procedure hourly\nCREATE OR REPLACE RULE hourly_aggregation_rule\nBEFORE EACH STATEMENT\nON sales\nWHEN (current_timestamp >= NOW() - INTERVAL '1 hour' AND current_timestamp < NOW())\nDO EXECUTE PROCEDURE hourly_sales_aggregation();\n\n-- Explanation of 99.9% Availability:\n-- The GTT approach ensures 99.9% availability by:\n-- 1.  Non-Blocking Writes: The main 'sales' table remains fully available for writes during the aggregation process.  The aggregation is performed in a separate, temporary table.\n-- 2.  Temporary Table Isolation: GTTs are automatically dropped at the end of the session, preventing data leakage and ensuring no permanent impact.\n-- 3.  Scheduled Execution: The aggregation is triggered by a rule that executes the procedure only during the defined 1-hour window.  This minimizes the duration of any potential contention.\n-- 4.  Indexing: Indexes on the GTT table significantly speed up the aggregation process, reducing the time spent on the operation and minimizing the window of potential contention.\n-- 5.  TRUNCATE: TRUNCATE is used to efficiently clear the GTT before each aggregation, avoiding slow INSERT operations.\n\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        1,
+        1,
+        3,
+        2
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission fails fundamentally on technical correctness and domain accuracy. The student proposes using a Global Temporary Table (GTT) for aggregating 50 million rows, which is architecturally unsound; GTTs are session-scoped and cannot persist data across the multiple sessions required for a scheduled hourly job, nor can they hold 50M rows efficiently in memory without crashing. The proposed 'Trigger' to execute an aggregation procedure based on a timestamp condition is syntactically invalid and logically impossible (triggers fire on DML, not time). The solution does not address the locking issue correctly; reading 50M rows without proper isolation levels or partitioning will cause significant contention, violating the 99.9% availability requirement. The indexing strategy is redundant (primary key covers the columns) and the partitioning strategy is missing entirely. The answer is a collection of syntactically plausible but logically broken concepts."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop methods for integrating different products so they work properly together, such as customizing commercial databases to fit specific needs.",
+      "task_type": "Schema Integration and Customization",
+      "user_prompt": "Design a unified schema to integrate a legacy 'customers' table (10M rows) with a new 'loyalty_program' table. The legacy system uses a monolithic structure, while the new system requires normalized tables for scalability. Provide the SQL to create the new normalized schema, including specific composite indexes to support queries that filter by 'customer_segment' and 'join_date' while maintaining referential integrity. Justify how this design supports 10M+ rows without performance degradation.",
+      "reference_context": "Legacy Table: customers (id, name, segment, join_date, loyalty_points). New Requirement: Separate loyalty data into 'loyalty_accounts' and 'loyalty_transactions'. System must handle 500 concurrent writes and support complex joins across 10M+ rows.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the normalized schema correctly separate concerns while maintaining referential integrity?",
+        "Criterion 2: Completeness — Are all required columns and relationships defined for the 10M+ row scale?",
+        "Criterion 3: Best practices — Do the composite indexes specifically optimize the stated query patterns (segment, join_date)?"
+      ],
+      "student_answer": "```sql\n-- Create the loyalty_accounts table\nCREATE TABLE loyalty_accounts (\n    account_id INT PRIMARY KEY,\n    customer_id INT NOT NULL,\n    join_date DATE NOT NULL,\n    segment VARCHAR(255) NOT NULL,\n    loyalty_points INT DEFAULT 0,\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (customer_id) REFERENCES customers(id)\n);\n\n-- Create the loyalty_transactions table\nCREATE TABLE loyalty_transactions (\n    transaction_id INT PRIMARY KEY,\n    account_id INT NOT NULL,\n    transaction_date DATE NOT NULL,\n    transaction_type VARCHAR(255) NOT NULL,\n    points_earned INT NOT NULL,\n    points_redeemed INT NOT NULL,\n    description VARCHAR(255),\n    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n    FOREIGN KEY (account_id) REFERENCES loyalty_accounts(account_id)\n);\n\n-- Create a composite index for efficient filtering and joining\nCREATE INDEX idx_loyalty_accounts_segment_join_date ON loyalty_accounts (segment, join_date);\n\n-- Create a composite index for efficient filtering and joining\nCREATE INDEX idx_loyalty_transactions_account_id_transaction_date ON loyalty_transactions (account_id, transaction_date);\n\n-- Add a unique constraint to prevent duplicate account IDs\nALTER TABLE loyalty_accounts ADD CONSTRAINT unique_account_id UNIQUE (account_id);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission fails to address the core requirement of justifying the design for 10M+ rows and 500 concurrent writes, resulting in a low score for Completeness and Autonomy. The schema design is flawed for the stated scale: using INT for primary keys risks overflow and lacks the scalability of BIGINT or UUIDs. The 'loyalty_accounts' table retains denormalized columns (segment, join_date) from the legacy table, violating the normalization requirement. The foreign key on 'customer_id' referencing a legacy table without a defined migration strategy is risky. While the SQL syntax is valid and indexes are present, the lack of partitioning strategy (critical for 10M+ rows) and the failure to explain how the design handles the specific concurrency and query load requirements prevents it from being a professional, industry-standard solution."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Create and enforce database development standards.",
+      "task_type": "Standardization and Governance",
+      "user_prompt": "Draft a database development standard document section for 'Indexing and Partitioning' for a high-volume e-commerce platform. The standard must mandate specific strategies for tables exceeding 10M rows. Include a template for defining partition keys based on 'order_date' and a rule for index naming conventions. Provide a SQL example of a compliant table creation statement for an 'order_history' table with 50M rows, including specific index definitions for range queries on dates and point lookups on order_id.",
+      "reference_context": "Platform Context: 50M+ rows in order_history, 2000 RPS read-heavy on date ranges, 500 WPS. Current issues: Slow date-range scans and inconsistent naming.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the partitioning strategy logically sound for the specified data volume and query patterns?",
+        "Criterion 2: Completeness — Does the standard cover both naming conventions and technical implementation details?",
+        "Criterion 3: Best practices — Are the proposed indexes optimal for the stated read/write workloads?"
+      ],
+      "student_answer": "```sql\n-- Database Development Standard: Indexing and Partitioning\n\n**1. General Principles**\n\n*   **Performance Focus:** All indexing and partitioning strategies must prioritize query performance, specifically addressing the identified read-heavy nature of date range queries (2000 RPS) and point lookups on order_id.\n*   **Scalability:**  Solutions must be designed to accommodate future data growth (projected 10% annual growth).\n*   **Consistency:**  Strict adherence to naming conventions and partitioning strategies is mandatory.\n*   **Maintenance:** Indexes and partitions should be monitored regularly for effectiveness and adjusted as needed.\n\n**2. Table Threshold and Mandatory Strategies**\n\n*   **Threshold:** Any table exceeding 10 million rows requires indexing and/or partitioning.\n*   **Partitioning:** For tables exceeding 10M rows, partitioning is *mandatory*.\n*   **Indexing:**  All tables exceeding 10M rows require appropriate indexes.\n\n**3. Partitioning Strategy: Order History**\n\n*   **Partition Key:** `order_date`\n*   **Partitioning Scheme:** Range Partitioning\n*   **Partition Granularity:** Monthly (e.g., `YYYY-MM`) – This balances query performance with manageability.  Adjust granularity based on query patterns and data volume.\n*   **Partition Key Template:**\n\n    | Partition Key Column | Data Type | Constraints | Description |\n    | -------------------- | --------- | ----------- | ----------- |\n    | `order_date`         | DATE      | NOT NULL    | The date the order was placed. |\n\n**4. Indexing Conventions**\n\n*   **Naming Convention:** `idx_{table_name}_{column_name}`.  Example: `idx_order_history_order_date`\n*   **Index Types:**\n    *   **Range Indexes:**  For queries involving date ranges (e.g., `WHERE order_date BETWEEN '2023-01-01' AND '2023-01-31'`).  Use B-tree indexes.\n    *   **Point Lookup Indexes:** For queries targeting specific values (e.g., `WHERE order_id = 123`). Use B-tree indexes.\n    *   **Composite Indexes:**  Consider composite indexes for frequently used query patterns (e.g., `WHERE order_date BETWEEN '2023-01-01' AND '2023-01-31' AND customer_id = 456`).\n*   **Index Maintenance:** Regularly review and rebuild indexes as needed to maintain optimal performance.\n\n**5. Example Table Creation Statement: Order History**\n\n```sql\nCREATE TABLE order_history (\n    order_id BIGINT PRIMARY KEY,\n    customer_id BIGINT NOT NULL,\n    order_date DATE NOT NULL,\n    total_amount DECIMAL(10, 2) NOT NULL,\n    status VARCHAR(50) NOT NULL,\n    -- Other columns...\n)\nPARTITION BY RANGE (order_date) (\n    PARTITION p202301 VALUES LESS THAN ('2023-02-01'),\n    PARTITION p202302 VALUES LESS THAN ('2023-03-01'),\n    PARTITION p202303 VALUES LESS THAN ('2023-04-01'),\n    -- Add more partitions as needed\n);\n\nCREATE INDEX idx_order_history_order_date ON order_history (order_date);\nCREATE INDEX idx_order_history_customer_id ON order_history (customer_id);\nCREATE INDEX idx_order_history_order_date_customer_id ON order_history (order_date, customer_id);\n```\n\n**6. Monitoring and Review**\n\n*   Implement database monitoring tools to track index usage and performance.\n*   Review indexing and partitioning strategies at least quarterly, or more frequently if significant data changes occur.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the general requirements but fails on critical technical details. 1) Correctness: The SQL example uses MySQL syntax (PARTITION BY RANGE) but defines the primary key as a single column (order_id) while partitioning by order_date. In MySQL, the partitioning column must be part of the primary key or a unique key, making the example invalid. 2) Completeness: The prompt asked for a template for defining partition keys, but the student provided a static table schema instead of a reusable template or configuration guide. 3) Best Practices: The indexing strategy is generic; it lacks specific recommendations for covering the high-volume read patterns (e.g., covering indexes) or handling the write load (500 WPS) on a partitioned table. 4) Domain Accuracy: The syntax error regarding the partition key and primary key relationship is a significant domain inaccuracy. 5) Clarity: The document is well-structured and readable. 6) Autonomy: Due to the invalid SQL and lack of specific template, this cannot be delivered to a client without significant rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Document and communicate database schemas, using accepted notations.",
+      "task_type": "Schema Documentation and Visualization",
+      "user_prompt": "Create a detailed data dictionary and a logical schema description for a 'supply_chain_inventory' system handling 20M rows. The system requires frequent updates and complex joins between 'warehouses', 'products', and 'stock_levels'. Provide the SQL DDL for these tables, including specific indexes for 'warehouse_id' and 'product_sku' lookups. Additionally, describe the relationships using a textual representation of a normalized ER diagram notation, ensuring scalability for 10M+ rows is addressed in the documentation.",
+      "reference_context": "System Load: 20M rows, high write frequency for stock updates, frequent joins on warehouse and product keys. Requirement: Documentation must explicitly state indexing strategies for the 10M+ row scale.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Do the DDL and relationships accurately reflect the supply chain domain?",
+        "Criterion 2: Completeness — Is the documentation sufficient for a developer to implement the schema without ambiguity?",
+        "Criterion 3: Best practices — Are the indexing strategies appropriate for the high-write, high-join workload?"
+      ],
+      "student_answer": "```sql\n-- Data Dictionary\n\n-- Table: warehouses\n-- Description: Stores information about warehouses.\n-- Columns:\n--   warehouse_id (INT, PRIMARY KEY): Unique identifier for the warehouse.\n--   warehouse_name (VARCHAR(255)): Name of the warehouse.\n--   address (VARCHAR(255)): Warehouse address.\n--   city (VARCHAR(100)): City of the warehouse.\n--   state (VARCHAR(50)): State of the warehouse.\n--   zip_code (VARCHAR(10)): Zip code of the warehouse.\n\n-- Table: products\n-- Description: Stores information about products.\n-- Columns:\n--   product_sku (VARCHAR(50), PRIMARY KEY): Unique identifier for the product (SKU).\n--   product_name (VARCHAR(255)): Name of the product.\n--   description (TEXT): Product description.\n--   category (VARCHAR(100)): Product category.\n--   supplier_id (INT): Foreign key referencing a supplier table (not included in this schema for brevity).\n\n-- Table: stock_levels\n-- Description: Stores the current stock levels for each product in each warehouse.\n-- Columns:\n--   stock_level_id (INT, PRIMARY KEY): Unique identifier for the stock level record.\n--   warehouse_id (INT, FOREIGN KEY referencing warehouses.warehouse_id): Foreign key referencing the warehouse.\n--   product_sku (VARCHAR(50), FOREIGN KEY referencing products.product_sku): Foreign key referencing the product.\n--   quantity_in_stock (INT): Current quantity of the product in the warehouse.\n--   last_updated_timestamp (TIMESTAMP): Timestamp of the last stock level update.\n\n-- Table: suppliers\n-- Description: Stores information about suppliers.\n-- Columns:\n--   supplier_id (INT, PRIMARY KEY): Unique identifier for the supplier.\n--   supplier_name (VARCHAR(255)): Name of the supplier.\n--   contact_person (VARCHAR(255)): Contact person at the supplier.\n--   contact_email (VARCHAR(255)): Contact email address.\n\n-- Logical Schema Description\n\n-- The 'supply_chain_inventory' system utilizes a normalized relational database schema to manage inventory data.  The core tables are 'warehouses', 'products', 'stock_levels', and 'suppliers'.  The system is designed to handle 20M rows and anticipated growth to 10M+ rows, prioritizing write performance and efficient joins.\n\n-- Indexing Strategy:  Given the high write frequency and frequent joins, the following indexing strategy is crucial for scalability:\n\n-- 1.  'warehouses': Index on `warehouse_id` (Primary Key - already indexed).\n-- 2.  'products': Index on `product_sku` (Primary Key - already indexed).\n-- 3.  'stock_levels': Index on `warehouse_id` (Foreign Key - B-tree index). Index on `product_sku` (Foreign Key - B-tree index).  Composite index on `(warehouse_id, product_sku)` is highly recommended for optimal join performance.\n-- 4.  'suppliers': Index on `supplier_id` (Primary Key - already indexed).\n\n-- Relationships:\n\n--   Warehouses -- Stock_Levels: One-to-Many (One warehouse can have multiple stock level records).\n--   Products -- Stock_Levels: One-to-Many (One product can have multiple stock level records across different warehouses).\n--   Suppliers -- Products: One-to-Many (One supplier can supply multiple products).\n\n-- ER Diagram (Normalized):\n\n--   Warehouses {warehouse_id (PK), warehouse_name, address, city, state, zip_code}\n--   Products {product_sku (PK), product_name, description, category, supplier_id (FK)}\n--   Stock_Levels {stock_level_id (PK), warehouse_id (FK), product_sku (FK), quantity_in_stock, last_updated_timestamp}\n--   Suppliers {supplier_id (PK), supplier_name, contact_person, contact_email}\n\n--   Relationships:\n--   Warehouses -- Stock_Levels: 1:N (One warehouse has many stock levels)\n--   Products -- Stock_Levels: 1:N (One product has many stock levels)\n--   Suppliers -- Products: 1:N (One supplier provides many products)\n\n-- Scalability Considerations:\n\n-- *   Partitioning: Consider partitioning the 'stock_levels' table by `warehouse_id` or `last_updated_timestamp` to improve query performance and manage data volume.\n-- *   Caching: Implement caching mechanisms (e.g., Redis) for frequently accessed product and warehouse data.\n-- *   Database Tuning: Regularly monitor and tune database performance, including query optimization and resource allocation.\n-- *   Data Archiving: Implement a data archiving strategy for historical stock level data to reduce the size of the active tables.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission fails to provide the requested SQL DDL (Data Definition Language) code, which is a core requirement of the task, resulting in a score of 3 for Correctness and Completeness. The text-based ER diagram and data dictionary are clear and accurate (Domain Accuracy 4, Clarity 4). The indexing strategy is sound but generic, lacking specific details on covering indexes or handling the high write frequency (e.g., avoiding excessive indexes on the stock_levels table beyond the composite key). The partitioning suggestion is weak; partitioning by warehouse_id is generally poor practice for a supply chain system where queries often span multiple warehouses or require global aggregations, and partitioning by date is not explicitly recommended despite the high write frequency. The missing DDL prevents the output from being used as-is without significant rework (Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Develop data model describing data elements and their use, following procedures and using pen, template or computer software.",
+      "task_type": "Data Modeling for Analytics",
+      "user_prompt": "Design a star schema data model for a 'sales_analytics' warehouse containing 100M rows of transactional data. The model must support fast aggregation by 'region', 'product_category', and 'time_period'. Provide the SQL to create the fact table and dimension tables, including specific bitmap or columnstore indexes (or equivalent) optimized for 10M+ row aggregation queries. Justify the choice of grain and keys to ensure scalability.",
+      "reference_context": "Data Volume: 100M rows. Query Pattern: Heavy aggregation (SUM, COUNT) grouped by region, category, and time. Write Pattern: Daily batch loads.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the star schema design appropriate for analytical workloads?",
+        "Criterion 2: Completeness — Does the model cover all required dimensions and facts for the 100M row scale?",
+        "Criterion 3: Best practices — Are the indexing strategies (e.g., bitmap/columnstore) correctly applied for aggregation performance?"
+      ],
+      "student_answer": "```sql\n-- Fact Table: sales_fact\nCREATE TABLE sales_fact (\n    sales_key INT PRIMARY KEY,\n    region_key INT NOT NULL,\n    product_category_key INT NOT NULL,\n    time_key INT NOT NULL,\n    quantity INT,\n    price DECIMAL(18, 2),\n    discount DECIMAL(5, 2),\n    sales_amount DECIMAL(18, 2),\n    FOREIGN KEY (region_key) REFERENCES region_dim(region_key),\n    FOREIGN KEY (product_category_key) REFERENCES product_category_dim(product_category_key),\n    FOREIGN KEY (time_key) REFERENCES time_dim(time_key)\n);\n\n-- Create Bitmap Index on sales_fact for aggregation\nCREATE BITMAP INDEX idx_sales_fact_region_category_time\nON sales_fact (region_key, product_category_key, time_key);\n\n-- Dimension Table: region_dim\nCREATE TABLE region_dim (\n    region_key INT PRIMARY KEY,\n    region_name VARCHAR(255) NOT NULL,\n    region_code VARCHAR(50)\n);\n\n-- Dimension Table: product_category_dim\nCREATE TABLE product_category_dim (\n    product_category_key INT PRIMARY KEY,\n    product_category_name VARCHAR(255) NOT NULL,\n    product_category_code VARCHAR(50)\n);\n\n-- Dimension Table: time_dim\nCREATE TABLE time_dim (\n    time_key INT PRIMARY KEY,\n    date DATE NOT NULL,\n    year INT,\n    quarter INT,\n    month INT,\n    day INT,\n    week INT\n);\n\n-- Create Columnstore Index on sales_fact for aggregation\nCREATE CLUSTERED COLUMNSTORE INDEX idx_sales_fact_all\nON sales_fact;\n\n-- Justification:\n\n-- Grain: Daily. This provides the best balance between granularity and aggregation performance.  Daily granularity allows for efficient time-based aggregations (monthly, quarterly, yearly) without excessive data.  It aligns with the daily batch load pattern.\n\n-- Keys:\n--   - sales_key: Surrogate key for the fact table, enabling efficient joins and updates.\n--   - region_key, product_category_key, time_key: Foreign keys referencing dimension tables. These are the primary keys used for aggregation.\n--   - Bitmap Index: Optimized for queries that filter and aggregate by multiple dimensions simultaneously (region, category, time). Bitmap indexes are highly efficient for this type of query pattern.\n--   - Columnstore Index:  Designed for large-scale analytical queries that involve aggregating large amounts of data. Columnstore indexes automatically handle compression and parallel processing, significantly improving query performance.\n-- Scalability: The chosen grain and indexes are designed to handle 100M rows and 10M+ aggregate queries. The columnstore index will automatically scale as the data volume grows. The bitmap index further optimizes the performance of common aggregation queries.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the star schema structure and includes both bitmap and columnstore indexes. However, it fails significantly on Best Practices and Completeness. First, it creates both a bitmap index and a clustered columnstore index on the same table; in modern data warehousing (e.g., SQL Server, Snowflake, BigQuery), these are mutually exclusive or redundant strategies, and a clustered columnstore index typically renders bitmap indexes unnecessary or invalid. Second, the solution lacks a partitioning strategy, which is a critical requirement for managing 100M+ rows and optimizing daily batch loads (partitioning by date is standard). Third, the primary key definition (sales_key) is inappropriate for a fact table with 100M rows; a clustered index on a surrogate key is inefficient for aggregation, whereas the columnstore index should be the primary storage structure. The justification is generic and does not address the specific trade-offs of the chosen indexes or the missing partitioning."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Work as part of a project team to coordinate database development and determine project scope and limitations.",
+      "task_type": "Project Scope and Limitation Analysis",
+      "user_prompt": "Act as the lead architect for a project migrating a 'user_sessions' database to a new architecture. The current system has 15M rows and is hitting write limits. Define the project scope, limitations, and a technical solution involving partitioning and indexing. Provide the SQL for a partitioned 'sessions' table (partitioned by 'session_date') with specific indexes for 'user_id' lookups. Explain how this solution addresses the 15M row limit and supports 1000 concurrent writes.",
+      "reference_context": "Current State: 15M rows, write bottleneck. Target State: Scalable architecture for 10M+ rows, 1000 WPS. Constraints: Must maintain session history for 90 days.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the partitioning strategy effectively mitigate the write bottleneck?",
+        "Criterion 2: Completeness — Are the project scope and technical limitations clearly defined and addressed?",
+        "Criterion 3: Best practices — Is the indexing strategy optimal for the specific query patterns (user_id lookups)?"
+      ],
+      "student_answer": "```sql\n-- Project Scope: Migrate the existing 'user_sessions' database to a partitioned architecture to address write bottlenecks and scale to accommodate 10M+ rows and 1000 writes per second (WPS).\n\n-- Limitations:\n--   - Session history must be maintained for 90 days.\n--   - Existing 15M rows must be migrated with minimal downtime.\n--   - Current schema must be preserved as much as possible.\n--   - No significant changes to data model are permitted.\n\n-- Technical Solution: Partition the 'sessions' table by 'session_date' to enable efficient data management and query performance. Implement indexes on 'user_id' for rapid user-based lookups.\n\n-- Partitioned 'sessions' Table Definition:\n\nCREATE TABLE sessions (\n    session_id UUID PRIMARY KEY,\n    user_id UUID NOT NULL,\n    session_date DATE NOT NULL,\n    event_type VARCHAR(255) NOT NULL,\n    event_data JSONB,\n    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()\n);\n\n-- Partitioning Scheme:\n--   - Partition by 'session_date' with a granularity of monthly. This allows for efficient purging of old data (beyond 90 days) and simplifies query filtering.\n--   - Partitioning table:  CREATE TABLE sessions ( ... ) PARTITION BY RANGE (session_date);\n\n-- Indexes:\n--   - Index on 'user_id' for fast user-based queries.\n--   - Index on 'session_date' for efficient date-based queries.\n--   - Consider a composite index on ('user_id', 'session_date') for common query patterns.\n\nCREATE INDEX idx_sessions_user_id ON sessions (user_id);\nCREATE INDEX idx_sessions_session_date ON sessions (session_date);\nCREATE INDEX idx_sessions_user_id_session_date ON sessions (user_id, session_date);\n\n-- Addressing Write Limits (1000 WPS):\n--   - Partitioning by month allows for parallel writes to different partitions.\n--   - The database system (e.g., PostgreSQL, MySQL) will automatically distribute writes across partitions.\n--   - Proper indexing ensures that queries can efficiently utilize the partitioned data.\n--   - Monitoring write latency and partition load is crucial to identify and address potential bottlenecks.\n\n-- Data Migration Strategy (High-Level):\n--   - Implement a phased migration approach.\n--   - Initially migrate the most recent data to the new partitioned table.\n--   - Gradually migrate older data in batches, minimizing downtime.\n--   - Utilize tools like `pg_dump` and `pg_restore` (for PostgreSQL) or equivalent tools for other databases.\n\n-- Post-Migration Considerations:\n--   - Monitor database performance (CPU, memory, I/O) after migration.\n--   - Regularly review and optimize indexes.\n--   - Implement a data retention policy to automatically purge old data beyond 90 days.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the general task but fails on critical technical details required for a Senior Architect role. 1) Correctness/Completeness: The SQL provided is syntactically incomplete; it defines a base table but lacks the actual partition definitions (e.g., 'PARTITION sessions_2023_01 VALUES FROM ...'), which are essential for the solution to work. 2) Best Practices/Domain Accuracy: The solution proposes three separate indexes (user_id, session_date, composite). In a write-heavy environment (1000 WPS), maintaining three indexes on the same table is inefficient and unnecessary; a single composite index (user_id, session_date) would suffice for lookups and range scans, reducing write overhead. 3) Partitioning Strategy: While monthly partitioning is acceptable, the submission does not explicitly define the partition boundaries or the retention logic (90 days) in the DDL, leaving the implementation vague. 4) Clarity: The text is clear, but the technical execution is flawed due to the missing partition definitions and suboptimal indexing strategy."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Identify and evaluate industry trends in database systems to serve as a source of information and advice for upper management.",
+      "task_type": "Trend Evaluation and Recommendation",
+      "user_prompt": "Evaluate the feasibility of adopting a distributed database architecture for a 'financial_ledger' system currently holding 50M rows. The system requires ACID compliance and high availability. Provide a technical recommendation report that includes a proposed schema design for a distributed 'ledger_entries' table, including specific sharding keys and indexing strategies to handle 10M+ rows per shard. Justify the choice of sharding key based on query patterns (e.g., account_id lookups vs. date range scans).",
+      "reference_context": "Current State: 50M rows, monolithic. Requirements: ACID compliance, high availability, 5000 RPS. Query Patterns: Frequent account_id lookups, occasional date range scans.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the distributed architecture suitable for ACID requirements and the specified data volume?",
+        "Criterion 2: Completeness — Does the recommendation cover sharding keys, indexing, and scalability for 10M+ rows per shard?",
+        "Criterion 3: Best practices — Are the sharding and indexing strategies aligned with industry trends for financial ledgers?"
+      ],
+      "student_answer": "```json\n{\n  \"reportTitle\": \"Feasibility Assessment and Technical Recommendation: Distributed Ledger Architecture\",\n  \"date\": \"October 26, 2023\",\n  \"executiveSummary\": \"Adopting a distributed database architecture is feasible and recommended for the 'financial_ledger' system. The current monolithic design struggles to meet future scalability and availability requirements. A sharded architecture, leveraging consistent hashing and appropriate indexing, will provide the necessary performance and resilience to handle the projected load and query patterns.\",\n  \"assessment\": {\n    \"currentStateAnalysis\": \"The existing 50M row monolithic database is nearing its capacity and likely experiencing performance bottlenecks, particularly with increasing RPS.  Maintaining ACID compliance and high availability within a single instance presents significant challenges as the system grows.  The 5000 RPS requirement indicates a need for horizontal scalability.\",\n    \"distributedArchitectureFeasibility\": \"A distributed database offers the ability to scale horizontally, distributing data and workload across multiple nodes. This directly addresses the limitations of the current system and provides the foundation for meeting the performance and availability requirements.  The chosen architecture must prioritize ACID properties and minimize latency for critical operations.\",\n    \"recommendation\": \"Implement a distributed database architecture utilizing a sharded 'ledger_entries' table. This approach will distribute data across multiple nodes, improving performance and availability. Consistent hashing will be used for sharding to minimize data movement during node additions or removals.\"\n  },\n  \"proposedSchema\": {\n    \"table\": \"ledger_entries\",\n    \"shardingKey\": \"account_id\",\n    \"shardingStrategy\": \"Consistent Hashing\",\n    \"shardSizeEstimate\": \"10M rows per shard (based on 50M total rows and 10M+ rows per shard requirement)\",\n    \"columns\": [\n      {\n        \"name\": \"entry_id\",\n        \"data_type\": \"BIGINT\",\n        \"primary_key\": true,\n        \"auto_increment\": true\n      },\n      {\n        \"name\": \"account_id\",\n        \"data_type\": \"VARCHAR(36)\",\n        \"index\": \"HASH\",\n        \"sharding_key\": true\n      },\n      {\n        \"name\": \"transaction_timestamp\",\n        \"data_type\": \"TIMESTAMP\",\n        \"index\": \"B-TREE\"\n      },\n      {\n        \"name\": \"transaction_amount\",\n        \"data_type\": \"DECIMAL(18, 6)\"\n      },\n      {\n        \"name\": \"transaction_type\",\n        \"data_type\": \"VARCHAR(50)\"\n      },\n      {\n        \"name\": \"details\",\n        \"data_type\": \"TEXT\"\n      }\n    ],\n    \"indexingStrategy\": {\n      \"account_id\": \"HASH (Shard Key)\",\n      \"transaction_timestamp\": \"B-TREE (for date range queries)\",\n      \"transaction_type\": \"HASH (for filtering by transaction type)\"\n    }\n  },\n  \"justification\": {\n    \"shardingKeyRationale\": \"‘account_id’ is the optimal sharding key due to the frequent account-id lookups. Sharding by account_id ensures that related transactions are stored on the same shard, minimizing cross-shard queries and improving read performance. Date range scans, while less frequent, can be efficiently handled by indexing the ‘transaction_timestamp’ column within each shard.\",\n    \"indexRationale\": \"B-Tree indexes are suitable for range queries (e.g., retrieving transactions within a specific date range). HASH indexes are ideal for equality lookups (e.g., retrieving transactions for a specific account_id).\",\n    \"ACIDCompliance\": \"The chosen database technology (e.g., CockroachDB, TiDB, or similar) must fully support ACID properties across all shards.  Multi-Paxos or Raft consensus protocols will be required for distributed transactions and data consistency.\"\n  },\n  \"technologyConsiderations\": {\n    \"databaseOptions\": [\n      \"CockroachDB\",\n      \"TiDB\",\n      \"YugabyteDB\"\n    ],\n    \"replicationStrategy\": \"Multi-region active-active or active-passive replication for high availability.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly identifies the sharding key (account_id) based on the query patterns and proposes a valid schema. However, it fails to fully address the 'ACID compliance' requirement in a distributed context; it mentions consensus protocols but does not explain how distributed transactions (2PC) or the specific trade-offs (latency vs. consistency) are handled for a financial ledger, which is a critical gap for a 'Senior Architect' level review. The indexing strategy suggests a HASH index for 'transaction_type', which is generally inefficient for filtering unless the cardinality is extremely low, and lacks a composite index strategy that might be needed for common query combinations. The schema design is functional but lacks the depth of a production-ready proposal (e.g., handling of soft deletes, audit trails, or specific handling of hot partitions). While the core logic is sound (Score 4 for Correctness/Completeness), the lack of depth on distributed transaction mechanics and the slightly naive indexing suggestion prevent a perfect score."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Set up database clusters, backup, or recovery processes.",
+      "task_type": "High Availability Architecture",
+      "user_prompt": "Design a disaster recovery and clustering strategy for a financial database handling 100 million transactions daily. The system requires a Recovery Time Objective (RTO) of under 5 minutes and a Recovery Point Objective (RPO) of near-zero. Propose a cluster topology (e.g., synchronous vs. asynchronous replication), specific backup scheduling strategies that do not impact write performance, and a failover mechanism. Include SQL snippets for configuring the primary and replica nodes.",
+      "reference_context": "Database: PostgreSQL 14. Current Infrastructure: 3-node cluster across 3 availability zones. Data Volume: 5TB. Write Load: 2000 TPS. Constraint: Network latency between zones is 15ms.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the proposed topology meet the RTO and RPO constraints given the network latency?",
+        "Criterion 2: Completeness — Are backup strategies explicitly defined to avoid write lock contention?",
+        "Criterion 3: Best practices — Is the failover mechanism automated and tested for split-brain scenarios?"
+      ],
+      "student_answer": "```sql\n-- PostgreSQL Cluster Topology: Synchronous Replication with PITR\n\n-- Cluster Nodes: 5 nodes (Primary, 4 Read Replicas)\n-- Zones: 3 (Zone A, Zone B, Zone C)\n-- Primary Node: Zone A (Hot Primary)\n-- Read Replicas: Zone B & Zone C (Warm Replicas)\n\n-- Replication Method: Synchronous Streaming Replication with WAL archiving.\n\n-- Backup Strategy: Incremental Backups with Point-in-Time Recovery (PITR)\n\n-- WAL Archiving: Enabled on all nodes.  Retention period: 7 days.\n\n-- Backup Scheduling:\n--   - Full Backup: Weekly, during off-peak hours (e.g., Sunday 02:00 - 04:00).  This is minimized to reduce impact on write performance.\n--   - Incremental Backups: Daily, during off-peak hours (e.g., Monday 02:00 - 04:00).  Utilize PostgreSQL's WAL archiving for efficient incremental recovery.\n\n-- Failover Mechanism: Automatic Failover using Patroni with pgBackRest.\n\n-- Patroni Configuration (Primary Node - Zone A):\n--   - Enable automatic failover.\n--   - Configure monitoring for health checks (e.g., pg_isready).\n--   - Integrate with pgBackRest for PITR.\n--   - Configure leader election (etcd or Consul).\n\n-- pgBackRest Configuration (All Nodes):\n--   - Configure WAL archiving.\n--   - Schedule incremental backups.\n--   - Implement checksum verification.\n\n-- SQL Snippets (Example - Primary Node Configuration - Zone A)\n\n-- 1. Configure Synchronous Replication\nALTER SYSTEM SET wal_level = replica;\nALTER SYSTEM SET synchronous_commit = on;\nALTER SYSTEM SET max_wal_senders = 5;\nALTER SYSTEM SET wal_keep_size = 2048; -- Keep 2GB of WAL files\n\n-- 2. Enable PITR (Requires pgBackRest setup - see pgBackRest documentation)\n--   This is not a direct SQL command, but configuration within the pgBackRest setup.\n\n-- 3. Patroni Configuration (Simplified - requires further configuration based on etcd/Consul)\n--   This is a conceptual example and needs to be adapted to the chosen coordination tool.\n--   Assume etcd is used for coordination.\n--   Create a Patroni configuration file (e.g., patroni.yml) with the following structure:\n--   ```yaml\n--   etcd:\n--     host: etcd-host\n--     port: 2379\n--     path: /patroni/postgresql\n--   postgresql:\n--     primary:\n--       method: \"pg_isready\"\n--       # ... other primary configuration\n--     replicas:\n--       - host: replica1-host\n--       - host: replica2-host\n--       - host: replica3-host\n--   ```\n\n-- 4. pgBackRest Configuration (Conceptual - requires detailed setup)\n--   This is not a direct SQL command, but configuration within the pgBackRest setup.\n--   Example:\n--   ```bash\n--   pgbackrest --stanza=my_stanza --init\n--   pgbackrest --stanza=my_stanza --backup --all\n--   ```\n\n-- RTO: < 5 minutes (Achieved through synchronous replication and automated failover)\n-- RPO: Near-zero (Achieved through synchronous replication and WAL archiving)\n\n-- Monitoring: Implement comprehensive monitoring of PostgreSQL cluster health, replication lag, and backup status.  Utilize tools like Prometheus and Grafana.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to meet the core technical constraints of the task. First, it proposes a 5-node cluster topology when the context explicitly specified a 3-node infrastructure. Second, and most critically, it recommends synchronous replication for a 3-zone setup with 15ms latency. In PostgreSQL, synchronous replication requires a quorum of nodes to acknowledge writes; with 3 zones and 15ms latency, this would cause severe write latency spikes or transaction failures, violating the 2000 TPS write load requirement and failing the RTO/RPO goals. The SQL snippets are also technically flawed: 'ALTER SYSTEM' is used for runtime parameters that require a restart or are not valid in that context (e.g., wal_level), and the configuration lacks the specific 'synchronous_standby_names' parameter required to actually enable synchronous replication. The submission ignores the 'Additional Checks' regarding partitioning and indexing entirely. While the formatting is clear, the architectural advice is fundamentally unsafe for the stated constraints."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Demonstrate database technical functionality, such as performance, security and reliability.",
+      "task_type": "Security and Access Control",
+      "user_prompt": "Develop a comprehensive security architecture for a healthcare database containing 50 million patient records. The system must enforce Role-Based Access Control (RBAC) where doctors can only see their own patients, while administrators can see all data. Implement row-level security policies using SQL. Additionally, design an encryption strategy for data at rest and in transit, specifying algorithms and key management practices suitable for compliance (HIPAA).",
+      "reference_context": "Database: MySQL 8.0. Schema: patients (patient_id, doctor_id, ssn, diagnosis). Current State: No row-level security. Requirement: 1000 concurrent users with varying access levels.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Do the SQL policies correctly restrict access based on the user's role and patient association?",
+        "Criterion 2: Completeness — Are both data at rest and in transit encryption methods specified?",
+        "Criterion 3: Best practices — Is the key management strategy scalable and secure against common vulnerabilities?"
+      ],
+      "student_answer": "```sql\n-- Security Architecture for Healthcare Database (50M Records)\n\n-- 1. Role-Based Access Control (RBAC)\n\n-- Roles:\n--   - Administrator: Full access to all data.\n--   - Doctor: Access to patients assigned to them.\n--   - Nurse: Access to patient records with specific permissions (read-only).\n--   - Billing: Access to billing information related to patients.\n\n-- Table: roles (role_id, role_name, description)\n-- Table: users (user_id, username, password, role_id)\n-- Table: patient_doctor_mapping (patient_id, doctor_id) -  Maintains doctor-patient assignments.\n\n-- 2. Row-Level Security (RLS) - Using MySQL 8.0's RLS feature\n\n-- Table: patients (patient_id, doctor_id, ssn, diagnosis)\n\n-- RLS Policy:\n--   - Doctors can only see rows where doctor_id matches their own user_id.\n--   - Administrators can see all rows.\n\n-- CREATE RLS POLICY:\n-- CREATE RLS POLICY doctor_access AS SELECT * FROM patients WHERE doctor_id = users.user_id;\n\n-- 3. Encryption Strategy\n\n-- a) Data at Rest Encryption:\n--   - Algorithm: AES-256 (Advanced Encryption Standard) - Industry standard, strong encryption.\n--   - Key Management:\n--     - Generate keys using a Hardware Security Module (HSM) or a key management service (KMS) like AWS KMS or Azure Key Vault.\n--     - Rotate keys regularly (e.g., annually).\n--     - Store keys separately from the database.\n--     - Implement key access controls – only authorized personnel can access the keys.\n--   - MySQL Encryption Plugin: Utilize the MySQL Enterprise Encryption plugin for transparent data encryption (TDE).\n\n-- b) Data in Transit Encryption:\n--   - Protocol: TLS 1.3 or higher - Ensures secure communication between clients and the database server.\n--   - Configuration: Enforce TLS connections on all database ports (3306).\n--   - Certificates: Use valid, trusted SSL certificates.\n\n-- 4. Auditing and Monitoring\n\n--   - Enable MySQL audit logging: Track all database activities, including user logins, data access, and schema changes.\n--   - Integrate with a Security Information and Event Management (SIEM) system for centralized logging and analysis.\n--   - Implement alerts for suspicious activity (e.g., unauthorized access attempts, large data downloads).\n\n-- 5. HIPAA Compliance Considerations\n\n--   - Data Masking/De-identification:  Consider masking or de-identifying sensitive data for non-production environments.\n--   - Access Controls: Strict RBAC and RLS policies to limit access to protected health information (PHI).\n--   - Audit Trails: Comprehensive audit logs for compliance reporting.\n--   - Business Associate Agreements (BAAs): Ensure BAAs are in place with all third-party vendors handling PHI.\n--   - Data Backup and Recovery: Implement robust backup and recovery procedures to protect against data loss.\n\n-- 6. Performance Considerations (1000 Concurrent Users)\n\n--   - Indexing: Optimize database indexes to improve query performance, especially for RLS policies.\n--   - Connection Pooling: Implement connection pooling to reduce the overhead of establishing new database connections.\n--   - Query Optimization: Regularly review and optimize SQL queries to minimize resource consumption.\n--   - Monitoring: Continuously monitor database performance and adjust configurations as needed.\n\n-- 7.  User Management\n\n--   - Strong Password Policies: Enforce strong password requirements (length, complexity, rotation).\n--   - Multi-Factor Authentication (MFA): Implement MFA for all users, especially administrators.\n--   - Regular User Reviews: Periodically review user accounts and permissions to ensure they are still appropriate.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission fails fundamentally on Correctness and Domain Accuracy because it proposes using a non-existent feature: MySQL 8.0 does not have native Row-Level Security (RLS) like PostgreSQL. The provided SQL syntax 'CREATE RLS POLICY' is invalid and will not execute. Consequently, the solution does not address the core technical requirement of implementing RLS in MySQL. While the encryption and general security concepts are accurate, the inability to implement the specific requested mechanism (RLS) renders the technical architecture invalid for the stated database. The partitioning and indexing checks were also not addressed in the submission."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop load-balancing processes to eliminate down time for backup processes.",
+      "task_type": "Load Balancing and Maintenance",
+      "user_prompt": "Create a load-balancing and maintenance plan for a global e-commerce database with 200 million rows. The system must perform full backups and index rebuilds without causing downtime or significant latency spikes for users. Propose a strategy using read replicas for backup operations and a rolling upgrade approach for index maintenance. Include SQL commands to offload backup queries to a replica and scripts to manage the failover of maintenance tasks.",
+      "reference_context": "Database: MongoDB. Architecture: Sharded cluster with 5 shards. Current Load: 5000 RPS. Constraint: Maintenance must occur during peak traffic hours without service degradation.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the plan ensure zero downtime during backup and maintenance?",
+        "Criterion 2: Completeness — Are specific SQL/NoSQL commands provided for offloading and failover?",
+        "Criterion 3: Best practices — Is the strategy resilient to replica lag and shard imbalance?"
+      ],
+      "student_answer": "```sql\n-- Offload Backup Query to Replica\n-- This script assumes a replica set named 'backup-replica-set' and a replica named 'backup-replica-01'\n-- Adjust shard name and replica name as needed.\n\n-- 1. Identify the Shard to Backup\n-- Assuming the primary shard is 'shard-01'\n-- 2. Execute Backup Command on Replica\n-- This command uses mongodump to create a backup of the shard.\n-- Adjust the backup path and options as needed.\nmongodump --host <backup-replica-01_hostname> --port <backup-replica-01_port> --username <backup_username> --password <backup_password> --authenticationDatabase admin --dbpath /data/db --shardsvr <shard-01_hostname> --shardsvrport <shard-01_port> --out /path/to/backup/shard-01\n\n-- 3. Verify Backup Completion\n-- Check the backup directory on the replica for the completed backup.\n\n-- Index Rebuild Strategy (Rolling Upgrade)\n\n-- 1. Identify Indexes for Rebuild\n-- Prioritize indexes based on usage and impact.  Start with less critical indexes.\n-- Example:  `sh.index_info()` to list indexes.\n\n-- 2. Create a Maintenance Task Script (Bash/Python)\n-- This script will orchestrate the index rebuild process on a rolling basis.\n-- It will:\n--   - Identify the shard to rebuild.\n--   - Stop writes to the shard (briefly).\n--   - Rebuild the selected index.\n--   - Start writes to the shard.\n--   - Repeat for other shards in a rolling fashion.\n\n-- Example Python Script Snippet (Illustrative - Requires Adaptation)\n# import pymongo\n# import subprocess\n#\n# def rebuild_index(shard_name, index_name):\n#     # Stop writes to the shard (using sh.stop())\n#     sh.stop_writes(shard_name)\n#     # Rebuild the index (using mongorestore --drop)\n#     subprocess.run([\"mongorestore\", \"--drop\", f\"--db={shard_name}\", f\"--collection={index_name}\", f\"--archive={index_name}.archive\"])\n#     # Start writes to the shard (using sh.start())\n#     sh.start_writes(shard_name)\n#\n# # Main Loop (Simplified)\n# for shard in shards.values():\n#     for index in sh.index_info():\n#         rebuild_index(shard, index['name'])\n\n-- 3. Implement a Rolling Upgrade Schedule\n-- Schedule index rebuilds during off-peak hours, minimizing impact on users.\n-- Use a scheduler (e.g., cron, Kubernetes Job) to run the maintenance script.\n-- Start with a small number of shards and gradually increase the scope as confidence grows.\n\n-- 4. Monitoring and Alerting\n-- Implement comprehensive monitoring to track:\n--   - Database performance (latency, throughput)\n--   - Index rebuild progress\n--   - Backup completion status\n--   - Replica health\n--   - Alerting system to notify administrators of any issues.\n\n-- Failover Script (Example - Simplified)\n\n-- 1. Identify the Failed Primary\n--  Monitor the MongoDB status for the failed primary.\n\n-- 2. Promote a Secondary to Primary\n--  `sh.promote(replica_name)` – Replace `replica_name` with the name of the secondary to be promoted.\n\n-- 3. Update DNS/Load Balancer\n--  Immediately update DNS records or load balancer configurations to point to the new primary.\n\n-- 4. Monitor Failover\n--  Verify that the failover was successful and that the database is functioning correctly.\n\n-- Load Balancing Considerations\n--  - Utilize a global load balancer (e.g., AWS Global Accelerator, Azure Traffic Manager) to distribute traffic across shards and replicas.\n--  - Implement health checks to automatically route traffic away from unhealthy shards or replicas.\n--  - Consider using a consistent hashing algorithm to ensure that users are consistently routed to the same shard.\n\n-- Backup Strategy Details\n--  - Full Backups: Weekly full backups to a geographically separate location.\n--  - Incremental Backups: Daily incremental backups to the replica set.\n--  - Point-in-Time Recovery (PITR): Enable PITR on the replica set to allow for recovery to a specific point in time.\n--  - Backup Verification: Regularly verify the integrity of backups.\n\n-- Security Considerations\n--  - Secure access to the database using authentication and authorization.\n--  - Encrypt data at rest and in transit.\n--  - Regularly audit database security.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on domain accuracy and correctness. It treats MongoDB as if it were a relational database (SQL syntax, 'sh.stop_writes', 'mongorestore --drop' for index rebuilds). The proposed 'index rebuild' using mongorestore is destructive and would wipe data, not rebuild an index. The backup command uses invalid flags for mongodump in a sharded context. The 'rolling upgrade' logic suggests stopping writes to a shard, which contradicts the requirement for zero downtime. The failover script uses non-existent commands. The solution is technically incoherent and would cause data loss if executed."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Plan and install upgrades of database management system software to enhance database performance.",
+      "task_type": "Upgrade and Migration Strategy",
+      "user_prompt": "Design a migration and upgrade plan to move a legacy Oracle database (100 million rows) to a modern cloud-native PostgreSQL cluster. The goal is to improve query performance by 40% and reduce storage costs. Outline the steps for schema conversion, data migration (including handling of stored procedures), and the specific configuration changes required in PostgreSQL to match or exceed the legacy performance. Include a rollback plan in case of critical failure.",
+      "reference_context": "Legacy System: Oracle 11g. Target System: AWS RDS PostgreSQL 15. Data Volume: 2TB. Downtime Window: 4 hours.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the schema conversion logic sound for the specific data types involved?",
+        "Criterion 2: Completeness — Does the plan address stored procedure migration and performance tuning post-migration?",
+        "Criterion 3: Best practices — Is the rollback plan viable and tested within the downtime window?"
+      ],
+      "student_answer": "```markdown\n# Oracle 11g to AWS RDS PostgreSQL 15 Migration & Upgrade Plan\n\n**Goal:** Improve query performance by 40% and reduce storage costs.\n**Downtime Window:** 4 hours\n**Data Volume:** 2TB (100 million rows)\n\n**Phase 1: Assessment & Schema Conversion (Estimated Time: 16 hours)**\n\n1.  **Detailed Schema Analysis:** Analyze the Oracle schema, identifying data types, constraints, indexes, and stored procedures. Document all dependencies.\n2.  **Schema Conversion Tool Selection:** Utilize AWS SCT (Schema Conversion Tool) to automate the initial schema conversion to PostgreSQL.  Expect manual intervention for complex objects.\n3.  **Manual Schema Adjustments:** Address SCT conversion issues.  Specifically:\n    *   **Data Type Mapping:** Map Oracle data types to equivalent PostgreSQL types.  Pay close attention to `VARCHAR2` (consider `TEXT`), `NUMBER` (consider `NUMERIC` or `BIGINT`), and `DATE` (consider `TIMESTAMP`).\n    *   **Index Conversion:**  Recreate indexes in PostgreSQL, considering PostgreSQL’s index types (B-tree, Hash, GiST, GIN). Analyze existing Oracle index usage and replicate in PostgreSQL.\n    *   **Constraint Conversion:** Convert primary keys, foreign keys, and unique constraints.\n    *   **Sequence Handling:**  PostgreSQL uses sequences.  Convert Oracle sequences to PostgreSQL sequences.\n4.  **Stored Procedure & Function Conversion:**  Convert stored procedures and functions using SCT.  Expect significant manual effort due to Oracle PL/SQL differences.  Prioritize critical procedures for conversion.  Document all conversion issues and manual changes.\n5.  **Testing Conversion:**  Run basic SQL queries against the converted schema to verify data type compatibility and basic functionality.\n\n**Phase 2: Data Migration (Estimated Time: 24 hours)**\n\n1.  **Data Migration Tool Selection:** Utilize AWS DMS (Database Migration Service) for initial bulk data migration.\n2.  **DMS Configuration:**\n    *   Create a DMS replication instance in AWS.\n    *   Configure source (Oracle) and target (PostgreSQL) endpoints.\n    *   Select full load mode initially.\n    *   Define table mappings, specifying data type transformations.\n    *   Configure logging and monitoring.\n3.  **Full Load:** Perform a full load of the data to the PostgreSQL cluster. Monitor progress and identify any errors.\n4.  **Change Data Capture (CDC):** Enable CDC in DMS to capture ongoing changes from the Oracle database.\n5.  **Incremental Load:** DMS will continuously replicate changes to the PostgreSQL cluster.\n6.  **Data Validation:** After the initial full load and CDC, perform thorough data validation to ensure data integrity.  Compare row counts, checksums, and sample data.\n\n**Phase 3: Post-Migration Optimization & Tuning (Estimated Time: 8 hours)**\n\n1.  **PostgreSQL Configuration:**\n    *   **`shared_buffers`:** Set to 25-50% of system RAM.\n    *   **`work_mem`:**  Increase for complex queries (e.g., 64MB - 256MB).\n    *   **`effective_cache_size`:**  Set to an estimate of available RAM.\n    *   **`wal_buffers`:**  Adjust based on workload.\n    *   **`checkpoint_timeout` & `checkpoint_completion_target`:**  Tune for optimal write performance.\n    *   **`max_connections`:**  Set appropriately for expected concurrent users.\n    *   **`listen_addresses`:** Configure to allow connections from the application servers.\n2.  **Index Optimization:** Analyze query performance and create/modify indexes as needed.\n3.  **Query Optimization:** Review and optimize slow-running queries.  Utilize `EXPLAIN ANALYZE` to identify bottlenecks.\n4.  **Vacuuming & Analyzing:** Regularly vacuum and analyze tables to maintain optimal performance.\n5.  **Connection Pooling:** Implement connection pooling in the application layer.\n\n**Phase 4: Performance Testing & Verification (Estimated Time: 4 hours)**\n\n1.  **Load Testing:** Simulate production workloads to assess query performance and identify any remaining bottlenecks.\n2.  **Performance Measurement:** Compare query performance metrics (e.g., execution time, throughput) between the legacy Oracle system and the PostgreSQL cluster.  Aim for a 40% performance improvement.\n3.  **User Acceptance Testing (UAT):**  Allow key users to test the system and provide feedback.\n\n**Rollback Plan:**\n\n1.  **Data Backup:** Maintain a full backup of the PostgreSQL cluster before the migration.\n2.  **Oracle Restoration:**  If critical issues arise, revert the application to the Oracle database.\n3.  **DMS Reversal:** Stop the DMS replication process.\n4.  **Schema Rollback:**  Restore the original Oracle schema from backups.\n5.  **Application Code Adjustment:** Modify application code to connect to the Oracle database.\n\n**Tools:**\n\n*   AWS SCT (Schema Conversion Tool)\n*   AWS DMS (Database Migration Service)\n*   PostgreSQL 15\n*   AWS RDS\n\n**Success Criteria:**\n\n*   Achieve a 40% performance improvement in key queries.\n*   Data integrity verified through validation.\n*   Application functionality maintained.\n*   System meets performance and scalability requirements.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a solid high-level framework but fails to meet the specific constraints and technical depth required for a 5 or even a 4. Key weaknesses include: 1) The 4-hour downtime window is incompatible with the proposed 2TB migration strategy using standard AWS DMS full load + CDC without explicit mention of parallel loading, partitioning, or pre-warming strategies to fit within the window. 2) The rollback plan is technically flawed; it suggests reverting the application to Oracle while keeping the PostgreSQL cluster, but fails to address the critical issue of data divergence (new data written to Oracle during the cutover window) which would make a simple 'revert' impossible without data loss or complex reconciliation. 3) The 'Additional Checks' regarding partitioning, index coverage, and write-heavy optimization are completely ignored; the plan is generic and does not address the specific 100M row volume or the 40% performance goal with concrete architectural changes (e.g., specific partitioning keys). 4) The storage cost reduction goal is mentioned but not addressed with specific PostgreSQL features (e.g., TOAST, columnar extensions, or compression settings). The answer is adequate (3) but lacks the professional rigor and specific technical solutions needed for a real-world migration of this scale."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Identify, evaluate and recommend hardware or software technologies to achieve desired database performance.",
+      "task_type": "Technology Selection and Optimization",
+      "user_prompt": "Evaluate and recommend a hardware and software stack for a real-time analytics platform processing 10 million events per second. The current stack is struggling with latency. Compare in-memory databases (e.g., Redis, Memcached) vs. columnar storage (e.g., ClickHouse, Snowflake) for this specific workload. Provide a recommendation with a justification based on throughput, latency, and cost. Include a sample query optimization plan using the recommended technology.",
+      "reference_context": "Current Stack: MySQL on standard SSDs. Workload: High-frequency time-series data. Requirement: Sub-second query latency for aggregations over 30 days of data.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the selected technology appropriate for high-throughput, low-latency analytics?",
+        "Criterion 2: Completeness — Does the recommendation include a clear comparison of alternatives?",
+        "Criterion 3: Best practices — Is the query optimization plan specific to the chosen technology's strengths?"
+      ],
+      "student_answer": "```json\n{\n  \"recommendation\": \"ClickHouse\",\n  \"justification\": \"ClickHouse is the most suitable solution due to its superior throughput and low latency capabilities for high-volume, time-series data aggregation. While in-memory databases like Redis and Memcached offer low latency for individual operations, they struggle to scale to 10 million events per second and are not optimized for complex analytical queries over large datasets. Snowflake, while scalable, introduces significant query latency and cost overhead for this specific workload. ClickHouse’s columnar storage format and vectorized query execution engine are specifically designed for time-series analytics, providing significantly faster aggregation speeds than MySQL or other relational databases.\",\n  \"hardware_stack\": {\n    \"nodes\": 4,\n    \"cpu\": \"AMD EPYC 7763 (64 cores)\",\n    \"memory\": \"512GB DDR4 ECC RAM (minimum)\",\n    \"storage\": \"16TB NVMe SSDs (RAID 10)\",\n    \"network\": \"100GbE interconnect\"\n  },\n  \"software_stack\": {\n    \"operating_system\": \"CentOS/Rocky Linux\",\n    \"database\": \"ClickHouse\",\n    \"message_queue\": \"Kafka\",\n    \"stream_processor\": \"Apache Flink or Apache Spark Streaming\",\n    \"monitoring\": \"Prometheus & Grafana\",\n    \"orchestration\": \"Kubernetes\"\n  },\n  \"cost_estimate\": {\n    \"hardware\": \"Approximately $80,000 - $120,000 (initial investment)\",\n    \"software\": \"Open source (ClickHouse, Kafka, Flink/Spark), Kubernetes managed service (e.g., GKE, EKS) - $5,000 - $15,000 per year\",\n    \"operational_costs\": \"Approximately $10,000 - $20,000 per year (monitoring, maintenance, engineering)\"\n  },\n  \"query_optimization_plan\": {\n    \"query_example\": \"SELECT avg(value) FROM time_series_data WHERE timestamp >= now() - interval 30d GROUP BY time_interval(1h);\",\n    \"optimization_steps\": [\n      \"**Data Partitioning:** Partition data by time (e.g., daily or hourly) to minimize the amount of data scanned.\",\n      \"**Data Compression:** Utilize ClickHouse’s compression algorithms (e.g., LZ4, ZSTD) to reduce storage space and I/O.\",\n      \"**Vectorized Query Execution:** Ensure ClickHouse’s vectorized query execution is enabled (default).\",\n      \"**Materialized Views:** Create materialized views for frequently used aggregations to precompute results.\",\n      \"**Data Type Optimization:** Use appropriate data types (e.g., `Float64` for high precision, `UInt32` for integers).\",\n      \"**Index Optimization:** Leverage ClickHouse’s indexing capabilities (e.g., covering indexes) to speed up query execution.\",\n      \"**Query Hints:** Utilize query hints to guide the query optimizer (e.g., specifying the preferred join order).\"\n    ]\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies ClickHouse as the optimal solution for high-throughput time-series analytics and provides a robust hardware/software stack. The justification effectively contrasts in-memory and columnar approaches. However, the query optimization plan contains a significant technical inaccuracy: ClickHouse does not support 'query hints' to specify join order in the manner described (it relies on its own optimizer and specific syntax like `FINAL` or `PREWHERE`), making that point misleading. Additionally, while the partitioning strategy is mentioned, the specific partition key selection (e.g., daily vs. hourly) for 10M events/sec is not rigorously validated against the 30-day retention window to ensure optimal granularity. The cost estimates are reasonable but generic. Overall, it is a high-quality professional response with minor technical imprecisions preventing a perfect score."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Test programs or databases, correct errors, and make necessary modifications.",
+      "task_type": "Performance Testing and Error Correction",
+      "user_prompt": "A production database with 50 million rows is experiencing intermittent timeouts during complex JOIN operations. Analyze the provided query execution plan and identify the bottleneck. Propose specific modifications to the schema (indexing, partitioning) or query structure to resolve the issue. Simulate the fix by providing the corrected SQL and explaining how it improves the execution plan for a 10M+ row dataset.",
+      "reference_context": "Database: PostgreSQL. Problem Query: SELECT * FROM orders o JOIN customers c ON o.customer_id = c.id WHERE o.order_date > '2023-01-01' AND c.region = 'US'. Current Indexes: Only on primary keys. Observed Issue: Sequential scans on large tables.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the proposed fix eliminate the sequential scan and reduce execution time?",
+        "Criterion 2: Completeness — Are the indexing strategies explicitly defined for the specific join and filter conditions?",
+        "Criterion 3: Best practices — Is the solution scalable and does it prevent future similar issues?"
+      ],
+      "student_answer": "```sql\n-- Corrected SQL with Indexing and Partitioning\n\n-- 1. Create a composite index on orders table:\nCREATE INDEX idx_orders_customer_id_order_date ON orders (customer_id, order_date);\n\n-- 2. Create a composite index on customers table:\nCREATE INDEX idx_customers_region ON customers (region);\n\n-- 3. Partition the orders table by order_date (monthly or quarterly):\n-- Example: Quarterly partitioning\nCREATE TABLE orders_2023_Q1 (\n    id SERIAL PRIMARY KEY,\n    customer_id INTEGER,\n    order_date DATE,\n    -- Other order columns\n);\n\nCREATE TABLE orders_2023_Q2 (\n    id SERIAL PRIMARY KEY,\n    customer_id INTEGER,\n    order_date DATE,\n    -- Other order columns\n);\n\n-- ... and so on for other quarters\n\n-- Add partitioning constraints:\nALTER TABLE orders PARTITION BY RANGE (order_date);\nALTER TABLE orders_2023_Q1 PARTITION BY RANGE (order_date);\nALTER TABLE orders_2023_Q2 PARTITION BY RANGE (order_date);\n-- ... and so on\n\n-- 4.  Update the query to utilize the new indexes and partition:\nSELECT *\nFROM orders o\nJOIN customers c ON o.customer_id = c.id\nWHERE o.order_date > '2023-01-01'\nAND c.region = 'US'\nAND o.order_date BETWEEN '2023-01-01' AND CURRENT_DATE; -- Added date range filter for partition pruning\n\n-- Explanation of Improvements:\n\n-- The original query suffered from sequential scans on the 'orders' and 'customers' tables due to the lack of appropriate indexes.  The current indexes on customer_id and region, combined with partitioning, significantly reduce the amount of data that needs to be scanned.\n\n-- Composite Index (idx_orders_customer_id_order_date): This index allows PostgreSQL to efficiently locate rows in the 'orders' table that match the `customer_id` and `order_date` criteria.  It avoids full table scans.\n\n-- Composite Index (idx_customers_region): This index allows efficient lookup of customers within the 'US' region.\n\n-- Partitioning:  Partitioning the 'orders' table by `order_date` enables PostgreSQL to only scan the relevant partition(s) containing data from 2023 onwards.  The `AND o.order_date BETWEEN '2023-01-01' AND CURRENT_DATE` clause further refines the partition selection, ensuring that only the necessary partitions are accessed.\n\n-- Simulation for 10M+ Row Dataset:\n\n-- With the implemented indexing and partitioning, the query execution plan will likely shift from sequential scans to index lookups and partition pruning.  For a 10M+ row dataset, the estimated execution time should be dramatically reduced (potentially by a factor of 10x or more) compared to the original query.  PostgreSQL's query optimizer will intelligently choose the optimal execution path, leveraging the indexes and partitions to minimize data I/O.  The sequential scans are eliminated, and the query operates on a much smaller subset of the data.  The specific performance improvement will depend on the data distribution and PostgreSQL's statistics.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the need for indexing and partitioning, but contains critical technical errors. The SQL for partitioning is syntactically invalid (partitioning is defined on the parent table, not child tables, and the syntax provided is incorrect). The proposed composite index (customer_id, order_date) is suboptimal for the specific query pattern (filtering on order_date first, then joining on customer_id); a leading order_date index would be superior. The solution also fails to address the 'SELECT *' anti-pattern which is inefficient for large datasets. While the explanation is clear, the technical implementation flaws prevent it from being industry-standard or usable without significant rework."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Identify and correct deviations from database development standards.",
+      "task_type": "Schema Audit and Remediation",
+      "user_prompt": "Analyze the provided legacy schema for a 'customer_data' table which currently lacks proper normalization and indexing. The table has 10 million rows and suffers from slow lookups by email and address. The current schema stores full addresses in a single VARCHAR column and has no foreign keys. Design a remediation plan that normalizes the schema to 3NF, defines specific composite indexes for the new structure, and provides the SQL migration script. Ensure the solution supports 1000 concurrent reads per second.",
+      "reference_context": "Legacy Schema: CREATE TABLE customer_data (id INT, full_address VARCHAR(500), email VARCHAR(100), name VARCHAR(100), phone VARCHAR(20)); Current Load: 10M rows, 1000 RPS, frequent filtering by email and city.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the normalized schema eliminate redundancy and support the required query patterns?",
+        "Criterion 2: Completeness — are all migration steps, including index creation and foreign key constraints, included?",
+        "Criterion 3: Best practices — is the indexing strategy optimized for the specific read patterns (email, city)?"
+      ],
+      "student_answer": "```sql\n-- Migration Script for customer_data table\n\n-- 1. Create the new schema\nCREATE TABLE customer_data (\n    customer_id INT PRIMARY KEY,\n    name VARCHAR(100),\n    email VARCHAR(100) UNIQUE,\n    phone VARCHAR(20),\n    address_id INT,\n    city VARCHAR(100),\n    state VARCHAR(50),\n    zip_code VARCHAR(10)\n);\n\n-- 2. Create the addresses table\nCREATE TABLE addresses (\n    address_id INT PRIMARY KEY,\n    full_address VARCHAR(500)\n);\n\n-- 3. Populate the addresses table (Bulk Load - Adjust based on your data source)\n-- This is a placeholder - replace with your actual data loading process\n-- Assuming you have a CSV file with address data\n-- INSERT INTO addresses (address_id, full_address)\n-- SELECT address_id, full_address\n-- FROM your_address_data_source;\n\n\n-- 4. Insert data into customer_data\n-- This is a placeholder - replace with your actual data insertion process\n-- Assuming you have a CSV file with customer data\n-- INSERT INTO customer_data (customer_id, name, email, phone, address_id, city, state, zip_code)\n-- SELECT customer_id, name, email, phone, address_id, city, state, zip_code\n-- FROM your_customer_data_source;\n\n\n-- 5. Create Indexes\nCREATE INDEX idx_customer_email ON customer_data (email);\nCREATE INDEX idx_customer_city_state_zip ON customer_data (city, state, zip_code);\nCREATE INDEX idx_address_full_address ON addresses (full_address);\n\n-- 6.  Consider partitioning the addresses table based on state or zip code for further performance improvements if needed.\n-- Example:\n-- CREATE TABLE addresses (\n--     address_id INT PRIMARY KEY,\n--     full_address VARCHAR(500),\n--     state VARCHAR(50),\n--     partition_key VARCHAR(2) -- e.g., state abbreviation\n-- );\n\n\n\n-- Performance Considerations:\n\n-- *   Ensure the address data loading process is optimized for bulk loading.\n-- *   Monitor query performance after migration and adjust indexes as needed.\n-- *   Consider using a caching layer for frequently accessed customer data.\n-- *   The 1000 RPS target can be achieved with proper indexing and database tuning.  Further optimization may be needed based on the specific workload.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to meet the core normalization requirement (3NF). It creates a 'customer_data' table that still contains repeating address components (city, state, zip) alongside a foreign key to an 'addresses' table, which violates 3NF by having partial dependencies on the primary key. The proposed indexes are insufficient for the stated workload (1000 RPS, filtering by email and city); specifically, the composite index on (city, state, zip) is inefficient for filtering by city alone without a leading city column, and the 'full_address' index on the addresses table is useless for the stated lookup patterns. The migration script is incomplete, relying on placeholders rather than providing a concrete transformation logic (e.g., extracting address components from the legacy VARCHAR). The partitioning suggestion is vague and potentially misaligned with the data growth pattern. The solution is fundamentally flawed in its architectural approach."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Review project requests describing database user needs to estimate time and cost required to accomplish project.",
+      "task_type": "Capacity Planning and Estimation",
+      "user_prompt": "A client requests a new analytics database to store IoT sensor data. The requirement is to ingest 50,000 events per second, each event being 2KB, and retain data for 2 years. Queries will primarily aggregate data by device_id and timestamp over 1-hour windows. Estimate the storage requirements, calculate the necessary IOPS for the write-heavy workload, and propose a partitioning strategy (e.g., by time) to ensure query performance remains under 200ms for 1-year lookups. Provide a cost estimation model based on these specs.",
+      "reference_context": "Input Data: 50k events/sec, 2KB/event, 2-year retention. Query Pattern: Aggregation by device_id and timestamp (1-hour windows). Constraint: Query latency < 200ms for 1-year range.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — are the storage and IOPS calculations mathematically accurate for the given throughput?",
+        "Criterion 2: Completeness — does the response include a partitioning strategy and a cost model?",
+        "Criterion 3: Best practices — is the proposed architecture scalable to handle the 50k/sec write load without bottlenecks?"
+      ],
+      "student_answer": "```json\n{\n  \"storage_estimation\": {\n    \"data_rate_bytes_per_second\": 50000 * 2048,\n    \"data_rate_bytes_per_day\": 50000 * 2048 * 24,\n    \"data_rate_bytes_per_year\": 50000 * 2048 * 24 * 365,\n    \"total_storage_bytes\": 50000 * 2048 * 24 * 365 * 2,\n    \"total_storage_terabytes\": 50000 * 2048 * 24 * 365 * 2 / (1024 * 1024 * 1024),\n    \"estimated_storage\": \"Approximately 22.7 TB\"\n  },\n  \"iops_estimation\": {\n    \"writes_per_second\": 50000,\n    \"average_write_size_bytes\": 2048,\n    \"total_iops\": 50000 * 2048,\n    \"estimated_iops\": \"Approximately 102.4 M IOPS\"\n  },\n  \"partitioning_strategy\": {\n    \"strategy\": \"Time-based partitioning\",\n    \"partition_granularity\": \"Daily or Hourly (depending on query needs and performance testing)\",\n    \"partition_scheme\": \"Partition by day, with hourly sub-partitions within each day.  Consider hourly for more granular queries if needed.\",\n    \"reasoning\": \"This partitioning strategy aligns with the 1-hour query window, allowing efficient retrieval of data within specific time ranges.  Daily partitioning reduces the number of partitions and simplifies management. Hourly partitions allow for faster retrieval within the 1-hour window.\",\n    \"estimated_number_of_partitions\": \"Approximately 365 partitions per year (daily) or 8760 partitions per year (hourly).\"\n  },\n  \"cost_estimation\": {\n    \"database_engine\": \"Cloud-based columnar database (e.g., Snowflake, BigQuery, Redshift)\",\n    \"storage_cost\": \"Approximately $0.02 - $0.10 per GB per month (depending on provider and storage tier)\",\n    \"compute_cost\": \"Approximately $0.05 - $0.20 per hour (depending on instance size and query complexity)\",\n    \"network_cost\": \"Variable, dependent on data transfer volume\",\n    \"estimated_monthly_cost\": \"Between $500 - $2000 (This is a highly variable estimate.  Detailed analysis based on chosen platform and usage patterns is required.)\",\n    \"notes\": \"This is a preliminary estimate.  Actual costs will vary based on the chosen cloud provider, instance size, data transfer volume, and query complexity.  Consider using a cloud cost management tool for ongoing monitoring and optimization.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains critical calculation errors and conceptual misunderstandings. 1) Correctness/Domain Accuracy: The IOPS calculation is fundamentally wrong; the student multiplied write rate by byte size (50,000 * 2048) to get IOPS, resulting in 102.4 million IOPS. IOPS is a count of operations (50,000), not a product of bytes. This error invalidates the infrastructure sizing. 2) Best Practices: The partitioning strategy suggests 8,760 partitions per year (hourly), which is excessive and would degrade performance due to metadata overhead; daily or weekly partitions are standard for this volume. 3) Completeness: The storage calculation ignores compression ratios, which are significant for IoT data, and the cost model is too generic to be actionable. 4) Autonomy: Due to the IOPS error and lack of specific technology recommendations (e.g., specific columnar stores or time-series DBs), the output cannot be used without significant rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Write and code logical and physical database descriptions, and specify identifiers of database to management system or direct others in coding descriptions.",
+      "task_type": "Logical to Physical Translation",
+      "user_prompt": "Convert the following logical entity-relationship description into a physical SQL schema for a PostgreSQL database optimized for high-concurrency financial transactions. Entities: 'Account' (id, balance, owner_id), 'Transaction' (id, account_id, amount, timestamp, type). Constraints: 'Transaction' must enforce referential integrity, and 'Account' balance must be updated atomically. Provide the DDL including specific data types, constraints, and a unique index on 'Transaction' for the (account_id, timestamp) pair to support audit trails.",
+      "reference_context": "Logical Model: One-to-Many relationship between Account and Transaction. Transaction types: 'DEBIT', 'CREDIT'. Requirement: Atomic balance updates and audit trail support.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the DDL accurately reflect the logical model and enforce referential integrity?",
+        "Criterion 2: Completeness — are all required constraints and indexes explicitly defined?",
+        "Criterion 3: Best practices — are data types and indexing strategies appropriate for financial data and high concurrency?"
+      ],
+      "student_answer": "```sql\nCREATE TABLE Account (\n    id BIGSERIAL PRIMARY KEY,\n    balance DECIMAL(18, 6) NOT NULL,\n    owner_id BIGINT NOT NULL\n);\n\nCREATE TABLE Transaction (\n    id BIGSERIAL PRIMARY KEY,\n    account_id BIGINT NOT NULL,\n    amount DECIMAL(18, 6) NOT NULL,\n    timestamp TIMESTAMP WITHOUT TIME ZONE NOT NULL,\n    type VARCHAR(10) NOT NULL CHECK (type IN ('DEBIT', 'CREDIT')),\n    FOREIGN KEY (account_id) REFERENCES Account(id)\n);\n\nCREATE UNIQUE INDEX transaction_account_timestamp ON Transaction (account_id, timestamp);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission correctly defines the schema structure, data types, and the specific unique index requested. However, it fails critically on the core requirement to 'update balance atomically' by omitting the necessary trigger or stored procedure logic (e.g., using SERIALIZABLE isolation or a trigger function). It also lacks a CHECK constraint for the 'Transaction' table to ensure negative amounts are not debited or positive amounts are not credited incorrectly, which is a standard domain requirement for financial systems. The timestamp type lacks timezone awareness, which is risky for financial audits. The solution is syntactically valid but functionally incomplete for a production financial system, requiring significant rework to be autonomous."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Develop or maintain archived procedures, procedural codes, or queries for applications.",
+      "task_type": "Stored Procedure Optimization",
+      "user_prompt": "A stored procedure 'update_inventory' currently takes 15 seconds to process 10,000 rows, causing timeouts during peak hours. The procedure updates stock levels based on incoming orders and checks for negative stock. Rewrite the procedure to use set-based operations instead of row-by-row processing, add appropriate locking hints to prevent deadlocks, and include a specific index recommendation for the 'inventory' table to speed up the update join. The table has 5 million rows.",
+      "reference_context": "Current Procedure: Row-by-row loop updating 'inventory' table. Table Size: 5M rows. Performance Issue: 15s execution time, timeout errors.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the rewritten procedure use set-based logic and handle locking correctly?",
+        "Criterion 2: Completeness — are the index recommendations and locking strategies explicitly detailed?",
+        "Criterion 3: Best practices — is the solution scalable for 5M rows and likely to reduce execution time significantly?"
+      ],
+      "student_answer": "```sql\n-- Stored Procedure: update_inventory\n\nCREATE OR ALTER PROCEDURE update_inventory (\n    @order_id INT\n)\nAS\nBEGIN\n    SET NOCOUNT ON;\n\n    -- Add a transaction for atomicity\n    BEGIN TRANSACTION;\n\n    -- Update inventory levels based on incoming orders\n    UPDATE i\n    SET stock_level = stock_level + oi.quantity\n    FROM inventory i\n    INNER JOIN orders_items oi ON i.product_id = oi.product_id\n    WHERE i.order_id = @order_id;\n\n    -- Check for negative stock and handle accordingly (e.g., log, prevent order fulfillment)\n    -- This can be done within the same UPDATE statement or in a separate query.\n    -- Example:\n    -- DELETE FROM inventory WHERE stock_level < 0;\n\n    -- Add a locking hint to prevent deadlocks\n    OPTION (MAXDOP 1, LOCK_ESCALATION = TABLE);\n\n    -- Index Recommendation:\n    -- Create a non-clustered index on the 'inventory' table to speed up the join.\n    -- Consider an index on (product_id, order_id)\n    CREATE INDEX IX_Inventory_ProductOrder ON inventory (product_id, order_id);\n\n    COMMIT TRANSACTION;\nEND;\nGO\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical fronts. 1) Correctness: The UPDATE statement logic is fundamentally flawed; it joins on product_id but filters by @order_id in the WHERE clause, which is incorrect for an order_items join (should filter on oi.order_id or the join should be on order_id). 2) Completeness: It fails to implement the required negative stock check logic (only commented out), and the locking hints are syntactically misplaced (placed in the wrong location for the specific query context) and inappropriate (LOCK_ESCALATION = TABLE often causes deadlocks in high-concurrency scenarios rather than preventing them). 3) Best Practices: Creating an index inside a stored procedure is a severe anti-pattern; indexes should be created separately. 4) Domain Accuracy: The index recommendation (product_id, order_id) is likely suboptimal for a join on product_id without order_id in the join predicate, and the solution ignores the 5M row scale implications for locking strategies (e.g., row-level locking with NOLOCK or specific hints on the join). 5) Clarity: The code is readable but logically incoherent. 6) Autonomy: The solution cannot be used as-is due to the syntax errors and logical flaws."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Provide technical support to junior staff or clients.",
+      "task_type": "Query Debugging and Guidance",
+      "user_prompt": "A junior developer has submitted a query that joins three tables ('users', 'orders', 'order_items') to find total spending per user. The query is timing out on a dataset with 20 million orders. The query uses implicit joins and selects all columns. Provide a corrected version of the query using explicit JOIN syntax, recommend specific indexes on the join keys, and explain why the original query was inefficient. The solution must handle 500 concurrent users.",
+      "reference_context": "Tables: users (1M rows), orders (20M rows), order_items (50M rows). Issue: Timeout on complex join. Current Query: Implicit joins, SELECT *.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — is the corrected query syntactically valid and logically equivalent to the intent?",
+        "Criterion 2: Completeness — does the response include index recommendations and a clear explanation of the performance issue?",
+        "Criterion 3: Best practices — does the solution adhere to modern SQL standards and scalability requirements?"
+      ],
+      "student_answer": "```sql\nSELECT\n    u.user_id,\n    u.username,\n    SUM(oi.quantity * oi.price) AS total_spending\nFROM\n    users u\nJOIN\n    orders o ON u.user_id = o.user_id\nJOIN\n    order_items oi ON o.order_id = oi.order_id\nGROUP BY\n    u.user_id, u.username;\n\n-- Recommended Indexes:\n-- 1. users.user_id: PRIMARY KEY (already likely exists)\n-- 2. orders.user_id: INDEX\n-- 3. orders.order_id: PRIMARY KEY (already likely exists)\n-- 4. order_items.order_id: INDEX\n\n-- Explanation of Inefficiency:\n-- The original query likely used implicit joins (through the WHERE clause), which the database optimizer struggled to efficiently process, especially with a large dataset and complex joins.  Selecting all columns (*), also known as \"select *\", forces the database to read all columns from all tables, even if they are not needed for the query result. This significantly increases I/O and network traffic.  The lack of explicit JOIN syntax made it difficult for the optimizer to determine the best join strategy.  The large number of rows in `order_items` (50M) combined with the joins across all three tables created a massive intermediate result set, leading to timeouts.  The implicit joins likely resulted in a full table scan on the `users` and `orders` tables for each row in `order_items`, which is extremely slow.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        3,
+        4,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The student correctly fixed the syntax (explicit joins) and identified the primary performance killer (SELECT *). However, the solution is incomplete for the stated constraints. It fails to address the '500 concurrent users' requirement by omitting query optimization techniques like covering indexes or query result caching. The index recommendations are basic and miss the critical composite index on order_items (order_id, quantity, price) which is essential for the aggregation. Furthermore, the critique on 'implicit joins' causing optimizer struggles is technically weak; modern optimizers handle implicit joins fine, and the real issue was the lack of indexes and the massive I/O from SELECT *. Finally, the submission completely ignores the 'Additional Checks' regarding partitioning strategies for the 50M row table, which is a significant gap for a Senior Architect role."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Establish and calculate optimum values for database parameters, using manuals and calculators.",
+      "task_type": "Parameter Tuning and Configuration",
+      "user_prompt": "A new database server has 64GB RAM and 16 CPU cores. It will host a mixed workload OLTP database with 100GB of data. Calculate the optimal values for 'shared_buffers', 'work_mem', and 'max_connections' to balance memory usage and prevent swapping. Provide the configuration snippet and justify the calculations based on the hardware specs and workload type. Assume a 25% buffer for OS and other processes.",
+      "reference_context": "Hardware: 64GB RAM, 16 Cores. Data Size: 100GB. Workload: Mixed OLTP. Constraint: No swapping, high concurrency.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — are the parameter values calculated accurately based on the available memory and workload?",
+        "Criterion 2: Completeness — does the response include a configuration snippet and a detailed justification for each parameter?",
+        "Criterion 3: Best practices — are the settings aligned with industry standards for the given hardware and data size?"
+      ],
+      "student_answer": "```postgresql\nshared_buffers = 16GB\nwork_mem = 4GB\nmax_connections = 128\n```\n\n**Justification:**\n\n*   **shared_buffers:**  A common recommendation is 25% of RAM. With 64GB RAM, 25% is 16GB.  This provides sufficient memory for PostgreSQL's shared cache, reducing disk I/O.  Accounting for OS and other processes, a 25% buffer is maintained.\n\n*   **work_mem:**  This setting controls the amount of memory used by internal sort operations and hash tables.  With 16 CPU cores, a reasonable starting point is 4GB.  This allows for efficient processing of moderately sized queries without excessive disk spills.  More complex queries or a higher concurrency might necessitate increasing this value, but 4GB offers a good balance.\n\n*   **max_connections:**  With 16 cores and a mixed OLTP workload, a maximum of 128 connections is a safe starting point. This allows for concurrent transactions without overwhelming the server.  Monitoring connection usage is crucial to determine if adjustments are needed.  The server's resources (RAM and CPU) will be heavily utilized with a high number of concurrent connections.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, and Domain Accuracy. The calculation for work_mem is dangerously flawed: setting work_mem to 4GB with max_connections at 128 implies a potential memory usage of 512GB (4GB * 128), which is 8x the available RAM and guarantees immediate swapping and server crash. The student ignored the fundamental constraint of preventing swapping by not calculating memory per connection. Additionally, the submission completely ignored the 'Additional Checks' section regarding partitioning, indexing, and query patterns, failing the Completeness and Best Practices criteria. While the JSON structure and clarity are acceptable (Clarity 4), the technical content is unsafe for production use, requiring major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Train users and answer questions.",
+      "task_type": "Database Architecture & Training",
+      "user_prompt": "You are a Senior Database Architect. A junior developer has submitted a query plan for a 'transactions' table containing 120 million rows that is causing timeouts during peak hours. The table schema is: CREATE TABLE transactions (txn_id BIGINT, user_id INT, txn_date TIMESTAMP, amount DECIMAL(12,2), status VARCHAR(10)); The problematic query filters by a date range and user_id, then aggregates the amount. The current index is only on txn_id. Provide a comprehensive response that includes: 1) A revised indexing strategy (including composite index definitions) optimized for the specific query pattern while maintaining write performance for 800 concurrent writes/second. 2) A partitioning strategy (e.g., range partitioning) to handle the 120M+ row count and ensure scalability. 3) A brief training explanation suitable for the junior developer on why the original approach failed and how the new strategy improves query execution time and system reliability.",
+      "reference_context": "Table Schema: CREATE TABLE transactions (txn_id BIGINT PRIMARY KEY, user_id INT, txn_date TIMESTAMP, amount DECIMAL(12,2), status VARCHAR(10)); Current Load: 120M rows, 800 WPS, 3000 RPS. Query Pattern: SELECT SUM(amount) FROM transactions WHERE txn_date BETWEEN '2023-01-01' AND '2023-12-31' AND user_id = 12345; Current Index: idx_txn_id (txn_id).",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the proposed composite index (user_id, txn_date) or similar align with the query's WHERE clause and aggregation needs?",
+        "Criterion 2: Scalability — Does the partitioning strategy (e.g., by txn_date) effectively address the 120M+ row constraint and improve maintenance/query performance?",
+        "Criterion 3: Training Quality — Is the explanation clear, actionable, and does it explicitly address the trade-offs between read optimization and write throughput (800 WPS)?"
+      ],
+      "student_answer": "```sql\n-- 1) Revised Indexing Strategy\n\n-- Create a composite index on (user_id, txn_date)\nCREATE INDEX idx_user_txn_date ON transactions (user_id, txn_date);\n\n-- Create a covering index on (user_id, txn_date, amount) - This is crucial for performance\nCREATE INDEX idx_user_txn_date_amount ON transactions (user_id, txn_date, amount);\n\n-- 2) Partitioning Strategy (Range Partitioning by txn_date)\n\n-- Partition the transactions table by txn_date into monthly partitions.\n-- This allows for efficient querying of date ranges and reduces the amount of data scanned.\n-- Adjust the partition count based on your specific needs and data volume.  A reasonable starting point is 12-24 partitions.\n\nCREATE TABLE transactions (\n    txn_id BIGINT PRIMARY KEY,\n    user_id INT,\n    txn_date TIMESTAMP,\n    amount DECIMAL(12,2),\n    status VARCHAR(10)\n)\nPARTITION BY RANGE (YEAR(txn_date)) (\n    PARTITION p2023 VALUES LESS THAN (2024),\n    PARTITION p2024 VALUES LESS THAN (2025),\n    PARTITION p2025 VALUES LESS THAN (2026),\n    -- Add more partitions as needed\n    PARTITION pfuture VALUES LESS THAN MAXVALUE\n);\n\n\n-- 3) Training Explanation for Junior Developer\n\n-- Original Failure: The original index on `txn_id` alone was insufficient because the query filters by both `txn_date` and `user_id`.  Without a composite index, the database had to perform a full table scan to find the relevant rows, which is extremely slow with 120 million rows.  The database optimizer likely chose a full table scan because it didn't see a suitable index to efficiently narrow down the search.\n\n-- Improvements:\n-- * **Composite Index (idx_user_txn_date):** This index allows the database to quickly locate rows based on `user_id` and `txn_date` without scanning the entire table.\n-- * **Covering Index (idx_user_txn_date_amount):**  Including `amount` in the index allows the database to retrieve all necessary data directly from the index without needing to access the base table, further accelerating the query.\n-- * **Partitioning:**  Partitioning by `txn_date` divides the table into smaller, more manageable chunks.  When querying by date range, the database only needs to scan the relevant partition(s), significantly reducing the amount of data processed.\n\n-- Write Performance Considerations:  The composite and covering indexes will slightly increase the overhead of write operations.  However, the performance gains from faster queries outweigh this cost, especially with the current load of 800 writes/second.  Monitor write performance after implementing these changes.  Consider using a less aggressive indexing strategy if write performance becomes a bottleneck.  The partitioning strategy also helps with write performance by distributing writes across partitions.\n\n-- Monitoring:  After implementing these changes, monitor query performance using tools like `EXPLAIN ANALYZE` to verify that the query plan is utilizing the new indexes effectively.  Also, monitor overall database performance, including CPU utilization, memory usage, and disk I/O.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails on critical technical accuracy. 1) The partitioning strategy uses YEAR(txn_date) as the partition key, which is syntactically invalid in standard SQL (MySQL/MariaDB require the column itself or a function returning the column directly, not a function wrapping the column in the PARTITION BY clause). 2) The indexing strategy proposes two separate indexes (one covering, one non-covering) which is redundant and wasteful; a single covering index suffices. 3) The solution ignores the 'status' column which is often part of such queries, though not explicitly in the prompt, the lack of a covering index for the specific query pattern (SUM) is addressed, but the redundancy is a best practice failure. 4) The explanation is clear but the technical implementation details contain errors that would cause the code to fail or perform sub-optimally, preventing it from being 'exceptional' or 'industry standard' without significant rework."
+    }
+  ]
+}

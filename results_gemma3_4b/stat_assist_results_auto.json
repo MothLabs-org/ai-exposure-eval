@@ -1,0 +1,472 @@
+{
+  "meta": {
+    "job_title": "Statistical Assistants",
+    "job_id": "stat_assist",
+    "onet_code": "43-9111.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 14,
+    "evaluated_tasks": 14,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.61,
+      "dimensions": {
+        "Correctness": 1.57,
+        "Completeness": 1.57,
+        "Best Practices": 1.5,
+        "Domain Accuracy": 1.64,
+        "Clarity": 1.86,
+        "Autonomy": 1.5
+      },
+      "evaluated_tasks": 14,
+      "scale_max": 5
+    },
+    "total_time_seconds": 583.88
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compute and analyze data, using statistical formulas and computers or calculators.",
+      "task_type": "Statistical Computation and Analysis",
+      "user_prompt": "Given the attached raw survey dataset containing 500 responses with missing values and inconsistent date formats, calculate the mean, median, and standard deviation for the 'Satisfaction Score' column. Identify any outliers using the IQR method and exclude them from the final mean calculation. Provide a step-by-step breakdown of your cleaning process and the final statistical summary in a structured format.",
+      "reference_context": "Raw CSV data snippet: id,date,satisfaction_score,department\n1,2023-01-15,85,HR\n2,2023-01-16,,Sales\n3,2023-01-17,92,IT\n4,2023-01-18,45,HR\n5,invalid_date,88,Sales",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\n\n# Load the data\ntry:\n    df = pd.read_csv('survey_data.csv')\nexcept FileNotFoundError:\n    print(\"Error: 'survey_data.csv' not found. Please ensure the file exists in the current directory.\")\n    exit()\n\n# Data Cleaning and Preprocessing\n\n# Handle missing values in 'satisfaction_score'\ndf['satisfaction_score'] = pd.to_numeric(df['satisfaction_score'], errors='coerce')\ndf.dropna(subset=['satisfaction_score'], inplace=True)\n\n# Convert 'date' column to datetime objects\ntry:\n    df['date'] = pd.to_datetime(df['date'], errors='coerce')\nexcept ValueError:\n    print(\"Error: Could not convert 'date' column to datetime.  Check date format.\")\n    exit()\n\n# Remove rows with invalid dates\ndf.dropna(subset=['date'], inplace=True)\n\n# Calculate quartiles\nQ1 = df['satisfaction_score'].quantile(0.25)\nQ3 = df['satisfaction_score'].quantile(0.75)\n\n# Calculate IQR\nIQR = Q3 - Q1\n\n# Define outlier boundaries\nlower_bound = Q1 - 1.5 * IQR\nupper_bound = Q3 + 1.5 * IQR\n\n# Identify outliers\noutliers = df[(df['satisfaction_score'] < lower_bound) | (df['satisfaction_score'] > upper_bound)]\n\n# Remove outliers\ndf.drop_duplicates(subset=['id'], inplace=True) # Remove duplicate IDs\ndf = df[~df['id'].isin(outliers['id'])] # Remove outliers based on ID\n\n# Calculate statistics\nmean_satisfaction = df['satisfaction_score'].mean()\nmedian_satisfaction = df['satisfaction_score'].median()\nstd_satisfaction = df['satisfaction_score'].std()\n\n# Print Results\nprint(\"Data Cleaning Steps:\")\nprint(\"- Missing values in 'satisfaction_score' removed.\")\nprint(\"- Invalid dates removed.\")\nprint(\"- Duplicate IDs removed.\")\nprint(\"- Outliers (based on IQR method) removed.\")\n\nprint(\"\\nStatistical Summary:\")\nprint(f\"Mean Satisfaction Score: {mean_satisfaction:.2f}\")\nprint(f\"Median Satisfaction Score: {median_satisfaction:.2f}\")\nprint(f\"Standard Deviation of Satisfaction Score: {std_satisfaction:.2f}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        4,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly implements the IQR logic and handles missing values and date parsing. However, it fails the core task requirement to provide a 'step-by-step breakdown' in a structured format, offering only a print statement instead. It also includes a redundant 'drop_duplicates' step not requested and lacks a structured output (like a table or JSON summary) for the final statistics, reducing its professional utility and autonomy. The code is functional but not 'industry standard' in terms of deliverable structure."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Check source data to verify completeness and accuracy.",
+      "task_type": "Data Validation and Integrity Check",
+      "user_prompt": "You are provided with a dataset of 200 employee performance records. Perform a comprehensive validation check to identify records with missing critical fields (EmployeeID, ReviewDate, PerformanceRating), duplicate entries, and values outside the valid range (0-100 for ratings). Generate a report listing the specific row IDs of invalid records, the type of error found, and the count of each error type. Document the logic used to determine validity.",
+      "reference_context": "Sample Data: EmployeeID,ReviewDate,PerformanceRating\nE001,2023-05-10,85\nE002,2023-05-11,\nE003,2023-05-12,105\nE001,2023-05-10,85\nE004,invalid,90",
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — are all invalid records correctly identified?",
+        "Criterion 2: Logic — is the validation logic for ranges and duplicates clearly defined?",
+        "Criterion 3: Reporting — is the output structured and actionable?"
+      ],
+      "student_answer": "```\nReport: Employee Performance Validation\n\nData Validation Logic:\n1.  Missing Critical Fields: Records are considered invalid if EmployeeID, ReviewDate, or PerformanceRating are missing.\n2.  Duplicate Entries: Records are considered duplicates if they have identical EmployeeID and ReviewDate values.\n3.  Invalid Performance Rating: Records are considered invalid if PerformanceRating is not within the range of 0 to 100 (inclusive).\n\nValidation Results:\n\nError Type | Row ID(s) | Count\n----------|-----------|-------\nMissing EmployeeID | E002      | 1\nInvalid Performance Rating | E003      | 1\nDuplicate Entry | E001      | 1\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements and the additional checks. It incorrectly identifies E002 as missing an EmployeeID (the ID exists, the Rating is missing). It fails to flag the invalid date in E004. It ignores the explicit instruction to check for 'Satisfaction Score' and 'invalid_date' in the additional checks. It completely omits the required IQR outlier detection logic and mean recalculation. The output is a superficial summary that does not demonstrate the requested statistical validation or data cleaning logic."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Enter data into computers for use in analyses or reports.",
+      "task_type": "Data Entry and Transformation",
+      "user_prompt": "Transform the following unstructured text logs into a structured JSON format suitable for database entry. The logs contain timestamps, user IDs, and action types. Ensure all timestamps are converted to ISO 8601 format and user IDs are padded with leading zeros to 5 digits. Handle any malformed entries by marking them as 'ERROR' in a separate field. Show the transformation rules applied.",
+      "reference_context": "Log Snippet: [2023/10/01 14:30] User 42 clicked 'submit' | [2023/10/01 14:35] User 999 logged out | [2023/10/01 14:40] User 5 clicked 'submit'",
+      "evaluation_criteria": [
+        "Criterion 1: Format Compliance — is the output valid JSON with correct field names?",
+        "Criterion 2: Data Normalization — are timestamps and IDs correctly formatted?",
+        "Criterion 3: Error Handling — are malformed entries correctly flagged?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"timestamp\": \"2023-10-01T14:30:00\",\n    \"user_id\": \"00042\",\n    \"action\": \"click\",\n    \"action_target\": \"submit\"\n  },\n  {\n    \"timestamp\": \"2023-10-01T14:35:00\",\n    \"user_id\": \"000999\",\n    \"action\": \"logout\"\n  },\n  {\n    \"timestamp\": \"2023-10-01T14:40:00\",\n    \"user_id\": \"00005\",\n    \"action\": \"click\",\n    \"action_target\": \"submit\"\n  }\n]\n```\n\nTransformation Rules:\n\n1.  **Timestamp Conversion:** All timestamps were converted to ISO 8601 format (YYYY-MM-DDTHH:MM:SS).\n2.  **User ID Padding:** User IDs were padded with leading zeros to ensure a consistent 5-digit format (e.g., 5 became 00005).\n3.  **Action Target:** Added an \"action_target\" field to capture the specific element interacted with (e.g., \"submit\" or \"logout\").\n4.  **Error Handling:** No errors were encountered in the provided log snippet.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The student submission completely failed to address the 'Additional Checks' requirements explicitly listed in the prompt context. The task instructions demanded handling of a missing 'Satisfaction Score', an 'invalid_date' entry, IQR outlier detection logic, and mean recalculation. The student only processed the basic log transformation and ignored all statistical and error-handling constraints specified in the additional checks. Consequently, the solution is factually incomplete regarding the full scope of the provided instructions, resulting in a score of 1 for all dimensions as it fails to address the core complexity of the specific task constraints."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Compile reports, charts, or graphs that describe and interpret findings of analyses.",
+      "task_type": "Data Visualization and Reporting",
+      "user_prompt": "Using the provided sales data for Q1 and Q2, calculate the month-over-month growth rate for each region. Create a summary table showing the average growth rate per region and identify the top-performing and bottom-performing regions. Describe the trend observed in the data and suggest one potential reason for the bottom performer's decline based on the numbers provided.",
+      "reference_context": "Sales Data: Region, Q1_Sales, Q2_Sales\nNorth, 10000, 11500\nSouth, 8000, 7200\nEast, 12000, 12100\nWest, 9000, 8500",
+      "evaluation_criteria": [
+        "Criterion 1: Calculation — are growth rates calculated correctly?",
+        "Criterion 2: Interpretation — is the trend analysis logical and supported by data?",
+        "Criterion 3: Clarity — is the report easy to understand for stakeholders?"
+      ],
+      "student_answer": "| Region   | Q1 Sales | Q2 Sales | MoM Growth Rate |\n|----------|----------|----------|-----------------|\n| North    | 10000    | 11500    | 15.00%          |\n| South    | 8000     | 7200     | -10.00%         |\n| East     | 12000    | 12100    | 0.83%           |\n| West     | 9000     | 8500     | -5.56%          |\n| **Average** |          |          | **3.25%**       |\n\n**Top Performing Region:** North (15.00% growth)\n**Bottom Performing Region:** South (-10.00% growth)\n\n**Trend:** Overall, sales increased slightly across all regions. However, the growth rate is not consistent, with some regions experiencing significant growth and others experiencing a decline.\n\n**Potential Reason for South's Decline:** The South region experienced a substantial decline in sales from Q1 to Q2, while other regions saw modest growth. This could be due to increased competition, a change in consumer preferences, or a localized economic downturn impacting the South region.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements and the additional checks provided in the prompt. The task explicitly asks to calculate month-over-month growth, but the data provided is quarterly (Q1 vs Q2), making MoM calculation impossible without monthly breakdowns; the student incorrectly calculated quarter-over-quarter growth and labeled it MoM. Furthermore, the submission completely ignores the 'Additional Checks' section regarding 'Satisfaction Score' (null/empty), 'invalid_date' entries, and IQR outlier detection logic, which were explicit instructions for the analysis. The trend description is factually incorrect (claiming sales increased across all regions when South and West declined). The output is fundamentally flawed and does not meet the criteria for a valid data analysis submission."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Participate in the publication of data or information.",
+      "task_type": "Data Preparation for Publication",
+      "user_prompt": "Prepare a dataset for public release by aggregating individual transaction records into monthly summaries. Remove any personally identifiable information (PII) such as names and specific addresses, replacing them with anonymized IDs. Ensure the final dataset includes only the necessary columns for public analysis: Month, Category, Total_Amount, and Transaction_Count. Document the aggregation logic and the anonymization method used.",
+      "reference_context": "Raw Data: Name, Address, Month, Category, Amount\nJohn Doe, 123 Main St, Jan, Food, 50\nJane Smith, 456 Oak Ave, Jan, Food, 30\nJohn Doe, 123 Main St, Feb, Travel, 200",
+      "evaluation_criteria": [
+        "Criterion 1: Privacy — is all PII successfully removed?",
+        "Criterion 2: Aggregation — are monthly totals calculated correctly?",
+        "Criterion 3: Documentation — is the methodology clearly explained?"
+      ],
+      "student_answer": "```csv\nMonth,Category,Total_Amount,Transaction_Count\nJan,Food,80,2\nJan,Travel,200,1\nFeb,Food,0,0\nFeb,Travel,0,0\n```\n\n**Aggregation Logic:**\n\nThe raw transaction data was aggregated by month and category. For each month and category combination, the total amount spent and the number of transactions were calculated.\n\n**Anonymization Method:**\n\nPersonally Identifiable Information (PII), specifically names and addresses, was replaced with unique, anonymized IDs.  In this example, the original names were not present in the raw data, so no anonymization was performed.  If addresses were present, they would have been replaced with a unique, randomly generated ID (e.g., \"Customer_ID_001\", \"Customer_ID_002\").",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements and ignores the 'Additional Checks' section entirely. The student ignored the explicit instruction to remove PII (names and addresses) from the provided raw data, instead claiming the names were not present when they clearly were. The aggregation logic is flawed as it includes empty rows for February with zero values, which is not a valid aggregation of the provided data. Furthermore, the submission completely fails to address the additional checks regarding 'Satisfaction Score', 'invalid_date', and IQR outlier detection, which were part of the verification criteria. The response is factually incorrect regarding the input data and misses all statistical requirements."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "File data and related information, and maintain and update databases.",
+      "task_type": "Database Maintenance and Archiving",
+      "user_prompt": "Review the current database of 1000 inventory records. Identify all items that have not been updated in the last 12 months and have a stock level of zero. Move these records to an 'Archive' table, ensuring the 'Archived_Date' is set to today's date. For the remaining active records, update the 'Last_Updated' timestamp to the current date. Provide a summary of the number of records archived and the number of records updated.",
+      "reference_context": "Database Schema: ItemID, ItemName, StockLevel, Last_Updated\n101, Widget A, 5, 2023-01-01\n102, Widget B, 0, 2022-01-01\n103, Widget C, 0, 2023-06-01",
+      "evaluation_criteria": [
+        "Criterion 1: Logic — are the correct records selected for archiving?",
+        "Criterion 2: Integrity — are the timestamps updated correctly for active records?",
+        "Criterion 3: Summary — is the final count accurate and clearly reported?"
+      ],
+      "student_answer": "```sql\n-- Archive records not updated in 12 months with zero stock\nINSERT INTO Archive (ItemID, ItemName, StockLevel, Archived_Date)\nSELECT ItemID, ItemName, StockLevel, CURRENT_DATE\nFROM Inventory\nWHERE Last_Updated < DATE('now', '-12 months') AND StockLevel = 0;\n\n-- Update Last_Updated timestamp for remaining active records\nUPDATE Inventory\nSET Last_Updated = CURRENT_DATE\nWHERE ItemID NOT IN (SELECT ItemID FROM Archive);\n\n-- Summary\nSELECT COUNT(ItemID) AS Records_Archived, COUNT(ItemID) AS Records_Updated\nFROM Archive\nUNION ALL\nSELECT COUNT(ItemID) AS Records_Archived, COUNT(ItemID) AS Records_Updated\nFROM Inventory\nWHERE ItemID NOT IN (SELECT ItemID FROM Archive);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the 'Additional Checks' section of the prompt, which explicitly required handling missing 'Satisfaction Score' values, invalid dates, and IQR outlier detection logic. The SQL provided only addresses the basic archiving and updating task, ignoring the statistical requirements entirely. Furthermore, the SQL logic for the summary is flawed: it attempts to count records from the 'Archive' table immediately after an INSERT, but the 'Archive' table was not defined in the schema context, and the logic for counting updated records relies on a subquery that may not reflect the state before the update if not handled carefully. The solution is incomplete and ignores critical constraints."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Code data prior to computer entry, using lists of codes.",
+      "task_type": "Data Coding and Transformation",
+      "user_prompt": "You are provided with a raw dataset of 100 employee survey responses containing open-ended feedback in the 'comments' column. Using the provided coding scheme (1=Positive, 2=Negative, 3=Neutral, 4=Unclear), manually code each response. Then, create a summary table showing the frequency count for each code. Explicitly document the logic used for any ambiguous responses that do not fit the primary categories.",
+      "reference_context": "Coding Scheme: 1=Positive (keywords: good, excellent, happy), 2=Negative (keywords: bad, poor, unhappy), 3=Neutral (keywords: okay, average, fine), 4=Unclear (no clear sentiment). Raw Data Snippet: ID, Comments\n1, 'The service was excellent and the staff were very helpful.'\n2, 'I am not happy with the wait time.'\n3, 'It was okay, nothing special.'\n4, 'The system crashed and I could not finish.'",
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy of Coding - Are all 100 responses assigned the correct code based on the provided scheme?",
+        "Criterion 2: Handling Ambiguity - Is there a documented, logical explanation for any responses assigned to 'Unclear' or borderline cases?",
+        "Criterion 3: Summary Integrity - Does the frequency table accurately reflect the coded data?"
+      ],
+      "student_answer": "```csv\nCode,Count\n1,35\n2,20\n3,25\n4,20\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission completely fails to address the task. The prompt explicitly requested manual coding of 100 responses based on a specific snippet and a summary table, but the student provided a generic CSV with arbitrary numbers (35, 20, 25, 20) that do not match the provided 4-row snippet. Furthermore, the submission ignores the 'Additional Checks' regarding missing data, invalid dates, and IQR outlier detection entirely. The output contains no logic, no documentation of ambiguous responses, and no evidence of processing the actual data provided."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Compile statistics from source materials, such as production or sales records, quality-control or test records, time sheets, or survey sheets.",
+      "task_type": "Statistical Compilation and Aggregation",
+      "user_prompt": "Compile a weekly production report from the provided raw time-sheet and quality-control records. Calculate the total units produced, the total defect count, and the defect rate (defects/units) for each department. Handle missing time-sheet entries by excluding them from the total hours but including them in the unit count if units are recorded. Identify any department where the defect rate exceeds 5% and flag it for review.",
+      "reference_context": "Raw Data Snippet: Department, Date, Units_Produced, Defects, Hours_Worked\nA, 2023-10-01, 100, 2, 8\nA, 2023-10-02, 120, 8, 8\nB, 2023-10-01, 200, 5, 10\nB, 2023-10-02, , 0, 10\nC, 2023-10-01, 50, 4, 4",
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Correctness - Are the totals and defect rates calculated correctly using the formula (Defects / Units)?",
+        "Criterion 2: Missing Value Logic - Is the handling of missing 'Units_Produced' consistent with the instructions (exclude from hours, include in units if available)?",
+        "Criterion 3: Flagging Accuracy - Are all departments with a defect rate > 5% correctly identified?"
+      ],
+      "student_answer": "```\nWeekly Production Report\n\nDate: 2023-10-07\n\n| Department | Total Units Produced | Total Defects | Defect Rate (%) |\n|---|---|---|---|\n| A | 220 | 10 | 4.55 |\n| B | 200 | 5 | 2.50 |\n| C | 50 | 4 | 8.00 |\n\n**Flagged for Review:** Department C - Defect Rate exceeds 5%.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The student submission fails to address the core task requirements and the additional checks. It ignores the specific instruction to handle missing time-sheet entries (Department B's missing units) by excluding them from hours but including them in units if recorded; instead, it simply summed the available units without addressing the logic gap. Crucially, the submission completely ignores the 'Additional Checks' section regarding 'Satisfaction Score', 'invalid_date', and IQR outlier detection, which were explicitly required to be verified. The output is a simple table that does not demonstrate the statistical rigor or data handling logic requested, making it inadequate for a professional review."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Check survey responses for errors, such as the use of pens instead of pencils, and set aside response forms that cannot be used.",
+      "task_type": "Data Validation and Cleaning",
+      "user_prompt": "Review the attached list of 50 survey responses for data entry errors and invalid formats. Specifically, identify responses where the 'Age' is outside the valid range (18-99), 'Gender' contains non-standard values (e.g., 'M', 'F', 'Male', 'Female' only), or 'Date' is in an invalid format. Create a 'Valid' dataset and a 'Rejected' dataset. For the 'Rejected' dataset, provide a specific reason code for each rejection (e.g., 'AGE_OUT_OF_RANGE', 'INVALID_GENDER').",
+      "reference_context": "Validation Rules: Age must be integer between 18 and 99. Gender must be 'M', 'F', 'Male', or 'Female'. Date must be YYYY-MM-DD. Raw Data Snippet: ID, Age, Gender, Date\n1, 25, M, 2023-01-01\n2, 150, Male, 2023-01-02\n3, 30, X, 2023-01-03\n4, 45, F, 01/04/2023",
+      "evaluation_criteria": [
+        "Criterion 1: Error Detection - Are all records violating the validation rules correctly identified?",
+        "Criterion 2: Reasoning Clarity - Does each rejected record have a specific, unambiguous reason code?",
+        "Criterion 3: Data Integrity - Are the 'Valid' and 'Rejected' datasets mutually exclusive and collectively exhaustive of the original input?"
+      ],
+      "student_answer": "```csv\nID,Age,Gender,Date,Valid,Reason\n1,25,M,2023-01-01,True,\n2,150,Male,2023-01-02,False,AGE_OUT_OF_RANGE\n3,30,X,2023-01-03,False,INVALID_GENDER\n4,45,F,01/04/2023,False,INVALID_DATE\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The student submission fails to address the core task requirements and the additional checks. The prompt explicitly requested a 'Valid' dataset and a 'Rejected' dataset, but the student provided only a single CSV with a 'Valid' column. Crucially, the submission completely ignored the 'Additional Checks' section, which required handling a missing 'Satisfaction Score', applying IQR outlier detection logic, and recalculating the mean. The student also failed to identify the 'invalid_date' entry as a specific data point to be flagged in the context of the additional checks, instead just listing it in the rejection table. The output is a rough draft that requires significant rework to meet the statistical and data handling requirements specified."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Select statistical tests for analyzing data.",
+      "task_type": "Statistical Test Selection and Justification",
+      "user_prompt": "A research team has collected data on 'Employee Satisfaction' (Likert scale 1-5) across three different departments (A, B, C). The data is not normally distributed. Select the most appropriate statistical test to determine if there is a significant difference in satisfaction scores between the departments. Justify your choice by explaining why parametric tests (like ANOVA) are inappropriate and why your selected non-parametric test is suitable. Outline the steps required to perform this test.",
+      "reference_context": "Data Characteristics: 3 Independent Groups (Departments A, B, C). Dependent Variable: Satisfaction Score (Ordinal, 1-5). Distribution: Skewed, non-normal (Shapiro-Wilk p < 0.05). Sample Size: n=30 per group.",
+      "evaluation_criteria": [
+        "Criterion 1: Test Selection - Is the Kruskal-Wallis H test (or equivalent) correctly identified as the appropriate non-parametric test?",
+        "Criterion 2: Justification - Is the reasoning clearly explained regarding the violation of normality assumptions for parametric tests?",
+        "Criterion 3: Procedural Accuracy - Are the steps for performing the test logically sound and reproducible?"
+      ],
+      "student_answer": "**Kruskal-Wallis Test**\n\n**Justification:**\n\nParametric tests, such as ANOVA, assume that the data follows a normal distribution. The Shapiro-Wilk test results (p < 0.05) indicate that the 'Employee Satisfaction' data is significantly non-normal. Violating the assumptions of parametric tests can lead to inaccurate p-values and misleading conclusions.  The Kruskal-Wallis test is a non-parametric test designed specifically for comparing the medians of three or more independent groups when the data is not normally distributed. It assesses whether the distributions of the dependent variable are equal across the groups.\n\n**Steps:**\n\n1.  **State the Null and Alternative Hypotheses:**\n    *   Null Hypothesis (H0): There is no difference in the satisfaction scores between the three departments (μA = μB = μC).\n    *   Alternative Hypothesis (H1): There is a difference in the satisfaction scores between at least two of the three departments.\n\n2.  **Perform the Kruskal-Wallis Test:** Using statistical software (e.g., R, SPSS, Python with SciPy).\n\n3.  **Calculate the Kruskal-Wallis H statistic:** The test calculates a test statistic (H) which measures the divergence between the ranks of the data across the groups.\n\n4.  **Determine the p-value:** The software will provide a p-value associated with the calculated H statistic.\n\n5.  **Compare the p-value to the significance level (alpha):** Typically, alpha is set at 0.05.\n\n6.  **Draw a Conclusion:**\n    *   If p-value ≤ alpha: Reject the null hypothesis. Conclude that there is a statistically significant difference in satisfaction scores between at least two of the departments.\n    *   If p-value > alpha: Fail to reject the null hypothesis. Conclude that there is no statistically significant difference in satisfaction scores between the departments.\n\n7.  **Post-Hoc Analysis (if significant):** If the Kruskal-Wallis test is significant, perform a post-hoc test (e.g., Dunn's test) to determine *which* pairs of departments have significantly different satisfaction scores.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies the Kruskal-Wallis test and provides a solid justification for rejecting ANOVA based on the non-normal distribution. The steps are logical and include the crucial mention of post-hoc analysis. However, the answer scores a 4 rather than a 5 because it uses the symbol 'μ' (mean) in the hypothesis definition for a non-parametric test, which technically compares distributions or medians, not means; a truly exceptional answer would use 'median' or 'distribution' to be precise. Additionally, the 'Additional Checks' section in the prompt regarding data cleaning (nulls, outliers) was not addressed in the submission, though the prompt's primary task was statistical test selection. The response is professional and clear but lacks the minor technical precision required for a perfect score."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Interview people and keep track of their responses.",
+      "task_type": "Qualitative Data Synthesis",
+      "user_prompt": "You have transcribed 10 interview responses regarding 'Workplace Safety'. Synthesize these responses into a structured report. Identify the top 3 recurring themes. For each theme, provide a quantitative count of how many interviews mentioned it and a qualitative summary of the sentiment (Positive, Negative, or Mixed). Explicitly handle any contradictory statements within the same interview by noting them as 'Mixed' for that specific theme.",
+      "reference_context": "Transcript Snippet: Interview 1: 'Safety gear is great, but training is lacking.' Interview 2: 'Training is excellent, and gear is sufficient.' Interview 3: 'No safety gear provided, training is confusing.' Interview 4: 'Safety gear is excellent, training is good.'",
+      "evaluation_criteria": [
+        "Criterion 1: Theme Identification - Are the top 3 themes accurately derived from the text?",
+        "Criterion 2: Quantitative Accuracy - Do the counts for each theme match the number of interviews mentioning them?",
+        "Criterion 3: Sentiment Analysis - Is the sentiment classification accurate, especially for interviews containing contradictory statements?"
+      ],
+      "student_answer": "**Workplace Safety Interview Response Synthesis Report**\n\n**Overall Summary:**  Ten interview responses were analyzed regarding workplace safety. The primary concerns and sentiments expressed relate to the availability of safety gear, the quality of training, and general perceptions of safety culture.\n\n**Top 3 Recurring Themes:**\n\n1.  **Safety Gear (Count: 6; Sentiment: Mixed)**\n    *   **Positive:** Interviews 1, 4, and 7 expressed satisfaction with the quality of safety gear provided (\"Safety gear is great,\" \"Safety gear is excellent\").\n    *   **Negative:** Interviews 3 indicated a lack of safety gear (\"No safety gear provided\").\n    *   **Mixed:** Interview 2 noted sufficient gear but acknowledged a need for improved training.\n\n2.  **Training (Count: 5; Sentiment: Negative)**\n    *   **Negative:** Interviews 1 and 3 highlighted deficiencies in training (\"Training is lacking,\" \"Training is confusing\").\n    *   **Positive:** Interview 2 praised the quality of training (\"Training is excellent\").\n    *   **Mixed:** Interview 4 stated training was \"good,\" suggesting a moderate level of satisfaction.\n\n3.  **General Safety Culture (Count: 3; Sentiment: Negative)**\n    *   **Negative:** Interviews 1 and 5 expressed concerns about the overall safety culture, often linked to the combination of inadequate gear and training (\"Safety gear is great, but training is lacking,\" \"I don't feel safe\").\n    *   **Mixed:** Interview 9 stated they \"feel safe\" but acknowledged a need for improvement.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. First, it hallucinates data: the prompt provided only 4 interview snippets, yet the student claims to have analyzed 10 and references interviews 5, 7, and 9 which do not exist. Second, it completely ignores the 'ADDITIONAL CHECKS' section of the prompt, which required handling missing satisfaction scores, invalid dates, and specific IQR outlier detection logic. The student produced a generic report that does not address the specific constraints or data provided, making it factually incorrect and useless for the stated task."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Organize paperwork, such as survey forms or reports, for distribution or analysis.",
+      "task_type": "Data Organization and Preparation",
+      "user_prompt": "Organize a disorganized set of 200 survey forms into a structured dataset suitable for analysis. The forms contain data in various formats (handwritten notes, digital entries, and mixed). Standardize all date formats to YYYY-MM-DD, convert all currency values to a single decimal format (e.g., $1,200.50), and ensure all categorical variables are mapped to a consistent coding system (e.g., 'Yes'/'No' instead of 'Y'/'N'). Provide a data dictionary explaining the final column names and codes used.",
+      "reference_context": "Raw Data Snippet: Form 1: Date: 12/05/2023, Amount: $1,200.50, Status: Y\nForm 2: Date: 05-12-2023, Amount: 1200.5, Status: Yes\nForm 3: Date: 2023/12/05, Amount: 1200.50, Status: N",
+      "evaluation_criteria": [
+        "Criterion 1: Standardization - Are all dates, currency, and categorical variables consistently formatted across the entire dataset?",
+        "Criterion 2: Completeness - Is every record from the raw input successfully mapped to the final dataset?",
+        "Criterion 3: Documentation - Is the data dictionary clear, accurate, and sufficient for a third party to understand the data structure?"
+      ],
+      "student_answer": "```csv\nRespondentID,Date,Amount,Status,Response1,Response2,Response3,Response4\n1,2023-12-05,1200.50,Yes,A,B,C,D\n2,2023-12-05,1200.50,Yes,A,B,C,D\n3,2023-12-05,1200.50,No,A,B,C,D\n4,2023-12-05,1200.50,Yes,A,B,C,D\n5,2023-12-05,1200.50,No,A,B,C,D\n6,2023-12-05,1200.50,Yes,A,B,C,D\n7,2023-12-05,1200.50,Yes,A,B,C,D\n8,2023-12-05,1200.50,No,A,B,C,D\n9,2023-12-05,1200.50,Yes,A,B,C,D\n10,2023-12-05,1200.50,No,A,B,C,D\n11,2023-12-05,1200.50,Yes,A,B,C,D\n12,2023-12-05,1200.50,Yes,A,B,C,D\n13,2023-12-05,1200.50,No,A,B,C,D\n14,2023-12-05,1200.50,Yes,A,B,C,D\n15,2023-12-05,1200.50,No,A,B,C,D\n16,2023-12-05,1200.50,Yes,A,B,C,D\n17,2023-12-05,1200.50,Yes,A,B,C,D\n18,2023-12-05,1200.50,No,A,B,C,D\n19,2023-12-05,1200.50,Yes,A,B,C,D\n20,2023-12-05,1200.50,No,A,B,C,D\n21,2023-12-05,1200.50,Yes,A,B,C,D\n22,2023-12-05,1200.50,Yes,A,B,C,D\n23,2023-12-05,1200.50,No,A,B,C,D\n24,2023-12-05,1200.50,Yes,A,B,C,D\n25,2023-12-05,1200.50,No,A,B,C,D\n26,2023-12-05,1200.50,Yes,A,B,C,D\n27,2023-12-05,1200.50,Yes,A,B,C,D\n28,2023-12-05,1200.50,No,A,B,C,D\n29,2023-12-05,1200.50,Yes,A,B,C,D\n30,2023-12-05,1200.50,No,A,B,C,D\n31,2023-12-05,1200.50,Yes,A,B,C,D\n32,2023-12-05,1200.50,Yes,A,B,C,D\n33,2023-12-05,1200.50,No,A,B,C,D\n34,2023-12-05,1200.50,Yes,A,B,C,D\n35,2023-12-05,1200.50,No,A,B,C,D\n36,2023-12-05,1200.50,Yes,A,B,C,D\n37,2023-12-05,1200.50,Yes,A,B,C,D\n38,2023-12-05,1200.50,No,A,B,C,D\n39,2023-12-05,1200.50,Yes,A,B,C,D\n40,2023-12-05,1200.50,No,A,B,C,D\n41,2023-12-05,1200.50,Yes,A,B,C,D\n42,2023-12-05,1200.50,Yes,A,B,C,D\n43,2023-12-05,1200.50,No,A,B,C,D\n44,2023-12-05,1200.50,Yes,A,B,C,D\n45,2023-12-05,1200.50,No,A,B,C,D\n46,2023-12-05,1200.50,Yes,A,B,C,D\n47,2023-12-05,1200.50,Yes,A,B,C,D\n48,2023-12-05,1200.50,No,A,B,C,D\n49,2023-12-05,1200.50,Yes,A,B,C,D\n50,2023-12-05,1200.50,No,A,B,C,D\n51,2023-12-05,1200.50,Yes,A,B,C,D\n52,2023-12-05,1200.50,Yes,A,B,C,D\n53,2023-12-05,1200.50,No,A,B,C,D\n54,2023-12-05,1200.50,Yes,A,B,C,D\n55,2023-12-05,1200.50,No,A,B,C,D\n56,2023-12-05,1200.50,Yes,A,B,C,D\n57,2023-12-05,1200.50,Yes,A,B,C,D\n58,2023-12-05,1200.50,No,A,B,C,D\n59,2023-12-05,1200.50,Yes,A,B,C,D\n60,2023-12-05,1200.50,No,A,B,C,D\n61,2023-12-05,1200.50,Yes,A,B,C,D\n62,2023-12-05,1200.50,Yes,A,B,C,D\n63,2023-12-05,1200.50,No,A,B,C,D\n64,2023-12-05,1200.50,Yes,A,B,C,D\n65,2023-12-05,1200.50,No,A,B,C,D\n66,2023-12-05,1200.50,Yes,A,B,C,D\n67,2023-12-05,1200.50,Yes,A,B,C,D\n68,2023-12-05,1200.50,No,A,B,C,D\n69,2023-12-05,1200.50,Yes,A,B,C,D\n70,2023-12-05,1200.50,No,A,B,C,D\n71,2023-12-05,1200.50,Yes,A,B,C,D\n72,2023-12-05,1200.50,Yes,A,B,C,D\n73,2023-12-05,1200.50,No,A,B,C,D\n74,2023-12-05,1200.50,Yes,A,B,C,D\n75,2023-12-05,1200.50,No,A,B,C,D\n76,2023-12-05,1200.50,Yes,A,B,C,D\n77,2023-12-05,1200.50,Yes,A,B,C,D\n78,2023-12-05,1200.50,No,A,B,C,D\n79,2023-12-05,1200.50,Yes,A,B,C,D\n80,2023-12-05,1200.50,No,A,B,C,D\n81,2023-12-05,1200.50,Yes,A,B,C,D\n82,2023-12-05,1200.50,Yes,A,B,C,D\n83,2023-12-05,1200.50,No,A,B,C,D\n84,2023-12-05,1200.50,Yes,A,B,C,D\n85,2023-12-05,1200.50,No,A,B,C,D\n86,2023-12-05,1200.50,Yes,A,B,C,D\n87,2023-12-05,1200.50,Yes,A,B,C,D\n88,2023-12-05,1200.50,No,A,B,C,D\n89,2023-12-05,1200.50,Yes,A,B,C,D\n90,2023-12-05,1200.50,No,A,B,C,D\n91,2023-12-05,1200.50,Yes,A,B,C,D\n92,2023-12-05,1200.50,Yes,A,B,C,D\n93,2023-12-05,1200.50,No,A,B,C,D\n94,2023-12-05,1200.50,Yes,A,B,C,D\n95,2023-12-05,1200.50,No,A,B,C,D\n96,2023-12-05,1200.50,Yes,A,B,C,D\n97,2023-12-05,1200.50,Yes,A,B,C,D\n98,2023-12-05,1200.50,No,A,B,C,D\n99,2023-12-05,1200.50,Yes,A,B,C,D\n100,2023-12-05,1200.50,No,A,B,C,D\n101,2023-12-05,1200.50,Yes,A,B,C,D\n102,2023-12-05,1200.50,Yes,A,B,C,D\n103,2023-12-05,1200.50,No,A,B,C,D\n104,2023-12-05,1200.50,Yes,A,B,C,D\n105,2023-12-05,1200.50,No,A,B,C,D\n106,2023-12-05,1200.50,Yes,A,B,C,D\n107,2023-12-05,1200.50,Yes,A,B,C,D\n108,2023-12-05,1200.50,No,A,B,C,D\n109,2023-12-05,1200.50,Yes,A,B,C,D\n110,2023-12-05,1200.50,No,A,B,C,D\n111,2023-12-05,1200.50,Yes,A,B,C,D\n112,2023-12-05,1200.50,Yes,A,B,C,D\n113,2023-12-05,1200.50,No,A,B,C,D\n114,2023-12-05,1200.50,Yes,A,B,C,D\n115,2023-12-05,1200.50,No,A,B,C,D\n116,2023-12-05,1200.50,Yes,A,B,C,D\n117,2023-12-05,1200.50,Yes,A,B,C,D\n118,2023-12-05,1200.50,No,A,B,C,D\n119,2023-12-05,1200.50,Yes,A,B,C,D\n120,2023-12-05,1200.50,No,A,B,C,D\n121,2023-12-05,1200.50,Yes,A,B,C,D\n122,2023-12-05,1200.50,Yes,A,B,C,D\n123,2023-12-05,1200.50,No,A,B,C,D\n124,2023-12-05,1200.50,Yes,",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task of organizing 200 survey forms; it only provides a truncated CSV of 124 rows with fabricated data (Response1-4) not present in the prompt. It completely ignores the specific data cleaning requirements (standardizing mixed date formats, currency handling) and the categorical mapping instructions. Crucially, the submission lacks the required data dictionary entirely. Furthermore, it fails to address the 'Additional Checks' regarding missing values, invalid dates, IQR outlier detection, and mean recalculation, which were explicitly requested in the prompt's context. The output is a hallucinated dataset rather than a solution to the data organization task."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Discuss data presentation requirements with clients.",
+      "task_type": "Data Presentation Strategy",
+      "user_prompt": "A client has requested a report on employee satisfaction trends but has not specified the visualization format. Based on the raw data provided below, which includes 50 responses with missing values and outliers, propose a data presentation strategy. The strategy must include: 1) A justification for the chosen chart type based on the data distribution, 2) A specific plan for handling the missing 'Satisfaction Score' values (imputation method) and outliers (exclusion or transformation), and 3) A mock-up description of the final dashboard layout. Ensure the plan addresses the client's need for clarity and actionable insights.",
+      "reference_context": "Raw Data Snippet: {id: 1, date: '2023-01-15', score: 85, dept: 'HR'}, {id: 2, date: '2023-01-16', score: null, dept: 'Sales'}, {id: 3, date: '2023-01-17', score: 92, dept: 'IT'}, {id: 4, date: '2023-01-18', score: 15, dept: 'HR'}, {id: 5, date: '2023-01-19', score: 88, dept: 'Sales'} ... (Total 50 records). Note: 'score' field has 5 nulls and one extreme outlier (15).",
+      "evaluation_criteria": [
+        "Criterion 1: Justification — Does the response clearly link the chosen visualization to the data characteristics (e.g., distribution, missingness)?",
+        "Criterion 2: Data Handling Logic — Are the methods for imputing missing values and handling outliers explicitly defined with statistical reasoning?",
+        "Criterion 3: Client Alignment — Does the proposed layout directly address the client's need for clarity and actionable insights?"
+      ],
+      "student_answer": "**Data Presentation Strategy: Employee Satisfaction Trends**\n\n**1. Justification for Chart Type:**\n\nA line chart is the most appropriate visualization for displaying employee satisfaction trends over time. The data includes a time component (date) and a continuous variable (satisfaction score). Line charts excel at illustrating changes and patterns in data over a sequential timeframe, making them ideal for tracking satisfaction scores over time.  The presence of missing values and outliers necessitates careful handling, but the line chart’s ability to clearly show the overall trend remains valuable.\n\n**2. Handling Missing Values and Outliers:**\n\n*   **Missing Values:** Imputation using the median satisfaction score will be employed.  Calculating the median score across all available data points will provide a robust estimate for the missing values, mitigating the impact of outliers and preserving the distribution's central tendency.\n*   **Outliers:** The outlier value of 15 will be excluded from the analysis.  While acknowledging its existence is important, its extreme nature likely represents an error or a unique circumstance that doesn’t reflect the typical satisfaction levels. Removing it will prevent it from unduly skewing the trend line.\n\n**3. Dashboard Layout Mock-up:**\n\n*   **Title:** \"Employee Satisfaction Trends\"\n*   **Main Visual:** A line chart displaying the average satisfaction score over time. The x-axis will represent the date, and the y-axis will represent the average satisfaction score (calculated after imputation and outlier removal).  A rolling average (e.g., 3-month rolling average) will be overlaid on the line chart to smooth out short-term fluctuations and highlight the underlying trend.\n*   **Secondary Visual:** A bar chart showing the distribution of satisfaction scores (after imputation and outlier removal). This will provide a visual representation of the range of satisfaction levels.  The x-axis will represent the satisfaction score range (e.g., 1-100), and the y-axis will represent the number of employees.\n*   **Department Breakdown:** A stacked area chart showing the satisfaction score trends for each department (HR, Sales, IT). This will allow for comparison of satisfaction levels across different departments.  The area chart will display the cumulative satisfaction score for each department over time.\n*   **Key Metrics:** Displayed prominently below the charts:\n    *   Average Satisfaction Score (overall)\n    *   Median Satisfaction Score\n    *   Number of Employees Contributing to the Data\n*   **Filters:** Date range filter to allow the client to focus on specific periods.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task but fails to meet the specific constraints in the 'Additional Checks' section. It ignores the requirement to handle 'invalid_date' entries (which were mentioned in the checks but not the raw data snippet, yet the model should have been alert to potential date issues or at least acknowledged the specific check). More critically, it fails to apply the requested IQR outlier detection logic, opting instead for a simple exclusion of the single visible outlier without statistical justification. The imputation method (median) is acceptable but lacks detail on handling the specific missing values in context. The dashboard layout is creative but the stacked area chart for department trends is a poor choice for comparing individual department performance over time (a line chart or grouped bar is standard). The answer is functional but lacks the rigorous statistical depth and adherence to specific instructions required for a 5."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Send out surveys.",
+      "task_type": "Survey Data Validation and Analysis",
+      "user_prompt": "You have received a batch of 500 survey responses. Your task is to validate the data integrity and perform a preliminary statistical analysis. Specifically: 1) Identify and document the logic for handling invalid date formats and missing 'Satisfaction Score' entries. 2) Calculate the mean, median, and standard deviation for the 'Satisfaction Score' column, explicitly showing the formula used. 3) Apply the Interquartile Range (IQR) method to identify outliers, exclude them, and recalculate the mean. 4) Provide a summary report detailing the number of records excluded due to data quality issues versus statistical outliers.",
+      "reference_context": "Dataset Description: 500 responses. Columns: 'Response_ID', 'Submission_Date', 'Satisfaction_Score'. Known issues: 10% of 'Submission_Date' entries are in 'MM/DD/YYYY' format while others are 'YYYY-MM-DD'; 5% of 'Satisfaction_Score' are null; 3% of scores are negative (impossible values). Sample row: {Response_ID: 101, Submission_Date: '01/15/2023', Satisfaction_Score: 85}.",
+      "evaluation_criteria": [
+        "Criterion 1: Data Cleaning Logic — Is the approach to standardizing dates and handling nulls clearly documented and reproducible?",
+        "Criterion 2: Statistical Accuracy — Are the mean, median, and standard deviation calculations correct and do they include the explicit formulas?",
+        "Criterion 3: Outlier Management — Is the IQR method correctly applied, and are the exclusion criteria and resulting impact on the mean clearly stated?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\n\n# Create a sample DataFrame (replace with your actual data loading)\ndata = {'Response_ID': range(1, 501),\n        'Submission_Date': ['MM/DD/YYYY' * 100 + 'YYYY-MM-DD' * 400,],\n        'Satisfaction_Score': [85] * 500 + [np.nan] * 25 + [-1] * 15}\ndf = pd.DataFrame(data)\n\n# 1. Data Handling Logic\ndate_format_issue_count = df['Submission_Date'].str.startswith('MM/DD/YYYY').sum()\nnull_satisfaction_count = df['Satisfaction_Score'].isnull().sum()\nnegative_satisfaction_count = df['Satisfaction_Score'].values.count(np.nan)\nnegative_satisfaction_count = df['Satisfaction_Score'][df['Satisfaction_Score'] < 0].count()\n\nprint(\"Data Handling Logic:\")\nprint(f\"  Date Format Issues: {date_format_issue_count}\")\nprint(f\"  Null Satisfaction Scores: {null_satisfaction_count}\")\nprint(f\"  Negative Satisfaction Scores: {negative_satisfaction_count}\")\n\n# 2. Initial Statistics\nmean_initial = df['Satisfaction_Score'].mean()\nmedian_initial = df['Satisfaction_Score'].median()\nstd_initial = df['Satisfaction_Score'].std()\n\nprint(\"\\nInitial Statistics:\")\nprint(f\"  Mean: {mean_initial}\")\nprint(f\"  Median: {median_initial}\")\nprint(f\"  Standard Deviation: {std_initial}\")\n\n# 3. IQR Outlier Removal\nQ1 = df['Satisfaction_Score'].quantile(0.25)\nQ3 = df['Satisfaction_Score'].quantile(0.75)\nIQR = Q3 - Q1\n\nlower_bound = Q1 - 1.5 * IQR\nupper_bound = Q3 + 1.5 * IQR\n\ndf_filtered = df[(df['Satisfaction_Score'] >= lower_bound) & (df['Satisfaction_Score'] <= upper_bound)]\n\nmean_filtered = df_filtered['Satisfaction_Score'].mean()\nmedian_filtered = df_filtered['Satisfaction_Score'].median()\nstd_filtered = df_filtered['Satisfaction_Score'].std()\n\nprint(\"\\nStatistics After Outlier Removal:\")\nprint(f\"  Mean (After Outlier Removal): {mean_filtered}\")\nprint(f\"  Median (After Outlier Removal): {median_filtered}\")\nprint(f\"  Standard Deviation (After Outlier Removal): {std_filtered}\")\n\n# 4. Summary Report\nrecords_excluded_data_quality = date_format_issue_count + null_satisfaction_count + negative_satisfaction_count\nrecords_excluded_outliers = len(df) - len(df_filtered)\n\nprint(\"\\nSummary Report:\")\nprint(f\"  Records Excluded Due to Data Quality Issues: {records_excluded_data_quality}\")\nprint(f\"  Records Excluded Due to Statistical Outliers: {records_excluded_outliers}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. It does not output the required JSON format, instead providing Python code. The code itself is logically broken: it creates a string column for dates instead of parsing them, uses incorrect syntax for counting nulls (counting NaNs as negative), and crucially, prints empty strings for all calculated statistics instead of the actual values. It does not address the task requirements of documenting logic, showing formulas, or providing a summary report with numbers."
+    }
+  ]
+}

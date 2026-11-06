@@ -1,0 +1,458 @@
+{
+  "meta": {
+    "job_title": "Information Security Analysts",
+    "job_id": "info_sec_analyst",
+    "onet_code": "15-1212.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 12,
+    "evaluated_tasks": 12,
+    "batches": 2,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.22,
+      "dimensions": {
+        "Correctness": 3.0,
+        "Completeness": 3.0,
+        "Best Practices": 3.0,
+        "Domain Accuracy": 3.17,
+        "Clarity": 4.17,
+        "Autonomy": 3.0
+      },
+      "evaluated_tasks": 12,
+      "scale_max": 5
+    },
+    "total_time_seconds": 713.46
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop plans to safeguard computer files against accidental or unauthorized modification, destruction, or disclosure and to meet emergency data processing needs.",
+      "task_type": "Incident Response Planning",
+      "user_prompt": "You are the lead security analyst for a mid-sized fintech firm. A recent audit revealed that backup files for the customer database are stored on an unencrypted network share accessible by all developers. Draft a comprehensive Incident Response Plan (IRP) section specifically addressing this vulnerability. Your plan must include: 1) Immediate containment steps, 2) A detailed remediation strategy involving encryption and access control changes, 3) A recovery timeline, and 4) A communication template for notifying the CTO. Assume the database contains PII and is subject to GDPR regulations.",
+      "reference_context": {
+        "current_infrastructure": "Linux servers, PostgreSQL 14, NFS v4 for backups, Active Directory for user management",
+        "compliance_framework": "GDPR, SOC 2 Type II",
+        "constraints": "Budget for new tools is limited; must use existing open-source or licensed enterprise tools"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the plan logically address the specific vulnerability described?",
+        "Completeness: Are all four required sections (containment, remediation, recovery, communication) present and detailed?",
+        "Best Practices: Does the solution adhere to NIST SP 800-61 guidelines for incident response?"
+      ],
+      "student_answer": "```markdown\n# Incident Response Plan: Unencrypted Backup Share Vulnerability\n\n**Incident ID:** 2024-10-27-BackupShare\n\n**Severity:** Critical\n\n**Date:** October 27, 2024\n\n**1. Immediate Containment (Within 1 Hour)**\n\n*   **Isolation:** Immediately revoke all developer access to the NFS v4 share containing customer database backups. This will be achieved via Active Directory group membership modification.\n*   **Network Segmentation:** Temporarily restrict network access to the NFS server to only the database administration team. Implement a firewall rule to block all inbound and outbound traffic except for necessary database connections.\n*   **Log Monitoring:** Intensify monitoring of all relevant logs (firewall, intrusion detection system, database audit logs) for any unusual activity related to the share or database.  Alerts should be configured for any attempts to access the share or database from outside the restricted network segment.\n*   **Evidence Preservation:** Securely copy all relevant logs and system images of the NFS server for forensic analysis. Maintain a chain of custody.\n\n**2. Remediation Strategy (Within 72 Hours)**\n\n*   **Encryption:** Implement LUKS encryption on the NFS server’s storage volume. This will encrypt all data at rest. Utilize existing Linux tools (e.g., `cryptsetup`) to manage the encryption.\n*   **Access Control:**\n    *   **Principle of Least Privilege:** Restrict access to the encrypted volume to only the database administration team and designated backup operators. Implement granular Active Directory group permissions.\n    *   **Multi-Factor Authentication (MFA):** Enforce MFA for all accounts accessing the NFS server or the database.\n    *   **Regular Access Reviews:** Schedule a monthly review of user access rights to the NFS share and database.\n*   **Backup Rotation & Storage:** Transition to a more secure backup solution.  Evaluate and implement a centralized, encrypted backup solution (e.g., BorgBackup with encryption) hosted on a separate, hardened server.  Implement a regular backup rotation schedule.\n*   **Vulnerability Scanning:** Conduct a thorough vulnerability scan of the NFS server and database server to identify and remediate any other potential weaknesses.\n*   **Tooling:** Utilize existing open-source tools like `fail2ban` for intrusion prevention. Consider a free tier of a SIEM solution (e.g., Wazuh) for centralized log management and alerting.\n\n**3. Recovery Timeline (Within 1 Week)**\n\n*   **Phase 1 (24 Hours):** Containment measures fully implemented. Initial forensic analysis completed.\n*   **Phase 2 (48 Hours):** Encryption implemented. Access controls updated. Backup solution evaluation completed.\n*   **Phase 3 (72 Hours):** New backup solution deployed and tested. Initial data restoration from the new backup completed.\n*   **Phase 4 (7 Days):** Full data restoration completed. System hardening and vulnerability patching completed.  Documentation updated.\n\n**4. Communication Template (To CTO)**\n\n**Subject:** Critical Incident: Unencrypted Backup Share Vulnerability – Immediate Action Required\n\n**To:** [CTO’s Email Address]\n\n**From:** [Your Name], Lead Security Analyst\n\n**Date:** October 27, 2024\n\nDear [CTO’s Name],\n\nThis email is to inform you of a critical security vulnerability identified during a recent audit: backup files for the customer database are currently stored on an unencrypted network share accessible by all developers. This poses a significant risk of data breach and non-compliance with GDPR regulations.\n\nWe have immediately implemented containment measures, including isolating the affected share and restricting network access.  Our remediation strategy focuses on encrypting the storage volume, implementing strict access controls, and transitioning to a more secure backup solution.\n\nWe anticipate completing the remediation within one week, with a detailed recovery timeline outlined above.  We will provide regular updates on our progress.\n\nWe are assessing the potential impact of this vulnerability and will notify you immediately if any unauthorized access or data exfiltration is detected.  We are also reviewing our overall backup and recovery procedures to prevent similar incidents in the future.\n\nSincerely,\n\n[Your Name]\n\nLead Security Analyst\n\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission is well-structured and addresses all four required sections of the task. However, it fails the specific additional checks: it does not specify encryption algorithms (e.g., AES-256), and it lacks a rollback strategy for the encryption migration, which is a critical risk in a production environment. The communication template is professional but could be slightly more precise regarding the specific GDPR implications. While the solution is competent and mostly correct, these omissions prevent it from reaching the 'Exceptional' (5) tier, as a real-world IRP for PII data requires explicit algorithmic standards and failure recovery plans."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Monitor current reports of computer viruses to determine when to update virus protection systems.",
+      "task_type": "Threat Intelligence and Patch Management",
+      "user_prompt": "You are the security operations manager for a healthcare provider. A new critical vulnerability (CVE-2023-XXXX) has been disclosed affecting the Apache web servers used across 500 patient portal instances. The vendor has released a patch, but there are conflicting reports about a potential regression in the update. Draft a decision matrix and action plan to determine whether to deploy the patch immediately, wait for vendor confirmation, or implement a compensating control. Your plan must reference NIST SP 800-40 for patch management and include a risk assessment for delaying the update.",
+      "reference_context": {
+        "current_infrastructure": "Apache HTTP Server 2.4, CentOS 8, ESET Endpoint Security",
+        "compliance_framework": "HIPAA, NIST CSF",
+        "constraints": "System downtime is restricted to a 2-hour window on Sundays; no third-party patch management tools available"
+      },
+      "evaluation_criteria": [
+        "Risk Analysis: Does the response accurately weigh the severity of the CVE against the risk of regression?",
+        "Compliance: Are the proposed actions aligned with HIPAA Security Rule requirements for software updates?",
+        "Justification: Is the chosen technology stack (e.g., specific ESET features or manual scripts) justified for the environment?"
+      ],
+      "student_answer": "```\n## CVE-2023-XXXX Patch Decision Matrix & Action Plan\n\n**Vulnerability:** CVE-2023-XXXX (Apache HTTP Server)\n**Affected Systems:** 500 Patient Portal Instances (Apache 2.4, CentOS 8, ESET Endpoint Security)\n**Compliance:** HIPAA, NIST CSF\n\n**Decision Matrix:**\n\n| Criteria             | Immediate Patch | Vendor Confirmation | Compensating Control | Score (1-5, 5=Highest) |\n|----------------------|-----------------|--------------------|-----------------------|------------------------|\n| **Severity (CVSS)**  | 4               | 4                   | 2                      | 4                      |\n| **Exploitability**   | 3               | 3                   | 1                      | 2                      |\n| **Business Impact**  | 5               | 5                   | 2                      | 3                      |\n| **Compliance Risk**  | 5               | 5                   | 3                      | 4                      |\n| **Downtime Impact**   | 3               | 3                   | 1                      | 2                      |\n| **Total Score**       | 20              | 20                  | 11                     |                       |\n\n**Decision Recommendation:** Immediate Patch (Score: 20) – High Priority\n\n**Action Plan:**\n\n**Phase 1: Immediate Assessment (2 hours)**\n\n1.  **Confirm Scope:** Verify all 500 patient portal instances are running Apache 2.4.  Utilize existing server inventory and configuration management tools (if any) to confirm.\n2.  **ESET Integration:**  Confirm ESET Endpoint Security can automatically deploy the patch.  If not, manual deployment will be required.\n3.  **Test Environment:** Deploy the patch to a representative test environment (mirroring production configuration as closely as possible) to assess for regressions.  This test should include key patient portal functionalities.\n\n**Phase 2: Patch Deployment (Sunday - 2 hour window)**\n\n1.  **Communication:** Notify relevant stakeholders (IT, clinical staff, patient portal administrators) of the planned downtime and expected resolution time.\n2.  **Deployment Schedule:** Schedule patch deployment for the 2-hour Sunday window. Prioritize instances based on criticality (e.g., high-volume portals first).\n3.  **Monitoring:**  Implement real-time monitoring of patched instances using ESET Endpoint Security and Apache server logs.  Monitor for errors, performance degradation, or unexpected behavior.\n4.  **Rollback Plan:**  Document a detailed rollback procedure in case of critical issues.  This includes restoring from backups and reverting to the previous Apache version.\n\n**Phase 3: Post-Deployment Validation (24-48 hours)**\n\n1.  **Functional Testing:** Conduct thorough functional testing of the patient portal to ensure all features are working as expected.\n2.  **Log Analysis:** Analyze Apache server logs for any anomalies or errors related to the patch.\n3.  **Performance Monitoring:** Monitor system performance (CPU, memory, network) to identify any performance regressions.\n4.  **User Feedback:**  Solicit feedback from clinical staff and patients regarding the patient portal experience.\n\n**Risk Assessment (Delaying Update):**\n\n*   **HIPAA Risk:** High.  Failure to address CVE-2023-XXXX exposes patient data to potential unauthorized access and disclosure, violating HIPAA regulations.\n*   **NIST CSF Risk:** High.  Compromise of the patient portal undermines the confidentiality, integrity, and availability of healthcare information, impacting the organization's security posture.\n*   **Financial Risk:** Moderate.  Potential fines, legal liabilities, and reputational damage associated with a data breach.\n*   **Operational Risk:** High.  Disruption of patient care and potential loss of trust.\n\n**NIST SP 800-40 Reference:** This action plan aligns with NIST SP 800-40, *Patch Management*, by prioritizing rapid vulnerability remediation, utilizing a phased deployment approach, and incorporating thorough testing and validation.  The rollback plan directly addresses the need for a well-defined recovery strategy.\n\n**Contingency:** If significant regressions are identified during testing, revert to the compensating control (enhanced monitoring) and escalate to vendor support for immediate assistance.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task but contains significant logical and technical flaws. 1) Correctness/Completeness: The decision matrix is flawed; it assigns identical high scores to 'Immediate Patch' and 'Vendor Confirmation' despite the prompt's explicit constraint about conflicting reports on regression, failing to weigh the risk of the regression against the vulnerability. 2) Best Practices/Domain Accuracy: The plan suggests deploying to production during the 2-hour window without a successful regression test first, which contradicts the 'conflicting reports' context and standard change management. It also fails to mention specific compensating controls (e.g., WAF rules) required by NIST 800-40 for unpatched systems. 3) Additional Checks: The submission does not suggest specific encryption algorithms (though not strictly required by the prompt, the check implies a need for technical specificity in security controls). 4) Clarity: The structure is good, but the logic gaps reduce its utility as a standalone professional document."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Encrypt data transmissions and erect firewalls to conceal confidential information as it is being transmitted and to keep out tainted digital transfers.",
+      "task_type": "Network Architecture and Encryption Strategy",
+      "user_prompt": "You are designing the network security architecture for a new cloud-native application. The application requires data to be transmitted between microservices in a Kubernetes cluster and to an external legacy API. Draft a technical specification for securing these data flows. You must specify the encryption protocols (e.g., TLS versions, cipher suites), the firewall rules required to segment the network, and the justification for choosing mTLS over standard TLS for internal service-to-service communication. Reference ISO 27001 A.13 for transmission security.",
+      "reference_context": {
+        "current_infrastructure": "AWS EKS, Istio Service Mesh, Legacy API running on-premise",
+        "compliance_framework": "ISO 27001, PCI-DSS",
+        "constraints": "The legacy API does not support modern TLS 1.3; must maintain backward compatibility"
+      },
+      "evaluation_criteria": [
+        "Technical Accuracy: Are the specified protocols and cipher suites appropriate for the stated constraints?",
+        "Compliance: Does the design meet the transmission security requirements of ISO 27001 and PCI-DSS?",
+        "Justification: Is the choice of mTLS and the specific firewall rules clearly justified by the threat model?"
+      ],
+      "student_answer": "```\n## Technical Specification: Data Flow Security - Cloud-Native Application\n\n**1. Introduction**\n\nThis document outlines the technical specifications for securing data flows within the new cloud-native application deployed on AWS EKS, utilizing Istio Service Mesh, and communicating with a legacy on-premise API.  The design prioritizes data confidentiality, integrity, and authenticity, aligning with ISO 27001 A.13 requirements for transmission security.\n\n**2. Data Flow Segments & Security Requirements**\n\n* **Microservice-to-Microservice (Internal):** Secure communication between microservices within the Kubernetes cluster.\n* **Microservice-to-Legacy API:** Secure communication with the on-premise legacy API.\n\n**3. Encryption Protocols**\n\n* **Microservice-to-Microservice (Internal):**\n    * **Protocol:** TLS 1.2\n    * **Cipher Suites:**  A prioritized list of cipher suites will be implemented, including:\n        * `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`\n        * `TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384`\n        * `TLS_CHACHA20_POLY1305_SHA256` (for performance-sensitive scenarios)\n    * **Rationale:** TLS 1.2 provides a strong balance of security and compatibility with Istio and Kubernetes.  GCM and Poly1305 ciphers offer authenticated encryption, enhancing data integrity.\n* **Microservice-to-Legacy API:**\n    * **Protocol:** TLS 1.1\n    * **Cipher Suites:**\n        * `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA`\n        * `TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA`\n    * **Rationale:**  The legacy API requires TLS 1.1 compatibility.  CBC mode is used to maintain backward compatibility.  While less secure than GCM, it’s the only viable option given the API constraints.\n\n**4. Authentication & Authorization**\n\n* **Microservice-to-Microservice (Internal):** Mutual TLS (mTLS) will be enforced using Istio Service Mesh.\n    * **Rationale:** mTLS provides strong authentication and encryption, ensuring that only authorized microservices can communicate with each other.  It mitigates man-in-the-middle attacks and strengthens service-to-service security.  This aligns with ISO 27001 A.13’s requirement for strong authentication.\n* **Microservice-to-Legacy API:** Standard TLS client certificates will be used for authentication.  Certificate validation will be strictly enforced.\n\n**5. Network Segmentation & Firewall Rules**\n\n* **Istio Ingress Gateway:**  A dedicated security group will be created for the Istio Ingress Gateway, allowing only necessary inbound traffic (e.g., HTTPS from external clients).\n* **Kubernetes Network Policies:**  Network policies will be implemented to restrict communication between microservices based on their roles and responsibilities.  Only explicitly permitted communication paths will be allowed.\n* **VPC Firewall Rules:**  Firewall rules will be configured to restrict outbound traffic from the Kubernetes cluster to the on-premise legacy API.  This will be achieved using a VPN connection or AWS Direct Connect.  Ingress to the cluster will be strictly controlled.\n* **Legacy API Firewall:**  The legacy API will be protected by a firewall to limit access to authorized microservices.\n\n**6. Key Management**\n\n* **AWS KMS:** AWS Key Management Service (KMS) will be used to manage encryption keys for TLS certificates and mTLS.\n* **Certificate Rotation:**  A regular certificate rotation schedule will be implemented to minimize the risk of compromised keys.\n\n**7. Monitoring & Logging**\n\n* **Istio Metrics:** Istio metrics will be monitored to track TLS connection health, cipher suite usage, and potential security issues.\n* **Centralized Logging:**  All TLS traffic logs will be aggregated and analyzed in a centralized logging system for auditing and incident response.\n\n**8. Compliance**\n\n* **ISO 27001:** This design adheres to ISO 27001 A.13 requirements for transmission security.\n* **PCI-DSS:**  Where applicable, controls will be implemented to meet PCI-DSS requirements for data protection.\n\n**9. Conclusion**\n\nThis technical specification provides a robust framework for securing data flows within the new cloud-native application.  The combination of mTLS, TLS 1.2/1.1, network segmentation, and comprehensive monitoring will ensure the confidentiality, integrity, and authenticity of data transmitted between microservices and the legacy API, meeting the required compliance standards.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, and Domain Accuracy due to critical security flaws. First, it explicitly recommends TLS 1.1 for the legacy API connection; TLS 1.1 is deprecated and considered insecure by modern standards (NIST, PCI-DSS), and a Senior Architect should propose a mitigation strategy (e.g., TLS termination at a gateway) rather than enabling a weak protocol. Second, it fails to specify the exact cipher suites for the legacy API, listing generic CBC suites without confirming the specific algorithm (e.g., AES-128-CBC vs AES-256-CBC) as required by the additional checks. Third, the justification for mTLS is generic and does not deeply address the specific implementation nuances in Istio. Fourth, the submission completely ignores the 'Additional Checks' requirement to include a rollback strategy for the migration process. While the structure is clear (Clarity 4), the technical content is unsafe and incomplete, preventing it from being used without major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Perform risk assessments and execute tests of data processing system to ensure functioning of data processing activities and security measures.",
+      "task_type": "Vulnerability Assessment and Penetration Testing",
+      "user_prompt": "You are the lead auditor for a logistics company. You need to design a penetration test plan for the company's new fleet management system, which processes real-time GPS data and driver identities. The system is hosted on a hybrid cloud environment. Create a test plan that includes the scope, methodology (e.g., OWASP Top 10), and specific test cases for SQL injection and broken authentication. Explain how you will validate the effectiveness of the current WAF (Web Application Firewall) during this test. Reference NIST SP 800-115 for the testing methodology.",
+      "reference_context": {
+        "current_infrastructure": "Azure Cloud, On-premise SQL Server, F5 BIG-IP WAF",
+        "compliance_framework": "NIST CSF, ISO 27001",
+        "constraints": "Testing must not disrupt live fleet operations; test data must be anonymized"
+      },
+      "evaluation_criteria": [
+        "Methodology: Does the plan follow NIST SP 800-115 standards for technical testing?",
+        "Scope: Are the specific vulnerabilities (SQLi, Auth) and systems (WAF, Hybrid Cloud) adequately covered?",
+        "Validation: Is there a clear method for verifying the WAF's effectiveness without causing service disruption?"
+      ],
+      "student_answer": "```markdown\n# Penetration Test Plan: Fleet Management System\n\n**Document Version:** 1.0\n**Date:** October 26, 2023\n**Prepared By:** Information Security Analyst\n\n**1. Executive Summary**\n\nThis penetration test plan outlines the strategy for assessing the security posture of the company’s new Fleet Management System. The system, hosted on a hybrid cloud environment (Azure and on-premise SQL Server), processes sensitive GPS data and driver identities. This test will focus on identifying vulnerabilities, particularly SQL injection and broken authentication, while adhering to constraints regarding operational disruption and data privacy.  The test will leverage the NIST SP 800-115 methodology for a structured and repeatable assessment.\n\n**2. Scope**\n\n*   **In-Scope:**\n    *   Fleet Management System Web Application (accessed via standard web browsers)\n    *   API endpoints for data retrieval and driver management.\n    *   Azure Cloud components supporting the application (e.g., Azure App Service, Azure Storage).\n    *   On-premise SQL Server database hosting the Fleet Management System data.\n    *   F5 BIG-IP WAF protecting the web application.\n*   **Out-of-Scope:**\n    *   Physical security of vehicles or fleet depots.\n    *   Mobile applications (unless specifically requested and scoped).\n    *   Network infrastructure outside the defined application environment (excluding direct access points).\n    *   Third-party integrations not directly related to the core Fleet Management System functionality.\n\n**3. Methodology**\n\n*   **Framework:** NIST SP 800-115 – Digital Identity Guidelines\n*   **OWASP Top 10:**  The test will prioritize vulnerabilities identified in the OWASP Top 10, specifically:\n    *   Injection (SQL Injection)\n    *   Broken Authentication\n    *   Sensitive Data Exposure\n    *   XML External Entities (XXE) – *If applicable based on application design*\n    *   Broken Access Control\n*   **Testing Stages:**\n    1.  **Reconnaissance:** Passive information gathering (e.g., DNS enumeration, OSINT).\n    2.  **Scanning:** Vulnerability scanning using automated tools (e.g., Nessus, OpenVAS) – *Limited to identify potential vulnerabilities, not exploitation*.\n    3.  **Exploitation:** Manual exploitation of identified vulnerabilities, focusing on SQL injection and broken authentication.\n    4.  **Reporting:** Detailed documentation of findings, including remediation recommendations.\n\n**4. Specific Test Cases**\n\n*   **SQL Injection:**\n    *   **Test Case 1:**  Attempt SQL injection in all input fields (e.g., driver ID, vehicle registration, GPS coordinates) using various techniques (e.g., UNION-based, error-based, time-based).\n    *   **Test Case 2:**  Test for SQL injection in API endpoints that accept user input.\n    *   **Test Case 3:**  Attempt to bypass input validation mechanisms.\n    *   **Test Case 4:**  Test for stored procedures vulnerabilities.\n*   **Broken Authentication:**\n    *   **Test Case 1:**  Brute-force login attempts using common credentials.\n    *   **Test Case 2:**  Test for weak password policies.\n    *   **Test Case 3:**  Attempt to exploit session management vulnerabilities (e.g., session fixation, session hijacking).\n    *   **Test Case 4:**  Test for multi-factor authentication (MFA) bypass vulnerabilities (if implemented).\n    *   **Test Case 5:**  Test for credential stuffing attacks.\n\n**5. WAF Validation**\n\n*   **Baseline Testing:**  Perform basic SQL injection and broken authentication attempts *without* the WAF enabled to establish a baseline.\n*   **WAF Bypass Techniques:**  Employ common WAF bypass techniques (e.g., case manipulation, URL encoding, HTTP parameter pollution) to assess the WAF’s effectiveness.\n*   **Log Analysis:**  Analyze WAF logs to determine which attacks were blocked and which were successful.\n*   **Signature Verification:**  Verify that the WAF signatures are up-to-date and effective against the identified vulnerabilities.\n*   **Rate Limiting Testing:**  Test the WAF’s rate limiting capabilities to ensure it prevents denial-of-service attacks.\n*   **Configuration Review:**  Review the WAF configuration to ensure it is properly configured and optimized for the Fleet Management System.\n\n**6. Data Anonymization & Constraints**\n\n*   All test data will be anonymized and scrubbed to remove any personally identifiable information (PII).\n*   Testing will be conducted during off-peak hours to minimize disruption to live fleet operations.\n*   The penetration test will be conducted with the explicit consent and collaboration of the Fleet Management System development team.\n\n**7. Reporting**\n\nA detailed report will be generated following the completion of the penetration test, including:\n\n*   Executive Summary\n*   Scope and Methodology\n*   Vulnerability Findings (with severity ratings)\n*   Remediation Recommendations\n*   Supporting Evidence (screenshots, logs)\n\n**8. References**\n\n*   NIST Special Publication 800-115: Digital Identity Guidelines\n*   OWASP Top 10: [https://owasp.org/www-project-top-ten/](https://owasp.org/www-project-top-ten/)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails significantly on Domain Accuracy (Score 2) by citing NIST SP 800-115 as 'Digital Identity Guidelines' (it is actually 'Information Security Testing Guide') and referencing the wrong NIST document for penetration testing methodology. The Correctness (Score 3) and Completeness (Score 3) are impacted by this error and the lack of specific technical details regarding the hybrid cloud constraints (e.g., how to test the on-prem SQL server without disrupting live operations). The WAF validation section is weak (Score 3) because it suggests disabling the WAF for baseline testing, which violates the constraint of not disrupting live operations and is poor security practice; a professional would use a 'shadow' or 'monitor-only' mode instead. The Clarity (Score 4) is good, but the Autonomy (Score 3) is reduced because the fundamental citation error and the flawed WAF testing approach require substantive professional review and correction before the document could be used."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Modify computer security files to incorporate new software, correct errors, or change individual access status.",
+      "task_type": "Identity and Access Management (IAM) Remediation",
+      "user_prompt": "A major software update has been deployed to the HR system, but the new role-based access control (RBAC) model has inadvertently granted 'Read-Only' access to the 'Payroll' module for all 'Intern' accounts, which violates company policy. You must draft a remediation script and a change management request to correct this. The script must modify the Active Directory security groups and update the application's IAM policy file. Justify the use of Infrastructure as Code (IaC) for this change to prevent future drift. Reference NIST SP 800-53 for access control.",
+      "reference_context": {
+        "current_infrastructure": "Active Directory, HashiCorp Terraform, Custom HR Application",
+        "compliance_framework": "SOX, NIST SP 800-53",
+        "constraints": "Change must be approved by the Change Advisory Board (CAB) within 24 hours; no manual database edits allowed"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the proposed script and policy change correctly revoke the unauthorized access?",
+        "Process: Does the change management request follow SOX requirements for audit trails?",
+        "Justification: Is the use of Terraform (IaC) justified as a control for preventing configuration drift?"
+      ],
+      "student_answer": "```terraform\nresource \"null_resource\" \"remediate_payroll_access\" {\n  provisioner \"local-exec\" {\n    command = <<EOT\n#!/bin/bash\n# Remediation Script - HR System Payroll Access\n\n# Update Active Directory Security Groups\ndsmod -d -thd \"group '$intern_group_name'\" -tw \"member '$intern_user_group_name'\"\ndsmod -d -thd \"group '$payroll_read_only_group_name'\" -tw \"member '$intern_user_group_name'\"\n\n# Update IAM Policy File (Example - Adapt to your application's policy format)\nsed -i \"s/intern_accounts: read_only/intern_accounts: read_only_restricted/\" /path/to/iam_policy.json\n\nEOT\n    environment = {\n      intern_group_name = \"HR_Interns\"\n      intern_user_group_name = \"HR_Intern_Users\"\n      payroll_read_only_group_name = \"HR_Payroll_Readonly\"\n    }\n  }\n}\n\n# Change Management Request - HR System Payroll Access Remediation\n\n{\n  \"Change Request ID\": \"CR-20241027-001\",\n  \"Requestor\": \"Information Security\",\n  \"Date\": \"2024-10-27\",\n  \"Priority\": \"High\",\n  \"Impact\": \"Potential data breach risk due to unauthorized access to payroll data.\",\n  \"Description\": \"A recent HR system update inadvertently granted 'Read-Only' access to the 'Payroll' module for all 'Intern' accounts. This violates company policy (SOX, NIST SP 800-53) regarding access control and data segregation. This change will remediate the issue by restricting intern access to the Payroll module.\",\n  \"Remediation Steps\": [\n    \"Execute Terraform script to update Active Directory security groups and the application's IAM policy file.\",\n    \"Verify access rights in the HR system after remediation.\",\n    \"Document the change in the change management system.\"\n  ],\n  \"Rollback Plan\": \"If the remediation fails, restore the previous IAM policy configuration and Active Directory group memberships.  This will require manual intervention and database restoration from the previous backup.\",\n  \"Justification for IaC\": \"Infrastructure as Code (IaC) using Terraform ensures consistent and repeatable deployments, preventing configuration drift and human error.  This approach aligns with NIST SP 800-53 principles of automated configuration management and reduces the risk of unauthorized changes.  The script is version controlled and auditable, facilitating compliance monitoring and demonstrating adherence to SOX regulations.\",\n  \"CAB Approval Required\": true,\n  \"Estimated Completion Time\": \"24 hours\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical technical errors and omissions. 1) Correctness/Domain Accuracy: The Terraform 'local-exec' provisioner is a poor choice for production remediation as it lacks idempotency and state management; the 'dsmod' command syntax provided is incorrect (dsmod does not use -thd/-tw flags for group membership modification in this manner). 2) Completeness: The script attempts to modify Active Directory via a local-exec command rather than using the proper Terraform AD provider or a secure remote execution method. The IAM policy update uses a fragile 'sed' command on a JSON file, which is a major anti-pattern for JSON manipulation. 3) Best Practices: The rollback plan suggests 'manual intervention and database restoration,' which violates the constraint 'no manual database edits allowed' and contradicts the IaC justification. 4) Autonomy: The script would fail immediately due to syntax errors and the lack of a proper AD provider, requiring significant rework. 5) The Change Management Request is well-structured and addresses the NIST/SOX requirements, but the technical execution plan is fundamentally flawed."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Review violations of computer security procedures and discuss procedures with violators to ensure violations are not repeated.",
+      "task_type": "Security Awareness and Incident Communication",
+      "user_prompt": "You have identified a pattern of 15 employees repeatedly clicking on phishing links in a simulated campaign, despite previous training. You need to draft a communication plan to address this. Create a personalized email template for the affected employees that explains the risk without shaming them, outlines the new mandatory training requirements, and provides a clear path for support. Additionally, draft a summary report for the HR Director that explains the trend, the root cause (e.g., lack of engagement), and the proposed remediation strategy. Ensure the tone is empathetic and clear for non-technical stakeholders. Reference ISO 27001 A.7.2.2 for security awareness.",
+      "reference_context": {
+        "current_infrastructure": "Microsoft 365, Phishing Simulation Platform",
+        "compliance_framework": "ISO 27001, GDPR",
+        "constraints": "Communication must be delivered within 48 hours; must not violate employee privacy laws"
+      },
+      "evaluation_criteria": [
+        "Tone and Clarity: Is the email empathetic and free of technical jargon suitable for non-technical staff?",
+        "Compliance: Does the approach align with ISO 27001 requirements for security awareness and training?",
+        "Strategy: Does the report to HR provide actionable insights and a clear remediation path?"
+      ],
+      "student_answer": "**Email Template (Personalized)**\n\nSubject: Important: Strengthening Our Security Practices\n\nDear [Employee Name],\n\nWe’re writing to you following our recent phishing simulation campaign. We observed a concerning pattern where you and 14 other colleagues repeatedly clicked on simulated phishing links, despite previous security awareness training.\n\nWe understand that phishing attempts can be sophisticated and sometimes difficult to identify. Our goal isn’t to blame anyone, but to ensure everyone is equipped to protect our organization and yourselves from potential threats.  This behavior, as observed across multiple individuals, indicates a potential gap in understanding or engagement with our security protocols.\n\nTo address this, we’re implementing mandatory, enhanced security awareness training focused on recognizing and reporting phishing attacks. This training will cover advanced techniques and real-world examples. You will be required to complete the updated training module by [Date - 72 hours from email send].  A link to the training is: [Link to Training].\n\nWe also want to ensure you have the support you need. If you have any questions or concerns about phishing, data security, or the training, please don’t hesitate to contact the IT Help Desk at [Help Desk Email Address] or [Help Desk Phone Number].\n\nThank you for your cooperation in strengthening our collective security posture.\n\nSincerely,\n\nThe Information Security Team\n\n---\n\n**Summary Report for HR Director**\n\nSubject: Security Awareness Training – Recurring Phishing Engagement\n\nTo: [HR Director Name]\n\nFrom: Information Security Team\n\nDate: [Current Date]\n\n**Executive Summary:**\n\nA recent phishing simulation campaign revealed a concerning trend: 15 employees repeatedly engaged with simulated phishing links, despite prior security awareness training. This pattern suggests a potential lack of sustained engagement with security protocols and highlights a need for reinforced training and support.  This activity aligns with ISO 27001 A.7.2.2, which mandates ongoing security awareness training to mitigate risks.\n\n**Trend Analysis:**\n\n*   **Observed Behavior:** 15 employees clicked on simulated phishing links during the recent campaign. This represents a significant percentage of the targeted group and indicates a consistent vulnerability.\n*   **Previous Training:** All employees received initial security awareness training approximately [Timeframe - e.g., 6 months ago].\n*   **Engagement Level:** The repeated engagement suggests a lack of internalization of training principles and a potential failure to apply learned knowledge in real-world scenarios.\n\n**Root Cause (Proposed):**\n\n*   **Lack of Sustained Engagement:** Initial training may not have translated into consistent behavioral changes.\n*   **Cognitive Bias:** Employees may be susceptible to cognitive biases (e.g., social proof, urgency) that make them more likely to click on suspicious links.\n*   **Insufficient Reinforcement:** The training may not have included sufficient reinforcement or practical exercises to solidify understanding.\n\n**Proposed Remediation Strategy:**\n\n1.  **Mandatory Enhanced Training:** Implement a new, more interactive and scenario-based security awareness training module by [Date - 72 hours from report send]. This training will focus on advanced phishing techniques and reporting procedures.\n2.  **Targeted Communication:** Send personalized emails (as drafted above) to the affected employees, emphasizing support and encouraging questions.\n3.  **Reinforcement Activities:** Introduce regular simulated phishing campaigns with varied scenarios and feedback mechanisms.\n4.  **Leadership Support:**  Communicate the importance of security awareness to all employees through leadership messaging.\n5.  **Monitoring & Reporting:**  Continue to monitor phishing simulation results and report trends to relevant stakeholders.\n\n**Compliance Reference:** ISO 27001 A.7.2.2 – Security Awareness.\n\nWe recommend prioritizing this issue to mitigate potential security risks and strengthen our organization’s overall security posture.  We are available to discuss this further at your convenience.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly addresses the core task of drafting an email and a report, referencing ISO 27001 A.7.2.2, and maintaining an empathetic tone. However, it fails the 'Additional Checks' constraints: it does not suggest specific encryption algorithms (though irrelevant to the email content, the prompt explicitly asked to check for this), and it completely omits a rollback strategy for the remediation plan, which is a critical component of professional change management. The email template is functional but slightly generic, and the report lacks specific data visualization or deeper root cause analysis beyond surface-level assumptions. These omissions prevent a score of 5 and limit the 'Autonomy' score to 3, as a real-world plan requires the missing rollback strategy to be viable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Document computer security and emergency measures policies, procedures, and tests.",
+      "task_type": "Policy Development and Testing",
+      "user_prompt": "You are the Chief Information Security Officer for a healthcare provider. Draft a comprehensive 'Emergency Data Recovery and Access Control' policy section. The policy must address scenarios where primary systems are compromised by ransomware. Include: 1) A step-by-step procedure for isolating affected systems, 2) Criteria for restoring data from offline backups, 3) A protocol for temporary access control overrides during recovery, and 4) A testing schedule to validate these procedures. Ensure the document references NIST SP 800-34 and HIPAA Security Rule requirements.",
+      "reference_context": {
+        "current_infrastructure": "Hybrid cloud environment (AWS and on-prem), Oracle Database, Active Directory",
+        "compliance_framework": "HIPAA, NIST SP 800-34",
+        "constraints": "Must align with existing ITIL change management processes; no new budget for tools."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the policy accurately reflect HIPAA and NIST requirements for emergency recovery?",
+        "Completeness: Are all four required sections (isolation, restoration, access override, testing) clearly defined?",
+        "Clarity: Is the language precise enough for IT staff to execute without ambiguity?"
+      ],
+      "student_answer": "## Emergency Data Recovery and Access Control Policy\n\n**1. Purpose:**\n\nThis policy outlines the procedures for recovering data and restoring access to critical systems following a ransomware compromise or other significant system disruption impacting data availability. It aligns with NIST SP 800-34, Risk Management Framework, and ensures compliance with HIPAA Security Rule requirements, specifically regarding data integrity and availability.\n\n**2. Scope:**\n\nThis policy applies to all systems, data, and personnel within [Healthcare Provider Name]’s IT environment, including those hosted on-premise and within the AWS cloud.\n\n**3. Policy Statement:**\n\nIn the event of a confirmed ransomware compromise or other system disruption leading to data unavailability, the organization will prioritize rapid containment, data recovery, and restoration of access controls while minimizing further damage and ensuring patient safety and data confidentiality.\n\n**4. Procedure: Isolating Affected Systems**\n\n4.1. **Detection & Confirmation:** Upon detection of a suspected ransomware attack, the Security Operations Center (SOC) will immediately initiate incident response procedures as defined in the Incident Response Plan (IRP). Confirmation of a ransomware infection will be based on indicators of compromise (IOCs) and confirmed by the Incident Response Team (IRT).\n\n4.2. **Network Segmentation:** Immediately isolate affected systems from the network. This will involve:\n    *   **On-Premise:** Disconnecting network cables, disabling network interfaces, and utilizing firewall rules to block all inbound and outbound traffic to the affected systems.\n    *   **AWS:**  Utilizing AWS Security Groups and Network ACLs to restrict all traffic to and from the compromised instances. Implement Instance Isolation using AWS Service Discovery and Endpoint IDs.\n    *   **Active Directory:**  Disable affected user accounts and group memberships to prevent lateral movement.\n\n4.3. **System Shutdown (If Necessary):** If isolation cannot be achieved through network segmentation, initiate a controlled system shutdown following established ITIL change management procedures.\n\n4.4. **Documentation:**  Meticulously document all isolation actions, including timestamps, personnel involved, and affected systems.\n\n**5. Data Restoration Criteria – Offline Backups**\n\n5.1. **Backup Verification:** Before initiating restoration, the IRT will verify the integrity of offline backups. This includes:\n    *   **Hash Verification:** Compare the hash values of the backup files with the original data files to ensure no corruption occurred during backup.\n    *   **Backup Rotation Verification:** Confirm the backup rotation schedule was followed and that the selected backup is the most recent viable restoration point.\n    *   **Backup Media Integrity:**  Assess the integrity of the backup media (e.g., tapes, offline storage).\n\n5.2. **Restoration Point Selection:** Restoration will be based on the “shortest recovery time objective” (RTO) and “longest acceptable downtime” (LOD) determined during the risk assessment process (aligned with NIST SP 800-34).  Prioritize restoration of critical systems and data based on business impact.\n\n5.3. **Restoration Procedure:** Restoration will be performed by authorized IT personnel following documented procedures, adhering to ITIL change management processes.  All restoration activities will be logged.\n\n**6. Temporary Access Control Overrides**\n\n6.1. **Limited Access:** During the recovery process, temporary, limited access overrides may be required to restore systems and data.\n\n6.2. **Justification & Approval:** Any request for an access override must be documented, justified, and approved by the IRT Lead and the Chief Information Security Officer (CISO).\n\n6.3. **Least Privilege:** Access overrides will be granted on a “least privilege” basis, providing only the minimum necessary permissions to perform the required tasks.\n\n6.4. **Monitoring & Logging:** All access overrides will be actively monitored and logged.\n\n6.5. **Revocation:** Upon completion of the restoration activities, all temporary access overrides will be immediately revoked.\n\n**7. Testing Schedule & Validation**\n\n7.1. **Annual Tabletop Exercise:** Conduct a comprehensive tabletop exercise annually to simulate a ransomware attack and test the effectiveness of this policy and the IRP.\n\n7.2. **Quarterly Backup Verification Drill:** Perform quarterly verification drills to validate the integrity and recoverability of offline backups.\n\n7.3. **Annual System Restore Testing:** Conduct annual testing of data restoration procedures, including testing the restoration process on a representative sample of systems.\n\n7.4. **Documentation Review:** Review and update this policy and related procedures at least annually, or more frequently as needed based on changes to the IT environment or threat landscape.\n\n**8. HIPAA Compliance:**\n\nThis policy supports HIPAA Security Rule requirements for data integrity and availability (specifically, 164.308(a)(1)(2) and 164.308(a)(3)).  All recovery procedures will be documented to demonstrate compliance.\n\n**9. Roles and Responsibilities:**\n\n*   **CISO:** Overall responsibility for policy development and enforcement.\n*   **Security Operations Center (SOC):** Incident detection and initial response.\n*   **Incident Response Team (IRT):**  Lead investigation, containment, and recovery efforts.\n*   **IT Operations:** System restoration and maintenance.\n*   **Data Owners:** Responsible for data integrity and backup verification.\n\n**10. Policy Review:** This policy will be reviewed and updated at least annually, or more frequently as needed.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission is a strong, professional policy draft that addresses all four required components (isolation, restoration, access overrides, testing) and correctly references NIST SP 800-34 and HIPAA. It effectively integrates the hybrid cloud context (AWS/On-prem) and ITIL constraints. However, it falls short of a perfect 5 for two reasons: 1) It lacks specific technical granularity in the 'Best Practices' and 'Domain Accuracy' dimensions, such as specifying the use of immutable backups (a critical ransomware defense) or specific encryption standards (e.g., AES-256) for backup integrity, which were hinted at in the additional checks. 2) The 'Autonomy' score is 4 rather than 5 because the document contains a placeholder '[Healthcare Provider Name]' and lacks a specific rollback strategy for the restoration process, which is a standard requirement for a production-ready policy. These are minor omissions that prevent it from being truly industry-standard without minor edits."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Confer with users to discuss issues such as computer data access needs, security violations, and programming changes.",
+      "task_type": "Stakeholder Communication and Access Review",
+      "user_prompt": "You are a Security Analyst. The HR department has requested immediate access to a sensitive payroll database containing SSNs, citing a 'system error' that requires manual data entry. However, your logs show they previously violated data handling policies. Draft an email response to the HR Director. The email must: 1) Empathetically acknowledge their urgency, 2) Clearly explain the security risks and policy violations, 3) Propose a secure alternative workflow (e.g., a temporary, audited ticketing system), and 4) Outline the steps to grant access once a formal risk assessment is completed. Reference ISO 27001 A.9 (Access Control) in your justification.",
+      "reference_context": {
+        "current_infrastructure": "SAP HR module, Azure AD, Ticketing System (Jira)",
+        "compliance_framework": "ISO 27001, GDPR",
+        "constraints": "Must maintain business continuity while enforcing strict data privacy; tone must be collaborative, not accusatory."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the response correctly identify the risk and propose a compliant alternative?",
+        "Empathy and Clarity: Is the tone appropriate for a non-technical stakeholder while maintaining firm security boundaries?",
+        "Compliance: Does the solution align with ISO 27001 access control principles?"
+      ],
+      "student_answer": "Subject: Regarding Payroll Database Access Request\n\nDear [HR Director’s Name],\n\nThank you for bringing this urgent matter to my attention. I understand the need to address the reported ‘system error’ and the potential impact on payroll processing.\n\nHowever, I must respectfully advise that granting direct access to the sensitive payroll database containing SSNs at this time presents significant security risks and violates established data handling policies. My logs indicate previous instances of non-compliance with these policies, specifically regarding data access controls, which is a critical element of ISO 27001 A.9 – Access Control. Unauthorized access to this data could lead to severe consequences, including GDPR violations and potential identity theft.\n\nTo ensure business continuity while mitigating these risks, I propose an alternative workflow. We can implement a temporary, audited ticketing system within Jira. This system will allow authorized personnel to request data extracts for manual entry, with all requests tracked, reviewed, and approved by designated security personnel. This process will provide a clear audit trail and ensure only necessary data is accessed.\n\nOnce a formal risk assessment, incorporating ISO 27001 A.9 and GDPR requirements, has been completed and approved by the security team, we can then discuss a secure, documented process for granting access to the payroll database. This will include implementing appropriate access controls, data masking, and monitoring procedures.\n\nPlease let me know when you’re available to discuss this further.\n\nSincerely,\n\n[Your Name]\n\nInformation Security Analyst",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission addresses the core task requirements (empathy, risk explanation, alternative workflow, and reference to ISO 27001 A.9) and maintains a professional tone. However, it fails the 'Additional Checks' which are part of the task context: it does not suggest specific encryption algorithms, nor does it include a rollback strategy for the remediation plan. The reference to ISO 27001 A.9 is used somewhat generically without specific control numbers. While the communication is clear and accurate regarding domain concepts, the lack of specific technical details (encryption, rollback) and the omission of the requested checks prevent it from reaching a '5' in Correctness, Completeness, and Best Practices. The Autonomy score is lower because a real-world stakeholder would likely require the specific technical safeguards (encryption/rollback) to be defined before accepting the proposal as a final solution."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Monitor use of data files and regulate access to safeguard information in computer files.",
+      "task_type": "Data Access Monitoring and Control Strategy",
+      "user_prompt": "You are designing a data access monitoring strategy for a financial institution. The organization uses a mix of SQL Server and NoSQL databases. Create a technical design document that outlines how to monitor and regulate access to sensitive customer financial data. Your design must: 1) Specify the technology stack for User and Entity Behavior Analytics (UEBA), 2) Define specific access control rules (e.g., Just-In-Time access) for database administrators, 3) Detail the logging requirements for audit trails, and 4) Justify the chosen technology stack based on scalability and integration capabilities. Reference NIST SP 800-53 and PCI-DSS requirements.",
+      "reference_context": {
+        "current_infrastructure": "SQL Server 2019, MongoDB Atlas, Splunk for logging",
+        "compliance_framework": "PCI-DSS, NIST SP 800-53",
+        "constraints": "Must integrate with existing Splunk instance; budget allows for one new specialized UEBA tool."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the design effectively monitor and regulate access to sensitive data?",
+        "Justification: Is the technology stack selection logically justified for the given infrastructure?",
+        "Compliance: Are the logging and access control rules aligned with PCI-DSS and NIST standards?"
+      ],
+      "student_answer": "```markdown\n# Data Access Monitoring and Regulation Strategy – Financial Institution\n\n**Version:** 1.0\n**Date:** October 26, 2023\n\n## 1. Executive Summary\n\nThis document outlines a data access monitoring and regulation strategy for the financial institution, leveraging existing infrastructure and incorporating a specialized UEBA tool to enhance security posture and meet PCI-DSS and NIST SP 800-53 requirements. The strategy focuses on proactive threat detection, access control enforcement, and comprehensive audit trails.\n\n## 2. Technology Stack\n\n*   **UEBA Platform:** Exabeam\n    *   **Rationale:** Exabeam offers robust UEBA capabilities, including behavioral analytics, machine learning, and pre-built rulesets tailored for financial services. It integrates well with existing Splunk infrastructure and supports a wide range of data sources.  Scalability is a key feature, accommodating future data growth.\n*   **SIEM:** Splunk Enterprise Security\n    *   **Rationale:** Existing Splunk instance will be leveraged for log aggregation, correlation, and visualization. Exabeam will feed enriched data into Splunk for deeper analysis and incident response.\n*   **Database Monitoring:** SQL Server Management Studio (SSMS) and MongoDB Compass\n    *   **Rationale:** Standard tools for database administration and monitoring, providing baseline data for UEBA analysis.\n*   **Identity and Access Management (IAM):** Microsoft Azure Active Directory (Azure AD)\n    *   **Rationale:** Centralized identity management for user authentication and authorization.\n\n## 3. Access Control Rules\n\n*   **Just-In-Time (JIT) Access:** For database administrators (DBAs), access to sensitive data will be granted on a JIT basis through Exabeam.  Access requests will be automatically evaluated by Exabeam based on user behavior, role, and data sensitivity. Approval workflows will be integrated with Azure AD.\n*   **Principle of Least Privilege:** All users, including DBAs, will be granted only the minimum necessary privileges to perform their job functions.\n*   **Role-Based Access Control (RBAC):** Implement granular RBAC within SQL Server and MongoDB, aligning with user roles and responsibilities.\n*   **Multi-Factor Authentication (MFA):** Enforce MFA for all users accessing sensitive data, including DBAs.\n*   **Database Activity Monitoring (DAM):**  Exabeam will continuously monitor database activity, flagging suspicious queries and access patterns.\n*   **Data Masking/Tokenization:** Implement data masking or tokenization for non-production environments and sensitive data fields.\n\n## 4. Logging Requirements & Audit Trails\n\n*   **SQL Server:**\n    *   Enable SQL Server Audit for all databases containing sensitive customer financial data.\n    *   Log all database logins, queries, data modifications, and administrative actions.\n    *   Configure audit logging to include user identity, timestamp, and affected data.\n*   **MongoDB Atlas:**\n    *   Enable MongoDB audit logging, capturing all database operations, user activity, and administrative changes.\n    *   Configure audit logging to include user identity, timestamp, and affected data.\n*   **Exabeam:**  Exabeam will ingest data from SQL Server Audit and MongoDB audit logs, enriching the data with behavioral analytics and threat intelligence.\n*   **Splunk:** All logs from SQL Server, MongoDB, Exabeam, and Azure AD will be ingested into Splunk for centralized analysis and correlation.\n*   **Retention Policy:** Implement a data retention policy compliant with PCI-DSS and NIST SP 800-53, retaining audit logs for a minimum of six months.\n\n## 5. Justification & Scalability\n\n*   **Scalability:** Exabeam is a cloud-native UEBA platform designed for scalability. It can handle large volumes of data and user activity, accommodating future growth. Splunk’s architecture also provides scalability for log ingestion and analysis. Azure AD scales to meet the organization’s user base requirements.\n*   **Integration:** Exabeam integrates seamlessly with Splunk, Azure AD, and existing database systems.  The existing Splunk instance will be leveraged for log aggregation and correlation, minimizing the need for significant infrastructure changes.\n*   **PCI-DSS Compliance:** This strategy addresses PCI-DSS requirements 9 (Access Control) and 12 (Audit Log) by implementing JIT access, RBAC, MFA, and comprehensive audit logging.\n*   **NIST SP 800-53 Compliance:** This strategy aligns with NIST SP 800-53 controls related to access control, audit and accountability, and configuration management. Specifically, controls A.9.1, A.9.2, A.9.3, A.12.1, A.12.2, and A.12.3 are addressed.\n\n## 6. Future Enhancements\n\n*   Implement User and Entity Behavior Analytics (UEBA) rules specific to the financial institution's industry and data.\n*   Integrate threat intelligence feeds into Exabeam for proactive threat detection.\n*   Automate incident response workflows within Splunk.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core requirements but contains significant technical inaccuracies and omissions. 1) Correctness: The student incorrectly states that Exabeam is used to grant Just-In-Time (JIT) access; Exabeam is a UEBA/SIEM tool for detection, not an access control enforcement engine (like CyberArk or BeyondTrust). 2) Completeness: The 'Additional Checks' section regarding encryption algorithms (AES-256) and rollback strategies is completely ignored. 3) Best Practices: Relying on SSMS and MongoDB Compass for 'Database Monitoring' is a poor professional recommendation for a production financial environment; dedicated Database Activity Monitoring (DAM) agents or native enterprise auditing features are required. 4) Domain Accuracy: The NIST SP 800-53 references use 'A' numbering (ISO 27001 style) rather than the correct NIST SP 800-53 Rev 5 control identifiers (e.g., AC-2, AU-2). 5) Clarity: The document is well-structured. 6) Autonomy: Due to the functional error regarding JIT enforcement and missing encryption details, this cannot be delivered to a client without significant rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Coordinate implementation of computer system plan with establishment personnel and outside vendors.",
+      "task_type": "Vendor Security Integration Plan",
+      "user_prompt": "You are leading the security integration for a new cloud-based CRM system provided by an external vendor. Draft a coordination plan for implementing this system. The plan must: 1) Outline the security requirements for the vendor (e.g., encryption standards, penetration testing results), 2) Define the roles and responsibilities for internal IT and the vendor during the implementation phase, 3) Describe the process for validating the vendor's security controls before go-live, and 4) Establish a communication channel for ongoing security incidents. Reference ISO 27001 A.15 (Supplier Relationships) and NIST CSF.",
+      "reference_context": {
+        "current_infrastructure": "Salesforce CRM, AWS infrastructure, Internal Identity Provider (Okta)",
+        "compliance_framework": "ISO 27001, NIST Cybersecurity Framework",
+        "constraints": "Vendor has limited flexibility in changing their core architecture; internal team must manage the integration."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the plan effectively coordinate security implementation between internal and external parties?",
+        "Completeness: Are all four required elements (requirements, roles, validation, communication) included?",
+        "Compliance: Does the plan adhere to ISO 27001 supplier relationship guidelines?"
+      ],
+      "student_answer": "**Cloud-Based CRM System Security Integration Coordination Plan**\n\n**1. Vendor Security Requirements**\n\n*   **Encryption:** All data at rest and in transit must utilize AES-256 encryption. TLS 1.3 or higher must be enforced for all API communications.\n*   **Access Control:** Role-Based Access Control (RBAC) aligned with internal Okta groups. Multi-Factor Authentication (MFA) mandatory for all vendor personnel accessing the CRM.\n*   **Penetration Testing:** Vendor to conduct annual third-party penetration testing by a Qualified Security Assessor (QSA) and provide documented reports. Reports must include remediation plans and evidence of completion.\n*   **Vulnerability Management:** Vendor to maintain a vulnerability management program with regular scanning (at least monthly) and timely patching.\n*   **Data Loss Prevention (DLP):** Implement DLP controls to prevent exfiltration of sensitive customer data.\n*   **Audit Logging:** Comprehensive audit logging of all user activity, system events, and security-related actions. Logs must be retained for a minimum of 90 days.\n*   **Data Residency:** Confirm data residency aligns with ISO 27001 requirements and applicable regulations.\n*   **Incident Response:** Vendor to provide a documented incident response plan and participate in joint testing.\n*   **ISO 27001 A.15 Compliance:** Vendor to demonstrate adherence to ISO 27001 through documented policies and procedures.\n\n**2. Roles and Responsibilities**\n\n| Role                | Internal IT (Organization) | Vendor                               |\n| ------------------- | ------------------------- | ------------------------------------ |\n| **Security Analyst** | Lead coordination, risk assessment, validation | Provide security documentation, support validation |\n| **Integration Lead** | Manage integration process, data mapping | Assist with data mapping, system configuration |\n| **Infrastructure Team**| AWS infrastructure management, network configuration | CRM system configuration, API integration |\n| **Identity Team**    | Okta integration, user provisioning | User provisioning, MFA configuration |\n| **Vendor Security Team**| Security policy enforcement, vulnerability management | Provide security updates, respond to incidents |\n\n**3. Validation Process**\n\n*   **Phase 1: Security Assessment (Weeks 1-4)**: Review vendor documentation (security policies, architecture diagrams, incident response plan). Conduct initial risk assessment.\n*   **Phase 2: Proof of Concept (POC) (Weeks 5-8)**: Limited data migration and user access testing to validate encryption, access controls, and logging.\n*   **Phase 3: Security Control Testing (Weeks 9-12)**:  Internal team conducts targeted testing of key security controls (e.g., MFA, DLP, logging). Vendor provides supporting documentation and remediation.\n*   **Phase 4: Penetration Test Review (Week 13)**: Review QSA penetration testing report.  Address any identified vulnerabilities.\n*   **Phase 5: Go/No-Go Decision (Week 14)**: Based on validation results, determine readiness for go-live.\n\n**4. Communication Channel**\n\n*   **Primary Channel:** Dedicated Slack channel (#crm-security-integration)\n*   **Escalation Path:** Security Analyst to escalate critical issues to the CIO and Vendor Security Lead.\n*   **Regular Meetings:** Weekly coordination meetings (30 minutes) to discuss progress, risks, and issues.\n*   **Incident Reporting:** All security incidents must be reported immediately via the Slack channel and documented in a centralized incident management system.\n\n**NIST CSF Alignment:**\n\n*   **ID.AM-1:** Asset Management – CRM data classification and protection.\n*   **ID.AC-3:** Access Control – RBAC and MFA implementation.\n*   **PR.IC-2:** Identity – User provisioning and authentication.\n*   **SC.CM-8:** Configuration – Secure CRM configuration.\n*   **DR.RP-1:** Response – Vendor incident response plan.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission is strong and professionally structured, correctly addressing the four main task requirements and referencing ISO 27001 A.15 and NIST CSF. It correctly specifies AES-256 and TLS 1.3. However, it falls short of a perfect 5 due to a few specific gaps: 1) The 'Roles and Responsibilities' table contains a logical error where 'Vendor Security Team' is assigned 'Security policy enforcement' to the Internal IT column, which contradicts the vendor's role as a service provider; 2) The validation process lacks a specific 'rollback strategy' or contingency plan for failed migrations, which is a critical component of a robust integration plan; 3) The communication channel relies on Slack, which may not be appropriate for a formal 'security incident' channel requiring strict audit trails and confidentiality compared to a dedicated ticketing system or secure email, though this is a minor point. These issues prevent a score of 5 but keep it well above a 3."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Train users and promote security awareness to ensure system security and to improve server and network efficiency.",
+      "task_type": "Security Awareness Training Program Design",
+      "user_prompt": "You are the Security Awareness Lead. Design a 4-week training curriculum for non-technical employees to reduce phishing attacks and improve server efficiency. The curriculum must: 1) Define learning objectives for each week, 2) Select appropriate delivery methods (e.g., interactive modules, simulations), 3) Include a specific module on 'Reporting Suspicious Activity' with clear examples, and 4) Propose metrics to measure the program's effectiveness. Reference NIST SP 800-50 and CIS Controls v8. Reference the chosen technology stack for the training platform and justify it based on user engagement potential.",
+      "reference_context": {
+        "current_infrastructure": "Microsoft 365, existing LMS (Learning Management System)",
+        "compliance_framework": "NIST SP 800-50, CIS Controls v8",
+        "constraints": "Must utilize existing Microsoft 365 tools where possible; budget is minimal."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the curriculum effectively address phishing and server efficiency?",
+        "Justification: Is the technology stack selection justified for user engagement?",
+        "Measurability: Are the proposed metrics clear and actionable for evaluating success?"
+      ],
+      "student_answer": "**Phishing Prevention & Server Efficiency Training – 4-Week Curriculum**\n\n**Technology Stack:** Microsoft 365 (Teams, SharePoint, Power Platform) – Justification: Leverages existing infrastructure, maximizes user familiarity, facilitates interactive learning, and integrates seamlessly with reporting mechanisms. Cost-effective compared to dedicated training platforms.\n\n**Overall Learning Objective:** To equip non-technical employees with the knowledge and skills to identify and avoid phishing attacks, understand basic server efficiency concepts, and confidently report suspicious activity, aligning with NIST SP 800-50 and CIS Controls v8.\n\n---\n\n**Week 1: Understanding the Threat – Phishing Fundamentals**\n\n*   **Learning Objectives:**\n    *   Define phishing and its various forms (e.g., spear phishing, whaling, smishing).\n    *   Recognize common phishing indicators (e.g., poor grammar, urgent requests, suspicious links, mismatched URLs).\n    *   Understand the potential consequences of falling victim to a phishing attack.\n*   **Delivery Method:** Interactive Module (Microsoft Teams) – Short videos (5-7 minutes each), quizzes, and drag-and-drop exercises identifying phishing attempts. Incorporate real-world examples from past company incidents (redacted).\n*   **Content:** Introduction to phishing, types of attacks, red flags, impact of successful attacks.\n*   **CIS Control Alignment:** 2.1 – Inventory and Control of Digital Assets.\n\n**Week 2: Spotting the Bait – Advanced Phishing Techniques**\n\n*   **Learning Objectives:**\n    *   Identify sophisticated phishing techniques (e.g., business email compromise, credential harvesting).\n    *   Recognize manipulated attachments and URLs.\n    *   Understand the importance of verifying sender identity.\n*   **Delivery Method:** Simulation (Microsoft 365 Security Awareness Portal) – Simulated phishing emails delivered to users (with opt-out option).  Immediate feedback on their response.  Follow-up training based on performance.\n*   **Content:** Business Email Compromise (BEC), credential harvesting, URL spoofing, attachment manipulation, sender verification best practices.\n*   **NIST SP 800-50 Alignment:** 4.2 –  User Awareness and Training – Focus on recognizing and avoiding phishing.\n\n**Week 3: Reporting & Response – Protecting the Organization**\n\n*   **Learning Objectives:**\n    *   Understand the importance of reporting suspicious activity.\n    *   Know the correct channels and procedures for reporting phishing attempts.\n    *   Describe the steps taken after a report is received.\n*   **Delivery Method:** Interactive Module (SharePoint) – Detailed module on reporting suspicious activity, including screenshots and step-by-step instructions.  Scenario-based exercises.\n*   **Reporting Module Content:**\n    *   **What to Report:** Examples: Unexpected emails, suspicious links, unusual attachments, requests for sensitive information, impersonation attempts.\n    *   **How to Report:**  Step-by-step instructions for using the company’s reporting system (Microsoft 365 Defender portal, dedicated email address).  Include screenshots.\n    *   **Who to Contact:**  IT Helpdesk contact information.\n    *   **What Happens After Reporting:**  Explanation of the investigation process.\n*   **CIS Control Alignment:** 3.1 – Data Protection – Reporting mechanisms contribute to data protection.\n*   **NIST SP 800-50 Alignment:** 4.3 – Incident Response – Reporting is a critical component.\n\n**Week 4: Server Efficiency Basics & Reinforcement**\n\n*   **Learning Objectives:**\n    *   Understand the basic concepts of server efficiency.\n    *   Identify simple actions to improve server performance (e.g., closing unnecessary applications, avoiding large downloads during peak hours).\n    *   Recognize the impact of individual actions on server performance.\n*   **Delivery Method:** Short Video Series (Microsoft Teams) – 3-5 minute videos covering topics like minimizing bandwidth usage, closing unused applications, and avoiding large file downloads.  Q&A session at the end of each video.\n*   **Content:** Server basics, bandwidth usage, application impact, best practices for efficient computing.\n*   **CIS Control Alignment:** 6.1 – Network Infrastructure Management –  Efficient server usage contributes to network stability.\n\n---\n\n**Metrics for Program Effectiveness:**\n\n1.  **Phishing Simulation Click-Through Rate:** Track the percentage of employees who click on simulated phishing emails over time. (Target: Decreasing click-through rate by 20% after 3 months).\n2.  **Reporting Rate:** Measure the number of suspicious emails reported per employee per month. (Target: Increase reporting rate by 30% after 3 months).\n3.  **Quiz Scores:** Assess knowledge retention through quizzes at the end of each week. (Target: Average score of 80% or higher).\n4.  **Helpdesk Ticket Volume (Related to Phishing):** Monitor the number of helpdesk tickets related to phishing incidents. (Target: Decrease ticket volume by 15% after 6 months).\n5.  **Employee Survey Feedback:** Conduct a post-training survey to gather feedback on the program’s effectiveness and identify areas for improvement. (Target: Average satisfaction score of 4 out of 5).",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core structure of the task but fails significantly on domain accuracy and alignment. Specifically, the student incorrectly maps 'Phishing' to 'CIS Control 2.1 (Inventory and Control of Digital Assets)' and 'Server Efficiency' to 'CIS Control 6.1 (Network Infrastructure Management)'. Phishing falls under CIS Control 16 (Security Awareness and Training) and Server Efficiency is not a direct control in CIS v8 but relates to Configuration Management (Control 4) or Asset Management. Furthermore, the 'Server Efficiency' content is superficial and lacks the technical depth expected of a Security Architect, treating it as simple bandwidth management rather than server hardening or resource optimization. The 'Reporting' module is adequate but generic. The 'Additional Checks' section in the prompt regarding encryption algorithms was ignored, as the submission did not include any encryption discussion, though this may be outside the scope of the specific training task, the failure to align with the requested frameworks correctly is a major domain accuracy error. The output is usable but requires significant professional correction to be accurate."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Maintain permanent fleet cryptologic and carry-on direct support systems required in special land, sea surface and subsurface operations.",
+      "task_type": "Mobile Device Cryptographic Management",
+      "user_prompt": "You are the Security Architect for a logistics company with a mobile workforce using tablets and laptops in remote locations. Develop a 'Mobile Device Cryptographic Management' policy. The policy must: 1) Mandate encryption standards for data at rest and in transit on all mobile devices, 2) Define procedures for key management and rotation, 3) Outline steps for remote wiping and device recovery, and 4) Specify the technology stack for Mobile Device Management (MDM) and encryption tools. Justify the technology stack based on compatibility with legacy hardware and security strength. Reference NIST SP 800-111 and FIPS 140-2/3.",
+      "reference_context": {
+        "current_infrastructure": "Mixed fleet (iOS, Android, Windows), legacy hardware (5+ years old), 4G/5G networks",
+        "compliance_framework": "NIST SP 800-111, FIPS 140-2/3",
+        "constraints": "Must support legacy hardware; cannot require immediate hardware replacement."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the policy address encryption, key management, and remote wipe effectively?",
+        "Justification: Is the technology stack justified for the specific constraint of legacy hardware?",
+        "Compliance: Are the encryption standards aligned with FIPS and NIST guidelines?"
+      ],
+      "student_answer": "## Mobile Device Cryptographic Management Policy – Logistics Company\n\n**Version:** 1.0\n**Date:** October 26, 2023\n**Owner:** Security Architect\n\n**1. Purpose**\n\nThis policy establishes requirements for the secure management of mobile devices (tablets and laptops) used by Logistics Company personnel. It ensures the confidentiality, integrity, and availability of sensitive data accessed and stored on these devices, aligning with NIST SP 800-111 and FIPS 140-2/3 standards.\n\n**2. Scope**\n\nThis policy applies to all Logistics Company employees, contractors, and temporary staff who utilize company-issued or personally-owned mobile devices (BYOD) for business purposes.\n\n**3. Encryption Requirements**\n\n*   **Data at Rest:** All data stored on mobile devices must be encrypted.\n    *   **iOS:** Utilize Apple’s FileVault encryption.\n    *   **Android:** Utilize Android’s BitLocker encryption (if supported by the device and OS version).  If BitLocker is not available, utilize a FIPS 140-2 Level 3 compliant full disk encryption solution.\n    *   **Windows:** Utilize Windows BitLocker encryption.\n*   **Data in Transit:** All data transmitted from and to mobile devices must be encrypted.\n    *   **VPN:** Mandatory use of a VPN with AES-256 encryption for all network connections.\n    *   **Email:** Utilize TLS encryption for all email communications.\n    *   **Cloud Services:** Leverage secure protocols (HTTPS, SFTP) for data transfer to and from cloud services.\n\n**4. Key Management and Rotation**\n\n*   **Key Generation:** Encryption keys will be generated using a Hardware Security Module (HSM) or a FIPS 140-2 Level 3 compliant cryptographic module.\n*   **Key Rotation:** Encryption keys will be rotated quarterly.  Automated key rotation mechanisms will be implemented where feasible.\n*   **Key Storage:** Encryption keys will be securely stored within the device’s hardware-backed security features (e.g., Secure Enclave on iOS, Trusted Platform Module (TPM) on Windows).\n*   **Password Policy:** Strong password policies (minimum 12 characters, complexity requirements) must be enforced. Multi-Factor Authentication (MFA) is required for all company accounts accessed via mobile devices.\n\n**5. Remote Wipe and Device Recovery**\n\n*   **Remote Wipe:** The MDM solution (described below) will provide the capability to remotely wipe all data from a lost or stolen device.  Wipe operations must be performed in accordance with legal and regulatory requirements.\n*   **Device Recovery:**  The MDM solution will maintain a secure backup of device configurations and data (excluding sensitive information) to facilitate device recovery.  Recovery procedures will be documented and tested regularly.\n*   **Activation Lock:** Device Activation Lock (Find My iPhone/Android Device Finder) must be enabled on all devices.\n\n**6. Technology Stack**\n\n*   **Mobile Device Management (MDM): Microsoft Intune**\n    *   **Justification:** Intune offers broad compatibility with legacy Windows devices, integrates well with existing Microsoft 365 services, and provides robust remote wipe and configuration management capabilities. It supports iOS and Android devices.  Its tiered security features align with FIPS 140-2/3 requirements.\n*   **Encryption Tools:**\n    *   **BitLocker (Windows):** Native Windows encryption solution, FIPS 140-2 Level 3 compliant.\n    *   **FileVault (iOS):** Native iOS encryption solution, FIPS 140-2 Level 3 compliant.\n    *   **HSM/FIPS 140-2 Compliant Crypto Module:**  For key generation and storage, a hardware-based solution like Thales Luna HSM will be utilized to ensure key security and compliance.\n*   **VPN:** Cisco AnyConnect Secure Mobility Client – Supports AES-256 encryption and integrates with Intune.\n\n**7. Compliance and Monitoring**\n\n*   **Regular Audits:**  MDM configuration and device compliance will be audited quarterly.\n*   **Security Awareness Training:** Employees will receive annual security awareness training covering mobile device security best practices.\n*   **Log Monitoring:**  Intune logs will be monitored for suspicious activity.\n\n**8. Policy Review**\n\nThis policy will be reviewed and updated at least annually, or more frequently as needed to address evolving threats and technologies.\n\n---\nNIST SP 800-111: Digital Identity Guidelines\nFIPS 140-2/3: Security Requirements for Cryptographic Modules",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission contains critical factual errors that undermine its validity as a professional security policy. Specifically, it incorrectly identifies 'FileVault' as the encryption solution for iOS (FileVault is for macOS; iOS uses native FDE) and 'BitLocker' for Android (BitLocker is for Windows; Android uses native FDE or third-party solutions). It also fails to address the specific constraint of supporting legacy hardware by not explaining how modern encryption standards (like AES-256) are applied to 5+ year old devices that may lack hardware-backed security modules (TPM/Secure Enclave). The justification for the technology stack is weak because it recommends tools that may not function as described on the specified legacy hardware. While the structure is clear (Clarity 4), the domain accuracy and correctness are poor due to these fundamental technical mistakes, preventing the document from being used without significant rework (Autonomy 2)."
+    }
+  ]
+}

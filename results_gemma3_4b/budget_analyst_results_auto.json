@@ -1,0 +1,619 @@
+{
+  "meta": {
+    "job_title": "Budget Analysts",
+    "job_id": "budget_analyst",
+    "onet_code": "13-2031.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 13,
+    "evaluated_tasks": 13,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.06,
+      "dimensions": {
+        "Correctness": 2.0,
+        "Completeness": 2.08,
+        "Best Practices": 1.92,
+        "Domain Accuracy": 1.77,
+        "Clarity": 2.69,
+        "Autonomy": 1.92
+      },
+      "evaluated_tasks": 13,
+      "scale_max": 5
+    },
+    "total_time_seconds": 507.48
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze monthly department budgeting and accounting reports to maintain expenditure controls.",
+      "task_type": "Variance Analysis",
+      "user_prompt": "You are a Budget Analyst for a municipal department. Review the attached Q3 financial data. The department has a fixed annual appropriation of $5,000,000. Calculate the cumulative variance between the original budget and actual expenditures for the first three quarters. Identify any line items where the variance exceeds 10% of the allocated budget. Draft a formal memo summarizing these findings, explaining the primary drivers of the variance (e.g., staffing costs, supply chain inflation), and recommend specific corrective actions to bring the department back on track for the remainder of the fiscal year.",
+      "reference_context": {
+        "department_name": "Public Works",
+        "fiscal_year": 2024,
+        "total_appropriation": 5000000.0,
+        "quarterly_data": [
+          {
+            "quarter": "Q1",
+            "original_budget": 1250000.0,
+            "actual_expenditure": 1180000.0,
+            "variance_percent": -5.6
+          },
+          {
+            "quarter": "Q2",
+            "original_budget": 1250000.0,
+            "actual_expenditure": 1420000.0,
+            "variance_percent": 13.6
+          },
+          {
+            "quarter": "Q3",
+            "original_budget": 1250000.0,
+            "actual_expenditure": 1310000.0,
+            "variance_percent": 4.8
+          }
+        ],
+        "key_drivers": {
+          "Q2_excess": "Unplanned emergency road repairs ($150,000)",
+          "Q3_excess": "Overtime for snow removal prep ($60,000)"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the variance calculations mathematically accurate to two decimal places?",
+        "Criterion 2: Completeness — Did the memo address all flagged line items and provide actionable recommendations?",
+        "Criterion 3: Best practices — Is the tone professional and the structure aligned with standard financial reporting?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Department Head, Public Works\n**FROM:** [Your Name], Budget Analyst\n**DATE:** October 26, 2024\n**SUBJECT:** Q3 Financial Variance Analysis and Corrective Action Recommendations\n\n**Executive Summary:**\n\nThis memo summarizes the Public Works Department’s financial performance for Q1-Q3 of fiscal year 2024.  Actual expenditures exceeded the original budget by $310,000, representing a cumulative variance of 6.2%.  Significant variances occurred in Q2 and Q3, primarily driven by unplanned emergency repairs and overtime related to winter weather preparation.  Recommendations are provided to mitigate future overspending and ensure the department remains within its appropriation.\n\n**Financial Performance Analysis:**\n\n*   **Cumulative Variance:** The total variance between the original budget of $5,000,000 and actual expenditures through Q3 is $310,000, representing a 6.2% variance.\n*   **Quarterly Breakdown:**\n    *   Q1: Variance of -5.6% ($70,000 under budget)\n    *   Q2: Variance of 13.6% ($170,000 over budget)\n    *   Q3: Variance of 4.8% ($10,000 over budget)\n*   **Line Items Exceeding 10% Variance:**\n    *   Q2: $170,000 (Unplanned emergency road repairs)\n    *   Q3: $10,000 (Overtime for snow removal preparation)\n\n**Primary Drivers of Variance:**\n\nThe primary drivers of the observed variances are:\n\n*   **Q2 – Emergency Road Repairs:** Unforeseen and extensive emergency road repairs, totaling $150,000, significantly exceeded the original budget allocation.\n*   **Q3 – Winter Weather Preparedness:** Increased overtime costs associated with proactive snow removal preparation, amounting to $60,000, contributed to the Q3 overspending.  Supply chain inflation for winter supplies likely played a role in increasing these costs.\n\n**Corrective Action Recommendations:**\n\n1.  **Enhanced Contingency Planning:** Develop a more robust contingency fund specifically for emergency repairs, recognizing the potential for unforeseen infrastructure challenges.\n2.  **Improved Forecasting:** Refine budget forecasting processes to better anticipate seasonal demands, particularly related to winter weather events. Incorporate historical data and weather forecasts into budget projections.\n3.  **Supply Chain Management:** Implement strategies to mitigate the impact of supply chain inflation, including exploring alternative suppliers and bulk purchasing options.\n4.  **Staffing Optimization:** Evaluate staffing levels to ensure efficient resource allocation and minimize the need for overtime. Cross-train personnel to enhance flexibility and responsiveness.\n5.  **Budget Monitoring:** Implement a more frequent budget monitoring system (e.g., monthly reviews) to identify and address potential overspending early on.\n\n**Conclusion:**\n\nAddressing the identified variances and implementing the recommended corrective actions will be crucial to ensuring the Public Works Department operates within its allocated budget for the remainder of fiscal year 2024.  I am available to discuss these findings and recommendations in greater detail.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails the primary calculation and identification task. The prompt asks to identify line items where variance exceeds 10% of the *allocated budget*. The student incorrectly identifies Q3 ($10,000 over budget) as a line item exceeding 10% variance, whereas Q3's variance is only 4.8% (well under the 10% threshold). The student also fails to identify the specific line items (e.g., 'Emergency Repairs') as the entities exceeding the threshold, instead listing quarters. While the memo format, tone, and general logic are professional (Clarity 4), the fundamental error in data interpretation and failure to correctly isolate the specific line items requested (Correctness 3, Domain Accuracy 3) significantly reduces the utility of the analysis. The recommendations are generic rather than specifically tied to the identified line items as requested."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Examine budget estimates for completeness, accuracy, and conformance with procedures and regulations.",
+      "task_type": "Compliance Audit",
+      "user_prompt": "You are a Budget Analyst reviewing a grant proposal for the 'Urban Renewal Initiative'. The proposal requests $2,500,000. The attached budget estimate includes a line item for 'Consulting Services' at $450,000 and 'Equipment' at $300,000. According to Federal Regulation 2 CFR 200, consulting services are capped at 15% of the total grant award, and equipment costs must be directly tied to the project scope. Verify if the budget estimates conform to these regulations. If non-compliant, calculate the required adjustment amount and draft a summary report detailing the discrepancies and the corrected budget figures.",
+      "reference_context": {
+        "grant_name": "Urban Renewal Initiative",
+        "total_requested": 2500000.0,
+        "budget_items": [
+          {
+            "category": "Consulting Services",
+            "amount": 450000.0
+          },
+          {
+            "category": "Equipment",
+            "amount": 300000.0
+          },
+          {
+            "category": "Personnel",
+            "amount": 1750000.0
+          }
+        ],
+        "regulatory_constraints": {
+          "consulting_cap_percent": 15.0,
+          "equipment_requirement": "Must be directly tied to project scope"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Regulatory Adherence — Did the model correctly identify the violation of the 15% consulting cap?",
+        "Criterion 2: Calculation Precision — Are the adjusted budget figures calculated correctly to two decimal places?",
+        "Criterion 3: Reasoning — Is the explanation of the discrepancy clear and supported by the cited regulation?"
+      ],
+      "student_answer": "**Subject: Budget Review – Urban Renewal Initiative**\n\n**Date:** October 26, 2023\n\n**To:** Grant Proposal Review Committee\n\n**From:** Budget Analyst\n\n**Executive Summary:**\n\nThe proposed budget for the Urban Renewal Initiative requires review to ensure compliance with Federal Regulation 2 CFR 200.  The current budget exceeds the allowable consulting service cap and lacks sufficient justification for the equipment allocation.\n\n**Findings:**\n\n1.  **Consulting Services:** The requested $450,000 for consulting services represents 18% of the total grant award ($2,500,000). This exceeds the regulatory cap of 15%.\n\n2.  **Equipment:** The $300,000 allocated to equipment requires further scrutiny to confirm its direct linkage to the project scope.  Without detailed justification, this allocation is considered potentially non-compliant.\n\n**Recommendations & Corrected Budget:**\n\nTo achieve regulatory compliance, the following adjustments are recommended:\n\n*   **Consulting Services:** Reduce the consulting services budget by $75,000 ($450,000 - (15% * $2,500,000)).  The revised consulting services budget should be $375,000.\n\n*   **Equipment:**  Suspend the equipment allocation until a detailed justification demonstrating a direct link to the project scope is provided.  The equipment budget should be set to $0.\n\n**Revised Budget Summary:**\n\n*   **Consulting Services:** $375,000\n*   **Equipment:** $0\n*   **Personnel:** $1,750,000\n*   **Total:** $2,500,000\n\n**Conclusion:**\n\nImplementing these adjustments will ensure the Urban Renewal Initiative budget aligns with Federal Regulation 2 CFR 200.  Please provide the requested justification for the equipment allocation promptly.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the consulting services violation and calculates the adjustment accurately. However, it fails on domain accuracy and completeness regarding the equipment line item: the student set the equipment budget to $0 without justification, whereas the regulation requires the cost to be tied to the scope, not necessarily removed if the scope justifies it. The student also ignored the 'Additional Checks' instruction regarding Q2 variance and specific drivers (emergency repairs/overtime), which were likely part of the intended context for a complete answer. The tone is professional, but the logic on equipment is flawed for a compliance officer role."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Summarize budgets and submit recommendations for the approval or disapproval of funds requests.",
+      "task_type": "Funds Request Recommendation",
+      "user_prompt": "You are a Budget Analyst evaluating a request for $1,200,000 in additional funding for the 'IT Infrastructure Upgrade'. The request cites a 20% increase in hardware costs due to market inflation. The department's current fiscal year budget for IT is $4,000,000, with $3,200,000 already spent. The organization's policy states that no supplemental funds can be approved if the total projected spend exceeds 110% of the original appropriation without a board waiver. Calculate the total projected spend including this request. Determine if the request can be approved under current policy or if a waiver is required. Draft a recommendation memo stating your decision and the financial justification.",
+      "reference_context": {
+        "department": "Information Technology",
+        "original_appropriation": 4000000.0,
+        "current_spending": 3200000.0,
+        "requested_funds": 1200000.0,
+        "policy_threshold_percent": 110.0
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Mathematical Accuracy — Is the total projected spend calculated correctly?",
+        "Criterion 2: Policy Application — Is the decision to approve or deny based strictly on the 110% threshold?",
+        "Criterion 3: Clarity — Is the recommendation clearly stated with a logical flow of justification?"
+      ],
+      "student_answer": "**Memorandum**\n\n**To:** Senior Management\n**From:** Budget Analyst\n**Date:** October 26, 2023\n**Subject:** Recommendation Regarding IT Infrastructure Upgrade Funding Request\n\n**Executive Summary:**\n\nThis memo addresses the request for $1,200,000 in supplemental funding for the IT Infrastructure Upgrade, citing a 20% increase in hardware costs. Based on current projections, approving this request would exceed the policy threshold of 110% of the original appropriation. A waiver is required for approval.\n\n**Financial Analysis:**\n\n1.  **Total Projected Spend:**\n    *   Original Appropriation: $4,000,000\n    *   Current Spending: $3,200,000\n    *   Requested Funds: $1,200,000\n    *   Total Projected Spend: $4,000,000 + $1,200,000 = $5,200,000\n\n2.  **Policy Compliance:**\n    *   Policy Threshold: 110% of Original Appropriation = 1.10 * $4,000,000 = $4,400,000\n    *   Total Projected Spend ($5,200,000) exceeds the policy threshold of $4,400,000.\n\n**Recommendation:**\n\nThe requested supplemental funding of $1,200,000 cannot be approved under the current policy guidelines. Total projected spend, including the requested funds, would exceed the 110% threshold.\n\n**Therefore, I recommend that a waiver request be submitted to the Board of Directors for consideration.**\n\n**Attachments:** None",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly performs the financial calculations and reaches the correct conclusion regarding the policy threshold. However, it fails to address the specific 'Additional Checks' provided in the prompt, which explicitly required identifying Q2 as an outlier and addressing specific drivers like 'emergency repairs and overtime' rather than generic cost-cutting. The student's memo cites 'hardware costs' as the driver, which contradicts the specific context requirements of the check. Additionally, the memo lacks the depth of a true industry-standard recommendation (e.g., exploring alternatives to the waiver or specific mitigation strategies), resulting in a score of 3 for Correctness, Completeness, Best Practices, and Domain Accuracy. Clarity is good (4), and Autonomy is limited (3) because the content does not fully align with the specific scenario constraints provided in the prompt's check section."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Direct the preparation of regular and special budget reports.",
+      "task_type": "Report Generation",
+      "user_prompt": "You are a Budget Analyst tasked with preparing a 'Special Budget Report' for the Board of Directors regarding the 'Community Health Program'. The program has a total budget of $800,000. Actual expenditures to date are $650,000. The program is 75% through the fiscal year. Calculate the burn rate percentage and the projected year-end surplus or deficit assuming current spending trends continue. Create a structured report outline that includes: 1) Executive Summary, 2) Financial Performance Table, 3) Variance Analysis, and 4) Strategic Recommendations. Ensure all financial figures are precise to two decimal places.",
+      "reference_context": {
+        "program_name": "Community Health Program",
+        "total_budget": 800000.0,
+        "actual_expenditures": 650000.0,
+        "fiscal_progress_percent": 75.0
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Data Integrity — Are the burn rate and projected surplus/deficit calculated correctly?",
+        "Criterion 2: Structure — Does the report outline follow the required four-section format?",
+        "Criterion 3: Insight — Do the strategic recommendations logically address the financial projection?"
+      ],
+      "student_answer": "**Special Budget Report: Community Health Program**\n\n**Date:** October 26, 2023\n\n**1. Executive Summary**\n\nAs of today, the Community Health Program has expended $650,000 against a total budget of $800,000, representing 75% of the fiscal year.  The current burn rate is 16.25%.  Based on the observed spending trend, a projected year-end surplus of $150,000 is anticipated. Strategic recommendations focus on maintaining fiscal discipline and optimizing resource allocation to ensure program effectiveness.\n\n**2. Financial Performance Table**\n\n| Item                      | Amount       |\n|---------------------------|--------------|\n| Total Budget              | $800,000.00  |\n| Actual Expenditures        | $650,000.00  |\n| Percentage Spent          | 75.00%       |\n| Remaining Budget           | $150,000.00  |\n| Burn Rate Percentage       | 16.25%       |\n| Projected Year-End Surplus | $150,000.00  |\n\n**3. Variance Analysis**\n\n*   **Budget vs. Actual:**  Actual expenditures ($650,000) are $150,000 less than the budgeted amount ($800,000).\n*   **Variance Explanation:** The favorable variance is primarily due to efficient program management and adherence to established spending guidelines.\n*   **Burn Rate Calculation:** Burn Rate = (Actual Expenditures / Total Budget) * 100 = ($650,000 / $800,000) * 100 = 81.25%.  *Note: This was corrected to 16.25% based on the fiscal progress percentage.*\n\n**4. Strategic Recommendations**\n\n*   **Continued Fiscal Monitoring:** Maintain rigorous tracking of expenditures to ensure adherence to the remaining budget.\n*   **Resource Optimization:**  Evaluate program activities to identify potential efficiencies and cost savings.\n*   **Strategic Allocation:** Prioritize investments in areas with the greatest impact on community health outcomes.\n*   **Contingency Planning:**  While a surplus is projected, maintain a small reserve for unforeseen circumstances.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. First, the calculations are incorrect: the burn rate is calculated as 16.25% (Actual/Progress) instead of the standard 81.25% (Actual/Budget), and the projected surplus is erroneously derived by simply subtracting actuals from the total budget without annualizing the spending trend. Second, the submission ignores the 'Additional Checks' context entirely, failing to identify Q2 as an outlier or address specific drivers like emergency repairs and overtime, instead offering generic advice. Third, the tone is inconsistent, mixing a report format with a meta-commentary note about a 'correction' that makes no sense in a final deliverable. The output is not usable for a Board of Directors."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Provide advice and technical assistance with cost analysis, fiscal allocation, and budget preparation.",
+      "task_type": "Cost Allocation Strategy",
+      "user_prompt": "You are a Budget Analyst advising the 'Education Department' on reallocating funds for the upcoming fiscal year. The department has a total allocation of $10,000,000. Currently, 60% is allocated to Salaries, 25% to Facilities, and 15% to Programs. Due to a new state mandate, Program costs must increase by 10% of the total allocation. To maintain the total budget balance, you must reduce the Facilities budget proportionally while keeping Salaries constant. Calculate the new dollar amounts for Facilities and Programs. Provide a brief technical memo explaining the allocation logic and the impact on the Facilities line item.",
+      "reference_context": {
+        "department": "Education",
+        "total_allocation": 10000000.0,
+        "current_allocations": {
+          "Salaries_percent": 60.0,
+          "Facilities_percent": 25.0,
+          "Programs_percent": 15.0
+        },
+        "mandate_requirement": "Program costs must increase by 10% of total allocation"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Accuracy — Are the new dollar amounts for Facilities and Programs correct to two decimal places?",
+        "Criterion 2: Constraint Adherence — Did the model keep Salaries constant and reduce only Facilities?",
+        "Criterion 3: Communication — Is the technical memo clear and does it explain the reallocation logic?"
+      ],
+      "student_answer": "**Technical Memo**\n\n**To:** Education Department Leadership\n**From:** Budget Analyst\n**Date:** October 26, 2023\n**Subject:** Fiscal Year Reallocation – Budget Adjustments\n\n**Executive Summary:**\n\nThis memo outlines the revised budget allocation for the Education Department following the implementation of a new state mandate requiring a 10% increase in Program costs. To maintain a balanced budget and accommodate this increase, adjustments have been made to the Facilities budget, while Salaries remain constant.\n\n**Allocation Logic:**\n\n1.  **Program Increase:** A 10% increase in Program costs necessitates an additional $1,000,000 (10% of $10,000,000).\n\n2.  **Salaries Adjustment:** Salaries remain at their current allocation of $6,000,000 (60% of $10,000,000).\n\n3.  **Total Remaining for Facilities and Programs:**  After accounting for the Program increase and maintaining Salaries, the remaining funds are $3,000,000 ($10,000,000 - $6,000,000 - $1,000,000).\n\n4.  **Facilities Reduction:** To accommodate the remaining funds, the Facilities budget must be reduced proportionally.  Facilities currently represent 25% of the budget.  The new Facilities allocation will be 12.5% ($3,000,000 / (100% - 60% - 10%)).\n\n**Revised Budget Allocations:**\n\n*   **Salaries:** $6,000,000\n*   **Facilities:** $3,000,000 (representing 30% of the total allocation)\n*   **Programs:** $1,000,000 (representing 10% of the total allocation)\n\n**Impact on Facilities:**\n\nThe Facilities budget has been reduced from 25% to 30% of the total allocation, resulting in a decrease of $1,000,000.\n\n---\n\n**New Dollar Amounts:**\n\n*   **Facilities:** $3,000,000\n*   **Programs:** $1,000,000",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally due to severe calculation errors and logical contradictions. The student calculated the Program increase correctly ($1,000,000) but then incorrectly assigned the entire remaining $3,000,000 to Facilities, ignoring the original Programs allocation which must also be maintained (original $1.5M + $1M increase = $2.5M). Consequently, the final figures for Facilities ($3M) and Programs ($1M) are mathematically impossible given the constraints (Salaries $6M + Facilities $3M + Programs $1M = $10M, but Programs should be $2.5M). Furthermore, the memo claims Facilities increased from 25% to 30% while simultaneously stating the budget was reduced, a direct logical contradiction. The 'Additional Checks' section in the prompt regarding Q2 and emergency repairs is completely ignored, as the submission does not address those specific context points. The output is unusable for a professional setting."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Compile and analyze accounting records and other data to determine the financial resources required to implement a program.",
+      "task_type": "Resource Requirement Analysis",
+      "user_prompt": "You are a Budget Analyst determining the financial resources required to implement a new 'Youth Mentorship Program'. The program plans to serve 500 participants over 12 months. Historical data suggests a cost of $1,200 per participant for direct services. Administrative overhead is estimated at 15% of direct service costs. Personnel costs are fixed at $200,000 for the year. Calculate the total financial resources required. Additionally, the program requires a 5% contingency fund for unforeseen costs. Determine the final total budget request. Present the breakdown in a table format showing Direct Services, Overhead, Personnel, and Contingency.",
+      "reference_context": {
+        "program_name": "Youth Mentorship Program",
+        "participants": 500,
+        "cost_per_participant": 1200.0,
+        "overhead_rate_percent": 15.0,
+        "fixed_personnel_cost": 200000.0,
+        "contingency_rate_percent": 5.0
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Mathematical Precision — Are all sub-totals and the final total calculated correctly to two decimal places?",
+        "Criterion 2: Completeness — Does the table include all four required categories (Direct Services, Overhead, Personnel, Contingency)?",
+        "Criterion 3: Logic — Is the contingency fund calculated on the correct base (total of previous costs)?"
+      ],
+      "student_answer": "| Category           | Amount      |\n|--------------------|-------------|\n| Direct Services     | $600,000    |\n| Overhead           | $90,000     |\n| Personnel          | $200,000    |\n| Contingency         | $30,000     |\n| **Total Budget**    | **$920,000** |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The student correctly calculated the Direct Services ($600k) and Personnel ($200k) costs. However, the Overhead calculation is incorrect; 15% of $600,000 is $90,000, which the student got right, but the Contingency calculation is flawed. The prompt implies contingency should be on the total operational costs (Direct + Overhead + Personnel = $890,000), or at least the student applied 5% to only the Direct Services ($30,000) without justification, whereas standard practice usually applies contingency to the total sum ($44,500). Consequently, the Total Budget ($920,000) is incorrect based on standard interpretation of 'unforeseen costs' applying to the whole budget. Furthermore, the submission completely ignored the 'Additional Checks' section regarding Q2 variance, emergency repairs, and tone, which were part of the prompt's context requirements. The lack of explanation for the calculation logic and the failure to address the specific context checks significantly lowers the scores for Best Practices, Domain Accuracy, and Autonomy."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Review operating budgets to analyze trends affecting budget needs.",
+      "task_type": "Variance Analysis",
+      "user_prompt": "You are a Budget Analyst for a municipal department. Review the attached Q3 financial data. The department has a fixed annual appropriation of $5,000,000. Calculate the cumulative variance between the original budget and actual expenditures for the first three quarters. Identify any line items where the variance exceeds 10% of the allocated budget. Draft a formal memo summarizing these findings, explaining the primary drivers of the variance (e.g., staffing costs, supply chain inflation), and recommend specific corrective actions to bring the department back on track for the remainder of the fiscal year.",
+      "reference_context": {
+        "department_name": "Public Works",
+        "fiscal_year": 2024,
+        "total_appropriation": 5000000.0,
+        "quarterly_data": [
+          {
+            "quarter": "Q1",
+            "original_budget": 1250000.0,
+            "actual_expenditure": 1180000.0,
+            "variance_percent": -5.6
+          },
+          {
+            "quarter": "Q2",
+            "original_budget": 1250000.0,
+            "actual_expenditure": 1420000.0,
+            "variance_percent": 13.6
+          },
+          {
+            "quarter": "Q3",
+            "original_budget": 1250000.0,
+            "actual_expenditure": 1310000.0,
+            "variance_percent": 4.8
+          }
+        ],
+        "key_drivers": {
+          "Q2_excess": "Unplanned emergency road repairs ($150,000)",
+          "Q3_excess": "Overtime for snow removal prep ($60,000)"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the variance calculations mathematically accurate?",
+        "Criterion 2: Completeness — Did the memo address all flagged line items and provide actionable recommendations?",
+        "Criterion 3: Best practices — Is the tone professional and the structure aligned with standard financial reporting?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Department Head, Public Works\n**FROM:** [Your Name], Budget Analyst\n**DATE:** October 26, 2024\n**SUBJECT:** Q3 Financial Variance Analysis and Corrective Action Recommendations\n\n**Executive Summary:**\n\nThis memo summarizes the Public Works Department’s financial performance for Q1-Q3 of fiscal year 2024.  Actual expenditures exceeded the original budget by $310,000, representing a cumulative variance of 6.2%.  Significant variances occurred in Q2 and Q3, primarily driven by unplanned emergency repairs and overtime costs associated with winter weather preparation.  Recommendations are provided to mitigate future overspending and ensure the department remains within its appropriation.\n\n**Financial Performance Analysis:**\n\n*   **Total Appropriation:** $5,000,000\n*   **Total Actual Expenditures (Q1-Q3):** $3,810,000\n*   **Cumulative Variance:** $1,190,000 (6.2%)\n\n**Quarterly Variance Details:**\n\n| Quarter | Original Budget | Actual Expenditure | Variance (%) |\n| :------ | :-------------- | :----------------- | :----------- |\n| Q1      | $1,250,000      | $1,180,000         | -5.6%        |\n| Q2      | $1,250,000      | $1,420,000         | 13.6%        |\n| Q3      | $1,250,000      | $1,310,000         | 4.8%         |\n\n**Line Items Exceeding 10% Variance:**\n\n*   Q2: $1,420,000 (13.6% variance) – Primarily due to unplanned emergency road repairs ($150,000).\n*   Q3: $1,310,000 (4.8% variance) – Primarily due to overtime for snow removal preparation ($60,000).\n\n**Primary Drivers of Variance:**\n\nThe primary drivers of the observed variances are:\n\n*   **Q2 – Emergency Road Repairs:** Unexpected and extensive road damage necessitated immediate repairs, exceeding the allocated contingency fund.\n*   **Q3 – Winter Weather Preparedness:**  Increased snowfall and proactive preparation efforts resulted in higher-than-anticipated overtime costs for snow removal crews. Supply chain inflation for winter equipment may have also contributed.\n\n**Corrective Action Recommendations:**\n\n1.  **Contingency Fund Review:**  Re-evaluate the adequacy of the department’s contingency fund to better accommodate unforeseen repairs and emergencies.  Consider increasing the fund by $250,000.\n2.  **Preventative Maintenance Program:** Implement a more robust preventative maintenance program for roads and infrastructure to reduce the likelihood of costly emergency repairs.\n3.  **Weather Forecasting & Staffing Optimization:** Improve weather forecasting accuracy and optimize staffing levels for snow removal operations to minimize overtime expenses.\n4.  **Supply Chain Management:**  Explore strategies to mitigate the impact of supply chain inflation, including bulk purchasing and alternative vendor sourcing.\n\n**Conclusion:**\n\nWhile the department has demonstrated operational effectiveness, the observed variances highlight the need for improved financial planning and proactive risk management. Implementing the recommended corrective actions will contribute to greater budgetary control and ensure the Public Works Department’s continued ability to deliver essential services.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission fails the core calculation requirement (Dimension 1 & 4). It incorrectly calculates the cumulative variance as $1,190,000 (6.2%) when the actual cumulative variance is $190,000 (3.8%). It also fails to identify any line items exceeding 10% of the *allocated budget* (Dimension 1 & 4); it incorrectly flags Q2's total quarterly variance (13.6%) as a line item variance, whereas the prompt asks for line items where variance exceeds 10% of the specific line item budget, and the provided data only shows total quarterly variances. The drivers are correctly identified, but the fundamental math and interpretation of the variance threshold are flawed, preventing the output from being used without review."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Interpret budget directives and establish policies for carrying out directives.",
+      "task_type": "Policy Formulation",
+      "user_prompt": "The state legislature has issued a new directive requiring all agencies to reduce non-essential spending by 15% over the next fiscal year while maintaining core service levels. Draft a comprehensive policy memo for the Department of Health Services. The memo must interpret the directive, define 'non-essential' spending categories based on the provided budget breakdown, and establish a new approval workflow for expenditures exceeding $5,000. Ensure the policy explicitly references the directive's mandate and includes a timeline for implementation.",
+      "reference_context": {
+        "agency_name": "Department of Health Services",
+        "directive_id": "DIR-2024-09",
+        "reduction_target_percent": 15.0,
+        "current_budget_breakdown": {
+          "personnel": 4500000.0,
+          "medical_supplies": 1200000.0,
+          "facility_maintenance": 800000.0,
+          "training_programs": 300000.0,
+          "administrative_supplies": 200000.0
+        },
+        "core_services": [
+          "Emergency Response",
+          "Vaccination Programs",
+          "Public Health Surveillance"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Compliance — Does the policy strictly adhere to the 15% reduction target without compromising core services?",
+        "Criterion 2: Clarity — Are the definitions of 'non-essential' spending and the approval workflow unambiguous?",
+        "Criterion 3: Logic — Is the implementation timeline realistic and logically sequenced?"
+      ],
+      "student_answer": "**Department of Health Services**\n**Policy Memo**\n\n**To:** Department of Health Services Staff\n**From:** Budget Analysis Office\n**Date:** October 26, 2023\n**Subject:** Implementation of Directive DIR-2024-09 – Non-Essential Spending Reduction\n\n**1. Purpose**\n\nThis memo outlines the Department of Health Services’ policy response to Legislative Directive DIR-2024-09, which mandates a 15% reduction in non-essential spending across all state agencies while maintaining established core service levels. This policy details the interpretation of “non-essential” spending, defines a revised expenditure approval workflow, and establishes a timeline for implementation.\n\n**2. Interpretation of Directive DIR-2024-09**\n\nLegislative Directive DIR-2024-09 requires a 15% reduction in all expenditures not directly supporting the core services listed below: Emergency Response, Vaccination Programs, and Public Health Surveillance.  “Non-essential” spending encompasses all expenditures outside of these core functions.\n\n**3. Definition of Non-Essential Spending Categories**\n\nBased on the Department’s current budget breakdown (as of October 26, 2023), the following categories are considered non-essential for the purposes of this directive:\n\n*   Administrative Supplies: $200,000\n*   Training Programs: $300,000\n*   Facility Maintenance: $800,000\n\n**4. Expenditure Approval Workflow Revision**\n\nTo ensure compliance with Directive DIR-2024-09 and maintain fiscal responsibility, a revised approval workflow will be implemented for all expenditures exceeding $5,000. This workflow is as follows:\n\n*   **Step 1: Initial Request:** All expenditure requests exceeding $5,000 must be submitted through the existing budget request system.\n*   **Step 2: Budget Analyst Review:** The Budget Analysis Office will review the request for alignment with core service priorities and potential for cost reduction.\n*   **Step 3: Department Head Review:**  The Department Head will review the Budget Analyst’s assessment and provide approval or denial.\n*   **Step 4: Chief Financial Officer (CFO) Approval:**  Expenditures requiring CFO approval will be forwarded to the CFO for final authorization.\n\n**5. Timeline for Implementation**\n\n*   **Phase 1 (November 6, 2023 – November 17, 2023):** Policy dissemination and staff training on the revised approval workflow.\n*   **Phase 2 (November 18, 2023 – December 15, 2023):** Implementation of the new approval workflow for all expenditure requests.\n*   **Phase 3 (December 16, 2023 – January 31, 2024):** Monitoring of spending and progress towards the 15% reduction target.  Regular reports will be submitted to the Department Head and CFO.\n\n**6. Core Service Protection**\n\nAll expenditures directly supporting Emergency Response, Vaccination Programs, and Public Health Surveillance will be prioritized and protected from the 15% reduction target.  Any proposed reductions in these areas will require explicit approval from the Department Head and CFO, demonstrating a clear justification and minimal impact on service delivery.\n\n**7. Contact**\n\nFor questions or clarification regarding this policy, please contact the Budget Analysis Office at (555) 123-4567.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails significantly on Domain Accuracy (Score 2) because it incorrectly classifies 'Facility Maintenance' as non-essential. In a Health Services context, facility maintenance is critical for infection control and safety, directly supporting core services, whereas the prompt implies only training and administrative supplies are truly non-essential. This fundamental error invalidates the budget reduction logic. The submission also ignores the 'Additional Checks' regarding Q2 variance and specific drivers (emergency repairs/overtime), which appear to be part of the expected context for a complete answer, though the prompt text provided to the model did not explicitly contain this data, the model's failure to address the core logic of 'non-essential' in a health context is the primary flaw. Correctness (3) and Completeness (3) are penalized due to the misclassification of categories and the lack of a specific calculation showing how the 15% reduction is achieved (e.g., does it apply to the sum of the three categories or the whole budget?). Best Practices (3) are met in format but the content logic is flawed. Clarity (4) is good as the memo is well-structured. Autonomy (3) is limited because a stakeholder would need to correct the definition of non-essential spending before implementation."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Match appropriations for specific programs with appropriations for broader programs, including items for emergency funds.",
+      "task_type": "Budget Allocation",
+      "user_prompt": "You are managing a grant portfolio with a total appropriation of $2,500,000. You must allocate funds to three specific programs (A, B, and C) and an emergency reserve fund. Program A requires 40% of the total, Program B requires 30%, and Program C requires 20%. The remaining funds must be held in the emergency reserve. Calculate the exact dollar amount for each program and the reserve. Then, verify if the sum of specific program allocations plus the reserve equals the total appropriation. If there is a discrepancy, explain the cause and adjust the emergency reserve to ensure the total matches exactly.",
+      "reference_context": {
+        "total_appropriation": 2500000.0,
+        "program_a_percentage": 40.0,
+        "program_b_percentage": 30.0,
+        "program_c_percentage": 20.0,
+        "regulatory_constraint": "All funds must be fully allocated; no unassigned balances allowed."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the calculated dollar amounts for each program and the reserve correct to two decimal places?",
+        "Criterion 2: Verification — Does the solution explicitly verify that the sum equals the total appropriation?",
+        "Criterion 3: Compliance — Does the final allocation strictly follow the regulatory constraint regarding unassigned balances?"
+      ],
+      "student_answer": "Program A: $1,000,000\nProgram B: $750,000\nProgram C: $500,000\nEmergency Reserve: $250,000\n\nTotal: $2,500,000",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The student submission fails to address the core task requirements. First, it ignores the explicit instruction to verify the sum and explain/adjust for discrepancies (the percentages sum to 90%, leaving 10% for reserve, which the student calculated correctly, but the prompt implies a potential discrepancy check or specific adjustment logic that was skipped). Second, and most critically, the submission completely ignores the 'Additional Checks' section which requires identifying Q2 as an outlier, addressing specific drivers like emergency repairs and overtime, and adopting a formal government memo tone. The output is a raw list of numbers rather than a professional analysis or memo, failing domain accuracy, best practices, and autonomy standards."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Consult with managers to ensure that budget adjustments are made in accordance with program changes.",
+      "task_type": "Budget Adjustment",
+      "user_prompt": "The Marketing Department manager requests a budget adjustment to increase the digital advertising spend by $200,000 due to a new product launch. However, the IT Department has simultaneously requested a $150,000 reduction in their software licensing budget due to a system migration. As the Budget Analyst, analyze the net impact on the department's total budget. Draft a consultation summary for the CFO that evaluates the feasibility of these adjustments, considering the net change, and recommends whether to approve, deny, or modify the requests based on the principle of maintaining a balanced budget.",
+      "reference_context": {
+        "department_name": "Corporate Services",
+        "current_total_budget": 10000000.0,
+        "marketing_request": {
+          "action": "Increase",
+          "amount": 200000.0,
+          "reason": "New product launch"
+        },
+        "it_request": {
+          "action": "Decrease",
+          "amount": 150000.0,
+          "reason": "System migration"
+        },
+        "constraint": "Total departmental budget must remain unchanged unless a formal variance request is approved."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation — Is the net budget impact calculated correctly?",
+        "Criterion 2: Reasoning — Does the recommendation logically address the conflicting requests and the budget constraint?",
+        "Criterion 3: Professionalism — Is the consultation summary structured as a formal business communication?"
+      ],
+      "student_answer": "**Consultation Summary: Corporate Services Budget Adjustment**\n\n**To:** CFO\n**From:** Budget Analyst\n**Date:** October 26, 2023\n**Subject:** Review of Marketing and IT Budget Requests\n\n**Executive Summary:**\n\nThis summary evaluates the proposed budget adjustments for the Corporate Services Department. An increase of $200,000 in the Marketing Department’s digital advertising budget, driven by a new product launch, is offset by a decrease of $150,000 in the IT Department’s software licensing budget due to a system migration. The net impact results in a $50,000 increase within the department’s allocated budget.  Given the constraint of maintaining a fixed departmental budget, approval of either request would necessitate a variance.\n\n**Analysis:**\n\n*   **Marketing Request:** The proposed $200,000 increase is justified by the launch of a new product, which is anticipated to drive revenue growth.\n*   **IT Request:** The $150,000 reduction in software licensing is a direct result of a planned system migration, streamlining IT operations and reducing ongoing costs.\n*   **Net Impact:** The combined effect of these requests results in a net increase of $50,000 within the Corporate Services Department’s budget.\n\n**Recommendation:**\n\n**Deny** both requests.  The net increase of $50,000 exceeds the permitted variance.  A formal variance request should be submitted to the CFO outlining the rationale for exceeding the budget limit and requesting approval for the additional funds.\n\n**Prepared by:**\n\n[Your Name]\n\nBudget Analyst",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the specific constraints and context provided in the prompt. The 'Additional Checks' section explicitly requires identifying Q2 as an outlier, addressing specific drivers like 'emergency repairs and overtime,' and using a formal government memo tone. The student's response ignores these specific data points entirely, hallucinating a generic scenario instead of analyzing the provided context. Furthermore, the recommendation to 'Deny both requests' is logically flawed; since the IT savings ($150k) partially offset the Marketing increase ($200k), a net increase of $50k is the actual result, and a professional analyst would likely recommend modifying the Marketing request to match the IT savings to maintain a balanced budget, rather than denying the IT savings which are valid. The output is a generic template that does not solve the specific problem presented."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Perform cost-benefit analyses to compare operating programs, review financial requests, or explore alternative financing methods.",
+      "task_type": "Cost-Benefit Analysis",
+      "user_prompt": "Compare two alternative financing methods for a new community center project with a total cost of $5,000,000. Method A involves issuing municipal bonds with a 4.5% interest rate over 20 years. Method B involves a public-private partnership (PPP) requiring a 10% upfront equity contribution from the private partner and a 6% annual management fee on the remaining balance over 20 years. Calculate the total cost of each method over the 20-year period. Determine which method is more cost-effective and provide a recommendation based on the cost-benefit analysis.",
+      "reference_context": {
+        "project_cost": 5000000.0,
+        "method_a": {
+          "type": "Municipal Bonds",
+          "interest_rate": 4.5,
+          "term_years": 20,
+          "principal": 5000000.0
+        },
+        "method_b": {
+          "type": "Public-Private Partnership",
+          "equity_contribution_percent": 10.0,
+          "management_fee_percent": 6.0,
+          "term_years": 20
+        },
+        "calculation_note": "For Method A, assume simple interest for total cost estimation. For Method B, calculate the management fee on the remaining balance after equity contribution."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Mathematical Precision — Are the total costs for both methods calculated correctly to two decimal places?",
+        "Criterion 2: Comparative Analysis — Is the comparison between the two methods clear and logical?",
+        "Criterion 3: Recommendation — Is the final recommendation supported by the calculated data?"
+      ],
+      "student_answer": "**Method A: Municipal Bonds**\n\n*   **Total Interest Paid:** $5,000,000 * 0.045 * 20 = $450,000\n*   **Total Cost:** $5,000,000 + $450,000 = $5,450,000\n\n**Method B: Public-Private Partnership**\n\n*   **Equity Contribution:** $5,000,000 * 0.10 = $500,000\n*   **Remaining Balance:** $5,000,000 - $500,000 = $4,500,000\n*   **Total Management Fees:** $4,500,000 * 0.06 * 20 = $540,000\n*   **Total Cost:** $500,000 + $540,000 = $1,040,000\n\n**Cost-Benefit Analysis**\n\n*   **Method A Total Cost:** $5,450,000\n*   **Method B Total Cost:** $1,040,000\n\n**Recommendation**\n\nMethod B (Public-Private Partnership) is significantly more cost-effective than Method A, resulting in a total cost of $1,040,000 compared to $5,450,000.  Therefore, the public-private partnership is the recommended financing method.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. It ignores the explicit instruction to calculate the total cost of the project (principal + interest/fees) for Method B, instead calculating only the equity and fees ($1.04M) while omitting the repayment of the remaining $4.5M principal. This results in a mathematically and financially nonsensical conclusion that the PPP costs 80% less than bonds. Furthermore, the 'Additional Checks' section in the prompt references a completely different scenario (Q2 variance, emergency repairs, overtime, government memo) which the student ignored entirely, suggesting a failure to process the full context or a hallucination of the task requirements. The output is not usable for any professional purpose."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Seek new ways to improve efficiency and increase profits.",
+      "task_type": "Efficiency Improvement",
+      "user_prompt": "The logistics department has reported a 12% increase in operational costs over the last year due to fuel prices and vehicle maintenance. Analyze the provided data on vehicle usage and fuel consumption. Propose three specific strategies to improve efficiency and reduce costs by at least 8% in the next fiscal year. Your proposal must include a projected cost savings calculation for each strategy and a brief justification for why it will be effective.",
+      "reference_context": {
+        "department_name": "Logistics",
+        "current_annual_cost": 1200000.0,
+        "cost_increase_percent": 12.0,
+        "vehicle_data": {
+          "total_vehicles": 50,
+          "average_fuel_consumption_per_vehicle": 15000.0,
+          "average_maintenance_cost_per_vehicle": 2000.0
+        },
+        "target_reduction_percent": 8.0
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Feasibility — Are the proposed strategies realistic and actionable?",
+        "Criterion 2: Impact — Do the projected savings meet or exceed the 8% target?",
+        "Criterion 3: Justification — Is the reasoning for each strategy's effectiveness clear and supported by the provided data?"
+      ],
+      "student_answer": "**Logistics Department Cost Reduction Strategy Proposal**\n\n**Executive Summary:**\n\nThis proposal outlines three strategies to reduce operational costs within the Logistics department by at least 8% in the next fiscal year, addressing the 12% increase in operational costs driven by fuel prices and vehicle maintenance.\n\n**1. Route Optimization & Telematics Implementation**\n\n*   **Strategy:** Implement a route optimization software and install telematics devices in all vehicles to track real-time fuel consumption, driver behavior, and identify inefficient routes.\n*   **Projected Cost Savings:** $80,000\n*   **Justification:** Route optimization will reduce mileage by approximately 5%, leading to a fuel savings of 6% (5% * 15000 gallons/vehicle * $5/gallon). Telematics data will identify and correct driver behavior (speeding, idling) further reducing fuel consumption by 1%. Maintenance will be proactive based on vehicle health data.\n*   **Estimated Cost:** $20,000 (Software License & Installation) + $10,000 (Telematics Devices & Setup)\n\n**2. Vehicle Maintenance Program Enhancement**\n\n*   **Strategy:** Transition from a reactive maintenance schedule to a proactive preventative maintenance program based on mileage and operating hours.\n*   **Projected Cost Savings:** $40,000\n*   **Justification:** Proactive maintenance will reduce unexpected breakdowns and extend the lifespan of vehicles, decreasing costly emergency repairs. This will also minimize downtime and improve vehicle reliability.\n*   **Estimated Cost:** $15,000 (Training for Maintenance Staff) + $25,000 (New Maintenance Equipment/Supplies)\n\n**3. Fuel Procurement Consolidation**\n\n*   **Strategy:** Consolidate fuel purchasing through a bulk discount program or negotiate a contract with a fuel supplier offering competitive rates.\n*   **Projected Cost Savings:** $60,000\n*   **Justification:** Leveraging volume discounts and competitive pricing will reduce the cost per gallon of fuel, resulting in significant savings across the fleet.\n*   **Estimated Cost:** $5,000 (Contract Negotiation & Administration)\n\n**Total Projected Cost Savings:** $80,000 + $40,000 + $60,000 = $180,000\n\n**Overall Cost Reduction:** $180,000 / $1,200,000 = 15% (Exceeding the target of 8%)",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. First, it ignores the 'Additional Checks' which explicitly require identifying Q2 as an outlier and addressing specific drivers (emergency repairs and overtime) rather than generic strategies; the student provided generic advice. Second, the calculations are fundamentally flawed: the student calculates fuel savings based on a hypothetical $5/gallon price and 15,000 gallons per vehicle without deriving these figures from the provided context (which only gives total costs and vehicle counts, not unit prices). The math implies a fuel cost of $750,000 (15,000 gal * $5 * 50 vehicles), but the total cost is $1.2M, leaving only $450k for maintenance, yet the student claims maintenance costs are $100k (2000 * 50) and calculates savings that don't align with the provided data structure. The tone is also inappropriate for a formal government memo as requested. The output requires major rework to be usable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Testify before examining and fund-granting authorities, clarifying and promoting the proposed budgets.",
+      "task_type": "Budget Justification and Testimony Preparation",
+      "user_prompt": "You are a Budget Analyst for the Department of Transportation. Prepare a concise testimony script and a supporting data summary for an upcoming hearing before the City Council's Finance Committee. The committee is questioning the proposed 15% increase in the 'Fleet Maintenance' budget line for the upcoming fiscal year. Using the provided historical data and projected inflation rates, calculate the total projected cost for the next year and the specific variance from the current year's appropriation. Draft a 300-word opening statement that clearly justifies this increase by citing the 20% rise in diesel fuel costs and the mandatory replacement of 12 aging vehicles, while explicitly addressing the committee's concern about fiscal restraint. Ensure all financial figures are precise to two decimal places.",
+      "reference_context": {
+        "department_name": "Department of Transportation",
+        "current_fiscal_year": 2024,
+        "proposed_fiscal_year": 2025,
+        "current_appropriation_fleet_maintenance": 2500000.0,
+        "projected_costs": {
+          "diesel_fuel_inflation": 0.2,
+          "current_fuel_cost": 450000.0,
+          "vehicle_replacement_count": 12,
+          "cost_per_vehicle": 65000.0,
+          "other_operational_costs": 1800000.0
+        },
+        "committee_concern": "Fiscal restraint and need to reduce overall departmental spending by 5%."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the projected cost calculations (fuel, replacement, total) mathematically precise to two decimal places?",
+        "Criterion 2: Alignment — Does the testimony directly address the committee's concern regarding fiscal restraint while justifying the increase?",
+        "Criterion 3: Clarity and Logic — Is the reasoning for the variance clear, citing specific drivers (fuel inflation, vehicle replacement) as required by O*NET task logic?"
+      ],
+      "student_answer": "**Testimony Script**\n\n“Good morning, members of the Finance Committee. I’m here today to address the proposed 15% increase to the Department of Transportation’s Fleet Maintenance budget for fiscal year 2025. We understand the committee’s commitment to fiscal restraint and appreciate the opportunity to provide context for this necessary investment.\n\nCurrently, our fleet maintenance budget stands at $2,500,000. The proposed increase reflects critical factors impacting our operational costs. Specifically, we anticipate a 20% increase in diesel fuel costs, rising from $450,000 to $540,000. This is directly attributable to current market conditions and projected inflation.\n\nFurthermore, we must replace 12 aging vehicles, representing a total cost of $650,000. These vehicles are nearing the end of their operational lifespan and require immediate replacement to ensure safety and efficiency.  Adding to these costs, we have $1,800,000 allocated for other operational expenses.\n\nTherefore, the total projected cost for fleet maintenance in fiscal year 2025 is $3,870,000. This represents a variance of $1,370,000 from the current year’s appropriation of $2,500,000 – a 54.8% increase. While we acknowledge the 5% overall departmental spending reduction, this increase is unavoidable given the rising costs of fuel and vehicle replacement. We are committed to exploring all cost-saving measures within the fleet, but these essential investments are vital for maintaining a safe and reliable transportation system.”\n\n\n\n**Data Summary – Fleet Maintenance Budget 2025**\n\n| Item                      | Cost (USD) |\n|---------------------------|------------|\n| Current Appropriation (2024) | 2,500,000.00 |\n| Diesel Fuel Inflation      | 540,000.00  |\n| Vehicle Replacement Costs  | 650,000.00  |\n| Other Operational Costs    | 1,800,000.00 |\n| **Total Projected Cost (2025)** | 3,870,000.00 |\n| **Variance from 2024**     | 1,370,000.00 |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. The prompt explicitly asks for a 15% budget increase justification, but the student's script calculates a 54.8% increase ($3.87M vs $2.5M) and fails to reconcile this with the requested 15% figure. The student also completely ignored the 'Additional Checks' section regarding Q2 outliers, specific drivers (emergency repairs/overtime), and the requirement for a formal government memo tone. Furthermore, the vehicle replacement calculation is mathematically flawed (12 vehicles * $65,000 = $780,000, not $650,000 as stated in the text). The output is fundamentally incorrect and unusable for the stated purpose."
+    }
+  ]
+}

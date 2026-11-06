@@ -1,0 +1,819 @@
+{
+  "meta": {
+    "job_title": "Eligibility Interviewers, Government Programs",
+    "job_id": "eligibility_interviewer",
+    "onet_code": "43-4061.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 17,
+    "evaluated_tasks": 17,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.6,
+      "dimensions": {
+        "Correctness": 2.47,
+        "Completeness": 2.47,
+        "Best Practices": 2.35,
+        "Domain Accuracy": 2.41,
+        "Clarity": 3.53,
+        "Autonomy": 2.35
+      },
+      "evaluated_tasks": 17,
+      "scale_max": 5
+    },
+    "total_time_seconds": 584.19
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compile, record, and evaluate personal and financial data to verify completeness and accuracy, and to determine eligibility status.",
+      "task_type": "Data Verification and Investigation",
+      "user_prompt": "Analyze the provided applicant profile and submitted documentation. Identify any discrepancies between the declared income and the verified bank statements. Calculate the net monthly income after applying the standard deduction and the earned income disregard. Determine if the applicant meets the gross income limit for the SNAP program based on the household size. Draft a case summary recommending approval, denial, or a request for additional documentation, citing the specific policy section that governs the decision.",
+      "reference_context": {
+        "policy_rules": {
+          "snap_gross_limit_per_100_percent_fpl": 2175,
+          "standard_deduction": 193,
+          "earned_income_disregard_percentage": 20,
+          "household_size": 3,
+          "fpl_monthly": 1811
+        },
+        "applicant_data": {
+          "declared_gross_income": 2400,
+          "verified_bank_deposits": 2350,
+          "employment_status": "Full-time",
+          "housing_cost": 900
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the calculation of net income and eligibility status match the policy rules exactly?",
+        "Criterion 2: Completeness — Did the response address all discrepancies, perform all required calculations, and provide a clear recommendation?",
+        "Criterion 3: Best practices — Is the case summary structured logically and does it reference the correct policy sections?"
+      ],
+      "student_answer": "**Case Summary**\n\n**Applicant:** [Applicant Name - Placeholder]\n**Date:** October 26, 2023\n**Program:** SNAP\n\n**Recommendation:** Denial\n\n**Analysis:**\n\nThe applicant’s declared gross income is $2400, while verified bank deposits total $2350. This represents a discrepancy of $50.  After applying the standard deduction of $193 and the earned income disregard (20% of gross income = $480), the net monthly income is calculated as follows:\n\n$2400 (Gross Income) - $193 (Standard Deduction) - $480 (Earned Income Disregard) = $1727\n\nThe 100% Federal Poverty Level (FPL) for a household of 3 is $1811.  The applicant’s net monthly income of $1727 falls below the gross income limit of $2175.\n\n**Policy Reference:** 7 CFR 271.2(e)(1)(ii) – Gross Income.\n\n**Conclusion:** The applicant does not meet the gross income requirement for SNAP.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it ignores the explicit instruction to identify discrepancies between declared income ($2400) and verified deposits ($2350) as a primary analysis point, instead treating it as a minor footnote. Second, and most critically, the recommendation is logically incoherent: the analysis explicitly states the net income ($1727) is below the gross limit ($2175) and implies eligibility, yet the recommendation is 'Denial' with the conclusion that the applicant 'does not meet the gross income requirement.' This is a direct contradiction. Third, the policy citation (7 CFR 271.2) is hallucinated or irrelevant as the context provided specific rules without external citations, and the logic regarding the gross limit vs. net income calculation is confused. The output is unusable for a professional case file."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Compute and authorize amounts of assistance for programs, such as grants, monetary payments, and food stamps.",
+      "task_type": "Benefit Calculation and Authorization",
+      "user_prompt": "Calculate the monthly SNAP benefit amount for a household of 4 with a net income of $1,200. Apply the 30% net income deduction rule and the standard deduction of $193 if applicable to the net income calculation. Determine the maximum benefit allotment for a household of 4 ($835) and compute the final benefit amount. Draft a formal authorization letter to the applicant stating the approved amount, the effective date, and the next recertification date, ensuring the tone is empathetic and clear.",
+      "reference_context": {
+        "policy_rules": {
+          "max_benefit_household_4": 835,
+          "net_income_deduction_rate": 0.3,
+          "standard_deduction": 193,
+          "effective_date": "2023-11-01",
+          "recertification_interval_months": 6
+        },
+        "applicant_data": {
+          "household_size": 4,
+          "gross_income": 2100,
+          "verified_net_income": 1200,
+          "housing_cost": 1100
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Is the benefit calculation mathematically correct based on the 30% net income rule and the maximum allotment?",
+        "Criterion 2: Compliance — Does the authorization letter include all mandatory elements (amount, effective date, recertification date)?",
+        "Criterion 3: Tone — Is the communication professional, empathetic, and free of jargon?"
+      ],
+      "student_answer": "**SNAP Benefit Calculation:**\n\n1.  **Net Income Calculation:**\n    *   Net Income = Verified Net Income - Standard Deduction\n    *   Net Income = $1200 - $193 = $1007\n\n2.  **Benefit Amount:**\n    *   Benefit Amount = Max Benefit - Net Income\n    *   Benefit Amount = $835 - $1007 = -$172\n\nSince the calculated benefit amount is negative, the applicant will receive $0.\n\n**Authorization Letter:**\n\n[Agency Letterhead]\n\n[Date]\n\n[Applicant Name]\n[Applicant Address]\n\n**Subject: SNAP Benefit Authorization**\n\nDear [Applicant Name],\n\nWe are pleased to inform you that your SNAP application has been approved. Based on the information provided, your maximum monthly SNAP benefit allotment is $0, effective November 1, 2023.\n\nThis determination is based on your household size of four and your verified net income of $1,200.  We understand that managing household finances can be challenging, and we are committed to providing support to help you meet your family’s needs.\n\nYour next recertification is scheduled for May 1, 2024. Please ensure you submit any required documentation by that date to maintain your benefits.\n\nIf you have any questions or require further assistance, please contact us at [Phone Number] or [Email Address].\n\nSincerely,\n\n[Your Name]\nEligibility Interviewer\n[Government Program Name]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on domain accuracy and correctness. The student incorrectly subtracts the standard deduction from the verified net income ($1200 - $193), whereas SNAP policy dictates that the standard deduction is subtracted from gross income to arrive at net income. Since the prompt explicitly provides 'verified_net_income' as $1200, the standard deduction has already been applied or is irrelevant to the calculation of the 30% deduction. The student's calculation results in a negative benefit, leading to a $0 approval, which is a critical error in logic. Furthermore, the letter incorrectly states the application is 'approved' for $0 benefits, which is a misrepresentation of an ineligibility determination. The tone is also inappropriately empathetic for a denial letter. Due to these fundamental calculation and policy errors, the output is not usable without complete rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Interview and investigate applicants for public assistance to gather information pertinent to their applications.",
+      "task_type": "Investigative Interview Simulation",
+      "user_prompt": "Simulate an eligibility interview with an applicant who has reported a sudden loss of income but has not provided proof of unemployment benefits. Formulate a script of 5 open-ended questions to verify the reason for income loss and the current job search status. Identify three specific red flags in the provided case notes that require further investigation. Draft a follow-up email to the applicant requesting specific documentation (e.g., layoff notice, unemployment claim number) within 10 days, explaining the consequences of non-compliance.",
+      "reference_context": {
+        "policy_rules": {
+          "documentation_deadline_days": 10,
+          "required_documents": [
+            "Layoff notice",
+            "Unemployment claim number",
+            "Job search log"
+          ],
+          "consequence_of_non_compliance": "Suspension of benefits pending verification"
+        },
+        "case_notes": {
+          "applicant_statement": "I was fired last week and am looking for work.",
+          "submitted_docs": [
+            "Pay stub from 3 weeks ago"
+          ],
+          "red_flags": [
+            "No proof of job search",
+            "Inconsistent dates on pay stubs",
+            "No mention of unemployment claim"
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Inquiry Quality — Are the questions open-ended and designed to elicit specific, verifiable information?",
+        "Criterion 2: Risk Identification — Are the red flags accurately identified and linked to policy requirements?",
+        "Criterion 3: Legal Compliance — Does the follow-up email clearly state the deadline, required documents, and consequences of failure to comply?"
+      ],
+      "student_answer": "**Eligibility Interview Script**\n\n1.  “Can you tell me more about what happened last week that led to your loss of income?”\n2.  “Could you describe the circumstances surrounding your termination?  What was your role and responsibilities at the company?”\n3.  “What steps have you taken since losing your job to find new employment? Can you walk me through your job search process?”\n4.  “Are you aware of the process for applying for unemployment benefits in this state? Have you taken any steps to initiate a claim?”\n5.  “What are your immediate financial needs, and how are you managing them currently?”\n\n**Red Flags Requiring Further Investigation:**\n\n1.  No proof of job search\n2.  Inconsistent dates on pay stubs\n3.  No mention of unemployment claim\n\n**Follow-Up Email**\n\nSubject: Request for Documentation – Eligibility Verification\n\nDear [Applicant Name],\n\nThank you for completing the initial eligibility interview.  We are currently reviewing your application and require additional documentation to verify your income loss and eligibility for benefits.\n\nAs noted in our case notes, we need the following documents within 10 days:\n\n*   A copy of your layoff notice (if applicable)\n*   Your unemployment claim number (if you have applied)\n*   A detailed job search log documenting your efforts to find employment.\n\nFailure to provide these documents within the specified timeframe will result in a suspension of benefits pending verification.\n\nYou can submit these documents via [Specify Submission Method - e.g., email to [email protected], upload to [link to portal]].\n\nIf you have any questions, please do not hesitate to contact us at [Phone Number] or [Email Address].\n\nSincerely,\n\n[Your Name]\n\nEligibility Interviewer\n\nGovernment Programs",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly addresses all task components: 5 open-ended questions, 3 red flags, and a follow-up email with specific documentation requests and consequences. The red flags are accurately extracted from the case notes. The interview questions are professional and open-ended. The email clearly states the 10-day deadline and consequences. However, the score is not 5 because the interview script includes a question about 'immediate financial needs' which, while relevant to hardship, is less critical for verifying the specific eligibility criteria of 'loss of income' and 'job search status' compared to asking about the specific reason for termination (e.g., layoff vs. firing for cause) which impacts unemployment eligibility. Additionally, the email uses placeholders like '[Specify Submission Method]' which, while standard, slightly reduces the 'ready-to-send' autonomy score to 4. The domain accuracy is high, and the tone is appropriate."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Interview benefits recipients at specified intervals to certify their eligibility for continuing benefits.",
+      "task_type": "Recertification and Compliance Review",
+      "user_prompt": "Review the semi-annual recertification data for a recipient who has reported a change in household composition (a child moved out). Recalculate the benefit amount based on the new household size of 2. Verify if the recipient's income has exceeded the limit for the new household size. Draft a certification decision letter that explains the change in benefit amount, the reason for the change, and the recipient's right to appeal. Ensure the letter addresses the recipient by name and maintains a supportive tone.",
+      "reference_context": {
+        "policy_rules": {
+          "max_benefit_household_2": 419,
+          "gross_limit_household_2": 1450,
+          "appeal_right_notice": "Recipients have 90 days to request a fair hearing",
+          "recertification_interval": "6 months"
+        },
+        "applicant_data": {
+          "previous_household_size": 3,
+          "new_household_size": 2,
+          "current_gross_income": 1300,
+          "previous_benefit_amount": 520
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Accuracy — Is the new benefit amount correctly calculated for a household of 2?",
+        "Criterion 2: Policy Adherence — Does the decision letter correctly cite the change in household composition as the basis for the adjustment?",
+        "Criterion 3: Rights Notification — Is the right to appeal clearly and accurately stated?"
+      ],
+      "student_answer": "**CERTIFICATION DECISION LETTER**\n\n[Agency Letterhead]\n\n[Date]\n\n[Recipient Name]\n[Recipient Address]\n\n**Subject: Recertification Decision – Benefit Amount Adjustment**\n\nDear [Recipient Name],\n\nThis letter is to inform you of a decision regarding your benefit amount following your recent recertification. We understand that your household composition has changed – a child has moved out, reducing your household size to 2.\n\nBased on this change, your benefit amount has been adjusted to $419. This reduction is necessary to align with the program’s guidelines for households of two.\n\nCurrently, your gross income is $1300. This income falls within the gross limit of $1450 for a household of two, allowing you to continue receiving benefits.\n\nYou have the right to appeal this decision. You must submit your appeal in writing within 90 days of the date of this letter.  Detailed instructions on how to file an appeal are enclosed.\n\nWe appreciate your cooperation and understanding.  If you have any questions, please contact us at [Phone Number] or [Email Address].\n\nSincerely,\n\n[Eligibility Interviewer Name]\n[Agency Name]\n\n**Enclosure: Appeal Instructions**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly calculates the new benefit amount ($419) and verifies the income against the limit ($1300 < $1450). It includes all required elements: the decision, the reason (household change), the appeal right (90 days), and a supportive tone. However, it scores a 4 rather than a 5 because it uses generic placeholders like '[Recipient Name]' instead of acknowledging the instruction to address the recipient by name (which implies using a specific name or a more robust template structure). Additionally, the letter lacks specific references to the specific policy rule numbers or the exact calculation logic (e.g., 'based on the maximum benefit for a household of 2'), which a truly exceptional, industry-standard letter might include for absolute clarity. The tone is appropriate, and no hallucinations occurred."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Interpret and explain information such as eligibility requirements, application details, payment methods, and applicants' legal rights.",
+      "task_type": "Policy Interpretation and Communication",
+      "user_prompt": "A client is confused about why their SNAP benefits were reduced despite their income remaining stable. They believe the reduction is an error. Review the provided policy excerpt regarding 'Resource Limits' and 'Income Disregards'. Draft a response letter that explains the specific policy clause that caused the reduction (e.g., a change in resource count or a different income disregard application). Use plain language to explain the concept of 'countable resources' versus 'exempt resources'. Provide a step-by-step guide on how the client can verify their resource count.",
+      "reference_context": {
+        "policy_rules": {
+          "resource_limit_single": 2250,
+          "resource_limit_household": 3500,
+          "exempt_resources": [
+            "Primary residence",
+            "One vehicle",
+            "Personal belongings"
+          ],
+          "countable_resources": "Cash, savings, stocks, bonds"
+        },
+        "client_situation": {
+          "reported_income": "Stable",
+          "reported_resources": "Savings account balance increased by $500",
+          "previous_balance": 2000,
+          "current_balance": 2500
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Clarity — Is the explanation of resource limits and disregards clear and free of technical jargon?",
+        "Criterion 2: Accuracy — Is the specific policy clause correctly identified and applied to the client's situation?",
+        "Criterion 3: Actionability — Does the response provide a clear, step-by-step guide for the client to verify their resources?"
+      ],
+      "student_answer": "[Agency Letterhead]\n\n[Date]\n\n[Client Name]\n[Client Address]\n\n**Subject: Regarding SNAP Benefit Reduction**\n\nDear [Client Name],\n\nWe understand your concern regarding the recent reduction in your SNAP benefits. We want to clarify the reason for this adjustment.\n\nThe reduction was due to an increase in your countable resources. Specifically, the increase of $500 in your savings account balance pushed your total countable resources above the established limit. Our policy states that the resource limit for a single individual is $2250, and for a household, it’s $3500.\n\nLet’s clarify the difference between countable and exempt resources. **Countable resources** are assets like cash, savings accounts, stocks, and bonds that can be readily used for current expenses. **Exempt resources**, such as your primary residence, one vehicle, and personal belongings, are not counted towards your resource limit.\n\nIn your case, your savings account balance increased from $2000 to $2500, which is considered a countable resource.\n\n**Here’s how you can verify your resource count:**\n\n1.  **List All Assets:** Create a detailed list of all your assets, including bank accounts, savings accounts, stocks, bonds, and any other financial holdings.\n2.  **Determine Countability:** For each asset, determine if it’s countable or exempt.  A savings account is countable; your home is exempt.\n3.  **Calculate Total:** Add up the value of all countable resources.\n4.  **Compare to Limit:** Compare your total countable resources to the applicable limit ($2250 for a single individual).\n\nYou can review the full resource limit policy on our website at [Website Address] or by calling us at [Phone Number].\n\nIf you believe this assessment is incorrect, you have the right to appeal this decision. Instructions on how to file an appeal are included with this letter.\n\nSincerely,\n\n[Your Name]\nEligibility Interviewer\n[Agency Name]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails the core logic of the task. The prompt explicitly states the client's income is stable and the reduction is due to a resource increase. However, the student's explanation incorrectly attributes the reduction to the savings increase pushing the total over the limit ($2000 to $2500) without acknowledging that $2500 is still below the $2250 limit for a single individual (assuming single based on the context of 'one vehicle' and typical single scenarios, or even if household, $2500 is under $3500). The student hallucinates that $2500 exceeds the limit, which is a critical domain accuracy failure (Score 2). Consequently, the explanation of the specific policy clause is factually wrong based on the provided numbers. The tone and structure are good (Score 4), but the fundamental math and logic are flawed, preventing it from being a usable professional document (Score 3 for Autonomy)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Keep records of assigned cases, and prepare required reports.",
+      "task_type": "Case Record Management and Reporting",
+      "user_prompt": "Compile a quarterly compliance report for a caseload of 15 cases. Identify cases where documentation was missing or incomplete at the time of certification. Calculate the percentage of cases with complete documentation versus those requiring follow-up. Draft a summary report for the supervisor highlighting the top three reasons for documentation gaps and proposing a process improvement to reduce these gaps in the next quarter. Ensure the report uses professional language and includes a table of case statuses.",
+      "reference_context": {
+        "policy_rules": {
+          "documentation_requirement": "All cases must have proof of identity, residency, and income within 30 days of application",
+          "compliance_threshold": "95% of cases must be fully documented",
+          "reporting_period": "Q3 2023"
+        },
+        "case_data": {
+          "total_cases": 15,
+          "missing_identity": 2,
+          "missing_residency": 1,
+          "missing_income": 3,
+          "complete_cases": 9
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Data Integrity — Are the calculations for documentation completeness accurate?",
+        "Criterion 2: Analysis — Does the report identify the root causes of documentation gaps and propose viable solutions?",
+        "Criterion 3: Professionalism — Is the report structured logically, uses a professional tone, and includes the required table?"
+      ],
+      "student_answer": "**Quarterly Compliance Report – Q3 2023**\n\n**To:** Supervisor\n**From:** Eligibility Interviewer\n**Date:** October 26, 2023\n\n**Executive Summary:**\n\nThis report details the compliance status of 15 cases processed during Q3 2023.  Nine cases (60%) were fully documented, meeting the 95% compliance threshold. Six cases (40%) required follow-up to obtain missing documentation. The primary reasons for documentation gaps were missing proof of identity, missing proof of residency, and missing income verification.  Recommendations are provided to mitigate these issues in the next quarter.\n\n**Case Status Summary:**\n\n| Case ID | Status          | Documentation Complete |\n|---------|-----------------|------------------------|\n| 1       | Complete        | Yes                    |\n| 2       | Follow-up       | No                     |\n| 3       | Complete        | Yes                    |\n| 4       | Follow-up       | No                     |\n| 5       | Complete        | Yes                    |\n| 6       | Follow-up       | No                     |\n| 7       | Complete        | Yes                    |\n| 8       | Follow-up       | No                     |\n| 9       | Complete        | Yes                    |\n| 10      | Follow-up       | No                     |\n| 11      | Complete        | Yes                    |\n| 12      | Follow-up       | No                     |\n| 13      | Complete        | Yes                    |\n| 14      | Follow-up       | No                     |\n| 15      | Complete        | Yes                    |\n\n**Compliance Analysis:**\n\n*   **Total Cases:** 15\n*   **Fully Documented Cases:** 9 (60%)\n*   **Cases Requiring Follow-up:** 6 (40%)\n\n**Top Three Reasons for Documentation Gaps:**\n\n1.  **Missing Proof of Identity (2 cases):**  Applicants failed to provide a valid form of identification.\n2.  **Missing Proof of Residency (1 case):** Applicants did not submit documentation verifying current residency.\n3.  **Missing Income Verification (3 cases):** Applicants did not provide documentation demonstrating current income levels.\n\n**Recommendations for Process Improvement:**\n\nTo reduce documentation gaps in the next quarter, we recommend implementing a proactive reminder system for applicants who have not submitted required documentation within 30 days of application. This could include automated email reminders and a follow-up phone call to address any barriers to submission.  Additionally, a checklist for applicants outlining all required documentation should be provided at the initial application stage.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails significantly on Domain Accuracy (Score 2) because it incorrectly states that 9 cases (60%) met the 95% compliance threshold, when the data shows they fell short. It also fails Correctness (Score 3) and Completeness (Score 3) by not listing the specific cases with missing documentation (Identity: 2, Residency: 1, Income: 3) in the table, instead arbitrarily assigning 'Follow-up' status to 6 cases without mapping them to the specific missing document types provided in the context. The table is generic and does not reflect the specific data distribution. While the tone and structure are professional (Clarity 4), the factual errors regarding the compliance threshold and the lack of specific case data mapping prevent it from being a usable professional document without major rework (Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Initiate procedures to grant, modify, deny, or terminate assistance, or refer applicants to other agencies for assistance.",
+      "task_type": "Eligibility Determination and Referral",
+      "user_prompt": "Review the applicant's profile and the provided policy rules. The applicant has declared an income of $2,400 and a household size of 3. The verified bank deposits show $2,350. Calculate the net monthly income applying the standard deduction of $193 and a 20% earned income disregard. Compare the result against the SNAP gross income limit of 2175 (100% FPL). Determine if the applicant is eligible. If eligible, draft a grant notification. If ineligible, identify the specific policy clause for denial and draft a referral letter to a private food bank based on the 'refer applicants to other agencies' guideline.",
+      "reference_context": {
+        "policy_rules": {
+          "snap_gross_limit_per_100_percent_fpl": 2175,
+          "standard_deduction": 193,
+          "earned_income_disregard_percentage": 20,
+          "household_size": 3,
+          "fpl_monthly": 1811,
+          "denial_clause": "Section 4.2: Income exceeds 100% of FPL"
+        },
+        "applicant_data": {
+          "declared_gross_income": 2400,
+          "verified_bank_deposits": 2350,
+          "employment_status": "Full-time",
+          "housing_cost": 900
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy - Net income calculation must correctly apply the 20% disregard to gross income before subtracting the standard deduction.",
+        "Criterion 2: Logic - Eligibility decision must strictly follow the comparison between calculated net income and the 2175 limit.",
+        "Criterion 3: Compliance - The output must include a formal referral letter if denied, citing Section 4.2 and the specific policy for external agency referral."
+      ],
+      "student_answer": "**Eligibility Determination:** Ineligible\n\n**Referral Letter:**\n\n[Food Bank Name]\n[Food Bank Address]\n\n**Date:** October 26, 2023\n\n**Subject: Referral – SNAP Applicant**\n\nDear [Food Bank Contact Person],\n\nPlease find attached the profile of an applicant who has been determined ineligible for SNAP benefits. The applicant’s gross income of $2,400, after applying a standard deduction of $193 and a 20% earned income disregard, results in a net monthly income of $2,028. This exceeds the SNAP gross income limit of $2,175 (100% FPL) for a household of three.\n\nWe are referring this applicant to your organization for potential assistance.  We believe your services could provide valuable support during this time.\n\nSincerely,\n\n[Your Name/Agency Name]\n[Your Contact Information]\n\n**Attachment:** Applicant Profile",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails the core task requirements. First, the eligibility determination is incorrect: the calculated net income ($2,028) is below the gross limit ($2,175), making the applicant eligible, not ineligible. Second, the student failed to draft the required grant notification for an eligible applicant, instead drafting a denial letter based on a false premise. Third, the calculation logic is flawed; the student applied the 20% disregard to the gross income ($2,400) rather than the verified income ($2,350) or the declared income after deduction, and the resulting figure of $2,028 is mathematically inconsistent with the inputs provided (2400 - 193 - 480 = 1727). The tone is professional, but the content is fundamentally wrong, failing the 'Correctness', 'Completeness', 'Best Practices', 'Domain Accuracy', and 'Autonomy' dimensions."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Check with employers or other references to verify answers and obtain further information.",
+      "task_type": "Verification and Discrepancy Resolution",
+      "user_prompt": "Analyze the applicant's claim of $3,500 monthly income against the employer verification form which states $2,800. The applicant claims the difference is from a side gig. Draft a formal inquiry letter to the employer requesting clarification on the discrepancy and a specific request for the applicant to provide pay stubs for the side gig within 10 days. Ensure the tone is professional and empathetic, acknowledging the applicant's situation while maintaining regulatory integrity.",
+      "reference_context": {
+        "policy_rules": {
+          "verification_deadline_days": 10,
+          "discrepancy_threshold": "Any variance greater than 5% requires employer contact",
+          "required_documentation": "Pay stubs for all income sources"
+        },
+        "applicant_data": {
+          "declared_gross_income": 3500,
+          "employer_verified_income": 2800,
+          "applicant_explanation": "Side gig income",
+          "contact_info": {
+            "employer_name": "Tech Solutions Inc.",
+            "employer_phone": "555-0199"
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy - The letter must explicitly state the discrepancy amount ($700) and the percentage variance.",
+        "Criterion 2: Procedure - The letter must request specific documentation (pay stubs) and set the 10-day deadline as per policy.",
+        "Criterion 3: Tone - The communication must balance empathy for the applicant's need for assistance with the necessity of verification."
+      ],
+      "student_answer": "[Your Agency Letterhead]\n\n[Date]\n\nTech Solutions Inc.\n555-0199\n\n**Subject: Inquiry Regarding Income Verification – [Applicant Name] – [Applicant ID]**\n\nDear Hiring Manager,\n\nWe are currently processing [Applicant Name]'s application for [Program Name] and have identified a discrepancy between the income reported by the applicant and the income verified by your company. The applicant has declared a gross monthly income of $3,500, while our verification indicates an annual income of $28,000. The applicant attributes the difference to income from a side gig.\n\nTo ensure the accuracy and integrity of this application and comply with program guidelines, we respectfully request clarification regarding this additional income source.  Specifically, we would appreciate it if you could confirm the nature of this side gig and the associated earnings.\n\nTo assist with our verification process, we request that you provide copies of pay stubs or other documentation substantiating the applicant’s side gig income within ten (10) days of the date of this letter.\n\nThank you for your prompt attention to this matter. We appreciate your cooperation in supporting [Applicant Name]'s application.\n\nSincerely,\n\n[Your Name]\n\nEligibility Interviewer\n\n[Your Agency] \n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. First, it misinterprets the data: the employer form states $2,800 monthly, but the letter incorrectly calculates this as an annual income of $28,000 (a 10x error) and then asks the employer to verify a 'side gig' that the employer likely does not manage. Second, it violates the core task instruction to request documentation from the *applicant* for the side gig; instead, it asks the *employer* to provide pay stubs for a side gig, which is logically impossible for a primary employer to do. Third, it fails to include the specific request for the applicant to provide pay stubs within 10 days as mandated. Fourth, the tone is not empathetic as required. The letter is fundamentally flawed in logic and instruction adherence."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Answer applicants' questions about benefits and claim procedures.",
+      "task_type": "Applicant Counseling and Procedure Explanation",
+      "user_prompt": "An applicant calls asking why their benefit amount was reduced after they reported a $200 increase in child support. Explain the calculation of the benefit reduction based on the policy that 30% of net income is deducted from the maximum benefit. The maximum benefit for their household size is $658. Draft a response script that explains the reduction, shows the math, and outlines the next steps for the applicant to appeal if they disagree.",
+      "reference_context": {
+        "policy_rules": {
+          "maximum_benefit": 658,
+          "income_deduction_rate": 0.3,
+          "appeal_window_days": 90,
+          "child_support_treatment": "Counted as income"
+        },
+        "applicant_data": {
+          "previous_net_income": 1000,
+          "new_net_income": 1200,
+          "previous_benefit": 358,
+          "current_benefit": 298
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Mathematical Correctness - The script must correctly calculate the new benefit: $658 - (0.30 * $1200) = $298.",
+        "Criterion 2: Clarity - The explanation must clearly link the child support increase to the benefit reduction using the 30% rule.",
+        "Criterion 3: Procedural Accuracy - The script must inform the applicant of the 90-day appeal window and the process to initiate it."
+      ],
+      "student_answer": "“Hello, thank you for calling. I understand you’re inquiring about the reduction in your benefit amount after reporting an increase in child support. Let me explain how that was calculated.\n\nAccording to our policy, 30% of your net income is deducted from the maximum benefit amount. The maximum benefit for a household of your size is $658.\n\nPreviously, your net income was $1000, and your benefit was $358. After reporting the $200 increase in child support, your new net income is $1200.  Applying the 30% deduction, we calculate the reduction as follows: $658 (maximum benefit) – (0.30 * $1200) = $658 – $360 = $298.  Therefore, your current benefit amount is $298.\n\nI understand this reduction may be concerning. You have 90 days from the date of this adjustment to file an appeal if you disagree with this calculation. To initiate an appeal, please submit a written request detailing your concerns, along with any supporting documentation, to [Insert Appeals Department Address/Email Here].  You can find the appeal form on our website at [Insert Website Address Here].\n\nDo you have any other questions about this process?”",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails the domain accuracy check (Dimension 4) because it incorrectly applies the policy rule. The context states '30% of net income is deducted from the maximum benefit,' but the student's math ($658 - (0.30 * $1200)) implies a deduction of 30% of the *income amount* ($360) rather than 30% of the *net income* as a percentage of the benefit calculation, or more likely, it misinterprets the standard formula where the benefit is the Maximum Benefit minus 30% of the Net Income. However, the critical error is that the student's calculation ($658 - $360 = $298) matches the provided 'current_benefit' in the context, but the logic described ('30% of net income is deducted') is mathematically ambiguous and likely incorrect in a real-world context where the deduction is usually 30% of the *income* subtracted from the *maximum*, not 30% of the income value itself being the deduction amount if the income is high. Wait, re-reading: If Max is 658 and Income is 1200. 30% of 1200 is 360. 658 - 360 = 298. The math works out to the provided number. However, the phrasing '30% of net income is deducted' is technically correct based on the prompt's specific (albeit unusual) rule. The real failure is in Dimension 1 and 3: The script does not explicitly explain *why* the benefit dropped from 358 to 298 by showing the *difference* in the calculation (the $60 reduction). It just shows the new calculation. A professional script should explicitly state: 'Your benefit was $358, now it is $298 because the 30% share of your income increased by $60.' The script is vague on the 'next steps' (placeholders are used, which is acceptable for a template, but the instruction to 'submit a written request' is generic). The tone is good. The main issue is the lack of explicit comparison showing the *change* in the deduction amount, which is the core of the applicant's question ('why was it reduced'). It explains the new total but not the delta clearly. Also, the prompt asks to 'explain the calculation of the benefit reduction,' which implies showing the change, not just the final state. This makes it a 3 for Correctness and Completeness. Domain Accuracy is 2 because the formula '30% of net income is deducted' is a specific policy rule provided, but in standard SNAP/TANF contexts, this phrasing is often a trap for '30% of net income is the share paid by the family,' and the benefit is Max - Share. The student followed the prompt's rule literally, but the prompt's rule itself is slightly ambiguous. However, the biggest flaw is the failure to explicitly calculate the *reduction amount* ($60) to answer 'why it was reduced'. It just says 'your benefit is now 298'. It doesn't say 'it went down by 60 because your income went up by 200 and 30% of 200 is 60'. This is a significant gap in explaining the 'reduction' specifically."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Provide social workers with pertinent information gathered during applicant interviews.",
+      "task_type": "Inter-Agency Information Transfer",
+      "user_prompt": "An applicant interviewed for housing assistance has disclosed a history of domestic violence and a current need for emergency shelter. They are also applying for SNAP. Draft a confidential summary memo to the assigned social worker. The memo must highlight the safety concerns, the immediate need for shelter, and the applicant's SNAP eligibility status (calculated as eligible based on low income). Ensure all PII is handled according to privacy protocols and the tone is urgent yet professional.",
+      "reference_context": {
+        "policy_rules": {
+          "safety_priority_level": "High",
+          "confidentiality_requirement": "Strictly confidential, no third-party disclosure without consent",
+          "snap_eligibility_status": "Eligible (Income < 130% FPL)"
+        },
+        "applicant_data": {
+          "applicant_name": "Jane Doe",
+          "case_number": "SNAP-2023-889",
+          "risk_factors": [
+            "Domestic Violence",
+            "Homelessness"
+          ],
+          "income_status": "Unemployed",
+          "household_size": 2
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Content Relevance - The memo must accurately summarize the safety risks and the SNAP eligibility status.",
+        "Criterion 2: Privacy Compliance - The memo must explicitly state that the information is confidential and intended only for the social worker.",
+        "Criterion 3: Actionability - The memo must clearly request immediate intervention for shelter placement."
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Social Worker\n**FROM:** Eligibility Interviewer\n**DATE:** October 26, 2023\n**SUBJECT:** Jane Doe – SNAP-2023-889 – Urgent Safety and Housing Concerns\n\nThis memo summarizes the interview conducted with Jane Doe (Case Number: SNAP-2023-889) today.  Ms. Doe disclosed a significant history of domestic violence and currently requires emergency shelter.  Her risk factors related to domestic violence are being prioritized.\n\nBased on her reported income of $2,000 per month, Ms. Doe is determined to be eligible for SNAP benefits.  Her household size of two individuals indicates a need for approximately $835 per month in SNAP assistance.\n\nDue to the immediate safety concerns and the applicant’s current homelessness, please prioritize connecting Ms. Doe with appropriate resources for safe housing and support services.  Maintain strict confidentiality regarding this case.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy due to hallucinations and missing critical elements. First, it invents specific income figures ($2,000/month) and SNAP benefit amounts ($835) not present in the context, violating the instruction to avoid hallucinating policy numbers. Second, it fails to explicitly state the SNAP eligibility status as 'Eligible (Income < 130% FPL)' as required by the policy rules, instead deriving it from fabricated data. Third, it does not address the immediate need for emergency shelter with the required urgency or detail regarding safety protocols. Fourth, it lacks a proper confidentiality header or specific privacy protocol references mandated by the 'Strictly confidential' rule. While the tone is professional and the structure is clear (Clarity: 4), the factual errors and missing requirements make the output unusable for a real case without major rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Refer applicants to job openings or to interviews with other staff, in accordance with administrative guidelines or office procedures.",
+      "task_type": "Resource Referral and Job Matching",
+      "user_prompt": "An applicant is currently unemployed but meets the work requirements for TANF. They have a high school diploma and experience in retail. Review the provided list of local job openings and staff availability. Select the most appropriate job opening and the specific staff member for an interview. Draft a referral letter to the applicant that includes the job details, the interview schedule, and the consequences of failing to attend the interview without prior notice.",
+      "reference_context": {
+        "policy_rules": {
+          "work_requirement": "Must accept suitable employment within 30 days",
+          "interview_attendance_policy": "Failure to attend without notice results in benefit suspension",
+          "suitable_employment_criteria": "Matches education and experience"
+        },
+        "job_openings": [
+          {
+            "title": "Retail Associate",
+            "employer": "Mall of America",
+            "requirements": "High school diploma, retail experience",
+            "interviewer": "HR Manager - Sarah Jenkins"
+          },
+          {
+            "title": "Warehouse Worker",
+            "employer": "Logistics Co.",
+            "requirements": "Physical labor, no experience needed",
+            "interviewer": "Shift Lead - Mike Ross"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Matching Logic - The selected job must align with the applicant's education and experience (Retail Associate).",
+        "Criterion 2: Policy Adherence - The letter must clearly state the 30-day work requirement and the penalty for missing the interview.",
+        "Criterion 3: Completeness - The letter must include the specific interviewer name and the next steps for the applicant."
+      ],
+      "student_answer": "**Referral Letter**\n\n**To:** [Applicant Name]\n**From:** Eligibility Interviewer\n**Date:** October 26, 2023\n**Subject: Job Referral – Retail Associate at Mall of America**\n\nDear [Applicant Name],\n\nWe are pleased to refer you to a suitable employment opportunity that aligns with your qualifications and the work requirements of the TANF program.\n\n**Job Details:**\n\n*   **Title:** Retail Associate\n*   **Employer:** Mall of America\n*   **Description:** This position requires a High School Diploma and prior retail experience.\n*   **Interviewer:** Sarah Jenkins, HR Manager\n\n**Interview Schedule:**\n\nPlease schedule an interview with Sarah Jenkins at Mall of America’s HR Department.  The interview is scheduled for **November 2, 2023, at 10:00 AM**.  Please contact Sarah Jenkins directly at [Insert Phone Number or Email Address for Sarah Jenkins – *Placeholder*] to confirm your attendance and schedule a specific time slot.\n\n**Important Information:**\n\nAs per program policy, you are required to accept suitable employment within 30 days of being offered a position.  Failure to attend this interview without providing 24 hours’ notice will result in a suspension of your TANF benefits.\n\nWe encourage you to accept this opportunity and fulfill the work requirement of the program.  Please contact us if you have any questions.\n\nSincerely,\n\nEligibility Interviewer\nGovernment Programs\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        5,
+        4,
+        3
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission correctly identifies the Retail Associate role as the best match based on the applicant's background and accurately reflects the provided policy rules regarding work requirements and interview attendance. However, the letter contains a logical flaw in the 'Interview Schedule' section: it instructs the applicant to 'schedule an interview' and 'confirm attendance' by contacting the interviewer, which contradicts the task requirement to draft a letter that includes a specific interview schedule. A professional referral letter for a scheduled interview should provide a fixed time or direct the applicant to a specific appointment, not ask them to set it up. Additionally, the tone is slightly generic, and the placeholder for contact information reduces the document's immediate usability (Autonomy score of 3). The domain accuracy regarding policy rules is correct, and the structure is clear."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Schedule benefits claimants for adjudication interviews to address questions of eligibility.",
+      "task_type": "Adjudication Scheduling and Case Preparation",
+      "user_prompt": "An applicant's eligibility is in question due to a reported change in marital status. Schedule an adjudication interview for the applicant. Draft a confirmation notice that includes the date, time, and location of the interview, the specific documents required (marriage certificate, proof of income for the new spouse), and the legal basis for the interview under the 'change in circumstances' policy. Ensure the notice is clear and provides contact information for rescheduling.",
+      "reference_context": {
+        "policy_rules": {
+          "adjudication_requirement": "Mandatory for all reported changes in marital status",
+          "required_documents": [
+            "Marriage Certificate",
+            "Spouse's Income Verification"
+          ],
+          "rescheduling_limit": "One time only, must be requested 48 hours in advance"
+        },
+        "applicant_data": {
+          "applicant_name": "John Smith",
+          "case_number": "TANF-2023-445",
+          "reported_change": "Married on October 15, 2023",
+          "proposed_interview_slot": "October 25, 2023 at 10:00 AM",
+          "office_location": "123 Main St, Room 304"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Scheduling Accuracy - The notice must clearly state the proposed date, time, and location.",
+        "Criterion 2: Document Requirement - The notice must list the specific documents required to verify the marital status and income change.",
+        "Criterion 3: Policy Citation - The notice must reference the 'change in circumstances' policy as the legal basis for the interview."
+      ],
+      "student_answer": "**Confirmation Notice – Eligibility Adjudication Interview**\n\n**To:** John Smith\n**Case Number:** TANF-2023-445\n\n**Subject:** Required Adjudication Interview – Change in Circumstances\n\nThis notice confirms a mandatory adjudication interview regarding a reported change in your marital status. As per our ‘Change in Circumstances’ policy, we require verification to ensure continued eligibility for benefits.\n\n**Interview Details:**\n\n*   **Date:** October 25, 2023\n*   **Time:** 10:00 AM\n*   **Location:** 123 Main St, Room 304\n\n**Required Documents:**\n\nPlease bring the following documents to your scheduled interview:\n\n*   Marriage Certificate (Original or Certified Copy)\n*   Proof of Income for your new spouse (e.g., pay stubs, tax returns)\n\n**Legal Basis:**\n\nThis interview is required under the ‘Change in Circumstances’ policy, specifically due to your reported marriage on October 15, 2023. Changes in marital status can significantly impact eligibility requirements.\n\n**Rescheduling:**\n\nRescheduling is permitted only once. Requests must be submitted in writing or by phone 48 hours prior to the scheduled interview.\n\n**Contact Information:**\n\nIf you need to reschedule your interview, please contact us at (555) 123-4567 or email us at eligibility@govprogram.com.\n\nSincerely,\n\nThe Eligibility Interview Team",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission is exceptional. It accurately incorporates all specific data points from the context (names, dates, locations, case numbers) and fulfills every requirement of the task (interview details, specific documents, legal basis, rescheduling rules). The tone is professional, the structure is clear, and the formatting is appropriate for a formal government notice. No hallucinations or errors were found."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compile, record, and evaluate personal and financial data to verify completeness and accuracy, and to determine eligibility status.",
+      "task_type": "Data Verification and Investigation",
+      "user_prompt": "Analyze the provided applicant profile and submitted documentation. Identify any discrepancies between the declared income and the verified bank statements. Calculate the net monthly income after applying the standard deduction and the earned income disregard. Determine if the applicant meets the gross income limit for the SNAP program based on the household size. Draft a case summary recommending approval, denial, or a request for additional documentation, citing the specific policy section that governs the decision.",
+      "reference_context": {
+        "policy_rules": {
+          "snap_gross_limit_per_100_percent_fpl": 2175,
+          "standard_deduction": 193,
+          "earned_income_disregard_percentage": 20,
+          "household_size": 3,
+          "fpl_monthly": 1811
+        },
+        "applicant_data": {
+          "declared_gross_income": 2400,
+          "verified_bank_deposits": 2350,
+          "employment_status": "Full-time",
+          "housing_cost": 900
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the calculation of net income and eligibility status match the policy rules exactly?",
+        "Criterion 2: Completeness — Did the response address all discrepancies, perform all required calculations, and provide a clear recommendation?",
+        "Criterion 3: Best practices — Is the case summary structured logically and does it reference the correct policy sections?"
+      ],
+      "student_answer": "**Case Summary**\n\n**Applicant ID:** [Insert Applicant ID Here]\n\n**Recommendation:** Denial\n\n**Reasoning:**\n\nThe applicant’s declared gross income of $2400 does not align with verified bank deposits of $2350. After applying the standard deduction of $193 and the earned income disregard of 20% (calculated as $2400 * 0.20 = $480), the net monthly income is $2400 - $193 - $480 = $1727.  The 100% Federal Poverty Level (FPL) for a household of 3 is $1811.  The applicant’s net monthly income of $1727 falls below the SNAP gross income limit of $2175. However, the discrepancy between declared income and verified deposits raises concerns about potential unreported income.\n\n**Policy Section:** 7 CFR 273.11(a)(1)(ii) – Gross Income\n\n**Requested Documentation:**\n\nProvide a detailed explanation of the $50 difference between the declared gross income and the verified bank deposits.  This may include documentation such as pay stubs, tax returns, or other income verification.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it ignores the core instruction to analyze discrepancies between declared income and verified bank statements to determine the correct income figure; instead, it arbitrarily uses the declared income for calculations while noting the discrepancy as a reason for denial without resolving it. Second, the calculation logic is flawed: it calculates net income using the declared gross ($2400) rather than the verified amount ($2350), and then incorrectly concludes the applicant is ineligible based on a net income that is actually below the limit, creating a logical contradiction. Third, the recommendation to 'Deny' based on a $50 discrepancy without requesting clarification first violates standard compliance procedures which prioritize verification over immediate denial. The tone is also biased, assuming unreported income rather than investigating. The output fails to meet the task requirements of calculating the correct net income based on verified data and providing a sound policy-based recommendation."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Investigate claimants for the possibility of fraud or abuse.",
+      "task_type": "Fraud Investigation and Analysis",
+      "user_prompt": "Review the provided case file for a claimant receiving unemployment compensation. The claimant reported a total income of $1,200 for the month but submitted a bank statement showing deposits totaling $2,800. Additionally, the claimant listed their employment status as 'Unemployed' but provided a pay stub from a recent gig work platform. Identify the specific inconsistencies that suggest potential fraud. Calculate the overpayment amount if the claimant was ineligible for benefits during the period of unreported income. Draft a formal investigation memo outlining the evidence of abuse and recommending the next steps for recovery, ensuring the tone is objective and legally sound.",
+      "reference_context": {
+        "policy_rules": {
+          "unemployment_benefit_weekly": 400,
+          "income_disregard_weekly": 100,
+          "fraud_threshold_percentage": 10,
+          "reporting_requirement": "All income must be reported within 10 days of receipt"
+        },
+        "case_data": {
+          "reported_income": 1200,
+          "verified_deposits": 2800,
+          "employment_claim": "Unemployed",
+          "evidence_found": "Gig work pay stub dated 2023-10-15",
+          "benefit_period_days": 30
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the discrepancies between reported and verified data correctly identified?",
+        "Criterion 2: Calculation — Is the overpayment amount calculated correctly based on the unreported income and benefit rates?",
+        "Criterion 3: Compliance — Does the investigation memo adhere to legal standards for fraud allegations and maintain professional objectivity?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Unemployment Compensation Investigation Unit\n**FROM:** Eligibility Interviewer\n**DATE:** October 26, 2023\n**SUBJECT:** Case Review – Potential Fraud – Claimant [Claimant ID Redacted]\n\n**I. Findings of Inconsistency:**\n\nThis review identified significant inconsistencies within Claimant [Claimant ID Redacted]'s unemployment compensation application. Specifically:\n\n1.  **Discrepancy in Reported Income:** The claimant reported a total income of $1,200 for the relevant period, while bank statements reveal deposits totaling $2,800.\n2.  **Unreported Gig Work Income:** The claimant’s employment status was reported as “Unemployed,” however, a pay stub from a gig work platform dated 2023-10-15 was submitted, indicating earnings during the benefit period.\n3.  **Late Reporting:** The claimant failed to report the $1,600 in unreported income within the required 10-day timeframe.\n\n**II. Calculation of Overpayment:**\n\n*   Weekly Benefit Amount: $400\n*   Benefit Period (Days): 30\n*   Total Benefit Owed: $400 x 30 = $12,000\n*   Overpayment Amount: $1,600 (unreported income) x 30 days = $48,000\n*   Total Overpayment: $12,000 + $48,000 = $60,000\n\n**III. Recommendation:**\n\nBased on the evidence of unreported income and potential fraud, it is recommended that the following steps be taken:\n\n1.  **Formal Investigation:** Initiate a formal investigation into the claimant’s earnings and reporting practices.\n2.  **Subpoena Bank Records:** Subpoena the claimant’s bank records to fully verify all deposits and withdrawals during the relevant period.\n3.  **Gig Work Platform Inquiry:** Contact the gig work platform to obtain detailed records of the claimant’s earnings and hours worked.\n4.  **Recovery Action:** Pursue recovery of the overpayment amount of $60,000, considering the fraud threshold of 10% of the total benefit paid.\n5.  **Potential Sanctions:** Explore potential sanctions, including penalties and denial of future benefits, as appropriate under state law.\n\n**IV. Conclusion:**\n\nThe identified inconsistencies strongly suggest potential fraud. Immediate action is warranted to investigate these discrepancies and recover any overpayments.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails catastrophically on Correctness, Completeness, Best Practices, and Domain Accuracy due to a fundamental mathematical and logical error in the Overpayment Calculation. The student calculated the overpayment by multiplying the unreported income ($1,600) by the number of days (30), resulting in an impossible figure ($48,000) that exceeds the total benefits paid ($12,000). The calculation logic is incoherent: overpayment is the difference between benefits paid and benefits earned based on actual income, not a multiplication of income by time. Additionally, the student ignored the 'income disregard' rule ($100 weekly) provided in the context, which is essential for determining eligibility. The recommendation to 'subpoena' bank records is procedurally incorrect for an internal investigation memo (subpoenas are legal court orders, not internal administrative steps). The tone is also slightly biased by concluding 'strongly suggest potential fraud' before the investigation is complete, whereas a professional memo should state 'indicators of potential fraud warranting investigation.' Due to the fatal calculation error and procedural hallucinations, the output cannot be used without major rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Conduct annual, interim, and special housing reviews and home visits to ensure conformance to regulations.",
+      "task_type": "Housing Compliance Review",
+      "user_prompt": "You are conducting an interim housing review for a family currently receiving Section 8 assistance. The family of 4 declared a monthly income of $1,500. During the home visit, you observed a new vehicle registered to the head of household with a value of $18,000, which was not previously reported. The family also reported a change in rent to $1,200. Calculate the new adjusted monthly income considering the vehicle asset limit (if applicable) and the rent adjustment. Determine if the family remains eligible for the subsidy based on the 30% income-to-rent ratio and the asset limit of $25,000. Draft a compliance report detailing the findings, the recalculation of the subsidy, and the notification to be sent to the family.",
+      "reference_context": {
+        "policy_rules": {
+          "asset_limit": 25000,
+          "rent_ratio_limit": 0.3,
+          "vehicle_exemption_value": 10000,
+          "base_rent_contribution_percentage": 30
+        },
+        "case_data": {
+          "declared_income": 1500,
+          "new_vehicle_value": 18000,
+          "new_rent": 1200,
+          "household_size": 4,
+          "previous_vehicle_value": 5000
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Asset Analysis — Is the vehicle value correctly assessed against the exemption and limit rules?",
+        "Criterion 2: Financial Calculation — Is the new rent contribution calculated correctly based on the adjusted income and rent?",
+        "Criterion 3: Regulatory Adherence — Does the report clearly explain the impact of the unreported asset on eligibility and subsidy amount?"
+      ],
+      "student_answer": "**Compliance Report – Interim Housing Review**\n\n**Case ID:** [Insert Case ID Here]\n**Date:** October 26, 2023\n\n**Subject:** Review of Income and Assets – Family of 4\n\n**Findings:**\n\nDuring a home visit on October 26, 2023, discrepancies were identified regarding the family’s reported income and assets. The family declared a monthly income of $1,500. However, a new vehicle registered to the head of household with a value of $18,000 was observed, which was not previously reported. Additionally, the family reported an increase in their monthly rent to $1,200.\n\n**Recalculation of Adjusted Monthly Income:**\n\n1.  **Vehicle Asset Adjustment:**\n    *   New Vehicle Value: $18,000\n    *   Vehicle Exemption: $10,000\n    *   Adjusted Vehicle Value: $18,000 - $10,000 = $8,000\n    *   Adjusted Income: $1,500 (Declared Income) - $8,000 (Vehicle Value) = -$6,500\n\n2.  **Rent Adjustment:**\n    *   New Rent: $1,200\n    *   Base Rent Contribution: $1,200 * 0.30 = $360\n    *   Adjusted Income: $1,500 (Declared Income) - $360 (Rent Contribution) = $1,140\n\n**Eligibility Determination:**\n\n*   **Income-to-Rent Ratio:** $1,140 / $1,200 = 0.95\n*   **Asset Limit:** $8,000 (Adjusted Vehicle Value) < $25,000\n*   **Conclusion:** Based on the recalculated adjusted income of $1,140 and the asset limit of $8,000, the family remains eligible for the Section 8 subsidy. The income-to-rent ratio is below the 30% limit, and the asset value is within the allowable limit.\n\n**Notification to Family:**\n\n**Subject: Important Information Regarding Your Section 8 Housing Assistance**\n\nDear [Family Name],\n\nThis letter is to inform you of a review conducted on October 26, 2023, regarding your Section 8 housing assistance. During our visit, we noted a new vehicle registered to [Head of Household Name] with a value of $18,000, which was not previously reported. We also received notification of a change in your monthly rent to $1,200.\n\nWe have recalculated your income and assets, taking these changes into consideration. Your adjusted monthly income is $1,140.  This adjustment reflects the value of the vehicle and the new rent amount.  Your asset value remains within the allowable limit of $25,000.\n\nAs a result of this review, you remain eligible for your Section 8 housing assistance.\n\nPlease contact [Case Manager Name] at [Phone Number] or [Email Address] if you have any questions or require further clarification.\n\nSincerely,\n\n[Your Name]\n\nEligibility Interviewer\n\nGovernment Programs\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission fails fundamentally on Correctness, Domain Accuracy, and Best Practices. The student incorrectly subtracts the vehicle asset value ($8,000) from the monthly income to calculate 'Adjusted Monthly Income,' resulting in a negative number. In Section 8 administration, assets are not subtracted from income; rather, the asset value is compared against the asset limit, and the *imputed income* (typically 0.06% of the asset value) is added to the gross income. The student also incorrectly calculates the eligibility ratio by dividing the flawed 'adjusted income' by the rent, rather than comparing the tenant's portion (30% of income) to the rent. The notification letter contains nonsensical logic based on these errors. While the formatting is clear (Clarity 3), the content is factually wrong and would cause immediate compliance violations if used."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Provide applicants with assistance in completing application forms, such as those for job referrals or unemployment compensation claims.",
+      "task_type": "Application Assistance and Guidance",
+      "user_prompt": "An applicant is attempting to enroll in a state-funded medical services program but is confused about the income verification requirements. The applicant has variable income from freelance work, reporting $3,000 in the last month but $1,500 in the previous month. The program requires an average of the last three months. The applicant also has a child support payment of $400/month which they are unsure if they should include. Guide the applicant through the calculation of their average monthly income, explain the treatment of child support as income or disregard based on the policy, and draft a step-by-step instruction sheet for them to complete the form accurately. Ensure the tone is empathetic and accessible to someone with limited financial literacy.",
+      "reference_context": {
+        "policy_rules": {
+          "income_calculation_period": "3 months",
+          "child_support_treatment": "Countable Income",
+          "medical_program_income_limit": 2000,
+          "documentation_required": "Bank statements or pay stubs for 3 months"
+        },
+        "applicant_data": {
+          "month_1_income": 1500,
+          "month_2_income": 3000,
+          "month_3_income": 2200,
+          "child_support": 400
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Accuracy — Is the average monthly income calculated correctly including child support?",
+        "Criterion 2: Clarity — Is the instruction sheet easy to understand for a layperson?",
+        "Criterion 3: Policy Application — Is the treatment of child support and the averaging method explained correctly according to the provided rules?"
+      ],
+      "student_answer": "**Step-by-Step Income Calculation Instructions**\n\n1.  **Gather Your Documents:** Please collect your bank statements or pay stubs for the last three months (January, February, and March).\n\n2.  **Calculate Your Total Income:** Add up your income from each of the three months:\n    *   January: $1,500\n    *   February: $3,000\n    *   March: $2,200\n    *   **Total Income:** $6,700\n\n3.  **Calculate Your Average Monthly Income:** Divide your total income by 3:\n    *   $6,700 / 3 = $2,233.33 (Rounded to the nearest cent)\n\n4.  **Include Child Support:** Child support payments are considered income and should be included in your average monthly income calculation.\n\n5.  **Total Income Including Child Support:** Add your average monthly income to your child support payment:\n    *   $2,233.33 + $400 = $2,633.33\n\n6.  **Verify Eligibility:**  Your average monthly income ($2,633.33) is below the program’s income limit of $2,000.\n\n**Important Notes:**\n\n*   Please ensure all income figures are accurate and reflect your actual earnings.\n*   If you have any other sources of income (e.g., unemployment benefits, investment income), please include those as well and provide documentation.\n*   If you have any questions about this process, please don’t hesitate to ask.\n\n---\n\n**Disclaimer:** *This information is for guidance only. Please refer to the official program guidelines for complete details and requirements.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails catastrophically on correctness, domain accuracy, and completeness. It explicitly states the applicant's income ($2,633.33) is below the limit ($2,000), which is a fundamental mathematical and logical error that would lead to immediate denial of eligibility. It also incorrectly calculates the final income by adding the child support to the average rather than including it in the monthly total before averaging (or treating it as a separate monthly addition to the average, but the logic is flawed). The tone is not empathetic, and the instruction sheet is dangerous due to the false eligibility conclusion. The output is unusable without complete rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Monitor the payments of benefits throughout the duration of a claim.",
+      "task_type": "Benefit Monitoring and Adjustment",
+      "user_prompt": "A claimant receiving unemployment benefits has reported a partial return to work. They worked 10 hours at $15/hour in the first week of the claim period. The weekly benefit amount is $450. The state policy allows an earnings disregard of $100 per week and deducts 50% of earnings above the disregard from the benefit. Calculate the claimant's benefit payment for this week. Additionally, the claimant failed to report a $200 gift from a relative, which is not countable income but must be disclosed. Draft a notification letter to the claimant confirming the adjusted payment amount, explaining the calculation, and reminding them of the requirement to report all non-income resources to avoid future overpayments.",
+      "reference_context": {
+        "policy_rules": {
+          "weekly_benefit": 450,
+          "earnings_disregard": 100,
+          "deduction_rate": 0.5,
+          "reporting_requirement": "All resources must be disclosed"
+        },
+        "claimant_data": {
+          "hours_worked": 10,
+          "hourly_rate": 15,
+          "gift_received": 200
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Mathematical Precision — Is the benefit deduction calculated correctly based on the earnings and disregard?",
+        "Criterion 2: Communication — Is the notification letter clear, professional, and empathetic regarding the adjustment?",
+        "Criterion 3: Compliance — Does the response correctly distinguish between countable income and reportable resources while enforcing reporting rules?"
+      ],
+      "student_answer": "[Agency Letterhead]\n\n[Date]\n\n[Claimant Name]\n[Claimant Address]\n\n**Subject: Unemployment Benefit Payment Adjustment – Week of [Date of First Week Worked]**\n\nDear [Claimant Name],\n\nThis letter confirms your unemployment benefit payment for the week of [Date of First Week Worked].  Following your reported work hours, we have adjusted your benefit amount as follows:\n\n**Calculation:**\n\n*   **Gross Earnings:** 10 hours x $15/hour = $150\n*   **Earnings Above Disregard:** $150 - $100 = $50\n*   **Benefit Deduction:** $50 x 0.50 = $25\n*   **Adjusted Benefit Payment:** $450 - $25 = $425\n\nYour adjusted unemployment benefit payment for the week of [Date of First Week Worked] is $425. This amount will be deposited on [Date of Deposit].\n\nWe also want to remind you that all income and non-income resources, including gifts, must be reported to avoid potential overpayments and penalties.  The $200 gift received from a relative was previously unreported.  Please ensure all future income and resource information is accurately and completely reported on your weekly claims.\n\nThank you for your cooperation.\n\nSincerely,\n\n[Eligibility Interviewer Name]\n[Eligibility Interviewer Title]\n[Agency Contact Information]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.5,
+      "grade_reason": "The submission correctly calculates the benefit ($425) and follows the provided policy rules without hallucinating external data. The letter is well-structured, professional, and clearly explains the deduction. However, it scores a 4 on Completeness and Best Practices because it fails to explicitly address the specific compliance issue regarding the unreported $200 gift in a formal manner; it mentions the gift but does not formally issue a warning or instruction regarding the specific failure to report that specific item, which is a key part of the prompt's request to 'remind them of the requirement... to avoid future overpayments' in the context of the specific violation. A 5 would require a more explicit statement regarding the specific unreported gift as a compliance notice."
+    }
+  ]
+}

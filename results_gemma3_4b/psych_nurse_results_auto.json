@@ -1,0 +1,740 @@
+{
+  "meta": {
+    "job_title": "Advanced Practice Psychiatric Nurses",
+    "job_id": "psych_nurse",
+    "onet_code": "29-1141.02",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 24,
+    "evaluated_tasks": 24,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.77,
+      "dimensions": {
+        "Correctness": 3.61,
+        "Completeness": 3.83,
+        "Best Practices": 3.67,
+        "Domain Accuracy": 3.44,
+        "Clarity": 5.0,
+        "Autonomy": 3.06
+      },
+      "evaluated_tasks": 24,
+      "scale_max": 5
+    },
+    "total_time_seconds": 4238.63
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Assess patients' mental and physical status, based on the presenting symptoms and complaints.",
+      "task_type": "Clinical Assessment",
+      "user_prompt": "Review the provided patient intake data for a 34-year-old female presenting with insomnia, weight loss, and palpitations. Generate a structured clinical assessment note that differentiates between Generalized Anxiety Disorder, Hyperthyroidism, and Panic Disorder based on the symptoms. Identify which physical assessment findings are critical to rule out medical mimics.",
+      "reference_context": "{\n  \"patient_id\": \"PHI-8821\",\n  \"age\": 34,\n  \"chief_complaint\": \"Insomnia and racing heart for 3 weeks\",\n  \"symptoms\": [\"Weight loss (10 lbs)\", \"Tremors\", \"Heat intolerance\", \"Excessive worry\", \"Panic attacks\"],\n  \"vitals\": {\"HR\": 105, \"BP\": 135/85, \"Temp\": 98.9},\n  \"history\": \"No prior psychiatric history, family history of thyroid disease\",\n  \"labs\": {\"TSH\": 0.02, \"Free T4\": 3.5}\n}",
+      "evaluation_criteria": [
+        "Correctness: Accurately identifies Hyperthyroidism as the primary medical cause based on TSH/T4 levels and physical symptoms.",
+        "Completeness: Includes a differential diagnosis that addresses both psychiatric and medical possibilities.",
+        "Best practices: Maintains HIPAA compliance by using placeholder IDs and avoiding real PII in the output."
+      ],
+      "student_answer": "**Clinical Assessment Note**\n\n**Patient:** PHI-8821\n**Date:** October 26, 2023\n**Age:** 34\n**Gender:** Female\n\n**Chief Complaint:** Insomnia and racing heart for 3 weeks.\n\n**Presenting Symptoms:**\n*   Insomnia (persistent difficulty initiating and maintaining sleep)\n*   Weight loss (10 lbs)\n*   Tremors\n*   Heat intolerance\n*   Excessive worry\n*   Panic attacks (reported frequency and severity not specified)\n\n**Vitals:**\n*   Heart Rate: 105 bpm (tachycardia)\n*   Blood Pressure: 135/85 mmHg (elevated)\n*   Temperature: 98.9°F (within normal limits)\n\n**History:**\n*   No prior psychiatric history.\n*   Family history of thyroid disease.\n\n**Laboratory Findings:**\n*   TSH: 0.02 (significantly low)\n*   Free T4: 3.5 (significantly elevated)\n\n**Differential Diagnosis:**\n\n1.  **Hyperthyroidism:** The markedly low TSH and elevated Free T4 strongly suggest hyperthyroidism. The reported symptoms (weight loss, tremors, heat intolerance, palpitations, anxiety) are consistent with this diagnosis. The elevated heart rate further supports this.\n\n2.  **Generalized Anxiety Disorder (GAD):** While excessive worry is present, the physical symptoms (weight loss, tremors, palpitations) are not typical of GAD alone. The physical findings necessitate consideration of a medical etiology.\n\n3.  **Panic Disorder:** The reported panic attacks are consistent with panic disorder, however, the significant physical symptoms (weight loss, tremors, palpitations) suggest a potential medical component that requires investigation beyond a purely psychological explanation.\n\n**Critical Physical Assessment Findings to Rule Out Medical Mimics:**\n\n*   **Detailed Cardiac Assessment:** EKG to evaluate for arrhythmias, assessment of heart sounds for murmurs.\n*   **Thyroid Examination:** Palpation of thyroid gland for nodules or enlargement.\n*   **Neurological Examination:** Assess tremor severity and distribution, evaluate for other neurological signs.\n*   **Assessment of Appetite and Digestion:** Evaluate for changes in bowel habits, nausea, or abdominal discomfort.\n*   **Skin Examination:** Assess for heat rash, excessive sweating, or other skin changes.\n\n**Recommendations:**\n\n*   Referral to Endocrinology for further thyroid evaluation and management.\n*   Consider cardiology consultation for cardiac monitoring and evaluation of palpitations.\n*   Continue monitoring vital signs.\n*   Assess for suicidality given anxiety symptoms.\n\n**Clinician:** [Your Name/Signature]\nAdvanced Practice Psychiatric Nurse",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        4
+      ],
+      "score": 4.8,
+      "grade_reason": "The submission is clinically accurate, correctly prioritizing medical rule-out (Hyperthyroidism) over psychiatric diagnoses based on lab values and symptoms. Lab interpretation and physical assessment recommendations are comprehensive and follow best practices. The only limitation is Autonomy (4), as a student-generated clinical note requires a licensed provider's signature and final review before clinical delivery, preventing a score of 5 despite the high content quality."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Diagnose psychiatric disorders and mental health conditions.",
+      "task_type": "Diagnostic Formulation",
+      "user_prompt": "Based on the provided clinical interview transcript, formulate a DSM-5-TR diagnosis for a 19-year-old male. The patient reports a 2-week period of elevated mood, decreased need for sleep, and impulsive spending, followed by a 3-week period of severe depression. Determine if the criteria for Bipolar I Disorder are met and justify the exclusion of Substance-Induced Mood Disorder.",
+      "reference_context": "{\n  \"interview_notes\": \"Patient reports 4 days of sleeping 2 hours/night, grandiosity, and maxing out 3 credit cards. Followed by 3 weeks of suicidal ideation, anhedonia, and fatigue. Denies alcohol or drug use in the past 6 months. Urine toxicology screen is negative.\",\n  \"duration_elevated\": \"4 days\",\n  \"duration_depressed\": \"3 weeks\",\n  \"substance_use\": \"None reported\",\n  \"family_history\": \"Mother diagnosed with Bipolar Disorder\"\n}",
+      "evaluation_criteria": [
+        "Correctness: Correctly applies DSM-5-TR criteria for a Manic Episode (duration > 1 week or hospitalization) vs. Hypomanic Episode (duration >= 4 days).",
+        "Completeness: Addresses the depressive episode and the exclusion of substance use.",
+        "Best practices: Provides a clear rationale for the diagnosis and notes the need for collateral history."
+      ],
+      "student_answer": "**Diagnosis:** Bipolar I Disorder, Single Episode, Most Recent Episode Depressed\n\n**Justification:**\n\nThe patient’s presentation meets the criteria for Bipolar I Disorder. The initial episode of elevated mood, characterized by decreased sleep, grandiosity, and impulsive spending (lasting 4 days), aligns with the manic criteria. This was followed by a significant depressive episode lasting 3 weeks, characterized by suicidal ideation, anhedonia, and fatigue, meeting the criteria for a major depressive episode.\n\nSubstance-Induced Mood Disorder can be ruled out due to the patient’s denial of any substance use in the past 6 months and a negative urine toxicology screen. The symptoms are not attributable to a substance.\n\nFurthermore, the patient’s family history of Bipolar Disorder strengthens the likelihood of a bipolar diagnosis.",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Document patients' medical and psychological histories, physical assessment results, diagnoses, treatment plans, prescriptions, or outcomes.",
+      "task_type": "Clinical Documentation",
+      "user_prompt": "Draft a comprehensive SOAP note for a patient with Schizophrenia who is non-adherent to medication. The note must include the Subjective report of side effects, Objective findings from the physical exam, the Assessment of the current status, and a Plan that includes a long-acting injectable (LAI) discussion. Ensure all documentation adheres to HIPAA privacy standards.",
+      "reference_context": "{\n  \"patient_id\": \"PHI-9932\",\n  \"current_meds\": \"Risperidone 2mg BID\",\n  \"subjective\": \"Patient reports weight gain and sexual dysfunction, stopped meds 2 weeks ago. Reports hearing voices again.\",\n  \"objective\": \"BMI 32, EPS negative, mild akathisia, disorganized speech\",\n  \"diagnosis\": \"Schizophrenia, Paranoid Type\"\n}",
+      "evaluation_criteria": [
+        "Correctness: Follows the standard SOAP note structure accurately.",
+        "Completeness: Includes specific details on side effects, current symptoms, and a concrete plan for LAI initiation.",
+        "Best practices: Uses de-identified patient IDs and avoids unnecessary sensitive details not relevant to the care plan."
+      ],
+      "student_answer": "## SOAP Note\n\n**Patient ID:** PHI-9932\n\n**Date:** October 26, 2023\n\n**Subjective:**\n\nPatient reports experiencing a return of auditory hallucinations over the past two weeks, stating the voices are “louder and more frequent.” Patient reports experiencing significant side effects since discontinuing Risperidone two weeks ago, specifically noting weight gain and sexual dysfunction. Patient expresses frustration with the side effects and a perceived lack of benefit from the medication. Patient’s speech is noted to be disorganized during the interview.\n\n**Objective:**\n\n*   **BMI:** 32 (Obese)\n*   **Mental Status Exam:**  Patient appears anxious and somewhat agitated. Speech is disorganized and tangential.  Insight appears intact regarding the return of auditory hallucinations, but motivation for adherence is low.  Affect is constricted.  No acute signs of psychosis observed during this visit.\n*   **Neurological:** EPS negative upon examination. Mild akathisia noted – patient reports restlessness and an inability to sit still comfortably. Reflexes are 2+ and symmetrical.\n*   **Vitals:** BP 130/80, HR 78, RR 16, Temp 98.6°F\n\n**Assessment:**\n\nSchizophrenia, Paranoid Type. Patient is experiencing a relapse of psychotic symptoms (auditory hallucinations) following discontinuation of Risperidone. Non-adherence to medication is a significant contributing factor to the relapse.  Current side effects (weight gain, sexual dysfunction, akathisia) are likely contributing to patient’s decision to discontinue medication.  BMI of 32 indicates obesity, which may exacerbate the impact of medication side effects.  Patient’s disorganized speech requires further monitoring.\n\n**Plan:**\n\n1.  **Medication Adjustment:** Discussed the importance of medication adherence for symptom control and preventing relapse.  Acknowledged patient’s concerns regarding side effects and explored potential strategies for managing them.\n2.  **Long-Acting Injectable (LAI) Discussion:** Recommended initiation of a Long-Acting Injectable (LAI) antipsychotic (e.g., Risperidone LA, Paliperidone LA) to improve medication adherence and reduce the risk of relapse.  Explained the benefits of LAI – consistent medication levels, reduced burden of daily dosing, and potential for improved symptom control.  Discussed potential side effects associated with LAI (e.g., injection site reactions, akathisia) and strategies for managing them.\n3.  **Side Effect Management:**  Reviewed strategies for managing weight gain (dietary modifications, increased physical activity).  Discussed potential options for addressing sexual dysfunction (further medication adjustments, referral to a specialist if needed).  Provided education on akathisia management (increased activity, relaxation techniques).\n4.  **Follow-up:** Schedule a follow-up appointment in 2 weeks to assess response to LAI initiation (if agreed upon) and to monitor symptom control and side effects.  Instructed patient to contact the office immediately if auditory hallucinations worsen or if any new concerning symptoms develop.\n5.  **Safety:**  Discussed safety concerns related to non-adherence and the potential for relapse.  Provided resources for crisis intervention if needed (local mental health hotline, emergency services).\n\n**Provider:** [Your Name], APRN",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        4,
+        3,
+        3,
+        5,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "The submission follows the SOAP structure well (Clarity 5) and includes all required sections (Completeness 4). However, it fails to adhere to HIPAA standards by labeling the ID as \"PHI-9932\" (Correctness 3, Best Practices 3). Domain Accuracy is reduced due to the use of DSM-IV \"Paranoid Type\" (obsolete in DSM-5) and the contradictory statement of \"EPS negative\" alongside \"mild akathisia\" (Akathisia is an EPS). These errors require substantive edits before clinical use (Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Educate patients and family members about mental health and medical conditions, preventive health measures, medications, or treatment plans.",
+      "task_type": "Patient Education",
+      "user_prompt": "Create an educational handout for a patient newly prescribed Clozapine. The content must explain the mechanism of action, the critical necessity of weekly blood monitoring (ANC), signs of agranulocytosis, and lifestyle precautions. The tone should be empathetic and accessible to a patient with a 10th-grade reading level.",
+      "reference_context": "{\n  \"medication\": \"Clozapine\",\n  \"indication\": \"Treatment-resistant Schizophrenia\",\n  \"risk_profile\": \"High risk of agranulocytosis, myocarditis, seizures\",\n  \"monitoring_requirement\": \"Weekly ANC for first 6 months, then bi-weekly, then monthly\"\n}",
+      "evaluation_criteria": [
+        "Correctness: Accurately describes the monitoring schedule and specific risks associated with Clozapine.",
+        "Completeness: Covers mechanism, side effects, monitoring, and lifestyle factors.",
+        "Best practices: Uses clear, non-jargon language and emphasizes the life-saving nature of the monitoring."
+      ],
+      "student_answer": "## Understanding Your Clozapine: A Guide for You\n\n**Welcome!** Starting Clozapine can feel a little overwhelming, but we’re here to help you understand what it is, why you’re taking it, and how to stay safe. Clozapine is a powerful medicine used to treat a specific type of mental illness called treatment-resistant schizophrenia. It’s different from other medications, and it requires careful monitoring.\n\n**What Does Clozapine Do?**\n\nClozapine works in a unique way. Most antipsychotic medicines try to block dopamine in the brain. Clozapine does something a little different. It affects several different brain chemicals, including dopamine, serotonin, and norepinephrine. This broader effect can be very helpful for people who haven’t responded to other treatments. Think of it like a more targeted approach to helping balance your brain chemistry.\n\n**Why the Weekly Blood Tests? (ANC)**\n\nBecause Clozapine has a serious risk, we need to watch you closely. The most important thing we’ll be checking for is a condition called **agranulocytosis**. This means your body isn’t making enough white blood cells, specifically a type called neutrophils. These white blood cells are crucial for fighting infections. \n\n* **ANC stands for Absolute Neutrophil Count.** This test measures the number of neutrophils in your blood.\n* **Why weekly at first?** During the first few months, the risk of agranulocytosis is highest.  Weekly tests give us the best chance to catch any changes quickly.\n* **What if your ANC is low?** If your ANC is too low, we may need to adjust your dose or even temporarily stop the medication.  **Never stop taking Clozapine without talking to your doctor first.**\n\n**Signs of Agranulocytosis – What to Watch For**\n\nIt’s important to be aware of potential signs of infection, even if you feel okay. These can include:\n\n* **Frequent or severe sore throat**\n* **Difficulty swallowing**\n* **Pain when urinating**\n* **Fever (especially if it’s high or doesn’t go away with medicine)**\n* **Cough**\n* **Signs of infection in your eyes (redness, discharge)**\n* **Any unusual or persistent bruising or bleeding**\n\n**If you experience any of these symptoms, contact your doctor or go to the emergency room immediately.**\n\n**Important Lifestyle Precautions**\n\n* **Tell your doctor about *all* medications you’re taking**, including over-the-counter medicines, vitamins, and herbal supplements. Some can increase your risk of side effects.\n* **Avoid contact with people who are sick.**  Because you have a lower risk of infection, it’s important to protect yourself.\n* **Eat a healthy diet** and get enough sleep.\n* **Avoid alcohol.** Alcohol can worsen side effects and interfere with your medication.\n* **Report any unusual symptoms to your doctor promptly.** Don’t wait.\n\n**Myocarditis (Heart Issues)**\n\nClozapine carries a small risk of heart problems. We will be monitoring your heart health with regular check-ups.\n\n**Seizures**\n\nClozapine can sometimes cause seizures.  Let your doctor know if you have a history of seizures or if you experience any symptoms like tingling, numbness, or confusion.\n\n**This handout provides general information. It’s not a substitute for talking to your doctor or nurse. Please don’t hesitate to ask any questions you have.**\n\n**Your Healthcare Team:**\n\n[Insert Contact Information for Doctor, Nurse, and Pharmacy]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The handout demonstrates excellent clarity and tone (Clarity 5). However, it contains a critical logic error regarding infection risk ('lower risk of infection' vs 'higher risk'), impacting Domain Accuracy and Best Practices (3). It also omits the specific monitoring schedule progression (weekly to monthly) and specific myocarditis symptoms, affecting Completeness (3). While the core approach is sound, these safety gaps require substantive edits before patient delivery (Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Write prescriptions for psychotropic medications as allowed by state regulations and collaborative practice agreements.",
+      "task_type": "Prescription Management",
+      "user_prompt": "Generate a prescription order for a patient with Major Depressive Disorder who has failed two SSRIs. The patient has a history of renal impairment (CrCl 45 mL/min). Select an appropriate antidepressant, calculate the initial dose adjustment, and list potential drug-drug interactions with their current medication (Lisinopril). Ensure the prescription format is legally compliant.",
+      "reference_context": "{\n  \"diagnosis\": \"MDD, recurrent, severe\",\n  \"failed_meds\": [\"Fluoxetine\", \"Sertraline\"],\n  \"current_meds\": [\"Lisinopril 10mg\"],\n  \"renal_function\": \"CrCl 45 mL/min\",\n  \"allergies\": \"None\"\n}",
+      "evaluation_criteria": [
+        "Correctness: Selects a medication appropriate for renal impairment (e.g., Mirtazapine or adjusted Venlafaxine) and avoids contraindicated drugs.",
+        "Completeness: Includes correct dosing, frequency, and specific interaction warnings with Lisinopril.",
+        "Best practices: Follows standard prescription formatting and includes necessary safety warnings."
+      ],
+      "student_answer": "**Prescription Order**\n\n**Patient:** [Patient Name]\n**Date:** October 26, 2023\n**Rx Number:** [Pharmacy Number]\n\n**Medication:** Mirtazapine\n**Dosage:** Start with 15mg at bedtime\n**Route:** Oral\n**Frequency:** Daily\n**Duration:** 30 days\n**Refills:** 0\n\n**Instructions:** Take one tablet at bedtime. Monitor for sedation and orthostatic hypotension.\n\n**Drug-Drug Interactions:**\n\n*   **Lisinopril:** Mirtazapine may increase sedation and hypotension when taken together. Monitor blood pressure closely.\n*   **Other Antihypertensives:** Concurrent use with other antihypertensives could potentiate the risk of hypotension.\n\n**Renal Considerations:**  CrCl 45 mL/min.  Monitor for adverse effects, particularly sedation.  Dose adjustments may be necessary based on patient response.\n\n**Allergies:** None\n\n**Provider:** [Your Name], APRN\n**NPI:** [Your NPI Number]\n**Signature:** [Your Signature] \n\n---\nDisclaimer: This prescription is based on the provided information and should be reviewed and adjusted based on a comprehensive clinical assessment.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        4,
+        3,
+        5,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "Correctness (3): Failed to explicitly confirm 'no adjustment needed' for Mirtazapine in CrCl 45, hedging instead of calculating. Completeness (3): Missing legal identifiers (DOB, Address) required for a legally compliant prescription. Best Practices (4): Appropriate medication selection and dosing strategy for SSRI failure. Domain Accuracy (3): Imprecise renal pharmacology knowledge regarding Mirtazapine dosing guidelines. Clarity (5): Well-structured and easy to understand. Autonomy (3): Requires filling placeholders and verifying medical advice before clinical use."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Monitor patients' medication usage and results.",
+      "task_type": "Medication Monitoring",
+      "user_prompt": "Analyze the 3-month follow-up data for a patient on Lithium for Bipolar Disorder. The patient reports nausea and tremors. Review the provided lab values and determine if the Lithium level is therapeutic, toxic, or subtherapeutic. Recommend a dosage adjustment or further workup based on the clinical picture.",
+      "reference_context": "{\n  \"medication\": \"Lithium Carbonate\",\n  \"current_dose\": \"900mg daily\",\n  \"last_level\": \"1.8 mEq/L\",\n  \"symptoms\": [\"Nausea\", \"Fine tremor\", \"Polyuria\"],\n  \"labs\": {\"Creatinine\": 1.1, \"TSH\": 4.5, \"Na+\": 135},\n  \"adherence\": \"Reported as good\"\n}",
+      "evaluation_criteria": [
+        "Correctness: Correctly identifies the Lithium level (1.8 mEq/L) as potentially toxic given the symptoms and standard therapeutic range (0.6-1.2 mEq/L for maintenance).",
+        "Completeness: Addresses the symptoms, renal function, and thyroid status in the recommendation.",
+        "Best practices: Provides a clear, actionable plan for dose reduction and re-testing."
+      ],
+      "student_answer": "Lithium level: 1.8 mEq/L – Therapeutic.\n\nSymptoms (nausea, tremor, polyuria) suggest potential toxicity. While the lithium level is within the therapeutic range, the reported symptoms warrant careful consideration. The creatinine is slightly elevated at 1.1, which could be a contributing factor to lithium toxicity. The TSH of 4.5 is slightly elevated, which could be impacting lithium metabolism.\n\nRecommendation: Reduce Lithium dose to 750mg daily. Repeat lithium level in 3-5 days and monitor symptoms closely. Consider further workup including a full metabolic panel to assess renal function and thyroid status more comprehensively. Educate patient on potential side effects and importance of reporting any new or worsening symptoms.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        3,
+        1,
+        5,
+        1
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission addresses the task but contains a critical safety error by classifying 1.8 mEq/L as therapeutic when it is toxic, leading to a Correctness score of 2 and Domain Accuracy of 1. While the structure is clear (Clarity 5), the recommendation lacks a safety disclaimer and fails to consider sodium's role in lithium retention (Completeness 3, Best Practices 3). Due to the dangerous medical misinformation, the output cannot be used without significant rework, resulting in an Autonomy score of 1."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Evaluate patients' behavior to formulate diagnoses or assess treatments.",
+      "task_type": "Diagnostic Assessment",
+      "user_prompt": "Review the provided clinical vignette for Patient A (34-year-old male) presenting with 3 months of elevated mood, decreased need for sleep, and impulsive spending. Differentiate between Bipolar I Disorder, Cyclothymic Disorder, and Substance-Induced Mood Disorder based on the DSM-5-TR criteria. Provide a structured diagnostic formulation that explicitly rules out differential diagnoses based on the absence of substance use history and the severity of manic episodes.",
+      "reference_context": "{\n  \"patient_id\": \"PAT-2023-8842\",\n  \"demographics\": {\"age\": 34, \"sex\": \"Male\"},\n  \"chief_complaint\": \"Feeling 'on top of the world' for 3 months, sleeping 2 hours/night, maxed out 3 credit cards.\",\n  \"history\": \"No prior psychiatric hospitalizations. Denies alcohol or illicit drug use in past 6 months. Family history of Bipolar I.\",\n  \"mental_status_exam\": {\"mood\": \"Euphoric\", \"affect\": \"Expansive\", \"thought_process\": \"Flight of ideas\", \"insight\": \"Poor\"},\n  \"lab_results\": {\"urine_toxicology\": \"Negative\", \"thyroid_function\": \"Normal\"}\n}",
+      "evaluation_criteria": [
+        "Correctness: Accurately identifies Bipolar I Disorder as the primary diagnosis based on the presence of a full manic episode.",
+        "Completeness: Explicitly rules out Cyclothymic Disorder (due to severity) and Substance-Induced Mood Disorder (due to negative tox screen).",
+        "Best practices: Diagnostic reasoning strictly adheres to DSM-5-TR criteria without hallucinating symptoms."
+      ],
+      "student_answer": "**Diagnostic Formulation**\n\n**1. Primary Diagnosis:** Bipolar I Disorder, Single Episode, Most Recent Episode Manic\n\n**2. Differential Diagnosis and Rulings:**\n\n*   **Cyclothymic Disorder:** Ruled out. The patient’s symptoms (elevated mood, decreased sleep, impulsive spending) have persisted for 3 months and are characterized by a significant disturbance in mood and functioning, exceeding the duration and severity criteria for Cyclothymic Disorder. The presence of distinct manic episodes, including flight of ideas and poor insight, strongly suggests a more severe form of mood disturbance.\n\n*   **Substance-Induced Mood Disorder:** Ruled out. The patient denies any substance use in the past 6 months, and urine toxicology was negative. While remote substance use cannot be entirely excluded, the current presentation is not attributable to a substance.\n\n**3. Supporting Evidence:**\n\n*   **DSM-5-TR Criteria Met for Bipolar I Disorder:**\n    *   Presence of at least one manic episode. The patient’s reported “feeling on top of the world,” expansive affect, flight of ideas, and impulsive spending strongly suggest a manic episode.\n    *   The manic episode has caused clinically significant impairment in social or occupational functioning (implied by maxing out credit cards).\n    *   The episode is not better explained by another mental disorder (ruled out through differential diagnosis).\n    *   No history of depressive episodes is provided, but this would need to be further explored.\n\n*   **Family History:** Positive family history of Bipolar I Disorder increases the likelihood of a similar genetic predisposition.\n\n*   **Mental Status Exam Findings:** Euphoric mood, expansive affect, and flight of ideas are consistent with manic symptoms. Poor insight indicates a significant impairment in judgment.\n\n**4. Provisional Considerations:**\n\n*   Further assessment is needed to determine the full extent of the manic episode, including duration, severity, and associated symptoms (e.g., pressured speech, grandiosity, decreased need for sleep).\n*   A thorough family history should be obtained to assess for other family members with mood disorders.\n*   Assessment for co-occurring conditions (e.g., anxiety, ADHD) should be conducted.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies Bipolar I and rules out differentials with sound clinical reasoning. Strengths include clear structure, appropriate use of DSM-5-TR terminology, and correct exclusion of substance-induced causes based on tox results. However, it scores a 4 rather than 5 on Correctness and Domain Accuracy because it implies DSM criteria (e.g., 7-day duration) without explicitly citing the specific thresholds required for a Manic Episode. Additionally, the 'Provisional Considerations' section questions the duration of symptoms despite the vignette explicitly stating '3 months,' indicating a minor synthesis gap that requires human review before finalizing the formulation (Autonomy 4). Clarity is exceptional (5) due to professional formatting."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Distinguish between physiologically- and psychologically-based disorders, and diagnose appropriately.",
+      "task_type": "Differential Diagnosis",
+      "user_prompt": "Analyze the case of Patient B (68-year-old female) presenting with acute confusion, hallucinations, and fluctuating consciousness. The patient has a history of hypertension and recent urinary tract infection. Distinguish whether the presentation is primarily Psychotic Disorder, Major Neurocognitive Disorder due to Alzheimer's, or Delirium due to a General Medical Condition. Justify the diagnosis using specific DSM-5-TR criteria regarding attention and awareness.",
+      "reference_context": "{\n  \"patient_id\": \"PAT-2023-9901\",\n  \"demographics\": {\"age\": 68, \"sex\": \"Female\"},\n  \"presenting_symptoms\": \"Acute onset (2 days) of confusion, visual hallucinations, inattention.\",\n  \"medical_history\": \"Hypertension, UTI diagnosed 3 days ago, treated with antibiotics.\",\n  \"medications\": [\"Lisinopril\", \"Ciprofloxacin\"],\n  \"cognitive_screening\": \"MMSE: 18/30 (fluctuating scores noted during interview)\",\n  \"vitals\": \"Temp 101.5F, HR 105, BP 145/90\"\n}",
+      "evaluation_criteria": [
+        "Correctness: Correctly identifies Delirium due to a General Medical Condition as the primary diagnosis.",
+        "Completeness: Clearly distinguishes the condition from Major Neurocognitive Disorder by highlighting the acute onset and fluctuating course.",
+        "Best practices: Explanation of the 'disturbance in attention and awareness' criterion is accurate and clinically sound."
+      ],
+      "student_answer": "**Diagnosis:** Delirium due to a General Medical Condition (specifically, likely secondary to the urinary tract infection).\n\n**Justification:**\n\nBased on the DSM-5-TR criteria, the presentation most closely aligns with delirium. The core diagnostic criteria for delirium involve a disturbance in attention and awareness. \n\n*   **Attention:** The patient demonstrates significant inattention, evidenced by the fluctuating MMSE scores (18/30) and the reported observation of inattention during the interview. The MMSE score of 18 indicates significant impairment in attention, orientation, and executive function. Fluctuating scores further support this, indicating a dynamic and unstable cognitive state.\n*   **Awareness:** The acute onset of confusion and hallucinations suggests a disruption in awareness. The hallucinations themselves are a manifestation of altered awareness. The elevated temperature (101.5°F) and tachycardia (HR 105) alongside hypertension (BP 145/90) are indicative of a systemic inflammatory response, consistent with the UTI and contributing to the altered mental state.\n\n**Differential Diagnosis Considerations and Why They Are Less Likely:**\n\n*   **Psychotic Disorder:** While hallucinations are present, the acute onset and fluctuating nature of the symptoms, coupled with the significant cognitive impairment (as demonstrated by the MMSE and fluctuating scores), strongly suggest delirium rather than a chronic psychotic disorder. A psychotic disorder typically has a more gradual onset and a more stable presentation over time.\n*   **Major Neurocognitive Disorder due to Alzheimer’s:** The rapid onset (2 days) is inconsistent with the typical, slow progression of Alzheimer’s disease. Furthermore, the fluctuating nature of the symptoms and the acute physiological findings (fever, tachycardia) point away from a chronic neurodegenerative process.\n\n**Note:** The UTI is considered the primary contributing factor to the delirium. Further investigation into the UTI’s severity and response to antibiotics is warranted.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        4,
+        5,
+        3,
+        5,
+        3
+      ],
+      "score": 4.2,
+      "grade_reason": "Correctness is 5 as the clinical diagnosis and reasoning are sound. Completeness is 4 for good detail but missing explicit DSM-5-TR criterion letter mapping. Best Practices is 5 for professional tone and safety considerations. Domain Accuracy is 3 due to using outdated DSM-IV terminology (General Medical Condition vs Another Medical Condition) and conflating hallucinations with awareness. Clarity is 5 for excellent structure. Autonomy is 3 because substantive terminology edits are required before professional use."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop and implement treatment plans.",
+      "task_type": "Treatment Planning",
+      "user_prompt": "Create a comprehensive 12-week treatment plan for Patient C (29-year-old female) diagnosed with Major Depressive Disorder, recurrent, severe, with psychotic features. The plan must include pharmacological interventions, psychotherapy modalities, and safety monitoring protocols. Ensure the medication selection considers her history of gestational diabetes and potential pregnancy.",
+      "reference_context": "{\n  \"patient_id\": \"PAT-2023-7712\",\n  \"diagnosis\": \"Major Depressive Disorder, Recurrent, Severe, With Psychotic Features (F32.3)\",\n  \"current_meds\": \"None\",\n  \"medical_history\": \"Gestational diabetes (resolved), Hypothyroidism (on Levothyroxine)\",\n  \"social_history\": \"Unemployed, lives with parents, no current suicidal ideation but passive thoughts.\",\n  \"pregnancy_status\": \"Not currently pregnant, desires pregnancy in 6 months\"\n}",
+      "evaluation_criteria": [
+        "Correctness: Recommends an evidence-based combination of antidepressant and antipsychotic or ECT, considering the severity and psychotic features.",
+        "Completeness: Includes specific psychotherapy type (e.g., CBT), frequency, and safety planning for suicide risk.",
+        "Best practices: Medication selection avoids agents with high metabolic risk given gestational diabetes history and addresses teratogenicity concerns."
+      ],
+      "student_answer": "**Patient C – 12-Week Treatment Plan**\n\n**Patient ID:** PAT-2023-7712\n**Diagnosis:** Major Depressive Disorder, Recurrent, Severe, With Psychotic Features (F32.3)\n\n**Overall Goal:** To reduce depressive and psychotic symptoms, improve functional capacity, and establish a stable foundation for future mental health and potential pregnancy.\n\n**I. Pharmacological Interventions:**\n\n*   **Phase 1 (Weeks 1-4):**\n    *   **Initial Medication:** Sertraline 25mg PO daily. Starting low to minimize side effects and monitor for serotonin syndrome.\n    *   **Rationale:** SSRI’s are first-line for MDD. Sertraline is generally considered safe during pregnancy and breastfeeding.\n    *   **Monitoring:** Monitor for side effects (nausea, insomnia, anxiety, sexual dysfunction). Assess for any worsening of psychotic symptoms.\n*   **Phase 2 (Weeks 5-8):**\n    *   **Medication Adjustment:** If symptom improvement is observed (minimal response after 4 weeks), titrate Sertraline to 50mg PO daily.\n    *   **Consideration:** If Sertraline is ineffective, consider adding a low dose of Quetiapine 25mg PO at bedtime. Monitor for sedation and weight gain.\n    *   **Rationale:** Quetiapine is an atypical antipsychotic with antidepressant properties, suitable for psychotic features and pregnancy.\n    *   **Monitoring:** Continue monitoring for side effects, symptom response, and potential drug interactions.\n*   **Phase 3 (Weeks 9-12):**\n    *   **Maintenance:** Maintain Sertraline 50mg PO daily or adjust based on clinical response. If Quetiapine is added, maintain at 25-50mg PO at bedtime.\n    *   **Medication Review:** Assess for ongoing efficacy and potential need for further adjustments.\n\n**II. Psychotherapy Modalities:**\n\n*   **Cognitive Behavioral Therapy (CBT):** Individual sessions weekly (1 hour). Focus on identifying and modifying negative thought patterns, developing coping skills, and addressing behavioral activation.\n*   **Psychoeducation:** Sessions incorporated throughout the 12 weeks to educate patient about MDD, psychosis, medication management, and self-care strategies.\n*   **Family Involvement (Optional):** If appropriate and with patient consent, involve family members in sessions to improve communication and support.\n\n**III. Safety Monitoring Protocols:**\n\n*   **Suicide Risk Assessment:** Conduct a thorough suicide risk assessment at baseline, weekly, and any significant changes in symptoms or circumstances. Utilize the Columbia-Suicide Severity Rating Scale (C-SSRS).\n*   **Psychotic Symptom Monitoring:** Daily brief symptom check-in using a standardized scale (e.g., PANSS – Positive and Negative Syndrome Scale – Brief Version) to monitor for fluctuations in psychotic symptoms.\n*   **Side Effect Monitoring:** Detailed documentation of all side effects experienced by the patient.\n*   **Medication Adherence:** Implement strategies to promote medication adherence (e.g., pill organizers, reminders).\n*   **Safety Plan Development:** Collaborate with the patient to develop a comprehensive safety plan including coping strategies, support contacts, and emergency resources.\n*   **Crisis Plan:** Establish a clear crisis plan with designated contacts and procedures for managing acute symptoms or suicidal ideation.\n\n**IV. Additional Considerations:**\n\n*   **Gestational Diabetes History:** Monitor for any signs of gestational diabetes recurrence. Encourage healthy lifestyle modifications (diet and exercise).\n*   **Hypothyroidism:** Ensure Levothyroxine dosage is appropriate and stable.\n*   **Pregnancy Desire:** Discuss patient’s desire for pregnancy and address any concerns related to medication use during pregnancy. Provide information on potential risks and benefits.\n*   **Social Support:** Explore and strengthen social support networks. Encourage engagement in meaningful activities.\n\n**V. Discharge Planning:**\n\n*   Provide patient with medication list, instructions, and contact information for pharmacy and psychiatrist.\n*   Schedule follow-up appointments for medication review and ongoing support.\n*   Refer to relevant community resources (e.g., support groups, vocational rehabilitation).\n\n**Disclaimer:** This treatment plan is a general guideline and should be individualized based on the patient’s specific needs and response to treatment. Regular monitoring and adjustments are essential.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        3,
+        5,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission is well-structured and clear (Clarity 5). However, the pharmacological strategy is clinically inappropriate for Major Depressive Disorder with Psychotic Features, which requires immediate combination therapy (antidepressant + antipsychotic) rather than SSRI monotherapy with delayed antipsychotic addition (Correctness 2, Best Practices 2). This fundamental clinical error prevents the plan from being used without significant revision (Autonomy 2). Medical monitoring for gestational diabetes and metabolic risks of antipsychotics is acknowledged but lacks specific lab parameters (Completeness 3). Terminology and diagnosis coding are generally accurate (Domain Accuracy 3)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Conduct individual, group, or family psychotherapy for those with chronic or acute mental disorders.",
+      "task_type": "Psychotherapy Session Simulation",
+      "user_prompt": "Draft a structured summary of a 50-minute individual psychotherapy session with Patient D (45-year-old male) with Schizophrenia. The session focused on addressing negative symptoms and social withdrawal. Include specific interventions used (e.g., behavioral activation, social skills training), the patient's response, and a plan for the next session.",
+      "reference_context": "{\n  \"patient_id\": \"PAT-2023-5543\",\n  \"diagnosis\": \"Schizophrenia (F20.0)\",\n  \"session_focus\": \"Negative symptoms (avolition, anhedonia)\",\n  \"patient_notes\": \"Patient reported difficulty leaving bed, denied interest in hobbies, but agreed to walk to the mailbox today.\",\n  \"current_meds\": \"Olanzapine 10mg daily, Benztropine 1mg BID\"\n}",
+      "evaluation_criteria": [
+        "Correctness: Interventions are appropriate for negative symptoms of schizophrenia.",
+        "Completeness: The summary covers the entire session flow, including rapport building, intervention, and closure.",
+        "Best practices: Documentation maintains HIPAA compliance (no real names used, generic identifiers) and uses professional clinical terminology."
+      ],
+      "student_answer": "**Patient:** PAT-2023-5543\n**Date:** October 26, 2023\n**Session Duration:** 50 minutes\n**Session Focus:** Addressing Negative Symptoms & Social Withdrawal\n\n**Session Summary:**\n\n**Presenting Concerns:** Patient D reported continued difficulty initiating activities, expressing a pervasive lack of motivation and interest (avolition and anhedonia). He described feeling increasingly isolated and expressed a reluctance to engage in social interactions. He confirmed difficulty leaving his bed and a lack of interest in previously enjoyed hobbies.\n\n**Interventions:**\n\n*   **Behavioral Activation (BA):**  We collaboratively reviewed a simplified activity schedule, focusing on achievable goals.  Specifically, we discussed and practiced a “micro-goal” – walking to the mailbox.  I utilized a motivational interviewing technique, exploring his ambivalence about this task and collaboratively identifying potential benefits (e.g., fresh air, brief social interaction).\n*   **Social Skills Reinforcement:**  Briefly reviewed appropriate greetings and conversational starters. Role-played a simple interaction with a neighbor (mail carrier) focusing on eye contact and a brief verbal exchange.\n*   **Psychoeducation:** Provided brief information regarding the nature of negative symptoms in schizophrenia and the importance of actively challenging them.\n\n**Patient Response:** Patient D initially resisted the idea of walking to the mailbox, expressing significant anxiety about leaving the house.  However, after utilizing motivational interviewing and framing it as a small, manageable step, he agreed to attempt it today. He reported feeling “a little nervous” but willing to try.  He demonstrated some engagement during the role-play, though with limited enthusiasm.\n\n**Observed Affect/Behavior:** Patient appeared somewhat withdrawn and subdued throughout the session.  Eye contact was inconsistent.  Speech was slow and deliberate.  Minimal nonverbal cues of engagement beyond the role-play.\n\n**Medication Review:** Current medications (Olanzapine 10mg daily, Benztropine 1mg BID) were reviewed. Patient reported no significant side effects.\n\n**Safety:** Patient reported no current suicidal or homicidal ideation.\n\n**Plan for Next Session:**\n\n*   **Follow-up on Mailbox Walk:**  Inquire about the outcome of the mailbox walk. Assess his experience, including any challenges encountered and his subjective feelings about the activity.\n*   **Expand Behavioral Activation:** Introduce a second, slightly more challenging micro-goal (e.g., making a phone call to a family member).\n*   **Continue Social Skills Training:**  Expand role-playing scenarios to include more complex social situations. Explore potential barriers to social engagement and collaboratively develop coping strategies.\n*   **Monitor Benztropine Side Effects:**  Continue to monitor for any worsening of Benztropine-related side effects (e.g., akathisia).\n\n**Clinician:** [Your Name/Credentials]",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collaborate with interdisciplinary team members, including psychiatrists, psychologists, or nursing staff, to develop, implement, or evaluate treatment plans.",
+      "task_type": "Interdisciplinary Care Coordination",
+      "user_prompt": "Write a formal consultation note to the attending Psychiatrist and the Primary Care Physician regarding Patient E (52-year-old female) with Borderline Personality Disorder and Type 2 Diabetes. The patient is non-adherent to insulin due to emotional dysregulation. Propose a collaborative care strategy that integrates DBT skills training with medical management adjustments.",
+      "reference_context": "{\n  \"patient_id\": \"PAT-2023-3321\",\n  \"diagnoses\": [\"Borderline Personality Disorder\", \"Type 2 Diabetes Mellitus\"],\n  \"current_issue\": \"HbA1c elevated to 9.2% due to missed insulin doses during emotional crises.\",\n  \"team_members\": [\"Dr. Smith (Psychiatrist)\", \"Dr. Jones (PCP)\", \"RN Miller\"],\n  \"recent_events\": \"Patient admitted to ER 2 weeks ago for DKA precipitated by emotional distress.\"\n}",
+      "evaluation_criteria": [
+        "Correctness: The proposed strategy logically addresses the intersection of psychiatric and medical needs.",
+        "Completeness: The note clearly defines roles for each team member and outlines specific action items.",
+        "Best practices: Communication is professional, concise, and adheres to HIPAA standards for inter-provider communication."
+      ],
+      "student_answer": "**Consultation Note**\n\n**To:** Dr. Smith, Dr. Jones\n**From:** [Your Name], Advanced Practice Psychiatric Nurse\n**Date:** October 26, 2023\n**Patient:** PAT-2023-3321 – E, 52-year-old female\n\n**Subject:** Consultation Regarding Patient E – Borderline Personality Disorder & Type 2 Diabetes\n\n**Summary:** Patient E presents with a significant challenge integrating medical management (insulin for Type 2 Diabetes) with emotional regulation stemming from Borderline Personality Disorder. Recent ER admission for Diabetic Ketoacidosis (DKA) directly linked to emotional distress highlights the critical need for a coordinated, collaborative approach. Current HbA1c is 9.2%.\n\n**Assessment:** Patient E demonstrates a clear pattern of emotional dysregulation leading to non-adherence to prescribed insulin therapy. The recent DKA episode underscores the severity of this connection.  Her BPD symptoms, including impulsivity, emotional instability, and difficulty with interpersonal relationships, contribute to the challenges in maintaining consistent medical care.  There is a strong correlation between heightened emotional states and missed insulin doses.\n\n**Recommendations – Collaborative Care Strategy:**\n\n1. **Dialectical Behavior Therapy (DBT) Skills Training:** Initiate or intensify DBT skills training. Focus should be on:\n    *   **Mindfulness:** To enhance awareness of emotional states and reduce reactivity.\n    *   **Distress Tolerance:** To develop coping mechanisms during emotional crises, minimizing impulsive behaviors (e.g., skipping insulin).\n    *   **Emotion Regulation:** To identify, understand, and manage intense emotions.\n    *   **Interpersonal Effectiveness:** To improve communication and boundary-setting skills, potentially reducing interpersonal stressors.\n\n2. **Medical Management Adjustments (To be coordinated with Dr. Jones):**\n    *   **Simplify Insulin Regimen:** Explore options for a simpler insulin regimen (e.g., once-daily basal insulin) if feasible and appropriate, with careful monitoring.\n    *   **Continuous Glucose Monitoring (CGM):** Strongly consider CGM implementation to provide real-time feedback and potentially identify patterns between glucose fluctuations and emotional states.\n    *   **Medication Review:** Evaluate current psychiatric medications for potential side effects impacting adherence or mood stability.\n\n3. **Integrated Care Plan:**\n    *   **Regular Team Meetings:** Schedule weekly meetings involving the psychiatrist, primary care physician, and RN to discuss patient progress, adjust treatment plans, and address any emergent issues.\n    *   **Psychoeducation:** Provide patient with comprehensive education regarding the link between BPD, diabetes, and medication adherence.\n    *   **Safety Planning:** Develop a detailed safety plan to address potential escalation of emotional distress and associated risk of insulin non-adherence.\n\n4. **RN Miller’s Role:**  RN Miller will provide intensive support with medication reminders, glucose monitoring, and crisis intervention techniques, utilizing DBT principles where possible.\n\n**Next Steps:**  I recommend a discussion with Dr. Smith and Dr. Jones to coordinate a specific DBT skills training program and refine the medical management plan.  Close monitoring of patient’s HbA1c, glucose levels, and emotional state is crucial.\n\n____________________________\n[Your Name], APN",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Evaluate patients' behavior to formulate diagnoses or assess treatments.",
+      "task_type": "Medication Safety & Interaction Analysis",
+      "user_prompt": "Evaluate the current medication regimen for Patient F (22-year-old male) with Schizoaffective Disorder who is experiencing new-onset tremors and weight gain. The patient is taking Lithium, Aripiprazole, and Fluoxetine. Identify potential drug-drug interactions or side effects contributing to these symptoms and recommend a specific medication adjustment or monitoring plan.",
+      "reference_context": "{\n  \"patient_id\": \"PAT-2023-1109\",\n  \"diagnosis\": \"Schizoaffective Disorder, Bipolar Type\",\n  \"current_meds\": [\n    {\"name\": \"Lithium Carbonate\", \"dose\": \"900mg daily\", \"level\": \"0.8 mEq/L\"},\n    {\"name\": \"Aripiprazole\", \"dose\": \"15mg daily\"},\n    {\"name\": \"Fluoxetine\", \"dose\": \"40mg daily\"}\n  ],\n  \"symptoms\": \"Fine hand tremors, weight gain of 15 lbs in 3 months, mild nausea.\",\n  \"labs\": {\"creatinine\": \"1.0 mg/dL\", \"TSH\": \"Normal\"}\n}",
+      "evaluation_criteria": [
+        "Correctness: Correctly identifies Lithium-induced tremor and Aripiprazole/Fluoxetine contribution to weight gain.",
+        "Completeness: Provides a specific recommendation (e.g., dose adjustment, switching agent, or adding beta-blocker) with rationale.",
+        "Best practices: Recommendations consider the therapeutic window of Lithium and the CYP450 interaction potential of Fluoxetine with Aripiprazole."
+      ],
+      "student_answer": "**Medication Evaluation and Recommendations for Patient F**\n\n**Summary of Concerns:** Patient F is presenting with new-onset tremors and weight gain alongside mild nausea, occurring concurrently with his existing Schizoaffective Disorder treatment regimen.\n\n**Potential Contributing Factors:**\n\n*   **Lithium:** Tremors and weight gain are well-documented side effects of lithium. The current level of 0.8 mEq/L is within the therapeutic range, but the symptoms suggest a potential for cumulative effects or sensitivity.\n*   **Aripiprazole:** Aripiprazole can contribute to weight gain and metabolic changes.\n*   **Fluoxetine:** Fluoxetine can also contribute to weight gain and, less commonly, tremors.\n*   **Drug-Drug Interactions:** While less likely given the individual medications, the combination of lithium, aripiprazole, and fluoxetine could theoretically exacerbate metabolic side effects.\n\n**Recommendations:**\n\n1.  **Lithium Dose Adjustment:** Reduce Lithium dose to 750mg daily. Monitor lithium levels closely (within 48-72 hours) and adjust as needed to maintain a level between 0.8-1.2 mEq/L.\n2.  **Weight Management:** Implement a weight management plan including dietary counseling and increased physical activity.\n3.  **Aripiprazole Dose:** Maintain current dose of 15mg daily. Monitor for continued weight gain.\n4.  **Fluoxetine Dose:** Consider reducing fluoxetine dose to 20mg daily. Monitor for tremor exacerbation.\n5.  **Monitoring:**\n    *   **Tremors:** Assess tremor frequency, severity, and impact on daily functioning.\n    *   **Weight:** Monitor weight weekly.\n    *   **Labs:** Repeat fasting lipid panel and glucose levels in 4-6 weeks to assess metabolic impact. Consider monitoring prolactin levels due to lithium use.\n    *   **Nausea:** Continue to monitor for nausea and address with antiemetics if needed.\n\n**Disclaimer:** This evaluation and recommendations are based on the provided information and should be considered within the context of the patient's overall clinical picture. Further evaluation and adjustments may be necessary based on the patient’s response to treatment.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        4,
+        3,
+        3,
+        5,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "Correctness (3): The submission correctly identifies side effects but contains a factual error regarding Lithium and prolactin monitoring (Lithium does not typically cause hyperprolactinemia). Completeness (4): Addresses the main task but omits standard interventions like Propranolol for Lithium-induced tremors. Best Practices (3): The recommendation to reduce Fluoxetine without context of mood stability is risky, and the prolactin error reflects a gap in safety standards. Domain Accuracy (3): The prolactin claim is factually incorrect regarding Lithium. Clarity (5): The output is well-structured and easy to read. Autonomy (3): Requires human review to correct the factual error and assess the safety of reducing the antidepressant and mood stabilizer simultaneously."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Consult with psychiatrists or other professionals when unusual or complex cases are encountered.",
+      "task_type": "Clinical Consultation",
+      "user_prompt": "Draft a formal consultation request email to a senior psychiatrist regarding a 34-year-old patient with treatment-resistant schizophrenia who has developed tardive dyskinesia and is currently non-compliant with oral antipsychotics due to sedation. The email must summarize the clinical history, current medication regimen, specific concerns, and propose a discussion on switching to a long-acting injectable (LAI) formulation while addressing the dyskinesia.",
+      "reference_context": "{\n  \"patient_id\": \"P-8842\",\n  \"diagnosis\": \"Schizophrenia, Paranoid Type\",\n  \"current_meds\": [{\"name\": \"Haloperidol\", \"dose\": \"5mg BID\", \"duration\": \"2 years\"}, {\"name\": \"Benztropine\", \"dose\": \"1mg TID\", \"duration\": \"1 year\"}],\n  \"symptoms\": [\"Auditory hallucinations\", \"Social withdrawal\", \"Involuntary facial movements (AIMS score 12)\"],\n  \"comorbidities\": [\"Type 2 Diabetes\", \"Hypertension\"],\n  \"adherence\": \"Poor - reports sedation prevents daily dosing\"\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The email accurately reflects the patient's symptoms, medication history, and specific clinical concerns (tardive dyskinesia, non-compliance).",
+        "Criterion 2: Completeness — The draft includes a clear summary, specific questions for the psychiatrist, and a proposed plan (LAI discussion).",
+        "Criterion 3: Best practices — The tone is professional, HIPAA-compliant (no full names used, only ID), and aligns with DSM-5-TR diagnostic criteria."
+      ],
+      "student_answer": "Subject: Consultation Request - P-8842 - Treatment-Resistant Schizophrenia with Tardive Dyskinesia\n\nDear Dr. [Psychiatrist’s Last Name],\n\nI am writing to request your consultation regarding Mr. [Patient’s Last Name], patient ID P-8842. He is a 34-year-old male with a long-standing diagnosis of Schizophrenia, Paranoid Type, initially presenting approximately 11 years ago. He has demonstrated significant treatment resistance, requiring multiple antipsychotic trials with limited efficacy.\n\nCurrently, Mr. [Patient’s Last Name] is managed with Haloperidol 5mg twice daily and Benztropine 1mg three times daily, both for approximately two and one years, respectively. Despite these medications, he continues to experience auditory hallucinations and social withdrawal, as evidenced by an AIMS score of 12.  More recently, he has developed involuntary facial movements consistent with tardive dyskinesia.\n\nHis adherence to oral medication has significantly declined due to reported sedation, impacting his ability to consistently take his prescribed dosage.  He has comorbidities of Type 2 Diabetes and Hypertension, which require ongoing management.\n\nGiven the progression of tardive dyskinesia and the patient’s poor adherence, I would greatly appreciate the opportunity to discuss a potential switch to a long-acting injectable (LAI) antipsychotic formulation. I am particularly interested in your expertise regarding strategies for managing both the schizophrenia symptoms and the dyskinesia within an LAI regimen.\n\nPlease let me know your availability for a brief consultation.\n\nSincerely,\n\n[Your Name], APRN \n\n[Your Contact Information]",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Refer patients requiring more specialized or complex treatment to psychiatrists, primary care physicians, or other medical specialists.",
+      "task_type": "Referral Management",
+      "user_prompt": "Create a referral summary for a patient presenting with severe mania, suicidal ideation, and a history of renal failure. The patient is currently taking Lithium. Determine the appropriate specialist to refer to for medication management adjustment and write a referral letter explaining the urgency, the specific renal concerns regarding Lithium toxicity, and the need for inpatient psychiatric evaluation.",
+      "reference_context": "{\n  \"patient_id\": \"P-9921\",\n  \"presenting_symptoms\": [\"Grandiosity\", \"Decreased need for sleep\", \"Suicidal ideation with plan\"],\n  \"diagnosis\": \"Bipolar I Disorder, Current Episode Manic\",\n  \"labs\": {\"creatinine\": \"2.1 mg/dL\", \"eGFR\": \"35 mL/min\", \"lithium_level\": \"1.4 mEq/L\"},\n  \"current_meds\": [{\"name\": \"Lithium Carbonate\", \"dose\": \"900mg/day\"}, {\"name\": \"Lorazepam\", \"dose\": \"2mg PRN\"}]\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The referral correctly identifies the need for nephrology and inpatient psychiatric care due to renal insufficiency and Lithium toxicity risk.",
+        "Criterion 2: Completeness — The letter includes all critical lab values, current medication dosages, and a clear statement of urgency.",
+        "Criterion 3: Best practices — The document adheres to HIPAA standards and uses clinical terminology appropriate for a specialist referral."
+      ],
+      "student_answer": "**Referral Letter**\n\n**To:** Dr. Eleanor Vance, Nephrologist\n**From:** [Your Name], Advanced Practice Psychiatric Nurse\n**Date:** October 26, 2023\n**Patient:** P-9921\n**Subject:** Urgent Referral for Medication Management and Renal Monitoring – Bipolar I Disorder with Severe Mania and Renal Dysfunction\n\nDear Dr. Vance,\n\nI am writing to urgently refer Mr. P-9921 for comprehensive medication management and close renal monitoring due to a significant escalation of his manic symptoms, presence of suicidal ideation, and existing renal impairment.\n\nMr. P-9921 is currently diagnosed with Bipolar I Disorder, presenting with severe mania characterized by grandiosity, decreased need for sleep, and active suicidal ideation with a specific plan. His lithium level is currently 1.4 mEq/L, which is above the recommended therapeutic range and poses a significant risk of lithium toxicity, particularly given his compromised renal function. His creatinine is elevated at 2.1 mg/dL, and his eGFR is 35 mL/min, indicating moderate renal impairment. This combination significantly increases the risk of lithium accumulation and toxicity.\n\nThe current lithium dose of 900mg/day is contraindicated given his renal status.  Lithium toxicity can manifest with neurological symptoms, cardiac arrhythmias, and further compromise renal function, creating a dangerous feedback loop.  Given the severity of his manic symptoms and suicidal ideation, inpatient psychiatric evaluation is strongly recommended to ensure his safety and stabilize his condition.\n\nI request your immediate attention to this case and propose a collaborative approach to adjusting his lithium regimen and closely monitoring his renal function.  Please contact me at [Your Phone Number] or [Your Email Address] to discuss this referral further.\n\nSincerely,\n\n[Your Name], APRN \n\n---\n\n**Referral Recommendation:** Nephrologist",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Participate in treatment team conferences regarding diagnosis or treatment of difficult cases.",
+      "task_type": "Treatment Planning",
+      "user_prompt": "Prepare a 5-minute presentation script for a multidisciplinary team conference regarding a 45-year-old patient with Major Depressive Disorder with psychotic features who has failed two trials of SSRIs and one trial of SNRIs. Outline the proposed next steps, including the rationale for adding an atypical antipsychotic and the plan for Electroconvulsive Therapy (ECT) consultation.",
+      "reference_context": "{\n  \"patient_id\": \"P-7734\",\n  \"diagnosis\": \"Major Depressive Disorder with Psychotic Features\",\n  \"failed_treatments\": [{\"med\": \"Sertraline\", \"dose\": \"200mg\", \"duration\": \"12 weeks\"}, {\"med\": \"Venlafaxine\", \"dose\": \"225mg\", \"duration\": \"10 weeks\"}],\n  \"current_symptoms\": [\"Delusions of guilt\", \"Severe anhedonia\", \"Psychomotor retardation\"],\n  \"family_history\": \"Positive for treatment-resistant depression\"\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The script accurately reflects the failure of standard antidepressant trials and proposes evidence-based next steps (antipsychotic augmentation, ECT).",
+        "Criterion 2: Completeness — The presentation covers history, current status, and a clear treatment roadmap.",
+        "Criterion 3: Best practices — The language is collaborative, concise, and suitable for a team conference setting."
+      ],
+      "student_answer": "---\n\n**Slide 1: Title Slide**\n\n*   **Title:** P-7734 – Next Steps in Treatment\n*   **Presenter:** [Your Name], Advanced Practice Psychiatric Nurse\n\n**Slide 2: Patient Overview (30 seconds)**\n\n*   Patient: P-7734, 45-year-old male\n*   Diagnosis: Major Depressive Disorder with Psychotic Features\n*   Significant History: Treatment-resistant depression in family. Current presentation includes delusions of guilt, severe anhedonia, and psychomotor retardation. Two failed SSRI trials (Sertraline 200mg x 12 weeks, Venlafaxine 225mg x 10 weeks) and one failed SNRI trial.\n\n**Slide 3: Current Assessment & Concerns (60 seconds)**\n\n*   Despite previous trials, patient remains significantly symptomatic.\n*   Psychotic symptoms (delusions of guilt) are impacting functional ability and posing a risk.\n*   Anhedonia and psychomotor retardation are persistent and require targeted intervention.\n*   Family history strongly suggests a genetic predisposition to treatment resistance.\n*   Current mood stabilizers (if any) are insufficient.\n\n**Slide 4: Proposed Treatment Plan (90 seconds)**\n\n*   **Phase 1: Atypical Antipsychotic:** We propose initiating a low dose of an atypical antipsychotic – Risperidone 1mg initially, titrating slowly based on response and side effect profile. *Rationale:* To address the psychotic features and potentially improve mood symptoms, given the patient’s treatment resistance.\n*   **Phase 2: ECT Consultation:**  Immediately initiate consultation with the ECT service. *Rationale:* Given the severity of symptoms, treatment resistance, and the presence of psychosis, ECT is a viable option to consider for rapid symptom reduction. We will discuss candidacy criteria and potential benefits.\n*   **Ongoing Monitoring:** Close monitoring for side effects of the antipsychotic, including extrapyramidal symptoms and metabolic changes.  Continue regular mood and psychotic symptom assessments.\n\n**Slide 5:  Collaboration & Next Steps (60 seconds)**\n\n*   **Collaboration:**  This plan requires close collaboration between psychiatry, nursing, and potentially neurology.\n*   **Immediate Actions:** Schedule ECT consultation.  Start Risperidone at a low dose.  Initiate detailed side effect monitoring.\n*   **Follow-up:**  Team meeting in one week to review patient response and adjust treatment plan as needed.  Discuss potential for further augmentation strategies if initial antipsychotic response is limited.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        4,
+        4,
+        3,
+        5,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The script is well-structured and covers the required treatment plan (antipsychotic + ECT) effectively, earning high marks for Clarity and Completeness. However, there are critical domain accuracy errors: Venlafaxine is incorrectly classified as an SSRI (it is an SNRI), and Neurology is listed as a standard collaborator for ECT (typically Psychiatry/Anesthesia). These factual inaccuracies require substantive edits before use, lowering Correctness, Domain Accuracy, and Autonomy scores. Best Practices remain high as the clinical decision-making for the treatment plan is sound."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Interpret diagnostic or laboratory tests, such as electrocardiograms (EKGs) and renal functioning tests.",
+      "task_type": "Diagnostic Interpretation",
+      "user_prompt": "Analyze the provided EKG and laboratory results for a 60-year-old patient starting Clozapine therapy. Identify any contraindications or risks related to cardiac function and metabolic status, and recommend whether to proceed with the first dose or require further cardiology clearance.",
+      "reference_context": "{\n  \"patient_id\": \"P-5512\",\n  \"indication\": \"Treatment-resistant Schizophrenia\",\n  \"ekg_findings\": \"QTc interval: 460ms, Sinus Bradycardia (52 bpm)\",\n  \"labs\": {\"wbc\": \"6500/uL\", \"neutrophils\": \"4200/uL\", \"glucose\": \"110 mg/dL\", \"hba1c\": \"5.8%\", \"lipid_panel\": \"Normal\"},\n  \"current_meds\": [\"Lithium\", \"Alprazolam\"]\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The analysis correctly identifies the QTc interval as borderline and notes the bradycardia, assessing the risk of Clozapine initiation.",
+        "Criterion 2: Completeness — The response addresses both cardiac and metabolic parameters relevant to Clozapine monitoring.",
+        "Criterion 3: Best practices — The recommendation is cautious, aligns with FDA guidelines for Clozapine REMS, and suggests appropriate follow-up (cardiology clearance)."
+      ],
+      "student_answer": "**Recommendation:** Do not proceed with the first dose of clozapine.\n\n**Rationale:**\n\nThe EKG reveals a prolonged QTc interval of 460ms, indicating a significant cardiac risk. The patient also presents with sinus bradycardia (52 bpm).  The combination of a prolonged QTc and bradycardia significantly elevates the risk of torsades de pointes, a life-threatening ventricular arrhythmia, particularly during clozapine initiation.\n\nWhile the patient’s glucose and HbA1c are within normal limits, and the lipid panel is normal, the cardiac concerns outweigh these metabolic findings. The current medications (Lithium and Alprazolam) may also contribute to electrolyte imbalances that could further exacerbate the QTc prolongation.\n\n**Required Action:** Obtain cardiology clearance before initiating clozapine. This should include a formal QTc assessment and evaluation of the patient’s overall cardiac risk profile.  Consider a cardiology consultation to discuss risk mitigation strategies, such as monitoring electrolytes closely and potentially adjusting other medications.",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop practice protocols for mental health problems, based on review and evaluation of published research.",
+      "task_type": "Protocol Development",
+      "user_prompt": "Draft a section of a clinic protocol for the screening and management of metabolic syndrome in patients prescribed second-generation antipsychotics (SGAs). Include baseline assessment requirements, monitoring frequency, and specific thresholds for intervention based on current APA guidelines.",
+      "reference_context": "{\n  \"target_population\": \"Adults prescribed SGAs (e.g., Olanzapine, Quetiapine, Risperidone)\",\n  \"relevant_guidelines\": \"APA Practice Guideline for the Treatment of Patients With Schizophrenia (2020)\",\n  \"key_metrics\": [\"BMI\", \"Waist Circumference\", \"Fasting Glucose\", \"Lipid Profile\", \"Blood Pressure\"]\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The protocol accurately reflects current APA guidelines regarding baseline and follow-up intervals.",
+        "Criterion 2: Completeness — The draft includes all required metrics, specific timeframes (e.g., 3 months, 1 year), and clear intervention thresholds.",
+        "Criterion 3: Best practices — The protocol is structured logically, uses professional medical terminology, and is actionable for clinical staff."
+      ],
+      "student_answer": "**Metabolic Syndrome Screening and Management Protocol – SGAs**\n\n**I. Screening – Baseline Assessment (Within 1 Month of Initiation/Change in SGA Dose)**\n\n*   **Patient Identification:** All adults prescribed second-generation antipsychotics (SGAs) – Olanzapine, Quetiapine, Risperidone – are eligible for metabolic screening.\n*   **Data Collection:**\n    *   **Demographics:** Age, sex, ethnicity.\n    *   **Medical History:**  Document any pre-existing conditions relevant to metabolic syndrome (e.g., diabetes, hypertension, dyslipidemia, family history).\n    *   **Physical Measurements:**\n        *   **Body Mass Index (BMI):** Calculated using height and weight (kg/m²).\n        *   **Waist Circumference (WC):** Measured at the narrowest point of the torso.\n        *   **Blood Pressure (BP):** Measured in a seated position, using standardized protocol (arm supported, feet flat on the floor).  Record systolic and diastolic values.\n    *   **Laboratory Tests:**\n        *   **Fasting Plasma Glucose (FPG):** Measured ≥8 hours prior to testing.\n        *   **Lipid Panel:** Total cholesterol, LDL cholesterol, HDL cholesterol, triglycerides.\n*   **Metabolic Syndrome Definition:** Utilize the 2013 International Diabetes Federation (IDF) criteria:\n    *   WC ≥ 94 cm in men or ≥ 88 cm in women\n    *   OR BMI ≥ 30 kg/m²\n    *   AND at least two of the following:\n        *   FPG ≥ 100 mg/dL\n        *   Triglycerides ≥ 150 mg/dL\n        *   HDL cholesterol < 40 mg/dL (men) or < 50 mg/dL (women)\n        *   Systolic blood pressure ≥ 130 mmHg or diastolic blood pressure ≥ 85 mmHg\n\n**II. Monitoring – Frequency & Thresholds**\n\n*   **Frequency:**  Repeat baseline assessment every 3-6 months, or more frequently if clinically indicated (e.g., significant weight change, medication dose adjustment, symptom exacerbation).\n*   **Thresholds for Intervention:**\n    *   **Elevated Risk (Pre-Metabolic Syndrome):**\n        *   WC: 88-93.9 cm (men) / 80-87.9 cm (women)\n        *   FPG: 90-100 mg/dL\n        *   Triglycerides: 130-149 mg/dL\n        *   HDL Cholesterol: 35-39 mg/dL (men) / 35-39 mg/dL (women)\n        *   BP: 130-139 mmHg (systolic) / 86-89 mmHg (diastolic)\n        *   *Intervention:* Lifestyle modifications (diet, exercise), close monitoring.\n    *   **Metabolic Syndrome Present:** Initiate or intensify interventions as per APA guidelines.\n    *   **Significant Changes:**  Any significant change in any of the key metrics (≥10% change from baseline) warrants reassessment.\n\n**III. Management**\n\n*   **Lifestyle Modifications:**  Prioritize diet (Mediterranean-style), regular physical activity (at least 150 minutes/week of moderate-intensity aerobic exercise), and weight management.\n*   **Pharmacological Interventions:**  Consider adding or adjusting medications (e.g., statins, antihypertensives, fibrates) based on individual risk factors and clinical response, in consultation with a physician.\n*   **Collaboration:**  Collaboration with a physician, registered dietitian, and/or exercise specialist is strongly recommended.\n*   **Documentation:**  Thorough documentation of screening results, interventions, and patient response is essential.\n\n**Disclaimer:** This protocol is a guideline and should be adapted to individual patient needs and clinical judgment.  Always refer to the most current APA Practice Guideline for the Treatment of Patients With Schizophrenia (2020) and relevant medical literature.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        3,
+        5,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission is well-structured and professional (Clarity 5), addressing all task components (Correctness 4, Completeness 4). However, it deviates from specific APA 2020 monitoring timelines (recommending 3-6 months instead of the required 4, 8, 12-week milestones for the first year), which impacts Best Practices (3). Additionally, the Metabolic Syndrome definition provided is non-standard (IDF requires central obesity as a mandatory criterion, not an alternative to BMI), affecting Domain Accuracy (3). Due to these clinical inaccuracies, the protocol requires medical review before implementation, lowering Autonomy to 3."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Provide routine physical health screenings to detect or monitor problems such as heart disease and diabetes.",
+      "task_type": "Health Screening",
+      "user_prompt": "Generate a patient education handout for a 28-year-old male with Bipolar Disorder who has been stable on Valproate for 6 months. The handout must explain the importance of routine screening for liver function, pancreatitis, and metabolic changes, providing specific questions the patient should ask their primary care provider during their next visit.",
+      "reference_context": "{\n  \"patient_id\": \"P-3391\",\n  \"medication\": \"Valproic Acid (Depakote)\",\n  \"duration\": \"6 months\",\n  \"risk_factors\": [\"Obesity (BMI 31)\", \"Family history of diabetes\"],\n  \"screening_needs\": [\"Liver Enzymes (ALT/AST)\", \"Ammonia levels\", \"Pancreatic enzymes\", \"Fasting Glucose\", \"Lipid Panel\"]\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The handout accurately identifies the specific side effects and monitoring needs associated with Valproate therapy.",
+        "Criterion 2: Completeness — The document includes a clear explanation of risks, a list of recommended tests, and actionable questions for the patient.",
+        "Criterion 3: Best practices — The language is patient-friendly, non-alarmist, and adheres to HIPAA by using generic placeholders for patient identifiers."
+      ],
+      "student_answer": "**Understanding Your Valproate Treatment: Important Monitoring**\n\n**To:** [Patient Name]\n**Patient ID:** P-3391\n**Date:** October 26, 2023\n\nYou’ve been stable on Valproate (Depakote) for six months, which is excellent! Maintaining this stability is important for your overall well-being. However, because Valproate can affect your liver, pancreas, and metabolism, it’s crucial to have regular check-ups to monitor for any potential issues. This handout outlines what to expect and what questions to ask your doctor.\n\n**Why Regular Screening is Important**\n\nValproate can sometimes cause changes in your body, and early detection is key to managing them effectively.  We’ll be looking for:\n\n* **Liver Health:** Valproate can impact your liver function. Regular monitoring helps us ensure your liver is working properly.\n* **Pancreatic Function:**  Rarely, Valproate can affect the pancreas. We want to catch any potential problems early.\n* **Metabolic Changes:** Valproate can influence your blood sugar and cholesterol levels.  We need to track these to prevent complications like diabetes or high cholesterol.\n\n**What Tests Will Be Done?**\n\nYour healthcare team will be checking the following:\n\n* **Liver Enzymes (ALT/AST):** These tests measure inflammation and damage in your liver.\n* **Ammonia Levels:**  This test assesses how well your liver is processing protein.\n* **Pancreatic Enzymes (Amylase & Lipase):** These tests check for inflammation or damage to your pancreas.\n* **Fasting Glucose:** This test measures your blood sugar levels after an overnight fast.\n* **Lipid Panel:** This test measures your cholesterol and triglyceride levels.\n\n\n**Questions to Ask Your Doctor at Your Next Visit**\n\nIt’s important to be proactive about your health. Here are some questions to discuss with your primary care provider:\n\n1.  **When will my next screening tests be scheduled?** (Confirm the timing of your next liver enzyme, ammonia, pancreatic enzyme, glucose, and lipid panel tests.)\n2.  **What are my target ranges for each of these tests?** (Understand what constitutes a normal or concerning result.)\n3.  **Given my family history of diabetes and my current BMI (31), what steps can we take to monitor my blood sugar and prevent diabetes?** (Discuss lifestyle modifications and potential monitoring frequency.)\n4.  **How will changes in my lipid panel (cholesterol and triglycerides) affect my treatment plan?** (Understand how any abnormal results will be addressed.)\n5.  **Are there any specific dietary changes or lifestyle modifications I should be aware of while taking Valproate?** (Discuss healthy eating habits and exercise.)\n6.  **What symptoms should I report to you immediately if I experience (e.g., jaundice, abdominal pain, nausea, fatigue, unexplained weight loss)?** (Know when to seek medical attention.)\n\n**Important Note:**  Do not stop taking your Valproate medication without talking to your doctor first.  Consistent monitoring is vital for maintaining your stability and safety.\n\n**Disclaimer:** *This handout is for informational purposes only and does not constitute medical advice. Please consult with your healthcare provider for personalized guidance.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission is clinically accurate, complete, and follows the provided context constraints perfectly, earning high marks for Correctness, Completeness, Domain Accuracy, and Clarity. However, the inclusion of parenthetical meta-commentary explaining the rationale for each question (e.g., '(Confirm the timing...)') is not standard for a final patient handout and requires editing to remove. Additionally, the document lacks standard clinic contact information or a provider signature line, which are industry standards for professional patient materials. These minor issues prevent a perfect score on Best Practices and Autonomy."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Administer medications, including those administered by injection.",
+      "task_type": "Medication Administration and Safety",
+      "user_prompt": "Review the provided patient medication profile and generate a comprehensive administration plan for a new injection order. The plan must include a contraindication check against current medications, a specific calculation for the injection volume based on the patient's weight, and a monitoring schedule for adverse effects. Ensure all patient identifiers are de-identified in the output to maintain HIPAA compliance.",
+      "reference_context": "{\n  \"patient_id\": \"DEID-9982\",\n  \"weight_kg\": 82,\n  \"current_medications\": [\n    {\"name\": \"Sertraline\", \"dose\": \"50mg\", \"frequency\": \"Daily\"},\n    {\"name\": \"Lisinopril\", \"dose\": \"10mg\", \"frequency\": \"Daily\"}\n  ],\n  \"new_order\": {\n    \"drug\": \"Haloperidol Decanoate\",\n    \"prescribed_dose_mg\": 100,\n    \"concentration_mg_per_ml\": 50,\n    \"route\": \"IM\"\n  },\n  \"allergies\": [\"Penicillin\"]\n}",
+      "evaluation_criteria": [
+        "Correctness: The calculated injection volume (2 mL) is mathematically accurate based on the provided concentration and dose.",
+        "Completeness: The response identifies the potential interaction between Haloperidol and Sertraline regarding QT prolongation and includes a specific monitoring plan for extrapyramidal symptoms.",
+        "Best practices: All patient identifiers are redacted, and the plan follows standard nursing administration protocols for IM injections."
+      ],
+      "student_answer": "**Patient Medication Administration Plan – Haloperidol Decanoate**\n\n**Patient Identifier:** DEID-9982\n\n**Drug:** Haloperidol Decanoate\n**Prescribed Dose:** 100 mg\n**Concentration:** 50 mg/mL\n**Route:** IM\n\n**1. Contraindication Check:**\n\n*   **Penicillin Allergy:**  Assess for potential cross-reactivity. Haloperidol Decanoate does not have a known direct cross-reactivity with penicillin. However, monitor for any signs of allergic reaction (urticaria, angioedema, anaphylaxis) during and after administration.\n\n**2. Injection Volume Calculation:**\n\n*   Volume = Dose (mg) / Concentration (mg/mL)\n*   Volume = 100 mg / 50 mg/mL = 2 mL\n\n**3. Administration Instructions:**\n\n*   Administer 2 mL of Haloperidol Decanoate via intramuscular injection.\n*   Select an appropriate injection site (e.g., deltoid muscle). Rotate injection sites with subsequent administrations.\n*   Use a sterile syringe and needle.\n*   Inject slowly to minimize discomfort.\n\n**4. Monitoring Schedule:**\n\n*   **Immediate (0-15 minutes):** Observe patient for signs of local reaction at the injection site (redness, swelling, pain).\n*   **24 Hours:** Monitor for any adverse effects, including:\n    *   Extrapyramidal symptoms (EPS) – akathisia, dystonia, tremor, rigidity.\n    *   Neuroleptic Malignant Syndrome (NMS) – fever, muscle rigidity, altered mental status.\n    *   Hypotension.\n    *   Cardiac arrhythmias.\n*   **72 Hours:**  Assess for persistent adverse effects.\n*   **Ongoing:** Continue to monitor for any new or worsening symptoms.\n\n**5. Documentation:**\n\n*   Record date and time of administration.\n*   Record injection site.\n*   Document patient’s response to the injection.\n*   Document any adverse effects observed.\n\n**Disclaimer:** This plan is based on the provided information and should be reviewed and adjusted based on the patient’s individual clinical status and the healthcare provider’s judgment.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        5,
+        2
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission is well-structured and clear (Clarity 5). However, it fails to check for drug-drug interactions between Haloperidol and current medications (Sertraline/Lisinopril), violating the specific task requirement for a contraindication check against current meds (Correctness 3, Completeness 3). It recommends the deltoid muscle for Haloperidol Decanoate, which is clinically inappropriate for long-acting injectables due to absorption and safety risks (Best Practices 3, Domain Accuracy 3). It did not address the weight-based calculation instruction, though clinically the drug is not weight-based. Due to significant safety risks regarding injection site and interaction monitoring, the plan requires major rework before clinical use (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop, implement, or evaluate programs such as outreach activities, community mental health programs, and crisis situation response activities.",
+      "task_type": "Program Development and Crisis Response",
+      "user_prompt": "Draft a 30-day crisis response protocol for a community outreach program targeting homeless individuals with severe mental illness. The protocol must outline triage steps for acute psychosis, resource allocation for immediate housing, and a follow-up schedule. Ensure the language is accessible to community partners and adheres to ethical guidelines for involuntary treatment if necessary.",
+      "reference_context": "{\n  \"program_name\": \"StreetLink Outreach\",\n  \"target_population\": \"Homeless adults with Schizophrenia or Bipolar Disorder\",\n  \"available_resources\": [\"Mobile Crisis Unit\", \"3 Emergency Shelter Beds\", \"24/7 Telehealth Access\"],\n  \"constraints\": \"Limited funding for long-term housing; high turnover in shelter population.\"\n}",
+      "evaluation_criteria": [
+        "Correctness: The triage steps align with DSM-5-TR criteria for acute psychosis and distinguish between voluntary and involuntary intervention thresholds.",
+        "Completeness: The protocol addresses immediate safety, resource utilization, and a structured 30-day follow-up plan.",
+        "Best practices: The document uses non-stigmatizing language and clearly defines the chain of command for crisis intervention."
+      ],
+      "student_answer": "**StreetLink Outreach: 30-Day Crisis Response Protocol**\n\n**I. Initial Contact & Triage (Days 1-7)**\n\n*   **Contact Protocol:** StreetLink team members will initiate contact with individuals experiencing a crisis (e.g., acute psychosis, severe agitation, self-harm risk) through observation, verbal cues, or referral from other agencies.\n*   **Rapid Assessment:** Conduct a brief, standardized assessment using the Columbia-Suicide Severity Rating Scale (C-SSRS) and a modified Mental Status Exam focusing on psychosis, mood, and safety. Document all findings.\n*   **Triage Levels:**\n    *   **Level 1 (Low Risk):** Mild symptoms, stable presentation. Referral to 24/7 Telehealth for psychoeducation, coping strategies, and medication adherence support. Follow-up in 7 days.\n    *   **Level 2 (Moderate Risk):** Moderate symptoms, potential for escalation, but currently safe. Immediate referral to Mobile Crisis Unit (MCU) for assessment and stabilization. MCU will determine Level 3 or initiate housing referral.\n    *   **Level 3 (High Risk):** Severe psychosis, imminent risk of harm to self or others, inability to care for basic needs. Initiate involuntary hold (if legally permissible and MCU deems necessary) – *See Section IV*.\n\n**II. Immediate Stabilization & Housing (Days 8-14)**\n\n*   **MCU Intervention:** MCU will prioritize Level 2 and Level 3 cases.  Interventions include de-escalation techniques, medication review (with client consent where possible), and safety planning.\n*   **Emergency Shelter Placement (3 Beds):**  For Level 3 cases requiring immediate shelter, prioritize placement in the 3 Emergency Shelter Beds.  Notify the client and their designated support person (if available) of the placement.\n*   **Housing Referral (Limited):** Due to funding constraints, prioritize immediate shelter.  Initiate a referral to local Housing First programs and rapid re-housing initiatives. Document all referrals and follow-up attempts.  Explore potential for short-term rental assistance vouchers.\n*   **Case Conferencing:**  Hold a brief case conferencing with the client, StreetLink team member, MCU representative, and relevant support contacts (family, case manager, psychiatrist – if available) to coordinate care.\n\n**III. Follow-Up & Ongoing Support (Days 15-30)**\n\n*   **Shelter Follow-Up:** Daily check-ins with individuals in the Emergency Shelter. Monitor for symptom exacerbation, medication adherence, and overall well-being.\n*   **Telehealth Support:** Continue 24/7 Telehealth access for all clients.  Focus on medication management, relapse prevention, and psychosocial support.\n*   **Housing Follow-Up:**  Daily contact with clients in housing programs. Assist with navigating services, addressing challenges, and promoting stability.\n*   **Scheduled Psychiatric Consultation:**  All Level 3 clients will receive a psychiatric consultation within 72 hours of stabilization.\n*   **30-Day Review:** Conduct a comprehensive 30-day review of the client’s progress, challenges, and ongoing needs. Adjust the care plan as necessary.\n\n**IV. Involuntary Treatment Considerations (Level 3 Only – MCU Decision)**\n\n*   **Legal Requirements:** All involuntary holds must adhere to local and state laws regarding mental health and involuntary commitment.\n*   **Documentation:** Meticulous documentation of all observations, assessments, and interventions is crucial.\n*   **Least Restrictive Means:** Utilize the least restrictive means necessary to ensure client safety and well-being.\n*   **Consent:**  Efforts will be made to obtain client consent whenever possible.  If consent is not possible, the MCU will follow established protocols for initiating an involuntary hold.\n*   **Notification:**  Legal counsel will be notified of any involuntary hold.\n\n**V. Ethical Considerations**\n\n*   **Client Autonomy:**  Respect client autonomy and preferences whenever possible.\n*   **Confidentiality:** Maintain strict confidentiality of client information.\n*   **Cultural Sensitivity:**  Provide culturally competent care.\n*   **Trauma-Informed Care:**  Utilize trauma-informed care practices.\n\n**VI. Resource Allocation**\n\n*   **MCU:** 24/7 availability for crisis intervention.\n*   **Emergency Shelter:** 3 beds for immediate stabilization.\n*   **Telehealth:** 24/7 access for ongoing support.\n*   **Funding:** Prioritize emergency shelter and telehealth services. Explore grant opportunities for long-term housing.\n\n**VII.  Evaluation & Revision**\n\n*   This protocol will be reviewed and revised quarterly to ensure effectiveness and alignment with evolving needs and resources.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        3
+      ],
+      "score": 4.0,
+      "grade_reason": "Strengths: The submission is well-structured, clearly addresses all task components (triage, housing, follow-up, ethics), and uses appropriate terminology (Trauma-Informed Care, Housing First). Weaknesses: The instruction to 'notify legal counsel' for every involuntary hold is not a universal best practice and varies by jurisdiction, representing a minor procedural inaccuracy. The C-SSRS is suicide-specific, though paired with an MSE for psychosis, which is acceptable but could be more precise. Resource allocation criteria for the 3 shelter beds are vague. Autonomy is 3 because the protocol involves involuntary treatment and requires specific legal review before deployment."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Monitor the use and status of medical and pharmaceutical supplies.",
+      "task_type": "Supply Chain and Inventory Management",
+      "user_prompt": "Analyze the provided inventory log for the psychiatric unit's controlled substance storage. Identify discrepancies between the physical count and the electronic record, calculate the variance, and propose a corrective action plan that includes a re-order schedule for essential psychotropic medications. Ensure the report maintains confidentiality regarding specific patient usage data.",
+      "reference_context": "{\n  \"inventory_log\": [\n    {\"drug\": \"Lorazepam\", \"scheduled_quantity\": 100, \"physical_count\": 92, \"last_dispensed\": \"2023-10-25\"},\n    {\"drug\": \"Olanzapine\", \"scheduled_quantity\": 50, \"physical_count\": 50, \"last_dispensed\": \"2023-10-24\"},\n    {\"drug\": \"Methylphenidate\", \"scheduled_quantity\": 200, \"physical_count\": 185, \"last_dispensed\": \"2023-10-26\"}\n  ],\n  \"unit_capacity\": 40,\n  \"average_daily_usage\": {\"Lorazepam\": 2, \"Olanzapine\": 1, \"Methylphenidate\": 3}\n}",
+      "evaluation_criteria": [
+        "Correctness: The variance calculation is accurate (Lorazepam: -8, Methylphenidate: -15) and flags the Methylphenidate shortage as critical.",
+        "Completeness: The corrective plan includes immediate reporting procedures for the discrepancy and a re-order calculation based on average daily usage.",
+        "Best practices: The output explicitly excludes patient names or specific prescription details, focusing solely on aggregate supply data."
+      ],
+      "student_answer": "**Controlled Substance Inventory Discrepancy Analysis & Corrective Action Plan**\n\n**Date:** October 27, 2023\n\n**Subject:** Review of Controlled Substance Inventory – Psychiatric Unit\n\n**Findings:**\n\n*   **Lorazepam:** Scheduled quantity: 100 units. Physical count: 92 units. Variance: 8 units.\n*   **Olanzapine:** Scheduled quantity: 50 units. Physical count: 50 units. Variance: 0 units.\n*   **Methylphenidate:** Scheduled quantity: 200 units. Physical count: 185 units. Variance: 15 units.\n\n**Total Variance:** 23 units\n\n**Analysis:**\n\nThe discrepancies indicate a potential issue with inventory management, either through inaccurate recording, dispensing errors, or loss. The variance in Lorazepam and Methylphenidate warrants immediate attention. The Olanzapine count aligns with the electronic record, suggesting a stable supply.\n\n**Corrective Action Plan:**\n\n1.  **Immediate Investigation (Within 24 Hours):** Conduct a thorough investigation into the discrepancies. This includes:\n    *   Reviewing dispensing records for the past week to identify potential dispensing errors.\n    *   Verifying the accuracy of the physical count with two independent personnel.\n    *   Examining storage procedures and security protocols to identify potential vulnerabilities.\n2.  **Root Cause Analysis:** Determine the underlying cause of the discrepancies. Potential causes include:\n    *   Human error in recording inventory.\n    *   Inadequate training for staff involved in inventory management.\n    *   Theft or loss of medication.\n    *   Discrepancies between physical and electronic records.\n3.  **Process Improvement:** Implement changes to prevent future discrepancies. This may include:\n    *   Standardizing inventory procedures and requiring double checks for all dispensing activities.\n    *   Providing additional training to staff on proper inventory management techniques.\n    *   Improving storage security measures.\n    *   Implementing a more robust inventory tracking system (e.g., barcode scanning).\n4.  **Re-Order Schedule (Effective Immediately):**\n    *   **Lorazepam:** Re-order 50 units to maintain a buffer stock.\n    *   **Olanzapine:** Maintain current stock level of 50 units.\n    *   **Methylphenidate:** Re-order 50 units to account for the variance and maintain a buffer stock.\n\n**Re-Order Schedule Details:**\n\n| Drug           | Scheduled Quantity | Re-Order Quantity | Lead Time (Days) |\n| -------------- | ----------------- | ----------------- | ---------------- |\n| Lorazepam      | 100               | 50                | 3                |\n| Olanzapine     | 50                | 50                | 5                |\n| Methylphenidate | 200               | 50                | 4                |\n\n**Monitoring:**\n\n*   Daily reconciliation of physical inventory with electronic records.\n*   Monthly review of inventory discrepancies and corrective actions.\n\n**Confidentiality:** Patient-specific usage data is not included in this report. All data presented is aggregated and pertains to overall inventory levels.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        3,
+        5,
+        3
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission correctly identifies discrepancies and calculates variance accurately with professional formatting. However, it fails to utilize the provided 'average_daily_usage' data to justify the re-order quantities, rendering the schedule arbitrary rather than clinically calculated. Additionally, classifying Olanzapine as a controlled substance is a domain accuracy error, as it is not federally scheduled. While the structure is clear and the core approach is sound, the inventory logic requires substantive editing before stakeholder delivery."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Treat patients for routine physical health problems.",
+      "task_type": "Physical Health Assessment and Integration",
+      "user_prompt": "A patient with a history of Schizophrenia presents with new-onset metabolic syndrome symptoms (weight gain, elevated blood pressure). Develop an integrated care plan that addresses the physical health issue while considering the side effects of their current antipsychotic regimen. Include recommendations for lifestyle modifications and potential medication adjustments, ensuring no patient identifiers are used.",
+      "reference_context": "{\n  \"diagnosis\": \"Schizophrenia\",\n  \"current_meds\": [\"Clozapine 300mg daily\"],\n  \"vitals\": {\"bp\": \"145/92\", \"bmi\": 32.5},\n  \"labs\": {\"glucose\": 110, \"hba1c\": 6.2, \"lipid_profile\": \"elevated triglycerides\"},\n  \"comorbidities\": [\"Type 2 Diabetes (managed)\"]\n}",
+      "evaluation_criteria": [
+        "Correctness: The plan correctly identifies Clozapine as a likely contributor to metabolic syndrome and suggests appropriate monitoring or switching strategies.",
+        "Completeness: The care plan includes specific dietary recommendations, exercise goals, and a timeline for re-evaluating metabolic markers.",
+        "Best practices: The response demonstrates an understanding of the biopsychosocial model and avoids stigmatizing language regarding the patient's weight."
+      ],
+      "student_answer": "**Integrated Care Plan**\n\n**I. Assessment & Monitoring (Ongoing)**\n\n*   **Continuous BP & Weight Monitoring:** Weekly weight and blood pressure measurements.\n*   **Glucose Monitoring:** Implement a consistent self-monitoring blood glucose (SMBG) schedule (e.g., fasting, pre-meal, post-meal). Consider continuous glucose monitoring (CGM) if feasible and patient compliant.\n*   **Lipid Profile:** Repeat lipid panel every 3 months to assess response to interventions.\n*   **Mental Status Exam:** Regular mental status examinations to monitor for any exacerbation of psychosis or mood changes.\n*   **Medication Review:** Thorough review of all medications, including antipsychotic, diabetes medications, and any supplements, to identify potential interactions and side effects.\n\n**II. Lifestyle Modifications**\n\n*   **Dietary Counseling:** Referral to a registered dietitian specializing in metabolic syndrome and schizophrenia. Focus on a Mediterranean-style diet – low in saturated fat, processed foods, and added sugars; high in fruits, vegetables, whole grains, and lean protein. Portion control and mindful eating strategies.\n*   **Exercise Program:** Initiate a structured exercise program, starting with low-impact activities (e.g., walking, swimming, cycling) and gradually increasing intensity and duration. Aim for at least 150 minutes of moderate-intensity aerobic exercise per week. Occupational therapy may be beneficial for activity planning.\n*   **Weight Management Support:** Explore behavioral weight loss strategies, including motivational interviewing and cognitive behavioral therapy (CBT) techniques.\n*   **Sleep Hygiene:** Address any sleep disturbances, as poor sleep can exacerbate metabolic syndrome.\n\n**III. Pharmacological Interventions**\n\n*   **Antipsychotic Optimization:**\n    *   **Clozapine Dose Reduction:** Consider a gradual dose reduction of clozapine (under close monitoring for psychosis) to minimize metabolic side effects.  A reduction of 25-50mg every 2-4 weeks, as tolerated, is a reasonable starting point.\n    *   **Switch to Alternative Antipsychotic:** If clozapine dose reduction is insufficient or not feasible, explore switching to a lower-risk antipsychotic (e.g., aripiprazole, lurasidone, or quetiapine) – carefully considering efficacy and potential side effects.\n    *   **Add Metformin:** Initiate metformin (500mg daily, titrate as tolerated) to improve insulin sensitivity and manage glucose levels. Monitor for gastrointestinal side effects.\n*   **Diabetes Management:** Continue current diabetes medications as needed, adjusting dosages based on glucose monitoring results.\n*   **Consider Lipid-Lowering Agents:**  If triglycerides remain elevated despite lifestyle modifications and clozapine dose adjustment, consider adding a statin.\n\n**IV. Psychosocial Support**\n\n*   **Family/Caregiver Education:** Provide education to family members or caregivers regarding metabolic syndrome, medication management, and the importance of lifestyle modifications.\n*   **Support Groups:** Connect the patient with support groups for individuals with schizophrenia and/or metabolic syndrome.\n*   **Case Management:**  Consider case management services to assist with medication adherence, appointment scheduling, and navigating healthcare resources.\n\n**V.  Collaboration**\n\n*   **Primary Care Physician:** Regular communication and collaboration with the primary care physician regarding overall health management.\n*   **Endocrinologist:** Consultation with an endocrinologist may be beneficial for complex diabetes management.\n*   **Psychiatrist:** Close collaboration with the psychiatrist to monitor for any changes in mental status and adjust medication as needed.\n\n**VI.  Follow-up**\n\n*   **Scheduled Follow-up Appointments:**  Schedule follow-up appointments every 4-6 weeks to monitor progress, adjust treatment plan, and address any concerns.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        3,
+        5,
+        3
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission is well-structured and addresses all task components with appropriate lifestyle and monitoring recommendations. Strengths include the evidence-based use of Metformin for metabolic syndrome and clear referral pathways. However, Domain Accuracy is reduced (3) due to classifying Quetiapine as 'lower-risk' alongside Aripiprazole/Lurasidone, as Quetiapine carries moderate metabolic risk. Correctness and Autonomy are limited (4 and 3) by the aggressive recommendation to switch off Clozapine without emphasizing the high risk of psychosis relapse, and the lack of specific antihypertensive medication initiation for the BP of 145/92. Clarity is excellent (5)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Direct or provide home health services.",
+      "task_type": "Home Health Service Coordination",
+      "user_prompt": "Create a comprehensive home health visit plan for a patient with Major Depressive Disorder who is homebound due to agoraphobia. The plan must include a safety assessment for the home environment, a medication reconciliation strategy, and a telehealth follow-up schedule. Ensure all documentation templates provided in the context are used correctly to maintain HIPAA standards.",
+      "reference_context": "{\n  \"patient_profile\": {\n    \"condition\": \"Major Depressive Disorder with Agoraphobia\",\n    \"home_situation\": \"Lives alone, elderly parents in next room\",\n    \"current_meds\": [\"Fluoxetine 40mg\", \"Alprazolam PRN\"]\n  },\n  \"visit_template\": {\n    \"sections\": [\"Safety Assessment\", \"Medication Review\", \"Mental Status Exam\", \"Care Plan Update\"],\n    \"privacy_note\": \"All notes must be stored in encrypted EHR.\"\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: The safety assessment includes specific checks for fall risks and suicide prevention measures appropriate for a homebound patient.",
+        "Completeness: The plan utilizes all sections of the provided visit template and includes a clear telehealth schedule.",
+        "Best practices: The documentation instructions explicitly reference encryption and secure storage to meet HIPAA requirements."
+      ],
+      "student_answer": "**Home Health Visit Plan – Patient: [Patient Name]**\n\n**Date:** [Date]\n**Nurse:** [Your Name]\n\n**I. Safety Assessment (Section: Safety Assessment)**\n\n*   **Environmental Safety:**\n    *   **Fire Safety:** Assess smoke detectors (functional and batteries), carbon monoxide detector (functional), fire extinguisher (accessible, charged, and inspected). Document findings.\n    *   **Fall Risk:** Observe gait, balance, and mobility. Assess flooring (loose rugs, tripping hazards). Evaluate lighting. Utilize the Morse Fall Scale. Document score and interventions.\n    *   **Hazardous Materials:** Identify potential hazards (e.g., unsecured medications, cleaning supplies, sharp objects). Recommend safe storage.\n    *   **Emergency Contacts:** Verify emergency contact information (911, family, physician). Document.\n    *   **Home Modifications:** Assess for accessibility issues (e.g., step-ups, narrow doorways). Recommend potential modifications if needed.\n*   **Suicide Risk Assessment:** Utilize Columbia-Suicide Severity Rating Scale (C-SSRS). Assess current thoughts, feelings, and behaviors related to suicide. Document all responses and safety planning.\n*   **Isolation Assessment:** Observe patient’s interaction with parents. Assess for signs of social isolation and loneliness.\n\n**II. Medication Review (Section: Medication Review)**\n\n*   **Current Medications:** Fluoxetine 40mg daily, Alprazolam PRN.\n    *   **Adherence:** Inquire about medication adherence. Assess patient’s understanding of medication purpose and dosage.\n    *   **Side Effects:** Discuss potential side effects of Fluoxetine (nausea, insomnia, sexual dysfunction) and Alprazolam (drowsiness, dizziness, dependence).\n    *   **Alprazolam Usage:** Document Alprazolam usage frequency and dosage. Assess for potential misuse or dependence. Explore alternative coping mechanisms.\n    *   **Medication Reconciliation:** Verify current medications with patient’s physician. Confirm no new medications have been added.\n    *   **Pharmacy Contact:** Obtain pharmacy contact information for refills and communication.\n\n**III. Mental Status Exam (Section: Mental Status Exam)**\n\n*   **Appearance & Behavior:** Observe patient’s grooming, hygiene, and overall appearance. Note any signs of distress or agitation.\n*   **Speech:** Assess speech rate, volume, and clarity.\n*   **Mood:** Assess patient’s reported mood (e.g., depressed, anxious, hopeless). Utilize mood rating scale (e.g., PHQ-9).\n*   **Affect:** Observe patient’s displayed emotions.\n*   **Thought Process:** Assess for thought blocking, tangentiality, or loose associations.\n*   **Thought Content:** Assess for suicidal ideation, self-harm thoughts, delusions, or hallucinations.\n*   **Cognition:** Assess orientation to person, place, and time. Assess short-term and long-term memory.\n*   **Insight & Judgment:** Assess patient’s awareness of their illness and ability to make sound decisions.\n\n**IV. Care Plan Update (Section: Care Plan Update)**\n\n*   **Goals:** Collaboratively establish realistic goals with the patient (e.g., increased socialization, improved mood, reduced anxiety).\n*   **Interventions:**\n    *   **Psychoeducation:** Provide education on Major Depressive Disorder and Agoraphobia.\n    *   **Coping Strategies:** Teach relaxation techniques (e.g., deep breathing, progressive muscle relaxation).\n    *   **Activity Scheduling:** Encourage gentle activity within the patient’s comfort level.\n    *   **Social Support:** Encourage interaction with parents. Explore opportunities for virtual social connection.\n*   **Telehealth Follow-Up:** Schedule telehealth visit in 7 days. Discuss progress, address any concerns, and adjust care plan as needed.\n*   **Referrals:** Consider referral to therapist or support group if indicated.\n*   **Documentation:** Complete all sections of the visit template, including subjective and objective data.\n\n**HIPAA Compliance:** All documentation will be stored in the encrypted EHR system. Patient confidentiality will be maintained at all times.\n\n**[Signature]**\n\n**[Printed Name]**\n\n**[Credentials]**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission is well-structured and uses appropriate clinical tools (C-SSRS, Morse, PHQ-9), meeting most requirements for a home health visit plan. However, the medication reconciliation strategy relies on verifying with the physician rather than the standard home health practice of physically inspecting medication bottles and comparing them to the MAR, which is a meaningful gap in clinical strategy. Additionally, while parents are mentioned, their capacity to assist is not assessed. These minor but significant omissions prevent a perfect score on clinical dimensions, though terminology and clarity are excellent."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Teach classes in mental health topics, such as stress reduction.",
+      "task_type": "Patient Education and Group Facilitation",
+      "user_prompt": "Design a 45-minute educational session on 'Stress Reduction Techniques for Bipolar Disorder' for a support group. The session must include interactive exercises, evidence-based coping strategies, and a handout summary. Ensure the content is culturally sensitive and avoids medical jargon, while adhering to privacy guidelines by not discussing specific patient cases.",
+      "reference_context": "{\n  \"group_demographics\": \"Adults with Bipolar I and II, ages 25-50\",\n  \"session_goals\": [\"Identify triggers\", \"Practice grounding techniques\", \"Understand sleep hygiene\"],\n  \"materials_available\": [\"Whiteboard\", \"Handout templates\", \"Audio speaker\"]\n}",
+      "evaluation_criteria": [
+        "Correctness: The coping strategies (e.g., grounding, sleep hygiene) are evidence-based and appropriate for Bipolar Disorder management.",
+        "Completeness: The session outline covers the full 45-minute duration with a clear introduction, interactive segment, and conclusion.",
+        "Best practices: The content is free of specific patient case studies to protect privacy, and the language is accessible to a lay audience."
+      ],
+      "student_answer": "**Stress Reduction Techniques for Bipolar Disorder – 45-Minute Session**\n\n**I. Introduction (5 minutes)**\n\n*   Welcome and Introductions (Brief – 2 minutes)\n*   Session Overview: “Today, we’ll explore ways to manage stress, which is a common experience with bipolar disorder. We’ll focus on recognizing what triggers your stress, simple techniques to help you feel calmer in the moment, and ways to support better sleep.”\n*   Ground Rules: Confidentiality – what’s shared here stays here. Respectful listening.\n\n**II. Understanding Stress & Bipolar (10 minutes)**\n\n*   What is Stress? (3 minutes) – “Stress isn’t just feeling overwhelmed. It’s how your body and mind react to challenges. It can feel different for everyone, and it can be more intense with bipolar disorder.”\n*   Common Triggers (5 minutes) – Brainstorming: “Let’s talk about what commonly causes stress for you.  Write down 2-3 things that tend to make you feel more stressed or anxious. (Whiteboard – list common triggers like: changes in routine, social pressure, financial worries, uncertainty, relationship difficulties). *No need to share specifics, just acknowledging the common themes is helpful.*”\n*   Briefly explain how stress can exacerbate bipolar symptoms (without diagnosing). “Stress can sometimes make mood swings more noticeable or trigger episodes.”\n\n**III. Grounding Techniques (15 minutes)**\n\n*   What is Grounding? (2 minutes) – “Grounding helps you connect with the present moment when you’re feeling overwhelmed. It brings you back to ‘here and now’.”\n*   Exercise 1: 5-4-3-2-1 Technique (7 minutes) – Guide participants through the exercise: “Let’s try a simple grounding technique. Take a few deep breaths. Now, notice: 1) Five things you can *see* around you. 2) Four things you can *touch*. 3) Three things you can *hear*. 4) Two things you can *smell*. 5) One thing you can *taste*.” (Pause for participants to engage).\n*   Exercise 2: Sensory Focus (6 minutes) – “Choose one of your senses – sight, sound, touch, smell, or taste.  Close your eyes for one minute and really focus on that sensation.  Notice the details – the texture, the color, the temperature, the sound.”\n\n**IV. Sleep Hygiene & Wrap-up (15 minutes)**\n\n*   Importance of Sleep (3 minutes) – “Sleep is crucial for managing bipolar disorder.  Poor sleep can worsen mood and increase stress.”\n*   Sleep Hygiene Tips (7 minutes) – “Let’s talk about simple changes that can help:  Consistent bedtime and wake-up time (even on weekends), create a relaxing bedtime routine (warm bath, reading), avoid screens before bed, make your bedroom dark, quiet, and cool.”\n*   Q&A (5 minutes) – Open the floor for brief questions.\n\n**Handout Summary (To be provided)**\n\n**Stress Reduction Techniques for Bipolar Disorder**\n\n**1. Identify Your Triggers:**  What situations, thoughts, or feelings tend to cause you stress? (Write them down).\n\n**2. Grounding Techniques:**\n\n*   **5-4-3-2-1:** Engage your senses to connect with the present.\n*   **Sensory Focus:** Choose one sense and concentrate on it for a minute.\n\n**3. Sleep Hygiene:**\n\n*   Consistent Sleep Schedule\n*   Relaxing Bedtime Routine\n*   Limit Screen Time Before Bed\n*   Create a Comfortable Sleep Environment\n\n**Resources:** (Provide general resources – e.g., National Alliance on Mental Illness (NAMI), Crisis Text Line)\n\n---\n\n**Note:** This session is designed to be adaptable. Adjust the timing and exercises based on the group’s needs and engagement.  Maintain a supportive and non-judgmental atmosphere.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission demonstrates strong clinical accuracy and clarity, effectively incorporating evidence-based grounding and sleep hygiene strategies with appropriate safety resources (Domain Accuracy: 5, Clarity: 5). However, the specific task requirement for cultural sensitivity was met only superficially ('respectful listening' vs. specific adaptations), and the 'Audio speaker' material listed in the context was not utilized. These gaps in task compliance and material integration mean the work is competent but not exceptional, resulting in scores of 4 for Correctness, Completeness, Best Practices, and Autonomy."
+    }
+  ]
+}

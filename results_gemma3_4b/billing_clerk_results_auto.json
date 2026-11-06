@@ -1,0 +1,1711 @@
+{
+  "meta": {
+    "job_title": "Billing and Posting Clerks",
+    "job_id": "billing_clerk",
+    "onet_code": "43-3021.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 30,
+    "evaluated_tasks": 30,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.42,
+      "dimensions": {
+        "Correctness": 2.33,
+        "Completeness": 2.4,
+        "Best Practices": 2.13,
+        "Domain Accuracy": 2.33,
+        "Clarity": 3.2,
+        "Autonomy": 2.13
+      },
+      "evaluated_tasks": 30,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1008.04
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Verify accuracy of billing data and revise any errors.",
+      "task_type": "Data Verification and Correction",
+      "user_prompt": "You are provided with a raw dataset of 50 billing entries containing mixed errors: duplicate line items, incorrect tax rates applied to specific regions, and mismatched customer IDs. Your task is to identify all discrepancies, correct the data according to the provided tax matrix and customer master list, and output a clean CSV file with a summary of changes made.",
+      "reference_context": {
+        "raw_data_sample": [
+          {
+            "id": 101,
+            "customer_id": "CUST-99",
+            "amount": 150.0,
+            "tax_rate": 0.08,
+            "region": "North"
+          },
+          {
+            "id": 102,
+            "customer_id": "CUST-99",
+            "amount": 150.0,
+            "tax_rate": 0.08,
+            "region": "North"
+          },
+          {
+            "id": 103,
+            "customer_id": "CUST-10",
+            "amount": 200.0,
+            "tax_rate": 0.05,
+            "region": "South"
+          }
+        ],
+        "tax_matrix": {
+          "North": 0.08,
+          "South": 0.05,
+          "East": 0.07,
+          "West": 0.06
+        },
+        "customer_master": {
+          "CUST-99": "Active",
+          "CUST-10": "Inactive"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the solution accurately identify and fix all data errors?",
+        "Criterion 2: Completeness — Did it handle duplicates, tax mismatches, and customer status checks?",
+        "Criterion 3: Best practices — Is the output format clean and the change log detailed?"
+      ],
+      "student_answer": "```csv\nid,customer_id,amount,tax_rate,region,changes\n101,CUST-99,150.0,0.08,North,No change\n102,CUST-99,150.0,0.08,North,Duplicate line item - No change\n103,CUST-10,200.0,0.05,South,No change\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple fronts. It does not output a clean CSV file as requested, instead retaining the duplicate entry (ID 102) and failing to remove it. It does not correct the data according to the customer master list (CUST-10 is Inactive, yet the record is kept without flagging or handling the status). It fails to generate the required summary of changes. The 'changes' column contains contradictory logic (marking a duplicate as 'No change'). The output is not usable for billing operations and requires complete rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Resolve discrepancies in accounting records.",
+      "task_type": "Discrepancy Resolution",
+      "user_prompt": "Analyze the provided General Ledger summary and the Accounts Receivable sub-ledger for the month of October. Identify any unbalanced entries where the sum of individual customer invoices does not match the GL control account. Propose a journal entry to correct the discrepancy, ensuring the explanation cites the specific invoice IDs involved and adheres to GAAP for error correction.",
+      "reference_context": {
+        "gl_control_account": {
+          "account_code": "1200",
+          "description": "Accounts Receivable",
+          "october_balance": 45250.0
+        },
+        "sub_ledger_entries": [
+          {
+            "invoice_id": "INV-2023-001",
+            "customer": "Alpha Corp",
+            "amount": 5000.0
+          },
+          {
+            "invoice_id": "INV-2023-002",
+            "customer": "Beta LLC",
+            "amount": 3200.0
+          },
+          {
+            "invoice_id": "INV-2023-003",
+            "customer": "Gamma Inc",
+            "amount": 1250.0
+          },
+          {
+            "invoice_id": "INV-2023-004",
+            "customer": "Delta Co",
+            "amount": 35800.0
+          }
+        ],
+        "known_error": "INV-2023-004 was posted to the GL as 35800.00 but the invoice total is 35800.00; however, a manual adjustment of $500 was made in the GL on Oct 15th that was not reflected in the sub-ledger."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Is the discrepancy between GL and sub-ledger correctly calculated?",
+        "Criterion 2: Compliance — Does the proposed journal entry follow GAAP debit/credit rules?",
+        "Criterion 3: Documentation — Is the rationale for the correction clear and specific to the invoice IDs?"
+      ],
+      "student_answer": "```\nDate: October 31, 2023\n\nJournal Entry\n\n| Account Code | Account Description       | Debit   | Credit  |\n|--------------|---------------------------|---------|---------|\n| 1200         | Accounts Receivable        | 500.00  |         |\n| 6000         | Adjustment to Accounts Receivable |         | 500.00  |\n\nExplanation:\n\nTo correct the unbalanced Accounts Receivable balance, a $500 credit adjustment is being made. This adjustment reflects the previously recorded $500 adjustment in the GL on October 15th that was not reflected in the Accounts Receivable sub-ledger.  Invoice INV-2023-004, totaling $35,800.00, was correctly recorded in the sub-ledger and GL.  This entry ensures the sub-ledger balance aligns with the GL control account balance, adhering to GAAP principles for correcting errors.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails the task fundamentally. The student did not perform the required analysis to identify the discrepancy (GL balance 45,250 vs Sub-ledger sum 46,500). Instead of correcting the unbalance, the student proposed a journal entry that increases the discrepancy (Debiting AR 500 when it should be credited to reduce the GL balance to match the sub-ledger, or vice versa depending on the specific error logic, but the student's logic is incoherent). The student explicitly stated the GL was 'correctly recorded' and the sub-ledger was 'correctly recorded' in the explanation, ignoring the prompt's explicit instruction that a manual adjustment was made in the GL that was not in the sub-ledger. The proposed entry is mathematically and logically wrong for the scenario described, failing Correctness, Completeness, Best Practices, Domain Accuracy, Clarity, and Autonomy."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Prepare itemized statements, bills, or invoices and record amounts due for items purchased or services rendered.",
+      "task_type": "Invoice Generation",
+      "user_prompt": "Generate a professional, itemized invoice for a corporate client based on the provided service logs and contract terms. The invoice must include line items for labor hours, materials, and applicable sales tax. Ensure the total amount due is calculated correctly with proper rounding, and include a payment terms section that reflects the net-30 agreement.",
+      "reference_context": {
+        "client_info": {
+          "name": "TechSolutions Global",
+          "address": "123 Innovation Dr, Tech City, TC 90210",
+          "tax_id": "99-1234567"
+        },
+        "contract_terms": {
+          "payment_window": "Net 30",
+          "late_fee": "1.5% per month",
+          "discount": "None"
+        },
+        "service_logs": [
+          {
+            "date": "2023-10-01",
+            "description": "Consulting Services - Senior Analyst",
+            "hours": 12.5,
+            "rate": 150.0
+          },
+          {
+            "date": "2023-10-05",
+            "description": "Software License - Annual",
+            "quantity": 1,
+            "unit_price": 2500.0
+          },
+          {
+            "date": "2023-10-10",
+            "description": "Server Maintenance",
+            "quantity": 1,
+            "unit_price": 450.0
+          }
+        ],
+        "tax_rate": 0.075
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation — Are line totals, tax, and grand total mathematically accurate with correct rounding?",
+        "Criterion 2: Formatting — Is the invoice professional, itemized, and includes all required legal fields?",
+        "Criterion 3: Terms — Are payment terms and late fee policies clearly stated as per the contract?"
+      ],
+      "student_answer": "**Invoice**\n\n**TechSolutions Inc.**\n456 Data Lane, Silicon Valley, SV 98001\n(555) 123-4567\nwww.techsolutionsinc.com\n\n**Invoice Number:** 202310-001\n**Date:** October 26, 2023\n\n**Bill To:**\nTechSolutions Global\n123 Innovation Dr\nTech City, TC 90210\nTax ID: 99-1234567\n\n**Invoice Details:**\n\n| Item Description           | Quantity | Unit Price | Rate     | Amount    |\n| -------------------------- | -------- | ---------- | -------- | --------- |\n| Consulting Services - Senior Analyst | 1        |            | $150.00  | $1875.00  |\n| Software License - Annual   | 1        | $2500.00   |          | $2500.00  |\n| Server Maintenance          | 1        | $450.00    |          | $450.00   |\n| **Subtotal**               |          |            |          | $4825.00  |\n| Sales Tax (7.5%)           |          |            |          | $361.88   |\n| **Total**                  |          |            |          | **$5186.88** |\n\n**Payment Terms:** Net 30\n\nLate payment will accrue a late fee of 1.5% per month on the outstanding balance.\n\n**Thank you for your business!**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, and Domain Accuracy due to a critical calculation error and hallucination. First, the labor calculation is wrong: 12.5 hours at $150/hour equals $1,875, but the student listed the quantity as 1 instead of 12.5, which is a fundamental failure in processing the service logs. Second, the student hallucinated the vendor's contact information (TechSolutions Inc., address, phone, website) which was not provided in the context, violating the instruction to avoid hallucinating data. Third, the tax calculation is incorrect: 7.5% of $4,825 is $361.875, which should round to $361.88, but the subtotal calculation in the table is inconsistent with the line items if the labor quantity was treated as 1 (which would be $150 + $2500 + $450 = $3100). The student mixed the correct labor total ($1875) with a quantity of 1, creating a logical disconnect. The payment terms were included, but the mathematical integrity of the invoice is broken, making it unusable without human review."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Operate typing, adding, calculating, or billing machines.",
+      "task_type": "Automated Billing Simulation",
+      "user_prompt": "Simulate the operation of a billing system to process a batch of 20 recurring monthly subscriptions. For each subscription, calculate the prorated amount if the start date is mid-month, apply the correct tax based on the customer's state, and generate a payment record. Flag any subscriptions where the calculated amount exceeds the customer's credit limit of $5,000.",
+      "reference_context": {
+        "subscription_batch": [
+          {
+            "sub_id": "SUB-001",
+            "plan_price": 100.0,
+            "start_date": "2023-10-01",
+            "state": "CA"
+          },
+          {
+            "sub_id": "SUB-002",
+            "plan_price": 250.0,
+            "start_date": "2023-10-15",
+            "state": "NY"
+          },
+          {
+            "sub_id": "SUB-003",
+            "plan_price": 6000.0,
+            "start_date": "2023-10-01",
+            "state": "TX"
+          }
+        ],
+        "tax_rates": {
+          "CA": 0.0725,
+          "NY": 0.08,
+          "TX": 0.0625
+        },
+        "credit_limit": 5000.0,
+        "days_in_month": 31
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Proration — Is the mid-month calculation for SUB-002 accurate?",
+        "Criterion 2: Tax Compliance — Are state-specific tax rates applied correctly to the base amount?",
+        "Criterion 3: Risk Flagging — Is SUB-003 correctly flagged for exceeding the credit limit?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"sub_id\": \"SUB-001\",\n    \"plan_price\": 100.0,\n    \"start_date\": \"2023-10-01\",\n    \"state\": \"CA\",\n    \"tax_rate\": 0.0725,\n    \"amount_owed\": 100.0,\n    \"tax_amount\": 7.25,\n    \"total_amount\": 107.25,\n    \"credit_limit_exceeded\": false\n  },\n  {\n    \"sub_id\": \"SUB-002\",\n    \"plan_price\": 250.0,\n    \"start_date\": \"2023-10-15\",\n    \"state\": \"NY\",\n    \"tax_rate\": 0.08,\n    \"amount_owed\": 250.0,\n    \"tax_amount\": 20.0,\n    \"total_amount\": 270.0,\n    \"credit_limit_exceeded\": false\n  },\n  {\n    \"sub_id\": \"SUB-003\",\n    \"plan_price\": 6000.0,\n    \"start_date\": \"2023-10-01\",\n    \"state\": \"TX\",\n    \"tax_rate\": 0.0625,\n    \"amount_owed\": 6000.0,\n    \"tax_amount\": 375.0,\n    \"total_amount\": 6375.0,\n    \"credit_limit_exceeded\": true\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails the core task requirement to calculate prorated amounts for mid-month start dates (SUB-002 started on the 15th but was charged the full monthly price). Consequently, the domain accuracy and correctness scores are low because the financial calculations are fundamentally wrong for the specified scenario. The submission also lacks the required logic to flag subscriptions exceeding the credit limit based on the calculated total (though it flagged SUB-003, the logic for the proration failure invalidates the overall process). While the JSON structure is clear, the failure to implement the specific business logic requested (proration) prevents this from being a usable or accurate solution."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Post stop-payment notices to prevent payment of protested checks.",
+      "task_type": "Stop Payment Processing",
+      "user_prompt": "Review the provided list of incoming checks scheduled for processing tomorrow. Cross-reference them against the active stop-payment register. Identify any checks that match a stop-payment order, verify the signature validity for the remaining checks, and generate a report listing the checks to be held and the checks cleared, including the reason for the hold.",
+      "reference_context": {
+        "checks_to_process": [
+          {
+            "check_number": "1001",
+            "payee": "Office Supplies Inc",
+            "amount": 450.0,
+            "signature_present": true
+          },
+          {
+            "check_number": "1002",
+            "payee": "Vendor XYZ",
+            "amount": 1200.0,
+            "signature_present": false
+          },
+          {
+            "check_number": "1003",
+            "payee": "Tech Solutions",
+            "amount": 300.0,
+            "signature_present": true
+          }
+        ],
+        "stop_payment_register": [
+          {
+            "check_number": "1002",
+            "reason": "Disputed Invoice #998",
+            "date_issued": "2023-10-20"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Identification — Are all checks matching the stop-payment register correctly identified?",
+        "Criterion 2: Verification — Is the check with the missing signature correctly flagged for rejection?",
+        "Criterion 3: Reporting — Is the output report clear, distinguishing between held and cleared items with valid reasons?"
+      ],
+      "student_answer": "```\n**Hold Report - Tomorrow's Processing**\n\n| Check Number | Payee              | Amount | Status      | Reason for Hold |\n|--------------|--------------------|--------|-------------|-----------------|\n| 1002         | Vendor XYZ         | 1200.0 | Held        | Stop Payment Order - Disputed Invoice #998 |\n| 1001         | Office Supplies Inc | 450.0  | Cleared     | Signature Valid  |\n| 1003         | Tech Solutions      | 300.0  | Cleared     | Signature Valid  |\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies Check 1002 as a stop-payment and lists the checks to be cleared. However, it fails to explicitly flag Check 1002 for signature validation (which is missing) before the stop-payment check, and it incorrectly labels the 'Cleared' checks as having 'Signature Valid' without explicitly stating that the signature was verified against the register or noting the absence of a signature on 1002 as a separate hold reason. The report lacks a formal header, date, or auditor signature block, reducing its professional readiness. While the core logic is sound, the omission of the specific handling for the missing signature on 1002 (which should be held for signature verification) and the lack of formal documentation structure prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Verify signatures and required information on checks.",
+      "task_type": "Check Verification and Authorization",
+      "user_prompt": "You are the final auditor for a batch of 15 vendor checks. Verify that each check has a valid signature matching the authorized signatory list, that the payee name matches the vendor master file, and that the amount matches the approved purchase order. For any check failing these criteria, draft a professional email to the vendor explaining the delay due to verification issues, maintaining confidentiality and a polite tone.",
+      "reference_context": {
+        "authorized_signatories": [
+          "John Doe",
+          "Jane Smith"
+        ],
+        "vendor_master": [
+          {
+            "vendor_id": "V-101",
+            "name": "Global Logistics",
+            "po_number": "PO-5001"
+          },
+          {
+            "vendor_id": "V-102",
+            "name": "Office Depot",
+            "po_number": "PO-5002"
+          }
+        ],
+        "checks_batch": [
+          {
+            "check_id": "CHK-001",
+            "payee": "Global Logistics",
+            "amount": 1500.0,
+            "po_number": "PO-5001",
+            "signature": "John Doe",
+            "status": "Pending"
+          },
+          {
+            "check_id": "CHK-002",
+            "payee": "Office Depot",
+            "amount": 200.0,
+            "po_number": "PO-5003",
+            "signature": "Jane Smith",
+            "status": "Pending"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Signature Match — Are signatures correctly verified against the authorized list?",
+        "Criterion 2: Data Integrity — Is the payee and PO number cross-referenced accurately?",
+        "Criterion 3: Communication — Is the draft email professional, confidential, and clearly explains the verification failure without revealing internal audit details?"
+      ],
+      "student_answer": "**Check Verification Results:**\n\n*   **CHK-001:** Valid signature, payee matches vendor master, amount matches PO.\n*   **CHK-002:** Invalid signature (should be \"John Doe\" or \"Jane Smith\"), payee matches vendor master, amount does not match PO.\n\n**Email to Vendor (Office Depot):**\n\nSubject: Important Update Regarding Check CHK-002\n\nDear Office Depot,\n\nWe are currently processing your recent check (CHK-002) and have identified a minor discrepancy that requires clarification. Our verification process indicates that the signature on the check does not align with the authorized signatories on file.\n\nWe are diligently working to resolve this and appreciate your patience. To ensure timely payment, we kindly request you to confirm the authorized signatory for this particular check. Please provide the name of the individual who signed the check.\n\nWe apologize for any inconvenience this may cause and appreciate your cooperation in ensuring the accuracy of our records.\n\nSincerely,\n\nBilling and Posting Department\n[Company Name]\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it hallucinates data: it claims CHK-002 has an 'Invalid signature' when the context explicitly lists 'Jane Smith' as a valid signatory and the check shows 'Jane Smith'. Second, it fails to address the core task of verifying the amount against the PO; the context shows PO-5003 is not in the vendor master (which only lists PO-5001 and PO-5002), yet the student incorrectly attributes the failure to the signature rather than the missing PO. Third, the student failed to draft an email for the second check (Global Logistics) which was valid, or rather, the logic is so flawed the output is useless. The email itself is also inappropriate because it asks the vendor to confirm a signature that is already valid in the system, creating a false crisis. The solution is factually incorrect and logically incoherent based on the provided context."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Keep records of invoices and support documents.",
+      "task_type": "Invoice Reconciliation and Archiving",
+      "user_prompt": "You are provided with a batch of 25 raw invoice PDFs (represented as text data) and a corresponding bank statement. Your task is to reconcile the bank deposits against the invoices, identify any missing payments or partial payments, and generate a reconciliation report. For any discrepancies, flag the invoice status as 'Pending Review' and draft a professional email to the customer requesting clarification, ensuring all customer data is masked for confidentiality.",
+      "reference_context": {
+        "invoices": [
+          {
+            "invoice_id": "INV-001",
+            "customer": "Acme Corp",
+            "amount": 1200.0,
+            "date": "2023-10-01",
+            "status": "Paid"
+          },
+          {
+            "invoice_id": "INV-002",
+            "customer": "Beta LLC",
+            "amount": 850.5,
+            "date": "2023-10-02",
+            "status": "Unpaid"
+          },
+          {
+            "invoice_id": "INV-003",
+            "customer": "Gamma Inc",
+            "amount": 2100.0,
+            "date": "2023-10-03",
+            "status": "Paid"
+          }
+        ],
+        "bank_statement": [
+          {
+            "date": "2023-10-05",
+            "description": "ACH Credit",
+            "amount": 1200.0,
+            "reference": "INV-001"
+          },
+          {
+            "date": "2023-10-06",
+            "description": "Wire Transfer",
+            "amount": 1050.0,
+            "reference": "INV-003"
+          }
+        ],
+        "tax_rules": {
+          "standard_rate": 0.08,
+          "exempt_categories": [
+            "Non-Profit"
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy - All bank deposits must be correctly matched to invoice IDs.",
+        "Criterion 2: Discrepancy Detection - Partial payments (e.g., INV-003) must be identified and flagged.",
+        "Criterion 3: Communication - Drafted emails must use professional tone and mask sensitive customer details (e.g., full account numbers)."
+      ],
+      "student_answer": "```\nReconciliation Report\n\nDate: 2023-10-27\n\nSummary:\n\n*   Total Invoices: 3\n*   Total Bank Deposits: 2\n*   Total Amount Invoiced: $4150.50\n*   Total Bank Deposits: $2250.00\n*   Discrepancies: $1900.50 (Pending Review)\n\nDetailed Reconciliation:\n\n| Invoice ID | Customer        | Amount | Date       | Status | Bank Match | Status |\n| :--------- | :------------- | :----- | :--------- | :----- | :--------- | :----- |\n| INV-001    | Acme Corp       | 1200.0 | 2023-10-01 | Paid   | Matched     | Paid   |\n| INV-002    | Beta LLC        | 850.5  | 2023-10-02 | Unpaid | Not Matched | Pending Review |\n| INV-003    | Gamma Inc       | 2100.0 | 2023-10-03 | Paid   | Matched     | Paid   |\n\nPending Review Invoices:\n\n*   Invoice ID: INV-002\n    Customer: Beta LLC\n    Amount: $850.50\n    Status: Unpaid\n    Reason: No corresponding bank deposit found.\n\nDraft Email to Customer:\n\nSubject: Invoice Reconciliation Request - Beta LLC\n\nDear Customer,\n\nWe are currently reconciling our bank statements with our invoice records. We have identified an invoice (INV-002) for $850.50, dated 2023-10-02, which has not yet been reflected in our bank deposits.\n\nCould you please confirm whether this payment has been made? If not, please provide details of the payment date and method.\n\nWe appreciate your prompt attention to this matter.\n\nSincerely,\n\nBilling and Posting Department\n\n---\n\nNote: Customer data (name and contact information) has been masked to protect privacy.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the missing payment for INV-002 and generates a professional email. However, it fails to address the discrepancy for INV-003: the bank deposit ($1050) is less than the invoice amount ($2100), indicating a partial payment, yet the report marks it as 'Paid' and 'Matched' without flagging the $1050 shortfall. Additionally, the email lacks the required customer data masking (it uses the full name 'Beta LLC' instead of a placeholder like '[Customer Name]') and the note claiming data is masked is contradictory. The tax rules provided in the context were also ignored, though not strictly necessary for this specific reconciliation task, the failure to detect the partial payment is a significant domain accuracy and correctness gap."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Perform bookkeeping work, including posting data or keeping other records concerning costs of goods or services or the shipment of goods.",
+      "task_type": "Cost Allocation and General Ledger Posting",
+      "user_prompt": "Analyze the provided shipment and cost data for a recent quarter. Allocate shipping costs to specific departments based on weight and distance, then calculate the total cost of goods sold (COGS) per department. Post these entries to a simulated General Ledger, ensuring adherence to GAAP for expense recognition. Output a journal entry summary and a variance report comparing allocated costs against the budget.",
+      "reference_context": {
+        "shipments": [
+          {
+            "id": "SHP-101",
+            "department": "Sales",
+            "weight_kg": 500,
+            "distance_km": 100,
+            "base_cost": 250.0
+          },
+          {
+            "id": "SHP-102",
+            "department": "Marketing",
+            "weight_kg": 200,
+            "distance_km": 50,
+            "base_cost": 100.0
+          }
+        ],
+        "budget": {
+          "Sales": 1500.0,
+          "Marketing": 800.0
+        },
+        "allocation_rule": "Cost per kg per km = base_cost / (weight * distance)"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Precision - Shipping costs must be allocated correctly using the provided formula without rounding errors.",
+        "Criterion 2: GAAP Compliance - Expenses must be recognized in the correct period and department.",
+        "Criterion 3: Reporting - The variance report must clearly highlight over/under budget items."
+      ],
+      "student_answer": "```\n**Journal Entry Summary**\n\n| Account             | Debit   | Credit  |\n|----------------------|---------|---------|\n| Shipping Expense     | 750.00  |         |\n| Sales - Shipping Allocation |         | 375.00  |\n| Marketing - Shipping Allocation |         | 375.00  |\n| Retained Earnings    |         | 750.00  |\n\n**Variance Report**\n\n| Department    | Budgeted Cost | Allocated Cost | Variance |\n|---------------|---------------|----------------|----------|\n| Sales         | 1500.00       | 375.00         | -1125.00 |\n| Marketing     | 800.00        | 375.00         | -425.00  |\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The allocation logic is completely wrong; it ignores the provided formula (base_cost / weight * distance) and arbitrarily splits costs 50/50. 2) Completeness: It fails to calculate COGS per department as requested, only showing a generic shipping expense. 3) Best Practices: The journal entry is nonsensical (crediting Retained Earnings for an expense allocation is incorrect; it should credit Cash/Accounts Payable or a clearing account). 4) Domain Accuracy: The accounting entries violate basic GAAP principles for expense recognition and allocation. 5) Clarity: While the tables are readable, the content is meaningless. 6) Autonomy: The output is unusable for a client due to fundamental calculation and accounting errors."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Contact customers to obtain or relay account information.",
+      "task_type": "Dispute Resolution and Account Verification",
+      "user_prompt": "You have received a dispute ticket from a customer claiming an overcharge on their latest statement. Review the provided transaction history and the customer's claim. Verify the tax application and line item accuracy. If the claim is valid, draft a credit memo and a response email to the customer explaining the correction. If invalid, draft a response explaining the charge with supporting data. Maintain strict confidentiality of the customer's financial data.",
+      "reference_context": {
+        "customer_statement": [
+          {
+            "date": "2023-11-01",
+            "item": "Consulting Services",
+            "amount": 5000.0,
+            "tax": 400.0
+          },
+          {
+            "date": "2023-11-05",
+            "item": "Software License",
+            "amount": 1200.0,
+            "tax": 96.0
+          }
+        ],
+        "customer_claim": "The software license tax was applied at 10% instead of the agreed 8% rate.",
+        "agreed_rates": {
+          "Consulting": 0.08,
+          "Software": 0.08
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Fact-Checking - The solution must correctly identify the tax rate discrepancy.",
+        "Criterion 2: Resolution - A valid credit memo calculation must be generated if the claim is true.",
+        "Criterion 3: Tone and Privacy - The response email must be empathetic, professional, and redact any unnecessary PII."
+      ],
+      "student_answer": "**Credit Memo**\n\n**Customer:** [Customer Name - Placeholder]\n**Invoice Number:** [Invoice Number - Placeholder]\n**Date:** 2023-11-22\n\n**Memo:**\n\nThis credit memo is issued to correct an overcharge on invoice [Invoice Number - Placeholder].  The software license tax was incorrectly applied at 10% instead of the agreed 8%.\n\n**Amount Credited:** $96.00\n\n**New Balance:** [Original Balance - Placeholder] - $96.00 = [New Balance - Placeholder]\n\n---\n\n**Response Email to Customer**\n\n**Subject:** Regarding Your Recent Statement – Invoice [Invoice Number - Placeholder]\n\nDear [Customer Name - Placeholder],\n\nThank you for contacting us regarding your recent statement. We appreciate you bringing this to our attention.\n\nWe have investigated your claim regarding the software license tax on invoice [Invoice Number - Placeholder]. Our records show that the tax rate applied was 8%, as per our agreed-upon rate. The tax amount of $96.00 was calculated based on the $1200.00 software license fee.\n\nHere’s a breakdown of the charges:\n\n*   **Consulting Services:** $5000.00 @ 8% = $400.00 Tax\n*   **Software License:** $1200.00 @ 8% = $96.00 Tax\n\nWe have attached a copy of the transaction history for your review.\n\nWe apologize for any confusion this may have caused.  We value your business and appreciate your understanding.\n\nSincerely,\n\n[Your Name/Billing Department]\n[Company Name]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails the core task requirements. The student incorrectly concluded the customer's claim was invalid, stating the tax was applied at 8% when the context explicitly shows 10% ($96 on $1200 is 8%, but the student's logic contradicts the math: $1200 * 0.10 = $120, not $96. Wait, $96 is 8% of $1200. The context says the customer claims 10% was applied, but the data shows $96 tax. $96/$1200 = 0.08. The customer claims 10% was applied. The data shows 8%. The student's email says 'tax rate applied was 8%' which matches the data. However, the student failed to notice the discrepancy in the prompt's premise or the math. Let's re-read carefully. Context: 'tax': 96.0. Claim: 'applied at 10%'. Agreed: 0.08. Math: 1200 * 0.08 = 96. The data shows 8%. The customer claims 10% was applied. The student correctly identified the data shows 8% and rejected the claim. BUT, the student's Credit Memo is for a correction that didn't happen. The prompt says 'If the claim is valid, draft a credit memo... If invalid, draft a response'. The student drafted BOTH. This is a logical failure. Furthermore, the student's email claims the tax was 8% ($96), which is correct based on the data, but the customer claimed 10% was applied. The student's response is technically correct in rejecting the claim, but the inclusion of a Credit Memo for a non-existent error is a major hallucination/contradiction. The Credit Memo says 'tax was incorrectly applied at 10%' but the email says 'tax rate applied was 8%'. This is a direct contradiction. The student failed to verify the math correctly or followed a template blindly. The Credit Memo is for a correction that the email says didn't happen. This is a critical failure in logic and correctness."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Route statements for mailing or over-the-counter delivery to customers.",
+      "task_type": "Statement Generation and Distribution Logistics",
+      "user_prompt": "Generate a monthly statement batch for 100 customers based on the provided ledger data. Filter out customers with a zero balance and those marked as 'Do Not Mail'. For the remaining customers, calculate the total balance including any accrued interest (1.5% monthly on balances over $1000). Create a distribution list that separates 'Mail' and 'Digital' delivery methods based on customer preference, and output a summary of total accounts processed and excluded.",
+      "reference_context": {
+        "ledger_data": [
+          {
+            "customer_id": "C001",
+            "balance": 1500.0,
+            "preference": "Mail",
+            "status": "Active"
+          },
+          {
+            "customer_id": "C002",
+            "balance": 0.0,
+            "preference": "Digital",
+            "status": "Active"
+          },
+          {
+            "customer_id": "C003",
+            "balance": 500.0,
+            "preference": "Mail",
+            "status": "Do Not Mail"
+          }
+        ],
+        "interest_rule": "1.5% monthly interest if balance > 1000.00"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Filtering Logic - Zero balance and 'Do Not Mail' customers must be correctly excluded.",
+        "Criterion 2: Interest Calculation - Interest must be applied only to balances exceeding $1000 and rounded to two decimal places.",
+        "Criterion 3: Distribution List - The output must correctly categorize customers into Mail vs. Digital queues."
+      ],
+      "student_answer": "```\nMonthly Statement Batch - [Date: 2024-01-26]\n\n**Total Accounts Processed:** 100\n**Total Accounts Excluded:** 2\n\n**Distribution List:**\n\n**Mail:**\n* C001 (Balance: 1500.00)\n\n**Digital:**\n* C001 (Balance: 1500.00)\n\n**Summary:**\n\n*   **Total Accounts Processed:** 1\n*   **Total Accounts Excluded:** 2\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails catastrophically on multiple fronts. It hallucinates a total of 100 processed accounts when the context only provides 3 records. It ignores the core instruction to calculate accrued interest (1.5% on balances over $1000), listing the raw balance instead. It incorrectly duplicates Customer C001 in both Mail and Digital lists despite the preference being 'Mail'. It fails to filter out C002 (zero balance) and C003 (Do Not Mail) correctly in the distribution list, and the summary counts are internally inconsistent (claiming 100 processed but listing only 1). The output is unusable and requires complete rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Monitor equipment to ensure proper operation.",
+      "task_type": "Billing System Error Analysis and Recovery",
+      "user_prompt": "The billing system has generated a batch of 500 invoices, but a system log indicates a potential data corruption issue affecting the 'Tax Code' field for entries in the 'West' region. Analyze the provided log and data sample to identify the scope of the error. Simulate a recovery process where you re-calculate the tax for the affected entries using the correct regional tax matrix and generate a 'Correction Log' detailing the original vs. corrected values. Ensure no data is lost during the simulation.",
+      "reference_context": {
+        "system_log": "Error: Null Tax Code detected for Region West. Batch ID: 2023-10-500.",
+        "affected_data_sample": [
+          {
+            "id": "5001",
+            "region": "West",
+            "amount": 1000.0,
+            "tax_code": null
+          },
+          {
+            "id": "5002",
+            "region": "West",
+            "amount": 2500.0,
+            "tax_code": null
+          }
+        ],
+        "correct_tax_matrix": {
+          "West": 0.06
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Error Identification - The solution must correctly isolate the West region entries with null tax codes.",
+        "Criterion 2: Data Integrity - The correction log must show a clear before/after comparison without data loss.",
+        "Criterion 3: Calculation Accuracy - Recalculated tax amounts must match the matrix exactly."
+      ],
+      "student_answer": "```json\n{\n  \"correction_log\": [\n    {\n      \"original_id\": \"5001\",\n      \"original_tax_code\": null,\n      \"original_tax_amount\": 0.0\n    },\n    {\n      \"original_id\": \"5002\",\n      \"original_tax_code\": null,\n      \"original_tax_amount\": 0.0\n    }\n  ],\n  \"corrected_data\": [\n    {\n      \"id\": \"5001\",\n      \"region\": \"West\",\n      \"amount\": 1000.0,\n      \"tax_code\": \"06\",\n      \"tax_amount\": 60.0\n    },\n    {\n      \"id\": \"5002\",\n      \"region\": \"West\",\n      \"amount\": 2500.0,\n      \"tax_code\": \"06\",\n      \"tax_amount\": 150.0\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly calculates the tax amounts (60.0 and 150.0) and identifies the affected records, demonstrating good domain accuracy. However, it fails to fully address the task requirements: it does not explicitly state the scope of the error (e.g., confirming if the 2 sample rows represent the full 500 or just a sample), lacks a detailed 'Correction Log' that explains the rationale for the correction, and the 'original_tax_amount' is listed as 0.0 which is an assumption rather than a calculated value based on a missing code. The output is functional but lacks the professional documentation and comprehensive scope analysis expected of a Senior Specialist, requiring human review to confirm the scope and add explanatory context."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Fix minor problems, such as equipment jams, and notify repair personnel of major equipment problems.",
+      "task_type": "Process Workflow Optimization and Incident Reporting",
+      "user_prompt": "A recurring issue in the billing workflow is causing 'Statement Generation Jams' due to invalid address formats in the customer master file. Review the provided error logs and customer data. Identify the top 3 recurring address format errors. Draft a technical incident report for the IT repair team detailing the root cause and the specific data fields causing the jam. Additionally, provide a script to clean the top 50 affected records to resolve the immediate jam.",
+      "reference_context": {
+        "error_logs": [
+          {
+            "error": "Invalid Zip Code",
+            "count": 45
+          },
+          {
+            "error": "Missing Street Name",
+            "count": 30
+          },
+          {
+            "error": "Invalid State Abbreviation",
+            "count": 15
+          }
+        ],
+        "sample_records": [
+          {
+            "id": "R1",
+            "address": "123 Main St",
+            "city": "NYC",
+            "state": "NY",
+            "zip": "10001"
+          },
+          {
+            "id": "R2",
+            "address": "",
+            "city": "LA",
+            "state": "CA",
+            "zip": "90001"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Root Cause Analysis - The report must accurately identify the top 3 address format errors based on log counts.",
+        "Criterion 2: Actionable Script - The cleaning script must logically handle the identified error types (e.g., flagging missing fields).",
+        "Criterion 3: Professional Reporting - The incident report must be structured for technical personnel with clear severity assessment."
+      ],
+      "student_answer": "**Technical Incident Report: Statement Generation Jams - Address Format Errors**\n\n**Incident ID:** 20231027-AddressJams\n**Date:** October 27, 2023\n**Reported By:** Billing and Posting Clerk\n**Affected System:** Customer Master File\n**Severity:** High – Impacting Statement Generation\n\n**Root Cause:** Recurring errors in the customer master file’s address format are causing ‘Statement Generation Jams’. These errors primarily stem from inconsistent or invalid data entry for key address fields.\n\n**Specific Data Fields Causing Jams:**\n\n1.  **Zip Code:**  Invalid Zip Codes (e.g., non-numeric values, incorrect length) – 45 occurrences\n2.  **Street Name:** Missing Street Name – 30 occurrences\n3.  **State Abbreviation:** Invalid State Abbreviations (e.g., using full state names instead of abbreviations) – 15 occurrences\n\n**Recommendations:**\n\n*   IT Repair Team: Investigate and correct the data entry process for address fields within the Customer Master File. Implement validation rules to prevent future errors.\n*   Data Quality Team: Review existing customer records for potential data quality issues and implement a data cleansing process.\n\n**Data Cleaning Script (SQL):**\n\n```sql\n-- Clean Top 50 Affected Records\n\nDECLARE @RecordCount INT = 50;\nDECLARE @RecordCounter INT = 0;\n\n-- Loop through the top 50 records with the most address errors (simulated based on error logs)\n-- This script assumes a table named 'CustomerData' with columns: id, address, city, state, zip\n\nWHILE @RecordCounter < @RecordCount\nBEGIN\n    -- Simulate fetching the top 50 records (replace with actual query)\n    -- This is a placeholder for the actual data retrieval\n    -- Replace this with a query that retrieves the top 50 records based on address errors.\n    -- For example: SELECT id, address, city, state, zip FROM CustomerData ORDER BY (CASE WHEN address IS NULL THEN 1 ELSE 0 END) + (CASE WHEN city IS NULL THEN 1 ELSE 0 END) + (CASE WHEN state IS NULL THEN 1 ELSE 0 END) + (CASE WHEN zip IS NULL THEN 1 ELSE 0 END) LIMIT 50;\n\n    -- Example record (replace with actual record from the query)\n    DECLARE @CustomerID VARCHAR(10) = 'R' + CAST(@RecordCounter AS VARCHAR(1));\n    DECLARE @Address VARCHAR(255) = '';\n    DECLARE @City VARCHAR(100) = '';\n    DECLARE @State VARCHAR(2) = '';\n    DECLARE @Zip VARCHAR(10) = '';\n\n    -- Clean the address fields\n    IF @Address IS NULL OR @Address = ''\n        SET @Address = 'Unknown';\n\n    IF @City IS NULL OR @City = ''\n        SET @City = 'Unknown';\n\n    IF @State IS NULL OR @State = ''\n        SET @State = 'US';\n\n    IF @Zip IS NULL OR @Zip = ''\n        SET @Zip = '00000';\n\n    -- Update the customer record (replace with actual update statement)\n    -- This is a placeholder for the actual update statement\n    -- Example: UPDATE CustomerData SET address = @Address, city = @City, state = @State, zip = @Zip WHERE id = @CustomerID;\n\n    SET @RecordCounter = @RecordCounter + 1;\nEND;\n\n-- Note: This script is a placeholder and needs to be adapted to your specific database schema and data retrieval/update logic.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission correctly identifies the top 3 errors and provides a professional incident report structure. However, the data cleaning script is a critical failure: it is a placeholder loop that does not actually clean the specific data fields identified (e.g., it does not fix invalid zip codes or state abbreviations, only fills nulls with generic defaults). It also uses SQL Server syntax (T-SQL) with a 'LIMIT' comment that is invalid in that dialect, and it fails to target the specific top 50 records based on the error logic provided. The script is functionally useless for the stated goal, requiring significant rework (Autonomy 2) and lacking best practices for data integrity (Best Practices 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Review documents, such as purchase orders, sales tickets, charge slips, or hospital records, to compute fees or charges due.",
+      "task_type": "Fee Calculation and Verification",
+      "user_prompt": "You are provided with a batch of 15 mixed billing documents (purchase orders and charge slips) containing service descriptions, quantities, and unit prices. Some documents have missing tax codes or incorrect unit prices compared to the current rate book. Calculate the total fee for each document, applying the correct regional tax rate based on the customer's location, and flag any documents where the calculated total deviates from the billed amount by more than 1%.",
+      "reference_context": {
+        "documents": [
+          {
+            "doc_id": "PO-1001",
+            "customer_loc": "North",
+            "items": [
+              {
+                "desc": "Consulting",
+                "qty": 10,
+                "unit_price": 150.0
+              }
+            ],
+            "billed_total": 1650.0
+          },
+          {
+            "doc_id": "CS-2002",
+            "customer_loc": "South",
+            "items": [
+              {
+                "desc": "Labor",
+                "qty": 5,
+                "unit_price": 100.0
+              }
+            ],
+            "billed_total": 550.0
+          },
+          {
+            "doc_id": "PO-1003",
+            "customer_loc": "East",
+            "items": [
+              {
+                "desc": "Materials",
+                "qty": 20,
+                "unit_price": 25.0
+              }
+            ],
+            "billed_total": 525.0
+          }
+        ],
+        "rate_book": {
+          "Consulting": 150.0,
+          "Labor": 100.0,
+          "Materials": 25.0
+        },
+        "tax_rates": {
+          "North": 0.08,
+          "South": 0.05,
+          "East": 0.07
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are all subtotals and tax calculations mathematically correct to two decimal places?",
+        "Criterion 2: Compliance — Does the solution correctly apply the tax rate corresponding to the customer location?",
+        "Criterion 3: Discrepancy Detection — Are all documents with >1% variance correctly flagged with the specific error reason?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"doc_id\": \"PO-1001\",\n    \"customer_loc\": \"North\",\n    \"items\": [\n      {\n        \"desc\": \"Consulting\",\n        \"qty\": 10,\n        \"unit_price\": 150.0\n      }\n    ],\n    \"billed_total\": 1650.0,\n    \"calculated_total\": 1650.0 * (1 + 0.08),\n    \"calculated_total_rounded\": 1782.0,\n    \"tax_flag\": false\n  },\n  {\n    \"doc_id\": \"CS-2002\",\n    \"customer_loc\": \"South\",\n    \"items\": [\n      {\n        \"desc\": \"Labor\",\n        \"qty\": 5,\n        \"unit_price\": 100.0\n      }\n    ],\n    \"billed_total\": 550.0,\n    \"calculated_total\": 550.0 * (1 + 0.05),\n    \"calculated_total_rounded\": 577.5,\n    \"tax_flag\": false\n  },\n  {\n    \"doc_id\": \"PO-1003\",\n    \"customer_loc\": \"East\",\n    \"items\": [\n      {\n        \"desc\": \"Materials\",\n        \"qty\": 20,\n        \"unit_price\": 25.0\n      }\n    ],\n    \"billed_total\": 525.0,\n    \"calculated_total\": 525.0 * (1 + 0.07),\n    \"calculated_total_rounded\": 554.25,\n    \"tax_flag\": false\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, the JSON output is syntactically invalid because it contains unquoted arithmetic expressions (e.g., '1650.0 * (1 + 0.08)') instead of calculated numeric values. Second, the logic is inverted: the student applied tax to the already 'billed_total' rather than calculating the base subtotal from items and then adding tax. Third, the student failed to flag any discrepancies; for instance, PO-1001 has a billed total of 1650 (which matches the base subtotal 10*150), but the student calculated a new total of 1782 and marked it as 'false' (no flag), missing the fact that the billed amount was likely missing tax or the calculation logic was wrong. The submission does not solve the task."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Track accumulated hours and dollar amounts charged to each client job to calculate client fees for professional services, such as legal or accounting services.",
+      "task_type": "Time and Billing Reconciliation",
+      "user_prompt": "Analyze the provided timesheet logs for three active legal clients. You must aggregate billable hours by attorney and task type, apply the specific hourly rates defined in the client engagement letters, and calculate the total invoice amount. Identify any hours that exceed the client's monthly cap and flag them for review. Ensure the final output adheres to GAAP by clearly separating billable and non-billable time.",
+      "reference_context": {
+        "timesheets": [
+          {
+            "client": "Client A",
+            "attorney": "J. Doe",
+            "hours": 12.5,
+            "task": "Litigation",
+            "date": "2023-10-01"
+          },
+          {
+            "client": "Client A",
+            "attorney": "J. Doe",
+            "hours": 8.0,
+            "task": "Litigation",
+            "date": "2023-10-02"
+          },
+          {
+            "client": "Client B",
+            "attorney": "A. Smith",
+            "hours": 20.0,
+            "task": "Consulting",
+            "date": "2023-10-01"
+          }
+        ],
+        "engagement_terms": {
+          "Client A": {
+            "hourly_rate": 250.0,
+            "monthly_cap_hours": 15.0
+          },
+          "Client B": {
+            "hourly_rate": 200.0,
+            "monthly_cap_hours": 50.0
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Aggregation — Are hours correctly summed per client and attorney?",
+        "Criterion 2: Cap Enforcement — Is the monthly cap correctly identified and applied to the billing calculation?",
+        "Criterion 3: GAAP Compliance — Is the distinction between billable and non-billable time (if applicable) and revenue recognition clear?"
+      ],
+      "student_answer": "```json\n{\n  \"invoice_date\": \"2023-10-05\",\n  \"client_a\": {\n    \"attorney\": \"J. Doe\",\n    \"billable_hours\": 20.5,\n    \"non_billable_hours\": 0.0,\n    \"total_billable_amount\": 5125.00,\n    \"total_invoice_amount\": 5125.00\n  },\n  \"client_b\": {\n    \"attorney\": \"A. Smith\",\n    \"billable_hours\": 20.0,\n    \"non_billable_hours\": 0.0,\n    \"total_billable_amount\": 4000.00,\n    \"total_invoice_amount\": 4000.00\n  },\n  \"notes\": [\n    \"Client A - J. Doe exceeded monthly cap by 5.5 hours. Review required.\"\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. It hallucinates data not present in the context (Client A total hours are 20.5, but the input only lists 12.5 + 8.0 = 20.5, yet the calculation 20.5 * 250 = 5125 is mathematically correct, but the logic regarding the cap is flawed). The prompt asks to aggregate by attorney and task, but the output aggregates by client only. Crucially, the task requires identifying hours exceeding the cap and flagging them, but the submission calculates the total billable amount based on the raw hours (20.5) rather than capping them at 15.0 as required by the engagement terms. A professional invoice would not bill for 20.5 hours when the cap is 15.0. Furthermore, the submission fails to separate billable and non-billable time as explicitly requested (GAAP requirement), listing 0.0 for non-billable without justification or breakdown. The output is a rough draft with significant calculation logic errors regarding the cap and missing required structural elements."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Consult sources, such as rate books, manuals, or insurance company representatives, to determine specific charges or information such as rules, regulations, or government tax and tariff information.",
+      "task_type": "Regulatory and Tariff Compliance Check",
+      "user_prompt": "You are auditing a batch of international shipping invoices. Cross-reference the declared values and weights against the current government tariff schedule and the company's internal rate book. Identify any invoices where the applied tariff rate is incorrect based on the product classification code (HS Code) or where the declared value exceeds the duty-free threshold. Calculate the corrected duty amount and draft a professional email to the logistics manager summarizing the discrepancies.",
+      "reference_context": {
+        "invoices": [
+          {
+            "inv_id": "INT-501",
+            "hs_code": "8517.12",
+            "declared_value": 5000.0,
+            "weight_kg": 10,
+            "applied_rate": 0.05
+          },
+          {
+            "inv_id": "INT-502",
+            "hs_code": "9001.30",
+            "declared_value": 1200.0,
+            "weight_kg": 2,
+            "applied_rate": 0.0
+          }
+        ],
+        "tariff_schedule": {
+          "8517.12": {
+            "rate": 0.06,
+            "threshold": 4000.0
+          },
+          "9001.30": {
+            "rate": 0.02,
+            "threshold": 1000.0
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Rate Accuracy — Is the correct tariff rate applied based on the HS Code?",
+        "Criterion 2: Threshold Logic — Are duty calculations correctly adjusted for the declared value threshold?",
+        "Criterion 3: Communication — Is the draft email professional, confidential, and clearly lists the required corrections?"
+      ],
+      "student_answer": "Subject: International Shipping Invoice Discrepancy Audit - INT-501 and INT-502\n\nDear Logistics Manager,\n\nPlease find below a summary of discrepancies identified during the audit of international shipping invoices INT-501 and INT-502.\n\n**Invoice INT-501:**\n\n*   **HS Code:** 8517.12\n*   **Declared Value:** 5000.0\n*   **Weight (kg):** 10\n*   **Applied Rate:** 0.05\n*   **Discrepancy:** The applied rate of 0.05 is incorrect. According to the tariff schedule, the correct rate for HS code 8517.12 is 0.06.  The declared value is also above the threshold of 4000.0.\n*   **Corrected Duty Amount:** (5000.0 * 0.06) - (5000.0 * 0.05) = 300.0\n\n**Invoice INT-502:**\n\n*   **HS Code:** 9001.30\n*   **Declared Value:** 1200.0\n*   **Weight (kg):** 2\n*   **Applied Rate:** 0.0\n*   **Discrepancy:** The applied rate of 0.0 is incorrect. According to the tariff schedule, the correct rate for HS code 9001.30 is 0.02.\n*   **Corrected Duty Amount:** (1200.0 * 0.02) - (1200.0 * 0.0) = 24.0\n\nPlease let me know if you require any further clarification or have questions regarding these adjustments.\n\nSincerely,\n\nBilling and Posting Clerk",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly identifies the rate discrepancies and calculates the duty differences accurately for both invoices. However, it fails to explicitly address the requirement to check if declared values exceed the duty-free threshold as a distinct condition (though it mentions it for INT-501, it doesn't explicitly state the threshold logic for INT-502 where the value 1200 exceeds the 1000 threshold, implying duty should apply). The email lacks a professional subject line structure often seen in formal audits and the signature 'Billing and Posting Clerk' is slightly inconsistent with the 'Senior Billing Operations Specialist' persona requested in the prompt context, though acceptable. The calculation logic is sound, but the explanation of the threshold rule for INT-502 is implicit rather than explicit, reducing completeness and best practice adherence slightly."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Compare previously prepared bank statements with canceled checks and reconcile discrepancies.",
+      "task_type": "Bank Reconciliation and Discrepancy Resolution",
+      "user_prompt": "Perform a reconciliation of the October bank statement against the internal ledger and canceled check images. Identify three specific discrepancies: a missing deposit, a check recorded at the wrong amount, and a bank service charge not yet in the ledger. Prepare a reconciliation report that adjusts the book balance to match the bank balance, ensuring all adjustments follow GAAP standards for cash management.",
+      "reference_context": {
+        "bank_statement": {
+          "ending_balance": 15420.5,
+          "transactions": [
+            {
+              "type": "Deposit",
+              "amount": 5000.0
+            },
+            {
+              "type": "Check",
+              "amount": 200.0
+            }
+          ]
+        },
+        "internal_ledger": {
+          "book_balance": 15200.0,
+          "transactions": [
+            {
+              "type": "Deposit",
+              "amount": 5000.0
+            },
+            {
+              "type": "Check",
+              "amount": 250.0
+            },
+            {
+              "type": "Service Charge",
+              "amount": 20.0
+            }
+          ]
+        },
+        "canceled_checks": [
+          {
+            "check_num": "101",
+            "amount": 200.0,
+            "payee": "Vendor A"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Discrepancy Identification — Are all three specific errors (missing deposit, wrong amount, unrecorded charge) found?",
+        "Criterion 2: Reconciliation Logic — Does the final adjusted book balance equal the bank statement balance?",
+        "Criterion 3: GAAP Adherence — Are the adjustments recorded in the correct accounting period and categorized properly?"
+      ],
+      "student_answer": "**Bank Reconciliation Report**\n\n**Date:** October 31, 2023\n\n**Prepared For:** [Client Name]\n\n**Reconciling Period:** October 1, 2023 – October 31, 2023\n\n**Bank Name:** [Bank Name]\n\n**Account Name:** Checking Account\n\n**1. Bank Balance:** $15,420.50\n\n**2. Book Balance:** $15,200.00\n\n**3. Reconciliation Details:**\n\n| Discrepancy | Description | Amount | Adjustment Type |\n|---|---|---|---|\n| **Missing Deposit** | A deposit of $3,000.00 was not recorded in the internal ledger. | $3,000.00 | Credit |\n| **Incorrect Check Amount** | Check #101, recorded as $250.00 in the ledger, should be $200.00. | $50.00 | Debit |\n| **Unrecorded Service Charge** | A bank service charge of $20.00 was not recorded in the internal ledger. | $20.00 | Debit |\n\n**4. Adjusted Bank Balance:** $15,420.50 + $3,000.00 - $50.00 - $20.00 = $18,350.50\n\n**5. Adjusted Book Balance:** $15,200.00 + $3,000.00 - $50.00 - $20.00 = $18,130.00\n\n**Note:** The adjusted balances do not match. The bank balance is $15,420.50 and the adjusted book balance is $18,130.00.  A review of the transactions is required to determine the root cause of the discrepancy.  The adjustments above are preliminary and require further investigation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on all technical and logical dimensions. First, it hallucinates a missing deposit of $3,000, which is not supported by the provided context (the bank statement shows a $5,000 deposit and the ledger shows a $5,000 deposit; the discrepancy is actually a missing $5,000 deposit in the ledger relative to the bank, or the student misread the data entirely). Second, the reconciliation logic is inverted: the student adds the missing deposit to the bank balance instead of the book balance, and subtracts the check error from the bank balance. Third, the final calculation results in two non-matching adjusted balances ($18,350.50 vs $18,130.00), proving the solution is mathematically invalid. A competent specialist would have identified the $5,000 deposit missing from the ledger (Bank $15,420.50 vs Ledger $15,200.00 implies a $220.50 gap, but the specific transactions show a $5,000 deposit on bank not in ledger, a $50 check error, and a $20 service charge). The student's failure to detect the obvious data mismatch and the resulting mathematical impossibility renders the output unusable."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Match statements with batches of canceled checks by account numbers.",
+      "task_type": "Statement and Check Matching",
+      "user_prompt": "You have a batch of 20 customer statements and a corresponding batch of 20 canceled checks. Your task is to match each statement to its correct canceled check based on the account number and transaction date. Identify any unmatched items where the account number exists in the statement but not in the check batch, or vice versa. Generate a report listing the matched pairs and a separate list of unmatched items with their account details.",
+      "reference_context": {
+        "statements": [
+          {
+            "account": "ACC-001",
+            "date": "2023-11-01",
+            "amount": 100.0
+          },
+          {
+            "account": "ACC-002",
+            "date": "2023-11-02",
+            "amount": 200.0
+          },
+          {
+            "account": "ACC-003",
+            "date": "2023-11-03",
+            "amount": 150.0
+          }
+        ],
+        "canceled_checks": [
+          {
+            "account": "ACC-001",
+            "date": "2023-11-01",
+            "amount": 100.0
+          },
+          {
+            "account": "ACC-003",
+            "date": "2023-11-03",
+            "amount": 150.0
+          },
+          {
+            "account": "ACC-004",
+            "date": "2023-11-04",
+            "amount": 300.0
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Matching Accuracy — Are all valid pairs correctly matched by account and date?",
+        "Criterion 2: Exception Handling — Are unmatched items (ACC-002 in statements, ACC-004 in checks) correctly identified and listed?",
+        "Criterion 3: Data Integrity — Is the output format clear and does it preserve the confidentiality of account numbers?"
+      ],
+      "student_answer": "```json\n{\n  \"matched_pairs\": [\n    {\n      \"statement_account\": \"ACC-001\",\n      \"statement_date\": \"2023-11-01\",\n      \"canceled_check_account\": \"ACC-001\",\n      \"canceled_check_date\": \"2023-11-01\",\n      \"amount\": 100.0\n    },\n    {\n      \"statement_account\": \"ACC-002\",\n      \"statement_date\": \"2023-11-02\",\n      \"canceled_check_account\": null,\n      \"canceled_check_date\": null,\n      \"amount\": null\n    },\n    {\n      \"statement_account\": \"ACC-003\",\n      \"statement_date\": \"2023-11-03\",\n      \"canceled_check_account\": \"ACC-003\",\n      \"canceled_check_date\": \"2023-11-03\",\n      \"amount\": 150.0\n    }\n  ],\n  \"unmatched_items\": [\n    {\n      \"statement_account\": \"ACC-002\",\n      \"statement_date\": \"2023-11-02\",\n      \"account_not_found_in_checks\": true\n    },\n    {\n      \"canceled_check_account\": \"ACC-004\",\n      \"canceled_check_date\": \"2023-11-04\",\n      \"account_not_found_in_statements\": true\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission correctly identifies the matching logic and the unmatched items (ACC-002 and ACC-004). However, it fails the 'Best Practices' and 'Completeness' criteria by mixing unmatched items into the 'matched_pairs' list rather than separating them as requested. The prompt explicitly asked for a 'separate list of unmatched items,' but the student included ACC-002 in the matched list with null values, creating a hybrid structure that is not standard for professional reconciliation reports. Additionally, the output lacks a clear header or summary, reducing its autonomy for immediate client delivery."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Weigh envelopes containing statements to determine correct postage and affix postage, using stamps or metering equipment.",
+      "task_type": "Postage Optimization and Cost Analysis",
+      "user_prompt": "Analyze a mailing list of 500 billing statements. For each envelope, calculate the required postage based on the weight (provided in the dataset) and the destination zone (domestic vs. international). Compare the current postage cost against the optimized cost using the latest postal rate tables (e.g., using First Class vs. Priority Mail where appropriate for speed/cost balance). Identify envelopes where the postage was overpaid or underpaid and calculate the total financial impact of the correction.",
+      "reference_context": {
+        "mailing_list_sample": [
+          {
+            "id": "M-001",
+            "weight_oz": 3.5,
+            "zone": "Domestic",
+            "current_postage": 1.2
+          },
+          {
+            "id": "M-002",
+            "weight_oz": 12.0,
+            "zone": "International",
+            "current_postage": 5.5
+          }
+        ],
+        "postal_rates": {
+          "Domestic": {
+            "up_to_1oz": 0.68,
+            "up_to_3oz": 0.92,
+            "up_to_5oz": 1.16,
+            "per_oz_over": 0.24
+          },
+          "International": {
+            "flat_rate": 1.5,
+            "per_oz": 0.8
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Precision — Are postage costs calculated correctly according to the provided rate tables and weight tiers?",
+        "Criterion 2: Optimization — Does the solution identify potential savings or overpayments accurately?",
+        "Criterion 3: Financial Impact — Is the total cost difference calculated correctly and rounded to two decimal places?"
+      ],
+      "student_answer": "```json\n{\n  \"analysis_results\": [\n    {\n      \"envelope_id\": \"M-001\",\n      \"weight_oz\": 3.5,\n      \"zone\": \"Domestic\",\n      \"current_postage\": 1.2,\n      \"optimized_postage\": 0.92,\n      \"overpaid_underpaid\": \"Underpaid\",\n      \"amount_difference\": -0.28,\n      \"total_impact\": 0.28\n    },\n    {\n      \"envelope_id\": \"M-002\",\n      \"weight_oz\": 12.0,\n      \"zone\": \"International\",\n      \"current_postage\": 5.5,\n      \"optimized_postage\": 1.5,\n      \"overpaid_underpaid\": \"Overpaid\",\n      \"amount_difference\": -4.0,\n      \"total_impact\": 4.0\n    }\n  ],\n  \"summary\": {\n    \"total_envelopes_analyzed\": 2,\n    \"total_overpaid_amount\": 4.0,\n    \"total_underpaid_amount\": -0.28,\n    \"overall_net_impact\": 3.72\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission fails to address the core task of analyzing a list of 500 statements, instead only processing the two sample entries provided. The calculation logic for the International zone is flawed; it applies a flat rate of 1.5 regardless of the 12oz weight, ignoring the 'per_oz' component of the provided rate table. The 'total_impact' field is ambiguous and inconsistently applied (showing positive values for both overpaid and underpaid scenarios without clear distinction). The solution lacks the necessary documentation, error handling, or scalability to be considered a professional deliverable, requiring significant rework to meet the task requirements."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compute credit terms, discounts, shipment charges, or rates for goods or services to complete billing documents.",
+      "task_type": "Complex Billing Calculation",
+      "user_prompt": "You are a Billing Specialist processing an invoice for a corporate client. The client purchased 500 units of Product A ($12.50/unit) and 200 units of Product B ($45.00/unit). The contract specifies a 5% volume discount if the total pre-discount amount exceeds $5,000. Shipping is calculated at $0.15 per unit for the first 1000 units, plus a $50 handling fee. Sales tax is 7.5% on the final amount after discounts but before shipping. Calculate the final invoice total, showing the breakdown of subtotal, discount, taxable amount, tax, shipping, and grand total. Ensure all intermediate steps adhere to GAAP rounding rules (round to 2 decimal places at each monetary step).",
+      "reference_context": {
+        "product_prices": {
+          "Product A": 12.5,
+          "Product B": 45.0
+        },
+        "quantities": {
+          "Product A": 500,
+          "Product B": 200
+        },
+        "discount_threshold": 5000.0,
+        "discount_rate": 0.05,
+        "shipping_rate_per_unit": 0.15,
+        "shipping_handling_fee": 50.0,
+        "sales_tax_rate": 0.075
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy - Are all subtotals, discounts, and taxes calculated correctly with proper rounding?",
+        "Criterion 2: Logic - Was the volume discount condition correctly evaluated and applied?",
+        "Criterion 3: Compliance - Does the final total match the sum of all components (Subtotal - Discount + Tax + Shipping)?"
+      ],
+      "student_answer": "```\nInvoice\n\nClient: [Client Name - Placeholder]\nInvoice Number: [Invoice Number - Placeholder]\nDate: [Date - Placeholder]\n\nItem Description | Quantity | Unit Price | Amount\n------------------|----------|------------|--------\nProduct A         | 500      | $12.50     | $6,250.00\nProduct B         | 200      | $45.00     | $9,000.00\nSubtotal           |          |            | $15,250.00\nDiscount           |          |            | -$781.25 (5% of $15,250.00)\nTaxable Amount     |          |            | $14,468.75\nSales Tax          |          |            | $1,085.15 (7.5% of $14,468.75)\nShipping           |          |            | $75.00 (1000 units * $0.15) + $50.00 (Handling Fee)\n--------------------------------------------------\nGrand Total        |          |            | $16,600.90\n\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission fails on critical calculation and logic dimensions. First, the tax calculation is incorrect: the prompt explicitly states tax is applied 'before shipping,' but the student's math implies tax is calculated on the post-discount amount ($14,468.75) which is correct, however, the final total ($16,600.90) is mathematically inconsistent with the provided line items ($14,468.75 + $1,085.15 + $125.00 = $15,678.90). The student calculated shipping as $125 but listed it as $75 + $50 in the text, yet the grand total does not sum correctly. Second, the student failed to apply GAAP rounding rules at intermediate steps as requested (though the numbers here are exact, the process wasn't shown). Third, the student hallucinated a specific shipping calculation logic in the text ('1000 units * $0.15') which matches the total units, but the prompt implies a rate structure that needs careful reading; however, the fatal flaw is the arithmetic error in the Grand Total which makes the invoice unusable. The formatting is good, but the financial data is wrong."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Update manuals when rates, rules, or regulations are amended.",
+      "task_type": "Regulatory Compliance Update",
+      "user_prompt": "A new state regulation has amended the billing rules for 'Service Category X'. Previously, the flat rate was $150. The new rule states: 'Apply a tiered rate: $100 for the first 10 hours, $120 for hours 11-20, and $140 for hours 21+. Additionally, a 2% surcharge applies to invoices over $2,000.' Draft a formal policy update memo for the billing department. The memo must include the effective date (next billing cycle), the specific calculation logic for the new tiers, and a sample calculation for a 25-hour service engagement. Ensure the tone is professional and the instructions are unambiguous for clerks processing future invoices.",
+      "reference_context": {
+        "old_rule": "Flat rate of $150 per hour for Service Category X.",
+        "new_rule_text": "Tiered rates: $100 (0-10h), $120 (11-20h), $140 (21h+). 2% surcharge if total > $2,000.",
+        "effective_date": "2023-11-01",
+        "sample_hours": 25
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Clarity - Is the new tiered logic explained clearly without ambiguity?",
+        "Criterion 2: Accuracy - Is the sample calculation for 25 hours mathematically correct based on the new rule?",
+        "Criterion 3: Professionalism - Does the memo maintain a formal tone and clearly state the effective date?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Billing Department Staff\n**FROM:** Billing and Posting Clerks\n**DATE:** October 26, 2023\n**SUBJECT:** Policy Update – Service Category X Billing Rules\n\nThis memo outlines a critical update to the billing procedures for Service Category X, effective November 1, 2023.\n\n**Effective Date:** November 1, 2023\n\n**New Billing Rules for Service Category X:**\n\nThe following tiered rate structure will be implemented for all Service Category X engagements:\n\n*   **Tier 1:** First 10 hours: $100 per hour\n*   **Tier 2:** Hours 11-20: $120 per hour\n*   **Tier 3:** Hours 21+: $140 per hour\n\n**Surcharge:** A 2% surcharge will be applied to the total invoice amount if the total billing amount exceeds $2,000.\n\n**Sample Calculation (25-hour Engagement):**\n\n1.  **Tier 1 Calculation:** 10 hours x $100/hour = $1,000\n2.  **Tier 2 Calculation:** (25 hours - 10 hours) = 15 hours x $120/hour = $1,800\n3.  **Tier 3 Calculation:** (25 hours - 20 hours) = 5 hours x $140/hour = $700\n4.  **Total Billing Before Surcharge:** $1,000 + $1,800 + $700 = $3,500\n5.  **Surcharge Calculation:** $3,500 x 0.02 = $70\n6.  **Total Invoice Amount:** $3,500 + $70 = $3,570\n\n**Please ensure all invoices for Service Category X reflect these new billing rules and calculations, starting November 1, 2023.**\n\nIf you have any questions, please contact the Billing Supervisor.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission is an exceptional response that fully meets all task requirements. It correctly identifies the effective date, clearly outlines the tiered rate structure, and provides a flawless sample calculation for 25 hours (correctly calculating $1,000 + $1,200 + $700 = $2,900 base, plus $58 surcharge = $2,958 total). Wait, re-evaluating the sample calculation in the student submission: The student calculated Tier 2 as 15 hours * $120 = $1,800. This is incorrect. Hours 11-20 is 10 hours, not 15. The student treated the remaining 15 hours as Tier 2, but the first 10 hours of the remaining 15 fall into Tier 2, and the last 5 fall into Tier 3. The student's logic: 'Tier 2: (25-10)=15 hours'. This is wrong. The range 11-20 is 10 hours. The range 21+ is 5 hours. The student assigned all 15 remaining hours to Tier 2. This is a critical domain accuracy error. Correct calculation: 10*100 + 10*120 + 5*140 = 1000 + 1200 + 700 = 2900. Student calculation: 1000 + 1800 + 700 = 3500. The student's math is internally consistent but logically flawed regarding the tier definitions. This is a significant error in Domain Accuracy and Correctness. I must adjust scores. The student failed to correctly apply the tier boundaries. They treated the 'remaining' hours as a single block for Tier 2 instead of splitting them between Tier 2 and Tier 3. This makes the sample calculation wrong. Score for Correctness and Domain Accuracy should be 3 or 2. Let's look closer. The prompt says 'Hours 11-20'. That is 10 hours. The student calculated 15 hours at $120. This is a fundamental misunderstanding of the tier logic. This is a major error. Score 2 for Domain Accuracy and Correctness. Completeness is 5. Clarity is 5. Best Practices is 4 (format is good). Autonomy is 2 (cannot be used as-is due to wrong math). Revised plan: Dim 1: 2, Dim 2: 5, Dim 3: 4, Dim 4: 2, Dim 5: 5, Dim 6: 2."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Compute credit terms, discounts, shipment charges, or rates for goods or services to complete billing documents.",
+      "task_type": "Credit Terms and Discount Analysis",
+      "user_prompt": "Analyze the following three invoices to determine the optimal payment strategy for a client to maximize savings. Invoice A: $10,000, terms 2/10, n/30. Invoice B: $5,000, terms 1/15, n/45. Invoice C: $12,000, terms 3/10, n/60. The client has $25,000 available cash today. Calculate the total savings if the client pays all eligible invoices within the discount period versus paying the full amount later. Also, determine if the client can afford to pay all three invoices in full today and what the remaining cash balance would be. Provide a recommendation on which invoices to prioritize if cash flow is tight, assuming the goal is to minimize total liability while maintaining vendor relationships.",
+      "reference_context": {
+        "invoices": [
+          {
+            "id": "A",
+            "amount": 10000,
+            "discount_pct": 2,
+            "discount_days": 10,
+            "net_days": 30
+          },
+          {
+            "id": "B",
+            "amount": 5000,
+            "discount_pct": 1,
+            "discount_days": 15,
+            "net_days": 45
+          },
+          {
+            "id": "C",
+            "amount": 12000,
+            "discount_pct": 3,
+            "discount_days": 10,
+            "net_days": 60
+          }
+        ],
+        "available_cash": 25000
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation - Are the discount amounts and net payables calculated correctly?",
+        "Criterion 2: Affordability - Is the cash flow analysis (can they pay all?) accurate?",
+        "Criterion 3: Strategy - Is the prioritization recommendation logical based on the highest percentage return on investment (discount)?"
+      ],
+      "student_answer": "```json\n{\n  \"total_invoice_amount\": 27000,\n  \"savings_with_discounts\": 750,\n  \"total_savings_calculation\": {\n    \"invoice_a_savings\": 200,\n    \"invoice_b_savings\": 50,\n    \"invoice_c_savings\": 300,\n    \"total_savings\": 550\n  },\n  \"can_pay_all_invoices_today\": true,\n  \"remaining_cash_balance\": 18000,\n  \"invoice_prioritization_recommendation\": {\n    \"priority_1\": \"Invoice C ($12,000) - 3/10 discount offers the highest savings.\",\n    \"priority_2\": \"Invoice A ($10,000) - 2/10 discount provides a significant benefit.\",\n    \"priority_3\": \"Invoice B ($5,000) - 1/15 discount is the shortest period for leveraging the discount.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical mathematical errors and logical contradictions. First, the total savings calculation is incorrect: the submission lists individual savings (200+50+300=550) but claims a total of 750 in the summary field. Second, the cash balance calculation is wrong; paying the discounted amounts ($9,800 + $4,950 + $11,640 = $26,390) exceeds the $25,000 available cash, making the 'can_pay_all_invoices_today' answer false, not true. Third, the prioritization logic for Invoice B is flawed, citing 'shortest period' as a benefit when the discount period is actually the longest (15 days vs 10 days). These fundamental errors in arithmetic and financial logic result in a weak score across all dimensions."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Encode and cancel checks, using bank machines.",
+      "task_type": "Check Reconciliation and Error Handling",
+      "user_prompt": "You are reviewing a batch of 10 cancelled checks from the bank statement. The company's ledger shows a total disbursement of $45,200. The bank statement shows a total of $44,850. Upon inspection, you find: Check #101 ($500) was recorded in the ledger as $50. Check #102 ($1,200) was recorded as $1,200 but the bank shows it as $1,200. Check #103 ($300) was recorded in the ledger but the bank shows it as 'NSF' (Non-Sufficient Funds) and returned. Check #104 ($800) was recorded in the ledger but the bank shows it as $80. Identify all discrepancies, calculate the correct ledger balance adjustment required, and draft a brief internal memo explaining the errors and the necessary journal entries to correct the books according to GAAP.",
+      "reference_context": {
+        "ledger_total": 45200,
+        "bank_total": 44850,
+        "check_details": [
+          {
+            "id": 101,
+            "ledger_amt": 50,
+            "bank_amt": 500
+          },
+          {
+            "id": 102,
+            "ledger_amt": 1200,
+            "bank_amt": 1200,
+            "status": "Cleared"
+          },
+          {
+            "id": 103,
+            "ledger_amt": 300,
+            "bank_amt": 0,
+            "status": "NSF"
+          },
+          {
+            "id": 104,
+            "ledger_amt": 800,
+            "bank_amt": 80
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Identification - Are all errors (transposition, NSF, recording error) correctly identified?",
+        "Criterion 2: Adjustment - Is the total adjustment amount calculated correctly to reconcile the ledger?",
+        "Criterion 3: Documentation - Does the memo clearly propose the correct journal entries (debit/credit)?"
+      ],
+      "student_answer": "**Discrepancies:**\n\n*   **Check #101:** Ledger recorded $50, bank recorded $500. Difference: $450\n*   **Check #103:** Ledger recorded $300, bank recorded NSF (returned). Difference: $300\n*   **Check #104:** Ledger recorded $800, bank recorded $80. Difference: $720\n\n**Total Discrepancy:** $450 + $300 + $720 = $1470\n\n**Ledger Balance Adjustment Required:** $1470 (to reconcile with the bank statement)\n\n**Internal Memo**\n\n**To:** Accounting Department\n**From:** Billing and Posting Clerk\n**Date:** October 26, 2023\n**Subject:** Reconciliation of Bank Statement Discrepancies\n\nThis memo outlines discrepancies identified between the company ledger and the bank statement. A review of 10 cancelled checks revealed the following errors:\n\n*   Check #101 was incorrectly recorded in the ledger at $50 instead of $500.\n*   Check #103 was recorded as a valid payment ($300) but was returned as NSF.\n*   Check #104 was recorded at $800, but the bank statement shows $80.\n\nThese discrepancies resulted in a difference of $1470 between the ledger total ($45,200) and the bank statement total ($44,850).\n\n**Recommended Journal Entries:**\n\n| Account             | Debit   | Credit  |\n| ------------------- | ------- | ------- |\n| Bank                  | $1470   |         |\n| Accounts Payable     |         | $1470   |\n| *To correct bank statement discrepancies* |         |         |\n\nPlease implement these journal entries to ensure accurate accounting records.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails on Correctness and Domain Accuracy due to a fundamental calculation error. The student calculated the total discrepancy as $1,470, but the actual difference between the ledger ($45,200) and bank ($44,850) totals is only $350. The student summed the absolute differences of individual errors ($450 + $300 + $720) without accounting for the fact that Check #104's error ($720) and Check #101's error ($450) are in opposite directions relative to the total (one understated, one overstated), or simply failed to reconcile the net effect. Furthermore, the proposed Journal Entry is incorrect: debiting Bank and crediting Accounts Payable for $1,470 would widen the gap rather than fix it. The correct entries should involve debiting Accounts Receivable for the NSF check and correcting the cash balance for the recording errors. The memo is clear (Clarity 4) but the financial logic is flawed, requiring significant rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Take orders for imprinted checks.",
+      "task_type": "Customer Communication and Order Verification",
+      "user_prompt": "A customer, 'Acme Corp', has called to order 500 imprinted checks. They provided a check number range (1000-1499) and a specific font style. However, the system shows their account has an outstanding balance of $1,200 which is past due. Draft a professional email to the customer acknowledging their order request but explaining that company policy requires the account to be current before processing custom orders. Politely request payment of the outstanding balance or a payment plan arrangement. Include a summary of the order details they provided to confirm accuracy, and state the next steps once payment is received. Ensure the tone is firm on policy but helpful and confidential.",
+      "reference_context": {
+        "customer_name": "Acme Corp",
+        "order_details": {
+          "quantity": 500,
+          "check_range": "1000-1499",
+          "font_style": "Standard Serif"
+        },
+        "outstanding_balance": 1200.0,
+        "account_status": "Past Due"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Tone - Is the email professional, polite, and firm regarding the policy?",
+        "Criterion 2: Accuracy - Are the order details (quantity, range, font) correctly summarized?",
+        "Criterion 3: Compliance - Does the email clearly state the requirement to clear the balance before fulfillment?"
+      ],
+      "student_answer": "Subject: Regarding Your Check Order Request – Acme Corp\n\nDear Acme Corp,\n\nThank you for contacting us regarding your request for 500 imprinted checks with a check number range of 1000-1499 and utilizing the Standard Serif font style.\n\nWe acknowledge receipt of your order details. However, we must inform you that due to an outstanding balance of $1,200 on your account, which is currently past due, company policy requires all accounts to be current before processing custom orders.\n\nTo proceed with fulfilling your request, we kindly request that you remit payment for the outstanding balance of $1,200 as soon as possible. Alternatively, we are open to discussing a payment plan arrangement to facilitate the fulfillment of your order. Please contact us directly to explore this option.\n\nUpon receipt of the full payment, we will immediately process your order and provide you with an estimated production timeline.\n\nWe appreciate your prompt attention to this matter and value your business.  Please note that all communications regarding this order will be handled with the utmost confidentiality.\n\nSincerely,\n\nBilling and Posting Department",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission is an exceptional response that fully addresses all task requirements. It correctly incorporates all specific order details (500 checks, range 1000-1499, Standard Serif font) and the financial context ($1,200 past due). The tone strikes the perfect balance between firm policy enforcement and helpful customer service. It explicitly includes the request for payment or a payment plan, confirms the order details, outlines next steps, and mentions confidentiality. There are no hallucinations, missing elements, or professional judgment errors. The email is ready for immediate delivery without any edits."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Estimate market value of products or services.",
+      "task_type": "Market Value Estimation and Billing Adjustment",
+      "user_prompt": "A long-term client, 'TechSolutions Inc', is disputing a billing amount for a custom software module. The original contract was based on an estimated market value of $50,000. However, recent market analysis indicates the standard rate for similar modules has dropped by 15% due to new open-source alternatives. The client has already paid 50% of the original invoice ($25,000). Calculate the new estimated market value of the module. Determine the total refund or credit adjustment required if the billing is adjusted to the new market value. Draft a formal billing adjustment notice to the client explaining the market shift, the calculation of the new value, and the credit amount to be applied to their account. Ensure the explanation is transparent and adheres to fair billing practices.",
+      "reference_context": {
+        "original_contract_value": 50000,
+        "market_drop_percentage": 0.15,
+        "amount_paid": 25000,
+        "client_name": "TechSolutions Inc"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation - Is the new market value and the resulting credit amount calculated correctly?",
+        "Criterion 2: Logic - Is the credit amount derived from the difference between the original billed amount and the new market value?",
+        "Criterion 3: Communication - Is the billing adjustment notice clear, professional, and does it explain the market rationale?"
+      ],
+      "student_answer": "**New Estimated Market Value:**\n\n$50,000 * (1 - 0.15) = $42,500\n\n**Total Refund/Credit Adjustment:**\n\n$25,000 (original amount paid) - $42,500 (new estimated value) = -$17,500\n\n**Billing Adjustment Notice**\n\n**Date:** October 26, 2023\n\n**To:** TechSolutions Inc.\n\n**From:** [Your Company Name] Billing Department\n\n**Subject: Billing Adjustment for Custom Software Module – Project [Module Name/Identifier]**\n\nDear TechSolutions Inc.,\n\nThis letter is to inform you of a necessary adjustment to the estimated market value of the custom software module developed for your company. We appreciate your continued partnership and value your business.\n\nFollowing recent market analysis, we’ve observed a significant shift in the standard rates for similar custom software modules. Specifically, the market rate has decreased by 15% due to the emergence of new open-source alternatives.  Our original contract for this module was based on an estimated market value of $50,000.\n\nConsidering this market change, we have revised our assessment of the module’s value to $42,500.  We believe this revised value accurately reflects the current market conditions and provides a fair representation of the module’s worth.\n\nYou have already made a payment of $25,000 representing 50% of the original invoice.  As a result of this adjustment, a credit of $17,500 will be applied to your account.  This credit will be reflected in your next billing statement.\n\nWe are committed to transparent and fair billing practices. We understand that changes in market conditions can impact pricing, and we have diligently assessed the situation to ensure a reasonable and equitable adjustment.\n\nPlease do not hesitate to contact us at [Your Phone Number] or [Your Email Address] if you have any questions or require further clarification.\n\nSincerely,\n\n[Your Name]\n\nBilling and Posting Clerk\n\n[Your Company Name] \n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains a critical logical and mathematical error in the refund calculation. The student calculated the difference between the amount paid ($25,000) and the new value ($42,500) as -$17,500, implying the client owes more money. However, since the new value ($42,500) is less than the original contract value ($50,000) and the client has already paid $25,000, the client is entitled to a refund of the overpayment relative to the new value ($42,500 - $25,000 = $17,500). The student's text claims a 'credit' will be applied, which contradicts the negative sign in the calculation and the logic that the new value is lower than the original. This fundamental error in financial logic (Dimension 1) and domain accuracy (Dimension 4) severely impacts the solution. While the letter format is professional (Dimension 5), the core financial advice is dangerously incorrect, preventing the output from being used without review (Dimension 2). The explanation of the calculation is also incomplete as it fails to explicitly state the refund amount in the text despite the calculation attempt."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Review compiled data on operating costs and revenues to set rates.",
+      "task_type": "Rate Analysis and Adjustment",
+      "user_prompt": "Analyze the provided quarterly operating cost report and revenue data to determine if current billing rates cover the increased labor and storage costs. Calculate the new recommended rate per unit for the 'West' region, ensuring a 15% profit margin is maintained. Output a memo detailing the calculation, the new rate, and the justification based on the cost factors provided.",
+      "reference_context": {
+        "operating_costs": {
+          "labor": 12000,
+          "production": 45000,
+          "storage": 8500,
+          "equipment": 3200
+        },
+        "total_units_sold": 5000,
+        "current_rate_per_unit": 14.5,
+        "target_profit_margin": 0.15,
+        "region": "West"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are all cost components summed correctly?",
+        "Criterion 2: Logic — Is the new rate calculated to achieve exactly the 15% margin on the new total cost?",
+        "Criterion 3: Compliance — Does the memo clearly justify the rate change using GAAP cost allocation principles?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Management\n**FROM:** Billing and Posting Clerk\n**DATE:** October 26, 2023\n**SUBJECT:** Recommendation for New Billing Rate – West Region\n\n**Analysis:**\n\nTotal operating costs for the West region are calculated as follows:\n\nLabor: $12,000\nProduction: $45,000\nStorage: $8,500\nEquipment: $3,200\n**Total Costs: $68,700**\n\nTo determine the current revenue, we multiply the current rate per unit by the total units sold:\n\nCurrent Revenue = $14.50/unit * 5000 units = $72,500\n\nCurrent Profit = Current Revenue - Total Costs = $72,500 - $68,700 = $3,800\n\nTo achieve a 15% profit margin on total costs, the required revenue is:\n\nRequired Revenue = Total Costs * (1 + Target Profit Margin) = $68,700 * (1 + 0.15) = $68,700 * 1.15 = $78,645\n\nNew Rate Calculation:\n\nNew Rate = Required Revenue / Total Units Sold = $78,645 / 5000 units = $15.73/unit\n\n**Recommendation:**\n\nThe recommended new billing rate for the West region is **$15.73 per unit**. This rate is calculated to ensure a 15% profit margin on the total operating costs, considering the increased labor, production, storage, and equipment expenses, and the total units sold.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly performs the arithmetic and identifies the necessary cost components, but it fails to address the specific prompt requirement to justify the rate based on 'increased labor and storage costs' as the primary driver; it treats all costs as a static block. The calculation of the profit margin is technically correct for a markup on cost, though industry standard often implies margin on revenue, creating a potential domain ambiguity. The tone is professional, but the 'From' field ('Billing and Posting Clerk') contradicts the persona of a 'Senior Billing Operations Specialist and Compliance Auditor,' reducing the perceived authority and autonomy of the document. The output is usable but requires minor professional adjustments to align with the specific persona and the nuanced justification requested."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Answer inquiries regarding rates, routing, or procedures.",
+      "task_type": "Customer Inquiry Resolution",
+      "user_prompt": "Draft a professional email response to a customer (ID: CUST-882) who is disputing a charge of $450.00 for a shipment routed via 'Express Air'. The customer claims the rate should be 'Standard Ground'. Review the provided rate card and routing policy to verify the charge. If the charge is correct, explain the rate difference and provide the policy reference. If incorrect, draft a credit memo request.",
+      "reference_context": {
+        "customer_id": "CUST-882",
+        "disputed_charge": 450.0,
+        "shipment_method": "Express Air",
+        "rate_card": {
+          "Standard Ground": 3.5,
+          "Express Air": 5.2,
+          "Overnight": 8.0
+        },
+        "shipment_weight_lbs": 100,
+        "routing_policy": "Express Air is mandatory for shipments over 50lbs to the Northeast region."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Verification — Is the calculation (100 lbs * $5.20) correct?",
+        "Criterion 2: Tone — Is the email professional, empathetic, and clear?",
+        "Criterion 3: Policy Adherence — Does the response correctly cite the routing policy regarding weight and region?"
+      ],
+      "student_answer": "Subject: Regarding Shipment CUST-882 - Disputed Charge\n\nDear Customer,\n\nThank you for contacting us regarding the $450.00 charge for shipment CUST-882.\n\nOur records indicate that the shipment was routed via Express Air due to the weight of 100 lbs and the destination being the Northeast region. As per our routing policy (Reference: Routing Policy Section 3.2), Express Air is mandatory for shipments over 50 lbs to the Northeast. The rate for Express Air is $5.20 per pound, resulting in a total charge of $520.00. The Standard Ground rate is $3.50 per pound. The difference in rate is $1.70 per pound.\n\nWe understand your concern and have reviewed your request. The charge is accurate based on the shipment details and our established routing and rate policies.\n\nSincerely,\n\nBilling and Posting Clerk",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        2,
+        1,
+        3,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission fails the core task requirements due to a critical calculation error. The student calculated the charge as $520.00 (100 lbs * $5.20) but the prompt explicitly states the disputed charge is $450.00. The student then incorrectly claims the charge is accurate based on their own calculation, failing to notice the discrepancy between the prompt's stated charge ($450) and the calculated charge ($520). Furthermore, the student hallucinated a specific policy reference ('Section 3.2') not present in the context. The email also fails to address the customer's specific claim about the rate difference or offer a resolution path for the discrepancy, making it factually incorrect and unprofessional."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Compile reports of cost factors, such as labor, production, storage, and equipment.",
+      "task_type": "Cost Factor Reporting",
+      "user_prompt": "Generate a detailed cost factor report for the Q3 fiscal period. Aggregate the provided raw transaction logs to calculate total costs for Labor, Production, Storage, and Equipment. Categorize these costs by department (Manufacturing, Logistics, Admin). Ensure the report includes a variance analysis comparing actual costs to the budgeted amounts provided in the context.",
+      "reference_context": {
+        "budgeted_costs": {
+          "Manufacturing": 150000,
+          "Logistics": 80000,
+          "Admin": 40000
+        },
+        "raw_transactions": [
+          {
+            "dept": "Manufacturing",
+            "type": "Labor",
+            "amount": 45000
+          },
+          {
+            "dept": "Manufacturing",
+            "type": "Production",
+            "amount": 95000
+          },
+          {
+            "dept": "Logistics",
+            "type": "Storage",
+            "amount": 32000
+          },
+          {
+            "dept": "Logistics",
+            "type": "Equipment",
+            "amount": 28000
+          },
+          {
+            "dept": "Admin",
+            "type": "Labor",
+            "amount": 22000
+          },
+          {
+            "dept": "Admin",
+            "type": "Equipment",
+            "amount": 15000
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Aggregation — Are all transaction amounts summed correctly per category?",
+        "Criterion 2: Variance Analysis — Is the variance (Actual - Budget) calculated and labeled correctly?",
+        "Criterion 3: Formatting — Is the report structured clearly with distinct sections for each department?"
+      ],
+      "student_answer": "**Q3 Fiscal Period Cost Factor Report**\n\n**Date:** October 26, 2023\n\n**Prepared by:** Billing and Posting Clerk\n\n**1. Total Costs by Department:**\n\n| Department        | Labor      | Production | Storage   | Equipment | Total Cost |\n|--------------------|------------|------------|-----------|-----------|------------|\n| Manufacturing      | $45,000    | $95,000    | $0        | $0        | $140,000   |\n| Logistics          | $0         | $0         | $32,000   | $28,000   | $60,000    |\n| Admin              | $22,000    | $0         | $0        | $15,000   | $37,000    |\n| **Total Company** | **$67,000** | **$95,000** | **$32,000** | **$43,000** | **$237,000** |\n\n**2. Variance Analysis:**\n\n| Department        | Budgeted Cost | Actual Cost | Variance   | Variance % |\n|--------------------|---------------|-------------|------------|------------|\n| Manufacturing      | $150,000       | $140,000    | -$10,000   | -6.67%     |\n| Logistics          | $80,000        | $60,000     | -$20,000   | -25.00%    |\n| Admin              | $40,000        | $37,000     | -$3,000    | -7.50%     |\n| **Total Company** | $270,000       | $237,000    | -$33,000   | -12.07%    |\n\n**3. Summary:**\n\nThe company incurred total costs of $237,000 during the Q3 fiscal period.  Manufacturing accounted for $140,000, Logistics $60,000, and Admin $37,000.  Actual costs varied from the budgeted amounts, with Manufacturing experiencing the largest variance at -6.67%. Logistics and Admin variances were -25.00% and -7.50% respectively.  The overall variance for the company was -12.07%.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly aggregates all raw transactions and calculates variances against the budget with perfect accuracy (Dimensions 1, 4). It addresses all task requirements including departmental categorization and cost factor breakdown (Dimension 2). The presentation is professional and clear (Dimension 5). However, the summary section contains a minor logical error by stating Manufacturing had the 'largest variance' when Logistics had a significantly larger percentage variance (-25% vs -6.67%), which slightly impacts the quality of the analysis (Dimension 3). Additionally, the report lacks a formal disclaimer or methodology note regarding data validation, which is a minor gap for a truly industry-standard deliverable (Dimension 6)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Create billing documents, shipping labels, credit memorandums, or credit forms.",
+      "task_type": "Document Generation and Correction",
+      "user_prompt": "A customer returned 3 defective units (SKU: DEF-500) from Invoice #INV-2023-999. Create a Credit Memorandum for the return. The original unit price was $120.00. Calculate the credit amount including the reversal of the 7% sales tax. Ensure the document format includes a unique credit ID, date, customer details, and a clear breakdown of the credit calculation.",
+      "reference_context": {
+        "invoice_id": "INV-2023-999",
+        "customer_name": "Acme Corp",
+        "sku": "DEF-500",
+        "quantity_returned": 3,
+        "original_unit_price": 120.0,
+        "sales_tax_rate": 0.07,
+        "return_date": "2023-10-25"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation — Is the credit amount (3 * 120 * 1.07) calculated correctly?",
+        "Criterion 2: Completeness — Does the credit memo include all required fields (ID, Date, Customer, Breakdown)?",
+        "Criterion 3: Tax Compliance — Is the tax reversal handled according to GAAP standards for returns?"
+      ],
+      "student_answer": "**Credit Memorandum**\n\n**Credit ID:** CM-2023-10-25-001\n\n**Date:** 2023-10-25\n\n**To:** Acme Corp\n\n**From:** [Your Company Name] Billing Department\n\n**Subject:** Credit Memorandum for Defective Units – INV-2023-999\n\n**Details:**\n\nThis credit memorandum is issued to account for the return of defective units.\n\n| Item | Quantity | Unit Price | Taxable Amount | Sales Tax | Total |\n|---|---|---|---|---|---|\n| DEF-500 | 3 | $120.00 | $360.00 | $25.20 | $385.20 |\n\n**Total Credit Amount:** $385.20\n\n**Sales Tax Reversal:** -$25.20\n\n**Net Credit Amount:** $360.00\n\n**Payment Terms:**  Net 30 days\n\n**Please remit payment to:**\n\n[Your Company Payment Address]\n\n**Thank you for your business.**\n\n---\n[Your Company Logo/Contact Information]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails the core calculation requirement by presenting a confusing and contradictory breakdown. It lists a 'Total' of $385.20, then lists 'Sales Tax Reversal' as a negative line item, and concludes with a 'Net Credit Amount' of $360.00. This implies the credit is only for the pre-tax amount, ignoring the instruction to include the reversal of sales tax in the credit amount (which should be $385.20). The table headers are also ambiguous ('Taxable Amount' vs 'Total'). While the document structure is professional, the fundamental accounting logic is flawed, making it unusable without significant rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Return checks to customers or retrieve checks returned to customers in error, adjusting accounts and answering inquiries about errors as necessary.",
+      "task_type": "Account Reconciliation and Adjustment",
+      "user_prompt": "Investigate a discrepancy where a customer's account shows a balance of -$50.00 (credit) but the bank statement shows a cleared check for $500.00 that was returned due to insufficient funds. The customer claims they never received the check. Review the provided check log and bank statement data. Determine if the check was actually issued, adjust the customer's account to reflect the NSF (Non-Sufficient Funds) fee of $25.00, and draft a notification letter explaining the adjustment.",
+      "reference_context": {
+        "customer_account_balance": -50.0,
+        "check_amount": 500.0,
+        "nsf_fee": 25.0,
+        "check_log": [
+          {
+            "check_id": "CHK-101",
+            "amount": 500.0,
+            "status": "Returned",
+            "reason": "NSF",
+            "date": "2023-10-20"
+          }
+        ],
+        "bank_statement": {
+          "cleared_checks": [
+            "CHK-100"
+          ],
+          "returned_checks": [
+            "CHK-101"
+          ]
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Is the new account balance calculated correctly (Original Balance + Check Amount + NSF Fee)?",
+        "Criterion 2: Logic — Does the solution correctly identify the check as returned based on the log?",
+        "Criterion 3: Communication — Is the notification letter professional and clearly explains the NSF fee and balance adjustment?"
+      ],
+      "student_answer": "[Your Company Letterhead]\n\n[Date]\n\n[Customer Name]\n[Customer Address]\n\n**Subject: Adjustment to Account Balance – Account Number [Customer Account Number]**\n\nDear [Customer Name],\n\nThis letter is to inform you of an adjustment to your account balance. Our records indicate a credit balance of -$50.00. However, we have identified a returned check for $500.00 (Check ID: CHK-101) on your account, which was returned due to insufficient funds (NSF).\n\nAccording to our check log, this check was issued on 2023-10-20.  Despite the returned check, we have applied a Non-Sufficient Funds (NSF) fee of $25.00 to your account to cover the bank’s charge for processing the returned item.\n\nYour updated account balance is now -$75.00.\n\nWe apologize for any inconvenience this may cause.  If you have any questions or require further clarification, please do not hesitate to contact us at [Phone Number] or [Email Address].\n\nSincerely,\n\n[Your Name]\nBilling and Posting Clerk\n[Your Company Name]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails the core mathematical and logical requirements of the task. First, the calculation is incorrect: a -$50 credit balance minus a $500 check and a $25 fee should result in a -$575 debit balance, not -$75. Second, the student failed to address the customer's specific claim that they never received the check; a professional response must address this discrepancy or state that the check log confirms issuance, rather than ignoring the claim. Third, the student did not explicitly state the conclusion regarding whether the check was issued based on the log data, which was a required step. The letter is professionally formatted but substantively flawed in its financial logic and failure to address the prompt's specific conflict."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Perform general administrative tasks, such as answering telephones, scheduling appointments, and ordering supplies or equipment.",
+      "task_type": "Supply Ordering and Inventory Management",
+      "user_prompt": "The billing department needs to order new carbon ribbons and shipping labels. Review the current inventory levels and the provided usage forecast for the next quarter. Calculate the total quantity needed to maintain a 2-week safety stock. Generate a purchase order summary including item descriptions, quantities, unit costs, and total estimated cost. Ensure the order adheres to the department's budget cap of $2,000.",
+      "reference_context": {
+        "current_inventory": {
+          "Carbon Ribbons": 15,
+          "Shipping Labels": 200
+        },
+        "quarterly_forecast": {
+          "Carbon Ribbons": 120,
+          "Shipping Labels": 1500
+        },
+        "safety_stock_weeks": 2,
+        "unit_costs": {
+          "Carbon Ribbons": 12.5,
+          "Shipping Labels": 0.05
+        },
+        "budget_cap": 2000.0
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation — Is the safety stock (Weekly Usage * 2) added correctly to the forecast?",
+        "Criterion 2: Budget Compliance — Does the total estimated cost stay within the $2,000 cap?",
+        "Criterion 3: Clarity — Is the purchase order summary clear, itemized, and ready for approval?"
+      ],
+      "student_answer": "```\nPurchase Order Summary\n\n| Item Description       | Quantity Needed | Unit Cost | Total Cost |\n|------------------------|-----------------|-----------|------------|\n| Carbon Ribbons         | 105             | $12.50    | $1,312.50  |\n| Shipping Labels        | 1300            | $0.05     | $65.00     |\n| **Total Estimated Cost** |                 |           | **$1,377.50** |\n\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The student correctly calculated the quantities (105 and 1300) and total costs, staying within the budget. However, the submission fails to explicitly show the calculation logic for the safety stock (2 weeks of forecast), which is a key requirement for a compliance audit. The format is a simple table lacking professional purchase order elements like PO numbers, dates, or vendor details, reducing its adherence to industry standards (Best Practices). While the math is accurate (Domain Accuracy), the lack of explanatory documentation regarding the safety stock derivation and the absence of standard PO metadata prevent it from being a fully autonomous, professional deliverable."
+    }
+  ]
+}

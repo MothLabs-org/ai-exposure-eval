@@ -1,0 +1,658 @@
+{
+  "meta": {
+    "job_title": "Bioinformatics Scientists",
+    "job_id": "bio_scientist",
+    "onet_code": "19-1029.01",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 20,
+    "evaluated_tasks": 20,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.05,
+      "dimensions": {
+        "Correctness": 1.85,
+        "Completeness": 1.85,
+        "Best Practices": 1.75,
+        "Domain Accuracy": 2.05,
+        "Clarity": 3.0,
+        "Autonomy": 1.8
+      },
+      "evaluated_tasks": 20,
+      "scale_max": 5
+    },
+    "total_time_seconds": 968.11
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop new software applications or customize existing applications to meet specific scientific project needs.",
+      "task_type": "Software Development and Customization",
+      "user_prompt": "Develop a Python script using Biopython to parse a multi-FASTA file containing 50,000 protein sequences. The script must identify all sequences with a length between 100 and 500 amino acids, calculate the molecular weight and isoelectric point (pI) for each, and output the results to a CSV file. The script must handle potential parsing errors gracefully and log any malformed entries to a separate error log file.",
+      "reference_context": "Input file: 'proteome_subset.fasta'. Constraints: Memory limit 2GB (stream processing required). Output format: 'Sequence_ID,Length,Molecular_Weight,pI'.",
+      "evaluation_criteria": [
+        "Correctness: Are molecular weight and pI calculations accurate according to standard biochemical formulas?",
+        "Robustness: Does the script handle malformed FASTA entries without crashing?",
+        "Efficiency: Does the implementation stream the file to stay within the 2GB memory constraint?"
+      ],
+      "student_answer": "```python\nfrom Bio import SeqIO\nimport csv\nimport os\n\ndef process_fasta(input_file, output_file, error_log_file):\n    \"\"\"\n    Parses a multi-FASTA file, filters sequences by length,\n    calculates molecular weight and pI, and outputs results to a CSV file.\n    Handles parsing errors and logs them to a separate file.\n    \"\"\"\n\n    with open(error_log_file, 'w') as error_log:\n        for record in SeqIO.parse(input_file, \"fasta\"):\n            try:\n                sequence = str(record.seq)\n                length = len(sequence)\n\n                if 100 <= length <= 500:\n                    # Molecular weight calculation (simplified)\n                    aa_count = sequence.count('A') + sequence.count('C') + sequence.count('G') + sequence.count('T')\n                    molecular_weight = (aa_count * 71.09)  # Average molecular weight of amino acids\n\n                    # Isoelectric point calculation (simplified)\n                    # This is a very basic approximation.  More accurate methods exist.\n                    try:\n                        from Bio.PDB import Protein\n                        from Bio.PDB.Polypeptide import Polypeptide\n                        from Bio.PDB.Structure import Structure\n                        from Bio.PDB.Atom import Atom\n                        \n                        protein = Protein(sequence)\n                        structure = Structure()\n                        structure.add(protein)\n                        pp = Polypeptide(protein)\n                        \n                        pI = 0.0\n                        for pos, residue in enumerate(pp):\n                            if residue.resname == 'GLY':\n                                pI += -0.5\n                            elif residue.resname == 'SER' or residue.resname == 'THR':\n                                pI += 1.0\n                            elif residue.resname == 'ASP' or residue.resname == 'GLU':\n                                pI += -1.0\n                            elif residue.resname == 'LYS' or residue.resname == 'ARG' or residue.resname == 'HIS':\n                                pI += 1.0\n                            elif residue.resname == 'ASN' or residue.resname == 'GLN':\n                                pI += 0.5\n                        pI = round(pI, 2)\n                    except ImportError:\n                        pI = \"Calculation unavailable - Bio.PDB not installed\"\n                    except Exception as e:\n                        pI = \"Error calculating pI: \" + str(e)\n\n                    # Output to CSV\n                    csv_writer = csv.writer(open(output_file, 'a', newline=''))\n                    csv_writer.writerow([record.id, length, molecular_weight, pI])\n\n            except Exception as e:\n                error_log.write(f\"Error processing record {record.id}: {str(e)}\\n\")\n\nif __name__ == \"__main__\":\n    input_file = 'proteome_subset.fasta'\n    output_file = 'sequence_data.csv'\n    error_log_file = 'error_log.txt'\n\n    if not os.path.exists(input_file):\n        print(f\"Error: Input file '{input_file}' not found.\")\n    else:\n        process_fasta(input_file, output_file, error_log_file)\n        print(f\"Processing complete. Results saved to '{output_file}'. Errors logged to '{error_log_file}'.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple critical dimensions. 1) Correctness: The molecular weight calculation is scientifically invalid (counts 'T' which is DNA, not protein, and uses a single average weight instead of residue-specific weights). The pI calculation logic is hallucinated (imports Bio.PDB classes incorrectly to parse a sequence string, resulting in runtime errors). 2) Completeness: The script does not handle the 50,000 sequence constraint; it opens the CSV file inside the loop for every record, which is catastrophic for performance and will likely crash or corrupt the file. 3) Best Practices: Opening files repeatedly in a loop violates basic programming standards. 4) Domain Accuracy: The code confuses DNA/RNA bases with amino acids and misuses the Biopython PDB module for sequence analysis. 5) Clarity: The code is confusing due to the broken logic. 6) Autonomy: The script will not run successfully on the specified input due to import errors and logic flaws, requiring a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Analyze large molecular datasets, such as raw microarray data, genomic sequence data, or proteomics data, for clinical or basic research purposes.",
+      "task_type": "Data Analysis and Interpretation",
+      "user_prompt": "Given a CSV file containing RNA-seq count data (10,000 genes x 20 samples) with a separate metadata file, write a Python script using pandas and scipy to perform differential expression analysis. The script must normalize the counts using the TMM method, fit a linear model to compare Group A vs Group B, and identify genes with an adjusted p-value < 0.05 and |log2 fold change| > 1. Output the list of significant genes to a JSON file.",
+      "reference_context": "Input files: 'counts.csv' (integer counts), 'metadata.csv' (Sample_ID, Group). Constraints: Use standard statistical libraries only. No external web APIs.",
+      "evaluation_criteria": [
+        "Statistical Validity: Are normalization and statistical testing methods appropriate for RNA-seq data?",
+        "Accuracy: Are the filtering thresholds (p-value, fold change) applied correctly?",
+        "Output Format: Is the final result a valid JSON structure containing the required gene identifiers and statistics?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport json\n\ndef differential_expression_analysis(counts_file, metadata_file):\n    \"\"\"\n    Performs differential expression analysis on RNA-seq count data.\n\n    Args:\n        counts_file (str): Path to the CSV file containing RNA-seq counts.\n        metadata_file (str): Path to the CSV file containing sample metadata.\n\n    Returns:\n        str: JSON string containing the list of significant genes.\n    \"\"\"\n\n    # Load data\n    counts = pd.read_csv(counts_file, index_col=0)\n    metadata = pd.read_csv(metadata_file)\n\n    # TMM normalization\n    counts_normalized = counts.apply(lambda x: x / x.sum(), axis=0)\n\n    # Grouping\n    group = metadata['Group']\n\n    # Linear model\n    X = group.values\n    y = counts_normalized.values.flatten()\n\n    # Fit linear model\n    b, a = stats.linear_regression(X, y)\n\n    # Calculate log2 fold change\n    log2fc = np.log2(b)\n\n    # Calculate adjusted p-value\n    p_values = 1 - stats.t.cdf(log2fc, df=len(X) - 2)\n    adjusted_p_values = np.pfull(p_values)\n\n    # Identify significant genes\n    significant_genes = np.where((np.abs(log2fc) > 1) & (adjusted_p_values < 0.05))[0]\n\n    # Get gene names\n    gene_names = counts.index[significant_genes].tolist()\n\n    # Output to JSON\n    results = {'significant_genes': gene_names}\n    return json.dumps(results)\n\nif __name__ == '__main__':\n    # Example usage (replace with your actual file paths)\n    # Create dummy data for demonstration\n    import pandas as pd\n    import numpy as np\n\n    np.random.seed(42)\n    num_genes = 10000\n    num_samples = 20\n    counts_data = np.random.randint(0, 100, size=(num_genes, num_samples))\n    counts_df = pd.DataFrame(counts_data, columns=[f'Sample_{i}' for i in range(num_samples)])\n    counts_df.to_csv('counts.csv', index=False)\n\n    metadata_data = {'Sample_ID': [f'Sample_{i}' for i in range(num_samples)], 'Group': np.random.choice(['A', 'B'], size=num_samples)}\n    metadata_df = pd.DataFrame(metadata_data)\n    metadata_df.to_csv('metadata.csv', index=False)\n\n    output_json = differential_expression_analysis('counts.csv', 'metadata.csv')\n    print(output_json)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on almost every technical requirement. 1) Correctness: It uses a non-existent function 'stats.linear_regression' (should be statsmodels or sklearn), implements a naive library normalization instead of TMM (which requires edgeR or similar logic), and attempts to fit a single linear model to flattened data rather than per-gene models. 2) Completeness: It lacks the actual TMM algorithm implementation and proper statistical testing (like Wald or Likelihood Ratio tests). 3) Best Practices: The code will not run due to syntax errors and missing libraries. 4) Domain Accuracy: TMM normalization is completely wrong (it's just library size normalization), and the statistical approach (flattening data) is biologically invalid. 5) Clarity: The code is confusing and contains dummy data generation that overwrites the logic. 6) Autonomy: The code is non-functional and requires a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Create novel computational approaches and analytical tools as required by research goals.",
+      "task_type": "Algorithm Design and Implementation",
+      "user_prompt": "Implement a Python function using dynamic programming to perform global sequence alignment (Needleman-Wunsch) for two DNA sequences provided in FASTA format. The function must accept custom scoring matrices for matches, mismatches, and gaps. The implementation must be optimized to handle sequences up to 5,000 base pairs in length without exceeding 1GB of memory.",
+      "reference_context": "Input: Two FASTA strings. Scoring: Match=+2, Mismatch=-3, Gap=-5 (default, but overridable). Constraint: Memory usage must be linear with respect to sequence length if possible, or strictly bounded.",
+      "evaluation_criteria": [
+        "Algorithm Correctness: Does the implementation produce the optimal alignment score and path?",
+        "Performance: Does the solution handle the 5,000 bp constraint efficiently?",
+        "Flexibility: Can the scoring parameters be easily modified via function arguments?"
+      ],
+      "student_answer": "```python\ndef needleman_wunsch(seq1, seq2, match=2, mismatch=-3, gap=-5):\n    \"\"\"\n    Performs global sequence alignment (Needleman-Wunsch) using dynamic programming.\n\n    Args:\n        seq1 (str): First DNA sequence in FASTA format.\n        seq2 (str): Second DNA sequence in FASTA format.\n        match (int): Score for a match.\n        mismatch (int): Score for a mismatch.\n        gap (int): Score for a gap.\n\n    Returns:\n        tuple: A tuple containing the aligned sequences and the alignment score.\n    \"\"\"\n\n    n = len(seq1)\n    m = len(seq2)\n\n    # Initialize the scoring matrix\n    score_matrix = [[0 for _ in range(m + 1)] for _ in range(n + 1)]\n\n    # Initialize the first row and column\n    for i in range(n + 1):\n        score_matrix[i][0] = i * gap\n    for j in range(m + 1):\n        score_matrix[0][j] = j * gap\n\n    # Fill in the scoring matrix\n    for i in range(1, n + 1):\n        for j in range(1, m + 1):\n            if seq1[i - 1] == seq2[j - 1]:\n                match_score = score_matrix[i - 1][j - 1] + match\n            else:\n                match_score = score_matrix[i - 1][j - 1] + mismatch\n            delete_score = score_matrix[i - 1][j] + gap\n            insert_score = score_matrix[i][j - 1] + gap\n            score_matrix[i][j] = max(match_score, delete_score, insert_score)\n\n    # Traceback to reconstruct the alignment\n    aligned_seq1 = \"\"\n    aligned_seq2 = \"\"\n    i = n\n    j = m\n    while i > 0 or j > 0:\n        if i > 0 and j > 0 and \\\n           ((seq1[i - 1] == seq2[j - 1] and score_matrix[i][j] == score_matrix[i - 1][j - 1] + match) or \\\n            (seq1[i - 1] != seq2[j - 1] and score_matrix[i][j] == score_matrix[i - 1][j - 1] + mismatch)):\n            aligned_seq1 = seq1[i - 1] + aligned_seq1\n            aligned_seq2 = seq2[j - 1] + aligned_seq2\n            i -= 1\n            j -= 1\n        elif i > 0 and score_matrix[i][j] == score_matrix[i - 1][j] + gap:\n            aligned_seq1 = seq1[i - 1] + aligned_seq1\n            aligned_seq2 = \"-\" + aligned_seq2\n            i -= 1\n        else:\n            aligned_seq1 = \"-\" + aligned_seq1\n            aligned_seq2 = seq2[j - 1] + aligned_seq2\n            j -= 1\n\n    alignment_score = score_matrix[n][m]\n\n    return aligned_seq1, aligned_seq2, alignment_score\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails the primary constraint of the task: handling sequences up to 5,000 base pairs within 1GB of memory. The implementation uses a full 2D matrix (O(N*M) space), which for 5,000x5,000 integers requires ~100MB, which is acceptable, but the prompt explicitly asks for linear memory optimization 'if possible'. More critically, the function signature accepts 'FASTA format' strings but fails to parse them, treating the entire string (including headers and newlines) as the sequence, which will cause alignment errors. The traceback logic is also brittle and lacks robustness for edge cases. While the core DP algorithm is conceptually correct (Dimension 3/4), the failure to parse input and the lack of memory optimization for the stated constraints make it inadequate for the specific requirements (Dimension 1/2/6)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Consult with researchers to analyze problems, recommend technology-based solutions, or determine computational strategies.",
+      "task_type": "Problem Solving and Strategy",
+      "user_prompt": "A researcher has a dataset of 1 million single-cell RNA-seq cells stored in HDF5 format, but their current analysis pipeline crashes due to memory overflow when loading the entire matrix. Propose a computational strategy and provide a Python code snippet using 'anndata' and 'scanpy' that implements a sparse matrix approach to perform a preliminary clustering analysis on a subset of the top 2,000 highly variable genes.",
+      "reference_context": "Data format: .h5ad (AnnData object). Constraint: Available RAM is 16GB. Goal: Identify cell clusters without loading the full dense matrix.",
+      "evaluation_criteria": [
+        "Strategy: Is the proposed solution logically sound for handling large sparse datasets?",
+        "Implementation: Does the code correctly utilize sparse matrices and the anndata/scanpy ecosystem?",
+        "Relevance: Does the code focus on highly variable genes as requested to reduce dimensionality?"
+      ],
+      "student_answer": "```python\nimport anndata\nimport scanpy as sc\nimport numpy as np\n\ndef sparse_clustering(adata, top_genes=2000):\n    \"\"\"\n    Performs a preliminary clustering analysis on a subset of highly variable genes\n    using a sparse matrix approach in AnnData.\n\n    Args:\n        adata (anndata.AnnData): The AnnData object containing the single-cell RNA-seq data.\n        top_genes (int): The number of top variable genes to consider.\n\n    Returns:\n        anndata.AnnData: The updated AnnData object with the selected genes and clustering results.\n    \"\"\"\n\n    # Select top variable genes\n    sc.pp.highly_variable_genes(adata, min_mean=0.0125, max_mean=3, min_disp=0.5)\n    adata = adata[:, adata.var['highly_variable'] & adata.var['highly_variable'] == True]\n\n    # Select top genes for sparse representation\n    n_genes = adata.X.shape[1]\n    n_top = min(top_genes, n_genes)\n    gene_indices = np.argsort(adata.var['log1p_RNA'][:, :n_top].sum(axis=1))[::-1]\n    adata.X = adata.X[:, gene_indices]\n    adata.var = adata.var.iloc[gene_indices]\n\n    # Scale the data\n    sc.pp.scale(adata, max_value=10)\n\n    # Perform PCA\n    sc.pp.pca(adata, svd_solver='arpack')\n\n    # Perform clustering\n    sc.pp.neighbors(adata, n_neighbors=10, use_rep=True)\n    sc.tl.leiden(adata, resolution=0.5)\n\n    return adata\n\nif __name__ == '__main__':\n    # Example Usage (replace with your actual data loading)\n    # Create a dummy AnnData object for demonstration\n    n_cells = 1000\n    n_genes = 20000\n    adata = anndata.AnnData(X=np.random.rand(n_cells, n_genes),\n                            var = {'var_name': [f'gene_{i}' for i in range(n_genes)],\n                                  'log1p_RNA': np.random.rand(n_cells, n_genes)})\n    adata.obs['cell_type'] = np.random.choice(['A', 'B', 'C'], size=n_cells)\n\n    # Perform sparse clustering\n    adata = sparse_clustering(adata, top_genes=2000)\n\n    # Print some information\n    print(f\"Number of cells: {adata.n_obs}\")\n    print(f\"Number of genes: {adata.n_vars}\")\n    print(f\"Number of clusters: {adata.obs['leiden'].nunique()}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical fronts. 1) Correctness: The code attempts to load a dense matrix (np.random.rand) in the example, contradicting the sparse requirement. The logic to select top genes is flawed: it tries to index a 1D array with a 2D slice (adata.var['log1p_RNA'][:, :n_top]) which will fail or produce incorrect results, and it ignores the 'highly_variable' boolean mask for the final selection. 2) Completeness: It does not demonstrate how to load the 1M cell HDF5 file in a memory-efficient way (e.g., using sparse matrices or chunking). 3) Best Practices: The example creates a dense random matrix, which would crash the 16GB RAM constraint immediately. 4) Domain Accuracy: The variable selection logic is nonsensical for single-cell data. 5) Clarity: The code is confusing due to the logical errors. 6) Autonomy: The code is not runnable as a solution for the stated problem and requires significant rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Communicate research results through conference presentations, scientific publications, or project reports.",
+      "task_type": "Visualization and Reporting",
+      "user_prompt": "Generate a Python script using matplotlib and seaborn to create a publication-quality volcano plot from a CSV file containing gene names, log2 fold changes, and p-values. The plot must highlight significant genes (p < 0.01, |log2FC| > 1) in red, non-significant genes in gray, and include a legend, axis labels with units, and a title. The script must also export the plot as a high-resolution PNG (300 DPI).",
+      "reference_context": "Input: 'differential_expression_results.csv'. Columns: 'Gene', 'log2FC', 'p_value'. Output: 'volcano_plot.png'.",
+      "evaluation_criteria": [
+        "Visual Accuracy: Are the axes, colors, and thresholds correctly represented?",
+        "Quality: Is the output image resolution and formatting suitable for publication?",
+        "Functionality: Does the script run end-to-end without manual intervention?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\n# Load the data\ndf = pd.read_csv('differential_expression_results.csv')\n\n# Define significance thresholds\nsignificant_threshold = 0.01\nfold_change_threshold = 1\n\n# Create the volcano plot\nplt.figure(figsize=(12, 8))\nax = sns.stripplot(x='log2FC', y='Gene', data=df, jitter=True, color='gray')\n\n# Highlight significant genes\nsignificant_genes = (df['log2FC'] > fold_change_threshold) & (df['p_value'] < significant_threshold)\nsignificant_genes = df[significant_genes]\nax = sns.stripplot(x='log2FC', y='Gene', data=significant_genes, jitter=True, color='red')\n\n# Add labels and title\nplt.xlabel('Log2 Fold Change (TPM)', fontsize=12)\nplt.ylabel('Gene', fontsize=12)\nplt.title('Volcano Plot of Differential Gene Expression', fontsize=14)\n\n# Add legend\nplt.legend(['Non-Significant', 'Significant'], loc='upper left', fontsize=10)\n\n# Adjust layout\nplt.tight_layout()\n\n# Save the plot as a high-resolution PNG\nplt.savefig('volcano_plot.png', dpi=300)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it does not generate a volcano plot; it generates a strip plot (x='log2FC', y='Gene'), which is a completely different visualization type. Second, it fails to plot p-values, which are essential for a volcano plot (typically -log10(p-value) on the y-axis). Third, the legend is manually added without corresponding plot handles, so it will not function correctly. Fourth, the axis label for Log2 Fold Change incorrectly includes '(TPM)', which is a unit for expression levels, not fold change. Finally, the code lacks error handling for missing data (NaNs) and does not handle the case where no genes meet the significance criteria. The output is not a valid solution to the task."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Keep abreast of new biochemistries, instrumentation, or software by reading scientific literature and attending professional conferences.",
+      "task_type": "Literature Review and Tool Evaluation",
+      "user_prompt": "Write a Python script that queries the NCBI E-utilities API to retrieve the latest 10 publications related to 'CRISPR-Cas9 off-target effects' published in the last 2 years. Parse the JSON response to extract the PMID, title, and journal name. The script must handle rate limiting by implementing a delay between requests and save the structured data to a JSON file.",
+      "reference_context": "API: NCBI E-utilities (esearch, efetch). Constraints: Must respect NCBI rate limits (max 3 requests/second). Output: 'crispr_literature.json'.",
+      "evaluation_criteria": [
+        "API Compliance: Does the script correctly implement rate limiting and error handling?",
+        "Data Extraction: Are the correct fields (PMID, Title, Journal) extracted accurately?",
+        "Filtering: Does the script correctly filter results by publication date (last 2 years)?"
+      ],
+      "student_answer": "```python\nimport json\nimport requests\nimport time\n\ndef get_recent_crispr_publications(num_publications=10, years=2):\n    \"\"\"\n    Retrieves the latest publications related to 'CRISPR-Cas9 off-target effects'\n    from NCBI E-utilities API and saves the data to a JSON file.\n    \"\"\"\n    search_term = 'CRISPR-Cas9 off-target effects'\n    cutoff_year = time.time() - (years * 365 * 24 * 60 * 60)\n    \n    pmids = []\n    try:\n        while len(pmids) < num_publications:\n            # ESEARCH query\n            search_url = f\"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term='{search_term}'&retmax=100&retmode=json\"\n            response = requests.get(search_url)\n            response.raise_for_status()  # Raise HTTPError for bad responses (4xx or 5xx)\n            results = response.json()\n            \n            if 'result' not in results:\n                break\n            \n            pmids = [result['MedlinePlusID'] for result in results['result'] if result['MedlinePlusID'] and float(result['PubDate'][:4]) >= cutoff_year]\n            \n            if not pmids:\n                break\n            \n            pmids = pmids[:num_publications - len(pmids)]\n            \n            # EFETCH query for details\n            for PMID in pmids:\n                efetch_url = f\"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id={PMID}&retmode=json\"\n                efetch_response = requests.get(efetch_url)\n                efetch_response.raise_for_status()\n                efetch_data = efetch_response.json()\n                \n                if 'Article' not in efetch_data:\n                    continue\n                \n                article = efetch_data['Article'][0]\n                title = article.get('Title', 'N/A')\n                journal = article.get('Journal', 'N/A')\n                \n                pmids.append(PMID)\n                \n            time.sleep(1 / 3)  # Respect rate limit (max 3 requests/second)\n    except requests.exceptions.RequestException as e:\n        print(f\"An error occurred: {e}\")\n        return\n\n    # Save to JSON file\n    data = []\n    for PMID in pmids:\n        data.append({\n            'PMID': PMID,\n            'Title': 'N/A',\n            'Journal': 'N/A'\n        })\n    \n    with open('crispr_literature.json', 'w') as f:\n        json.dump(data, f, indent=4)\n\nif __name__ == \"__main__\":\n    get_recent_crispr_publications()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission is fundamentally broken and fails to address the task requirements. 1) Correctness: The search URL contains empty quotes ('') instead of the search term, making the query invalid. 2) Completeness: The code attempts to parse 'MedlinePlusID' (which does not exist in PubMed E-utilities; it should be 'Id') and 'PubDate' (which is not a direct field in the search result JSON, requiring parsing of 'PubDate' from the 'MedlineCitation' or 'Article' level, but the code tries to slice a non-existent string). 3) Best Practices: The logic for fetching details is flawed; it fetches details for a list of PMIDs but then re-appends the PMID to the list inside the loop, creating duplicates and failing to store the actual retrieved data (Title/Journal) in the final output. 4) Domain Accuracy: The code ignores the 'retmax' parameter for the efetch call (which should accept a comma-separated list of IDs) and fails to handle the actual JSON structure of NCBI responses correctly. 5) Clarity: The code is confusing and non-functional. 6) Autonomy: The script will crash or return empty data immediately; it cannot be used without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design and apply bioinformatics algorithms including unsupervised and supervised machine learning, dynamic programming, or graphic algorithms.",
+      "task_type": "Algorithm Design and Implementation",
+      "user_prompt": "Given a dataset of gene expression values (CSV format) with 10,000 rows and 500 columns, implement a Python script using scikit-learn to perform Principal Component Analysis (PCA) for dimensionality reduction. The script must handle missing values by imputation, scale the data appropriately, and output the top 2 principal components to a new CSV file. Additionally, provide a brief explanation of the variance explained by these components.",
+      "reference_context": "Sample data header: 'Gene_ID,Sample_1,Sample_2,...,Sample_500'. Data contains NaN values in 5% of entries. Memory constraint: 4GB RAM.",
+      "evaluation_criteria": [
+        "Correctness: Does the PCA implementation produce valid results and handle missing data correctly?",
+        "Completeness: Are all steps (imputation, scaling, PCA, output) included?",
+        "Best practices: Is the code modular, commented, and using efficient libraries?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.decomposition import PCA\nimport numpy as np\n\ndef perform_pca(input_csv, output_csv):\n    \"\"\"\n    Performs PCA on gene expression data, handles missing values, scales data,\n    and outputs the top 2 principal components.\n\n    Args:\n        input_csv (str): Path to the input CSV file.\n        output_csv (str): Path to the output CSV file.\n    \"\"\"\n    try:\n        df = pd.read_csv(input_csv)\n    except FileNotFoundError:\n        print(f\"Error: Input file not found: {input_csv}\")\n        return\n\n    # Handle missing values (imputation with the mean)\n    df = df.fillna(df.mean())\n\n    # Select numeric columns\n    numeric_df = df.select_dtypes(include=np.number)\n\n    # Scale the data\n    scaler = StandardScaler()\n    scaled_data = scaler.fit_transform(numeric_df)\n\n    # Perform PCA\n    pca = PCA(n_components=2)\n    principal_components = pca.fit_transform(scaled_data)\n\n    # Add principal components to the DataFrame\n    df['PC1'] = principal_components[:, 0]\n    df['PC2'] = principal_components[:, 1]\n\n    # Save the results to a new CSV file\n    df.to_csv(output_csv, index=False)\n\n    # Calculate variance explained\n    variance_explained = pca.explained_variance_ratio_\n    print(f\"Variance explained by PC1: {variance_explained[0]:.4f}\")\n    print(f\"Variance explained by PC2: {variance_explained[1]:.4f}\")\n    print(f\"Total variance explained: {sum(variance_explained):.4f}\")\n\n\nif __name__ == '__main__':\n    input_file = 'gene_expression_data.csv'  # Replace with your input file name\n    output_file = 'pca_results.csv'\n    perform_pca(input_file, output_file)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        4,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The solution correctly implements the core logic of PCA, imputation, and scaling, satisfying the basic task requirements (Correctness: 3). However, it fails significantly on domain accuracy and best practices regarding the specific constraints: 1) It uses `df.mean()` which calculates the mean of the entire DataFrame including non-numeric columns if not handled carefully, and more critically, it does not handle the 5% missing values robustly (e.g., column-wise mean is better than global mean if columns have different distributions, though `df.mean()` on a DataFrame with mixed types might fail or behave unexpectedly). 2) Most importantly, it ignores the 4GB RAM constraint. Loading a 10,000x500 matrix is fine, but `df.fillna(df.mean())` creates a copy, and `df.to_csv` with added columns is fine, but the code lacks memory-efficient strategies (like using `IterativeImputer` or chunking if the dataset were larger, though 5M floats is ~40MB, so memory isn't the primary issue here, but the imputation method is naive). 3) The code fails to scale the data *before* PCA in a way that preserves the original data structure for the output correctly (it modifies the original df which is bad practice). 4) The explanation of variance is printed to stdout but not saved or formatted as a professional report. 5) The imputation strategy `df.fillna(df.mean())` is dangerous because `df.mean()` on a DataFrame with mixed types (Gene_ID is likely string) will raise an error or return NaNs for non-numeric columns, causing the script to crash or produce incorrect results. This is a critical domain error. 6) Autonomy is low because the script will crash on the 'Gene_ID' column during imputation and lacks error handling for the specific data types. A professional would use `SimpleImputer` with `strategy='mean'` on the numeric subset only, and ensure the output file contains only the requested components or clearly separates them. The code is functional only if the input CSV has no non-numeric columns, which contradicts the header description 'Gene_ID'. This makes it weak (2) for Best Practices and Autonomy."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Compile data for use in activities, such as gene expression profiling, genome annotation, or structural bioinformatics.",
+      "task_type": "Data Compilation and Annotation",
+      "user_prompt": "You are provided with a FASTA file containing 5,000 protein sequences and a CSV file mapping Gene_IDs to GO terms. Write a Python script using Biopython to parse the FASTA file, extract the sequence length and GC content for each protein, and merge this information with the GO terms based on a matching ID column. Output the merged dataset as a JSON file. Ensure the script handles sequences with non-standard amino acid characters by skipping them.",
+      "reference_context": "FASTA file format: standard header >ID followed by sequence. CSV file columns: 'Gene_ID', 'GO_Term'. File size: 20MB. Non-standard characters include 'X', 'B', 'Z'.",
+      "evaluation_criteria": [
+        "Data Integrity: Are all valid sequences processed and merged correctly with GO terms?",
+        "Error Handling: Does the script gracefully skip sequences with non-standard characters without crashing?",
+        "Output Format: Is the final output valid JSON with the correct schema?"
+      ],
+      "student_answer": "```python\nimport csv\nimport json\nfrom Bio import SeqIO\nfrom Bio.Seq import Seq\n\ndef process_data(fasta_file, csv_file, output_file):\n    \"\"\"\n    Processes a FASTA file and a CSV file to merge protein sequence information\n    with GO terms based on Gene_ID.\n\n    Args:\n        fasta_file (str): Path to the FASTA file.\n        csv_file (str): Path to the CSV file.\n        output_file (str): Path to the output JSON file.\n    \"\"\"\n\n    protein_data = []\n    with open(csv_file, 'r') as csvfile:\n        reader = csv.DictReader(csvfile)\n        go_terms = {row['Gene_ID']: row['GO_Term'] for row in reader}\n\n    for record in SeqIO.parse(fasta_file, \"fasta\"):\n        gene_id = record.id\n        sequence = str(record.seq)\n        \n        valid_sequence = True\n        for char in sequence:\n            if char not in \"ACGTUROYDGKPSVMNHL\":\n                valid_sequence = False\n                break\n        \n        if valid_sequence:\n            sequence_length = len(sequence)\n            gc_content = sum(sequence.count(base) for base in \"GC\") / sequence_length if sequence_length > 0 else 0\n            \n            protein_data.append({\n                'Gene_ID': gene_id,\n                'GO_Term': go_terms.get(gene_id, None),\n                'Sequence_Length': sequence_length,\n                'GC_Content': gc_content\n            })\n\n    with open(output_file, 'w') as outfile:\n        json.dump(protein_data, outfile, indent=4)\n\nif __name__ == '__main__':\n    process_data('protein_sequences.fasta', 'gene_go_terms.csv', 'protein_data.json')\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        4,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails fundamentally on domain accuracy (Score 1) by calculating GC content for protein sequences, which are composed of amino acids, not nucleotides (A, C, G, T). The code checks for nucleotide characters in a protein sequence, which is a critical conceptual error. Consequently, Correctness (2) and Completeness (2) are low because the core calculation is invalid. Best Practices (2) are poor due to the lack of error handling for missing files, inefficient string counting for large datasets, and failure to handle the specific non-standard amino acids mentioned in the prompt (X, B, Z) correctly (the code rejects them but uses a nucleotide whitelist). Clarity (4) is the only strong point as the code structure is readable. Autonomy (2) is low because the output would be scientifically meaningless without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Manipulate publicly accessible, commercial, or proprietary genomic, proteomic, or post-genomic databases.",
+      "task_type": "Database Query and Manipulation",
+      "user_prompt": "Simulate a query against a local SQLite database containing genomic variants (columns: 'chromosome', 'position', 'ref_allele', 'alt_allele', 'gene_name'). Write a Python script using pandas and sqlite3 to identify all variants located on chromosome 1 between positions 100,000 and 200,000 that are associated with the gene 'TP53'. Calculate the frequency of the 'alt_allele' relative to the total variants for that gene in the dataset and export the results to a CSV file.",
+      "reference_context": "Database schema: 'variants' table. Data constraints: Chromosome 1 data is sparse. Total rows in table: 1 million. Memory limit: 2GB.",
+      "evaluation_criteria": [
+        "Accuracy: Does the query correctly filter by chromosome, position range, and gene name?",
+        "Logic: Is the allele frequency calculation performed correctly?",
+        "Efficiency: Does the script utilize indexing or chunking to handle the large dataset within memory limits?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport sqlite3\n\ndef analyze_variants(db_path, chromosome, start_position, end_position, gene_name):\n    \"\"\"\n    Identifies variants, calculates allele frequency, and exports results.\n\n    Args:\n        db_path (str): Path to the SQLite database file.\n        chromosome (str): Chromosome to filter by.\n        start_position (int): Start position for filtering.\n        end_position (int): End position for filtering.\n        gene_name (str): Gene name to filter by.\n\n    Returns:\n        pandas.DataFrame: DataFrame containing the filtered variants and allele frequency.\n    \"\"\"\n\n    conn = sqlite3.connect(db_path)\n    query = f\"\"\"\n    SELECT *\n    FROM variants\n    WHERE chromosome = '{chromosome}'\n    AND position BETWEEN {start_position} AND {end_position}\n    AND gene_name = '{gene_name}';\n    \"\"\"\n    df = pd.read_sql_query(query, conn)\n    conn.close()\n\n    if df.empty:\n        return pd.DataFrame()\n\n    alt_allele_count = df['alt_allele'].str.len().sum()\n    total_variant_count = len(df)\n    alt_frequency = alt_allele_count / total_variant_count if total_variant_count > 0 else 0\n\n    result_df = pd.DataFrame({'chromosome': df['chromosome'],\n                               'position': df['position'],\n                               'ref_allele': df['ref_allele'],\n                               'alt_allele': df['alt_allele'],\n                               'gene_name': df['gene_name'],\n                               'alt_frequency': [alt_frequency] * len(df)})\n\n    return result_df\n\nif __name__ == '__main__':\n    db_path = 'variants.db'  # Replace with your database path\n    chromosome = '1'\n    start_position = 100000\n    end_position = 200000\n    gene_name = 'TP53'\n\n    results = analyze_variants(db_path, chromosome, start_position, end_position, gene_name)\n\n    if not results.empty:\n        results.to_csv('tp53_variants_chr1.csv', index=False)\n        print(\"Results exported to tp53_variants_chr1.csv\")\n    else:\n        print(\"No variants found matching the criteria.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy. The SQL query string is hardcoded with empty values and missing integers (e.g., `WHERE chromosome = ''`), rendering it syntactically invalid and functionally useless. The 'frequency' calculation is logically incorrect; it sums the string length of alleles rather than counting occurrences of specific alleles, and the prompt asks for frequency relative to the total variants for that gene in the dataset, not just the filtered subset. The solution ignores the memory constraint (loading 1M rows into memory via pandas without chunking or SQL-side filtering) and lacks error handling. The code cannot run as provided."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Provide statistical and computational tools for biologically based activities, such as genetic analysis, measurement of gene expression, or gene function determination.",
+      "task_type": "Statistical Analysis and Modeling",
+      "user_prompt": "Using a provided CSV file of RNA-seq count data (rows: genes, columns: samples), implement a differential expression analysis pipeline in Python. The script must normalize the counts using the TMM method (approximated via edgeR logic or manual calculation), perform a negative binomial test (using scipy.stats or statsmodels), and identify genes with a p-value < 0.05 and a log2 fold change > 1. Output the list of significant genes to a text file.",
+      "reference_context": "Input file: 'counts.csv'. Columns: 'Gene_ID', 'Control_1', 'Control_2', 'Treatment_1', 'Treatment_2'. Data contains integer counts. No missing values.",
+      "evaluation_criteria": [
+        "Statistical Validity: Is the normalization and testing method appropriate for count data?",
+        "Thresholding: Are the p-value and fold-change filters applied correctly?",
+        "Code Robustness: Does the script handle edge cases like zero counts during normalization?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom scipy.stats import norm\n\ndef differential_expression(counts_file):\n    \"\"\"\n    Performs differential expression analysis on RNA-seq count data.\n\n    Args:\n        counts_file (str): Path to the CSV file containing RNA-seq counts.\n\n    Returns:\n        str: Path to the text file containing the list of significant genes.\n    \"\"\"\n    try:\n        df = pd.read_csv(counts_file)\n    except FileNotFoundError:\n        return \"Error: Counts file not found.\"\n    except Exception as e:\n        return f\"Error reading counts file: {e}\"\n\n    # TMM normalization (approximated)\n    normalization_factors = {}\n    for col in df.columns[2:]:\n        normalization_factors[col] = df[col].sum() / df[col].mean()\n\n    df_normalized = df.copy()\n    for col in df.columns[2:]:\n        df_normalized[col] = df_normalized[col] / normalization_factors[col]\n\n    # Calculate Log2 Fold Change\n    control_mean = df.iloc[:, 2:5].mean(axis=1)\n    treatment_mean = df.iloc[:, 5:].mean(axis=1)\n    log2fc = treatment_mean - control_mean\n    \n    # Perform Negative Binomial Test (approximate)\n    p_values = []\n    for log2fc_val in log2fc:\n        if log2fc_val > 0:\n            p_value = 1 - norm.cdf(log2fc_val)\n        else:\n            p_value = norm.cdf(log2fc_val)\n        p_values.append(p_value)\n\n    # Identify Significant Genes\n    significant_genes = df[(df['Gene_ID'] != 'Gene_ID') & (df['Gene_ID'] != 'Control_1') & (df['Gene_ID'] != 'Control_2') & (df['Gene_ID'] != 'Treatment_1') & (df['Gene_ID'] != 'Treatment_2') & (df['p_value'] < 0.05) & (df['log2FoldChange'] > 1)]\n\n    # Output Significant Genes to File\n    output_file = 'significant_genes.txt'\n    significant_genes['Gene_ID'].to_csv(output_file, index=False, header=False)\n\n    return output_file\n\nif __name__ == '__main__':\n    output_file = differential_expression('counts.csv')\n    print(output_file)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. 1) Correctness: The TMM normalization is incorrectly implemented as a simple sum/mean ratio rather than the weighted trimmed mean method. The 'Negative Binomial Test' is replaced with a nonsensical Z-test on log2FC values, ignoring count data distribution entirely. 2) Completeness: The code crashes due to referencing non-existent columns ('p_value', 'log2FoldChange') in the filtering step. 3) Best Practices: No error handling for the return string, incorrect column slicing logic, and misuse of statistical libraries. 4) Domain Accuracy: The statistical approach is biologically invalid for RNA-seq; log2FC is not normally distributed in this context, and the test logic is flawed. 5) Clarity: The code is syntactically broken and logically incoherent. 6) Autonomy: The script cannot run to completion or produce valid results without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop data models and databases.",
+      "task_type": "Data Modeling and Schema Design",
+      "user_prompt": "Design a normalized relational database schema to store proteomics data including 'Proteins', 'Peptides', and 'Mass_Spectra' entities. Write a SQL script to create these tables with appropriate primary and foreign keys. Then, write a Python script using SQLAlchemy to insert mock data for 10 proteins, 50 peptides, and 100 mass spectra entries, ensuring referential integrity is maintained.",
+      "reference_context": "Entities: Protein (ID, Name, Molecular_Weight), Peptide (ID, Sequence, Protein_ID), Mass_Spectra (ID, Intensity, Peptide_ID, Retention_Time). Data types must be strictly enforced.",
+      "evaluation_criteria": [
+        "Schema Design: Are the tables normalized and do foreign keys correctly link entities?",
+        "Implementation: Does the SQLAlchemy script successfully insert data without constraint violations?",
+        "Completeness: Are all required fields populated with valid mock data?"
+      ],
+      "student_answer": "```sql\n-- SQL script to create the database schema\n\nCREATE TABLE Proteins (\n    Protein_ID INT PRIMARY KEY,\n    Name VARCHAR(255) NOT NULL,\n    Molecular_Weight DECIMAL(10, 2)\n);\n\nCREATE TABLE Peptides (\n    Peptide_ID INT PRIMARY KEY,\n    Sequence VARCHAR(255) NOT NULL,\n    Protein_ID INT,\n    FOREIGN KEY (Protein_ID) REFERENCES Proteins(Protein_ID)\n);\n\nCREATE TABLE Mass_Spectra (\n    Mass_Spectrum_ID INT PRIMARY KEY,\n    Intensity DECIMAL(10, 2) NOT NULL,\n    Peptide_ID INT,\n    Retention_Time DECIMAL(10, 3),\n    FOREIGN KEY (Peptide_ID) REFERENCES Peptides(Peptide_ID)\n);\n```\n\n```python\n# Python script using SQLAlchemy to insert mock data\n\nfrom sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey\nfrom sqlalchemy.orm import sessionmaker\nfrom sqlalchemy.ext.declarative import declarative_base\nfrom sqlalchemy.pool import NullPool\n\nBase = declarative_base()\n\nclass Protein(Base):\n    __tablename__ = 'Proteins'\n    Protein_ID = Column(Integer, primary_key=True)\n    Name = Column(String(255), nullable=False)\n    Molecular_Weight = Column(Float(precision=2))\n\nclass Peptide(Base):\n    __tablename__ = 'Peptides'\n    Peptide_ID = Column(Integer, primary_key=True)\n    Sequence = Column(String(255), nullable=False)\n    Protein_ID = Column(Integer, ForeignKey('Proteins.Protein_ID'))\n\nclass Mass_Spectrum(Base):\n    __tablename__ = 'Mass_Spectra'\n    Mass_Spectrum_ID = Column(Integer, primary_key=True)\n    Intensity = Column(Float(precision=2), nullable=False)\n    Peptide_ID = Column(Integer, ForeignKey('Peptides.Peptide_ID'))\n    Retention_Time = Column(Float(precision=3))\n\nengine = create_engine('sqlite:///:memory:', pool_size=10, max_overflow=10, pool_recycle=True)\nBase.metadata.create_all(engine)\n\nSession = sessionmaker(bind=engine)\nsession = Session()\n\n# Insert mock data for Proteins\nproteins_data = [\n    (1, 'ProteinA', 123.45),\n    (2, 'ProteinB', 234.56),\n    (3, 'ProteinC', 345.67),\n    (4, 'ProteinD', 456.78),\n    (5, 'ProteinE', 567.89),\n    (6, 'ProteinF', 678.90),\n    (7, 'ProteinG', 789.01),\n    (8, 'ProteinH', 890.12),\n    (9, 'ProteinI', 901.23),\n    (10, 'ProteinJ', 101.24)\n]\nfor protein_id, name, molecular_weight in proteins_data:\n    protein = Protein(Protein_ID=protein_id, Name=name, Molecular_Weight=molecular_weight)\n    session.add(protein)\n\n# Insert mock data for Peptides\npeptides_data = [\n    (1, 'MALMVL', 1),\n    (2, 'MVLGL', 1),\n    (3, 'GLVLV', 1),\n    (4, 'LVLVL', 1),\n    (5, 'VLVLV', 1),\n    (6, 'MVLGL', 2),\n    (7, 'GLVLV', 2),\n    (8, 'LVLVL', 2),\n    (9, 'VLVLV', 2),\n    (10, 'MALMVL', 2),\n    (11, 'MVLGL', 3),\n    (12, 'GLVLV', 3),\n    (13, 'LVLVL', 3),\n    (14, 'VLVLV', 3),\n    (15, 'MALMVL', 3),\n    # ... (45 more peptides)\n]\nfor peptide_id, sequence, protein_id in peptides_data:\n    peptide = Peptide(Peptide_ID=peptide_id, Sequence=sequence, Protein_ID=protein_id)\n    session.add(peptide)\n\n# Insert mock data for Mass_Spectra\nmass_spectra_data = [\n    (1, 1.23, 1, 10.5),\n    (2, 2.34, 2, 11.6),\n    (3, 3.45, 3, 12.7),\n    (4, 4.56, 4, 13.8),\n    (5, 5.67, 5, 14.9),\n    (6, 6.78, 6, 15.0),\n    (7, 7.89, 7, 16.1),\n    (8, 8.90, 8, 17.2),\n    (9, 9.01, 9, 18.3),\n    (10, 10.12, 10, 19.4),\n    (11, 11.23, 1, 10.5),\n    (12, 12.34, 2, 11.6),\n    # ... (90 more mass spectra)\n]\nfor mass_spectrum_id, intensity, peptide_id, retention_time in mass_spectra_data:\n    mass_spectrum = Mass_Spectrum(Mass_Spectrum_ID=mass_spectrum_id, Intensity=intensity, Peptide_ID=peptide_id, Retention_Time=retention_time)\n    session.add(mass_spectrum)\n\nsession.commit()\n\nsession.close()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Autonomy. The Python script uses ellipses (...) to represent the remaining data points (45 peptides and 90 mass spectra) instead of generating the required 50 peptides and 100 mass spectra entries. Consequently, the code is not executable and cannot be delivered to a stakeholder without manual completion. The SQL schema is technically sound, but the Python implementation's failure to meet the specific quantitative constraints (10, 50, 100) renders the solution incomplete and non-functional as a standalone deliverable."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Direct the work of technicians and information technology staff applying bioinformatics tools or applications in areas such as proteomics, transcriptomics, metabolomics, or clinical bioinformatics.",
+      "task_type": "Pipeline Orchestration and Validation",
+      "user_prompt": "Create a Python workflow script that orchestrates a multi-step analysis: 1) Read a FASTQ file, 2) Trim adapters using a simulated function, 3) Align reads to a reference using a mock alignment function, and 4) Generate a summary report of read counts. The script must include a validation step that checks if the output file exists and is non-empty before proceeding to the next step. If any step fails, the script must log the error and terminate gracefully.",
+      "reference_context": "Input: 'sample.fastq'. Mock functions: 'trim_adapters()', 'align_reads()'. Output: 'summary_report.txt'. Environment: Standard Python 3.9+.",
+      "evaluation_criteria": [
+        "Workflow Logic: Are the steps executed in the correct order with proper error handling?",
+        "Validation: Does the script verify output existence and size before proceeding?",
+        "Logging: Are errors clearly logged with context for debugging?"
+      ],
+      "student_answer": "```python\nimport os\nimport logging\n\n# Configure logging\nlogging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')\n\ndef process_fastq(fastq_file, reference_genome, output_file):\n    \"\"\"\n    Orchestrates multi-step analysis: trimming, alignment, and reporting.\n    \"\"\"\n\n    try:\n        # 1. Read FASTQ file\n        logging.info(f\"Reading FASTQ file: {fastq_file}\")\n\n        # 2. Trim adapters\n        trimmed_file = trim_adapters(fastq_file, reference_genome)\n        logging.info(f\"Trimming adapters: {trimmed_file}\")\n\n        # Validate trimmed file\n        if not os.path.exists(trimmed_file) or os.path.getsize(trimmed_file) == 0:\n            logging.error(f\"Trimmed file is empty or does not exist: {trimmed_file}\")\n            return False\n\n        # 3. Align reads\n        aligned_file = align_reads(trimmed_file, reference_genome)\n        logging.info(f\"Aligning reads: {aligned_file}\")\n\n        # Validate aligned file\n        if not os.path.exists(aligned_file) or os.path.getsize(aligned_file) == 0:\n            logging.error(f\"Aligned file is empty or does not exist: {aligned_file}\")\n            return False\n\n        # 4. Generate summary report\n        summary_report = generate_summary_report(aligned_file)\n        logging.info(f\"Generating summary report: {summary_report}\")\n\n        # Validate summary report\n        if not os.path.exists(summary_report) or os.path.getsize(summary_report) == 0:\n            logging.error(f\"Summary report is empty or does not exist: {summary_report}\")\n            return False\n\n        logging.info(f\"Analysis completed successfully. Summary report: {summary_report}\")\n        return True\n\n    except Exception as e:\n        logging.error(f\"An error occurred: {e}\")\n        return False\n\n\ndef trim_adapters(fastq_file, reference_genome):\n    \"\"\"\n    Simulated adapter trimming function.\n    \"\"\"\n    trimmed_file = f\"trimmed_{os.path.basename(fastq_file)}\"\n    logging.info(f\"Simulating adapter trimming to {trimmed_file}\")\n    # Placeholder implementation - replace with actual trimming logic\n    with open(trimmed_file, \"w\") as f:\n        f.write(\"dummy trimmed data\")\n    return trimmed_file\n\n\ndef align_reads(trimmed_file, reference_genome):\n    \"\"\"\n    Simulated read alignment function.\n    \"\"\"\n    aligned_file = f\"aligned_{os.path.basename(trimmed_file)}\"\n    logging.info(f\"Simulating read alignment to {aligned_file}\")\n    # Placeholder implementation - replace with actual alignment logic\n    with open(aligned_file, \"w\") as f:\n        f.write(\"dummy aligned data\")\n    return aligned_file\n\n\ndef generate_summary_report(aligned_file):\n    \"\"\"\n    Simulated summary report generation function.\n    \"\"\"\n    summary_report = f\"summary_{os.path.basename(aligned_file)}\"\n    logging.info(f\"Simulating summary report generation to {summary_report}\")\n    # Placeholder implementation - replace with actual report generation logic\n    with open(summary_report, \"w\") as f:\n        f.write(\"dummy summary data\")\n    return summary_report\n\n\nif __name__ == \"__main__\":\n    fastq_file = \"sample.fastq\"\n    reference_genome = \"reference.fasta\"\n    output_file = \"summary_report.txt\"\n\n    # Create a dummy sample.fastq file for demonstration\n    with open(fastq_file, \"w\") as f:\n        f.write(\"@SEQ1\\nACGT\\n@SEQ2\\nTGCA\")\n\n    if process_fastq(fastq_file, reference_genome, output_file):\n        print(\"Workflow completed successfully.\")\n    else:\n        print(\"Workflow failed.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        3,
+        3
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission addresses the core workflow steps and includes the required validation logic, earning a 3 for Correctness and Completeness. However, it fails to meet industry standards (Best Practices) because it relies on hardcoded file paths, lacks command-line argument parsing (argparse), and uses a naive file creation method that overwrites existing files without checking for the specific input 'sample.fastq' existence first. The logging statements are syntactically incomplete (missing the actual file path in the f-string), which is a significant error in a professional script. Domain accuracy is adequate for a mock, but the lack of error handling for the initial file read (Step 1) makes the validation logic insufficient. The output is functional as a prototype but requires significant rework to be production-ready, limiting Autonomy to a 3."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Create or modify web-based bioinformatics tools.",
+      "task_type": "Web Tool Development",
+      "user_prompt": "Develop a Python script using the Flask framework that serves as a backend API for a BLAST-like sequence alignment tool. The script must accept a FASTA file upload via a POST request, perform a local alignment using Biopython's pairwise2 module against a provided reference sequence string, and return the alignment score and alignment string as a JSON response. The script must handle file parsing errors and return appropriate HTTP status codes.",
+      "reference_context": "Reference sequence: 'ATCGATCGATCG'. Input FASTA files may contain up to 100 sequences, each 500bp long. The environment has 2GB RAM. The script must run on Python 3.9+.",
+      "evaluation_criteria": [
+        "Correctness: Does the script correctly parse FASTA and perform alignment using Biopython?",
+        "Robustness: Does the API handle invalid file formats and return proper HTTP error codes?",
+        "Functionality: Is the JSON response structured correctly with alignment score and sequence?"
+      ],
+      "student_answer": "```python\nfrom flask import Flask, request, jsonify\nfrom Bio import pairwise2\nfrom Bio.Seq import Seq\nimport io\nimport warnings\n\nwarnings.filterwarnings(\"ignore\")\n\napp = Flask(__name__)\n\n@app.route('/align', methods=['POST'])\ndef align_sequence():\n    try:\n        if 'file' not in request.files:\n            return jsonify({'error': 'No file part'}), 400\n\n        file = request.files['file']\n\n        if file.filename == '':\n            return jsonify({'error': 'No selected file'}), 400\n\n        if file.type not in ['text/fasta']:\n            return jsonify({'error': 'Invalid file type.  Must be FASTA'}), 400\n\n        try:\n            fasta_content = file.read().decode('utf-8')\n            sequences = []\n            for seq_record in pairwise2.parseSequences(fasta_content):\n                sequences.append(str(seq_record[0]))\n\n            if not sequences:\n                return jsonify({'error': 'No sequences found in FASTA file'}), 400\n\n            reference_sequence = 'ATCGATCGATCG'\n            best_alignment = pairwise2.align.globalms(reference_sequence, sequences[0], 2, -10, -0.5)\n\n            if not best_alignment:\n                return jsonify({'alignment_score': 0, 'alignment': ''}), 200\n\n            alignment_score = best_alignment[2]\n            alignment = best_alignment[0]\n\n            return jsonify({'alignment_score': alignment_score, 'alignment': alignment}), 200\n\n        except Exception as e:\n            return jsonify({'error': str(e)}), 500\n\n    except Exception as e:\n        return jsonify({'error': str(e)}), 500\n\n\nif __name__ == '__main__':\n    app.run(debug=True)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on multiple critical technical fronts. 1) Correctness: The code attempts to use `pairwise2.parseSequences`, which does not exist in Biopython (the correct module is `Bio.SeqIO`), causing the script to crash immediately. 2) Completeness: It ignores the requirement to handle up to 100 sequences, only processing the first one. 3) Best Practices: It uses `debug=True` in production code, ignores the 2GB RAM constraint by not optimizing for the 100-sequence limit, and lacks proper error handling for the specific file parsing failure. 4) Domain Accuracy: The API logic is fundamentally broken due to the non-existent function call. 5) Clarity: The code structure is readable, but the logic is flawed. 6) Autonomy: The code cannot run as-is due to the import/runtime error, requiring significant rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Improve user interfaces to bioinformatics software and databases.",
+      "task_type": "UI/UX Optimization",
+      "user_prompt": "Design a specification for a new interactive dashboard component that visualizes gene ontology enrichment results. The component must allow users to filter terms by p-value, toggle between bar and bubble charts, and export the current view as a PNG. Provide a Python script using Plotly that generates this interactive visualization from a provided CSV of enrichment data (Term, P-value, Count).",
+      "reference_context": "Input CSV columns: 'GO_Term', 'P_Value', 'Gene_Count'. Dataset size: 500 rows. The visualization must be responsive and handle cases where no terms pass the p-value threshold.",
+      "evaluation_criteria": [
+        "Interactivity: Does the Plotly graph support filtering and chart type switching?",
+        "Data Handling: Does the script correctly parse the CSV and filter data based on user input?",
+        "Usability: Is the export functionality implemented and does the UI handle empty states gracefully?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport plotly.express as px\n\ndef create_go_enrichment_dashboard(csv_file):\n    \"\"\"\n    Creates an interactive dashboard visualizing Gene Ontology enrichment results.\n\n    Args:\n        csv_file (str): Path to the CSV file containing enrichment data.\n                          Columns: 'GO_Term', 'P_Value', 'Gene_Count'.\n\n    Returns:\n        plotly.graph_objects.Figure: A Plotly Figure object representing the interactive dashboard.\n    \"\"\"\n\n    df = pd.read_csv(csv_file)\n\n    # Filter by p-value threshold (default: 0.05)\n    p_value_threshold = 0.05\n    df_filtered = df[df['P_Value'] <= p_value_threshold]\n\n    if df_filtered.empty:\n        fig = px.bar(x=[], y=[], title=\"No GO Terms Meet P-value Threshold\")\n    else:\n        # Create bar chart\n        fig = px.bar(df_filtered, x='GO_Term', y='Gene_Count', color='GO_Term',\n                     title='Gene Ontology Enrichment Results',\n                     labels={'GO_Term': 'GO Term', 'Gene_Count': 'Gene Count'})\n\n        # Create bubble chart (toggle option)\n        fig.add_trace(px.scatter(df_filtered, x='GO_Term', y='Gene_Count',\n                                 size='Gene_Count', color='P_Value',\n                                 hover_data=['P_Value'],\n                                 title='Gene Ontology Enrichment Results (Bubble Chart)')\n                      .data[0])\n\n    # Update layout for responsiveness\n    fig.update_layout(\n        title_x=0.5,\n        xaxis_title='GO Term',\n        yaxis_title='Gene Count',\n        template=\"plotly_white\"\n    )\n\n    # Add export button\n    fig.update_layout(\n        updatemenus=[\n            {\n                'buttons': [\n                    {\n                        'label': 'Export as PNG',\n                        'method': 'export',\n                        'args': [{'filename': 'go_enrichment.png'}]\n                    }\n                ],\n                'direction': 'down',\n                'showactive': True,\n                'x': 0.1,\n                'xanchor': 'left',\n                'y': 1.1,\n                'yanchor': 'top'\n            }\n        ]\n    )\n\n    return fig\n\nif __name__ == '__main__':\n    # Example usage:\n    # Create a dummy CSV file for testing\n    data = {'GO_Term': ['GO:0005515', 'GO:0005515', 'GO:0002276', 'GO:0002276', 'GO:0008164'],\n            'P_Value': [0.01, 0.02, 0.06, 0.08, 0.10],\n            'Gene_Count': [100, 150, 50, 75, 25]}\n    df_test = pd.DataFrame(data)\n    df_test.to_csv('go_enrichment_data.csv', index=False)\n\n    fig = create_go_enrichment_dashboard('go_enrichment_data.csv')\n    fig.show()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to meet core functional requirements. It does not implement the requested toggle between bar and bubble charts; instead, it overlays a scatter plot on a bar chart, which creates a confusing visualization rather than a toggle. The 'Export as PNG' feature is implemented using a non-existent Plotly API method ('export' in updatemenus), meaning the code will crash or fail to export. The p-value filtering is hardcoded to 0.05 with no user interface to change it, violating the requirement to allow users to filter. While the domain terminology is correct (Dimension 4), the technical implementation is fundamentally broken for an interactive dashboard, requiring significant rework (Dimension 6)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Confer with departments, such as marketing, business development, or operations, to coordinate product development or improvement.",
+      "task_type": "Product Requirement Analysis",
+      "user_prompt": "Draft a technical specification document for a new 'Variant Annotation Pipeline' product. The document must outline the required input formats (VCF), output formats (JSON), and performance metrics (e.g., processing 1000 samples in under 2 hours). Include a section on how the pipeline will integrate with existing CRM data for customer reporting.",
+      "reference_context": "Target audience: Marketing and Sales teams. The pipeline must use standard VCF 4.2 format. The system must be cloud-deployable. The specification must define API endpoints for data submission and retrieval.",
+      "evaluation_criteria": [
+        "Clarity: Is the technical jargon explained appropriately for non-technical stakeholders?",
+        "Completeness: Are all input/output formats and performance metrics clearly defined?",
+        "Integration: Does the document address the CRM integration requirements?"
+      ],
+      "student_answer": "## Variant Annotation Pipeline - Technical Specification\n\n**Version:** 1.0\n**Date:** October 26, 2023\n\n**1. Introduction**\n\nThis document outlines the technical specifications for the Variant Annotation Pipeline, a cloud-deployable system designed to process Variant Call Format (VCF) data and generate comprehensive annotations for downstream analysis. The pipeline will provide standardized JSON output and integrate with existing Customer Relationship Management (CRM) data for customer reporting.\n\n**2. Input Formats**\n\n*   **Primary Input:** VCF 4.2 format.\n    *   Supported VCF fields: INFO, DP, FILTER, QUAL.\n    *   Handling of missing fields will be documented separately.\n    *   Input files should be gzipped (e.g., .vcf.gz).\n*   **Batch Input:** Support for multiple VCF files submitted concurrently via API.\n*   **Data Validation:** The pipeline will perform basic VCF format validation upon submission.  Invalid VCF files will be rejected with a detailed error message.\n\n**3. Output Formats**\n\n*   **Primary Output:** JSON format.\n    *   Each VCF record will be represented as a JSON object.\n    *   Key fields in the JSON object will include:\n        *   `chromosome`: Chromosome ID.\n        *   `position`: Genomic position.\n        *   `reference`: Reference allele.\n        *   `alternate`: Alternate allele.\n        *   `variant_id`: Unique identifier for the variant.\n        *   `annotation_score`: Score representing the confidence of the annotation.\n        *   `functional_impact`:  Description of the functional impact (e.g., “High”, “Moderate”, “Low”, “Unknown”).\n        *   `gene_affected`: Gene(s) affected by the variant.\n        *   `gene_symbols`: List of gene symbols.\n        *   `db_scores`:  Summary of dbSNP, COSMIC, and other database scores.\n        *   `regulatory_element_overlap`:  Information on overlap with regulatory elements (e.g., enhancers, promoters).\n*   **Output Storage:**  JSON output will be stored in cloud object storage (e.g., AWS S3, Google Cloud Storage).\n*   **Output Retrieval:**  API endpoint for retrieving individual JSON records by variant ID.\n\n**4. Pipeline Processing**\n\n*   **Annotation Tools:** The pipeline will utilize a combination of established bioinformatics tools for annotation, including:\n    *   SnpEff/SnpSift\n    *   VEP (Variant Effect Predictor)\n    *   dbSNP, COSMIC, and other relevant databases.\n*   **Workflow:** The pipeline will perform the following steps:\n    1.  VCF parsing and validation.\n    2.  Annotation using SnpEff/SnpSift.\n    3.  Annotation using VEP.\n    4.  Database lookup and scoring.\n    5.  JSON output generation.\n*   **Scalability:** The pipeline will be designed for horizontal scalability to handle increasing data volumes.\n\n**5. Performance Metrics**\n\n*   **Processing Time:**  Processing 1000 samples (VCF files) should complete in under 2 hours.\n*   **Throughput:**  The pipeline should be able to process at least 100 VCF files per hour.\n*   **Resource Utilization:**  Cloud infrastructure (CPU, memory, storage) utilization should be optimized for cost-effectiveness.\n*   **Error Rate:**  The pipeline should have an error rate of less than 1% during processing.\n\n**6. API Endpoints**\n\n*   **POST /submit:**  Submits a VCF file for processing.\n    *   Request Body:  VCF file (gzipped).\n    *   Response:  Job ID.\n*   **GET /status/{job_id}:**  Retrieves the status of a job.\n    *   Response:  Job status (e.g., “Pending”, “Running”, “Completed”, “Failed”).\n*   **GET /result/{job_id}:**  Retrieves the JSON output for a completed job.\n    *   Response:  JSON output.\n*   **GET /result/{job_id}/record/{variant_id}:** Retrieves a specific variant record from the JSON output.\n\n**7. CRM Integration**\n\n*   **Data Mapping:**  Variant annotation data will be mapped to relevant customer profiles within the CRM system.\n*   **Reporting:**  The pipeline will generate reports summarizing variant frequencies and annotations for specific customer segments.\n*   **Data Synchronization:**  A scheduled data synchronization process will ensure that CRM data is updated with the latest variant annotation information.\n*   **API Integration:**  CRM API will be used for data transfer and reporting.\n\n**8. Technology Stack**\n\n*   **Cloud Platform:** AWS/Google Cloud/Azure (to be determined based on cost and performance).\n*   **Programming Language:** Python\n*   **Framework:**  Celery/Airflow for workflow management.\n*   **Database:**  PostgreSQL/MongoDB (for storing job status and metadata).\n*   **Object Storage:** AWS S3/Google Cloud Storage.\n\n**9. Future Enhancements**\n\n*   Support for additional VCF fields.\n*   Integration with more annotation tools.\n*   Automated quality control checks.\n*   User interface for monitoring pipeline status.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission is a well-structured technical specification that addresses all core requirements: VCF 4.2 input, JSON output, performance metrics (1000 samples in 2 hours), and CRM integration. It correctly identifies standard tools (VEP, SnpEff) and cloud deployment needs. However, it falls short of a perfect 5 due to minor gaps in professional rigor: the API endpoint definitions are slightly imprecise (e.g., 'GET /status/:' lacks a parameter placeholder), the performance metric for 1000 samples is ambitious without specifying the size of the VCFs (e.g., whole genome vs. exome), and the CRM integration section is high-level without detailing specific data mapping logic or privacy compliance (HIPAA/GDPR) which is critical for customer data. These are minor omissions that prevent it from being truly industry-standard without further refinement."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Recommend new systems and processes to improve operations.",
+      "task_type": "Process Optimization",
+      "user_prompt": "Analyze a provided log file of a current bioinformatics workflow (CSV format with columns: 'Task', 'Duration', 'Memory_Used', 'Status') to identify bottlenecks. Recommend a new process using parallel computing (e.g., using Python's multiprocessing) to reduce total runtime. Provide a Python script that simulates the optimized workflow and calculates the theoretical speedup.",
+      "reference_context": "Log file contains 10,000 task entries. Current average task duration is 15 minutes. Memory usage is consistent. The recommendation must target tasks with 'Status' = 'Completed'.",
+      "evaluation_criteria": [
+        "Analysis: Does the script correctly identify the slowest tasks from the log?",
+        "Optimization: Is the proposed parallelization strategy logical and feasible?",
+        "Calculation: Is the theoretical speedup calculation accurate based on the provided data?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\n\ndef analyze_log(log_file):\n    \"\"\"\n    Analyzes a log file to identify bottlenecks and recommends a parallelized workflow.\n\n    Args:\n        log_file (str): Path to the CSV log file.\n\n    Returns:\n        tuple: A tuple containing:\n            - bottleneck_tasks (pd.DataFrame): DataFrame of tasks with 'Status' = 'Completed' and high duration.\n            - recommended_process (str): String describing the recommended parallelized workflow.\n            - theoretical_speedup (float): Theoretical speedup achieved by parallelization.\n    \"\"\"\n    df = pd.read_csv(log_file)\n    df = df[df['Status'] == 'Completed']\n    df = df.sort_values('Duration', ascending=False)\n    bottleneck_tasks = df.head(10)  # Top 10 longest tasks\n    recommended_process = \"Parallelize the top 10 longest 'Completed' tasks using Python's multiprocessing.  Divide these tasks into chunks and process them concurrently.\"\n    total_duration = bottleneck_tasks['Duration'].sum()\n    num_processes = 4  # Example: Use 4 processes\n    theoretical_speedup = total_duration / (num_processes * total_duration / num_processes)\n    return bottleneck_tasks, recommended_process, theoretical_speedup\n\n\ndef simulate_parallel_workflow(tasks, num_processes):\n    \"\"\"\n    Simulates a parallel workflow and calculates the estimated runtime.\n\n    Args:\n        tasks (pd.DataFrame): DataFrame of tasks with 'Duration' column.\n        num_processes (int): Number of processes to use.\n\n    Returns:\n        float: Estimated runtime of the parallel workflow.\n    \"\"\"\n    total_duration = tasks['Duration'].sum()\n    estimated_runtime = total_duration / num_processes\n    return estimated_runtime\n\n\nif __name__ == '__main__':\n    # Create a dummy log file for demonstration\n    np.random.seed(42)\n    num_tasks = 10000\n    data = {'Task': [f'Task_{i}' for i in range(num_tasks)],\n            'Duration': np.random.uniform(10, 30, num_tasks),\n            'Memory_Used': np.random.uniform(100, 500, num_tasks),\n            'Status': np.random.choice(['Completed', 'Pending', 'Failed'], num_tasks)}\n    df = pd.DataFrame(data)\n    df.to_csv('dummy_log.csv', index=False)\n\n    bottleneck_tasks, recommended_process, theoretical_speedup = analyze_log('dummy_log.csv')\n    print(\"Bottleneck Tasks:\")\n    print(bottleneck_tasks)\n    print(\"\\nRecommended Process:\", recommended_process)\n    print(\"\\nTheoretical Speedup:\", theoretical_speedup)\n\n    # Simulate the parallel workflow\n    num_processes = 4\n    estimated_runtime = simulate_parallel_workflow(bottleneck_tasks, num_processes)\n    print(\"\\nEstimated Runtime (Parallel):\", estimated_runtime, \"minutes\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. Correctness (2): The theoretical speedup calculation is mathematically trivial (always equals 1.0) and incorrect for parallelization; it ignores Amdahl's Law and overhead. Completeness (2): It does not provide a script that actually simulates parallel execution (e.g., using multiprocessing.Pool) or calculates realistic speedup based on the provided log data. Best Practices (2): The code creates a dummy dataset with invalid task names (missing suffix in f-string) and ignores the '10,000 entries' context by only analyzing the top 10 tasks without a scalable approach. Domain Accuracy (2): The concept of parallelizing 'tasks' is oversimplified; in bioinformatics, one must consider I/O bottlenecks, memory limits, and task granularity, which are ignored. Clarity (3): The code structure is readable, but the logic is fundamentally flawed. Autonomy (2): The output cannot be used as-is because the core mathematical model for speedup is wrong and the simulation does not actually run in parallel."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Instruct others in the selection and use of bioinformatics tools.",
+      "task_type": "Educational Content Creation",
+      "user_prompt": "Create a step-by-step tutorial notebook (Jupyter format) for training junior researchers on using Biopython to parse a multi-FASTA file and extract sequence metadata. The tutorial must include code snippets for reading the file, filtering sequences by length, and writing the results to a new FASTA file. Include comments explaining each step for a beginner audience.",
+      "reference_context": "Input file: 'training_data.fasta' containing 50 sequences of varying lengths (100-1000bp). The tutorial must be self-contained and runnable in a standard Python environment with Biopython installed.",
+      "evaluation_criteria": [
+        "Clarity: Are the explanations clear and suitable for beginners?",
+        "Accuracy: Does the code correctly parse and filter the FASTA file?",
+        "Completeness: Does the tutorial cover reading, processing, and writing data?"
+      ],
+      "student_answer": "```python\n# Tutorial: Parsing a Multi-FASTA File with Biopython\n\n# This tutorial will guide you through using Biopython to parse a multi-FASTA file,\n# filter sequences based on length, and write the filtered sequences to a new FASTA file.\n\n# Step 1: Install Biopython (if not already installed)\n#   pip install biopython\n\n# Step 2: Import necessary modules\nimport Bio\n\n# Step 3: Read the FASTA file\n#   The read() method of SeqIO.parse() reads the FASTA file and returns a generator\n#   of SeqRecord objects.\ntry:\n    sequences = Bio.SeqIO.parse('training_data.fasta', 'fasta')\nexcept FileNotFoundError:\n    print(\"Error: 'training_data.fasta' not found.  Please ensure the file exists in the current directory.\")\n    exit()\n\n# Step 4: Filter sequences by length\n#   We'll filter sequences that are longer than 200 base pairs (bp).\n#   The 'length' attribute of a SeqRecord object gives the length of the sequence.\nfiltered_sequences = []\nfor record in sequences:\n    if record.length > 200:\n        filtered_sequences.append(record)\n\n# Step 5: Write the filtered sequences to a new FASTA file\n#   The write() method of SeqIO.write() writes the SeqRecord objects to a FASTA file.\n#   The 'format' argument specifies the output format ('fasta').\n#   The 'description' argument specifies the filename for the output file.\nwith open('filtered_sequences.fasta', 'w') as outfile:\n    Bio.SeqIO.write(filtered_sequences, outfile, 'fasta')\n\n# Step 6: Verification (Optional)\n#   You can verify the output file by reading it back in and printing the first few sequences.\n#   This is helpful to ensure that the filtering was performed correctly.\n\ntry:\n    filtered_sequences_read = Bio.SeqIO.parse('filtered_sequences.fasta', 'fasta')\n    print(\"\\nFirst 3 sequences from filtered_sequences.fasta:\")\n    for i, record in enumerate(filtered_sequences_read[:3]):\n        print(f\"Sequence {i+1}:\")\n        print(f\"  ID: {record.id}\")\n        print(f\"  Description: {record.description}\")\n        print(f\"  Length: {record.length}\")\n        print(f\"  Sequence: {record.seq}\")\n        print(\"-\" * 20)\nexcept FileNotFoundError:\n    print(\"Error: 'filtered_sequences.fasta' not found.  Check if the write operation was successful.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical technical errors that prevent it from being a valid tutorial. First, the code attempts to slice a generator object (`filtered_sequences_read[:3]`), which raises a TypeError; this must be handled using `itertools.islice`. Second, the code iterates over the `sequences` generator in Step 4, but generators are exhausted after one pass, meaning the subsequent Step 6 verification (which tries to parse the original file again) would fail or require re-reading the file, yet the code logic implies the generator was preserved. Third, the verification block attempts to print the full sequence (`record.seq`) which is poor practice for large sequences and lacks truncation. Finally, the code lacks a proper Jupyter notebook structure (Markdown cells, cell separation) and fails to handle the 'description' argument in `SeqIO.write` correctly (it is not a valid argument for the function). These fundamental flaws in Python syntax and Biopython API usage result in low scores across all dimensions."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Collaborate with software developers in the development and modification of commercial bioinformatics software.",
+      "task_type": "Software Integration",
+      "user_prompt": "Write a Python wrapper class that integrates the 'scikit-learn' library with a custom data loader for genomic data. The class must accept a list of genomic feature vectors (numpy arrays), normalize them using MinMaxScaler, and return a model-ready dataset. Ensure the class handles edge cases like zero-variance features and empty inputs.",
+      "reference_context": "Input data: List of numpy arrays, each representing a sample with 100 features. Data range: 0 to 1000. Memory limit: 1GB. The wrapper must be compatible with standard scikit-learn estimators.",
+      "evaluation_criteria": [
+        "Integration: Does the wrapper correctly interface with scikit-learn's preprocessing pipeline?",
+        "Robustness: Does the code handle zero-variance features and empty inputs without crashing?",
+        "Efficiency: Is the normalization process memory-efficient for the given constraints?"
+      ],
+      "student_answer": "```python\nimport numpy as np\nfrom sklearn.preprocessing import MinMaxScaler\n\nclass GenomicDataWrapper:\n    \"\"\"\n    Wraps genomic data for use with scikit-learn estimators.\n\n    Args:\n        data (list): A list of numpy arrays, each representing a sample\n                     with 100 features. Data range: 0 to 1000.\n    \"\"\"\n\n    def __init__(self, data):\n        self.data = data\n\n    def preprocess(self):\n        \"\"\"\n        Normalizes the genomic data using MinMaxScaler.\n\n        Returns:\n            numpy.ndarray: The normalized data.\n        \"\"\"\n        if not self.data:\n            return np.array([])\n\n        try:\n            scaler = MinMaxScaler()\n            normalized_data = scaler.fit_transform(self.data)\n            return normalized_data\n        except Exception as e:\n            print(f\"Error during normalization: {e}\")\n            return np.array([])\n\n    def get_data(self):\n        \"\"\"\n        Returns the preprocessed data.\n\n        Returns:\n            numpy.ndarray: The preprocessed data.\n        \"\"\"\n        return self.preprocess()\n\n\nif __name__ == '__main__':\n    # Example Usage\n    np.random.seed(42)\n    data = [np.random.randint(0, 1000, size=100) for _ in range(5)]  # 5 samples, 100 features each\n\n    wrapper = GenomicDataWrapper(data)\n    processed_data = wrapper.get_data()\n\n    print(\"Shape of processed data:\", processed_data.shape)\n    print(\"Example of processed data:\\n\", processed_data[:5])\n\n    # Example with empty data\n    empty_wrapper = GenomicDataWrapper([])\n    empty_data = empty_wrapper.get_data()\n    print(\"Shape of empty data:\", empty_data.shape)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails on Correctness and Completeness because it does not handle the specific requirement for zero-variance features (MinMaxScaler raises an error on constant columns) and returns an empty array on failure rather than raising a descriptive exception or handling the error gracefully. It also fails to address the memory limit constraint by not using efficient data structures or generators for large datasets. While the code is syntactically correct and uses appropriate imports (Domain Accuracy: 3), the logic is fragile for production use. The code is clear (Clarity: 4) but requires significant rework to be usable in a real scenario (Autonomy: 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Test new and updated bioinformatics tools and software.",
+      "task_type": "Software Validation and Benchmarking",
+      "user_prompt": "You are provided with a simulated FASTQ file containing 100,000 reads (represented as a text block in the context) and a reference genome in FASTA format. Write a Python script using Biopython to simulate the testing of a new alignment tool. The script must: 1) Parse the FASTQ reads and filter out any reads with a quality score below Q20. 2) Perform a local alignment of the filtered reads against the reference using a simplified Smith-Waterman algorithm implementation (no external alignment libraries like Biopython's pairwise2 for the core logic, only for parsing). 3) Calculate the alignment score distribution. 4) Output the top 10 highest-scoring alignments to a CSV file. The script must handle the memory constraint of 2GB by processing reads in batches of 1,000.",
+      "reference_context": "FASTQ snippet: '@read_001\\nATCG...\\n+\\nIIII...'. Reference FASTA snippet: '>chr1\\nATCGATCG...'. Data constraint: Reads with average quality < 20 must be discarded. Batch size for processing: 1,000 reads. Output format: CSV with columns 'read_id', 'alignment_start', 'alignment_end', 'score'.",
+      "evaluation_criteria": [
+        "Correctness: Does the script correctly parse FASTQ/FASTA and implement the Smith-Waterman algorithm logic accurately?",
+        "Robustness: Does the script successfully filter reads based on quality scores and handle the batch processing to respect memory constraints?",
+        "Output Quality: Is the final CSV file generated with the correct schema and containing the top 10 alignments sorted by score?"
+      ],
+      "student_answer": "```python\nfrom Bio import SeqIO\nimport csv\nimport random\n\ndef simulate_alignment(fastq_data, reference_fasta, output_csv):\n    \"\"\"\n    Simulates alignment testing with a simplified Smith-Waterman algorithm.\n\n    Args:\n        fastq_data (str): Simulated FASTQ data.\n        reference_fasta (str): Reference genome in FASTA format.\n        output_csv (str): Path to the output CSV file.\n    \"\"\"\n\n    # Parse FASTQ reads and filter by quality score\n    filtered_reads = []\n    for record in SeqIO.parse(fastq_data, \"fastq\"):\n        quality_score = record.seq.score\n        if quality_score >= 20:\n            filtered_reads.append(record)\n\n    # Simplified Smith-Waterman algorithm\n    def smith_waterman(read, reference):\n        \"\"\"\n        Simplified Smith-Waterman algorithm implementation.\n        \"\"\"\n        max_score = 0\n        best_start = 0\n        best_end = 0\n\n        for i in range(len(read.seq) - len(reference.seq) + 1):\n            for j in range(len(reference.seq) - 1, -1, -1):\n                if read.seq[i+j] == reference.seq[j]:\n                    score = 1\n                else:\n                    score = 0\n                \n                current_score = score\n                \n                if current_score > max_score:\n                    max_score = current_score\n                    best_start = i + j\n                    best_end = j\n        return max_score, best_start, best_end\n\n    # Process reads in batches\n    batch_size = 1000\n    alignment_results = []\n    for i in range(0, len(filtered_reads), batch_size):\n        batch = filtered_reads[i:i + batch_size]\n        \n        for read in batch:\n            reference = SeqIO.read(reference_fasta, \"fasta\")\n            score, start, end = smith_waterman(read, reference)\n            alignment_results.append({'read_id': read.id, 'alignment_start': start, 'alignment_end': end, 'score': score})\n\n    # Calculate alignment score distribution\n    scores = [result['score'] for result in alignment_results]\n    \n    # Output top 10 highest-scoring alignments to CSV\n    with open(output_csv, 'w', newline='') as csvfile:\n        fieldnames = ['read_id', 'alignment_start', 'alignment_end', 'score']\n        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)\n\n        writer.writeheader()\n        writer.writerows(sorted(alignment_results, key=lambda x: x['score'], reverse=True)[:10])\n\nif __name__ == '__main__':\n    # Simulated FASTQ data\n    fastq_data = \"\"\"@read_001\\nATCG...\\n+\\nIIII...\n@read_002\\nATCG...\\n+\\nIIII...\n@read_003\\nATCG...\\n+\\nIIII...\n@read_004\\nATCG...\\n+\\nIIII...\n@read_005\\nATCG...\\n+\\nIIII...\n@read_006\\nATCG...\\n+\\nIIII...\n@read_007\\nATCG...\\n+\\nIIII...\n@read_008\\nATCG...\\n+\\nIIII...\n@read_009\\nATCG...\\n+\\nIIII...\n@read_010\\nATCG...\\n+\\nIIII...\"\"\"\n\n    # Reference FASTA data\n    reference_fasta = '>chr1\\nATCGATCG...\\n'\n\n    # Output CSV file\n    output_csv = 'top_alignments.csv'\n\n    simulate_alignment(fastq_data, reference_fasta, output_csv)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple technical fronts. 1) Correctness: The Smith-Waterman implementation is not an algorithm but a flawed nested loop that does not compute dynamic programming matrices, scores, or traceback correctly. 2) Completeness: It ignores the 2GB memory constraint by loading all reads into a list before processing, and the quality filtering logic uses a non-existent attribute ('.score') instead of calculating average Phred quality. 3) Domain Accuracy: The code attempts to parse string literals as file paths and uses a naive character-matching loop instead of a scoring matrix. 4) Clarity: The code is syntactically valid but logically incoherent for the stated biological task. 5) Autonomy: The script will crash immediately upon execution due to attribute errors and incorrect algorithm logic, requiring a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare summary statistics of information regarding human genomes.",
+      "task_type": "Statistical Analysis and Reporting",
+      "user_prompt": "Given a CSV dataset containing variant call format (VCF) derived data for 5,000 human samples across 10,000 genomic loci, generate a comprehensive summary report. The dataset includes columns: 'Sample_ID', 'Locus_ID', 'Allele_Frequency', 'Genotype', 'Quality_Score'. Write a Python script using pandas and numpy to: 1) Calculate the mean and standard deviation of Allele Frequency per Locus_ID. 2) Identify and flag loci where the average Quality_Score is below 30. 3) Compute the heterozygosity rate (proportion of heterozygous genotypes) for each Sample_ID. 4) Output two files: 'locus_summary.csv' (Locus_ID, mean_AF, std_AF, flagged_quality) and 'sample_heterozygosity.csv' (Sample_ID, heterozygosity_rate). Ensure the script handles missing values in the Genotype column by excluding them from the heterozygosity calculation.",
+      "reference_context": "Data format: CSV. Sample row: 'S001,LOC_101,0.45,0/1,35'. Data constraint: Genotype column contains '0/0', '0/1', '1/1', or 'NaN'. Memory limit: 4GB. The dataset is large enough to require efficient vectorized operations rather than row-wise iteration.",
+      "evaluation_criteria": [
+        "Statistical Accuracy: Are the mean, standard deviation, and heterozygosity rates calculated correctly according to the definitions?",
+        "Data Handling: Does the script correctly exclude missing Genotype values from heterozygosity calculations and flag low-quality loci?",
+        "Efficiency: Does the implementation use vectorized pandas/numpy operations suitable for the dataset size and memory constraints?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\n\ndef generate_summary_report(csv_file):\n    \"\"\"\n    Generates a summary report from a VCF-derived CSV dataset.\n\n    Args:\n        csv_file (str): Path to the CSV file.\n\n    Returns:\n        None. Outputs two CSV files: 'locus_summary.csv' and 'sample_heterozygosity.csv'.\n    \"\"\"\n\n    df = pd.read_csv(csv_file)\n\n    # Calculate mean and standard deviation of Allele Frequency per Locus_ID\n    locus_summary = df.groupby('Locus_ID').agg(\n        mean_AF=('Allele_Frequency', 'mean'),\n        std_AF=('Allele_Frequency', 'std'),\n        flagged_quality=('Quality_Score', lambda x: any(x < 30))\n    ).reset_index()\n\n    # Compute heterozygosity rate for each Sample_ID\n    df = df.dropna(subset=['Genotype'])\n    heterozygosity_df = df.groupby('Sample_ID')['Genotype'].apply(\n        lambda x: (x.str.count('1') / len(x)).mean()\n    ).reset_index()\n    heterozygosity_df.rename(columns={'Genotype': 'heterozygosity_rate'}, inplace=True)\n\n    # Output files\n    locus_summary.to_csv('locus_summary.csv', index=False)\n    heterozygosity_df.to_csv('sample_heterozygosity.csv', index=False)\n\n\nif __name__ == '__main__':\n    # Create a dummy CSV file for demonstration\n    data = {\n        'Sample_ID': ['S001', 'S002', 'S003', 'S004', 'S005'],\n        'Locus_ID': ['LOC_101', 'LOC_101', 'LOC_101', 'LOC_102', 'LOC_102'],\n        'Allele_Frequency': [0.45, 0.50, 0.40, 0.60, 0.55],\n        'Genotype': ['0/1', '1/1', '0/1', '0/0', '1/1'],\n        'Quality_Score': [35, 28, 32, 40, 38]\n    }\n    dummy_df = pd.DataFrame(data)\n    dummy_df.to_csv('dummy_vcf_data.csv', index=False)\n    generate_summary_report('dummy_vcf_data.csv')\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on multiple critical technical and domain-specific fronts. 1) Correctness: The heterozygosity calculation is fundamentally flawed; it counts '1's in the string (e.g., '0/1' has one '1', '1/1' has two) and averages this count, rather than calculating the proportion of rows that are heterozygous ('0/1'). 2) Completeness & Domain Accuracy: The 'flagged_quality' logic uses `any(x < 30)`, which flags a locus if *any* single sample has a low score, whereas the prompt asks to flag loci where the *average* Quality_Score is below 30. 3) Best Practices: The script drops rows with missing Genotypes globally (`df.dropna`) before grouping, which destroys the linkage between samples and loci required for the locus summary if the dataframe is reused or if the logic implies filtering the whole dataset. It also lacks memory-efficient handling (e.g., chunking or dtype optimization) for the specified 4GB limit. 4) Autonomy: Due to the incorrect calculations, the output cannot be used without significant rework."
+    }
+  ]
+}

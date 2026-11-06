@@ -1,0 +1,1169 @@
+{
+  "meta": {
+    "job_title": "Logisticians",
+    "job_id": "logisticians",
+    "onet_code": "13-1081.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 22,
+    "evaluated_tasks": 22,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.95,
+      "dimensions": {
+        "Correctness": 1.82,
+        "Completeness": 1.86,
+        "Best Practices": 1.77,
+        "Domain Accuracy": 1.77,
+        "Clarity": 2.77,
+        "Autonomy": 1.73
+      },
+      "evaluated_tasks": 22,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1300.54
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Direct availability and allocation of materials, supplies, and finished products.",
+      "task_type": "Inventory Allocation & Risk Mitigation",
+      "user_prompt": "You are a Logistics Manager facing a sudden supplier disruption. You must reallocate inventory from three regional warehouses to meet urgent demand at four retail locations. Given the current stock levels, demand forecasts, and transportation costs, calculate the optimal allocation plan that minimizes total transportation costs while ensuring no location receives less than 90% of its required demand. Include a risk mitigation strategy for potential secondary disruptions in the supply chain.",
+      "reference_context": {
+        "warehouses": [
+          {
+            "id": "WH1",
+            "location": "North",
+            "stock_units": 5000,
+            "transport_cost_per_unit_to_retail": 10
+          },
+          {
+            "id": "WH2",
+            "location": "South",
+            "stock_units": 3000,
+            "transport_cost_per_unit_to_retail": 15
+          },
+          {
+            "id": "WH3",
+            "location": "East",
+            "stock_units": 4000,
+            "transport_cost_per_unit_to_retail": 12
+          }
+        ],
+        "retail_locations": [
+          {
+            "id": "R1",
+            "demand_units": 2500,
+            "min_requirement_percent": 90
+          },
+          {
+            "id": "R2",
+            "demand_units": 3000,
+            "min_requirement_percent": 90
+          },
+          {
+            "id": "R3",
+            "demand_units": 2000,
+            "min_requirement_percent": 90
+          },
+          {
+            "id": "R4",
+            "demand_units": 2500,
+            "min_requirement_percent": 90
+          }
+        ],
+        "constraints": {
+          "max_transport_cost_increase": 0,
+          "min_demand_satisfaction": 0.9
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the allocation mathematically satisfy the 90% minimum demand requirement for all locations?",
+        "Criterion 2: Completeness — did it calculate the total transportation cost and ensure no warehouse exceeds its stock?",
+        "Criterion 3: Risk Mitigation — does the response include a specific contingency plan for secondary supply chain disruptions?"
+      ],
+      "student_answer": "```json\n{\n  \"allocation_plan\": {\n    \"WH1\": {\n      \"destination\": \"R1\",\n      \"units_to_ship\": 2000,\n      \"transport_cost\": 20000\n    },\n    \"WH1\": {\n      \"destination\": \"R4\",\n      \"units_to_ship\": 1000,\n      \"transport_cost\": 10000\n    },\n    \"WH2\": {\n      \"destination\": \"R2\",\n      \"units_to_ship\": 2000,\n      \"transport_cost\": 30000\n    },\n    \"WH3\": {\n      \"destination\": \"R3\",\n      \"units_to_ship\": 2000,\n      \"transport_cost\": 24000\n    },\n    \"WH3\": {\n      \"destination\": \"R4\",\n      \"units_to_ship\": 2000,\n      \"transport_cost\": 24000\n    }\n  },\n  \"total_transport_cost\": 108000,\n  \"risk_mitigation_strategy\": {\n    \"strategy\": \"Dual Sourcing and Safety Stock\",\n    \"details\": \"Immediately contact alternative suppliers for at least two of the disrupted items. Increase safety stock levels at all regional warehouses by 20% to buffer against future disruptions. Implement a real-time inventory tracking system to monitor stock levels and demand fluctuations. Establish a contingency plan for expedited shipping options with alternative carriers.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, the JSON structure is invalid due to duplicate keys ('WH1' and 'WH2' appear twice as root keys in the allocation_plan object), making it unparseable. Second, the mathematical solution is incorrect: it fails to meet the 90% demand requirement for R2 (shipping 2000 units against a 2700 unit requirement) and R4 (shipping 3000 units against a 2250 unit requirement, though the math shows 3000 shipped, the allocation logic is flawed as WH2 only has 3000 total and WH3 has 4000, but the distribution ignores the cost minimization constraint properly). Third, the submission completely ignores the 'Additional Checks' regarding a 15% fuel hike, time reduction analysis, and routing logic, which were explicitly part of the evaluation criteria context. The risk mitigation strategy is generic and does not address the specific supply chain disruption scenario with professional depth. The output is unusable without significant rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Manage subcontractor activities, reviewing proposals, developing performance specifications, and serving as liaisons between subcontractors and organizations.",
+      "task_type": "Subcontractor Performance Evaluation & Contracting",
+      "user_prompt": "You are evaluating three logistics subcontractors for a new 12-month contract. Analyze their proposals based on cost, reliability, and capacity. Select the best candidate and draft a performance specification that includes a penalty clause for delays exceeding 48 hours. Calculate the expected annual cost for the selected vendor assuming a 5% volume increase and a 2% inflation adjustment. Include a risk mitigation strategy for vendor insolvency.",
+      "reference_context": {
+        "subcontractors": [
+          {
+            "name": "FastFreight",
+            "base_rate_per_km": 2.5,
+            "reliability_score": 0.95,
+            "max_capacity_km": 50000
+          },
+          {
+            "name": "EcoLogistics",
+            "base_rate_per_km": 2.2,
+            "reliability_score": 0.88,
+            "max_capacity_km": 60000
+          },
+          {
+            "name": "GlobalShip",
+            "base_rate_per_km": 2.8,
+            "reliability_score": 0.98,
+            "max_capacity_km": 45000
+          }
+        ],
+        "projected_volume_km": 40000,
+        "inflation_rate": 0.02,
+        "volume_increase_percent": 0.05
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the cost calculation correctly apply the volume increase and inflation rate?",
+        "Criterion 2: Completeness — did it include a specific penalty clause for delays and a clear selection rationale?",
+        "Criterion 3: Risk Mitigation — does the response address vendor insolvency with a specific mitigation strategy?"
+      ],
+      "student_answer": "**Best Subcontractor:** GlobalShip\n\n**Performance Specification:**\n\n*   **Transportation:** All shipments must be completed within the agreed-upon timeframe.\n*   **Tracking:** Real-time shipment tracking with updates provided at least daily.\n*   **Documentation:** Accurate and timely delivery of all required shipping documentation.\n*   **Damage Prevention:** Implement measures to minimize the risk of damage during transit.\n*   **Penalty Clause:** Any delay exceeding 48 hours will incur a penalty of 5% of the total shipment cost.\n\n**Expected Annual Cost Calculation:**\n\n1.  **Initial Volume:** 40,000 km\n2.  **Volume Increase:** 40,000 km * 0.05 = 2,000 km\n3.  **Total Volume:** 40,000 km + 2,000 km = 42,000 km\n4.  **Base Cost:** 42,000 km * 2.8 = 117,600\n5.  **Inflation Adjustment:** 117,600 * 0.02 = 2,352\n6.  **Total Cost (with inflation):** 117,600 + 2,352 = 120,000 - 2,352 = 117,999.9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails catastrophically on multiple fronts. First, the vendor selection (GlobalShip) is logically flawed; while it has the highest reliability, it lacks the capacity (45,000 km) to handle the projected volume (42,000 km) after the 5% increase, making it an invalid choice compared to EcoLogistics. Second, the cost calculation is broken, displaying a massive, nonsensical string of repeating decimals instead of a valid number. Third, the submission completely ignores the 'risk mitigation strategy for vendor insolvency' requirement. Fourth, the 'Additional Checks' section in the prompt mentions a 15% fuel hike and budget cap which were not addressed, but the primary failure is the hallucinated output and lack of basic arithmetic. The response is unusable."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Review logistics performance with customers against targets, benchmarks, and service agreements.",
+      "task_type": "Performance Analysis & Service Level Agreement Review",
+      "user_prompt": "A key client has reported a 15% increase in order fulfillment errors and a 10% drop in on-time delivery rates over the last quarter. Review the provided performance data and identify the root causes. Propose a corrective action plan that includes specific process changes to reduce errors by 20% and improve on-time delivery by 15% within 6 months. Calculate the projected cost savings from reduced returns and penalties. Include a risk mitigation strategy for implementation delays.",
+      "reference_context": {
+        "current_metrics": {
+          "error_rate_percent": 5.0,
+          "on_time_delivery_percent": 85.0,
+          "annual_return_cost": 150000,
+          "penalty_cost_per_incident": 5000
+        },
+        "target_metrics": {
+          "error_rate_reduction_percent": 20,
+          "on_time_delivery_increase_percent": 15
+        },
+        "incident_frequency": 12
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the cost savings calculation accurately reflect the reduction in returns and penalties?",
+        "Criterion 2: Completeness — did it propose specific process changes and a timeline for the 6-month goal?",
+        "Criterion 3: Risk Mitigation — does the response include a plan to handle potential delays in implementing the corrective actions?"
+      ],
+      "student_answer": "**Root Cause Analysis & Corrective Action Plan**\n\n**1. Root Cause Identification:**\n\n*   **Increased Error Rate:** Primarily driven by inadequate quality control processes, stemming from insufficient training on new packaging procedures and a lack of standardized inspection protocols.\n*   **Decreased On-Time Delivery:** Resulting from increased lead times due to supplier delays and inefficient warehouse routing, compounded by inaccurate inventory data.\n\n**2. Corrective Action Plan:**\n\n| Action                               | Timeline | Responsibility | Metrics                               |\n| :----------------------------------- | :------- | :------------- | :------------------------------------ |\n| **Quality Control Enhancement**       | Month 1-2 | Operations Manager | Error Rate Reduction (Target: 20%)     |\n| Implement standardized inspection checklists for all outbound shipments. | Month 1 | Quality Control Specialist | Compliance Rate                       |\n| Provide comprehensive training on new packaging procedures to all warehouse staff. | Month 1-2 | Training Department | Training Completion Rate, Error Rate Reduction |\n| **Warehouse Optimization**           | Month 2-4 | Logistics Manager | On-Time Delivery Increase (Target: 15%) |\n| Optimize warehouse routing to minimize travel time. | Month 2 | Logistics Manager | Route Efficiency, Delivery Time      |\n| Implement cycle counting program to improve inventory accuracy. | Month 2-3 | Inventory Manager | Inventory Accuracy Rate               |\n| **Supplier Relationship Management** | Month 3-6 | Procurement Manager | Lead Time Reduction                    |\n| Conduct supplier performance reviews and negotiate revised delivery terms. | Month 3-4 | Procurement Manager | Average Lead Time, Supplier Compliance |\n\n**3. Projected Cost Savings:**\n\n*   **Return Cost Reduction:** 15% reduction in annual return cost: 150000 * 0.15 = $22,500\n*   **Penalty Cost Reduction:** 12 incidents * $5000/incident = $60,000 (assuming 12 incidents are attributable to the identified issues)\n*   **Total Projected Savings:** $22,500 + $60,000 = $82,500\n\n**4. Risk Mitigation Strategy:**\n\n| Risk                     | Likelihood | Impact | Mitigation Strategy                               |\n| :----------------------- | :--------- | :----- | :------------------------------------------------ |\n| Training Delays          | Medium     | High   | Secure executive sponsorship, allocate sufficient resources, phased rollout. |\n| Supplier Non-Compliance | Medium     | Medium | Establish clear performance metrics, implement supplier scorecards, contingency plans. |\n| Technology Implementation | Low        | Medium | Pilot program, phased rollout, dedicated IT support. |\n\n**5. Timeline Summary:**\n\n*   **Months 1-2:** Quality Control Enhancement & Initial Warehouse Optimization\n*   **Months 2-4:** Continued Warehouse Optimization & Supplier Relationship Management\n*   **Months 3-6:** Ongoing Monitoring, Refinement, and Expansion of Corrective Actions\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        3,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy due to ignoring critical constraints in the 'Additional Checks' section. Specifically, it completely omits the 15% fuel hike calculation, the 5% budget cap, and the requirement to verify route change feasibility. The cost savings calculation is also flawed; it calculates savings based on a 15% reduction in return costs rather than the required 20% error rate reduction (which would drive the return cost down). Furthermore, the penalty cost reduction logic is weak, assuming a direct 100% correlation between incidents and the 15% delivery improvement without a clear mathematical basis. While the structure is clear (Clarity 4), the failure to address the specific constraints and perform accurate financial modeling prevents it from being a professional-grade solution (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Develop proposals that include documentation for estimates.",
+      "task_type": "Logistics Proposal & Cost Estimation",
+      "user_prompt": "You need to develop a proposal for a new international shipping route. The route involves 500 units of goods, weighing 2000kg, with a value of $50,000. Calculate the total estimated cost including freight, insurance, customs duties (5%), and handling fees. The freight cost is $1.50/kg, insurance is 1% of value, and handling is $200 per shipment. Include a risk mitigation strategy for customs delays and currency fluctuation. Present the final proposal with a detailed cost breakdown.",
+      "reference_context": {
+        "shipment_details": {
+          "units": 500,
+          "weight_kg": 2000,
+          "value_usd": 50000
+        },
+        "cost_factors": {
+          "freight_per_kg": 1.5,
+          "insurance_rate": 0.01,
+          "customs_duty_rate": 0.05,
+          "handling_fee_per_shipment": 200
+        },
+        "risk_factors": {
+          "customs_delay_probability": 0.15,
+          "currency_fluctuation_range": 0.05
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the total cost calculation correctly sum freight, insurance, customs, and handling?",
+        "Criterion 2: Completeness — did it include a detailed cost breakdown and a specific risk mitigation strategy for customs and currency?",
+        "Criterion 3: Best practices — is the proposal structured professionally and clearly?"
+      ],
+      "student_answer": "**International Shipping Route Proposal**\n\n**1. Cost Breakdown:**\n\n*   **Freight Cost:** 2000 kg * $1.50/kg = $3000\n*   **Insurance Cost:** $50,000 * 0.01 = $500\n*   **Customs Duties:** $50,000 * 0.05 = $2500\n*   **Handling Fee:** $200\n*   **Total Estimated Cost:** $3000 + $500 + $2500 + $200 = $6200\n\n**2. Risk Mitigation Strategy:**\n\n*   **Customs Delays:**\n    *   **Strategy:** Implement a phased shipment approach. Divide the 500 units into multiple smaller shipments to reduce the impact of potential customs delays on the entire order.\n    *   **Probability-Based Buffer:** Allocate an additional 10% buffer to the total cost (6200 * 0.10 = $620) to cover potential delays and associated storage fees. This buffer will be added to the total cost.\n    *   **Pre-clearance:** Explore pre-clearance options with customs authorities in the destination country to expedite the process.\n*   **Currency Fluctuation:**\n    *   **Strategy:** Utilize forward contracts with a financial institution to lock in an exchange rate for the $6200 USD. This will mitigate the risk of currency devaluation.\n    *   **Contingency Fund:** Establish a contingency fund of 2% of the total cost ($6200 * 0.02 = $124) to address unexpected currency fluctuations.\n\n**3. Revised Total Estimated Cost:**\n\n*   Total Estimated Cost (Initial): $6200\n*   Customs Delay Buffer: $620\n*   Currency Fluctuation Contingency: $124\n*   **Revised Total Estimated Cost:** $6200 + $620 + $124 = $6944\n\n**Final Proposal:**\n\nThe estimated cost for shipping 500 units (2000kg) with a value of $50,000 via the proposed route is $6944. This includes freight ($3000), insurance ($500), customs duties ($2500), and handling fees ($200). A 10% buffer for potential customs delays and a 2% contingency fund for currency fluctuations have been incorporated to mitigate risk.  Phased shipment strategy is recommended to minimize disruption from potential delays.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy because it ignores the specific constraints in the 'Additional Checks' section: it did not calculate the 15% fuel hike, did not address time reduction feasibility, and failed to account for the 5% budget cap. The risk mitigation strategy is also weak, suggesting a 10% buffer for customs delays (which is arbitrary and not derived from the provided 15% probability) and proposing forward contracts for a small USD amount, which is not industry-standard practice. While the basic arithmetic for the initial costs is correct and the formatting is clear (Clarity 4), the failure to follow explicit task constraints and the lack of professional judgment on risk management prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Maintain and develop positive business relationships with a customer's key personnel involved in, or directly relevant to, a logistics activity.",
+      "task_type": "Stakeholder Management & Relationship Strategy",
+      "user_prompt": "You are managing a critical account where the client is dissatisfied with recent delivery delays. Develop a communication and action plan to rebuild trust. The plan must include a meeting agenda, a revised service level agreement (SLA) with specific metrics, and a compensation package for the delays. Calculate the cost of the compensation package and the projected cost of the new SLA. Include a risk mitigation strategy for future relationship breakdowns.",
+      "reference_context": {
+        "client_dissatisfaction_level": "High",
+        "delay_incidents": 5,
+        "average_delay_hours": 24,
+        "compensation_rate_per_hour": 100,
+        "new_sla_metrics": {
+          "max_delay_hours": 12,
+          "on_time_delivery_target_percent": 98
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the compensation calculation accurately reflect the delay incidents and rate?",
+        "Criterion 2: Completeness — did it include a meeting agenda, revised SLA, and a clear compensation package?",
+        "Criterion 3: Risk Mitigation — does the response include a strategy to prevent future relationship breakdowns?"
+      ],
+      "student_answer": "**Subject: Addressing Delivery Delays and Rebuilding Trust – [Client Name]**\n\n**Communication & Action Plan**\n\n**1. Initial Communication (Immediately)**\n\n*   **Method:** Email and Phone Call\n*   **Content:** Acknowledge client’s dissatisfaction, express sincere apologies for recent delays, and commit to immediate action.  Outline the following plan.\n\n**2. Meeting – “Path Forward”**\n\n*   **Date/Time:** [Suggest 2-3 options]\n*   **Attendees:** [Client Contact Name(s)], [Your Name], [Relevant Logistics Team Member(s)]\n*   **Agenda:**\n    *   (5 min) Recap of Issues: Briefly review the 5 delay incidents and average delay hours.\n    *   (10 min) Client Perspective: Dedicated time for the client to express concerns and outline their needs.\n    *   (15 min) Proposed Solutions: Present the revised SLA and compensation package.\n    *   (5 min) Next Steps & Timeline: Confirm action items and establish a follow-up schedule.\n\n**3. Revised Service Level Agreement (SLA)**\n\n| Metric               | Current | Proposed |\n| --------------------- | ------- | -------- |\n| Max Delay Hours       | 24      | 12       |\n| On-Time Delivery (%) | 85      | 98       |\n| Communication Updates | Daily   | Daily    |\n| Escalation Process    | Standard | Standard |\n\n**4. Compensation Package**\n\n*   **Total Delay Hours:** 5 incidents * 24 hours/incident = 120 hours\n*   **Compensation Cost:** 120 hours * $100/hour = $12,000\n*   **Payment Terms:** Net 30\n\n**5. Projected Cost of New SLA**\n\n*   **Increased Labor Costs:**  (Requires detailed analysis of current staffing levels and potential overtime needs to meet 98% on-time delivery.  *Placeholder: $5,000/month*)\n*   **Technology Investment:** (Potential investment in improved tracking/optimization software. *Placeholder: $2,000 one-time*)\n*   **Total Projected Monthly Cost Increase:** $7,000 (Assuming $5,000 labor + $2,000 tech)\n\n**6. Risk Mitigation Strategy**\n\n*   **Enhanced Monitoring:** Implement real-time shipment tracking and proactive alerts.\n*   **Contingency Planning:** Develop alternative transportation routes and supplier options.\n*   **Improved Communication Protocols:**  Establish clear escalation paths and regular updates to the client.\n*   **Root Cause Analysis:** Conduct a thorough investigation into the causes of the delays to prevent recurrence.\n*   **Client Relationship Manager:** Assign a dedicated point of contact for the client to ensure consistent communication and support.\n*   **Regular Performance Reviews:** Schedule monthly meetings to review SLA performance and address any emerging issues.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy because it ignores all specific constraints in the 'Additional Checks' section: it does not calculate costs including the 15% fuel hike, fails to verify if the 12-hour delay target is achievable with the proposed changes, does not address routing logic or cost implications of faster transport, and ignores the 5% budget cap. The compensation calculation is also incomplete as it only covers past delays without addressing the new SLA's financial implications under the fuel hike. While the structure is clear (Clarity 4), the output is not ready for client delivery (Autonomy 2) due to these critical omissions and the use of placeholders for cost analysis."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Develop an understanding of customers' needs and take actions to ensure that such needs are met.",
+      "task_type": "Needs Analysis & Process Optimization",
+      "user_prompt": "A customer has requested a new service: same-day delivery for 20% of their orders. Analyze the current logistics network to determine if this is feasible. Calculate the additional cost required to implement this service, including extra vehicles and overtime labor. Propose a phased implementation plan that minimizes disruption to existing operations. Include a risk mitigation strategy for potential capacity bottlenecks during peak seasons.",
+      "reference_context": {
+        "current_order_volume": 1000,
+        "same_day_order_percentage": 0.2,
+        "current_delivery_time_hours": 24,
+        "target_delivery_time_hours": 8,
+        "vehicle_cost_per_hour": 50,
+        "overtime_labor_cost_per_hour": 30,
+        "peak_season_factor": 1.5
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the cost calculation accurately reflect the additional vehicles and overtime labor needed?",
+        "Criterion 2: Completeness — did it include a phased implementation plan and a feasibility analysis?",
+        "Criterion 3: Risk Mitigation — does the response include a strategy to handle capacity bottlenecks during peak seasons?"
+      ],
+      "student_answer": "**Feasibility Analysis:**\n\nImplementing same-day delivery for 20% of 1000 orders (200 orders) is feasible but requires significant logistical adjustments. The target delivery time of 8 hours is substantially shorter than the current 24-hour delivery time, necessitating a complete overhaul of the current network.\n\n**Cost Calculation:**\n\n*   **Additional Vehicles:**\n    *   Current vehicles: Assume 10 vehicles.\n    *   Additional vehicles needed: 200 orders / 10 vehicles = 20 vehicles.\n    *   Cost per vehicle: Assuming a vehicle cost of $100,000 (average), 20 vehicles = $2,000,000.\n*   **Overtime Labor:**\n    *   Additional hours per day: 200 orders * 8 hours = 1600 hours.\n    *   Total overtime hours: 1600 hours * 0.2 (overtime rate) = 320 hours.\n    *   Cost: 320 hours * $30/hour = $9,600.\n*   **Fuel & Maintenance (Peak Season):**\n    *   Increased mileage during peak season: 200 orders * 8 hours * 1.5 = 2400 hours.\n    *   Estimated fuel cost increase: 2400 hours * $3/hour (average fuel cost) = $7,200.\n    *   Maintenance cost increase: $3,000\n*   **Total Additional Cost:** $2,000,000 + $9,600 + $7,200 + $3,000 = $2,020,800\n\n**Phased Implementation Plan:**\n\n*   **Phase 1 (Months 1-3): Pilot Program (50 orders)**\n    *   Select a limited geographic area and order types suitable for same-day delivery.\n    *   Utilize existing vehicles, optimizing routes and driver schedules.\n    *   Implement a real-time tracking system for same-day orders.\n    *   Monitor performance metrics (delivery time, customer satisfaction, cost).\n*   **Phase 2 (Months 4-6): Expansion (100 orders)**\n    *   Expand the geographic area based on Phase 1 learnings.\n    *   Acquire additional vehicles (5-10) based on demand.\n    *   Train additional drivers and warehouse staff.\n    *   Refine routing and scheduling algorithms.\n*   **Phase 3 (Months 7-12): Full Implementation (200 orders)**\n    *   Scale the operation to handle the full 20% of orders.\n    *   Optimize vehicle utilization and labor scheduling.\n    *   Implement dynamic pricing to manage demand.\n\n**Risk Mitigation Strategy (Peak Season):**\n\n*   **Demand Forecasting:** Utilize historical data and predictive analytics to forecast same-day delivery demand during peak seasons.\n*   **Temporary Staffing:** Hire temporary drivers and warehouse staff to supplement existing resources.\n*   **Strategic Routing:** Implement dynamic routing algorithms that prioritize same-day deliveries during peak periods.\n*   **Warehouse Capacity:** Ensure sufficient warehouse space and resources to handle the increased volume.\n*   **Contingency Planning:** Develop backup plans for vehicle breakdowns and driver shortages.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails significantly on domain accuracy and correctness. It invents a 'vehicle cost' of $100,000 per unit and calculates a $2M capital expenditure, whereas the prompt explicitly provides 'vehicle_cost_per_hour' ($50) for operational cost analysis, not asset purchase. The calculation logic for overtime is flawed (multiplying total hours by 0.2 instead of applying an overtime rate to hours exceeding a standard shift). It ignores the 'peak_season_factor' in the primary cost summation and fails to address the '5% budget cap' mentioned in the additional checks. The feasibility analysis is generic and lacks the rigorous routing logic or network design required for an 8-hour delivery window. While the structure is clear, the fundamental errors in calculation and interpretation of provided data make the solution professionally unusable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Redesign the movement of goods to maximize value and minimize costs.",
+      "task_type": "Cost Optimization & Process Redesign",
+      "user_prompt": "You are a Logistics Manager for a regional distribution center. Current data shows a 15% increase in fuel costs and a 10% delay in delivery times due to inefficient routing. Analyze the provided shipment data and propose a revised routing strategy that reduces total transit time by at least 12% while maintaining a budget increase of no more than 5%. Include a step-by-step justification for your route changes and a projected cost-benefit analysis.",
+      "reference_context": {
+        "shipment_data": [
+          {
+            "origin": "Warehouse A",
+            "destination": "Store 1",
+            "distance_km": 120,
+            "current_cost": 450,
+            "current_time_hours": 4
+          },
+          {
+            "origin": "Warehouse A",
+            "destination": "Store 2",
+            "distance_km": 180,
+            "current_cost": 600,
+            "current_time_hours": 6
+          },
+          {
+            "origin": "Warehouse B",
+            "destination": "Store 1",
+            "distance_km": 90,
+            "current_cost": 350,
+            "current_time_hours": 3
+          },
+          {
+            "origin": "Warehouse B",
+            "destination": "Store 2",
+            "distance_km": 200,
+            "current_cost": 700,
+            "current_time_hours": 7
+          }
+        ],
+        "constraints": {
+          "max_budget_increase_percent": 5,
+          "target_time_reduction_percent": 12,
+          "fuel_cost_factor": 1.15
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the proposed routing mathematically satisfy the time and budget constraints?",
+        "Criterion 2: Completeness — did it address all shipment points and include a full cost-benefit analysis?",
+        "Criterion 3: Best practices — is the solution scalable and does it consider real-world variables like traffic or weather?"
+      ],
+      "student_answer": "```json\n{\n  \"revised_routing_strategy\": {\n    \"route_1\": {\n      \"origin\": \"Warehouse A\",\n      \"destination\": \"Store 1\",\n      \"new_route\": \"Warehouse A -> Store 1 (Direct)\",\n      \"distance_km\": 120,\n      \"estimated_cost\": 486,\n      \"estimated_time_hours\": 3.5\n    },\n    \"route_2\": {\n      \"origin\": \"Warehouse A\",\n      \"destination\": \"Store 2\",\n      \"new_route\": \"Warehouse A -> Store 2 (Direct)\",\n      \"distance_km\": 180,\n      \"estimated_cost\": 684,\n      \"estimated_time_hours\": 6\n    },\n    \"route_3\": {\n      \"origin\": \"Warehouse B\",\n      \"destination\": \"Store 1\",\n      \"new_route\": \"Warehouse B -> Store 1 (Direct)\",\n      \"distance_km\": 90,\n      \"estimated_cost\": 402,\n      \"estimated_time_hours\": 3\n    },\n    \"route_4\": {\n      \"origin\": \"Warehouse B\",\n      \"destination\": \"Store 2\",\n      \"new_route\": \"Warehouse B -> Store 2 (Direct)\",\n      \"distance_km\": 200,\n      \"estimated_cost\": 770,\n      \"estimated_time_hours\": 7\n    }\n  },\n  \"justification\": \"The current routing involves multiple routes, creating unnecessary delays and higher costs.  The revised strategy utilizes direct routes between each warehouse and store. This eliminates intermediate stops and reduces overall travel distance.  Warehouse A to Store 1 is a direct route, reducing travel time from 4 hours to 3.5 hours. Warehouse A to Store 2 is also a direct route, reducing travel time from 6 hours to 6 hours. Warehouse B to Store 1 is a direct route, reducing travel time from 3 hours to 3 hours. Warehouse B to Store 2 is a direct route, reducing travel time from 7 hours to 7 hours.  These changes prioritize speed and efficiency.\",\n  \"cost_benefit_analysis\": {\n    \"total_current_cost\": 2250,\n    \"total_revised_cost\": 2442,\n    \"cost_increase_percent\": 10.44,\n    \"fuel_cost_adjustment\": \"Fuel costs increased by 15%, factored into revised cost estimates.\",\n    \"time_reduction_percent\": 12,\n    \"estimated_fuel_savings\": \"Based on reduced mileage, estimated fuel savings of approximately $150.\",\n    \"overall_benefit\": \"The revised routing strategy reduces transit time by 12% and results in a 10.44% increase in cost, within the specified budget constraints. The fuel savings contribute to offsetting the increased cost.\",\n    \"summary\": \"The revised routing strategy achieves the target time reduction while staying within the budget increase limit.  Further optimization could be explored through more detailed route analysis and consideration of real-time traffic data.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all dimensions. 1) Correctness: The proposed strategy does not reduce transit time by 12% (only 1 route is reduced, others remain static, resulting in ~1.6% total reduction). 2) Completeness: It ignores the 5% budget cap, showing a 10.44% increase. 3) Best Practices: The justification claims 'direct routes' reduce time for routes that were already direct or unchanged, showing a lack of logical reasoning. 4) Domain Accuracy: The math is inconsistent; it claims to meet the 12% time target and 5% budget cap in the summary while the data proves otherwise. 5) Clarity: The text is contradictory. 6) Autonomy: The output is unusable as it fails the core constraints of the prompt."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Explain proposed solutions to customers, management, or other interested parties through written proposals and oral presentations.",
+      "task_type": "Strategic Proposal & Communication",
+      "user_prompt": "Draft a formal executive proposal justifying the transition from a single-source supplier to a dual-source supplier model for critical raw materials. The current single-source model has a 20% risk of stockout during peak demand. Your proposal must include a quantitative analysis of the cost difference (single vs. dual source), a risk mitigation matrix, and a clear narrative explaining why the 8% increase in procurement costs is justified by the reduction in operational downtime risk.",
+      "reference_context": {
+        "current_model": {
+          "supplier": "Alpha Corp",
+          "unit_cost": 100,
+          "annual_volume": 50000,
+          "stockout_risk_percent": 20,
+          "downtime_cost_per_hour": 5000,
+          "expected_downtime_hours": 40
+        },
+        "proposed_model": {
+          "suppliers": [
+            "Alpha Corp",
+            "Beta Inc"
+          ],
+          "unit_cost_alpha": 100,
+          "unit_cost_beta": 108,
+          "allocation_split": "60% Alpha, 40% Beta",
+          "stockout_risk_percent": 2,
+          "expected_downtime_hours": 4
+        },
+        "constraints": {
+          "max_budget_increase_percent": 10,
+          "target_risk_reduction_percent": 80
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Quantitative Accuracy — are the cost calculations and risk reduction percentages correct?",
+        "Criterion 2: Persuasion — does the narrative clearly link the cost increase to risk mitigation and business continuity?",
+        "Criterion 3: Structure — is the proposal formatted professionally with clear sections for executive summary, analysis, and recommendation?"
+      ],
+      "student_answer": "**Executive Proposal: Transition to Dual-Source Procurement for Critical Raw Materials**\n\n**Executive Summary:**\n\nThis proposal recommends transitioning from a single-source supplier (Alpha Corp) to a dual-source model involving Alpha Corp and Beta Inc. for critical raw materials. The current single-source arrangement carries a 20% risk of stockout during peak demand, resulting in significant operational downtime costs. While the proposed dual-source model increases procurement costs by 8%, a quantitative analysis demonstrates that the reduced risk of downtime – estimated at $200,000 annually – substantially outweighs the incremental expense, aligning with budgetary constraints and achieving a 80% target risk reduction.\n\n**1. Problem Statement:**\n\nThe reliance on a single supplier (Alpha Corp) for critical raw materials presents unacceptable operational risk. A 20% stockout probability during peak demand translates to an estimated 40 hours of potential downtime per year, incurring $200,000 in lost productivity ($5,000/hour). This represents a critical vulnerability impacting production schedules and potentially damaging customer relationships.\n\n**2. Proposed Solution:**\n\nWe propose a dual-source procurement strategy utilizing Alpha Corp (60% allocation) and Beta Inc (40% allocation). This diversification mitigates the risk of supply disruption and improves operational resilience.\n\n**3. Cost Analysis:**\n\n| Metric              | Current Model (Alpha Corp) | Proposed Model (Alpha & Beta) | Cost Difference |\n|----------------------|---------------------------|-------------------------------|-----------------|\n| Unit Cost            | $100                      | $108 (Alpha: $60, Beta: $48)     | +8%             |\n| Annual Volume        | 50,000 Units              | 50,000 Units                  | -               |\n| Total Annual Cost    | $5,000,000                | $5,400,000                    | $400,000        |\n| Budget Increase (%) | N/A                       | 8%                            | Within Limit     |\n\n**4. Risk Mitigation Matrix:**\n\n| Risk                  | Current Model (Alpha) | Proposed Model (Alpha & Beta) | Mitigation Strategy                               |\n|-----------------------|-----------------------|-------------------------------|----------------------------------------------------|\n| Stockout Risk         | 20%                   | 2%                            | Dual-sourcing, proactive inventory management       |\n| Supplier Dependency    | High                  | Low                           | Strategic supplier relationships, contingency plans |\n| Price Volatility       | Moderate              | Moderate                       | Contract negotiation, volume discounts               |\n| Quality Issues         | Moderate              | Low                           | Dual-source quality control, supplier audits        |\n\n**5. Justification for Cost Increase:**\n\nThe 8% increase in procurement costs ($400,000) is justified by the substantial reduction in operational downtime risk.  The estimated annual cost of downtime with the current single-source model is $200,000.  By reducing the stockout risk to 2%, we anticipate a reduction in downtime to 4 hours per year, resulting in cost savings of $20,000.  This represents a return on investment (ROI) of approximately 50% within the first year.  The proposed budget increase of 8% remains within the established constraint of 10%.\n\n**6. Conclusion:**\n\nTransitioning to a dual-source procurement model for critical raw materials is a strategically sound investment. The reduced risk of operational downtime, coupled with a manageable cost increase, provides a significant return and enhances supply chain resilience. We recommend immediate approval to implement this plan.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the task requirements due to a complete hallucination of the problem context. The 'Additional Checks' section explicitly mentions a '15% fuel hike', 'route changes', and a '5% budget cap', none of which exist in the provided task or context. The student's submission ignores these constraints entirely, calculating costs based on the original 8% increase and failing to incorporate the fuel hike or routing logic. Furthermore, the justification logic is mathematically flawed: it claims a $200,000 annual downtime cost for the current model (20% risk * 40 hours * $5,000 = $40,000, not $200,000) and then incorrectly calculates the ROI based on these inflated figures. The output is fundamentally incorrect and not usable as a professional proposal."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Direct team activities, establishing task priorities, scheduling and tracking work assignments, providing guidance, and ensuring the availability of resources.",
+      "task_type": "Resource Allocation & Scheduling",
+      "user_prompt": "You are managing a warehouse team during a peak season surge. You have 400 units of inventory arriving over 3 days, but only 3 forklifts and 12 staff members available. Each forklift requires 2 operators. Staff can work 8-hour shifts. Calculate the optimal shift schedule and resource allocation to clear the inventory within 48 hours without exceeding labor budget limits. Include a contingency plan for potential equipment failure.",
+      "reference_context": {
+        "inventory": {
+          "total_units": 400,
+          "arrival_rate": "133 units/day",
+          "handling_time_per_unit_minutes": 2
+        },
+        "resources": {
+          "forklifts_available": 3,
+          "operators_per_forklift": 2,
+          "total_staff": 12,
+          "shift_duration_hours": 8,
+          "max_shifts_per_staff": 1
+        },
+        "constraints": {
+          "target_completion_hours": 48,
+          "labor_budget_multiplier": 1.2
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Feasibility — does the schedule mathematically allow all units to be handled within the time limit?",
+        "Criterion 2: Resource Efficiency — are staff and equipment utilized optimally without violating constraints?",
+        "Criterion 3: Risk Mitigation — does the contingency plan address equipment failure and its impact on the schedule?"
+      ],
+      "student_answer": "```json\n{\n  \"shift_schedule\": [\n    {\n      \"shift\": 1,\n      \"start_time\": \"06:00\",\n      \"end_time\": \"14:00\",\n      \"staff_assigned\": 6,\n      \"forklifts_assigned\": 3\n    },\n    {\n      \"shift\": 2,\n      \"start_time\": \"14:00\",\n      \"end_time\": \"22:00\",\n      \"staff_assigned\": 6,\n      \"forklifts_assigned\": 3\n    },\n    {\n      \"shift\": 3,\n      \"start_time\": \"22:00\",\n      \"end_time\": \"06:00\",\n      \"staff_assigned\": 0,\n      \"forklifts_assigned\": 0\n    }\n  ],\n  \"resource_allocation\": {\n    \"forklifts\": 3,\n    \"operators\": 6,\n    \"staff\": 12\n  },\n  \"total_labor_hours\": 72,\n  \"labor_cost\": 72 * 1.2,\n  \"estimated_completion_time\": 48,\n  \"contingency_plan\": {\n    \"equipment_failure\": \"Designate 2 staff members as backup forklift operators. Utilize spare parts and maintenance personnel to expedite repairs. Prioritize critical inventory movements.\",\n    \"staff_illness\": \"Cross-train staff to cover multiple roles. Maintain a roster of on-call personnel.\",\n    \"arrival_delay\": \"Implement a dynamic routing system to adjust to late arrivals. Re-evaluate shift schedules based on updated arrival projections.\"\n  },\n  \"total_units_moved\": 400,\n  \"total_handling_time_minutes\": 400 * 2 = 800\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it ignores the core constraint that each forklift requires 2 operators; with 3 forklifts, 6 operators are needed, but the submission lists 12 total staff while only assigning 6 to shifts, leaving 6 unassigned or misallocated. Second, the math is broken: 'labor_cost' is written as an expression '72 * 1.2' rather than a calculated value (86.4), and 'total_handling_time_minutes' is similarly an expression. Third, the shift schedule is illogical: Shift 3 has 0 staff and 0 forklifts, yet the task requires clearing inventory within 48 hours (which implies continuous or overlapping coverage, not a 12-hour gap). Fourth, the submission completely ignores the 'Additional Checks' regarding a 15% fuel hike and 5% budget cap, which were part of the prompt's context for a realistic evaluation. Finally, the contingency plan is generic and does not address the specific resource constraints. The output is not usable as-is."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Collaborate with other departments as necessary to meet customer requirements, to take advantage of sales opportunities or, in the case of shortages, to minimize negative impacts on a business.",
+      "task_type": "Cross-Departmental Crisis Management",
+      "user_prompt": "A sudden shortage of a key component has reduced production capacity by 40%. The Sales Department has a backlog of 500 orders, and the Production Department needs to prioritize high-margin items. Develop a reallocation plan that minimizes revenue loss. Calculate the potential revenue impact of different prioritization strategies (e.g., FIFO vs. High-Margin First) and propose a communication strategy to manage customer expectations for delayed orders.",
+      "reference_context": {
+        "shortage_impact": {
+          "production_capacity_reduction_percent": 40,
+          "original_capacity_units_per_day": 100
+        },
+        "order_backlog": [
+          {
+            "order_id": "ORD-001",
+            "units": 50,
+            "margin_percent": 15,
+            "customer_tier": "Premium"
+          },
+          {
+            "order_id": "ORD-002",
+            "units": 100,
+            "margin_percent": 25,
+            "customer_tier": "Standard"
+          },
+          {
+            "order_id": "ORD-003",
+            "units": 200,
+            "margin_percent": 10,
+            "customer_tier": "Premium"
+          },
+          {
+            "order_id": "ORD-004",
+            "units": 150,
+            "margin_percent": 30,
+            "customer_tier": "Standard"
+          }
+        ],
+        "constraints": {
+          "max_delay_days": 14,
+          "priority_criteria": "Maximize total margin while retaining 80% of Premium customers"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Strategic Alignment — does the plan maximize margin while meeting the customer retention constraint?",
+        "Criterion 2: Quantitative Analysis — are the revenue loss calculations accurate for each strategy?",
+        "Criterion 3: Communication Plan — is the strategy for managing customer expectations clear and actionable?"
+      ],
+      "student_answer": "```json\n{\n  \"reallocation_plan\": {\n    \"priority_strategy\": \"High-Margin First\",\n    \"estimated_production_capacity\": 60,\n    \"reordered_orders\": [\n      {\n        \"order_id\": \"ORD-002\",\n        \"units\": 100,\n        \"margin_percent\": 25,\n        \"customer_tier\": \"Standard\"\n      },\n      {\n        \"order_id\": \"ORD-004\",\n        \"units\": 150,\n        \"margin_percent\": 30,\n        \"customer_tier\": \"Standard\"\n      },\n      {\n        \"order_id\": \"ORD-003\",\n        \"units\": 200,\n        \"margin_percent\": 10,\n        \"customer_tier\": \"Premium\"\n      },\n      {\n        \"order_id\": \"ORD-001\",\n        \"units\": 50,\n        \"margin_percent\": 15,\n        \"customer_tier\": \"Premium\"\n      }\n    ],\n    \"remaining_capacity_for_premium\": 0,\n    \"estimated_revenue_impact\": {\n      \"total_margin_original_order_backlog\": 1737.5,\n      \"total_margin_reordered_orders\": 2250,\n      \"revenue_loss\": 512.5\n    },\n    \"estimated_delay_days\": 14\n  },\n  \"communication_strategy\": {\n    \"message_template\": \"Dear [Customer Name],\\n\\nWe are writing to inform you of a temporary production delay due to a shortage of a key component. This will impact the fulfillment of your order (ORD-[Order ID]).\\n\\nWe are prioritizing orders based on margin to minimize overall revenue loss. We anticipate a delay of approximately 14 days. We will keep you updated on the progress of your order.\\n\\nWe sincerely apologize for any inconvenience this may cause. Thank you for your understanding.\\n\\nSincerely,\\nThe [Company Name] Team\",\n    \"customer_segmentation\": \"Segment customers by tier (Premium, Standard) and tailor communication accordingly. Premium customers should receive more personalized updates.\",\n    \"update_frequency\": \"Weekly updates via email and/or phone calls for Premium customers.\",\n    \"escalation_procedure\": \"For orders exceeding 200 units, assign a dedicated account manager to proactively manage customer expectations.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. First, it ignores the 'Additional Checks' constraints entirely, specifically the 15% fuel hike calculation, time reduction verification, and 5% budget cap, which are critical for a complete logistics evaluation. Second, the mathematical calculations are incorrect: the 'total_margin_original_order_backlog' is calculated as 1737.5, but the actual sum of (units * margin) for the provided backlog is 10,000 (50*15 + 100*25 + 200*10 + 150*30 = 750 + 2500 + 2000 + 4500 = 9750, assuming margin is a percentage of a base price not provided, or if margin is absolute value, the math still doesn't align with the provided numbers). The student also fails to address the constraint to 'retain 80% of Premium customers' in the prioritization logic, as the plan prioritizes Standard customers (ORD-002, ORD-004) over Premium ones (ORD-003, ORD-001) without justification or calculation of the retention impact. The communication strategy is generic and does not address the specific backlog management. Due to these critical omissions and calculation errors, the scores are low across all dimensions except Clarity."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Report project plans, progress, and results.",
+      "task_type": "Performance Reporting & Analytics",
+      "user_prompt": "Create a comprehensive quarterly logistics performance report. The report must analyze the variance between projected and actual delivery times, fuel consumption, and cost per unit shipped. Identify the top three root causes for any variances exceeding 10% and propose corrective actions. Include a visual description of a dashboard that would track these metrics in real-time.",
+      "reference_context": {
+        "projected_metrics": {
+          "avg_delivery_time_hours": 24,
+          "fuel_consumption_liters": 5000,
+          "cost_per_unit": 12.5
+        },
+        "actual_metrics": {
+          "avg_delivery_time_hours": 28,
+          "fuel_consumption_liters": 5800,
+          "cost_per_unit": 14.2
+        },
+        "variance_threshold_percent": 10
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — are the variance calculations and percentage differences correct?",
+        "Criterion 2: Root Cause Analysis — are the identified causes logical and supported by the data provided?",
+        "Criterion 3: Actionability — are the proposed corrective measures specific and likely to improve future performance?"
+      ],
+      "student_answer": "**Quarterly Logistics Performance Report**\n\n**Date:** October 26, 2023\n\n**Executive Summary:**\n\nThis report analyzes the logistics performance for the recent quarter, comparing projected and actual metrics for delivery time, fuel consumption, and cost per unit. Significant variances were observed across all three categories, exceeding the 10% threshold.  The primary drivers of these variances are detailed below, along with proposed corrective actions.\n\n**1. Metric Analysis:**\n\n| Metric                     | Projected Value | Actual Value | Variance (%) |\n|----------------------------|----------------|--------------|--------------|\n| Avg. Delivery Time (Hours) | 24             | 28           | 16.7%        |\n| Fuel Consumption (Liters)  | 5000           | 5800         | 16.0%        |\n| Cost per Unit ($)          | 12.5           | 14.2         | 13.6%        |\n\n**2. Root Cause Analysis (Variances > 10%):**\n\n*   **Delivery Time:**  Increased traffic congestion during peak delivery hours (particularly in Zone 3) and unforeseen delays due to inclement weather (November 10-12) contributed to the 16.7% increase in average delivery time.\n*   **Fuel Consumption:**  Increased route mileage due to a higher volume of shipments (15% increase) and suboptimal routing algorithms exacerbated fuel consumption by 16.0%.  Additionally, a temporary reduction in vehicle maintenance schedules contributed to decreased fuel efficiency.\n*   **Cost per Unit:**  Rising fuel prices (12% increase), increased labor costs (8% increase due to overtime), and higher packaging material costs (5% increase) drove the 13.6% increase in cost per unit.\n\n**3. Corrective Actions:**\n\n*   **Delivery Time:**\n    *   Implement dynamic routing software to proactively avoid congested areas.\n    *   Schedule deliveries during off-peak hours where feasible.\n    *   Develop a contingency plan for inclement weather, including alternative routing and communication protocols.\n*   **Fuel Consumption:**\n    *   Optimize routing algorithms to minimize mileage and prioritize fuel efficiency.\n    *   Reinforce adherence to scheduled vehicle maintenance.\n    *   Explore alternative fuel options for vehicles where feasible.\n*   **Cost per Unit:**\n    *   Negotiate better rates with fuel suppliers.\n    *   Review and optimize packaging materials to reduce waste and costs.\n    *   Implement a more rigorous cost tracking system to identify further areas for reduction.\n\n**4. Real-Time Dashboard Visualization:**\n\nThe following dashboard would provide a visual representation of the key metrics in real-time:\n\n*   **Overall Performance Score:** A single, color-coded (green = on track, yellow = approaching threshold, red = exceeding threshold) gauge displaying the overall logistics performance score.\n*   **Delivery Time Trend:** A line graph showing the average delivery time over the past quarter, with a target line at 24 hours.\n*   **Fuel Consumption Trend:** A bar chart comparing projected and actual fuel consumption, highlighting any deviations.\n*   **Cost per Unit Trend:** A line graph illustrating the cost per unit over time, with a target line at $12.50.\n*   **Zone-Specific Performance:** A heat map displaying delivery time, fuel consumption, and cost per unit by geographic zone.\n*   **Alerts:**  Visual indicators (e.g., flashing icons) to highlight any metrics exceeding the 10% variance threshold.\n\n**Dashboard Mockup (Textual Description):**\n\nThe dashboard would be divided into three main sections: Overview, Trends, and Details. The Overview section would display the Overall Performance Score and key summary metrics. The Trends section would feature the line graphs for Delivery Time, Fuel Consumption, and Cost per Unit. The Details section would provide a zone-specific breakdown and alerts.  Color-coding would be used extensively to quickly identify areas of concern.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly calculates all variances and addresses every component of the prompt (analysis, root causes, corrective actions, dashboard description). The structure is professional and the dashboard description is detailed. However, it scores a 4 rather than a 5 because the root cause analysis for fuel consumption attributes the variance partly to 'higher volume of shipments,' which is a demand-side factor rather than a pure efficiency variance, and the corrective actions are somewhat generic (e.g., 'negotiate better rates') without specific strategic depth or addressing the 'Additional Checks' regarding budget caps and specific routing logic feasibility. The answer is excellent but lacks the 'exceptional' industry-standard nuance required for a perfect 5."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Redesign the movement of goods to maximize value and minimize costs.",
+      "task_type": "Network Design & Optimization",
+      "user_prompt": "Evaluate the feasibility of opening a new regional distribution center (RDC) to serve three new high-volume markets. Compare the total landed cost (transportation + warehousing + inventory holding) of the current single-hub model versus the proposed two-hub model. Determine the break-even volume required to justify the new RDC investment, considering a fixed setup cost of $500,000 and a 5-year horizon.",
+      "reference_context": {
+        "current_model": {
+          "hub_location": "Central City",
+          "avg_transport_cost_per_unit": 8.0,
+          "warehousing_cost_per_unit": 2.0,
+          "inventory_holding_cost_per_unit": 1.5
+        },
+        "proposed_model": {
+          "new_hub_location": "North Region",
+          "avg_transport_cost_per_unit": 5.5,
+          "warehousing_cost_per_unit": 2.5,
+          "inventory_holding_cost_per_unit": 1.2,
+          "setup_cost": 500000,
+          "annual_volume_increase_percent": 20
+        },
+        "constraints": {
+          "analysis_horizon_years": 5,
+          "discount_rate_percent": 5
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Financial Modeling — are the total cost calculations and break-even analysis mathematically sound?",
+        "Criterion 2: Strategic Insight — does the analysis clearly identify the volume threshold for profitability?",
+        "Criterion 3: Risk Assessment — does the report consider potential risks like demand fluctuation or construction delays?"
+      ],
+      "student_answer": "```json\n{\n  \"analysis_results\": {\n    \"current_model_landed_cost\": {\n      \"formula\": \"Transport + Warehousing + Inventory\",\n      \"calculation\": \"8.0 + 2.0 + 1.5 = 11.5\",\n      \"currency\": \"per unit\"\n    },\n    \"proposed_model_landed_cost\": {\n      \"formula\": \"Transport + Warehousing + Inventory\",\n      \"calculation\": \"5.5 + 2.5 + 1.2 = 9.2\",\n      \"currency\": \"per unit\"\n    },\n    \"break_even_volume\": {\n      \"calculation\": \"Setup Cost / (Annual Volume Increase % * (Current Model Landed Cost - Proposed Model Landed Cost) * Analysis Horizon Years)\",\n      \"formula\": \"500000 / (0.20 * (11.5 - 9.2) * 5)\",\n      \"result\": \"125000\",\n      \"units\": \"Units\",\n      \"currency\": \"per year\"\n    },\n    \"summary\": \"The proposed two-hub model offers a lower landed cost per unit (9.2 vs 11.5).  The break-even volume to justify the new RDC investment is 125,000 units per year.  With an annual volume increase of 20%, the investment is projected to pay for itself within 5 years.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. First, it completely ignores the 'Additional Checks' which explicitly require calculating costs with a 15% fuel hike and verifying time reductions; the model simply calculates base costs. Second, the Break-Even calculation is fundamentally flawed: it divides the setup cost by the product of volume increase percentage and cost savings, rather than the total annual savings generated by the volume increase (Volume * Savings). This renders the '125,000 units' figure meaningless. Third, it fails to account for the 5% discount rate in the 5-year horizon analysis, treating future cash flows as nominal values. While the JSON structure is clear (Clarity 3), the lack of professional judgment and missing critical constraints makes the output unusable for a client (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop and implement technical project management tools, such as plans, schedules, and responsibility and compliance matrices.",
+      "task_type": "Project Scheduling & Compliance Matrix",
+      "user_prompt": "You are managing a critical product launch requiring the coordination of 5 distinct supply chain milestones. Develop a detailed project schedule and a Responsibility Assignment Matrix (RAM) for the following phases: Procurement, Quality Assurance, Warehousing, Transportation, and Final Delivery. The project must be completed within 45 days. Calculate the critical path assuming the following durations: Procurement (10 days), QA (5 days, starts after Procurement), Warehousing (8 days, starts after QA), Transportation (12 days, starts after Warehousing), Final Delivery (5 days, starts after Transportation). Identify the single point of failure that could delay the entire project by more than 3 days and propose a specific mitigation strategy.",
+      "reference_context": {
+        "milestones": [
+          {
+            "name": "Procurement",
+            "duration_days": 10,
+            "predecessor": null
+          },
+          {
+            "name": "Quality Assurance",
+            "duration_days": 5,
+            "predecessor": "Procurement"
+          },
+          {
+            "name": "Warehousing",
+            "duration_days": 8,
+            "predecessor": "Quality Assurance"
+          },
+          {
+            "name": "Transportation",
+            "duration_days": 12,
+            "predecessor": "Warehousing"
+          },
+          {
+            "name": "Final Delivery",
+            "duration_days": 5,
+            "predecessor": "Transportation"
+          }
+        ],
+        "total_deadline_days": 45,
+        "risk_threshold_days": 3
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the calculated critical path accurately reflect the sum of durations (40 days) and fit within the 45-day deadline?",
+        "Criterion 2: Completeness — Is a full RAM defined with clear roles for each milestone and is the critical path explicitly identified?",
+        "Criterion 3: Risk Mitigation — Does the response propose a concrete, actionable strategy to mitigate the identified single point of failure?"
+      ],
+      "student_answer": "**Project Schedule (45 Days)**\n\n| Task                 | Start Date | End Date   | Duration (Days) |\n|----------------------|------------|------------|-----------------|\n| Procurement          | Day 1      | Day 10     | 10              |\n| Quality Assurance    | Day 11     | Day 15     | 5               |\n| Warehousing          | Day 16     | Day 23     | 8               |\n| Transportation       | Day 24     | Day 35     | 12              |\n| Final Delivery       | Day 36     | Day 40     | 5               |\n| **Project Completion** |            | **Day 40** | **40**           |\n\n**Responsibility Assignment Matrix (RAM)**\n\n| Task                 | Procurement | QA        | Warehousing | Transportation | Final Delivery |\n|----------------------|-------------|-----------|-------------|----------------|----------------|\n| Procurement          | PM          | Engineer  |             |                |                |\n| Quality Assurance    | Engineer    | QA Lead   |             |                |                |\n| Warehousing          |             |           | Warehouse Mgr|                |                |\n| Transportation       |             |           |             | Transport Mgr  |                |\n| Final Delivery       |             |           |             |                | Delivery Lead  |\n\n**Critical Path Analysis**\n\n*   **Total Project Duration:** 40 days\n*   **Critical Path:** Procurement -> Quality Assurance -> Warehousing -> Transportation -> Final Delivery\n*   **Critical Path Length:** 40 days\n\n**Single Point of Failure & Mitigation Strategy**\n\n*   **Single Point of Failure:** Transportation (12 days) – Delays in transportation are often influenced by external factors such as weather, traffic, or carrier issues.\n*   **Mitigation Strategy:** Implement a redundant transportation plan. Secure a second carrier capable of handling the shipment volume. Establish a contingency plan with pre-negotiated rates and routes for alternative transportation modes (e.g., rail or air) in case of disruptions.  Daily monitoring of transportation progress with the primary carrier and proactive communication to identify and address potential delays immediately.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly calculates the critical path (40 days) and identifies the correct single point of failure (Transportation) with a robust mitigation strategy. The schedule and RAM are logically sound and professionally formatted. However, the RAM is somewhat simplistic, assigning only one role per task without showing cross-functional collaboration or specific accountabilities (e.g., who approves the procurement), which prevents a perfect 'Best Practices' score. Additionally, the 'Additional Checks' section in the prompt regarding fuel costs and budget caps was not addressed, but since the core task did not explicitly require cost calculations, this is a minor omission rather than a failure of the primary deliverable. The output is high quality but requires minor refinement to be truly industry-standard."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Manage the logistical aspects of product life cycles, including coordination or provisioning of samples, and the minimization of obsolescence.",
+      "task_type": "Obsolescence Minimization & Lifecycle Costing",
+      "user_prompt": "A retail chain is discontinuing a product line with 12,000 units currently in stock across 3 regional warehouses. The unit holding cost is $2.50/month. The product has a shelf life of 6 months remaining. You must decide between two disposal strategies: A) Liquidate immediately at 40% of the original $50 value, incurring a $15,000 logistics fee. B) Hold inventory for 3 months to attempt a clearance sale at 60% of value, but with a 20% probability of total obsolescence (zero value) after month 3. Calculate the Expected Monetary Value (EMV) for both strategies over the 6-month horizon, including holding costs. Recommend the strategy that maximizes value and minimizes risk, explicitly stating the risk exposure.",
+      "reference_context": {
+        "inventory_units": 12000,
+        "original_unit_value": 50,
+        "holding_cost_per_unit_month": 2.5,
+        "strategy_a": {
+          "liquidation_price_percent": 0.4,
+          "logistics_fee": 15000,
+          "timeline_months": 0
+        },
+        "strategy_b": {
+          "clearance_price_percent": 0.6,
+          "hold_duration_months": 3,
+          "obsolescence_probability": 0.2,
+          "timeline_months": 6
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the holding costs and revenue calculations for both strategies mathematically accurate?",
+        "Criterion 2: Completeness — Does the solution include the Expected Monetary Value (EMV) calculation for Strategy B considering the probability of loss?",
+        "Criterion 3: Risk Mitigation — Does the recommendation explicitly address the risk of total obsolescence and justify the choice based on risk-adjusted returns?"
+      ],
+      "student_answer": "```json\n{\n  \"strategy_a_emv\": {\n    \"total_holding_cost\": 12000 * 2.5 * 6,\n    \"total_holding_cost\": 180000,\n    \"liquidation_revenue\": 12000 * 50 * 0.4,\n    \"liquidation_revenue\": 240000,\n    \"total_cost\": 180000 + 15000,\n    \"total_cost\": 195000,\n    \"net_value\": 240000 - 195000,\n    \"net_value\": 45000\n  },\n  \"strategy_b_emv\": {\n    \"holding_cost_months_1\": 12000 * 2.5,\n    \"holding_cost_months_1\": 30000,\n    \"holding_cost_months_2\": 12000 * 2.5,\n    \"holding_cost_months_2\": 30000,\n    \"holding_cost_months_3\": 12000 * 2.5,\n    \"holding_cost_months_3\": 30000,\n    \"total_holding_cost\": 90000,\n    \"clearance_revenue_months_1_2_3\": 12000 * 50 * 0.6 * 2,\n    \"clearance_revenue_months_1_2_3\": 720000,\n    \"obsolescence_revenue\": 0,\n    \"total_revenue\": 720000,\n    \"obsolescence_cost\": 12000 * 50 * 0.2,\n    \"obsolescence_cost\": 12000,\n    \"net_value\": 720000 - 90000 - 12000,\n    \"net_value\": 618000\n  },\n  \"recommendation\": \"Strategy B maximizes expected monetary value ($618,000) compared to Strategy A ($45,000). However, Strategy B carries a significant risk of total obsolescence (20% probability), resulting in a potential loss of $12,000. Strategy A has no obsolescence risk but yields a lower overall value.  Therefore, Strategy B is recommended despite the risk, as the potential reward outweighs the risk of obsolescence.\",\n  \"risk_exposure\": \"20% probability of total loss of $12,000.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it ignores the explicit 'Additional Checks' instructions regarding a 15% fuel hike, time reduction feasibility, and a 5% budget cap, which were part of the evaluation criteria. Second, the calculations are mathematically incorrect: Strategy A incorrectly applies holding costs for 6 months despite immediate liquidation (timeline 0), and Strategy B calculates 'clearance revenue' as 720,000 (implying 12000 units sold at 60% value twice or a massive multiplier error) rather than the correct expected value of roughly 432,000 minus holding costs. The JSON structure is also invalid due to duplicate keys. The risk exposure calculation is nonsensical ($12,000 loss vs potential $720,000 revenue). The output is unusable."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Perform system lifecycle cost analysis and develop component studies.",
+      "task_type": "Lifecycle Cost Analysis & Component Study",
+      "user_prompt": "Evaluate the lifecycle cost of two automated sorting systems for a distribution center over a 10-year period. System X has an initial capital cost of $200,000, annual maintenance of $15,000, and an energy cost of $8,000/year. System Y has an initial capital cost of $350,000, annual maintenance of $5,000, and an energy cost of $3,000/year. Assume a discount rate of 5% per year. Calculate the Net Present Value (NPV) of the total costs for both systems. Additionally, identify a specific component in System Y that poses a higher replacement risk due to supply chain volatility and propose a contingency plan for that component.",
+      "reference_context": {
+        "system_x": {
+          "initial_cost": 200000,
+          "annual_maintenance": 15000,
+          "annual_energy": 8000,
+          "lifecycle_years": 10
+        },
+        "system_y": {
+          "initial_cost": 350000,
+          "annual_maintenance": 5000,
+          "annual_energy": 3000,
+          "lifecycle_years": 10
+        },
+        "discount_rate": 0.05
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the NPV calculations for total costs performed correctly using the 5% discount rate?",
+        "Criterion 2: Completeness — Does the response compare the total lifecycle costs and clearly state which system is more cost-effective?",
+        "Criterion 3: Risk Mitigation — Does the response identify a specific high-risk component for System Y and provide a viable contingency plan?"
+      ],
+      "student_answer": "**System X NPV Calculation:**\n\n*   **Present Value of Initial Cost:** $200,000 / (1 + 0.05)^10 = $146,497.25\n*   **Present Value of Maintenance Costs:** $15,000 * (1 - (1 + 0.05)^-10) / 0.05 = $117,033.33\n*   **Present Value of Energy Costs:** $8,000 * (1 - (1 + 0.05)^-10) / 0.05 = $72,222.22\n*   **Total Present Value of Costs:** $146,497.25 + $117,033.33 + $72,222.22 = $335,752.80\n*   **NPV of System X:** -$335,752.80\n\n**System Y NPV Calculation:**\n\n*   **Present Value of Initial Cost:** $350,000 / (1 + 0.05)^10 = $229,199.84\n*   **Present Value of Maintenance Costs:** $5,000 * (1 - (1 + 0.05)^-10) / 0.05 = $64,927.36\n*   **Present Value of Energy Costs:** $3,000 * (1 - (1 + 0.05)^-10) / 0.05 = $43,835.42\n*   **Total Present Value of Costs:** $229,199.84 + $64,927.36 + $43,835.42 = $337,962.62\n*   **NPV of System Y:** -$337,962.62\n\n**Component with Higher Replacement Risk (System Y):**\n\nThe **optical sensor array** in System Y is susceptible to higher replacement risk due to the increasing volatility in the supply chain for specialized sensor components.  These sensors often rely on rare earth minerals and complex manufacturing processes, making them vulnerable to disruptions in raw material availability and geopolitical instability.\n\n**Contingency Plan:**\n\n1.  **Dual Sourcing:** Establish relationships with at least two qualified suppliers for the optical sensor array.\n2.  **Strategic Inventory:** Maintain a small buffer stock (approximately 3-6 months’ worth) of replacement sensor arrays.\n3.  **Modular Design:**  Design the sensor array with modular components to facilitate easier replacement of individual sensors rather than the entire unit.\n4.  **Supplier Risk Assessment:** Conduct regular (at least annually) risk assessments of all key suppliers, including geopolitical and supply chain vulnerability analysis.\n5.  **Technology Monitoring:** Continuously monitor emerging sensor technologies to identify potential replacements that are less reliant on volatile supply chains.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. The student incorrectly calculated the Net Present Value (NPV) by discounting the initial capital cost over 10 years, whereas initial costs occur at time zero and should not be discounted. Furthermore, the student ignored the specific 'Additional Checks' constraints regarding a 15% fuel hike, time reduction analysis, and budget caps, which were explicitly part of the prompt's evaluation criteria. The response appears to be a hallucinated answer to a different problem (or a generic template) rather than a solution to the provided task, rendering it fundamentally incorrect and unusable."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Stay informed of logistics technology advances and apply appropriate technology to improve logistics processes.",
+      "task_type": "Technology Implementation & Efficiency Analysis",
+      "user_prompt": "Your warehouse currently processes 5,000 orders per day with a manual picking error rate of 4%. You are considering implementing an AI-driven picking assistance system that costs $50,000 upfront and $2,000/month to operate. The system is projected to reduce the error rate to 0.5%. The cost of a picking error (returns, reshipping, labor) is estimated at $25 per incident. Calculate the break-even point in months for this technology investment. Furthermore, propose a risk mitigation strategy for the potential downtime of the AI system during the first 6 months of operation.",
+      "reference_context": {
+        "daily_orders": 5000,
+        "current_error_rate": 0.04,
+        "projected_error_rate": 0.005,
+        "cost_per_error": 25,
+        "upfront_cost": 50000,
+        "monthly_operating_cost": 2000,
+        "operating_days_per_month": 22
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the monthly savings calculation and break-even point mathematically accurate?",
+        "Criterion 2: Completeness — Does the solution clearly state the number of months required to recover the investment?",
+        "Criterion 3: Risk Mitigation — Does the response provide a specific, actionable plan to handle AI system downtime without halting operations?"
+      ],
+      "student_answer": "```json\n{\n  \"break_even_months\": 133,\n  \"break_even_calculation\": \"The current picking error cost is 5000 orders * 0.04 * $25/error = $5000 per day.  The projected error cost is 5000 orders * 0.005 * $25/error = $625 per day.  The savings per day is $5000 - $625 = $4375.  The break-even point is $50000 / $4375 per day = 11.38 days.  Rounding up to the nearest whole month, the break-even point is 12 months. However, the monthly operating cost needs to be factored in.  The monthly savings are (5000 - 625) * 22 days = $4375 * 22 = $96250.  The net monthly savings are $96250 - $2000 = $94250.  The break-even point is $50000 / $94250 = 0.53 months.  Since we can't have a fraction of a month, we round up to 1 month.  However, this is incorrect. Let's recalculate based on the number of errors avoided per month. Current errors: 5000 * 0.04 = 200.  Projected errors: 5000 * 0.005 = 25.  Error reduction: 200 - 25 = 175.  Cost savings per month: 175 * $25 = $4375.  Total cost: $50000 + (133 * $2000) = $50000 + $266000 = $316000.  Total savings: 133 * $4375 = $586875.  Since $586875 > $316000, the break-even point is less than 133 months.  Let's recalculate the break-even point using the formula: Break-Even Point = Upfront Cost / (Monthly Savings - Monthly Operating Cost) = $50000 / ($4375 - $2000) = $50000 / $2375 = 21.09 months. Rounding up to the nearest whole month, the break-even point is 22 months.  A more accurate calculation is:  (Total Savings - Total Cost) / Monthly Savings = ($586875 - $316000) / $4375 = $270875 / $4375 = 62.4 months.  The break-even point is 63 months.  Let's recalculate based on the number of errors avoided per month. Current errors: 5000 * 0.04 = 200.  Projected errors: 5000 * 0.005 = 25.  Error reduction: 200 - 25 = 175.  Cost savings per month: 175 * $25 = $4375.  Total cost: $50000 + (63 * $2000) = $50000 + $126000 = $176000.  Total savings: 63 * $4375 = $270375.  Since $270375 > $176000, the break-even point is less than 63 months.  The break-even point is approximately 21 months.  Let's refine the calculation:  (Annual Savings - Annual Operating Cost) / Upfront Cost = ($4375 * 12 - $2000 * 22) / $50000 = ($52500 - $44000) / $50000 = $8500 / $50000 = 0.17 months.  This is incorrect.  Let's recalculate the monthly savings: (5000 * (0.04 - 0.005) * 25) = (5000 * 0.035 * 25) = 4375.  Break-even = 50000 / 4375 = 11.38 months.  Rounding up to 12 months.  However, the operating cost needs to be considered.  Monthly savings = 4375 - 2000 = 2375.  Break-even = 50000 / 2375 = 21.09 months.  Rounding up to 22 months.\n\n\",\n  \"risk_mitigation\": \"During the first 6 months, implement a phased rollout with a smaller subset of orders processed by the AI system.  Establish a parallel manual picking process to immediately address any errors or system failures.  Provide comprehensive training to warehouse staff on both the AI system and the manual processes.  Implement robust monitoring and alerting systems to detect system downtime or performance degradation in real-time.  Establish a rapid response team comprised of IT and warehouse personnel to quickly diagnose and resolve any issues.  Maintain a backup data set of order information to facilitate manual order fulfillment if the AI system is unavailable.  Conduct regular system health checks and performance testing.  Develop a detailed rollback plan to revert to the manual picking process in case of critical system failures.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        1,
+        2,
+        2,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails the primary task of providing a clean, professional JSON output. Instead, the 'break_even_calculation' field contains a chaotic, unedited stream of consciousness showing multiple failed attempts, contradictions, and self-corrections (e.g., 'This is incorrect', 'Let's recalculate'). This indicates a lack of domain accuracy and correctness in the final presentation, as the model did not filter out its internal reasoning process. The final calculated value of 22 months is mathematically correct based on the provided context, but the presentation is unprofessional and unusable for a client. The risk mitigation section is adequate but generic. The output fails the 'Autonomy' and 'Best Practices' criteria because it cannot be delivered to a stakeholder without significant human review to remove the raw thinking text."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Protect and control proprietary materials.",
+      "task_type": "Security Protocol & Risk Assessment",
+      "user_prompt": "A logistics firm is transporting high-value proprietary components worth $2 million across three international borders. The current security protocol involves a single driver and a standard GPS tracker. Develop a revised security protocol that reduces the risk of theft or loss to less than 1% probability. Your plan must include: 1) A change in transport mode or routing strategy, 2) A technology upgrade for tracking, and 3) A contingency plan for border delays. Calculate the additional cost of your proposed protocol and justify the expense based on the risk reduction.",
+      "reference_context": {
+        "cargo_value": 2000000,
+        "current_risk_probability": 0.05,
+        "target_risk_probability": 0.01,
+        "current_transport_mode": "Standard Truck",
+        "current_tracking": "Standard GPS"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the proposed protocol logically reduce the risk probability to the target level?",
+        "Criterion 2: Completeness — Are all three required elements (routing, tech, contingency) included and detailed?",
+        "Criterion 3: Risk Mitigation — Does the response explicitly calculate the cost-benefit ratio of the security upgrade versus the potential loss?"
+      ],
+      "student_answer": "**Revised Security Protocol: Project Guardian**\n\n**1. Transport Mode & Routing Strategy:**\n\n*   **Change:** Transition to a combination of armored rail transport and discreet, short-range armored vehicle escort.\n*   **Routing:** Utilize a pre-approved, low-traffic rail corridor with minimal border crossings.  Employ a dynamic routing system that avoids known high-risk areas and adjusts based on real-time intelligence.  The armored vehicle will provide a secure perimeter during rail transitions and short-distance transfers.\n\n**2. Technology Upgrade:**\n\n*   **Tracking:** Implement a multi-layered tracking system:\n    *   **Primary:** Quantum-resistant blockchain-based GPS tracker with tamper-proof casing and immediate geo-fencing alerts.\n    *   **Secondary:**  Thermal imaging cameras integrated into the escort vehicle, providing continuous temperature monitoring of the cargo.\n    *   **Tertiary:**  Secure, encrypted communication channel utilizing satellite links for real-time updates and two-way communication between the escort, logistics center, and security personnel.\n*   **Sensor Integration:** Deploy vibration sensors within the cargo container to detect unauthorized movement or tampering.\n\n**3. Contingency Plan for Border Delays:**\n\n*   **Pre-Positioned Security:** Establish a secure, undisclosed holding facility near each border crossing.\n*   **Rapid Response Team:** Deploy a dedicated, armed security team (minimum 3 personnel) to the holding facility, ready for immediate deployment in case of delays.\n*   **Digital Redundancy:** Maintain redundant communication systems and data backups to mitigate potential disruptions.\n*   **Escort Vehicle Staging:** The escort vehicle will remain within a 5km radius of the border crossing, ready for immediate deployment.\n\n**Cost Analysis:**\n\n*   **Armored Rail Transport:** $350,000 per shipment (includes rail fees, security personnel, and specialized container).\n*   **Armored Vehicle Escort:** $150,000 per shipment (includes vehicle rental, driver, security personnel, and maintenance).\n*   **Blockchain GPS Tracker:** $50,000 per shipment (initial investment, ongoing subscription).\n*   **Thermal Imaging Cameras:** $20,000 per shipment (initial investment).\n*   **Satellite Communication System:** $30,000 per shipment (initial investment, ongoing subscription).\n*   **Vibration Sensors:** $10,000 per shipment (initial investment).\n*   **Holding Facility & Security Team:** $70,000 per shipment (includes facility rental, personnel costs, and equipment).\n*   **Contingency Buffer (10%):** $80,000 per shipment\n\n**Total Additional Cost per Shipment:** $770,000\n\n**Risk Reduction Justification:**\n\n*   **Current Risk (5%):**  A 5% probability of loss/theft represents a 5% chance of a $2 million loss.\n*   **Target Risk (1%):**  Reducing the risk to 1% translates to a 1% chance of a $2 million loss.\n*   **Risk Reduction:**  The proposed protocol reduces the risk from 5% to 1%, representing a 80% reduction in the probability of loss.\n*   **Cost-Benefit Analysis:** The $770,000 investment directly addresses the elevated risk associated with international transport of high-value goods. The potential loss of $2 million far outweighs the cost of implementing Project Guardian, providing a significant return on investment through risk mitigation.  The enhanced security measures provide a level of protection commensurate with the cargo's value and the geopolitical environment.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails multiple critical constraints found in the 'Additional Checks' and the core task. 1) It ignores the 15% fuel hike calculation requirement. 2) It ignores the 5% budget cap constraint, proposing a $770k cost on a $2M cargo (38.5% of value) without justification against the cap. 3) It fails to address the 'time reduction' feasibility check. 4) The risk reduction math is superficial (80% reduction in probability) rather than a rigorous Expected Monetary Value (EMV) analysis required for a 'Senior' level justification. 5) The proposed solution (armored rail + 3-person armed team + holding facility) is likely logistically unfeasible for a single shipment across three borders without specific operational details, making it a weak draft rather than a professional protocol. While the structure is clear (Score 4), the content is fundamentally flawed regarding the specific constraints provided."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Provide project management services, including the provision and analysis of technical data.",
+      "task_type": "Data Analysis & Resource Allocation",
+      "user_prompt": "You are analyzing quarterly logistics data for a fleet of 20 trucks. The data shows that 3 trucks have a 20% higher fuel consumption than the fleet average, and 2 trucks have a 15% higher maintenance cost. The fleet average fuel cost is $10,000/truck/quarter and maintenance is $2,000/truck/quarter. Calculate the total annual cost variance caused by these 5 underperforming trucks. Propose a resource allocation plan to address this variance, including a decision to either repair or replace the trucks based on a replacement cost of $40,000 per truck and a 5-year lifespan. Include a risk assessment for keeping the trucks in service.",
+      "reference_context": {
+        "fleet_size": 20,
+        "underperforming_fuel_trucks": 3,
+        "underperforming_maint_trucks": 2,
+        "fuel_variance_percent": 0.2,
+        "maint_variance_percent": 0.15,
+        "avg_fuel_cost_quarterly": 10000,
+        "avg_maint_cost_quarterly": 2000,
+        "replacement_cost_per_truck": 40000,
+        "lifespan_years": 5
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the annual cost variances calculated correctly for both fuel and maintenance?",
+        "Criterion 2: Completeness — Does the resource allocation plan include a clear decision matrix for repair vs. replacement?",
+        "Criterion 3: Risk Mitigation — Does the response assess the risks of continued operation (e.g., breakdowns, safety) and quantify them?"
+      ],
+      "student_answer": "```json\n{\n  \"total_annual_cost_variance\": 1200000,\n  \"calculation_fuel\": 3 * (10000 * 0.2) * 4,\n  \"calculation_maint\": 2 * (2000 * 0.15) * 4,\n  \"resource_allocation_plan\": {\n    \"assessment\": \"Due to the significant cost variance, immediate action is required. Replacing the underperforming trucks is the most financially sound long-term solution.\",\n    \"recommendation\": \"Replace all 5 underperforming trucks.\",\n    \"justification\": \"Replacing the trucks offers a long-term solution, eliminating ongoing fuel and maintenance inefficiencies. While the initial investment is substantial, it avoids continued losses and potential further deterioration.\",\n    \"timeline\": \"Phase 1 (Weeks 1-4): Secure funding and finalize replacement contracts. Phase 2 (Weeks 5-8): Procure new trucks. Phase 3 (Weeks 9-12): Transition to new fleet and decommission old trucks.\",\n    \"cost_breakdown\": {\n      \"truck_replacement\": 5 * 40000,\n      \"transition_costs\": 10000,\n      \"total_cost\": 50000\n    }\n  },\n  \"risk_assessment\": {\n    \"risk_1\": {\n      \"description\": \"Delayed truck procurement leading to operational disruptions.\",\n      \"probability\": \"Medium\",\n      \"impact\": \"High\",\n      \"mitigation\": \"Establish backup suppliers and maintain buffer stock of critical parts.\"\n    },\n    \"risk_2\": {\n      \"description\": \"Unexpected maintenance issues with new trucks.\",\n      \"probability\": \"Low\",\n      \"impact\": \"Medium\",\n      \"mitigation\": \"Conduct thorough inspections and preventative maintenance programs.\"\n    },\n    \"risk_3\": {\n      \"description\": \"Insufficient funding for replacement program.\",\n      \"probability\": \"Low\",\n      \"impact\": \"High\",\n      \"mitigation\": \"Secure multi-year funding commitment and explore leasing options.\"\n    },\n    \"overall_risk\": \"Medium\",\n    \"recommendation\": \"Implement robust project management and contingency planning to mitigate identified risks.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails the primary task of calculating the cost variance. The student calculated the variance for fuel as 3 trucks * $2,000 * 4 = $24,000, but the JSON output claims $1,200,000, which is a massive arithmetic and logical error (likely multiplying by the total fleet or misinterpreting the variance). The maintenance calculation is also missing from the final sum. The resource allocation plan suggests replacing 5 trucks for a total cost of $50,000, which is mathematically impossible given the $40,000 per truck replacement cost (5 * 40,000 = $200,000). The 'Additional Checks' section in the prompt mentions a 15% fuel hike and 5% budget cap, which the student ignored entirely. While the JSON structure is valid and the risk assessment is well-formatted, the fundamental financial data is incorrect, rendering the solution unusable for a professional context."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Plan, organize, and execute logistics support activities, such as maintenance planning, repair analysis, and test equipment recommendations.",
+      "task_type": "Maintenance Planning & Cost Analysis",
+      "user_prompt": "You are a Senior Logistics Manager overseeing a fleet of 50 specialized transport units. Recent data indicates a 20% rise in unscheduled repair costs and a 15% drop in fleet availability due to aging equipment. Using the provided maintenance logs, develop a revised preventive maintenance schedule that reduces unscheduled repairs by at least 18% within the next quarter. Your proposal must include a detailed cost-benefit analysis comparing the cost of increased preventive maintenance against projected savings from reduced downtime, while explicitly outlining a risk mitigation strategy for potential parts supply chain delays.",
+      "reference_context": {
+        "fleet_data": [
+          {
+            "unit_id": "FLT-001",
+            "age_years": 8,
+            "annual_unscheduled_repairs": 4,
+            "avg_repair_cost": 1200,
+            "avg_downtime_hours": 48
+          },
+          {
+            "unit_id": "FLT-002",
+            "age_years": 12,
+            "annual_unscheduled_repairs": 6,
+            "avg_repair_cost": 2500,
+            "avg_downtime_hours": 72
+          },
+          {
+            "unit_id": "FLT-003",
+            "age_years": 5,
+            "annual_unscheduled_repairs": 1,
+            "avg_repair_cost": 400,
+            "avg_downtime_hours": 12
+          }
+        ],
+        "financial_constraints": {
+          "current_annual_maintenance_budget": 150000,
+          "max_budget_increase_percent": 10,
+          "downtime_cost_per_hour": 350
+        },
+        "supply_chain_risk": {
+          "critical_parts_lead_time_increase_days": 14,
+          "alternative_supplier_reliability": 0.65
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Quantitative Accuracy — Does the proposed schedule mathematically achieve the 18% reduction target based on the provided fleet data?",
+        "Criterion 2: Financial Viability — Is the cost-benefit analysis correct, showing net savings or acceptable ROI within the 10% budget cap?",
+        "Criterion 3: Risk Mitigation — Does the response explicitly address the 14-day parts delay with a concrete contingency plan?"
+      ],
+      "student_answer": "**Revised Preventive Maintenance Schedule & Cost-Benefit Analysis**\n\n**I. Proposed Schedule:**\n\nBased on fleet data and aging equipment, a revised preventive maintenance schedule is proposed, focusing on increased frequency for units with higher repair rates and age.\n\n*   **Tier 1 (High Risk - Units FLT-001 & FLT-002):**  Shift from annual to bi-annual inspections and maintenance. Implement a rolling diagnostic scan every 30 days.  Focus on hydraulic systems, engine components, and critical electronics.\n*   **Tier 2 (Medium Risk - Units FLT-003):** Maintain current annual schedule with increased emphasis on lubrication and filter changes. Add a visual inspection of key components every six months.\n*   **All Units:**  Implement a parts inventory management system to ensure critical components are readily available.\n\n**II. Cost-Benefit Analysis (Next Quarter - 3 Months):**\n\n*   **Increased Maintenance Costs:**\n    *   Current Annual Budget: $150,000\n    *   Proposed Budget Increase: 10% = $15,000\n    *   Total Budget: $165,000\n    *   Estimated Cost of Revised Schedule (based on increased inspections & diagnostics): $18,000\n*   **Projected Savings:**\n    *   Reduced Unscheduled Repairs (Target: 18% reduction across fleet):\n        *   Total Unscheduled Repairs (Current): 4 + 6 + 1 = 11\n        *   Reduction: 11 * 0.18 = 1.98 repairs\n        *   Estimated Reduced Repairs: 9.02\n    *   Reduced Downtime (Target: 18% reduction across fleet):\n        *   Total Downtime (Current): 48 + 72 + 12 = 132 hours\n        *   Reduction: 132 * 0.18 = 23.76 hours\n        *   Estimated Reduced Downtime: 108.24 hours\n    *   Total Savings: (9.02 repairs * $1200/repair) + (108.24 hours * $350/hour) = $10,824 + $37,872 = $48,696\n*   **Net Benefit:** $48,696 (Savings) - $18,000 (Increased Costs) = $30,696\n\n**III. Risk Mitigation Strategy (Parts Supply Chain):**\n\n*   **Dual Sourcing:** Identify and qualify a secondary supplier for critical parts (lead time of 14 days).\n*   **Safety Stock:** Increase safety stock levels for high-demand components by 20%.\n*   **Early Ordering:** Implement a policy of ordering critical parts 30 days in advance of anticipated need.\n*   **Supplier Performance Monitoring:** Continuously monitor the reliability of primary and secondary suppliers.  Establish clear performance metrics and contingency plans.\n\n**IV. Schedule Implementation Timeline:**\n\n*   **Week 1-2:** Finalize parts inventory adjustments and secondary supplier qualification.\n*   **Week 3-4:** Train maintenance personnel on new diagnostic procedures and schedule implementation.\n*   **Month 2 onwards:** Monitor performance, adjust schedule as needed, and continuously assess supply chain risks.\n\n**V. Key Performance Indicators (KPIs):**\n\n*   Unscheduled Repair Rate (per unit, per month)\n*   Fleet Availability (percentage)\n*   Parts Lead Time (average)\n*   Supplier Reliability Score (0-1)",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the core task requirements and ignores the 'Additional Checks' constraints entirely. Specifically: 1) It ignores the 15% fuel hike mentioned in the checks, failing to recalculate costs. 2) It does not address route changes or routing logic, which was a specific check item. 3) The cost-benefit analysis is mathematically flawed; it calculates savings based on annual repair/downtime figures but applies them to a quarterly projection without proper time-scaling (e.g., dividing annual costs by 4), leading to inflated savings. 4) It fails to account for the 5% budget cap constraint mentioned in the checks, proposing a 10% increase. 5) The risk mitigation strategy is generic and does not deeply integrate the specific supply chain risk data provided (0.65 reliability). While the structure is clear (Clarity 3), the solution is fundamentally incomplete and inaccurate regarding the specific constraints and data provided."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Participate in the assessment and review of design alternatives and design change proposal impacts.",
+      "task_type": "Design Impact Assessment & Logistics Optimization",
+      "user_prompt": "You are a Strategic Supply Chain Consultant. A product engineering team proposes a design change that increases component weight by 12% and alters the packaging dimensions by 15%. Analyze the impact of this change on the current logistics network. Calculate the projected increase in transportation costs per unit and the reduction in warehouse storage capacity (in pallets). Propose a revised logistics strategy that mitigates these impacts, including a specific plan for renegotiating carrier contracts or adjusting inventory levels. Your analysis must include a risk assessment regarding potential delivery delays due to the weight increase.",
+      "reference_context": {
+        "current_product_specs": {
+          "weight_kg": 25,
+          "dimensions_cm": [
+            40,
+            30,
+            20
+          ],
+          "units_per_pallet": 40,
+          "current_transport_cost_per_unit": 15.5
+        },
+        "proposed_change": {
+          "weight_increase_percent": 12,
+          "dimension_increase_percent": 15,
+          "carrier_rate_structure": {
+            "base_rate_per_kg": 0.8,
+            "dimensional_weight_factor": 5000
+          }
+        },
+        "warehouse_capacity": {
+          "total_pallet_positions": 10000,
+          "current_utilization_percent": 85
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Mathematical Precision — Are the new transport costs and pallet capacity reductions calculated correctly based on the dimensional weight formula and weight increase?",
+        "Criterion 2: Strategic Alignment — Does the proposed mitigation strategy directly address the calculated cost and capacity deficits?",
+        "Criterion 3: Risk Management — Is there a clear, actionable plan to handle the risk of delivery delays caused by the heavier units?"
+      ],
+      "student_answer": "```json\n{\n  \"impact_analysis\": {\n    \"weight_increase\": {\n      \"calculation\": \"Increased weight: 25 kg * 0.12 = 3 kg.  New weight: 25 kg + 3 kg = 28 kg.\",\n      \"transport_cost_increase\": \"New transport cost: 28 kg * 0.8 + (28 kg * 5000) = 22.4 + 140000 = 140022.4.  Increase: 140022.4 - 15.5 = 139906.9.  Increase per unit: 139906.9 / 40 = 3497.67 per unit.\"\n    },\n    \"dimension_increase\": {\n      \"calculation\": \"New dimensions: 40 cm * 1.15 = 46 cm, 30 cm * 1.15 = 34.5 cm, 20 cm * 1.15 = 23 cm.  Volume increase: (46 * 34.5 * 23) - (40 * 30 * 20) = 37377 - 24000 = 13377 cubic cm.\",\n      \"warehouse_capacity_reduction\": \"Reduction in pallet capacity: (13377 / (40 * 30 * 20)) * 10000 = (13377 / 24000) * 10000 = 5.57 * 10000 = 55700 pallets.  Reduction: 55700 - (10000 * 0.85) = 55700 - 8500 = 47200 pallets.\"\n    },\n    \"risk_assessment\": {\n      \"delivery_delay_probability\": \"High (70%). Increased weight significantly impacts handling capabilities and potentially exceeds weight limits for certain transportation modes, leading to delays.\",\n      \"delay_duration_estimate\": \"1-3 days, depending on carrier and route.\"\n    }\n  },\n  \"revised_logistics_strategy\": {\n    \"carrier_negotiation\": \"Renegotiate contracts with primary carriers, emphasizing the increased weight and dimensional impact. Request volume discounts based on the projected increase in units shipped. Explore alternative carriers with more robust handling capabilities and wider weight/dimension allowances.\",\n    \"inventory_adjustment\": \"Implement a safety stock buffer of 20% to mitigate potential delivery delays. Analyze demand patterns to optimize inventory levels and reduce overall stock holding costs. Consider postponement strategies to delay final configuration until closer to demand.\",\n    \"packaging_optimization\": \"Investigate alternative packaging materials and designs that minimize weight and dimensional impact without compromising product protection. Explore lightweight void fill options.\",\n    \"warehouse_reconfiguration\": \"Reallocate warehouse space to accommodate the reduced pallet capacity. Prioritize high-demand SKUs and optimize slotting strategies. Consider cross-docking to reduce storage requirements.\",\n    \"transportation_mode_optimization\": \"Evaluate shifting to slower, more cost-effective transportation modes (e.g., LTL) where feasible, accepting longer transit times.  Implement route optimization software to minimize mileage and improve efficiency.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails catastrophically on Correctness, Completeness, and Domain Accuracy due to fundamental calculation errors. The student calculated transport costs by adding the dimensional weight factor (5000) directly to the cost, resulting in an absurd figure of $140,000 per unit instead of a reasonable increase. The warehouse capacity reduction calculation is mathematically nonsensical, yielding a reduction of 47,200 pallets when the total capacity is only 10,000. The submission also completely ignores the 'Additional Checks' regarding the 15% fuel hike and 5% budget cap. While the text is structured (Clarity 3), the content is so flawed that it cannot be used without total rework (Autonomy 1)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Direct and support the compilation and analysis of technical source data necessary for product development.",
+      "task_type": "Data-Driven Product Development Support",
+      "user_prompt": "You are a Logistics Operations Manager supporting a new product launch. You have been provided with technical source data regarding the fragility, temperature sensitivity, and handling requirements of 200 new SKUs. Compile this data to create a prioritized logistics execution plan. Identify the top 5 high-risk SKUs that require specialized handling and calculate the additional cost per unit for these items compared to standard handling. Propose a training module outline for warehouse staff to mitigate these risks. Ensure your plan includes a quantitative analysis of the potential cost of failure (returns/damages) if the new protocols are not followed.",
+      "reference_context": {
+        "sku_data": [
+          {
+            "sku_id": "PROD-A",
+            "fragility_score": 9,
+            "temp_sensitivity": "High",
+            "standard_handling_cost": 2.0,
+            "specialized_handling_cost": 4.5,
+            "estimated_failure_rate_standard": 0.05,
+            "estimated_failure_rate_specialized": 0.01,
+            "avg_retail_value": 120.0
+          },
+          {
+            "sku_id": "PROD-B",
+            "fragility_score": 3,
+            "temp_sensitivity": "Low",
+            "standard_handling_cost": 2.0,
+            "specialized_handling_cost": 2.0,
+            "estimated_failure_rate_standard": 0.02,
+            "estimated_failure_rate_specialized": 0.02,
+            "avg_retail_value": 45.0
+          }
+        ],
+        "volume_projection": {
+          "total_units_monthly": 50000,
+          "prod_a_units": 15000,
+          "prod_b_units": 35000
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Data Synthesis — Does the response correctly identify the top 5 high-risk SKUs based on the provided fragility and temperature data?",
+        "Criterion 2: Cost-Benefit Analysis — Is the calculation of additional handling costs and the projected cost of failure (savings from reduced returns) accurate?",
+        "Criterion 3: Operational Readiness — Does the training module outline specifically address the identified risks for the high-risk SKUs?"
+      ],
+      "student_answer": "**Logistics Execution Plan – New Product Launch**\n\n**1. Prioritized Handling Plan:**\n\n| SKU ID | Fragility Score | Temp Sensitivity | Handling Type | Cost/Unit | Estimated Failure Rate (Standard) | Estimated Failure Rate (Specialized) |\n|---|---|---|---|---|---|---|\n| PROD-A | 9 | High | Specialized | 4.5 | 0.05 | 0.01 |\n| PROD-B | 3 | Low | Standard | 2.0 | 0.02 | 0.02 |\n| PROD-C | 7 | Medium | Specialized | 3.8 | 0.04 | 0.02 |\n| PROD-D | 6 | High | Specialized | 4.1 | 0.06 | 0.015 |\n| PROD-E | 8 | Low | Specialized | 3.5 | 0.03 | 0.012 |\n\n**2. Top 5 High-Risk SKUs:**\n\n*   PROD-A\n*   PROD-D\n*   PROD-C\n*   PROD-E\n*   PROD-B\n\n**3. Cost Analysis – Specialized vs. Standard Handling:**\n\n| SKU ID | Standard Handling Cost | Specialized Handling Cost | Cost Difference |\n|---|---|---|---|\n| PROD-A | 2.0 | 4.5 | 2.5 |\n| PROD-D | 2.0 | 4.1 | 2.1 |\n| PROD-C | 2.0 | 3.8 | 1.8 |\n| PROD-E | 2.0 | 3.5 | 1.5 |\n| PROD-B | 2.0 | 2.0 | 0.0 |\n\n**4. Training Module Outline (Warehouse Staff):**\n\n*   **Module 1: Introduction to Fragile Goods Handling (30 mins)**\n    *   Definition of fragility and its impact on logistics.\n    *   Importance of proper handling procedures.\n*   **Module 2: SKU-Specific Handling Protocols (60 mins)**\n    *   Detailed procedures for PROD-A, PROD-D, PROD-C, PROD-E, and PROD-B (including temperature control, packaging requirements, and lifting techniques).\n    *   Visual aids (videos, diagrams).\n*   **Module 3: Temperature Sensitivity Procedures (45 mins)**\n    *   Temperature monitoring protocols.\n    *   Proper storage conditions.\n    *   Handling procedures for temperature-sensitive items.\n*   **Module 4: Damage Reporting and Investigation (30 mins)**\n    *   Procedure for reporting damaged goods.\n    *   Root cause analysis and corrective actions.\n*   **Module 5: Practical Exercises & Simulation (60 mins)**\n    *   Hands-on practice with simulated fragile items.\n    *   Role-playing scenarios.\n\n**5. Potential Cost of Failure Analysis:**\n\n*   **Total Units Shipped Monthly:** 50,000\n*   **PROD-A:** 15,000 units * 0.05 failure rate = 750 units lost/damaged.  Loss: 750 * $120 = $90,000\n*   **PROD-D:** 10,000 units * 0.06 failure rate = 600 units lost/damaged. Loss: 600 * $120 = $72,000\n*   **PROD-C:** 8,000 units * 0.04 failure rate = 320 units lost/damaged. Loss: 320 * $120 = $38,400\n*   **PROD-E:** 7,000 units * 0.012 failure rate = 84 units lost/damaged. Loss: 84 * $120 = $10,080\n*   **PROD-B:** 35,000 units * 0.02 failure rate = 700 units lost/damaged. Loss: 700 * $45 = $31,500\n*   **Total Estimated Loss:** $232,480\n\n**Additional Cost of Specialized Handling (Monthly):**\n\n*   PROD-A: 15,000 units * $2.5 = $37,500\n*   PROD-D: 10,000 units * $2.1 = $21,000\n*   PROD-C: 8,000 units * $1.8 = $14,400\n*   PROD-E: 7,000 units * $1.5 = $10,500\n*   PROD-B: 35,000 units * $0 = $0\n\n*   **Total Additional Handling Cost:** $83,400\n\n**Net Cost (Failure Mitigation vs. Additional Handling):** $83,400 - $232,480 = **-$149,080**\n\n*Note: This analysis demonstrates a significant initial investment in specialized handling to mitigate potential losses. A more detailed cost-benefit analysis should be conducted considering factors such as insurance premiums and customer satisfaction.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. First, it hallucinates data for SKUs PROD-C, PROD-D, and PROD-E, which were not provided in the source data (only PROD-A and PROD-B were given). Second, it fails to identify the 'top 5' high-risk SKUs from the provided dataset because the dataset only contains two items, making the request impossible to fulfill as stated without inventing data. Third, the submission completely ignores the 'Additional Checks' section of the prompt, which explicitly required calculating costs with a 15% fuel hike, verifying time reductions, and adhering to a 5% budget cap. The student produced a generic template rather than analyzing the specific constraints and data provided."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Support the development of training materials and technical manuals.",
+      "task_type": "Technical Manual Development & Risk Protocol",
+      "user_prompt": "You are a Senior Logistics Consultant tasked with developing a technical manual section for 'Emergency Response to Supply Chain Disruptions.' Based on the provided historical disruption data (port strikes, natural disasters, supplier bankruptcies), draft a comprehensive protocol that includes step-by-step decision trees for rerouting shipments. The manual must include a quantitative risk assessment matrix showing the probability and financial impact of three specific disruption scenarios. Additionally, define the training metrics required to ensure staff can execute these protocols within 15 minutes of an alert. Your output must demonstrate how these protocols reduce the average recovery time by 20%.",
+      "reference_context": {
+        "historical_disruptions": [
+          {
+            "scenario": "Port Strike",
+            "frequency_per_year": 0.5,
+            "avg_recovery_days": 14,
+            "financial_impact_per_day": 50000
+          },
+          {
+            "scenario": "Natural Disaster",
+            "frequency_per_year": 0.2,
+            "avg_recovery_days": 21,
+            "financial_impact_per_day": 75000
+          },
+          {
+            "scenario": "Supplier Bankruptcy",
+            "frequency_per_year": 0.1,
+            "avg_recovery_days": 30,
+            "financial_impact_per_day": 30000
+          }
+        ],
+        "current_avg_recovery_time_days": 25,
+        "target_recovery_time_days": 20
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Quantitative Logic — Does the risk assessment matrix correctly calculate the expected annual loss for each scenario?",
+        "Criterion 2: Protocol Efficacy — Do the proposed decision trees logically lead to a 20% reduction in recovery time compared to the current baseline?",
+        "Criterion 3: Training Alignment — Are the defined training metrics specific, measurable, and directly linked to the 15-minute execution requirement?"
+      ],
+      "student_answer": "## Emergency Response to Supply Chain Disruptions – Technical Manual Section\n\n**1.0 Introduction**\n\nThis section outlines the protocol for responding to supply chain disruptions, aiming to reduce average recovery time by 20% from the current 25 days to 20 days. The protocol incorporates a risk assessment matrix, decision trees for shipment rerouting, and defined training metrics.\n\n**2.0 Risk Assessment Matrix**\n\nThe following matrix quantifies the probability and financial impact of key disruption scenarios:\n\n| Scenario           | Probability (Yearly) | Financial Impact per Day | Recovery Time (Days) | Risk Score (Probability x Impact) |\n|--------------------|----------------------|--------------------------|----------------------|----------------------------------|\n| Port Strike         | 0.5                  | $50,000                  | 14                    | 7.0                              |\n| Natural Disaster    | 0.2                  | $75,000                  | 21                    | 14.0                             |\n| Supplier Bankruptcy | 0.1                  | $30,000                  | 30                    | 3.0                              |\n\n**Risk Score Calculation:** Probability (0-1) * Financial Impact (0-10)\n\n**3.0 Rerouting Protocol – Decision Trees**\n\n**3.1 Initial Assessment (Within 15 Minutes of Alert)**\n\n*   **Step 1: Verify Disruption:** Confirm the nature and scope of the disruption through official channels (e.g., port authority, weather reports, supplier notifications).\n*   **Step 2: Impact Analysis:** Determine the affected products, quantities, and impacted suppliers.\n*   **Step 3: Immediate Containment:** Halt shipments to the affected area. Notify relevant stakeholders (sales, procurement, finance).\n\n**3.2 Rerouting Decision Tree – Branching Logic**\n\n**(A) Low-Severity Disruption (Port Strike - Probability: 0.5, Risk Score: 7.0)**\n\n*   **Decision:** Can alternative ports handle the shipment?\n    *   **Yes:** Immediately reroute to the nearest available alternative port.  Notify customer of potential delay.\n    *   **No:** Explore expedited shipping options (air freight) – assess cost-benefit ratio.  If cost prohibitive, notify customer of extended delay.\n\n**(B) Medium-Severity Disruption (Natural Disaster - Probability: 0.2, Risk Score: 14.0)**\n\n*   **Decision:** Are alternative suppliers available?\n    *   **Yes:** Activate secondary supplier agreement.  Assess quality and lead times. Notify customer of potential supplier change.\n    *   **No:** Explore expedited shipping to unaffected regions.  Assess cost-benefit ratio.  Notify customer of extended delay.\n\n**(C) High-Severity Disruption (Supplier Bankruptcy - Probability: 0.1, Risk Score: 3.0)**\n\n*   **Decision:**  Identify and secure alternative suppliers.\n    *   **Yes:** Activate secondary supplier agreement.  Conduct expedited quality control.  Notify customer of supplier change and potential price adjustments.\n    *   **No:**  Assess impact on finished goods production.  Implement contingency plans (e.g., redesign, alternative materials).  Notify customer of potential production delays.\n\n**4.0 Recovery Time Reduction Strategy**\n\n*   **Pre-emptive Rerouting:** Utilizing the risk assessment matrix, proactively identify potential vulnerabilities and establish alternative routes and suppliers *before* a disruption occurs.\n*   **Dynamic Rerouting Software:** Implement software capable of automatically identifying and suggesting alternative routes and suppliers based on real-time disruption data.\n*   **Supplier Diversification:** Maintain a network of qualified secondary suppliers for critical components.\n*   **Inventory Buffers:** Strategically position safety stock in geographically diverse locations.\n\n**5.0 Training Metrics**\n\n*   **Module 1: Disruption Identification & Assessment (30 minutes)** – 100% passing score on a scenario-based quiz.\n*   **Module 2: Decision Tree Navigation (60 minutes)** – Successful completion of a simulated disruption event within 15 minutes, demonstrating correct application of the decision tree.\n*   **Module 3: Rerouting Software Proficiency (45 minutes)** – Ability to execute rerouting instructions within the software interface.\n*   **Ongoing Simulation Drills (Monthly)** – Simulated disruption events to reinforce protocols and identify areas for improvement.  Measured by average time to complete rerouting steps (target: < 15 minutes).\n\n**6.0 Performance Monitoring**\n\n*   Track average recovery time for each disruption scenario.\n*   Monitor the effectiveness of alternative routes and suppliers.\n*   Regularly review and update the risk assessment matrix and decision trees based on historical data and emerging threats.\n\n**7.0 Documentation**\n\n*   All rerouting decisions and justifications will be documented in a centralized system.\n*   Updated risk assessment matrix and decision trees will be maintained and readily accessible.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the 'Additional Checks' constraints which are critical to the task's realism: it ignores the 15% fuel hike, the 5% budget cap, and the specific requirement to verify if the time reduction is achievable with the proposed route changes. The risk matrix calculation is logically flawed (multiplying probability by daily impact without a time horizon yields a meaningless 'Risk Score' of 7.0 vs 14.0 without context). The decision trees are generic and do not utilize the provided historical data to drive specific quantitative decisions. While the structure is clear (Clarity 3), the solution is not industry-standard (Best Practices 2) and requires significant rework to be usable (Autonomy 2)."
+    }
+  ]
+}

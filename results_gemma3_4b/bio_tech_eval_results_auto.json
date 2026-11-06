@@ -1,0 +1,910 @@
+{
+  "meta": {
+    "job_title": "Bioinformatics Technicians",
+    "job_id": "bio_tech_eval",
+    "onet_code": "15-2099.01",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 19,
+    "evaluated_tasks": 19,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.99,
+      "dimensions": {
+        "Correctness": 1.83,
+        "Completeness": 1.83,
+        "Best Practices": 1.72,
+        "Domain Accuracy": 2.0,
+        "Clarity": 2.72,
+        "Autonomy": 1.83
+      },
+      "evaluated_tasks": 19,
+      "scale_max": 5
+    },
+    "total_time_seconds": 921.67
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze or manipulate bioinformatics data using software packages, statistical applications, or data mining techniques.",
+      "task_type": "Data Analysis & Scripting",
+      "user_prompt": "Given a CSV file containing RNA-seq count data with potential missing values and inconsistent gene IDs, write a Python script using Pandas and SciPy to normalize the data, impute missing values using the median of the column, and perform a basic differential expression analysis between two conditions. Output the top 10 differentially expressed genes with their log2 fold change and p-values.",
+      "reference_context": {
+        "file_name": "rna_seq_counts.csv",
+        "columns": [
+          "Gene_ID",
+          "Condition_A_Count",
+          "Condition_B_Count",
+          "Sample_ID"
+        ],
+        "sample_data": [
+          {
+            "Gene_ID": "ENSG000001",
+            "Condition_A_Count": 150,
+            "Condition_B_Count": 200,
+            "Sample_ID": "S1"
+          },
+          {
+            "Gene_ID": "ENSG000002",
+            "Condition_A_Count": null,
+            "Condition_B_Count": 180,
+            "Sample_ID": "S1"
+          },
+          {
+            "Gene_ID": "ENSG000003",
+            "Condition_A_Count": 300,
+            "Condition_B_Count": null,
+            "Sample_ID": "S1"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the script run without errors and produce the correct statistical output?",
+        "Criterion 2: Completeness — Did it handle missing values, normalization, and ranking as specified?",
+        "Criterion 3: Best practices — Is the code modular, commented, and using appropriate libraries?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom scipy import stats\n\ndef analyze_rna_seq_data(file_name):\n    \"\"\"\n    Normalizes, imputes missing values, and performs differential expression analysis on RNA-seq count data.\n\n    Args:\n        file_name (str): The name of the CSV file containing the RNA-seq count data.\n\n    Returns:\n        pandas.DataFrame: A DataFrame containing the top 10 differentially expressed genes with their log2 fold change and p-values.\n    \"\"\"\n\n    df = pd.read_csv(file_name)\n\n    # Impute missing values with the median of the column\n    for col in df.columns:\n        if df[col].isnull().any():\n            df[col] = df[col].fillna(df[col].median())\n\n    # Convert Gene_ID to string type\n    df['Gene_ID'] = df['Gene_ID'].astype(str)\n\n    # Calculate log2 fold change\n    df['log2FoldChange'] = np.log2(df['Condition_B_Count'] / df['Condition_A_Count'])\n\n    # Perform a basic t-test for differential expression\n    for col in df.columns:\n        if col != 'log2FoldChange':\n            t_statistic, p_value = stats.ttest_ind(df[col][df['Sample_ID'] == 'S1'], df[col][df['Sample_ID'] == 'S2'])\n            df[col + '_p_value'] = p_value\n\n    # Sort by absolute log2 fold change\n    df_sorted = df.sort_values(by='log2FoldChange', ascending=False)\n\n    # Get the top 10 differentially expressed genes\n    top_10_genes = df_sorted.head(10)\n\n    return top_10_genes\n\n# Example usage:\nfile_name = \"rna_seq_counts.csv\"\ntop_genes = analyze_rna_seq_data(file_name)\nprint(top_genes)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on multiple technical and domain-specific levels. 1) Correctness: The code attempts to calculate log2 fold change on a single-row-per-gene dataset (implied by the sample data structure) rather than aggregating replicates, and the t-test logic is broken because it tries to split a single row into two groups based on Sample_ID, resulting in empty arrays and statistical errors. 2) Completeness: It does not handle the 'inconsistent gene IDs' requirement mentioned in the prompt. 3) Best Practices: It iterates over all columns for a t-test, including non-numeric ones, and fails to handle the specific RNA-seq count data distribution (using t-test on raw counts without normalization like TPM/FPKM or variance stabilization is statistically invalid). 4) Domain Accuracy: RNA-seq differential expression requires replicates to estimate variance; the provided logic assumes a single sample per condition or misinterprets the data structure entirely. 5) Clarity: The code is syntactically valid but logically incoherent for the stated task. 6) Autonomy: The script will crash or produce garbage results immediately upon execution with the provided data structure."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Extend existing software programs, web-based interactive tools, or database queries as sequence management and analysis needs evolve.",
+      "task_type": "Software Extension & API Integration",
+      "user_prompt": "Develop a Python script that extends a local BLAST+ wrapper to query a remote NCBI nucleotide database. The script must handle rate limiting, parse the XML output to extract high-scoring segment pairs (HSPs), and filter results where the E-value is less than 1e-5. Include error handling for network timeouts and malformed XML responses.",
+      "reference_context": {
+        "database": "nt",
+        "query_sequence": "ATCGATCGATCGATCGATCGATCG",
+        "max_hits": 50,
+        "e_value_threshold": 1e-05
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Robustness — Does the script handle network failures and XML parsing errors gracefully?",
+        "Criterion 2: Accuracy — Are the HSPs correctly extracted and filtered by E-value?",
+        "Criterion 3: Compliance — Does the script respect rate limits and output valid JSON/CSV?"
+      ],
+      "student_answer": "```python\nimport subprocess\nimport xml.etree.ElementTree as ET\nimport requests\n\ndef blast_remote(database, query_sequence, max_hits, e_value_threshold):\n    \"\"\"\n    Queries a remote NCBI nucleotide database using BLAST+, handles rate limiting,\n    parses the XML output, and filters results based on E-value.\n\n    Args:\n        database (str): The database to query (e.g., \"nt\").\n        query_sequence (str): The sequence to query.\n        max_hits (int): The maximum number of hits to return.\n        e_value_threshold (float): The E-value threshold for filtering hits.\n\n    Returns:\n        list: A list of dictionaries, where each dictionary represents a hit\n              with 'accession', 'score', and 'e_value' keys.\n              Returns an empty list if an error occurs.\n    \"\"\"\n    try:\n        # Construct the BLAST+ command\n        command = [\n            \"blastn\",\n            \"-query\", query_sequence,\n            \"-db\", f\"db{database}\",\n            \"-outfmt\", \"6 qseqid qstart qend sscore pident evalue qcovhsp\",\n            \"-max_hsps\", str(max_hits),\n            \"-evalue\", str(e_value_threshold),\n            \"-num_threads\", \"1\",  # Limit threads for rate limiting\n            \"-quiet\"\n        ]\n\n        # Execute the BLAST+ command\n        result = subprocess.run(command, capture_output=True, text=True, timeout=60)\n\n        if result.returncode != 0:\n            print(f\"BLAST+ error: {result.stderr}\")\n            return []\n\n        # Parse the XML output\n        root = ET.ElementTree(ET.fromstring(result.stdout))\n        hits = []\n        for region in root.findall(\".//region\"):\n            hits.append({\n                \"accession\": region.find(\".//title/text()\").strip(),\n                \"score\": region.find(\".//score/text()\").strip(),\n                \"e_value\": region.find(\".//evalue/text()\").strip()\n            })\n\n        return hits\n\n    except requests.exceptions.Timeout:\n        print(\"Network timeout error.\")\n        return []\n    except ET.ParseError:\n        print(\"Malformed XML response error.\")\n        return []\n    except Exception as e:\n        print(f\"An unexpected error occurred: {e}\")\n        return []\n\nif __name__ == '__main__':\n    database = \"nt\"\n    query_sequence = \"ATCGATCGATCGATCGATCGATCG\"\n    max_hits = 50\n    e_value_threshold = 1e-05\n\n    results = blast_remote(database, query_sequence, max_hits, e_value_threshold)\n\n    if results:\n        print(\"BLAST Results:\")\n        for hit in results:\n            print(f\"  Accession: {hit['accession']}, Score: {hit['score']}, E-value: {hit['e_value']}\")\n    else:\n        print(\"No results found or an error occurred.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical requirements. 1) Correctness: It attempts to run 'blastn' locally with a hardcoded local database name 'db' instead of querying the remote NCBI server via the BLAST+ API (which requires HTTP requests, not local subprocess calls). 2) Completeness: It ignores the requirement to handle rate limiting (no delays or retries) and fails to implement the remote query mechanism entirely. 3) Best Practices: It imports 'requests' but never uses it; it tries to parse BLAST+ command-line output (tabular) as XML, which is a fatal logic error. 4) Domain Accuracy: It confuses the local BLAST+ executable with the remote NCBI BLAST API. 5) Clarity: The code is syntactically valid but logically incoherent. 6) Autonomy: The code cannot run as intended and would produce no results or errors immediately."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Maintain awareness of new and emerging computational methods and technologies.",
+      "task_type": "Method Evaluation & Implementation",
+      "user_prompt": "Write a Python script to compare two variant calling methods (e.g., GATK HaplotypeCaller vs. FreeBayes) on a provided VCF file. The script should calculate sensitivity and precision metrics assuming a truth set is available in a separate BED file. The output must be a summary report highlighting discrepancies in variant calls, specifically focusing on indels.",
+      "reference_context": {
+        "vcf_file": "sample_variants.vcf",
+        "truth_bed": "truth_set.bed",
+        "variant_types": [
+          "SNP",
+          "Indel"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Metric Calculation — Are sensitivity and precision calculated correctly?",
+        "Criterion 2: Indel Handling — Does the script specifically identify and report indel discrepancies?",
+        "Criterion 3: Reproducibility — Is the script documented with version numbers and input parameters?"
+      ],
+      "student_answer": "```python\nimport vcfutils\nimport pandas as pd\n\ndef compare_variant_calling_methods(vcf_file, truth_bed, variant_types):\n    \"\"\"\n    Compares two variant calling methods on a VCF file against a truth set.\n\n    Args:\n        vcf_file (str): Path to the VCF file.\n        truth_bed (str): Path to the truth set BED file.\n        variant_types (list): List of variant types to compare (e.g., [\"SNP\", \"Indel\"]).\n\n    Returns:\n        pandas.DataFrame: A summary report of the comparison.\n    \"\"\"\n\n    vcf_reader = vcfutils.VcfReader(vcf_file)\n    truth_df = pd.read_csv(truth_bed, sep='\\t', header=None, names=['chrom', 'start', 'end', 'truth'])\n\n    results = []\n    for variant_type in variant_types:\n        true_positives = 0\n        false_positives = 0\n        false_negatives = 0\n\n        for variant in vcf_reader:\n            if variant.filter == f\"funcType={variant_type}\":\n                chrom = variant.chrom\n                start = variant.start\n                end = variant.end\n                alleles = variant.alts\n\n                # Check if the variant is in the truth set\n                truth_entry = truth_df[truth_df['chrom'] == chrom & truth_df['start'] == start & truth_df['end'] == end]\n                if not truth_entry.empty:\n                    true_positives += 1\n                else:\n                    false_negatives += 1\n\n                # Check for false positives (simplified - assumes no overlapping variants)\n                count = 0\n                for row in truth_df:\n                    if row['chrom'] == chrom and row['start'] == start and row['end'] == end:\n                        count += 1\n                if count == 0:\n                    false_positives += 1\n\n        sensitivity = true_positives / (true_positives + false_negatives) if (true_positives + false_negatives) > 0 else 0\n        precision = true_positives / (true_positives + false_positives) if (true_positives + false_positives) > 0 else 0\n\n        results.append({\n            'variant_type': variant_type,\n            'true_positives': true_positives,\n            'false_positives': false_positives,\n            'false_negatives': false_negatives,\n            'sensitivity': sensitivity,\n            'precision': precision\n        })\n\n    results_df = pd.DataFrame(results)\n    return results_df\n\nif __name__ == '__main__':\n    vcf_file = \"sample_variants.vcf\"\n    truth_bed = \"truth_set.bed\"\n    variant_types = [\"SNP\", \"Indel\"]\n\n    comparison_report = compare_variant_calling_methods(vcf_file, truth_bed, variant_types)\n    print(comparison_report)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The code uses a non-existent library 'vcfutils' (standard is 'pysam' or 'cyvcf2'), attempts to iterate over a DataFrame as if it were a list of objects, and uses invalid boolean logic ('&' inside a list comprehension context without parentheses). 2) Completeness: It ignores the requirement to compare two methods (only processes one VCF), fails to parse VCF fields correctly, and does not handle indel-specific logic. 3) Best Practices: The logic for matching variants is O(N^2) and inefficient, and the code will crash immediately upon execution. 4) Domain Accuracy: The concept of matching variants by exact start/end coordinates without considering allele sequence or normalization is scientifically flawed for variant calling. 5) Clarity: The code is syntactically broken and logically incoherent. 6) Autonomy: The code is unusable and requires a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Conduct quality analyses of data inputs and resulting analyses or predictions.",
+      "task_type": "Data Quality Assurance",
+      "user_prompt": "Create a validation pipeline script that checks a FASTQ file for quality issues. The script must detect adapter contamination, low-quality bases (Phred score < 20), and N-bases. It should generate a detailed report listing the percentage of reads failing each criterion and flag the file for manual review if >5% of reads fail any single criterion.",
+      "reference_context": {
+        "file_name": "raw_data.fastq",
+        "adapter_sequence": "AGATCGGAAGAGC",
+        "quality_threshold": 20,
+        "failure_threshold_percent": 5
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Detection Accuracy — Does the script correctly identify adapters, low quality, and N-bases?",
+        "Criterion 2: Reporting — Is the output report clear and actionable?",
+        "Criterion 3: Threshold Logic — Does the script correctly flag files based on the 5% failure threshold?"
+      ],
+      "student_answer": "```python\nimport argparse\nfrom Bio import SeqIO\nfrom collections import Counter\n\ndef validate_fastq(file_name, adapter_sequence, quality_threshold, failure_threshold_percent):\n    \"\"\"\n    Validates a FASTQ file for adapter contamination, low-quality bases, and N-bases.\n\n    Args:\n        file_name (str): The name of the FASTQ file to validate.\n        adapter_sequence (str): The adapter sequence to search for.\n        quality_threshold (int): The minimum Phred score for a base to be considered passing.\n        failure_threshold_percent (float): The percentage of reads that must fail a criterion\n                                           to flag the file for manual review.\n\n    Returns:\n        dict: A dictionary containing the validation report.\n    \"\"\"\n\n    adapter_reads = 0\n    low_quality_reads = 0\n    n_base_reads = 0\n    total_reads = 0\n\n    try:\n        for record in SeqIO.parse(file_name, \"fastq\"):\n            total_reads += 1\n            sequence = str(record.seq)\n            quality = record.letterscore\n            \n            if adapter_sequence in sequence:\n                adapter_reads += 1\n            \n            if quality < quality_threshold:\n                low_quality_reads += 1\n            \n            if any(base == 'N' for base in sequence):\n                n_base_reads += 1\n\n    except Exception as e:\n        print(f\"Error processing file: {e}\")\n        return None\n\n    report = {\n        \"adapter_contamination_percent\": (adapter_reads / total_reads) * 100 if total_reads > 0 else 0,\n        \"low_quality_bases_percent\": (low_quality_reads / total_reads) * 100 if total_reads > 0 else 0,\n        \"n_bases_percent\": (n_base_reads / total_reads) * 100 if total_reads > 0 else 0\n    }\n\n    # Flag the file for manual review if any criterion exceeds the threshold\n    if report[\"adapter_contamination_percent\"] > failure_threshold_percent or \\\n       report[\"low_quality_bases_percent\"] > failure_threshold_percent or \\\n       report[\"n_bases_percent\"] > failure_threshold_percent:\n        report[\"flagged_for_review\"] = True\n    else:\n        report[\"flagged_for_review\"] = False\n\n    return report\n\n\nif __name__ == \"__main__\":\n    parser = argparse.ArgumentParser(description=\"Validate a FASTQ file for quality issues.\")\n    parser.add_argument(\"file_name\", help=\"The name of the FASTQ file to validate.\")\n    parser.add_argument(\"--adapter_sequence\", default=\"AGATCGGAAGAGC\", help=\"The adapter sequence to search for.\")\n    parser.add_argument(\"--quality_threshold\", type=int, default=20, help=\"The minimum Phred score for a base to be considered passing.\")\n    parser.add_argument(\"--failure_threshold_percent\", type=float, default=5, help=\"The percentage of reads that must fail a criterion to flag the file for manual review.\")\n\n    args = parser.parse_args()\n\n    report = validate_fastq(args.file_name, args.adapter_sequence, args.quality_threshold, args.failure_threshold_percent)\n\n    if report:\n        print(\"FASTQ Validation Report:\")\n        print(f\"  Adapter Contamination: {report['adapter_contamination_percent']:.2f}%\")\n        print(f\"  Low Quality Bases: {report['low_quality_bases_percent']:.2f}%\")\n        print(f\"  N Bases: {report['n_bases_percent']:.2f}%\")\n        if report[\"flagged_for_review\"]:\n            print(\"  File flagged for manual review.\")\n        else:\n            print(\"  File passes validation.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical domain errors and logic flaws. 1) Correctness: The code incorrectly uses `record.letterscore` (which returns a list of scores) to check if a read has low quality; it should check if the minimum score is below the threshold. It also fails to count 'N' bases per read correctly if the logic implies checking the whole read, though the `any` check is valid, the low-quality check is fundamentally broken. 2) Completeness: The 'Additional Checks' section in the prompt regarding Pandas, statistical tests, and gene IDs is completely ignored, though these seem irrelevant to a FASTQ validator, the prompt's context implies a broader data quality audit. 3) Best Practices: The error handling is too broad (catching all exceptions and returning None without re-raising or logging details), and the adapter check is a simple substring search which is inefficient and prone to false positives compared to k-mer based tools. 4) Domain Accuracy: The logic for low-quality bases is wrong; checking `quality < threshold` on a list object is invalid. 5) Clarity: The code is readable but the logic errors make the output unreliable. 6) Autonomy: Due to the logic errors, the script cannot be used as-is."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Enter or retrieve information from structural databases, protein sequence motif databases, mutation databases, genomic databases or gene expression databases.",
+      "task_type": "Database Query & Retrieval",
+      "user_prompt": "Write a script to query a local SQLite database containing protein sequences and their associated Pfam domains. The script must retrieve all proteins containing a specific domain motif (e.g., 'Pkinase') and export the results to a CSV file. Handle cases where the database connection fails or the motif is not found, logging the error appropriately.",
+      "reference_context": {
+        "db_path": "/data/protein_db.sqlite",
+        "motif": "Pkinase",
+        "output_file": "kinase_proteins.csv"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Query Efficiency — Is the SQL query optimized and correct?",
+        "Criterion 2: Error Handling — Does the script handle connection failures and missing motifs?",
+        "Criterion 3: Output Integrity — Is the CSV file correctly formatted with headers and data?"
+      ],
+      "student_answer": "```python\nimport sqlite3\nimport csv\n\ndef query_protein_db(db_path, motif, output_file):\n    \"\"\"\n    Queries a local SQLite database for proteins containing a specific Pfam domain motif\n    and exports the results to a CSV file.\n    \"\"\"\n    try:\n        conn = sqlite3.connect(db_path)\n        cursor = conn.cursor()\n\n        # Construct the SQL query\n        query = \"SELECT protein_id, protein_name FROM proteins WHERE pfam_domain LIKE ?\"\n        cursor.execute(query, ('%' + motif + '%',))\n\n        # Fetch the results\n        results = cursor.fetchall()\n\n        # Export the results to a CSV file\n        with open(output_file, 'w', newline='') as csvfile:\n            writer = csv.writer(csvfile)\n            writer.writerow(['Protein ID', 'Protein Name'])  # Write header\n            writer.writerows(results)\n\n        print(f\"Successfully exported {len(results)} proteins containing '{motif}' to {output_file}\")\n\n    except sqlite3.Error as e:\n        print(f\"SQLite error: {e}\")\n    except Exception as e:\n        print(f\"An error occurred: {e}\")\n    finally:\n        if conn:\n            conn.close()\n\nif __name__ == '__main__':\n    db_path = \"/data/protein_db.sqlite\"\n    motif = \"Pkinase\"\n    output_file = \"kinase_proteins.csv\"\n    query_protein_db(db_path, motif, output_file)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        2,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. Correctness (2): The script contains syntax errors in the print statements (missing format arguments), fails to handle the specific case where the motif is not found (no explicit check or logging), and does not implement the requested error logging mechanism (only prints to stdout). Completeness (2): It ignores the 'Additional Checks' context regarding data integrity, though the primary task is the script itself. Best Practices (2): It lacks a proper logging module, uses hardcoded paths instead of the provided context variables in a flexible way, and has no validation for the database schema. Domain Accuracy (3): The SQL logic for string matching is generally correct for the domain, but the column selection is arbitrary. Clarity (2): The code is readable but the broken print statements and lack of comments on error handling reduce clarity. Autonomy (2): The script will crash or produce malformed output due to the syntax errors in the print statements and the unhandled 'motif not found' logic, requiring significant rework before use."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Develop or maintain applications that process biologically based data into searchable databases for purposes of analysis, calculation, or presentation.",
+      "task_type": "Application Development & Data Processing",
+      "user_prompt": "Develop a Python application that ingests a directory of unstructured text files containing gene expression summaries. The application must extract gene symbols, expression values, and condition labels using regex, validate the data against a standard gene ID list, and load the cleaned data into a PostgreSQL database. Include error handling for malformed text entries and database write failures.",
+      "reference_context": {
+        "input_directory": "./expression_logs/",
+        "gene_id_list": "hgnc_ids.txt",
+        "db_host": "localhost",
+        "db_name": "expression_db"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Extraction Accuracy — Does the regex correctly parse the unstructured text?",
+        "Criterion 2: Validation — Are invalid gene IDs filtered out before database insertion?",
+        "Criterion 3: Reliability — Does the application handle file and database errors without crashing?"
+      ],
+      "student_answer": "```python\nimport os\nimport re\nimport logging\nimport psycopg2\nfrom Bio import Entrez\n\nlogging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')\n\ndef extract_data(filepath):\n    try:\n        with open(filepath, 'r') as f:\n            text = f.read()\n        gene_pattern = r'(\\w+)\\s+(\\d+\\.?\\d*)'\n        matches = re.findall(gene_pattern, text)\n        return matches\n    except Exception as e:\n        logging.error(f\"Error reading or parsing file {filepath}: {e}\")\n        return []\n\ndef validate_gene_id(gene_symbol):\n    Entrez.email = \"your_email@example.com\"  # Replace with your email\n    try:\n        handle = Entrez.esearch(db=\"gene\", term=gene_symbol, retmax=1)\n        record = Entrez.read(handle)\n        handle.close()\n        if record[\"Count\"] > 0:\n            return True\n        else:\n            return False\n    except Exception as e:\n        logging.error(f\"Error validating gene ID {gene_symbol}: {e}\")\n        return False\n\ndef load_data_to_db(data, db_host, db_name):\n    try:\n        conn = psycopg2.connect(host=db_host, database=db_name)\n        cur = conn.cursor()\n        for gene_symbol, expression_value in data:\n            if validate_gene_id(gene_symbol):\n                cur.execute(\"INSERT INTO gene_expression (gene_symbol, expression_value) VALUES (%s, %s)\", (gene_symbol, expression_value))\n            else:\n                logging.warning(f\"Skipping invalid gene ID: {gene_symbol}\")\n        conn.commit()\n        cur.close()\n        conn.close()\n    except psycopg2.Error as e:\n        logging.error(f\"Database error: {e}\")\n\ndef main():\n    input_directory = \"./expression_logs/\"\n    gene_id_list_path = \"hgnc_ids.txt\"\n    db_host = \"localhost\"\n    db_name = \"expression_db\"\n\n    # Load gene IDs from file\n    try:\n        with open(gene_id_list_path, 'r') as f:\n            gene_ids = [line.strip() for line in f]\n    except FileNotFoundError:\n        logging.error(f\"Gene ID list file not found: {gene_id_list_path}\")\n        return\n    except Exception as e:\n        logging.error(f\"Error reading gene ID list: {e}\")\n        return\n\n    for filename in os.listdir(input_directory):\n        if filename.endswith(\".txt\"):\n            filepath = os.path.join(input_directory, filename)\n            data = extract_data(filepath)\n            if data:\n                load_data_to_db(data, db_host, db_name)\n            else:\n                logging.warning(f\"No data extracted from {filename}\")\n\nif __name__ == \"__main__\":\n    main()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails to address the core task requirements. It ignores the provided 'gene_id_list' file for validation, instead attempting to query the NCBI Entrez API (which is slow, rate-limited, and requires an email). The regex pattern is insufficient for extracting 'condition labels' as requested. It lacks error handling for malformed entries beyond a generic try-except, does not handle database connection pooling or transaction rollback properly, and completely ignores the 'Additional Checks' regarding Pandas, statistical tests, and sorting. The code is not runnable as-is due to missing database schema definitions and configuration."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Write computer programs or scripts to be used in querying databases.",
+      "task_type": "Data Analysis & Scripting",
+      "user_prompt": "Given a CSV file containing RNA-seq count data with potential missing values and inconsistent gene IDs, write a Python script using Pandas and SciPy to normalize the data, impute missing values using the median of the column, and perform a basic differential expression analysis between two conditions. Output the top 10 differentially expressed genes with their log2 fold change and p-values.",
+      "reference_context": {
+        "file_name": "rna_seq_counts.csv",
+        "columns": [
+          "Gene_ID",
+          "Condition_A_Count",
+          "Condition_B_Count",
+          "Sample_ID"
+        ],
+        "sample_data": [
+          {
+            "Gene_ID": "ENSG000001",
+            "Condition_A_Count": 150,
+            "Condition_B_Count": 200,
+            "Sample_ID": "S1"
+          },
+          {
+            "Gene_ID": "ENSG000002",
+            "Condition_A_Count": null,
+            "Condition_B_Count": 180,
+            "Sample_ID": "S1"
+          },
+          {
+            "Gene_ID": "ENSG000003",
+            "Condition_A_Count": 300,
+            "Condition_B_Count": null,
+            "Sample_ID": "S1"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the script run without errors and produce the correct statistical output?",
+        "Criterion 2: Completeness — Did it handle missing values, normalization, and ranking as specified?",
+        "Criterion 3: Best practices — Is the code modular, commented, and using appropriate libraries?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom scipy import stats\n\ndef analyze_rna_seq_data(file_name):\n    \"\"\"\n    Normalizes, imputes missing values, and performs differential expression analysis on RNA-seq count data.\n\n    Args:\n        file_name (str): The name of the CSV file containing the RNA-seq data.\n\n    Returns:\n        pandas.DataFrame: A DataFrame containing the top 10 differentially expressed genes with their log2 fold change and p-values.\n    \"\"\"\n\n    df = pd.read_csv(file_name)\n\n    # Impute missing values with the median of the column\n    for col in df.columns:\n        if df[col].isnull().any():\n            median_val = df[col].median()\n            df[col] = df[col].fillna(median_val)\n\n    # Convert Gene_ID to string type\n    df['Gene_ID'] = df['Gene_ID'].astype(str)\n\n    # Calculate log2 fold change\n    df['log2FoldChange'] = np.log2(df['Condition_B_Count'] / df['Condition_A_Count'])\n\n    # Perform a basic t-test for differential expression\n    for gene_id in df['Gene_ID'].unique():\n        gene_data = df[df['Gene_ID'] == gene_id]\n        _, p_value = stats.ttest_ind(gene_data['Condition_A_Count'], gene_data['Condition_B_Count'])\n        gene_data['p_value'] = p_value\n\n    # Sort by absolute log2 fold change\n    df_sorted = df.sort_values(by='log2FoldChange', ascending=False)\n\n    # Select the top 10 differentially expressed genes\n    top_10_genes = df_sorted.head(10)\n\n    return top_10_genes\n\n# Example usage:\nfile_name = \"rna_seq_counts.csv\"\ntop_genes = analyze_rna_seq_data(file_name)\nprint(top_genes)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        1,
+        1,
+        3,
+        2
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission fails on multiple critical technical and domain-specific grounds. 1) Correctness: The differential expression logic is fundamentally broken; the code iterates through unique genes but attempts to run a t-test on single-row data (since the sample data shows one row per gene per sample, not replicates), causing the t-test to fail or return NaN. It also fails to merge the p-values back into the dataframe correctly. 2) Completeness: It does not normalize the data as requested (e.g., TPM/FPKM/DESeq2 size factors), only imputes. 3) Best Practices: It iterates row-by-row in Python loops for statistical testing, which is computationally inefficient and unprofessional for bioinformatics. 4) Domain Accuracy: It uses a t-test on raw counts without normalization or variance stabilization, which is statistically invalid for RNA-seq data (violates assumptions of normality and equal variance). 5) Clarity: The code structure is readable but the logic is flawed. 6) Autonomy: The script will crash or produce garbage results on the provided sample data due to the t-test on single values and the logic error in assigning p-values."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Document all database changes, modifications, or problems.",
+      "task_type": "Documentation & Data Integrity",
+      "user_prompt": "You are auditing a genomic variant database that has recently undergone a schema migration. Review the provided migration log and a sample of the new data entries. Generate a comprehensive 'Data Integrity Report' that identifies any records with malformed FASTA sequences, missing mandatory fields (e.g., chromosome, position), or inconsistent data types. The report must include a section on 'Reproducibility' detailing the exact steps taken to validate the data and a 'Change Log' summarizing the modifications made to the database schema.",
+      "reference_context": {
+        "migration_log": "2023-10-01: Added column 'Phenotype' (VARCHAR). 2023-10-02: Changed 'Variant_Type' from INT to ENUM. 2023-10-03: Removed column 'Old_ID'.",
+        "sample_entries": [
+          {
+            "variant_id": "VAR_001",
+            "chromosome": "chr1",
+            "position": 12345,
+            "sequence": "ATCG",
+            "phenotype": "Hypertension",
+            "variant_type": "SNP"
+          },
+          {
+            "variant_id": "VAR_002",
+            "chromosome": "chr2",
+            "position": "invalid",
+            "sequence": "ATCG",
+            "phenotype": null,
+            "variant_type": "DEL"
+          },
+          {
+            "variant_id": "VAR_003",
+            "chromosome": "chrX",
+            "position": 54321,
+            "sequence": "ATCG",
+            "phenotype": "Diabetes",
+            "variant_type": 999
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are all data anomalies (malformed sequences, missing fields, type mismatches) correctly identified?",
+        "Criterion 2: Completeness — Does the report include both the 'Data Integrity' findings and the 'Reproducibility' section?",
+        "Criterion 3: Clarity — Is the 'Change Log' clear and does it accurately reflect the migration steps provided in the log?"
+      ],
+      "student_answer": "```json\n{\n  \"DataIntegrityReport\": {\n    \"ReportGenerated\": \"2023-10-27\",\n    \"DatabaseSchemaMigration\": \"2023-10-01: Added column 'Phenotype' (VARCHAR). 2023-10-02: Changed 'Variant_Type' from INT to ENUM. 2023-10-03: Removed column 'Old_ID'.\",\n    \"DataValidationSteps\": \"1. FASTA Sequence Validation: Checked each record for valid FASTA format using regex. 2. Mandatory Field Checks: Verified presence of 'chromosome' and 'position' fields. 3. Data Type Validation: Confirmed 'position' is numeric and 'variant_type' is one of the allowed ENUM values. 4. Null Value Checks: Identified records with null values in mandatory fields.\",\n    \"Findings\": [\n      {\n        \"RecordID\": \"VAR_002\",\n        \"Issue\": \"Invalid Position Data Type\",\n        \"Description\": \"The 'position' field contains 'invalid', which is not a valid numeric value. This violates the schema change from INT to numeric.\",\n        \"Severity\": \"High\"\n      },\n      {\n        \"RecordID\": \"VAR_003\",\n        \"Issue\": \"Invalid Variant Type Data Type\",\n        \"Description\": \"The 'variant_type' field contains 999, which is not a valid ENUM value after the schema change. The valid values are 'SNP' and 'DEL'.\",\n        \"Severity\": \"High\"\n      },\n      {\n        \"RecordID\": \"VAR_002\",\n        \"Issue\": \"Missing Mandatory Field\",\n        \"Description\": \"The 'phenotype' field is null, which is not allowed.\",\n        \"Severity\": \"Medium\"\n      }\n    ],\n    \"Reproducibility\": \"Data validation was performed using Python scripts with regular expressions for FASTA format and type checking, and enumerated values for variant types.  The script checked each record against the expected schema after the migration.\",\n    \"ChangeLog\": {\n      \"2023-10-01\": \"Added 'Phenotype' column (VARCHAR).\",\n      \"2023-10-02\": \"Modified 'Variant_Type' column from INT to ENUM.\",\n      \"2023-10-03\": \"Removed 'Old_ID' column.\"\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies data type errors in the sample entries and structures the report logically. However, it fails to address the specific 'Additional Checks' provided in the prompt (Pandas null handling, statistical tests for count data, gene ID consistency, and sorting by significance), which are critical for a comprehensive audit in this context. The 'Reproducibility' section is vague, describing 'Python scripts' without providing the actual code or specific logic, failing the 'industry standard' threshold for reproducibility. The report also incorrectly flags 'phenotype' as a mandatory field in VAR_002 despite the sample data showing it as None, and the prompt did not explicitly define it as mandatory in the sample context, though the migration log implies its addition. The failure to address the specific technical constraints in the 'Additional Checks' section significantly impacts the 'Best Practices' and 'Completeness' scores."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop or apply data mining and machine learning algorithms.",
+      "task_type": "Algorithm Development",
+      "user_prompt": "Develop a Python script using Scikit-learn to classify protein sequences into functional families based on a provided training dataset. The dataset contains sequences with labels (e.g., 'Kinase', 'Receptor', 'Enzyme'). The script must handle non-standard amino acid characters (e.g., 'X', 'B') by replacing them with the most frequent valid amino acid in the sequence, convert sequences to numerical features using a k-mer frequency approach (k=3), and train a Random Forest classifier. The script should output the model's accuracy on a held-out test set and a confusion matrix.",
+      "reference_context": {
+        "training_data": [
+          {
+            "sequence": "MKTVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGG",
+            "label": "Kinase"
+          },
+          {
+            "sequence": "MKTIVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGG",
+            "label": "Kinase"
+          },
+          {
+            "sequence": "MKTVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGX",
+            "label": "Kinase"
+          },
+          {
+            "sequence": "MKTVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGG",
+            "label": "Receptor"
+          }
+        ],
+        "test_data": [
+          {
+            "sequence": "MKTVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGG",
+            "true_label": "Kinase"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Robustness — Does the script correctly handle non-standard amino acids without crashing?",
+        "Criterion 2: Performance — Is the Random Forest model trained and evaluated correctly with a confusion matrix?",
+        "Criterion 3: Methodology — Is the k-mer frequency approach implemented correctly for sequence-to-feature conversion?"
+      ],
+      "student_answer": "```python\nimport numpy as np\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.ensemble import RandomForestClassifier\nfrom sklearn.metrics import accuracy_score, confusion_matrix\nfrom collections import Counter\n\ndef process_sequence(sequence, valid_amino_acids=['A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'Y']):\n    \"\"\"Replaces non-standard amino acids with the most frequent valid amino acid.\"\"\"\n    amino_acid_counts = Counter(sequence)\n    most_common_amino_acid = amino_acid_counts.most_common(1)[0][0]\n    return ''.join(c if c in valid_amino_acids else most_common_amino_acid for c in sequence)\n\ndef create_features(sequence, k=3):\n    \"\"\"Creates k-mer frequency features from a sequence.\"\"\"\n    kmers = [sequence[i:i+k] for i in range(len(sequence) - k + 1)]\n    return Counter(kmers)\n\ndef train_and_evaluate(training_data, test_data, k=3):\n    \"\"\"Trains a Random Forest classifier and evaluates its performance.\"\"\"\n\n    # Preprocess training data\n    processed_training_data = []\n    for item in training_data:\n        processed_sequence = process_sequence(item['sequence'])\n        features = create_features(processed_sequence, k)\n        processed_training_data.append((features.keys(), item['label']))\n\n    # Preprocess test data\n    processed_test_data = []\n    for item in test_data:\n        processed_sequence = process_sequence(item['sequence'])\n        features = create_features(processed_sequence, k)\n        processed_test_data.append((features.keys(), item['true_label']))\n\n    # Extract features and labels\n    X_train = [set(features.keys()) for features in processed_training_data]\n    y_train = [item['label'] for item in processed_training_data]\n    X_test = [set(features.keys()) for features in processed_test_data]\n    y_test = [item['true_label'] for item in processed_test_data]\n\n    # Train the Random Forest classifier\n    model = RandomForestClassifier(random_state=42)\n    model.fit(X_train, y_train)\n\n    # Evaluate the model\n    y_pred = model.predict(X_test)\n    accuracy = accuracy_score(y_test, y_pred)\n    confusion = confusion_matrix(y_test, y_pred)\n\n    return accuracy, confusion\n\n# Example usage\ndata = {\n  \"training_data\": [\n    {\n      \"sequence\": \"MKTVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGG\",\n      \"label\": \"Kinase\"\n    },\n    {\n      \"sequence\": \"MKTIVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGG\",\n      \"label\": \"Kinase\"\n    },\n    {\n      \"sequence\": \"MKTVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGX\",\n      \"label\": \"Kinase\"\n    },\n    {\n      \"sequence\": \"MKTVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGG\",\n      \"label\": \"Receptor\"\n    }\n  ],\n  \"test_data\": [\n    {\n      \"sequence\": \"MKTVRQERLKSIVRILERSKEPVSGAQLAEELSVSRQVIVQDIAYLRSLGYNIVATPRGYVLAGG\",\n      \"true_label\": \"Kinase\"\n    }\n  ]\n}\n\naccuracy, confusion = train_and_evaluate(data[\"training_data\"], data[\"test_data\"])\n\nprint(f\"Accuracy: {accuracy}\")\nprint(\"Confusion Matrix:\")\nprint(confusion)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The code attempts to fit a Random Forest classifier using sets of k-mer keys (X_train = [set(...)]) as features. Scikit-learn cannot process sets as input features; it requires numerical arrays or sparse matrices. The code will crash immediately upon execution. 2) Completeness: The k-mer frequency logic is incomplete; it extracts keys but fails to construct a feature vector (counts) or align features across samples. 3) Domain Accuracy: The logic for handling non-standard amino acids is flawed; it replaces invalid characters with the most frequent character in the *entire* sequence, which is not the standard approach (usually replacement with 'X' or the most frequent valid AA in the alphabet, or simply ignoring). 4) Best Practices: The code lacks proper feature vectorization (e.g., using CountVectorizer or a custom pipeline), proper train/test splitting logic (it treats the provided lists as the full set without splitting), and robust error handling. 5) The 'Additional Checks' section in the prompt regarding Pandas/DESeq2 is irrelevant to the specific task of protein classification, but the code also fails to address the core requirement of numerical feature conversion. 6) Autonomy: The code is not runnable and requires significant rework to function."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Confer with researchers, clinicians, or information technology staff to determine data needs and programming requirements and to provide assistance with database-related research activities.",
+      "task_type": "Database Design & Querying",
+      "user_prompt": "A research team needs a SQL query to extract patient genomic data for a specific study. The database contains tables 'Patients', 'Samples', and 'Genomic_Variants'. The query must join these tables to find all variants in patients over 60 years old who have a 'Positive' clinical outcome. The query must also handle cases where the 'Genomic_Variants' table might have missing 'Chromosome' or 'Position' data by filtering them out. Provide the SQL query and a brief explanation of how the query ensures data quality and meets the research requirements.",
+      "reference_context": {
+        "schema": {
+          "Patients": [
+            "Patient_ID",
+            "Age",
+            "Clinical_Outcome"
+          ],
+          "Samples": [
+            "Sample_ID",
+            "Patient_ID",
+            "Sample_Type"
+          ],
+          "Genomic_Variants": [
+            "Variant_ID",
+            "Sample_ID",
+            "Chromosome",
+            "Position",
+            "Mutation"
+          ]
+        },
+        "sample_data": [
+          {
+            "Patient_ID": 1,
+            "Age": 65,
+            "Clinical_Outcome": "Positive"
+          },
+          {
+            "Patient_ID": 2,
+            "Age": 55,
+            "Clinical_Outcome": "Negative"
+          },
+          {
+            "Sample_ID": 101,
+            "Patient_ID": 1,
+            "Sample_Type": "Blood"
+          },
+          {
+            "Variant_ID": 501,
+            "Sample_ID": 101,
+            "Chromosome": "chr1",
+            "Position": 12345,
+            "Mutation": "A>T"
+          },
+          {
+            "Variant_ID": 502,
+            "Sample_ID": 101,
+            "Chromosome": null,
+            "Position": 67890,
+            "Mutation": "C>G"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the SQL query correctly join tables and filter by age and outcome?",
+        "Criterion 2: Data Quality — Does the query explicitly exclude records with missing chromosome or position data?",
+        "Criterion 3: Clarity — Is the explanation clear and does it justify the query design based on the research needs?"
+      ],
+      "student_answer": "```sql\nSELECT\n  GV.Variant_ID,\n  GV.Chromosome,\n  GV.Position,\n  GV.Mutation\nFROM Genomic_Variants AS GV\nJOIN Samples AS S\n  ON GV.Sample_ID = S.Sample_ID\nJOIN Patients AS P\n  ON S.Patient_ID = P.Patient_ID\nWHERE\n  P.Age > 60 AND P.Clinical_Outcome = 'Positive' AND GV.Chromosome IS NOT NULL AND GV.Position IS NOT NULL;\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The SQL query is syntactically correct and effectively joins the three tables while filtering for age > 60, positive outcomes, and non-null chromosome/position data. It correctly addresses the core task requirements. However, the solution scores a 4 on Completeness and Autonomy because it ignores the 'Additional Checks' section provided in the prompt context (which asks for Pandas null handling, statistical tests, and sorting). While the prompt's main task was SQL, the inclusion of these specific checks in the context implies a need for a more comprehensive data pipeline solution or at least an acknowledgment of them. The domain accuracy is high as the logic aligns with genomic data filtering standards. No major errors exist in the SQL itself."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Create data management or error-checking procedures and user manuals.",
+      "task_type": "Procedure Creation & Documentation",
+      "user_prompt": "Create a 'Standard Operating Procedure (SOP)' document for a new bioinformatics pipeline that processes whole-genome sequencing (WGS) data. The SOP must include a section on 'Error Handling' that describes how the pipeline should respond to common failures such as corrupted input FASTQ files, insufficient disk space, or failed alignment steps. Additionally, include a 'User Manual' excerpt that explains how to configure the pipeline parameters for a specific organism (e.g., Human vs. Mouse) and how to interpret the final quality control reports.",
+      "reference_context": {
+        "pipeline_stages": [
+          "Quality Control",
+          "Alignment",
+          "Variant Calling",
+          "Annotation"
+        ],
+        "common_errors": [
+          "Corrupted FASTQ",
+          "Disk Space Low",
+          "Alignment Failed"
+        ],
+        "config_params": [
+          "organism",
+          "reference_genome",
+          "thread_count"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Completeness — Does the SOP cover all specified error scenarios and provide actionable recovery steps?",
+        "Criterion 2: Usability — Is the User Manual clear and does it explain parameter configuration for different organisms?",
+        "Criterion 3: Reproducibility — Does the documentation follow scientific standards for reproducibility (e.g., versioning, environment details)?"
+      ],
+      "student_answer": "## Standard Operating Procedure: WGS Data Processing Pipeline\n\n**Document Version:** 1.0\n**Date:** October 26, 2023\n**Prepared By:** Bioinformatics Team\n\n**1. Introduction**\n\nThis SOP outlines the standard procedures for processing whole-genome sequencing (WGS) data using the newly developed bioinformatics pipeline. The pipeline automates quality control, alignment, variant calling, and annotation steps, providing a streamlined workflow for genomic analysis.\n\n**2. Pipeline Overview**\n\nThe pipeline consists of four primary stages:\n\n*   **Quality Control:**  Assess FASTQ file quality using FastQC.\n*   **Alignment:** Align reads to a reference genome using BWA-MEM.\n*   **Variant Calling:** Identify genetic variants using GATK HaplotypeCaller.\n*   **Annotation:** Annotate variants with functional information using ANNOVAR.\n\n**3. Procedure**\n\n**3.1. Input Requirements**\n\n*   Raw FASTQ files (paired-end recommended)\n*   Reference genome FASTA file\n*   Index files for the reference genome (created using `bwa index`)\n\n**3.2. Pipeline Execution**\n\n1.  **Prepare Input:** Ensure FASTQ files are properly indexed. Verify the reference genome and index files are present in the designated input directory.\n2.  **Run Pipeline:** Execute the pipeline script using the following command:  `./wgs_pipeline.sh -i <input_directory> -o <output_directory>`\n3.  **Monitor Progress:** The pipeline will output progress information to the console.\n4.  **Review Output:**  Upon completion, review the output files in the designated output directory.\n\n**4. Error Handling**\n\n| Error Type           | Description                               | Response                                                              |\n| -------------------- | ----------------------------------------- | --------------------------------------------------------------------- |\n| Corrupted FASTQ      | FASTQ file is unreadable or incomplete.     | Pipeline halts.  Log file will indicate the problematic file.  User must correct the FASTQ file and rerun the pipeline. |\n| Disk Space Low       | Insufficient disk space for intermediate files. | Pipeline halts. Log file will indicate the low disk space. User must free up disk space and rerun the pipeline. |\n| Alignment Failed      | BWA-MEM alignment process failed.           | Pipeline halts. Log file will indicate the reason for failure (e.g., memory issues, mapping quality).  User should check memory allocation and alignment parameters. |\n| GATK Error           | Error during variant calling.               | Pipeline halts. Log file will provide details.  User should review GATK configuration and input data. |\n| ANNOVAR Error        | Error during annotation.                    | Pipeline halts. Log file will provide details.  User should verify ANNOVAR configuration and input data. |\n| General Pipeline Error | Unexpected error during pipeline execution. | Pipeline halts. Log file will provide details.  User should review the log file for specific error messages and consult with the bioinformatics team. |\n\n**5. User Manual Excerpt: Configuration**\n\nThe pipeline utilizes several configurable parameters.  The following excerpt details the configuration for Human and Mouse genomes.\n\n**5.1. Organism Selection**\n\nThe `organism` parameter dictates the reference genome and associated parameters used throughout the pipeline.  Valid values are: \"Human\", \"Mouse\", \"Other\" (requires specifying a custom reference genome path).\n\n*   **Human:**  The pipeline will use the GRCh38 reference genome.  Alignment parameters will be optimized for human reads.\n*   **Mouse:** The pipeline will use the mm10 reference genome. Alignment parameters will be optimized for mouse reads.\n\n**5.2. Reference Genome Path**\n\nThe `reference_genome` parameter specifies the path to the reference genome FASTA file.  This parameter is required for \"Other\" organism selections.\n\n*   **Example (Human):**  `/path/to/GRCh38.fa`\n*   **Example (Mouse):** `/path/to/mm10.fa`\n\n**5.3. Thread Count**\n\nThe `thread_count` parameter controls the number of threads used for computationally intensive tasks (alignment and variant calling).  Increasing the thread count can significantly reduce processing time, but may require sufficient system resources.\n\n*   **Recommended Values:**  Start with 8 threads and adjust based on system performance.  For high-throughput projects, consider increasing to 16 or 32 threads.\n\n**5.4. Interpreting Quality Control Reports**\n\nThe Quality Control report (FastQC output) provides a summary of read quality metrics.  Key metrics to consider:\n\n*   **Per-base sequence quality:**  Lower quality scores indicate potential sequencing errors.\n*   **Adapter content:**  High adapter content can interfere with alignment.\n*   **Sequence duplication:**  High duplication levels may indicate PCR bias.\n\n**6.  Logging and Reporting**\n\nAll pipeline execution details, including errors and warnings, are logged to a dedicated log file in the output directory.  Detailed reports are generated for each stage of the pipeline, providing comprehensive information on data processing.\n\n---\n\n## Quality Control Report Interpretation\n\nThe FastQC report provides a detailed assessment of your raw sequencing reads. Here's a breakdown of key metrics and what they indicate:\n\n*   **Per-Read Quality Score Distribution:**  A bell-shaped curve is ideal.  A skewed distribution (e.g., many low-quality scores) suggests potential sequencing issues.\n*   **Adapter Content:**  High adapter content can lead to misalignments.  Remove adapters during library preparation or adjust alignment parameters.\n*   **Sequence Duplication:**  High duplication levels can bias variant calling.  Consider using deduplication tools.\n*   **Base Content:**  Examine for over- or under-representation of specific bases, which could indicate biases in library preparation.\n*   **Read N50:**  A higher N50 indicates longer, more contiguous reads, generally leading to better alignment.\n\nA score of 8 or higher for the overall Quality score is generally considered acceptable.  Address any significant issues identified in the report before proceeding to alignment.  Consult the FastQC documentation for more detailed information on each metric.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission addresses the core task of creating an SOP and User Manual with appropriate tools (FastQC, BWA, GATK) and structure. However, it fails to meet the 'Best Practices' and 'Completeness' standards for a professional pipeline. The Error Handling section relies on a naive 'halt and wait' strategy without mentioning automated retries, checkpointing, or containerization (e.g., Docker/Singularity) which are industry standards. The User Manual lacks specific command-line syntax for the parameters mentioned (organism, reference, threads), making it vague for actual implementation. Additionally, the submission includes irrelevant 'Additional Checks' at the end regarding Pandas and DESeq2, which contradicts the WGS context and suggests a lack of domain focus. While the domain concepts are generally accurate (Dimension 4), the lack of robustness in error handling and specific configuration instructions prevents a top score."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Participate in the preparation of reports or scientific publications.",
+      "task_type": "Report Generation & Visualization",
+      "user_prompt": "Generate a summary report for a recent CRISPR-Cas9 gene editing experiment. The report must include a visualization of the editing efficiency across different guide RNAs (gRNAs) and a statistical summary of off-target effects. The input data is a JSON file containing gRNA sequences, on-target efficiency scores, and off-target hit counts. The report must be formatted as a Markdown document suitable for inclusion in a scientific publication, including a methods section that describes the statistical tests used (e.g., t-test) and a results section with a generated bar chart description.",
+      "reference_context": {
+        "input_data": [
+          {
+            "gRNA_id": "gRNA_01",
+            "on_target_efficiency": 0.85,
+            "off_target_hits": 2
+          },
+          {
+            "gRNA_id": "gRNA_02",
+            "on_target_efficiency": 0.45,
+            "off_target_hits": 5
+          },
+          {
+            "gRNA_id": "gRNA_03",
+            "on_target_efficiency": 0.92,
+            "off_target_hits": 1
+          }
+        ],
+        "statistical_test": "t-test"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the statistical summaries and efficiency scores correctly calculated and reported?",
+        "Criterion 2: Formatting — Is the output a valid Markdown document with appropriate sections (Methods, Results)?",
+        "Criterion 3: Visualization — Does the report include a clear description of the bar chart and its interpretation?"
+      ],
+      "student_answer": "```markdown\n# CRISPR-Cas9 Gene Editing Efficiency and Off-Target Analysis\n\n## Abstract\n\nThis report summarizes the results of a CRISPR-Cas9 gene editing experiment utilizing three guide RNAs (gRNAs). On-target efficiency was assessed, and potential off-target effects were quantified.  The data indicates varying levels of on-target activity among the gRNAs, with gRNA_03 demonstrating the highest efficiency.  Off-target analysis revealed potential unintended editing sites, necessitating further investigation.\n\n## Methods\n\n**CRISPR-Cas9 System:** The CRISPR-Cas9 system was employed for targeted gene editing. Three gRNAs (gRNA_01, gRNA_02, and gRNA_03) were designed to target a specific genomic locus.\n\n**On-Target Efficiency Measurement:** On-target efficiency was determined by quantifying the percentage of cells exhibiting the desired gene modification following Cas9 expression.\n\n**Off-Target Analysis:** Off-target effects were identified by comparing the gRNA binding sites to the entire genome and identifying potential off-target sites with significant sequence similarity to the gRNA.  Off-target hits were defined as the number of unique off-target sites identified per gRNA.\n\n**Statistical Analysis:** A one-way t-test was used to compare the on-target efficiency scores of the three gRNAs.  The t-test was chosen due to its suitability for comparing the means of three independent groups.  A p-value of < 0.05 was considered statistically significant.\n\n## Results\n\n### On-Target Efficiency\n\nThe on-target efficiency varied significantly among the three gRNAs (Figure 1). gRNA_03 exhibited the highest on-target efficiency (0.92), followed by gRNA_01 (0.85) and gRNA_02 (0.45).  The t-test revealed a statistically significant difference in on-target efficiency between the gRNAs (p < 0.05).\n\n![On-Target Efficiency Bar Chart](https://github.com/example/CRISPR_Report/blob/main/on_target_efficiency.png)\n\n*Figure 1: Bar chart illustrating the on-target efficiency of gRNA_01, gRNA_02, and gRNA_03.  The y-axis represents the on-target efficiency score (percentage), and the x-axis represents the gRNA ID.*\n\n### Off-Target Effects\n\nOff-target analysis identified potential unintended editing sites. gRNA_02 exhibited the highest number of off-target hits (5), followed by gRNA_01 (2) and gRNA_03 (1).  These off-target sites require further validation to determine their actual frequency and potential impact.\n\n| gRNA_id | On-Target Efficiency | Off-Target Hits |\n|---|---|---|\n| gRNA_01 | 0.85 | 2 |\n| gRNA_02 | 0.45 | 5 |\n| gRNA_03 | 0.92 | 1 |\n\n## Discussion\n\nThe observed differences in on-target efficiency among the gRNAs highlight the importance of careful gRNA design. gRNA_03 demonstrated superior performance, suggesting it may have a more favorable binding profile within the target locus.  The identification of off-target sites with gRNA_02 underscores the need for thorough off-target analysis and potential mitigation strategies, such as using paired nickases or modified Cas9 variants.  Further experiments are warranted to validate the identified off-target sites and assess their functional consequences.\n\n## References\n\n[Placeholder for relevant references]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on domain accuracy and correctness. It incorrectly states that a t-test is suitable for comparing the means of three independent groups (a t-test compares two groups; an ANOVA is required for three). It also fails to address the 'Additional Checks' regarding statistical appropriateness for count data (off-target hits are counts, not continuous variables suitable for a t-test). The visualization is a broken placeholder link rather than a generated chart or description. While the formatting is clear (Clarity 4), the scientific content is fundamentally flawed, preventing it from being industry-standard or usable without major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design or implement web-based tools for querying large-scale biological databases.",
+      "task_type": "Web Tool Development",
+      "user_prompt": "Develop a Python script using the Biopython library to query the NCBI Nucleotide database for a list of 50 accession numbers provided in a local text file. The script must handle rate limiting by implementing a 2-second delay between requests, catch network timeouts, and parse the returned FASTA records. Output a consolidated FASTA file containing only sequences with a length greater than 500 base pairs, excluding any entries with ambiguous nucleotides (N) in the first 50 positions.",
+      "reference_context": {
+        "input_file": "accession_list.txt",
+        "sample_accessions": [
+          "NM_001301717.1",
+          "NM_001301718.1",
+          "NM_001301719.1"
+        ],
+        "constraints": {
+          "min_length": 500,
+          "max_ambiguous_start": 50,
+          "delay_seconds": 2
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Robustness — Does the script handle network failures and rate limits without crashing?",
+        "Criterion 2: Filtering Logic — Are sequences correctly filtered based on length and ambiguous nucleotide constraints?",
+        "Criterion 3: Output Format — Is the resulting FASTA file valid and properly formatted?"
+      ],
+      "student_answer": "```python\nfrom Bio import Entrez\nfrom Bio import SeqIO\nimport time\n\ndef process_accessions(accession_list_file, output_file):\n    \"\"\"\n    Queries NCBI Nucleotide database for a list of accession numbers,\n    filters sequences based on length and ambiguous nucleotides,\n    and outputs a consolidated FASTA file.\n    \"\"\"\n    Entrez.email = \"your_email@example.com\"  # Replace with your email\n\n    accessions = []\n    with open(accession_list_file, \"r\") as f:\n        accessions = [line.strip() for line in f]\n\n    fasta_sequences = []\n    for accession in accessions:\n        try:\n            handle = Entrez.efetch(db=\"nucleotide\", id=accession, rettype=\"fasta\", retmode=\"text\")\n            record = next(SeqIO.parse(handle, \"fasta\"))\n            handle.close()\n\n            if len(record.seq) > 500 and any(c not in \"ATGC\" for c in record.seq[:50]):\n                fasta_sequences.append(record)\n\n            time.sleep(2)  # Rate limiting\n\n        except Exception as e:\n            print(f\"Error processing accession {accession}: {e}\")\n            time.sleep(2)\n\n    SeqIO.write(fasta_sequences, output_file, \"fasta\")\n\nif __name__ == \"__main__\":\n    input_file = \"accession_list.txt\"\n    output_file = \"filtered_sequences.fasta\"\n    process_accessions(input_file, output_file)\n```",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Monitor database performance and perform any necessary maintenance, upgrades, or repairs.",
+      "task_type": "Database Maintenance & Monitoring",
+      "user_prompt": "Write a SQL script to audit a local SQLite database containing genomic variant data. The script must identify tables with more than 10% NULL values in critical columns (CHROM, POS, REF, ALT) and flag them for review. Additionally, generate a report of duplicate entries based on CHROM and POS, and provide a SQL command to create an index on the 'POS' column if it does not already exist to improve query performance.",
+      "reference_context": {
+        "database_type": "SQLite",
+        "table_name": "variants",
+        "critical_columns": [
+          "CHROM",
+          "POS",
+          "REF",
+          "ALT"
+        ],
+        "null_threshold_percent": 10
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Does the script correctly calculate NULL percentages and identify duplicates?",
+        "Criterion 2: Performance Optimization — Does the script correctly check for and create the necessary index?",
+        "Criterion 3: Error Handling — Does the script gracefully handle cases where the table or columns do not exist?"
+      ],
+      "student_answer": "```sql\n-- Audit for tables with > 10% NULL values in critical columns\nSELECT\n  table_name\nFROM sqlite_master\nWHERE\n  type = 'table'\n  AND table_name = 'variants'\nAND EXISTS (\n  SELECT\n    1\n  FROM variants\n  WHERE\n    CHROM IS NULL\n    OR POS IS NULL\n    OR REF IS NULL\n    OR ALT IS NULL\n)\nAND (\n  (SELECT COUNT(CHROM) FROM variants WHERE CHROM IS NULL) * 1.0 / COUNT(CHROM) > 0.10 OR\n  (SELECT COUNT(POS) FROM variants WHERE POS IS NULL) * 1.0 / COUNT(POS) > 0.10 OR\n  (SELECT COUNT(REF) FROM variants WHERE REF IS NULL) * 1.0 / COUNT(REF) > 0.10 OR\n  (SELECT COUNT(ALT) FROM variants WHERE ALT IS NULL) * 1.0 / COUNT(ALT) > 0.10\n);\n\n-- Report of duplicate entries based on CHROM and POS\nSELECT\n  CHROM,\n  POS,\n  COUNT(*) AS duplicate_count\nFROM variants\nGROUP BY\n  CHROM,\n  POS\nHAVING\n  COUNT(*) > 1;\n\n-- Create index on 'POS' column if it doesn't exist\nCREATE INDEX IF NOT EXISTS idx_variants_pos ON variants (POS);\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness and Completeness due to a fundamental logical error in the NULL percentage calculation. The student uses COUNT(column) in the denominator, which excludes NULLs, resulting in a ratio that can never exceed 100% and often yields incorrect percentages (e.g., if 50% are NULL, the ratio becomes 100% of the non-NULLs). The correct approach requires dividing the NULL count by the total row count (COUNT(*)). Additionally, the query logic for detecting tables with >10% NULLs is flawed because it returns the table name if ANY column exceeds the threshold, rather than identifying specific columns or rows as requested. The duplicate report and index creation are correct, but the core audit logic is broken. The 'Additional Checks' section in the prompt regarding Pandas and DESeq2 is irrelevant to a SQL task, but the SQL solution itself is insufficient for an industry-standard audit."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Package bioinformatics data for submission to public repositories.",
+      "task_type": "Data Curation & Submission",
+      "user_prompt": "Create a Python script to validate and reformat a directory of VCF files for submission to the EGA (European Genome-phenome Archive). The script must check that all files have a valid header, ensure chromosome names follow the 'chr1' or '1' standard (converting if necessary), and verify that the REF and ALT alleles are valid DNA bases. Output a summary report listing files that passed validation and a list of specific errors for files that failed, including the line number and error type.",
+      "reference_context": {
+        "input_directory": "./vcf_files/",
+        "target_standard": "EGA Submission Guidelines",
+        "valid_bases": [
+          "A",
+          "C",
+          "G",
+          "T"
+        ],
+        "chromosome_formats": [
+          "chr1",
+          "1"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Validation Logic — Are header checks and allele validation implemented correctly?",
+        "Criterion 2: Formatting — Does the script correctly normalize chromosome naming conventions?",
+        "Criterion 3: Reporting — Is the error report detailed enough to allow manual correction of the source files?"
+      ],
+      "student_answer": "```python\nimport os\nimport re\nimport vcf\n\ndef validate_vcf_files(input_directory, target_standard, valid_bases, chromosome_formats):\n    \"\"\"\n    Validates and reformats VCF files for EGA submission.\n\n    Args:\n        input_directory (str): Path to the directory containing VCF files.\n        target_standard (str): Target submission standard (for reporting).\n        valid_bases (list): List of valid DNA bases.\n        chromosome_formats (list): List of acceptable chromosome formats.\n\n    Returns:\n        tuple: A tuple containing a list of valid files and a dictionary of errors.\n    \"\"\"\n\n    valid_files = []\n    errors = {}\n\n    for filename in os.listdir(input_directory):\n        if filename.endswith(\".vcf.gz\") or filename.endswith(\".vcf\"):\n            filepath = os.path.join(input_directory, filename)\n            try:\n                vcf_file = vcf.Reader.from_path(filepath)\n                header = vcf_file.header\n\n                # Check header validity (basic check - more robust checks could be added)\n                if not header.info:\n                    errors[filename] = {\"line\": \"Header is empty\", \"type\": \"HeaderError\"}\n                    continue\n\n                # Validate chromosome names\n                for record in vcf_file:\n                    chrom = record.chrom\n                    if chrom not in chromosome_formats:\n                        chrom = re.sub(r'[^0-9a-zA-Z]', '', chrom)  # Remove non-alphanumeric chars\n                        if chrom not in chromosome_formats:\n                            errors[filename] = {\n                                \"line\": record.line.strip(),\n                                \"type\": \"ChromosomeFormatError\",\n                                \"message\": f\"Invalid chromosome format: {chrom}.  Must be 'chr1' or '1'.\"\n                            }\n                            break  # Stop checking chromosome after first error\n\n                    # Validate REF and ALT alleles\n                    for record in vcf_file:\n                        ref = record.ref\n                        alt = record.alt\n                        for base in ref:\n                            if base not in valid_bases:\n                                errors[filename] = {\n                                    \"line\": record.line.strip(),\n                                    \"type\": \"BaseValidationError\",\n                                    \"message\": f\"Invalid REF base: {base}.  Must be A, C, G, or T.\"\n                                }\n                                break\n                        for base in alt:\n                            if base not in valid_bases:\n                                errors[filename] = {\n                                    \"line\": record.line.strip(),\n                                    \"type\": \"BaseValidationError\",\n                                    \"message\": f\"Invalid ALT base: {base}.  Must be A, C, G, or T.\"\n                                }\n                                break\n                    break # Break inner loop after finding an error\n\n                if filename not in errors:\n                    valid_files.append(filename)\n\n            except Exception as e:\n                errors[filename] = {\"line\": \"VCF parsing error\", \"type\": \"VCFError\", \"message\": str(e)}\n\n    return valid_files, errors\n\n\nif __name__ == \"__main__\":\n    input_directory = \"./vcf_files/\"\n    target_standard = \"EGA Submission Guidelines\"\n    valid_bases = [\"A\", \"C\", \"G\", \"T\"]\n    chromosome_formats = [\"chr1\", \"1\"]\n\n    valid_files, errors = validate_vcf_files(input_directory, target_standard, valid_bases, chromosome_formats)\n\n    print(\"Valid Files:\")\n    for file in valid_files:\n        print(file)\n\n    print(\"\\nErrors:\")\n    for filename, error_details in errors.items():\n        print(f\"File: {filename}\")\n        print(f\"  Line: {error_details['line']}\")\n        print(f\"  Type: {error_details['type']}\")\n        print(f\"  Message: {error_details['message']}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The code iterates over the VCF file twice (once for chromosomes, once for alleles) but the second iteration yields no records because the file iterator is exhausted after the first loop. 2) Completeness: It does not actually reformat the files as requested, only attempts to validate. 3) Best Practices: It uses the deprecated 'vcf' library instead of 'cyvcf2' or 'pysam', and the logic for handling file streams is broken. 4) Domain Accuracy: The error reporting logic is flawed (overwriting errors in the dictionary instead of appending), and the chromosome normalization logic is naive. 5) Clarity: The code structure is confusing due to the nested loops and iterator exhaustion. 6) Autonomy: The script will crash or produce empty results on any real file, requiring a complete rewrite. Note: The 'Additional Checks' regarding Pandas and DESeq2 are irrelevant to this specific VCF validation task and were not addressed, but the primary failure is the broken Python logic."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Confer with database users about project timelines and changes.",
+      "task_type": "Data Integration & Visualization",
+      "user_prompt": "Develop a Python script using Matplotlib and Seaborn to visualize the distribution of gene expression levels across three experimental conditions (Control, Treatment_A, Treatment_B) stored in a CSV file. The script must handle missing values by excluding them from the plot, detect and remove outliers using the IQR method, and generate a boxplot with individual data points overlaid. Include a statistical test (ANOVA) in the output text to determine if significant differences exist between the groups.",
+      "reference_context": {
+        "file_name": "expression_data.csv",
+        "columns": [
+          "Gene_ID",
+          "Control",
+          "Treatment_A",
+          "Treatment_B"
+        ],
+        "outlier_method": "IQR",
+        "statistical_test": "ANOVA"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Data Integrity — Are missing values and outliers handled as specified without data leakage?",
+        "Criterion 2: Visualization Quality — Is the plot clear, labeled correctly, and does it include individual data points?",
+        "Criterion 3: Statistical Correctness — Is the ANOVA test applied correctly and the p-value reported?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom scipy import stats\n\n# Load the data\ndf = pd.read_csv(\"expression_data.csv\")\n\n# Handle missing values\ndf = df.dropna()\n\n# Detect and remove outliers using IQR\nQ1 = df[\"Control\"].quantile(0.25)\nQ3 = df[\"Control\"].quantile(0.75)\nIQR = Q3 - Q1\nlower_bound = Q1 - 1.5 * IQR\nupper_bound = Q3 + 1.5 * IQR\ndf = df[(df[\"Control\"] >= lower_bound) & (df[\"Control\"] <= upper_bound)]\ndf = df[(df[\"Treatment_A\"] >= lower_bound) & (df[\"Treatment_A\"] <= upper_bound)]\ndf = df[(df[\"Treatment_B\"] >= lower_bound) & (df[\"Treatment_B\"] <= upper_bound)]\n\n# Perform ANOVA\nf_statistic, p_value = stats.f_oneway(df[\"Control\"], df[\"Treatment_A\"], df[\"Treatment_B\"])\n\n# Create the boxplot\nplt.figure(figsize=(10, 6))\nsns.boxplot(data=df, palette=\"viridis\", showfliers=False)\nplt.title(\"Gene Expression Distribution Across Conditions\")\nplt.xlabel(\"Conditions\")\nplt.ylabel(\"Expression Level\")\nplt.xticks(rotation=45)\nplt.tight_layout()\n\n# Print the ANOVA results\nprint(f\"ANOVA Results: F-statistic = {f_statistic:.3f}, p-value = {p_value:.3f}\")\n\n# Save the plot\nplt.savefig(\"gene_expression_boxplot.png\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical and domain-specific fronts. 1) Correctness: The outlier removal logic is fundamentally flawed; it calculates bounds based solely on the 'Control' group and applies them to all columns, which is statistically invalid for comparing distributions. It also fails to handle missing values per column (dropna removes rows with any missing value, potentially discarding valid data for other conditions). 2) Completeness: The requirement to 'overlay individual data points' is missing; the code uses showfliers=False which hides points. 3) Domain Accuracy: The student ignores the 'Gene_ID' column entirely, treating the dataset as a single pool of values rather than aggregating by gene, which is the standard approach for gene expression analysis. 4) Best Practices: The script lacks a check for normality or homogeneity of variance required before ANOVA, and the outlier method is applied incorrectly. 5) Clarity: The code is readable but the logic is misleading. 6) Autonomy: The output cannot be used as-is because the statistical results will be invalid due to the flawed data filtering and lack of per-gene aggregation."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Train bioinformatics staff or researchers in the use of databases.",
+      "task_type": "Educational Material & Scripting",
+      "user_prompt": "Create a Jupyter Notebook tutorial that demonstrates how to use the Biopython Entrez module to retrieve protein sequences and their associated metadata from the NCBI Protein database. The tutorial must include a code cell that handles API key usage, implements error handling for invalid IDs, and parses the XML response to extract the organism name and protein length. Include markdown cells explaining the steps and best practices for citing the data source.",
+      "reference_context": {
+        "target_database": "NCBI Protein",
+        "required_fields": [
+          "Organism",
+          "Length"
+        ],
+        "input_example": "NP_001301717.1"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Educational Value — Is the explanation clear and suitable for training researchers?",
+        "Criterion 2: Code Quality — Does the code include proper error handling and API key management?",
+        "Criterion 3: Completeness — Are all required metadata fields extracted and displayed correctly?"
+      ],
+      "student_answer": "```jupyter\n# Biopython Entrez Tutorial: Retrieving Protein Sequences and Metadata\n\n# This tutorial demonstrates how to use the Biopython Entrez module to retrieve protein sequences and their associated metadata from the NCBI Protein database.\n\n# **Important:** You need an NCBI API key to use Entrez.  You can obtain one at: https://www.ncbi.nlm.nih.gov/labs/developers/applications/entrez/\n\n# **Citation:** NCBI Protein database. Available at: https://www.ncbi.nlm.nih.gov/protein.  Accessed [Date of Access].\n\n# ---\n# **1. Setting up Biopython and Entrez**\n\n# First, make sure you have Biopython installed. If not, install it using pip:\n#   pip install biopython\n\n# Import the necessary modules:\nimport Bio.Entrez\nimport xml.etree.ElementTree as ET\n\n# ---\n# **2. API Key Setup**\n\n# Replace 'YOUR_API_KEY' with your actual NCBI API key.\n# Store your API key in an environment variable for security.\n# Example:\n# import os\n# Bio.Entrez.email = os.environ.get('NCBI_EMAIL')\n# Bio.Entrez.api_key = os.environ.get('NCBI_API_KEY')\n\n# Alternatively, you can hardcode it (not recommended for production):\nBio.Entrez.email = \"your_email@example.com\"  # Replace with your email\nBio.Entrez.api_key = \"YOUR_API_KEY\" # Replace with your API key\n\n# ---\n# **3. Retrieving Protein Data**\n\n# Define the protein ID to retrieve.\nprotein_id = \"NP_001301717.1\"\n\n# Search the NCBI Protein database for the protein.\n# The 'retmax' parameter limits the number of results returned.\n# The 'retmode' parameter specifies the format of the response (XML in this case).\nhandle = Bio.Entrez.esearch(db=\"protein\", term=protein_id, retmax=10)\nprotein_records = Bio.Entrez.read(handle)\n\n# Check for errors during the search.\nif not protein_records:\n    print(f\"Error: Could not retrieve protein data for ID: {protein_id}\")\n    exit()\n\n# ---\n# **4. Error Handling for Invalid IDs**\n\n# Implement error handling to gracefully handle invalid protein IDs.\ndef get_protein_data(protein_id):\n    try:\n        handle = Bio.Entrez.esearch(db=\"protein\", term=protein_id, retmax=1)\n        protein_records = Bio.Entrez.read(handle)\n\n        if not protein_records:\n            print(f\"Error: Could not retrieve protein data for ID: {protein_id}\")\n            return None\n\n        return protein_records[0]  # Return the first record\n    except Bio.Et.FetchError as e:\n        print(f\"Error fetching data for ID {protein_id}: {e}\")\n        return None\n\n# Example usage:\nprotein_data = get_protein_data(protein_id)\n\nif protein_data:\n    print(f\"Protein ID: {protein_data['protein']}, Description: {protein_data['description']}\")\nelse:\n    print(\"Failed to retrieve protein data.\")\n\n# ---\n# **5. Parsing the XML Response**\n\n# Parse the XML response to extract the organism name and protein length.\ndef parse_protein_data(protein_data):\n    try:\n        tree = ET.fromstring(protein_data)\n        organism = tree.find(\".//Organism\").text\n        length = tree.find(\".//Length\").text\n        return organism, length\n    except AttributeError as e:\n        print(f\"Error parsing XML: {e}\")\n        return None, None\n\n# Example usage:\norganism, length = parse_protein_data(protein_data)\n\nif organism and length:\n    print(f\"Organism: {organism}\")\n    print(f\"Protein Length: {length}\")\nelse:\n    print(\"Failed to parse protein data.\")\n\n# ---\n# **6.  Complete Example with Error Handling and Parsing**\n\n# This combines the previous steps into a single, runnable example.\nimport Bio.Entrez\nimport xml.etree.ElementTree as ET\n\nBio.Entrez.email = \"your_email@example.com\"  # Replace with your email\nBio.Entrez.api_key = \"YOUR_API_KEY\" # Replace with your API key\n\nprotein_id = \"NP_001301717.1\"\n\ndef get_protein_data(protein_id):\n    try:\n        handle = Bio.Entrez.esearch(db=\"protein\", term=protein_id, retmax=1)\n        protein_records = Bio.Entrez.read(handle)\n\n        if not protein_records:\n            print(f\"Error: Could not retrieve protein data for ID: {protein_id}\")\n            return None\n\n        return protein_records[0]\n    except Bio.Et.FetchError as e:\n        print(f\"Error fetching data for ID {protein_id}: {e}\")\n        return None\n\ndef parse_protein_data(protein_data):\n    try:\n        tree = ET.fromstring(protein_data)\n        organism = tree.find(\".//Organism\").text\n        length = tree.find(\".//Length\").text\n        return organism, length\n    except AttributeError as e:\n        print(f\"Error parsing XML: {e}\")\n        return None, None\n\nprotein_data = get_protein_data(protein_id)\n\nif protein_data:\n    organism, length = parse_protein_data(protein_data)\n    print(f\"Organism: {organism}\")\n    print(f\"Protein Length: {length}\")\nelse:\n    print(\"Failed to retrieve protein data.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: It uses `Bio.Entrez.esearch` (which returns a list of IDs) instead of `Bio.Entrez.efetch` (which retrieves the actual XML sequence data required for parsing). Consequently, the code attempts to parse a Python dictionary as an XML string, which will crash. 2) Domain Accuracy: It imports `Bio.Et.FetchError` (non-existent module) instead of `Bio.Entrez.EFetchError`. 3) Completeness: It fails to extract the requested fields (Organism, Length) because the data retrieval method is wrong. 4) Clarity/Structure: The code is repetitive, contains placeholder text in print statements (e.g., `print(f'Organism: ')`), and includes irrelevant 'Additional Checks' regarding Pandas and DESeq2 in the prompt context which were not addressed. 5) Autonomy: The code is non-functional and cannot be used without significant rewriting."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Perform routine system administrative functions, such as troubleshooting, back-ups, or upgrades.",
+      "task_type": "System Administration & Automation",
+      "user_prompt": "Write a Bash script to automate the backup and integrity check of a large genomic database directory. The script must create a compressed tarball of the 'genomic_data' folder, verify the integrity of the archive using checksums, and move the backup to a 'backups' directory with a timestamped filename. The script must also check if the disk space is sufficient before starting and exit with an error code if the backup fails or if the disk is full.",
+      "reference_context": {
+        "source_directory": "./genomic_data",
+        "backup_directory": "./backups",
+        "compression_format": "tar.gz",
+        "integrity_check": "md5sum"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Reliability — Does the script correctly check disk space and handle backup failures?",
+        "Criterion 2: Integrity — Is the checksum verification implemented and does it confirm the archive is not corrupted?",
+        "Criterion 3: Automation — Is the timestamping and file naming consistent and unique?"
+      ],
+      "student_answer": "```bash\n#!/bin/bash\n\n# Set variables\nSOURCE_DIR=\"./genomic_data\"\nBACKUP_DIR=\"./backups\"\nCOMPRESSION_FORMAT=\"tar.gz\"\nINTEGRITY_CHECK=\"md5sum\"\n\n# Check for sufficient disk space\nFREE_SPACE=$(df -h \"$SOURCE_DIR\" | awk 'NR==2 {print $4}')\nif [ \"$FREE_SPACE\" -lt 1024 ]; then\n  echo \"Error: Insufficient disk space in $SOURCE_DIR.  Requires at least 1GB free.\"\n  exit 1\nfi\n\n# Create backup directory if it doesn't exist\nmkdir -p \"$BACKUP_DIR\"\n\n# Generate timestamp\nTIMESTAMP=$(date +%Y%m%d_%H%M%S)\n\n# Create backup filename\nBACKUP_FILE=\"$BACKUP_DIR/genomic_data_backup_$TIMESTAMP.$COMPRESSION_FORMAT\"\n\n# Create compressed tarball\ntar -czvf \"$BACKUP_FILE\" \"$SOURCE_DIR\"\n\n# Check if backup was successful\nif [ $? -ne 0 ]; then\n  echo \"Error: Backup failed.\"\n  exit 1\nfi\n\n# Generate checksum\nCHECKSUM=$(echo \"$BACKUP_FILE\" | md5sum | awk '{print $1}')\n\n# Verify integrity\necho \"Verifying integrity of $BACKUP_FILE...\"\nif [ -f \"$BACKUP_FILE\" ]; then\n  if [ \"$CHECKSUM\" == \"$(md5sum \"$BACKUP_FILE\" | awk '{print $1}')\" ]; then\n    echo \"Integrity check passed.\"\n  else\n    echo \"Error: Integrity check failed.\"\n    exit 1\n  fi\nelse\n  echo \"Error: Backup file not found.\"\n  exit 1\nfi\n\necho \"Backup completed successfully.\"\nexit 0\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The script correctly implements the core logic for creating a tarball, checking disk space, and verifying integrity. However, it fails to meet industry standards in several areas: 1) It lacks error handling for the 'df' command and assumes the output format is consistent across systems (portability issue). 2) The disk space check is arbitrary (1GB) and does not account for the actual size of the 'genomic_data' directory, which is critical for large genomic databases. 3) The integrity check logic is redundant (calculating a checksum and immediately re-calculating it to compare) rather than using 'tar' with the '--verify' flag or storing the checksum for later verification. 4) The script does not handle the case where the source directory is empty or missing gracefully. 5) The 'Additional Checks' section in the prompt regarding Pandas and statistical tests is irrelevant to a Bash script task, but the script itself does not address any data integrity beyond the file checksum. The solution is functional but lacks the robustness expected of a Senior Bioinformatics Engineer."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Test new or updated software or tools and provide feedback to developers.",
+      "task_type": "Software Testing & Validation",
+      "user_prompt": "You are tasked with validating a new bioinformatics pipeline tool designed to process FASTQ files. The tool claims to handle non-standard nucleotide characters (e.g., 'N', 'R', 'Y') and missing quality scores gracefully. Write a Python script that simulates a test suite by generating synthetic FASTQ files containing edge cases (e.g., mixed case sequences, invalid quality strings, truncated lines). The script must attempt to parse these files using a mock parser function, implement robust error handling for malformed input (catching exceptions and logging them), and output a detailed report listing which edge cases caused failures and which passed. The report must follow scientific reproducibility guidelines by including a timestamp, the specific input hash, and the exact error message returned by the parser.",
+      "reference_context": {
+        "tool_name": "FastQValidator_v2",
+        "expected_behavior": "The tool should not crash on non-standard characters but should flag them in the output report. It must handle truncated lines by skipping them and logging a warning.",
+        "edge_cases_to_test": [
+          "Sequences containing 'N' (unknown bases)",
+          "Quality scores represented as '?' instead of ASCII",
+          "Lines with mismatched sequence and quality string lengths",
+          "Empty lines within the file",
+          "Lowercase nucleotide sequences"
+        ],
+        "output_format": "JSON report with keys: 'test_id', 'input_hash', 'status' (PASS/FAIL), 'error_message', 'timestamp'"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Robustness — Does the script successfully generate all specified edge cases without crashing the test harness itself?",
+        "Criterion 2: Error Handling — Does the script correctly catch exceptions during parsing, log them, and prevent the entire test suite from terminating prematurely?",
+        "Criterion 3: Reproducibility — Is the output report complete, including timestamps, input hashes, and specific error messages as required by scientific standards?"
+      ],
+      "student_answer": "```json\n[\n  {\n    \"test_id\": \"1\",\n    \"input_hash\": \"a1b2c3d4\",\n    \"status\": \"PASS\",\n    \"error_message\": null,\n    \"timestamp\": \"2024-02-29 10:00:00\"\n  },\n  {\n    \"test_id\": \"2\",\n    \"input_hash\": \"e5f6g7h8\",\n    \"status\": \"FAIL\",\n    \"error_message\": \"Sequence length mismatch: Sequence length (10) does not match quality string length (5)\",\n    \"timestamp\": \"2024-02-29 10:00:05\"\n  },\n  {\n    \"test_id\": \"3\",\n    \"input_hash\": \"i9j0k1l2\",\n    \"status\": \"FAIL\",\n    \"error_message\": \"Invalid quality score: '?' is not a valid ASCII character.\",\n    \"timestamp\": \"2024-02-29 10:00:10\"\n  },\n  {\n    \"test_id\": \"4\",\n    \"input_hash\": \"m3n4o5p6\",\n    \"status\": \"PASS\",\n    \"error_message\": null,\n    \"timestamp\": \"2024-02-29 10:00:15\"\n  },\n  {\n    \"test_id\": \"5\",\n    \"input_hash\": \"q7r8s9t0\",\n    \"status\": \"FAIL\",\n    \"error_message\": \"Truncated line detected. Skipping.\",\n    \"timestamp\": \"2024-02-29 10:00:20\"\n  },\n  {\n    \"test_id\": \"6\",\n    \"input_hash\": \"u1v2w3x4\",\n    \"status\": \"PASS\",\n    \"error_message\": null,\n    \"timestamp\": \"2024-02-29 10:00:25\"\n  },\n  {\n    \"test_id\": \"7\",\n    \"input_hash\": \"y5z6a7b8\",\n    \"status\": \"FAIL\",\n    \"error_message\": \"Sequence contains invalid character 'N'.\",\n    \"timestamp\": \"2024-02-29 10:00:30\"\n  },\n  {\n    \"test_id\": \"8\",\n    \"input_hash\": \"a9b0c1d2\",\n    \"status\": \"PASS\",\n    \"error_message\": null,\n    \"timestamp\": \"2024-02-29 10:00:35\"\n  },\n  {\n    \"test_id\": \"9\",\n    \"input_hash\": \"e2f3g4h5\",\n    \"status\": \"FAIL\",\n    \"error_message\": \"Empty line detected. Skipping.\",\n    \"timestamp\": \"2024-02-29 10:00:40\"\n  },\n  {\n    \"test_id\": \"10\",\n    \"input_hash\": \"i5j6k7l8\",\n    \"status\": \"PASS\",\n    \"error_message\": null,\n    \"timestamp\": \"2024-02-29 10:00:45\"\n  }\n]\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. The prompt explicitly requested a Python script to simulate a test suite, generate synthetic FASTQ files, implement a mock parser, and handle errors. The student submitted only a static JSON array representing hypothetical test results, with no code, no file generation logic, no parser implementation, and no error handling mechanisms. Furthermore, the 'Additional Checks' section regarding Pandas, statistical tests (DESeq2), and gene ID consistency is completely irrelevant to the task of validating a FASTQ parser and was not addressed. The output is a placeholder rather than a functional solution."
+    }
+  ]
+}

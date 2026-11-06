@@ -1,0 +1,672 @@
+{
+  "meta": {
+    "job_title": "Economists",
+    "job_id": "economist",
+    "onet_code": "19-3011.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 13,
+    "evaluated_tasks": 13,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.95,
+      "dimensions": {
+        "Correctness": 1.77,
+        "Completeness": 1.85,
+        "Best Practices": 1.69,
+        "Domain Accuracy": 1.77,
+        "Clarity": 2.85,
+        "Autonomy": 1.77
+      },
+      "evaluated_tasks": 13,
+      "scale_max": 5
+    },
+    "total_time_seconds": 568.99
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compile, analyze, and report data to explain economic phenomena and forecast market trends, applying mathematical models and statistical techniques.",
+      "task_type": "Data Analysis & Forecasting",
+      "user_prompt": "Analyze the provided quarterly dataset for the renewable energy sector. Identify the correlation between government subsidy changes and production volume. Construct a time-series forecast for the next 12 months using a linear regression model. Provide the forecasted values, the R-squared statistic, and a brief interpretation of the trend's sustainability.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "quarter": "Q1 2022",
+            "subsidy_change_pct": 5,
+            "production_mwh": 1200
+          },
+          {
+            "quarter": "Q2 2022",
+            "subsidy_change_pct": 5,
+            "production_mwh": 1250
+          },
+          {
+            "quarter": "Q3 2022",
+            "subsidy_change_pct": 0,
+            "production_mwh": 1240
+          },
+          {
+            "quarter": "Q4 2022",
+            "subsidy_change_pct": -2,
+            "production_mwh": 1180
+          }
+        ],
+        "model_instruction": "Use simple linear regression: Production = alpha + beta * Subsidy_Change"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the regression calculation match the provided data points?",
+        "Criterion 2: Completeness — Are the 12-month forecast, R-squared, and interpretation all present?",
+        "Criterion 3: Best practices — Is the economic reasoning for the trend sustainable and logical?"
+      ],
+      "student_answer": "```json\n{\n  \"correlation_analysis\": {\n    \"correlation_coefficient\": 0.95,\n    \"p_value\": 0.001\n  },\n  \"time_series_forecast\": {\n    \"model_equation\": \"Production = 1200 + 10 * Subsidy_Change\",\n    \"forecasted_values\": [\n      {\"quarter\": \"Q1 2023\", \"production_mwh\": 1210},\n      {\"quarter\": \"Q2 2023\", \"production_mwh\": 1220},\n      {\"quarter\": \"Q3 2023\", \"production_mwh\": 1230},\n      {\"quarter\": \"Q4 2023\", \"production_mwh\": 1240},\n      {\"quarter\": \"Q1 2024\", \"production_mwh\": 1250},\n      {\"quarter\": \"Q2 2024\", \"production_mwh\": 1260},\n      {\"quarter\": \"Q3 2024\", \"production_mwh\": 1270},\n      {\"quarter\": \"Q4 2024\", \"production_mwh\": 1280},\n      {\"quarter\": \"Q1 2025\", \"production_mwh\": 1290},\n      {\"quarter\": \"Q2 2025\", \"production_mwh\": 1300},\n      {\"quarter\": \"Q3 2025\", \"production_mwh\": 1310},\n      {\"quarter\": \"Q4 2025\", \"production_mwh\": 1320}\n    ],\n    \"r_squared\": 0.90,\n    \"trend_sustainability_interpretation\": \"The linear trend suggests a strong, positive correlation between subsidy changes and production volume. However, the R-squared value indicates that approximately 90% of the variation in production can be explained by subsidy changes.  The sustainability of this trend is uncertain and depends on continued government support and broader market dynamics.  Without further data or adjustments, the model's accuracy may diminish over time.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on Correctness, Completeness, Best Practices, and Domain Accuracy due to fundamental statistical errors. First, the model equation (Production = 1200 + 10 * Subsidy_Change) is mathematically incorrect for the provided data; a subsidy change of 5 should yield 1250, but the equation yields 1250 only if the intercept is 1150, yet the student claims 1200. Second, the forecast assumes a constant subsidy change of +1% per quarter (implied by the 10 MWh increase per quarter) without any basis in the data or instructions, ignoring the actual historical trend of fluctuating subsidies. Third, the student ignores the 'Additional Checks' regarding seasonality and overfitting, presenting a linear trend on 4 data points as robust. While the JSON structure is clear (Clarity 4), the output is analytically flawed and cannot be used without significant rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Study the socioeconomic impacts of new public policies, such as proposed legislation, taxes, services, and regulations.",
+      "task_type": "Policy Impact Analysis",
+      "user_prompt": "Evaluate the proposed 15% carbon tax on industrial manufacturing. Using the Supply-Demand model, analyze the short-run equilibrium shift. Provide a sensitivity analysis on the price elasticity of demand. Recommend a mitigation strategy for two distinct stakeholder groups: small manufacturers and low-income consumers.",
+      "reference_context": {
+        "current_market_state": {
+          "price_per_unit": 100,
+          "quantity_sold": 5000,
+          "elasticity_of_demand": -0.8
+        },
+        "policy_details": {
+          "tax_rate": 0.15,
+          "target_sector": "Industrial Manufacturing"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Theoretical Application — Does the response correctly apply the Supply-Demand model to show the price and quantity shift?",
+        "Criterion 2: Sensitivity Analysis — Is a confidence interval or sensitivity range provided regarding the elasticity assumption?",
+        "Criterion 3: Stakeholder Address — Are distinct recommendations provided for both small manufacturers and low-income consumers?"
+      ],
+      "student_answer": "**Short-Run Equilibrium Shift Analysis**\n\nApplying the Supply-Demand model with a 15% carbon tax on industrial manufacturing:\n\n*   **Initial Equilibrium:** Price = $100, Quantity = 5000\n*   **Supply Shift:** The tax increases the cost of production for industrial manufacturers. This shifts the supply curve upward by 15% (or $15 per unit). The new supply curve becomes S1.\n*   **New Equilibrium:** The intersection of the new supply curve (S1) and the original demand curve (D) determines the new equilibrium.  The new price will be higher, and the new quantity sold will be lower.\n\n    *   **New Price:** Approximately $115\n    *   **New Quantity:** Approximately 4000\n\n*   **Impact:** The carbon tax reduces the quantity of industrial manufacturing sold by 20% (from 5000 to 4000).  This represents a decrease in economic output within the targeted sector.\n\n**Sensitivity Analysis – Price Elasticity of Demand**\n\nThe elasticity of demand (-0.8) indicates that demand is relatively inelastic in the short run.  A 15% tax will lead to a proportionally smaller decrease in quantity demanded (20%) than the increase in price (15%).\n\n*   **Scenario 1: Elastic Demand (Elasticity = -2)** – If demand were more elastic (e.g., -2), the quantity decrease would be significantly larger (approximately 40%), leading to a more substantial impact on output and potentially greater economic disruption.\n*   **Scenario 2: Inelastic Demand (Elasticity = -0.2)** – If demand were less elastic (e.g., -0.2), the quantity decrease would be smaller (approximately 10%), resulting in a milder impact on output.\n\n**Mitigation Strategies**\n\n1.  **Small Manufacturers:**\n    *   **Targeted Tax Credits/Grants:** Provide direct financial assistance to small manufacturers to offset the increased costs associated with the carbon tax.  These credits should be tiered based on size and energy intensity.\n    *   **Technical Assistance Programs:** Offer subsidized training and support to help small manufacturers adopt more energy-efficient technologies and processes, reducing their long-term carbon footprint and tax burden.\n\n2.  **Low-Income Consumers:**\n    *   **Carbon Rebate Program:** Implement a revenue-neutral carbon rebate program.  The revenue generated from the carbon tax is redistributed to low-income households through direct cash payments, offsetting the increased cost of goods and services impacted by the tax.\n    *   **Targeted Energy Efficiency Assistance:**  Expand programs that provide free or subsidized energy audits and weatherization upgrades to low-income households, reducing their energy consumption and lowering their utility bills.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails significantly on Correctness and Domain Accuracy due to fundamental economic errors. First, it incorrectly calculates the new equilibrium quantity (4000) based on a 15% price increase and -0.8 elasticity; mathematically, a 15% price rise with -0.8 elasticity should result in a 12% quantity drop (4400 units), not 20%. Second, the sensitivity analysis contains a logical contradiction: it claims a 15% tax leads to a 20% quantity drop with -0.8 elasticity, which is mathematically impossible (15 * 0.8 = 12). Third, it ignores the 'Additional Checks' regarding seasonality and correlation/causation. While the mitigation strategies are sound (Completeness 3) and the writing is clear (Clarity 4), the mathematical failures and lack of professional rigor in the modeling section prevent it from being a usable industry-standard output (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Study economic and statistical data in area of specialization, such as finance, labor, or agriculture.",
+      "task_type": "Labor Market Analysis",
+      "user_prompt": "Review the provided labor force participation data for the tech sector over the last 5 years. Identify structural unemployment trends. Apply the Natural Rate of Unemployment (NAIRU) framework to determine if current rates are cyclical or structural. Forecast the labor gap for the next 24 months assuming a 3% annual productivity growth.",
+      "reference_context": {
+        "labor_data": [
+          {
+            "year": 2020,
+            "participation_rate": 65.2,
+            "unemployment_rate": 8.1
+          },
+          {
+            "year": 2021,
+            "participation_rate": 64.8,
+            "unemployment_rate": 6.5
+          },
+          {
+            "year": 2022,
+            "participation_rate": 63.9,
+            "unemployment_rate": 4.2
+          },
+          {
+            "year": 2023,
+            "participation_rate": 63.5,
+            "unemployment_rate": 3.8
+          },
+          {
+            "year": 2024,
+            "participation_rate": 63.2,
+            "unemployment_rate": 3.5
+          }
+        ],
+        "productivity_growth_assumption": 0.03
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Diagnostic Accuracy — Is the distinction between cyclical and structural unemployment clearly justified using the data?",
+        "Criterion 2: Forecasting — Is the 24-month labor gap forecast derived logically from the productivity assumption?",
+        "Criterion 3: Confidence Interval — Does the forecast include a confidence interval or sensitivity analysis regarding the productivity rate?"
+      ],
+      "student_answer": "**Structural Unemployment Trends:**\n\nThe tech sector’s labor force participation rate has declined steadily from 65.2% in 2020 to 63.2% in 2024, while the unemployment rate has decreased dramatically, falling from 8.1% to 3.5% over the same period. This suggests a shift towards a tighter labor market, but the declining participation rate indicates a potential structural component. The consistent decline in participation, despite falling unemployment, points to factors beyond cyclical fluctuations, such as demographic shifts (aging workforce, reduced labor force attachment), skill mismatches (lack of workers with the skills demanded by tech companies), and potential early retirement trends.\n\n**NAIRU Assessment:**\n\nCurrent unemployment rates (3.5%) are significantly below historical averages and the levels observed in 2020 and 2021. Given the declining participation rate, these rates are likely driven by structural factors rather than cyclical pressures. The NAIRU framework suggests that the economy is operating below its natural rate of unemployment.  The persistent tightness in the labor market, indicated by the low unemployment rate and declining participation, supports this conclusion.\n\n**Labor Gap Forecast (Next 24 Months):**\n\n1.  **Productivity Growth Impact:** A 3% annual productivity growth translates to a cumulative productivity growth of 1.44% over 24 months.\n\n2.  **Labor Demand:** Assuming a stable relationship between productivity and labor demand, an increase in productivity will lead to increased demand for labor.\n\n3.  **Labor Gap Calculation:**  Let's assume a baseline labor demand level based on current unemployment rates.  We can approximate the labor gap as the difference between the potential labor supply and the actual labor supply.  Without a precise baseline, we'll express the gap as a percentage of the current labor force.\n\n    *   Current Labor Force: Approximately 63.2% of the potential workforce.\n    *   Labor Gap Percentage: 3% productivity growth * 24 months = 72%\n    *   Estimated Labor Gap:  The tech sector will experience a labor gap of approximately 72% of its potential workforce over the next 24 months. This indicates a significant shortage of skilled labor.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. It contains severe mathematical errors (calculating cumulative growth as 72% instead of ~6.09%), misapplies the NAIRU framework by claiming the economy is operating below the natural rate when low unemployment typically indicates operating above it, and derives a nonsensical labor gap forecast (72% of the workforce) based on flawed logic. The analysis confuses correlation with causation and provides no professional or usable output."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Conduct research on economic issues, and disseminate research findings through technical reports or scientific articles in journals.",
+      "task_type": "Research & Reporting",
+      "user_prompt": "Draft a technical summary on the impact of remote work policies on urban commercial real estate values. Synthesize the provided case studies into a cohesive argument using the Agglomeration Economies theory. Include a forecast of vacancy rates for the next 3 years with a 95% confidence interval.",
+      "reference_context": {
+        "case_studies": [
+          {
+            "city": "New York",
+            "vacancy_change": "+12%",
+            "remote_adoption": "High"
+          },
+          {
+            "city": "Austin",
+            "vacancy_change": "+5%",
+            "remote_adoption": "Medium"
+          },
+          {
+            "city": "Chicago",
+            "vacancy_change": "+18%",
+            "remote_adoption": "High"
+          }
+        ],
+        "theoretical_framework": "Agglomeration Economies"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Theoretical Integration — Is Agglomeration Economies theory correctly applied to explain the vacancy trends?",
+        "Criterion 2: Forecast Precision — Is the 3-year vacancy forecast accompanied by a 95% confidence interval?",
+        "Criterion 3: Report Quality — Is the synthesis of case studies logical and suitable for a technical journal audience?"
+      ],
+      "student_answer": "**Technical Summary: Impact of Remote Work Policies on Urban Commercial Real Estate Values**\n\n**Executive Summary:**\n\nThe widespread adoption of remote work policies has demonstrably negatively impacted urban commercial real estate values, primarily driven by a reduction in demand for office space. Utilizing the Agglomeration Economies theory, this analysis synthesizes data from three major cities – New York, Austin, and Chicago – to illustrate this trend. Increased remote work adoption correlates with higher vacancy rates and declining property values.  A forecast indicates continued negative pressure on vacancy rates over the next three years.\n\n**Findings:**\n\nThe case studies reveal a consistent pattern: cities with higher rates of remote work adoption experienced greater increases in commercial real estate vacancy rates. New York exhibited the most significant negative impact (+12%), followed by Chicago (+18%), and Austin (+5%). These increases are directly attributable to reduced demand for traditional office space as companies downsize their physical footprints and embrace remote or hybrid work models.\n\n**Theoretical Framework – Agglomeration Economies:**\n\nThis analysis is grounded in the theory of Agglomeration Economies. This theory posits that the concentration of similar industries and businesses within a geographic area generates synergistic benefits, including reduced transportation costs, knowledge spillovers, and access to specialized labor.  The decline in office occupancy rates observed in these cities disrupts these agglomeration effects.  Reduced density weakens knowledge sharing, increases commuting costs for those who remain in the office, and diminishes the overall attractiveness of urban centers as hubs for innovation and collaboration.  The shift to remote work effectively fragments these agglomeration benefits, leading to decreased value for commercial real estate.\n\n**Vacancy Rate Forecast (Next 3 Years):**\n\n| Year | Projected Vacancy Rate | 95% Confidence Interval |\n|---|---|---|\n| 2024 | 18% - 22% |  |\n| 2025 | 21% - 25% |  |\n| 2026 | 23% - 27% |  |\n\n*Note: These forecasts are based on the observed trends and the continued expectation of sustained remote work adoption.  External economic factors (e.g., interest rates, inflation) could influence these projections.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. It misinterprets the data by listing Chicago's vacancy change (+18%) as the second highest after New York (+12%), when 18 is greater than 12. It fails to synthesize the case studies into a cohesive argument using Agglomeration Economies as requested, instead providing a generic definition. Most critically, it fails the specific task requirement to provide a forecast with a 95% confidence interval; the table columns are empty and the values provided are ranges, not point estimates with intervals. The distinction between correlation and causation is not rigorously maintained, and the forecast lacks any statistical basis or seasonality adjustment. The output is a rough draft requiring major rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Study the socioeconomic impacts of new public policies, such as proposed legislation, taxes, services, and regulations.",
+      "task_type": "Policy Recommendation",
+      "user_prompt": "Assess the economic implications of a proposed Universal Basic Income (UBI) pilot program. Use Keynesian Multiplier theory to estimate the impact on aggregate demand. Provide a policy recommendation that balances the needs of the unemployed (beneficiaries) and the tax-paying workforce (contributors), including a sensitivity analysis on the funding source.",
+      "reference_context": {
+        "pilot_parameters": {
+          "monthly_payment": 1000,
+          "target_population": 50000,
+          "funding_source_options": [
+            "Income Tax Increase",
+            "Consumption Tax Increase"
+          ]
+        },
+        "multiplier_estimate": 1.5
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Theoretical Application — Is the Keynesian Multiplier correctly calculated to estimate aggregate demand changes?",
+        "Criterion 2: Stakeholder Balance — Do the recommendations explicitly address the trade-offs for both beneficiaries and contributors?",
+        "Criterion 3: Sensitivity Analysis — Is the impact of different funding sources analyzed with a clear confidence range?"
+      ],
+      "student_answer": "**Economic Implications of UBI Pilot Program & Policy Recommendation**\n\n**Estimated Aggregate Demand Impact:**\n\nApplying the Keynesian Multiplier, a UBI pilot program with a $1,000 monthly payment to 50,000 individuals will generate an initial injection of $60 million into the economy per month ($1,000 * 50,000).  The multiplier of 1.5 suggests this initial injection will lead to a total increase in aggregate demand of $90 million per month ($60 million * 1.5).  Over a year, this translates to $1.08 billion in increased economic activity.  This increase will be distributed across various sectors – retail, services, housing, and potentially investment – stimulating economic growth.\n\n**Policy Recommendation:**\n\nImplement a UBI pilot program with a $1,000 monthly payment to 50,000 individuals, funded by a progressive income tax increase.  Specifically, a 5% increase across all income brackets, with a greater impact on higher earners, would be the most equitable and sustainable approach. This ensures that contributors bear a proportionate share of the cost while mitigating the potential for inflationary pressures associated with a consumption tax.\n\n**Sensitivity Analysis – Funding Source:**\n\n| Funding Source        | Estimated Annual Cost | Impact on Taxpayers | Potential Inflationary Risk |\n|-----------------------|-----------------------|----------------------|-----------------------------|\n| Income Tax Increase   | $720 million           | Moderate             | Low to Moderate              |\n| Consumption Tax Increase| $720 million           | High                 | Moderate to High             |\n\n*   **Income Tax:** A 5% increase would generate approximately $720 million annually. This approach is less likely to trigger significant inflationary pressures as it doesn’t directly impact consumer spending. However, it may disproportionately affect higher earners.\n*   **Consumption Tax:** A 5% increase on consumption would generate approximately $720 million annually. This method is more directly linked to increased spending, potentially leading to higher inflation. Careful monitoring and potential adjustments would be necessary.\n\n**Conclusion:**\n\nThe UBI pilot program, funded by a progressive income tax increase, offers a viable pathway to stimulate aggregate demand and provide a safety net for vulnerable populations. Continuous monitoring of inflation and economic indicators is crucial to refine the program’s design and funding strategy.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly applies the Keynesian multiplier to the provided parameters (Correctness: 3, Domain Accuracy: 3). However, it fails to address the 'Additional Checks' regarding overfitting, correlation vs. causation, and seasonality, which are explicit constraints in the prompt (Completeness: 3). The policy recommendation contains a significant logical flaw: it proposes a flat 5% increase across all brackets while claiming it is 'progressive' and 'disproportionately affects higher earners,' which is mathematically inconsistent (Best Practices: 2). The sensitivity analysis is superficial, assuming identical revenue generation for both tax types without adjusting for the different tax bases (elasticity), reducing its professional utility (Autonomy: 3). Clarity is good, but the content lacks the depth expected of a senior analyst."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Compile, analyze, and report data to explain economic phenomena and forecast market trends, applying mathematical models and statistical techniques.",
+      "task_type": "Market Trend Forecasting",
+      "user_prompt": "Analyze the provided historical inflation and interest rate data to forecast the central bank's next policy move. Apply the Taylor Rule to determine the 'fair' interest rate. Compare this to the current rate and forecast the probability of a rate hike or cut in the next quarter, providing a confidence interval.",
+      "reference_context": {
+        "historical_data": [
+          {
+            "period": "Q1",
+            "inflation_rate": 2.1,
+            "current_rate": 4.5
+          },
+          {
+            "period": "Q2",
+            "inflation_rate": 2.4,
+            "current_rate": 4.5
+          },
+          {
+            "period": "Q3",
+            "inflation_rate": 2.8,
+            "current_rate": 4.75
+          },
+          {
+            "period": "Q4",
+            "inflation_rate": 3.1,
+            "current_rate": 4.75
+          }
+        ],
+        "taylor_rule_formula": "Rate = 2 + Inflation + 0.5 * (Inflation - 2) + 0.5 * Output_Gap",
+        "output_gap_assumption": 0.0
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Model Accuracy — Is the Taylor Rule calculation performed correctly based on the provided inflation data?",
+        "Criterion 2: Forecast Logic — Is the probability of a rate hike/cut logically derived from the gap between 'fair' and 'current' rates?",
+        "Criterion 3: Uncertainty Quantification — Is a confidence interval or sensitivity analysis included for the forecast?"
+      ],
+      "student_answer": "**Forecast of Central Bank Policy Move**\n\n**1. Inflation Analysis:**\n\nInflation has increased significantly over the past four quarters, rising from 2.1% in Q1 to 4.5% in Q4. The rate of increase has been consistent, averaging approximately 0.7 percentage points per quarter.\n\n**2. Taylor Rule Calculation:**\n\nUsing the provided Taylor Rule formula (Rate = 2 + Inflation + 0.5 * (Inflation - 2) + 0.5 * Output_Gap), with an output gap of 0.0, the ‘fair’ interest rate is:\n\nRate = 2 + 4.5 + 0.5 * (4.5 - 2) + 0.5 * 0.0\nRate = 2 + 4.5 + 0.5 * 2.5 + 0\nRate = 2 + 4.5 + 1.25\nRate = 7.75%\n\n**3. Current Rate Comparison:**\n\nThe current policy rate is 4.75%.\n\n**4. Forecast of Policy Move:**\n\nGiven the persistent inflation rate (currently 4.5%) and the Taylor Rule suggesting a ‘fair’ rate of 7.75%, the central bank is likely to continue its tightening cycle.  The current rate is significantly below the Taylor Rule target.\n\n**Probability Assessment:**\n\n*   **Probability of Rate Hike (Next Quarter):** 85%\n*   **Probability of Rate Cut (Next Quarter):** 15%\n\n**Confidence Interval:**\n\n*   **95% Confidence Interval:** [75%, 95%]\n\n**Note:** This forecast is based solely on the provided data and the specified Taylor Rule.  Other economic factors not included in the context (e.g., labor market conditions, global economic outlook) could influence the central bank’s decision.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. First, it hallucinates data: it claims inflation rose to 4.5% in Q4, whereas the provided context explicitly states Q4 inflation was 3.1% (and current rate was 4.75%). Second, it fails the basic arithmetic check: using the correct Q4 inflation of 3.1%, the Taylor Rule calculation should be 2 + 3.1 + 0.5(1.1) = 6.65%, not 7.75%. Third, it ignores the 'Additional Checks' regarding seasonality and correlation/causation. Fourth, the probability and confidence interval are presented without any statistical derivation or justification, making them arbitrary. The answer is factually incorrect based on the provided input and mathematically flawed."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Formulate recommendations, policies, or plans to solve economic problems or to interpret markets.",
+      "task_type": "Policy Formulation",
+      "user_prompt": "A sudden 15% drop in global oil prices has occurred. Draft a policy recommendation memo for the Department of Energy. Analyze the impact on domestic renewable energy producers versus fossil fuel consumers. Propose a subsidy adjustment plan that balances the interests of both groups while maintaining long-term energy security.",
+      "reference_context": {
+        "market_data": {
+          "current_oil_price": "$60/barrel",
+          "previous_oil_price": "$70/barrel",
+          "renewable_production_cost": "$45/MWh",
+          "fossil_fuel_production_cost": "$35/MWh"
+        },
+        "stakeholder_constraints": {
+          "renewable_producers": "Require subsidies to remain above $10/MWh to avoid bankruptcy.",
+          "consumers": "Demand energy prices not exceed $0.12/kWh."
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Theoretical Application - Does the response explicitly apply Supply-Demand theory to explain the price drop impact?",
+        "Criterion 2: Stakeholder Balance - Are distinct recommendations provided for both renewable producers and consumers?",
+        "Criterion 3: Feasibility - Is the proposed subsidy plan mathematically consistent with the provided cost constraints?"
+      ],
+      "student_answer": "**Memorandum**\n\n**To:** Department of Energy\n\n**From:** Economist\n\n**Date:** October 26, 2023\n\n**Subject:** Policy Recommendation: Response to Sudden Oil Price Drop\n\n**Executive Summary:** A 15% decline in global oil prices necessitates a targeted subsidy adjustment to mitigate negative impacts on renewable energy producers while ensuring consumer affordability and long-term energy security. This memo proposes a phased subsidy reduction coupled with strategic investments in renewable energy infrastructure.\n\n**Analysis of Impact:**\n\n*   **Renewable Energy Producers:** The lower oil price diminishes the relative competitiveness of renewables. With a $45/MWh production cost, renewables are currently profitable, but the $15/barrel drop increases the cost advantage of fossil fuels, potentially pushing some producers below the $10/MWh threshold required for viability.\n*   **Fossil Fuel Consumers:** Lower oil prices directly translate to reduced energy costs for consumers. Current prices are within the $0.12/kWh limit, providing a buffer. However, sustained low oil prices could incentivize increased fossil fuel consumption, offsetting some of the environmental benefits.\n\n**Proposed Subsidy Adjustment Plan:**\n\n1.  **Phase 1 (Immediate - 3 Months):** Reduce renewable energy subsidies by $2/MWh, targeting a total reduction of $6/MWh across all producers. This acknowledges the immediate price shock and provides a small adjustment to incentivize efficiency.\n2.  **Phase 2 (6-12 Months):** Implement a tiered subsidy reduction based on production capacity. Smaller producers (under 100 MW) receive a further $1/MWh reduction, while larger producers receive $3/MWh. This protects nascent renewable industries.\n3.  **Infrastructure Investment:** Simultaneously, allocate $5 billion to accelerate the deployment of grid modernization and energy storage technologies. This will enhance the reliability and dispatchability of renewables, further reducing their reliance on subsidies.\n4.  **Consumer Protection:** Maintain a fixed, targeted consumer rebate program of $500 per household for low-income households to mitigate any potential price increases due to fossil fuel consumption.\n\n**Rationale:**\n\nThis plan balances competing interests by:\n\n*   Protecting renewable producers from immediate bankruptcy.\n*   Maintaining consumer affordability within the established price constraint.\n*   Investing in infrastructure to improve the long-term viability of renewable energy.\n\n**Monitoring & Evaluation:**\n\nRegularly monitor oil prices, renewable energy production costs, and consumer energy consumption. Adjust the subsidy plan as needed based on market conditions and program effectiveness.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. It ignores the explicit constraint that renewable producers require subsidies to remain above $10/MWh to avoid bankruptcy, yet proposes a plan that reduces subsidies by $6/MWh without calculating if this keeps them above the threshold. It also fails to address the consumer price constraint ($0.12/kWh) with any actual calculation or mechanism, merely stating prices are within limits without proof. The distinction between oil prices ($/barrel) and electricity prices ($/MWh or $/kWh) is handled loosely, leading to domain inaccuracies. While the structure is clear (Clarity 4), the lack of rigorous analysis, missing calculations, and failure to meet specific stakeholder constraints make the output unsuitable for professional use without major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Forecast production and consumption of renewable resources and supply, consumption, and depletion of non-renewable resources.",
+      "task_type": "Resource Forecasting",
+      "user_prompt": "Using the provided historical extraction data for a specific non-renewable mineral, forecast the depletion timeline over the next 20 years. Apply the Hotelling Rule to model the optimal extraction path. Provide a 95% confidence interval for the depletion year, accounting for a 2% annual increase in extraction costs.",
+      "reference_context": {
+        "historical_data": [
+          {
+            "year": 2020,
+            "extraction_tons": 5000,
+            "price_per_ton": 100
+          },
+          {
+            "year": 2021,
+            "extraction_tons": 4800,
+            "price_per_ton": 102
+          },
+          {
+            "year": 2022,
+            "extraction_tons": 4600,
+            "price_per_ton": 105
+          }
+        ],
+        "total_reserves": 50000,
+        "cost_growth_rate": 0.02
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Model Accuracy - Is the Hotelling Rule correctly applied to the extraction path?",
+        "Criterion 2: Statistical Rigor - Is a confidence interval or sensitivity analysis included for the depletion forecast?",
+        "Criterion 3: Data Integration - Does the forecast accurately reflect the provided historical extraction trends?"
+      ],
+      "student_answer": "```json\n{\n  \"forecast\": {\n    \"optimal_extraction_path\": \"The Hotelling Rule dictates that the price of a non-renewable resource should increase at the same rate as the extraction cost.  Given a 2% annual cost growth rate, the price will increase by 2% per year.  This implies a decreasing extraction rate.\",\n    \"extraction_timeline\": [\n      {\n        \"year\": 2023,\n        \"extraction_tons\": 4400,\n        \"price_per_ton\": 108\n      },\n      {\n        \"year\": 2024,\n        \"extraction_tons\": 4200,\n        \"price_per_ton\": 111\n      },\n      {\n        \"year\": 2025,\n        \"extraction_tons\": 4000,\n        \"price_per_ton\": 114\n      },\n      {\n        \"year\": 2026,\n        \"extraction_tons\": 3800,\n        \"price_per_ton\": 117\n      },\n      {\n        \"year\": 2027,\n        \"extraction_tons\": 3600,\n        \"price_per_ton\": 120\n      },\n      {\n        \"year\": 2028,\n        \"extraction_tons\": 3400,\n        \"price_per_ton\": 123\n      },\n      {\n        \"year\": 2029,\n        \"extraction_tons\": 3200,\n        \"price_per_ton\": 126\n      },\n      {\n        \"year\": 2030,\n        \"extraction_tons\": 3000,\n        \"price_per_ton\": 129\n      },\n      {\n        \"year\": 2031,\n        \"extraction_tons\": 2800,\n        \"price_per_ton\": 132\n      },\n      {\n        \"year\": 2032,\n        \"extraction_tons\": 2600,\n        \"price_per_ton\": 135\n      },\n      {\n        \"year\": 2033,\n        \"extraction_tons\": 2400,\n        \"price_per_ton\": 138\n      },\n      {\n        \"year\": 2034,\n        \"extraction_tons\": 2200,\n        \"price_per_ton\": 141\n      },\n      {\n        \"year\": 2035,\n        \"extraction_tons\": 2000,\n        \"price_per_ton\": 144\n      },\n      {\n        \"year\": 2036,\n        \"extraction_tons\": 1800,\n        \"price_per_ton\": 147\n      },\n      {\n        \"year\": 2037,\n        \"extraction_tons\": 1600,\n        \"price_per_ton\": 150\n      },\n      {\n        \"year\": 2038,\n        \"extraction_tons\": 1400,\n        \"price_per_ton\": 153\n      },\n      {\n        \"year\": 2039,\n        \"extraction_tons\": 1200,\n        \"price_per_ton\": 156\n      },\n      {\n        \"year\": 2040,\n        \"extraction_tons\": 1000,\n        \"price_per_ton\": 159\n      },\n      {\n        \"year\": 2041,\n        \"extraction_tons\": 800,\n        \"price_per_ton\": 162\n      }\n    ],\n    \"depletion_year\": 2041,\n    \"confidence_interval\": {\n      \"lower_bound\": 2038,\n      \"upper_bound\": 2044\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. 1) Correctness: The student misapplies the Hotelling Rule (which dictates price net of marginal cost grows at the discount rate, not that price grows at the cost growth rate) and fails to perform the required integration to find the depletion year based on the 50,000 reserve constraint. The extraction path is a simple linear arithmetic progression, not an optimal economic path. 2) Completeness: No confidence interval calculation is shown, and the 20-year forecast is arbitrary. 3) Best Practices: No mathematical derivation or model specification is provided. 4) Domain Accuracy: The economic theory is incorrect. 5) Clarity: The output is a JSON block with nonsensical logic. 6) Autonomy: The output is unusable for a client due to fundamental theoretical errors."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Testify at regulatory or legislative hearings concerning the estimated effects of changes in legislation or public policy, and present recommendations based on cost-benefit analyses.",
+      "task_type": "Cost-Benefit Analysis",
+      "user_prompt": "Prepare a testimony summary for a proposed carbon tax of $50 per ton. Conduct a cost-benefit analysis comparing the tax revenue generated against the economic losses in the manufacturing sector. Estimate the net welfare effect for the economy and identify the break-even point for the tax to be economically neutral.",
+      "reference_context": {
+        "emissions_data": {
+          "total_annual_emissions": "1 billion tons",
+          "manufacturing_share": "30%"
+        },
+        "elasticity": {
+          "demand_elasticity": -0.5,
+          "supply_elasticity": 0.3
+        },
+        "revenue_use": "Funds allocated to green infrastructure projects valued at $20 billion annually."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Economic Theory - Does the analysis utilize standard welfare economics concepts (deadweight loss, consumer surplus)?",
+        "Criterion 2: Quantitative Precision - Are the revenue and cost estimates calculated correctly based on elasticity?",
+        "Criterion 3: Policy Recommendation - Is a clear conclusion drawn regarding the net welfare effect?"
+      ],
+      "student_answer": "**Testimony Summary: Proposed $50/Ton Carbon Tax**\n\n**Executive Summary:** A $50/ton carbon tax, generating approximately $50 billion annually, presents a mixed economic impact. While significant revenue is projected, the manufacturing sector faces substantial economic losses due to increased production costs. A net welfare effect is anticipated to be negative, though the magnitude depends on the allocation of tax revenue.  The tax will be economically neutral at approximately $25/ton.\n\n**Revenue Generation:**\n\n*   Total Annual Revenue: 1 billion tons * $50/ton = $50 billion\n*   Green Infrastructure Investment: $50 billion (as specified)\n\n**Economic Impact – Manufacturing Sector:**\n\n*   Manufacturing Share of Emissions: 30%\n*   Emissions Subject to Tax: 1 billion tons * 0.30 = 300 million tons\n*   Estimated Cost Increase for Manufacturing: Assuming supply elasticity of 0.3, a $50/ton tax will increase production costs by 15% (0.3 * $50).\n*   Estimated Manufacturing Losses: 300 million tons * $15/ton = $4.5 billion\n\n**Welfare Analysis:**\n\n*   Net Economic Loss (Manufacturing): $4.5 billion\n*   Net Revenue (Green Infrastructure): $50 billion\n*   Net Welfare Effect: $50 billion - $4.5 billion = $45.5 billion (positive)\n\n**Break-Even Point:**\n\nTo achieve economic neutrality, the revenue generated must equal the economic losses.  Therefore, the break-even carbon tax rate is $4.5 billion / 1 billion tons = $4.50/ton.\n\n**Elasticity Considerations:**\n\n*   Demand Elasticity (-0.5):  A $50/ton tax will reduce demand in sectors with significant emissions, leading to decreased output and further economic losses.\n*   Supply Elasticity (0.3):  The manufacturing sector’s relatively inelastic supply suggests that cost increases will be passed on to consumers, exacerbating the economic impact.\n\n**Conclusion:**\n\nWhile the proposed $50/ton carbon tax generates substantial revenue and could positively impact green infrastructure, the anticipated economic losses in the manufacturing sector outweigh these benefits.  The tax is economically neutral at $4.50/ton.  A lower tax rate, such as $25/ton, would likely result in a more economically favorable outcome, minimizing negative impacts on the manufacturing sector while still generating significant revenue for green investments.  Further analysis incorporating regional variations in manufacturing activity and potential mitigation strategies is recommended.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy due to severe logical and mathematical errors. First, the revenue calculation ($50 billion) assumes the tax applies to total emissions, but the context specifies a manufacturing share of 30%, meaning the tax base for the sector analysis is inconsistent with the total revenue claim. Second, the calculation of manufacturing losses is nonsensical: it multiplies tons by a percentage-derived dollar amount ($15/ton) without establishing a baseline price or quantity change, resulting in a meaningless figure. Third, the elasticity concepts are misapplied; the student claims a 15% cost increase based on elasticity, which is a category error (elasticity measures responsiveness, not direct cost pass-through). Fourth, the break-even calculation ($4.5B / 1B tons) is mathematically invalid because it divides a sector-specific loss by the total emission volume, ignoring the tax rate's impact on the total revenue stream. Finally, the conclusion contradicts the internal math: the student calculates a positive net welfare of $45.5B but concludes losses outweigh benefits. The output is not usable for a client."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Develop economic guidelines and standards, and prepare points of view used in forecasting trends and formulating economic policy.",
+      "task_type": "Trend Forecasting & Guidelines",
+      "user_prompt": "Analyze the provided quarterly GDP and inflation data to forecast the next two quarters. Determine if the economy is entering a stagflationary period. Based on your forecast, develop a set of monetary policy guidelines for the central bank, specifying interest rate targets and inflation expectations.",
+      "reference_context": {
+        "gdp_growth": [
+          2.1,
+          1.8,
+          1.5,
+          1.2
+        ],
+        "inflation_rate": [
+          2.0,
+          2.5,
+          3.2,
+          3.8
+        ],
+        "unemployment_rate": [
+          4.0,
+          4.2,
+          4.5,
+          4.8
+        ],
+        "model_instruction": "Use a Phillips Curve framework to relate unemployment and inflation."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Diagnostic Accuracy - Is the identification of stagflation supported by the data trends?",
+        "Criterion 2: Theoretical Consistency - Does the analysis correctly apply the Phillips Curve relationship?",
+        "Criterion 3: Guideline Specificity - Are the proposed interest rate targets and inflation expectations logically derived from the forecast?"
+      ],
+      "student_answer": "**Forecast for Next Two Quarters:**\n\n*   **Q3 2024 GDP Growth:** 1.0%\n*   **Q4 2024 GDP Growth:** 0.8%\n*   **Q3 2024 Inflation Rate:** 4.0%\n*   **Q4 2024 Inflation Rate:** 4.2%\n*   **Q3 2024 Unemployment Rate:** 4.7%\n*   **Q4 2024 Unemployment Rate:** 5.0%\n\n**Stagflation Assessment:**\n\nThe economy is transitioning into a stagflationary period. GDP growth is decelerating sharply, while inflation remains persistently high and is accelerating. The unemployment rate is increasing, indicating a weakening labor market. The combination of slow growth and rising inflation, alongside rising unemployment, aligns with the definition of stagflation.\n\n**Monetary Policy Guidelines:**\n\n*   **Short-Term Interest Rate Target:** 5.75% - 6.00% (Maintain current target, with a slight upward adjustment)\n*   **Long-Term Interest Rate Target:** 6.25% - 6.50% (Gradually increase to signal commitment to price stability)\n*   **Inflation Expectations:** Target 2.5% - 3.0% (Communicate a firm commitment to achieving this target through clear forward guidance and data dependency)\n*   **Quantitative Tightening:** Continue tapering asset purchases at a rate of $20 billion per quarter.\n*   **Reserve Requirement:** Maintain current reserve requirement of 10%.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to follow the explicit instruction to use a Phillips Curve framework for the analysis, resulting in a lack of domain accuracy and methodological rigor. The forecast logic is weak; predicting a sharp decline in GDP growth while inflation accelerates without explaining the mechanism (e.g., supply shocks vs. demand) is a significant analytical gap. The monetary policy section contains a fundamental error: the Federal Reserve does not set 'Long-Term Interest Rate Targets' directly, nor does it set 'Reserve Requirements' as a primary active tool in the current framework (which relies on IORB and ON RRP). The distinction between correlation and causation is not addressed, and the forecast ignores the implied seasonality or structural breaks in the data. While the output is clear and formatted well (Clarity 3), the substantive errors and lack of required framework application prevent it from being a competent professional submission."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Provide advice and consultation on economic relationships to businesses, public and private agencies, and other employers.",
+      "task_type": "Strategic Consultation",
+      "user_prompt": "A multinational corporation is considering expanding into a developing market with high inflation and volatile currency. Provide a strategic economic consultation report. Analyze the risks using Game Theory concepts regarding potential government intervention. Recommend a hedging strategy and a market entry timeline.",
+      "reference_context": {
+        "market_conditions": {
+          "inflation_rate": "15% annually",
+          "currency_volatility": "High",
+          "government_intervention_probability": 0.4
+        },
+        "competitor_actions": [
+          {
+            "competitor": "Firm A",
+            "action": "Delayed entry"
+          },
+          {
+            "competitor": "Firm B",
+            "action": "Immediate entry"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Game Theory Application - Is a payoff matrix or strategic interaction model used to analyze government intervention?",
+        "Criterion 2: Risk Assessment - Are the inflation and currency risks quantified and addressed?",
+        "Criterion 3: Strategic Recommendation - Is the hedging strategy and timeline actionable and justified by the analysis?"
+      ],
+      "student_answer": "**Strategic Economic Consultation Report: Developing Market Expansion**\n\n**Executive Summary:** Expanding into a developing market with high inflation and currency volatility presents significant challenges. Government intervention adds a layer of uncertainty. A phased entry strategy, coupled with proactive hedging and careful competitor analysis, is recommended.\n\n**I. Risk Analysis – Game Theory & Government Intervention**\n\nThe market’s high inflation and currency volatility create a non-zero probability of government intervention (40%). This introduces a Game Theory element.  We must consider the potential actions of the government and how they might impact our investment.\n\n*   **Scenario 1: Supportive Intervention (Probability 0.6):** The government may offer incentives (tax breaks, subsidies) to attract foreign investment, stabilizing the currency and mitigating inflation. This would benefit early entrants like Firm B.\n*   **Scenario 2: Neutral Intervention (Probability 0.3):** The government maintains a passive stance, allowing market forces to operate.  Inflation and currency fluctuations persist.\n*   **Scenario 3: Disruptive Intervention (Probability 0.1):** The government imposes capital controls, price controls, or nationalizes assets. This significantly increases risk and could deter investment.\n\nFirm A’s delayed entry is a strategic response, likely anticipating potential negative intervention.  Our optimal strategy must account for this.\n\n**II. Hedging Strategy Recommendation**\n\nGiven the volatility, a multi-faceted hedging strategy is crucial:\n\n1.  **Currency Forward Contracts:** Lock in exchange rates for a significant portion of anticipated revenue streams to mitigate immediate currency risk. Initial contracts should cover at least 6 months.\n2.  **Inflation-Indexed Bonds:** Invest a small portion of capital in local inflation-indexed bonds to protect against eroding purchasing power.\n3.  **Natural Hedge (If Possible):** If revenue is in the local currency, consider invoicing in local currency to reduce exposure.\n4.  **Options Strategy (Limited):** Explore purchasing currency options for a small portion of the investment to protect against extreme currency movements, but avoid excessive speculation.\n\n**III. Market Entry Timeline & Phased Approach**\n\n1.  **Phase 1 (Months 1-6): Market Research & Pilot Program (10% Investment)** – Conduct thorough due diligence, establish a small-scale pilot program in a limited geographic area. Focus on understanding local regulations and consumer behavior.\n2.  **Phase 2 (Months 7-12): Limited Expansion (30% Investment)** – Expand operations to a wider geographic area based on pilot program results. Implement initial hedging strategies. Monitor government activity closely.\n3.  **Phase 3 (Months 13-18): Strategic Growth (40% Investment)** – Scale operations based on performance. Refine hedging strategies.  Maintain a flexible approach to adapt to changing market conditions.\n4.  **Phase 4 (Months 19+): Consolidation & Optimization (20% Investment)** – Focus on operational efficiency and market share consolidation.\n\n**IV. Competitor Analysis & Response**\n\nFirm A’s delayed entry suggests they anticipate unfavorable government action. We should mirror this cautious approach initially, prioritizing stability and risk mitigation.  However, we must be prepared to capitalize on opportunities if supportive intervention occurs.\n\n**V. Key Performance Indicators (KPIs)**\n\n*   Local Currency Revenue Growth\n*   Inflation-Adjusted Profitability\n*   Currency Volatility Index (CVIX)\n*   Government Intervention Index (based on regulatory changes and policy announcements)\n\n**Disclaimer:** This report provides a preliminary strategic assessment based on the provided context. A more detailed analysis would require further information and ongoing monitoring.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task but contains significant logical and domain-specific flaws. In Dimension 1 (Correctness) and 4 (Domain Accuracy), the Game Theory analysis is weak; it arbitrarily assigns probabilities to government scenarios (0.6, 0.3, 0.1) that sum to 1.0, ignoring the provided 0.4 intervention probability, and fails to model the strategic interaction (payoff matrix) between the firm and the government. The hedging recommendation in Dimension 4 is flawed: suggesting 'invoicing in local currency' as a natural hedge is incorrect for a firm with foreign costs or revenue needs, as it increases exposure rather than reducing it. Dimension 2 (Completeness) suffers from a lack of specific quantitative modeling or deeper strategic reasoning. While the structure is clear (Dimension 5), the substantive errors and lack of rigorous professional judgment prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Explain economic impact of policies to the public.",
+      "task_type": "Public Communication & Impact Analysis",
+      "user_prompt": "Draft a public-facing explanation of a new progressive tax reform. Explain how the reform affects low-income households versus high-income earners using a simplified supply-side and demand-side framework. Include a sensitivity analysis showing how the tax burden changes if the elasticity of labor supply shifts by +/- 10%.",
+      "reference_context": {
+        "tax_structure": {
+          "low_income_bracket": "10% flat",
+          "high_income_bracket": "37% marginal"
+        },
+        "baseline_elasticity": 0.2,
+        "target_audience": "General public with no economics background"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Clarity & Accessibility - Is the explanation free of jargon and suitable for the general public?",
+        "Criterion 2: Theoretical Framework - Are supply-side and demand-side concepts correctly applied to the tax impact?",
+        "Criterion 3: Sensitivity Analysis - Is the +/- 10% elasticity shift correctly calculated and its impact on tax burden explained?"
+      ],
+      "student_answer": "**A Fairer Tax System: Investing in Our Communities**\n\nOur current tax system isn’t always fair. It currently relies on a 10% flat tax for low-income earners and a 37% top marginal tax rate. This reform aims to create a more equitable system that supports economic growth and invests in our communities.\n\n**How It Works: A Simple Supply and Demand View**\n\nThink of the economy like a seesaw.  “Demand” represents the spending people have – the money they want to buy goods and services. “Supply” represents the willingness of people to work and produce. Taxes shift this seesaw.\n\nThis reform introduces a progressive structure, meaning those with higher incomes pay a larger percentage of their earnings in taxes.  Specifically, we’re shifting to a system where:\n\n*   **Low-Income Households:** Continue to pay a 10% tax on their income.\n*   **Middle-Income Households:**  A portion of their income will be taxed at 15% (a gradual increase from the current flat rate).\n*   **High-Income Households:**  Their income will be taxed at 28% and 37% depending on their total income.\n\n**Who Benefits?**\n\n*   **Low-Income Households:**  Initially, this reform provides a small benefit.  They continue to pay a lower rate on their income. However, the real impact comes from the increased government revenue used to fund vital services like affordable housing, childcare, and job training programs – directly improving their lives.\n*   **High-Income Households:**  This reform will result in a significantly larger tax burden.  A greater portion of their income will be directed towards public services.\n\n**The Impact on Work and Production (Supply-Side)**\n\nTaxes can affect how much people *want* to work (labor supply).  Generally, higher taxes reduce the incentive to work extra hours or take on additional jobs.  This reform, by increasing taxes on higher earners, *could* lead to a slight decrease in the supply of labor – meaning fewer hours worked or less entrepreneurial activity. However, the increased government investment in education and infrastructure could *increase* the demand for labor, partially offsetting this effect.\n\n**Sensitivity Analysis: How Much Does it Matter?**\n\nThe elasticity of labor supply measures how responsive people are to changes in taxes.  Currently, we estimate this elasticity to be 0.2 – meaning a 1% increase in taxes leads to a 0.2% decrease in labor supply.  Let’s see how this changes with a shift:\n\n*   **Scenario 1: Elasticity Increases to 1.2 (More Sensitive)** – If people are *more* sensitive to taxes (meaning they work less when taxes go up), the decrease in labor supply would be greater.  This could lead to a more noticeable slowdown in economic growth.\n*   **Scenario 2: Elasticity Decreases to 0.0 (Less Sensitive)** – If people are *less* sensitive to taxes (meaning they don’t change their work habits much), the impact on labor supply would be minimal.  The economy would likely experience less disruption.\n\n**Important Note:** This is a simplified explanation. The actual economic effects of this reform would be complex and depend on many other factors, including how the increased revenue is spent.  The goal is to create a system that is both fairer and supports a thriving economy for everyone.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. First, it contradicts the provided context: the baseline states a 10% flat tax for low income and 37% for high income, but the student invents a new 'progressive' structure with a 15% middle bracket and 28% high bracket, which was not part of the task. Second, the sensitivity analysis is mathematically and conceptually flawed; it claims a shift of +/- 10% results in elasticity changing from 0.2 to 1.2 (a 500% increase) and 0.0, rather than a 10% relative shift (0.18 to 0.22). Third, it fails to explain the specific mechanism of how the tax burden changes quantitatively under these scenarios, offering only vague qualitative statements. The tone is too simplistic for a 'Senior Economic Analyst' persona, and the output requires major rework to be usable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Provide litigation support, such as writing reports for expert testimony or testifying as an expert witness.",
+      "task_type": "Expert Testimony & Litigation Support",
+      "user_prompt": "Draft a section of an expert witness report for a class-action lawsuit alleging price-fixing in the national airline industry. The plaintiffs claim that four major carriers colluded to raise ticket prices by 15% in Q3 2023. Using the provided market data and the concept of the Herfindahl-Hirschman Index (HHI), analyze whether the market structure supports a collusion theory. Specifically, calculate the HHI before and after a hypothetical merger mentioned in the case, and explain how the resulting concentration levels relate to the observed price increase using Game Theory (specifically the Prisoner's Dilemma framework). Conclude with a recommendation on whether the evidence supports the claim of anti-competitive behavior.",
+      "reference_context": {
+        "market_data": {
+          "carriers": [
+            {
+              "name": "Airline A",
+              "market_share_pct": 30
+            },
+            {
+              "name": "Airline B",
+              "market_share_pct": 25
+            },
+            {
+              "name": "Airline C",
+              "market_share_pct": 20
+            },
+            {
+              "name": "Airline D",
+              "market_share_pct": 15
+            },
+            {
+              "name": "Others",
+              "market_share_pct": 10
+            }
+          ],
+          "price_change_q3_2023": "15% increase",
+          "pre_merger_hhi_threshold": 2500,
+          "post_merger_hhi_threshold": 1800
+        },
+        "theoretical_framework": "Use the Herfindahl-Hirschman Index (HHI) to measure market concentration. Apply Game Theory (Prisoner's Dilemma) to explain how high concentration facilitates tacit collusion among rational actors to maximize joint profits at the expense of consumers."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy of HHI Calculation - Does the model correctly calculate the pre-merger HHI (30^2 + 25^2 + 20^2 + 15^2 + 10^2 = 2550) and interpret the concentration level correctly?",
+        "Criterion 2: Theoretical Application - Does the response explicitly apply Game Theory to explain the mechanism of collusion in a high-concentration market?",
+        "Criterion 3: Stakeholder Analysis - Does the report address the implications for both the 'Consumers' (higher prices) and the 'Carriers' (profit maximization vs. legal risk) as distinct stakeholder groups?",
+        "Criterion 4: Confidence & Sensitivity - Does the analysis include a confidence interval or sensitivity analysis regarding the correlation between market concentration and the specific 15% price hike?"
+      ],
+      "student_answer": "**Analysis of Market Concentration and Collusion Potential**\n\nThis analysis examines the market structure of the national airline industry and assesses the potential for collusion based on the observed price increase in Q3 2023, utilizing the Herfindahl-Hirschman Index (HHI) and Game Theory principles.\n\n**Initial HHI Calculation:**\n\nPrior to a hypothetical merger, the HHI was calculated as follows:\n\n(30^2 + 25^2 + 20^2 + 15^2 + 10^2) / 100 = (900 + 625 + 400 + 225 + 100) / 100 = 2250 / 100 = 22.5\n\nThis initial HHI of 22.5 indicates a relatively fragmented market with moderate concentration.  It falls significantly below the pre-merger threshold of 2500, suggesting that, prior to any consolidation, the market did not exhibit the level of concentration typically associated with overt collusion.\n\n**Hypothetical Merger Impact:**\n\nLet’s assume a merger occurs between Airline A and Airline B, resulting in a combined market share of 55% (30% + 25%).  The post-merger HHI would be calculated as:\n\n(55^2 + 20^2 + 15^2 + 10^2) / 100 = (3025 + 400 + 225 + 100) / 100 = 3750 / 100 = 37.5\n\nThe post-merger HHI of 37.5 substantially exceeds the post-merger threshold of 1800, indicating a significant increase in market concentration.\n\n**Game Theory Application (Prisoner’s Dilemma):**\n\nThe observed 15% price increase in Q3 2023 is consistent with a scenario modeled by the Prisoner’s Dilemma.  In this framework, each airline rationally seeks to maximize its own profits, even if doing so harms the collective industry and consumers.  The potential outcomes are:\n\n*   **Cooperation (Lower Prices):** All airlines maintain lower prices, resulting in higher overall industry profits and greater consumer welfare.\n*   **Defection (Higher Prices):** Each airline individually chooses to raise prices, leading to higher profits for that airline but lower overall industry profits and reduced consumer welfare.\n\nThe Prisoner’s Dilemma predicts that, without enforceable oversight or credible threat of punishment, rational airlines will defect and collectively raise prices.  The increased market concentration following the merger exacerbates this tendency by reducing the number of independent actors and increasing the incentive for individual firms to pursue self-interested profit maximization.  The higher HHI reflects a reduced ability for individual firms to credibly threaten to deviate from a collusive agreement.\n\n**Conclusion and Recommendation:**\n\nThe combination of a moderate initial HHI, followed by a substantial increase in concentration due to a hypothetical merger, coupled with the observed 15% price increase, provides suggestive evidence supporting the claim of anti-competitive behavior.  The application of the Prisoner’s Dilemma framework demonstrates how increased market power, facilitated by consolidation, can incentivize firms to engage in tacit collusion to raise prices.  While further investigation is warranted to definitively establish a formal agreement, the presented data and theoretical analysis support a recommendation that the evidence is sufficient to warrant further scrutiny and potential legal action.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails catastrophically on Correctness, Completeness, and Domain Accuracy due to fundamental mathematical errors in calculating the Herfindahl-Hirschman Index (HHI). The student divided the sum of squared market shares by 100 instead of 1 (or failed to convert percentages to decimals correctly), resulting in scores of 22.5 and 37.5 instead of the correct values of 2250 and 3750. Consequently, the analysis incorrectly concludes the market was fragmented and the post-merger HHI was below the threshold, when in reality, the market is highly concentrated and the merger would trigger a significant regulatory concern. The Game Theory section also misinterprets the Prisoner's Dilemma, claiming that 'Cooperation' (lower prices) leads to higher industry profits, whereas in the standard model, cooperation (collusion) leads to monopoly profits, while defection (price wars) leads to lower profits. The output is mathematically invalid and theoretically flawed, rendering it unusable for an expert witness report."
+    }
+  ]
+}

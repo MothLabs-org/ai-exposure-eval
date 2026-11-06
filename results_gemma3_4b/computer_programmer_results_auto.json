@@ -1,0 +1,565 @@
+{
+  "meta": {
+    "job_title": "Computer Programmers",
+    "job_id": "computer_programmer",
+    "onet_code": "15-1251.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 17,
+    "evaluated_tasks": 17,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.43,
+      "dimensions": {
+        "Correctness": 2.12,
+        "Completeness": 2.35,
+        "Best Practices": 2.12,
+        "Domain Accuracy": 2.94,
+        "Clarity": 2.94,
+        "Autonomy": 2.12
+      },
+      "evaluated_tasks": 17,
+      "scale_max": 5
+    },
+    "total_time_seconds": 575.34
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Write, analyze, review, and rewrite programs, using workflow chart and diagram, and applying knowledge of computer capabilities, subject matter, and symbolic logic.",
+      "task_type": "Algorithm Refactoring and Optimization",
+      "user_prompt": "Refactor the provided legacy Python function to improve its time complexity from O(n^2) to O(n log n) while maintaining backward compatibility with the existing API. Include a brief explanation of the algorithmic changes and ensure all edge cases are handled.",
+      "reference_context": "def process_data(data_list):\n    results = []\n    for i in range(len(data_list)):\n        for j in range(len(data_list)):\n            if i != j:\n                if data_list[i] + data_list[j] == 100:\n                    results.append((data_list[i], data_list[j]))\n    return results",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The refactored function must return the exact same pairs as the original for all valid inputs.",
+        "Criterion 2: Complexity — The solution must demonstrate O(n log n) or better time complexity, typically using sorting or a hash map approach.",
+        "Criterion 3: Robustness — The code must handle edge cases such as empty lists, single-element lists, and lists with duplicate values without raising errors."
+      ],
+      "student_answer": "```python\ndef process_data(data_list):\n    \"\"\"\n    Processes a list of numbers to find pairs that sum to 100.\n\n    Algorithm:\n    The original function had a nested loop, resulting in O(n^2) time complexity.\n    This refactored version utilizes sorting to achieve O(n log n) time complexity.\n    1. Sort the input list.\n    2. Use two pointers, 'left' and 'right', initialized to the start and end of the sorted list, respectively.\n    3. While 'left' < 'right':\n       - If 'left' + 'right' == 100, append the pair to the results.\n       - If 'left' + 'right' < 100, increment 'left'.\n       - If 'left' + 'right' > 100, decrement 'right'.\n    \"\"\"\n    if not data_list:\n        return []\n\n    sorted_data = sorted(data_list)\n    results = []\n    left = 0\n    right = len(sorted_data) - 1\n\n    while left < right:\n        if sorted_data[left] + sorted_data[right] == 100:\n            results.append((sorted_data[left], sorted_data[right]))\n            left += 1\n            right -= 1\n        elif sorted_data[left] + sorted_data[right] < 100:\n            left += 1\n        else:\n            right -= 1\n\n    return results\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The solution fails the core requirement of maintaining backward compatibility. The original function returns pairs based on their original indices (i, j) where i != j, allowing for duplicate values to be treated as distinct pairs (e.g., [50, 50] yields two pairs if indices differ). The student's O(n log n) solution sorts the list, destroying original indices and failing to return all valid pairs when duplicates exist (e.g., [50, 50, 50] should yield 6 pairs, but the two-pointer approach yields only 1). Additionally, the solution does not handle integer overflow (though less critical in Python, it's a requirement in the prompt) and the explanation is generic. The algorithmic change is correct for the 'Two Sum' problem but incorrect for the specific 'all pairs' requirement of the legacy API."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Correct errors by making appropriate changes and rechecking the program to ensure that the desired results are produced.",
+      "task_type": "Debugging and Error Correction",
+      "user_prompt": "The provided inventory management script contains logical errors causing incorrect stock counts when items are added and removed simultaneously. Identify the bugs, fix them, and add input validation to prevent negative stock levels. Ensure the final code handles concurrent-like scenarios by validating state before updates.",
+      "reference_context": "class Inventory:\n    def __init__(self):\n        self.items = {}\n\n    def add_item(self, item_id, quantity):\n        if item_id in self.items:\n            self.items[item_id] += quantity\n        else:\n            self.items[item_id] = quantity\n\n    def remove_item(self, item_id, quantity):\n        if item_id in self.items:\n            self.items[item_id] -= quantity\n        else:\n            raise ValueError(\"Item not found\")\n\n    def get_stock(self, item_id):\n        return self.items.get(item_id, 0)",
+      "evaluation_criteria": [
+        "Criterion 1: Bug Fix — The code must correctly handle the scenario where removing more items than available results in a zero or negative check, preventing invalid states.",
+        "Criterion 2: Input Validation — The functions must validate that quantity is a non-negative integer before processing.",
+        "Criterion 3: Error Handling — Appropriate exceptions must be raised for invalid inputs or logical violations."
+      ],
+      "student_answer": "```python\nclass Inventory:\n    def __init__(self):\n        self.items = {}\n\n    def add_item(self, item_id, quantity):\n        if not isinstance(item_id, int):\n            raise TypeError(\"Item ID must be an integer.\")\n        if not isinstance(quantity, int):\n            raise TypeError(\"Quantity must be an integer.\")\n        if quantity < 0:\n            raise ValueError(\"Quantity cannot be negative.\")\n\n        if item_id in self.items:\n            self.items[item_id] += quantity\n        else:\n            self.items[item_id] = quantity\n\n    def remove_item(self, item_id, quantity):\n        if not isinstance(item_id, int):\n            raise TypeError(\"Item ID must be an integer.\")\n        if not isinstance(quantity, int):\n            raise TypeError(\"Quantity must be an integer.\")\n        if quantity < 0:\n            raise ValueError(\"Quantity cannot be negative.\")\n\n        if item_id in self.items:\n            if self.items[item_id] < quantity:\n                raise ValueError(\"Not enough stock to remove.\")\n            self.items[item_id] -= quantity\n        else:\n            raise ValueError(\"Item not found\")\n\n    def get_stock(self, item_id):\n        if not isinstance(item_id, int):\n            raise TypeError(\"Item ID must be an integer.\")\n        return self.items.get(item_id, 0)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The student correctly implemented input validation for types and negative quantities, and added a check to prevent negative stock levels during removal. However, the solution fails to address the core task requirement of handling 'concurrent-like scenarios' by validating state before updates (e.g., using atomic operations or checking if stock is sufficient before modifying, which was partially done but lacks the specific 'state validation' pattern requested for race conditions). Additionally, the student did not address the 'Additional Checks' regarding empty lists, duplicate pairs, or integer overflow, which were explicitly requested in the prompt. The code is functional for single-threaded use but does not meet the industry standard for the concurrency aspect mentioned in the task."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Perform or direct revision, repair, or expansion of existing programs to increase operating efficiency or adapt to new requirements.",
+      "task_type": "Feature Expansion and Efficiency",
+      "user_prompt": "Expand the provided data retrieval function to support filtering by date range and sorting by priority. The current implementation is inefficient for large datasets. Refactor the code to use generator expressions where possible to reduce memory usage and implement the new filtering logic efficiently.",
+      "reference_context": "def get_records(records):\n    return [r for r in records if r['status'] == 'active']",
+      "evaluation_criteria": [
+        "Criterion 1: Functionality — The new function must accept optional 'start_date', 'end_date', and 'sort_by' parameters and return filtered, sorted results.",
+        "Criterion 2: Efficiency — The solution should avoid creating intermediate large lists if possible, utilizing generators or efficient list comprehensions.",
+        "Criterion 3: Validation — The function must validate that date strings are in the correct format (YYYY-MM-DD) and raise a ValueError if invalid."
+      ],
+      "student_answer": "```python\ndef get_records(records, start_date=None, end_date=None, sort_by='priority'):\n    \"\"\"\n    Retrieves records from a list, filtering by date range and sorting by priority.\n\n    Args:\n        records (list): A list of dictionaries, where each dictionary represents a record.\n        start_date (str, optional): The start date for filtering (YYYY-MM-DD). Defaults to None.\n        end_date (str, optional): The end date for filtering (YYYY-MM-DD). Defaults to None.\n        sort_by (str, optional): The field to sort by ('priority' or 'date'). Defaults to 'priority'.\n\n    Yields:\n        dict: A record that meets the filtering criteria and is sorted according to the specified field.\n    \"\"\"\n\n    filtered_records = (\n        r for r in records\n        if start_date is None or start_date <= r.get('date', '')\n        if end_date is None or end_date >= r.get('date', '')\n    )\n\n    if sort_by == 'priority':\n        sorted_records = sorted(filtered_records, key=lambda r: r.get('priority', 0))\n    elif sort_by == 'date':\n        sorted_records = sorted(filtered_records, key=lambda r: r.get('date', ''))\n    else:\n        sorted_records = filtered_records\n\n    for r in sorted_records:\n        yield r\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails on Correctness and Completeness due to a critical logical error: the generator expression uses two consecutive 'if' clauses instead of a single 'if' with an 'and' condition, causing the filter to fail (it requires both conditions to be true independently in a way that breaks the logic). It also fails to address the 'sorting by priority' requirement correctly because the code materializes the generator into a list via 'sorted()', which contradicts the task's explicit instruction to use generators to reduce memory usage for large datasets. The code introduces side effects by consuming the generator twice (once for sorting, once for yielding) and does not handle the 'duplicate pairs' or 'integer overflow' checks mentioned in the additional checks. While the syntax is valid Python and the structure is clear (Clarity 4), the fundamental logic errors and failure to meet the core constraint of memory efficiency result in low scores for correctness, completeness, best practices, and autonomy."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Write, update, and maintain computer programs or software packages to handle specific jobs such as tracking inventory, storing or retrieving data, or controlling other equipment.",
+      "task_type": "Data Persistence and Validation",
+      "user_prompt": "Update the provided data storage module to ensure that all data written to the JSON file is validated against a strict schema before saving. If validation fails, the write operation must be aborted, and a detailed error log must be generated. Ensure the module handles file locking to prevent corruption.",
+      "reference_context": "import json\n\ndef save_data(data, filename):\n    with open(filename, 'w') as f:\n        json.dump(data, f)",
+      "evaluation_criteria": [
+        "Criterion 1: Schema Validation — The code must define a schema (e.g., required keys, data types) and validate the input 'data' against it before writing.",
+        "Criterion 2: Error Handling — If validation fails, the function must not write to the file and must return a specific error object or raise a custom exception.",
+        "Criterion 3: File Safety — The implementation should include basic file locking or atomic write patterns to prevent data corruption during concurrent access."
+      ],
+      "student_answer": "```python\nimport json\nimport logging\nimport os\n\nlogging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')\n\ndef save_data(data, filename):\n    \"\"\"\n    Saves data to a JSON file, validating against a schema and handling file locking.\n    \"\"\"\n    try:\n        # File locking\n        lock_file = filename + \".lock\"\n        if os.path.exists(lock_file):\n            logging.error(f\"File {filename} is already locked. Aborting save.\")\n            return False\n\n        with open(filename, 'w') as f:\n            try:\n                json.dump(data, f, indent=4)\n                # Verification (Placeholder - Replace with actual schema validation)\n                # Example:\n                # if not validate_data(data):\n                #     logging.error(\"Data validation failed.\")\n                #     return False\n                return True\n            except (json.JSONDecodeError, TypeError) as e:\n                logging.error(f\"Error during JSON serialization: {e}\")\n                return False\n    except Exception as e:\n        logging.error(f\"An unexpected error occurred: {e}\")\n        return False\n    finally:\n        # Release lock\n        if os.path.exists(lock_file):\n            os.remove(lock_file)\n\n# Placeholder for schema validation - Replace with your actual validation logic\ndef validate_data(data):\n    \"\"\"\n    Placeholder for data validation against a schema.\n    Replace this with your actual validation logic.\n    \"\"\"\n    # Example: Check if data is a dictionary\n    if not isinstance(data, dict):\n        return False\n    return True\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to implement the core requirements of the task. It explicitly leaves the schema validation as a commented-out placeholder, meaning no data is actually validated against a strict schema as requested. The file locking mechanism is fundamentally flawed: it checks for a lock file but never creates one, meaning the check is useless and race conditions are not prevented. The exception handling for JSON serialization is incorrect (catching JSONDecodeError on a write operation is wrong; that error occurs on read). The code does not handle the specific additional checks (empty lists, integer overflow) mentioned in the prompt. While the structure is readable, the logic is insufficient for production use."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Consult with managerial, engineering, and technical personnel to clarify program intent, identify problems, and suggest changes.",
+      "task_type": "Requirement Analysis and Code Adaptation",
+      "user_prompt": "The current logging system is too verbose and does not distinguish between critical errors and informational messages. Refactor the logging module to support configurable log levels (DEBUG, INFO, WARNING, ERROR) and ensure that only messages of the specified level or higher are written to the output stream. Add input validation for the log level string.",
+      "reference_context": "def log(message):\n    print(f\"LOG: {message}\")",
+      "evaluation_criteria": [
+        "Criterion 1: Log Levels — The refactored function must accept a 'level' argument and only print messages that meet the threshold (e.g., if level is WARNING, do not print INFO).",
+        "Criterion 2: Input Validation — The function must validate that the provided level is one of the allowed constants (DEBUG, INFO, WARNING, ERROR).",
+        "Criterion 3: Formatting — The output format must be consistent and include the timestamp and log level."
+      ],
+      "student_answer": "```python\nLOG_LEVELS = {\n    \"DEBUG\": 10,\n    \"INFO\": 5,\n    \"WARNING\": 3,\n    \"ERROR\": 1,\n}\n\ndef log(message, level=\"INFO\"):\n    \"\"\"Logs a message with a configurable log level.\n\n    Args:\n        message: The message to log.\n        level: The log level (DEBUG, INFO, WARNING, ERROR). Defaults to INFO.\n    \"\"\"\n    if level not in LOG_LEVELS:\n        raise ValueError(f\"Invalid log level: {level}. Must be one of: {list(LOG_LEVELS.keys())}\")\n\n    level_value = LOG_LEVELS[level]\n    print(f\"LOG: {level} - {message}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. It does not implement the logic to filter messages based on log levels (only checking validity), the print statement is broken with empty placeholders ('LOG:  - '), and it completely ignores the 'Additional Checks' regarding side effects and complexity. The code is non-functional and would raise errors or produce no output."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Conduct trial runs of programs and software applications to be sure they will produce the desired information and that the instructions are correct.",
+      "task_type": "Simulation and Verification",
+      "user_prompt": "Create a simulation script that runs a series of test cases against the provided payment processing logic to verify that tax calculations are correct for different regions. The script must handle invalid region codes gracefully and report the pass/fail status of each test case. Ensure the simulation covers edge cases like zero-amount transactions.",
+      "reference_context": "def calculate_tax(amount, region):\n    if region == 'US':\n        return amount * 0.08\n    elif region == 'UK':\n        return amount * 0.20\n    else:\n        return 0",
+      "evaluation_criteria": [
+        "Criterion 1: Test Coverage — The simulation must run at least 5 distinct test cases covering valid regions, invalid regions, and zero amounts.",
+        "Criterion 2: Error Handling — The script must catch and report errors when invalid region codes are passed without crashing.",
+        "Criterion 3: Output — The script must clearly output the expected vs. actual result for each test case and a final summary of passed/failed tests."
+      ],
+      "student_answer": "```python\ndef run_tax_simulation():\n    test_cases = [\n        {'amount': 100, 'region': 'US', 'expected_tax': 8.0},\n        {'amount': 50, 'region': 'UK', 'expected_tax': 10.0},\n        {'amount': 25, 'region': 'CA', 'expected_tax': 0.0},\n        {'amount': 0, 'region': 'US', 'expected_tax': 0.0},\n        {'amount': 75, 'region': 'UK', 'expected_tax': 15.0},\n        {'amount': 10, 'region': 'DE', 'expected_tax': 0.0},\n        {'amount': 1000, 'region': 'US', 'expected_tax': 80.0},\n        {'amount': 1000, 'region': 'UK', 'expected_tax': 200.0},\n    ]\n\n    for i, test_case in enumerate(test_cases):\n        try:\n            actual_tax = calculate_tax(test_case['amount'], test_case['region'])\n            if abs(actual_tax - test_case['expected_tax']) < 1e-6:\n                status = 'Pass'\n            else:\n                status = 'Fail'\n            print(f\"Test Case {i+1}: Region={test_case['region']}, Amount={test_case['amount']}, Expected Tax={test_case['expected_tax']}, Actual Tax={actual_tax}, Status={status}\")\n        except Exception as e:\n            print(f\"Test Case {i+1}: Region={test_case['region']}, Amount={test_case['amount']}, Error: {e}, Status=Fail\")\n\nif __name__ == \"__main__\":\n    run_tax_simulation()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to meet the task requirements due to critical implementation errors. First, the code is syntactically broken: the print statements inside the loop are malformed, missing the actual values for 'Actual Tax' and 'Status' (e.g., 'Actual Tax=, Status='), which would cause a syntax error or runtime failure. Second, the function `calculate_tax` is called but not defined in the submission, making the code non-executable. Third, the task explicitly requested handling of invalid region codes gracefully and reporting pass/fail status, but the error handling logic is incomplete and the output formatting is broken. Finally, the code does not address the additional checks regarding empty lists, duplicates, or integer overflow. The output is unusable as-is."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Prepare detailed workflow charts and diagrams that describe input, output, and logical operation, and convert them into a series of instructions coded in a computer language.",
+      "task_type": "Algorithm Implementation from Logic",
+      "user_prompt": "Implement a Python function 'calculate_shipping_cost' based on the following logic: If the package weight is less than 1kg, cost is $5. If weight is between 1kg and 5kg, cost is $5 + $2 per kg. If weight is greater than 5kg, cost is $15 + $1 per kg over 5kg. Additionally, if the destination is 'International', add a 20% surcharge to the total. The function must accept 'weight' (float) and 'destination' (string) as arguments. Validate inputs: weight must be positive, destination must be 'Domestic' or 'International'. Return the final cost rounded to two decimal places.",
+      "reference_context": "Logic Rules:\n1. Base cost < 1kg: $5\n2. Base cost 1-5kg: $5 + ($2 * weight)\n3. Base cost > 5kg: $15 + ($1 * (weight - 5))\n4. International Surcharge: Total * 1.20\nInput Validation: weight > 0, destination in ['Domestic', 'International']",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the function return the exact expected cost for valid inputs across all weight ranges and destinations?",
+        "Criterion 2: Input Validation — Does the function raise a ValueError for negative weights or invalid destination strings?",
+        "Criterion 3: Precision — Is the returned cost correctly rounded to two decimal places?"
+      ],
+      "student_answer": "```python\ndef calculate_shipping_cost(weight, destination):\n    \"\"\"\n    Calculates the shipping cost based on weight and destination.\n\n    Args:\n        weight (float): The weight of the package in kg.\n        destination (str): The destination of the package ('Domestic' or 'International').\n\n    Returns:\n        float: The final shipping cost rounded to two decimal places.\n    \"\"\"\n    if weight <= 0:\n        return 0.00  # Or raise an exception, depending on desired behavior\n\n    if destination not in ['Domestic', 'International']:\n        return 0.00  # Or raise an exception\n\n    if weight < 1:\n        cost = 5.00\n    elif 1 <= weight <= 5:\n        cost = 5.00 + (2 * weight)\n    else:\n        cost = 15.00 + (weight - 5)\n\n    if destination == 'International':\n        cost *= 1.20\n\n    return round(cost, 2)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The solution fails on Correctness (2) and Autonomy (2) because it violates the explicit input validation requirement. The prompt mandates that inputs be validated (implying an error should be raised or handled strictly), but the code returns 0.00 for invalid inputs (negative weight or invalid destination), which is logically incorrect for a validation step and masks errors. It also fails Best Practices (2) by not raising exceptions for invalid data, a standard industry practice for input validation. While the core logic for cost calculation is correct (Domain Accuracy 3) and the code is clear (Clarity 4), the fundamental failure to handle validation as requested prevents it from being a complete or autonomous solution."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Compile and write documentation of program development and subsequent revisions, inserting comments in the coded instructions so others can understand the program.",
+      "task_type": "Code Documentation and Refactoring",
+      "user_prompt": "Take the provided 'legacy_user_auth' function and refactor it to include comprehensive docstrings and inline comments explaining the security logic. The function checks if a user is active, verifies a hashed password, and logs the attempt. Ensure the code follows PEP 8 standards. The function must handle exceptions for database connection failures and invalid hash formats gracefully without exposing internal error details.",
+      "reference_context": "def legacy_user_auth(db_conn, username, password_hash, user_hash):\n    try:\n        user = db_conn.query('SELECT * FROM users WHERE name=?', (username,))\n        if not user:\n            return False\n        if user['status'] != 'active':\n            return False\n        if user['hash'] == user_hash:\n            return True\n        return False\n    except Exception as e:\n        print(e)\n        return False",
+      "evaluation_criteria": [
+        "Criterion 1: Documentation — Does the function include a clear docstring describing purpose, args, returns, and exceptions?",
+        "Criterion 2: Security & Logic — Does the refactored code correctly implement the active status and hash check logic?",
+        "Criterion 3: Error Handling — Does the code catch specific exceptions (e.g., DB errors) and return False without printing stack traces or leaking data?"
+      ],
+      "student_answer": "```python\ndef legacy_user_auth(db_conn, username, password_hash, user_hash):\n    \"\"\"Authenticates a user against legacy database records.\n\n    This function checks if a user is active, verifies a hashed password\n    against the user's stored hash, and logs authentication attempts.\n\n    Args:\n        db_conn: Database connection object.\n        username (str): The username to authenticate.\n        password_hash (str): The user's provided password hash.\n        user_hash (str): The user's stored password hash.\n\n    Returns:\n        bool: True if authentication is successful, False otherwise.\n\n    Raises:\n        Exception: If a database error occurs, the exception is caught and\n                   returned as False.  Detailed error information is suppressed.\n    \"\"\"\n    try:\n        # Query the database for the user by username.\n        user = db_conn.query('SELECT * FROM users WHERE name=?', (username,))\n\n        # Check if the user exists.\n        if not user:\n            print(f\"User '{username}' not found.\")  # Log user not found\n            return False\n\n        # Check if the user is active.\n        if user['status'] != 'active':\n            print(f\"User '{username}' is not active.\")  # Log inactive user\n            return False\n\n        # Verify the password hash.\n        if user['hash'] == password_hash:\n            print(f\"User '{username}' authenticated successfully.\")  # Log successful auth\n            return True\n        else:\n            print(f\"Incorrect password for user '{username}'.\")  # Log incorrect password\n            return False\n\n    except Exception as e:\n        # Handle database connection errors and other exceptions gracefully.\n        print(f\"Database error during authentication: {e}\")  # Log database error\n        return False\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to meet core task requirements. It does not refactor the logic to handle 'database connection failures' and 'invalid hash formats' gracefully as distinct cases; instead, it catches a generic Exception and swallows the error message entirely, violating the requirement to handle specific failure modes. It introduces a critical security flaw by printing PII (usernames) to stdout in the log messages, which is a severe violation of security best practices. The code also fails to address the 'Additional Checks' regarding side effects (printing to console is a side effect) and does not handle empty lists or integer overflow (though less relevant here, the logic is still weak). The docstring claims to suppress detailed errors but the code prints generic messages, and the logic for the hash comparison uses the wrong variable name in the condition (comparing user['hash'] to password_hash instead of the provided user_hash parameter, or vice versa, creating a logic error). The code is not production-ready."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Consult with and assist computer operators or system analysts to define and resolve problems in running computer programs.",
+      "task_type": "Debugging and Log Analysis",
+      "user_prompt": "Analyze the provided error log snippet and the corresponding 'data_processor.py' code to identify the root cause of the crash. The program crashes when processing a specific CSV file with missing values. Write a patch for the code that handles missing values by replacing them with 'N/A' and ensures the program continues processing the rest of the file without crashing. Include a test case demonstrating the fix.",
+      "reference_context": "Error Log: ValueError: could not convert string to float: ''\nCode Snippet:\nimport csv\n\ndef process_row(row):\n    val = float(row['amount'])\n    return val * 2\n\ndef main():\n    with open('data.csv') as f:\n        reader = csv.DictReader(f)\n        for row in reader:\n            print(process_row(row))",
+      "evaluation_criteria": [
+        "Criterion 1: Root Cause Identification — Does the solution correctly identify that empty strings in the 'amount' column cause the float conversion error?",
+        "Criterion 2: Robustness — Does the patched code handle empty strings by converting them to 'N/A' or a default numeric value before processing?",
+        "Criterion 3: Continuity — Does the solution ensure the loop continues to process subsequent rows after encountering an error?"
+      ],
+      "student_answer": "```python\nimport csv\n\ndef process_row(row):\n    val_str = row.get('amount')\n    if val_str is None or val_str == '':\n        val = 'N/A'\n    else:\n        try:\n            val = float(val_str)\n        except ValueError:\n            val = 'N/A'\n    return val * 2\n\ndef main():\n    with open('data.csv') as f:\n        reader = csv.DictReader(f)\n        for row in reader:\n            print(process_row(row))\n\nif __name__ == '__main__':\n    # Create a dummy data.csv file with missing values\n    with open('data.csv', 'w', newline='') as f:\n        writer = csv.writer(f)\n        writer.writerow(['name', 'amount'])\n        writer.writerow(['Alice', '10'])\n        writer.writerow(['Bob', ''])\n        writer.writerow(['Charlie', '20.5'])\n        writer.writerow(['David', ''])\n\n    main()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. First, it violates the core requirement to handle missing values by replacing them with 'N/A' while ensuring the program continues; the code attempts to multiply 'N/A' by 2 (returning 'N/AN/A'), which is not a valid numeric handling strategy and likely causes downstream errors or logical failures. Second, the test case is flawed: it creates the CSV file inside the `main` function, overwriting the input file before the actual processing logic runs, meaning the test does not validate the fix against the intended scenario. Third, the code lacks robustness for the 'integer overflow' and 'empty list' checks mentioned in the additional requirements. Finally, the solution introduces a side effect (file creation) within the processing function, which is poor architectural practice."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Perform systems analysis and programming tasks to maintain and control the use of computer systems software as a systems programmer.",
+      "task_type": "System Configuration and Validation",
+      "user_prompt": "Create a Python script that validates a JSON configuration file for a microservice. The configuration must contain 'service_name' (string), 'port' (integer 1024-65535), and 'allowed_origins' (list of strings). The script must check for the presence of these keys, validate the port range, and ensure 'allowed_origins' is not empty. If validation fails, print a specific error message for each failed check and exit with code 1. If valid, print 'Configuration Valid'.",
+      "reference_context": "Expected JSON Structure:\n{\n  \"service_name\": \"auth-service\",\n  \"port\": 8080,\n  \"allowed_origins\": [\"https://example.com\"]\n}\nConstraints: Port must be > 1023 and < 65536. allowed_origins must be a non-empty list.",
+      "evaluation_criteria": [
+        "Criterion 1: Schema Validation — Does the script correctly identify missing required keys?",
+        "Criterion 2: Range Validation — Does the script reject ports outside the 1024-65535 range?",
+        "Criterion 3: Output Behavior — Does the script print specific error messages for each validation failure and exit with code 1 on any failure?"
+      ],
+      "student_answer": "```python\nimport json\nimport sys\n\ndef validate_config(config_file):\n    try:\n        with open(config_file, 'r') as f:\n            config = json.load(f)\n    except FileNotFoundError:\n        print(f\"Error: Configuration file not found: {config_file}\")\n        return 1\n    except json.JSONDecodeError:\n        print(f\"Error: Invalid JSON format in {config_file}\")\n        return 1\n\n    if 'service_name' not in config:\n        print(\"Error: 'service_name' key is missing.\")\n        return 1\n    if not isinstance(config['service_name'], str):\n        print(\"Error: 'service_name' must be a string.\")\n        return 1\n\n    if 'port' not in config:\n        print(\"Error: 'port' key is missing.\")\n        return 1\n    if not isinstance(config['port'], int):\n        print(\"Error: 'port' must be an integer.\")\n        return 1\n    if not 1024 <= config['port'] <= 65535:\n        print(\"Error: 'port' must be between 1024 and 65535.\")\n        return 1\n\n    if 'allowed_origins' not in config:\n        print(\"Error: 'allowed_origins' key is missing.\")\n        return 1\n    if not isinstance(config['allowed_origins'], list):\n        print(\"Error: 'allowed_origins' must be a list.\")\n        return 1\n    if not config['allowed_origins']:\n        print(\"Error: 'allowed_origins' list cannot be empty.\")\n        return 1\n\n    for origin in config['allowed_origins']:\n        if not isinstance(origin, str):\n            print(\"Error: 'allowed_origins' must contain strings.\")\n            return 1\n\n    print(\"Configuration Valid\")\n    return 0\n\nif __name__ == \"__main__\":\n    if len(sys.argv) != 2:\n        print(\"Usage: python validate_config.py <config_file>\")\n        sys.exit(1)\n\n    config_file = sys.argv[1]\n    sys.exit(validate_config(config_file))\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The solution is robust and professional, correctly implementing all core validation logic (presence, types, ranges, non-empty checks) and handling file/JSON errors gracefully. It scores 4 on Correctness and Completeness because it does not explicitly handle the 'Additional Checks' requested in the prompt: it does not check for duplicate origins, integer overflow (though Python handles large ints natively, explicit validation is often expected in strict contexts), or edge cases like boolean values being passed as integers (though isinstance checks usually catch this, bool is a subclass of int in Python). It scores 4 on Autonomy because the code lacks a shebang line and does not handle the specific 'duplicate pairs' requirement mentioned in the additional checks, requiring minor review or extension before being considered production-ready for that specific constraint."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Write or contribute to instructions or manuals to guide end users.",
+      "task_type": "API Documentation and Example Generation",
+      "user_prompt": "Generate a Python module that implements a 'ReportGenerator' class. The class should have a method 'generate_summary' that takes a list of transaction objects and returns a formatted string summary. The summary must include the total count, total amount, and a list of transactions exceeding $1000. Include a detailed docstring for the class and method explaining usage, parameters, and return format. Provide a usage example in the docstring showing how to instantiate the class and call the method.",
+      "reference_context": "Transaction Object Structure:\n{\n  \"id\": 101,\n  \"amount\": 1500.00,\n  \"date\": \"2023-10-01\"\n}\nOutput Format:\n\"Summary: Count=5, Total=$5000.00. High Value: [101, 105]\"",
+      "evaluation_criteria": [
+        "Criterion 1: Functionality — Does the method correctly calculate count, total, and filter high-value transactions?",
+        "Criterion 2: Documentation — Does the code include a comprehensive docstring with a usage example?",
+        "Criterion 3: Formatting — Is the returned summary string formatted exactly as specified in the requirements?"
+      ],
+      "student_answer": "```python\nclass ReportGenerator:\n    \"\"\"\n    Generates a summary report from a list of transaction objects.\n\n    Args:\n        transactions (list): A list of transaction objects. Each object\n                           should have an 'id', 'amount', and 'date' attribute.\n\n    Returns:\n        str: A formatted string summary including the total count,\n             total amount, and a list of transactions exceeding $1000.\n\n    Example:\n        transactions = [\n            {\"id\": 101, \"amount\": 1500.00, \"date\": \"2023-10-01\"},\n            {\"id\": 102, \"amount\": 500.00, \"date\": \"2023-10-02\"},\n            {\"id\": 103, \"amount\": 2000.00, \"date\": \"2023-10-03\"},\n            {\"id\": 104, \"amount\": 750.00, \"date\": \"2023-10-04\"},\n            {\"id\": 105, \"amount\": 1200.00, \"date\": \"2023-10-05\"}\n        ]\n        report = ReportGenerator(transactions).generate_summary()\n        print(report)\n        # Expected Output:\n        # Summary: Count=5, Total=$5450.00. High Value: [101, 103, 105]\n    \"\"\"\n    def __init__(self, transactions):\n        self.transactions = transactions\n\n    def generate_summary(self):\n        \"\"\"\n        Generates a summary report from the list of transactions.\n\n        Returns:\n            str: A formatted string summary.\n        \"\"\"\n        count = len(self.transactions)\n        total_amount = sum(transaction[\"amount\"] for transaction in self.transactions)\n        high_value_transactions = [\n            transaction[\"id\"] for transaction in self.transactions\n            if transaction[\"amount\"] > 1000\n        ]\n\n        return (\n            f\"Summary: Count={count}, Total={$total_amount:.2f}. \"\n            f\"High Value: {high_value_transactions}\"\n        )\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        2,
+        3,
+        2,
+        1
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission fails fundamentally on Correctness and Autonomy. The code contains a critical syntax error in the f-string: the dollar sign is escaped as `{$total_amount}` instead of `${total_amount}` or `\\${total_amount}`, causing a runtime error. Furthermore, the return string is incomplete; it cuts off after 'High Value: ' and does not include the list of high-value transaction IDs as required by the output format. The docstring example claims a specific output that the code cannot produce. While the logic for calculating totals is sound, the implementation is broken and unusable without significant rework."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Investigate whether networks, workstations, the central processing unit of the system, or peripheral equipment are responding to a program's instructions.",
+      "task_type": "Network Health Monitor Simulation",
+      "user_prompt": "Write a Python script that simulates a network health monitor. The script should accept a list of simulated server IPs and a timeout value. For each server, attempt to 'ping' (simulate with a random delay and success/fail rate) the server. If the server responds within the timeout, mark it as 'UP'. If it times out or fails, mark it as 'DOWN'. The script must aggregate the results and print a report: 'Total: X, UP: Y, DOWN: Z'. Ensure the simulation handles invalid IP formats by skipping them and logging a warning.",
+      "reference_context": "Simulation Logic:\n- Use 'random' module to simulate network latency (0.1s to 2.0s).\n- 90% success rate for valid IPs, 100% failure for invalid IPs.\n- Timeout threshold: 1.5 seconds.\n- Input: List of strings representing IPs.",
+      "evaluation_criteria": [
+        "Criterion 1: Simulation Accuracy — Does the script correctly simulate timeouts and failures based on the defined logic?",
+        "Criterion 2: Input Validation — Does the script skip invalid IP formats and log a warning instead of crashing?",
+        "Criterion 3: Aggregation — Does the final report accurately reflect the count of UP and DOWN servers?"
+      ],
+      "student_answer": "```python\nimport random\nimport time\n\ndef monitor_servers(server_ips, timeout):\n    \"\"\"\n    Simulates a network health monitor for a list of server IPs.\n\n    Args:\n        server_ips (list): A list of server IP addresses (strings).\n        timeout (float): The timeout value in seconds.\n\n    Returns:\n        None. Prints a report to the console.\n    \"\"\"\n    up_servers = 0\n    down_servers = 0\n    \n    for ip in server_ips:\n        try:\n            # Simulate network latency\n            delay = random.uniform(0.1, 2.0)\n            time.sleep(delay)\n            \n            # Simulate ping\n            if random.random() < 0.9:  # 90% success rate\n                print(f\"Server {ip} is UP\")\n                up_servers += 1\n            else:\n                print(f\"Server {ip} is DOWN\")\n                down_servers += 1\n        except ValueError:\n            print(f\"Warning: Invalid IP address format: {ip}. Skipping.\")\n        except Exception as e:\n            print(f\"Error monitoring {ip}: {e}\")\n\n    print(f\"Total: {len(server_ips)}, UP: {up_servers}, DOWN: {down_servers}\")\n\nif __name__ == '__main__':\n    servers = [\"127.0.0.1\", \"192.168.1.1\", \"invalid_ip\", \"8.8.8.8\", \"10.0.0.1\"]\n    timeout_value = 1.5\n    monitor_servers(servers, timeout_value)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. It does not implement IP validation (skipping invalid IPs), ignores the timeout logic (simulating all delays regardless of the 1.5s threshold), and contains critical syntax errors where variables are missing from f-strings (e.g., 'Server  is UP' instead of 'Server {ip} is UP'). The code will crash or produce malformed output immediately. It does not meet the definition of a functional script."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Assign, coordinate, and review work and activities of programming personnel.",
+      "task_type": "Code Review and Workflow Optimization",
+      "user_prompt": "Review the provided Python module for a data processing pipeline. Identify three critical issues related to error handling, input validation, and resource management. Propose a refactored version of the code that addresses these issues, adhering to PEP 8 standards. Additionally, draft a brief coordination plan (in bullet points) for assigning these specific fixes to three junior developers, ensuring clear ownership and testing requirements.",
+      "reference_context": "import os\n\ndef process_file(filename):\n    f = open(filename, 'r')\n    data = f.read()\n    lines = data.split('\\n')\n    results = []\n    for line in lines:\n        if line.strip() != '':\n            results.append(int(line))\n    return sum(results)\n\ndef main():\n    process_file('data.txt')",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The refactored code must handle file not found errors, invalid integer inputs, and ensure file handles are closed properly.",
+        "Criterion 2: Completeness — The response must include exactly three identified issues, the refactored code, and a coordination plan for three developers.",
+        "Criterion 3: Best practices — Code must follow PEP 8, use context managers for files, and include type hinting."
+      ],
+      "student_answer": "```python\nimport os\n\ndef process_file(filename):\n    \"\"\"\n    Processes a file containing integers, summing them and returning the total.\n\n    Args:\n        filename (str): The path to the input file.\n\n    Returns:\n        int: The sum of the integers in the file.\n\n    Raises:\n        FileNotFoundError: If the file does not exist.\n        ValueError: If a line in the file cannot be converted to an integer.\n        TypeError: If the input is not a string.\n    \"\"\"\n    if not isinstance(filename, str):\n        raise TypeError(\"Filename must be a string.\")\n\n    try:\n        with open(filename, 'r') as f:\n            data = f.read()\n            lines = data.splitlines()\n            results = []\n            for line in lines:\n                line = line.strip()\n                if line:\n                    try:\n                        results.append(int(line))\n                    except ValueError:\n                        raise ValueError(f\"Invalid integer format in line: {line}\")\n            return sum(results)\n    except FileNotFoundError:\n        raise FileNotFoundError(f\"File not found: {filename}\")\n\n\ndef main():\n    try:\n        process_file('data.txt')\n    except (FileNotFoundError, ValueError) as e:\n        print(f\"Error processing file: {e}\")\n\n\nif __name__ == \"__main__\":\n    main()\n```\n\n```\nCoordination Plan:\n\n*   **Developer 1 (Sarah):**  Fix Error Handling - `process_file` function. Specifically, implement the `FileNotFoundError` and `ValueError` exception handling as described in the docstring.  Testing: Create a `data.txt` file with a missing file and a line containing non-integer data to trigger the exceptions.  Verify that the correct exceptions are raised and handled gracefully.\n\n*   **Developer 2 (David):** Input Validation - `process_file` function. Add a check to ensure the filename is a string.  Testing: Provide a non-string filename (e.g., an integer) to `process_file` and verify that a `TypeError` is raised.\n\n*   **Developer 3 (Emily):**  Docstring and PEP 8 Compliance - `process_file` and `main` functions.  Improve the docstrings to clearly describe arguments, return values, and potential exceptions.  Ensure the code adheres to PEP 8 style guidelines (e.g., spacing, line length). Testing:  Run the code through a linter (e.g., `flake8`) to identify and fix PEP 8 violations.  Review the docstrings for clarity and completeness.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        4,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The student correctly identified the three critical issues (resource management via context managers, input validation, and error handling) and provided a refactored code snippet that addresses them. The code uses 'with' statements, validates input types, and includes docstrings. However, the error handling implementation has minor flaws: the f-strings for error messages are empty (e.g., f'Invalid integer format in line: '), which is a syntax/logic error in the string formatting. Additionally, the coordination plan assigns the 'Docstring' task to a developer, but the student's own code already included a docstring, making the task assignment slightly redundant or misaligned with the actual 'fix' needed (which was mostly code logic). The plan is clear but the specific testing instructions for the error handling developer are slightly vague regarding the 'missing file' test case (should be a missing file path, not a file with missing data). Overall, it is a strong submission but lacks the polish of a flawless industry-standard solution due to the empty error messages and minor planning misalignment."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Train subordinates in programming and program coding.",
+      "task_type": "Educational Code Generation with Documentation",
+      "user_prompt": "Create a Python script that demonstrates the concept of 'Dependency Injection' using a simple e-commerce cart system. The script must include a base class for payment processors and two concrete implementations (CreditCard, PayPal). Provide inline comments and a separate docstring explaining the design pattern to a junior developer. Ensure the code includes input validation for the cart total and handles potential exceptions during payment processing.",
+      "reference_context": "class PaymentProcessor:\n    def process_payment(self, amount):\n        pass\n\nclass ShoppingCart:\n    def __init__(self):\n        self.total = 0\n    def add_item(self, price):\n        self.total += price",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The code must successfully instantiate the cart, add items, and process payments via injected dependencies without errors.",
+        "Criterion 2: Completeness — The solution must include two concrete payment classes, input validation for negative amounts, and comprehensive documentation.",
+        "Criterion 3: Best practices — The code must strictly follow SOLID principles, specifically the Dependency Inversion Principle, and use standard naming conventions."
+      ],
+      "student_answer": "```python\nclass PaymentProcessor:\n    \"\"\"\n    Base class for payment processors.  This demonstrates Dependency Injection.\n    Instead of the ShoppingCart directly creating a PaymentProcessor instance,\n    it receives it as a parameter. This allows for easier testing and\n    substitution of different payment methods without modifying the ShoppingCart class.\n\n    The `process_payment` method is a placeholder; concrete implementations\n    will handle the actual payment processing logic.\n    \"\"\"\n    def process_payment(self, amount):\n        raise NotImplementedError(\"Subclasses must implement process_payment\")\n\n\nclass CreditCard(PaymentProcessor):\n    \"\"\"\n    Concrete implementation of PaymentProcessor using a credit card.\n    \"\"\"\n    def process_payment(self, amount):\n        print(f\"Processing credit card payment of {amount}\")\n        # Simulate payment processing\n        if amount <= 0:\n            raise ValueError(\"Payment amount must be positive.\")\n        return True\n\n\nclass PayPal(PaymentProcessor):\n    \"\"\"\n    Concrete implementation of PaymentProcessor using PayPal.\n    \"\"\"\n    def process_payment(self, amount):\n        print(f\"Processing PayPal payment of {amount}\")\n        # Simulate payment processing\n        if amount <= 0:\n            raise ValueError(\"Payment amount must be positive.\")\n        return True\n\n\nclass ShoppingCart:\n    \"\"\"\n    Represents an e-commerce shopping cart.\n    \"\"\"\n    def __init__(self, payment_processor):\n        \"\"\"\n        Initializes the ShoppingCart with a PaymentProcessor.\n\n        Args:\n            payment_processor: An instance of a PaymentProcessor class.\n        \"\"\"\n        self.total = 0\n        self.payment_processor = payment_processor\n\n    def add_item(self, price):\n        \"\"\"\n        Adds an item to the cart and updates the total.\n\n        Args:\n            price: The price of the item to add.\n        \"\"\"\n        self.total += price\n\n    def checkout(self):\n        \"\"\"\n        Processes the checkout and attempts to pay the total amount.\n        Handles potential exceptions during payment processing.\n        \"\"\"\n        try:\n            if self.total <= 0:\n                print(\"Cart is empty. Nothing to checkout.\")\n                return\n\n            print(f\"Checking out with total: {self.total}\")\n            if self.payment_processor.process_payment(self.total):\n                print(\"Payment successful!\")\n            else:\n                print(\"Payment failed.\")\n        except ValueError as e:\n            print(f\"Error during payment: {e}\")\n        except Exception as e:\n            print(f\"An unexpected error occurred: {e}\")\n\n\nif __name__ == '__main__':\n    # Example usage:\n    cart = ShoppingCart(CreditCard())\n    cart.add_item(100)\n    cart.add_item(50)\n    cart.checkout()\n\n    cart = ShoppingCart(PayPal())\n    cart.add_item(75)\n    cart.checkout()\n\n    cart = ShoppingCart(CreditCard())\n    cart.add_item(-10)\n    cart.checkout()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        3,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly implements the Dependency Injection pattern and includes the required classes and docstrings. However, it fails to meet several specific requirements: 1) The f-strings in the print statements are incomplete (missing the variable for the amount), causing runtime errors or empty output. 2) The `add_item` method lacks the requested input validation for the cart total (it allows negative prices to be added, which the `checkout` method only partially handles). 3) The exception handling prints empty strings after the colon instead of the actual error message (`e`). 4) The 'Additional Checks' regarding empty lists and duplicate pairs are irrelevant to the specific task of a cart system and were not addressed, though the core logic is sound. These syntax errors and missing validations prevent the code from being production-ready (Autonomy 3) and reduce its correctness (Correctness 3)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop Web sites.",
+      "task_type": "API Endpoint Implementation with Security",
+      "user_prompt": "Develop a secure REST API endpoint using Python (Flask or FastAPI) that accepts user registration data (username, email, password). The endpoint must validate the input format (regex for email, minimum password length), hash the password using a secure algorithm (e.g., bcrypt), and return a JSON response. Include error handling for duplicate usernames and invalid inputs. The code must be self-contained and include a mock database class.",
+      "reference_context": "import re\n\ndef validate_email(email):\n    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'\n    return re.match(pattern, email)",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The endpoint must correctly validate inputs, hash passwords, and return appropriate HTTP status codes (201, 400, 409).",
+        "Criterion 2: Completeness — The solution must include input validation, password hashing, and error handling for all specified edge cases.",
+        "Criterion 3: Best practices — The code must avoid hardcoding secrets, use parameterized queries or mock safe storage, and follow RESTful conventions."
+      ],
+      "student_answer": "```python\nimport bcrypt\nfrom flask import Flask, request, jsonify\nimport os\n\napp = Flask(__name__)\n\n# Mock Database\nclass MockDatabase:\n    def __init__(self):\n        self.users = {}\n\n    def add_user(self, username, email, password):\n        if username in self.users:\n            return False, \"Username already exists\"\n        self.users[username] = {\"email\": email, \"password\": bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')}\n        return True, None\n\n    def get_user(self, username):\n        return self.users.get(username)\n\ndb = MockDatabase()\n\n@app.route('/register', methods=['POST'])\ndef register():\n    data = request.get_json()\n    username = data.get('username')\n    email = data.get('email')\n    password = data.get('password')\n\n    if not username or not email or not password:\n        return jsonify({\"error\": \"Missing required fields\"}), 400\n\n    if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$', email):\n        return jsonify({\"error\": \"Invalid email format\"}), 400\n\n    if len(password) < 8:\n        return jsonify({\"error\": \"Password must be at least 8 characters long\"}), 400\n\n    success, error_message = db.add_user(username, email, password)\n    if success:\n        return jsonify({\"message\": \"User registered successfully\"}), 201\n    else:\n        return jsonify({\"error\": error_message}), 409\n\nif __name__ == '__main__':\n    app.run(debug=True)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. First, it is syntactically invalid: the code imports 'bcrypt' and uses 're' but fails to import the 're' module, causing a NameError. Second, it ignores the provided context snippet for email validation, instead hardcoding the regex directly in the function, which contradicts the prompt's implied structure. Third, it violates the 'Additional Checks' instruction by not handling empty lists or integer overflow (though less relevant here, the instruction implies robustness). Fourth, the security practice of running with 'debug=True' in the main block is a significant industry violation for a production-ready API. Finally, the error handling for missing keys in the JSON payload (e.g., if 'username' is missing) will raise a KeyError instead of returning a 400 error, making the code fragile."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Train users on the use and function of computer programs.",
+      "task_type": "User-Facing Tool with Interactive Validation",
+      "user_prompt": "Write a Python command-line application that acts as a 'Configuration Validator' for a legacy system. The tool should prompt the user for a configuration file path, read the file, and validate specific fields (e.g., port number must be 1-65535, timeout must be positive). If validation fails, the tool must provide clear, user-friendly error messages explaining the issue and how to fix it. Include a 'dry-run' mode that prints the validation results without saving changes.",
+      "reference_context": "config_example = {\n    'port': 8080,\n    'timeout': 30,\n    'host': 'localhost'\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The tool must accurately validate the port range and timeout positivity, and handle file read errors gracefully.",
+        "Criterion 2: Completeness — The application must support both standard validation and 'dry-run' mode, providing clear feedback for all failure scenarios.",
+        "Criterion 3: Best practices — The code must use argparse for CLI arguments, separate validation logic from I/O, and include a main entry point."
+      ],
+      "student_answer": "```python\nimport argparse\n\ndef validate_config(config):\n    errors = []\n    if not 1 <= config['port'] <= 65535:\n        errors.append(f\"Port number ({config['port']}) must be between 1 and 65535.\")\n    if config['timeout'] <= 0:\n        errors.append(\"Timeout must be a positive number.\")\n    if not isinstance(config['host'], str):\n        errors.append(\"Host must be a string.\")\n    return errors\n\ndef main():\n    parser = argparse.ArgumentParser(description=\"Configuration Validator\")\n    parser.add_argument(\"config_file\", help=\"Path to the configuration file\")\n    parser.add_argument(\"--dry-run\", action=\"store_true\", help=\"Perform dry run (no changes)\")\n    args = parser.parse_args()\n\n    try:\n        with open(args.config_file, 'r') as f:\n            config = eval(f.read())  # Use eval cautiously, consider ast.literal_eval for safer parsing\n    except FileNotFoundError:\n        print(f\"Error: Configuration file not found: {args.config_file}\")\n        return\n    except Exception as e:\n        print(f\"Error: Invalid configuration file format: {e}\")\n        return\n\n    errors = validate_config(config)\n\n    if errors:\n        print(\"Validation Errors:\")\n        for error in errors:\n            print(f\"- {error}\")\n    else:\n        print(\"Configuration is valid.\")\n\n    if not args.dry_run:\n        # In a real application, you would save the validated config here\n        print(\"Configuration validated and ready for use.\")\n\nif __name__ == \"__main__\":\n    main()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        1,
+        3,
+        2,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails on multiple critical fronts. Correctness (2): The code uses eval() which is a severe security vulnerability, and the error printing loop is broken (prints '- ' instead of the error message). Completeness (2): It lacks robust error handling for non-dict inputs or missing keys, and the dry-run logic is trivial. Best Practices (1): Using eval() on untrusted input is a fundamental anti-pattern; proper JSON parsing is required. Domain Accuracy (3): The validation logic for ports and timeouts is technically correct, but the implementation context is flawed. Clarity (2): The output format is broken, and the code is difficult to trust due to security issues. Autonomy (2): The code cannot be delivered to a client due to the security risk and broken output formatting."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collaborate with computer manufacturers and other users to develop new programming methods.",
+      "task_type": "Algorithmic Optimization and Benchmarking",
+      "user_prompt": "Analyze the provided inefficient sorting function which currently uses a bubble sort approach. Refactor it to use a more efficient algorithm (e.g., Merge Sort or Quick Sort) to achieve O(n log n) complexity. Write a benchmarking script that compares the execution time of the original and refactored functions on datasets of increasing size (100, 1000, 10000 elements). Include error handling for non-list inputs and ensure the benchmarking script outputs a summary table.",
+      "reference_context": "def bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The refactored sort must produce the same sorted output as the original for all valid inputs.",
+        "Criterion 2: Completeness — The solution must include the optimized algorithm, a benchmarking script, and a summary table of results.",
+        "Criterion 3: Best practices — The code must handle non-list inputs, use timeit for accurate benchmarking, and adhere to standard naming conventions."
+      ],
+      "student_answer": "```python\nimport time\nimport random\nimport pandas as pd\n\ndef bubble_sort(arr):\n    n = len(arr)\n    for i in range(n):\n        for j in range(0, n-i-1):\n            if arr[j] > arr[j+1]:\n                arr[j], arr[j+1] = arr[j+1], arr[j]\n    return arr\n\ndef quick_sort(arr):\n    if len(arr) < 2:\n        return arr\n    pivot = arr[0]\n    less = [i for i in arr[1:] if i <= pivot]\n    greater = [i for i in arr[1:] if i > pivot]\n    return quick_sort(less) + [pivot] + quick_sort(greater)\n\ndef benchmark_sort_algorithms(sizes):\n    results = {}\n    for size in sizes:\n        arr = [random.randint(0, 10000) for _ in range(size)]\n        \n        # Bubble Sort\n        start_time = time.time()\n        bubble_sort(arr.copy())  # Use a copy to avoid modifying the original\n        end_time = time.time()\n        results[size] = {'bubble_sort': end_time - start_time}\n\n        # Quick Sort\n        start_time = time.time()\n        quick_sort(arr.copy())\n        end_time = time.time()\n        results[size] ['quick_sort'] = end_time - start_time\n    \n    df = pd.DataFrame.from_dict(results, orient='index')\n    df = df.rename(columns={'bubble_sort': 'Bubble Sort Time (s)', 'quick_sort': 'Quick Sort Time (s)'})\n    df = df.style.format({'Bubble Sort Time (s)': '.6f', 'Quick Sort Time (s)': '.6f'})\n    return df\n\nif __name__ == '__main__':\n    sizes = [100, 1000, 10000]\n    benchmark_results = benchmark_sort_algorithms(sizes)\n    print(benchmark_results)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        4,
+        3,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission fails several critical requirements. 1) Correctness: It completely ignores the mandatory error handling for non-list inputs. 2) Completeness: It does not include the requested error handling logic. 3) Best Practices: The Quick Sort implementation creates new lists at every recursion step, leading to O(n^2) space complexity and poor performance on large datasets compared to an in-place implementation. 4) Domain Accuracy: The code uses pandas styling which is not standard for a simple benchmarking script and may fail in environments without pandas. 5) Clarity: The output is a pandas Styler object, not a clean summary table as requested. 6) Autonomy: The lack of input validation and the inefficient Quick Sort implementation mean this code cannot be used in a production environment without significant rework."
+    }
+  ]
+}

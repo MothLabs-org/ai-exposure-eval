@@ -1,0 +1,874 @@
+{
+  "meta": {
+    "job_title": "Operations Research Analysts",
+    "job_id": "or_analyst",
+    "onet_code": "15-2031.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 16,
+    "evaluated_tasks": 16,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.38,
+      "dimensions": {
+        "Correctness": 2.25,
+        "Completeness": 2.25,
+        "Best Practices": 2.12,
+        "Domain Accuracy": 2.19,
+        "Clarity": 3.25,
+        "Autonomy": 2.19
+      },
+      "evaluated_tasks": 16,
+      "scale_max": 5
+    },
+    "total_time_seconds": 618.61
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Formulate mathematical or simulation models of problems, relating constants and variables, restrictions, alternatives, conflicting objectives, and their numerical parameters.",
+      "task_type": "Mathematical Modeling",
+      "user_prompt": "You are an Operations Research Analyst for a manufacturing plant. The plant must schedule production for three products (A, B, C) over a 40-hour week to maximize profit. Product A yields $50/unit, B yields $70/unit, and C yields $40/unit. Machine 1 requires 2 hours for A, 3 hours for B, and 1 hour for C. Machine 2 requires 1 hour for A, 2 hours for B, and 2 hours for C. Machine 1 has 100 available hours, and Machine 2 has 80 available hours. Additionally, market demand limits production to 20 units of A, 30 units of B, and 40 units of C. Formulate a linear programming model to solve this. Define the decision variables, objective function, and all necessary constraints. Output the mathematical formulation in a structured format.",
+      "reference_context": {
+        "products": [
+          "A",
+          "B",
+          "C"
+        ],
+        "profit_per_unit": {
+          "A": 50,
+          "B": 70,
+          "C": 40
+        },
+        "machine_hours_required": {
+          "Machine 1": {
+            "A": 2,
+            "B": 3,
+            "C": 1
+          },
+          "Machine 2": {
+            "A": 1,
+            "B": 2,
+            "C": 2
+          }
+        },
+        "available_machine_hours": {
+          "Machine 1": 100,
+          "Machine 2": 80
+        },
+        "market_demand_limits": {
+          "A": 20,
+          "B": 30,
+          "C": 40
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the mathematical formulations (variables, objective, constraints) logically sound and mathematically valid?",
+        "Completeness: Does the model account for all constraints mentioned in the prompt (machine hours, demand limits)?",
+        "Best Practices: Is the notation clear, standardized, and suitable for implementation in optimization software?"
+      ],
+      "student_answer": "```\n**Objective Function:**\n\nMaximize Profit:  Z = 50x + 70y + 40z\n\n**Decision Variables:**\n\n*   x = Number of units of product A to produce\n*   y = Number of units of product B to produce\n*   z = Number of units of product C to produce\n\n**Constraints:**\n\n1.  Machine 1 Capacity: 2x + 3y + z <= 100\n2.  Machine 2 Capacity: x + 2y + 2z <= 80\n3.  Demand for A: x <= 20\n4.  Demand for B: y <= 30\n5.  Demand for C: z <= 40\n6.  Non-negativity: x >= 0, y >= 0, z >= 0\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly formulates the linear programming model with accurate decision variables, objective function, and constraints based on the provided data. The mathematical notation is clear and standard. However, it scores a 4 on Best Practices and Autonomy because it lacks explicit variable definitions (e.g., x_A, x_B, x_C) which improves readability in professional settings, and it omits the explicit statement that variables must be integers (integer programming), which is a standard requirement for production unit problems, even though the LP relaxation is often the first step. The solution is technically correct but not fully 'industry-ready' without these minor professional refinements."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Perform validation and testing of models to ensure adequacy, and reformulate models, as necessary.",
+      "task_type": "Model Validation and Reformulation",
+      "user_prompt": "You are an Operations Research Analyst reviewing a proposed inventory model for a retail chain. The current model assumes constant demand and zero lead time, which has resulted in a 15% stockout rate in simulation. The actual demand follows a normal distribution with a mean of 100 units/day and a standard deviation of 20 units/day. The lead time is 5 days. The holding cost is $2/unit/day, and the stockout cost is $10/unit. The current model uses a fixed reorder point of 500 units. Validate this model by calculating the safety stock required to achieve a 95% service level. Reformulate the reorder point and safety stock parameters based on the stochastic demand and lead time. Provide the new parameters and the logic for the reformulation.",
+      "reference_context": {
+        "demand_mean_daily": 100,
+        "demand_std_daily": 20,
+        "lead_time_days": 5,
+        "holding_cost_per_unit": 2,
+        "stockout_cost_per_unit": 10,
+        "target_service_level": 0.95,
+        "current_reorder_point": 500,
+        "z_score_95": 1.645
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the calculation of safety stock and reorder point mathematically accurate based on the provided distribution parameters?",
+        "Validation: Does the response correctly identify the flaw in the constant demand assumption?",
+        "Reformulation: Are the new parameters logically derived and clearly explained?"
+      ],
+      "student_answer": "```json\n{\n  \"safety_stock_calculation\": {\n    \"formula\": \"SS = sqrt((demand_mean_daily * lead_time_days * (1 - service_level)) / service_level)\",\n    \"calculation\": \"SS = sqrt((100 * 5 * (1 - 0.95)) / 0.95) = sqrt((500 * 0.05) / 0.95) = sqrt(25 / 0.95) = sqrt(26.31578947) = 5.129\",\n    \"safety_stock\": 5.129,\n    \"units\": \"units\"\n  },\n  \"new_reorder_point_calculation\": {\n    \"formula\": \"ROP = demand_mean_daily * lead_time_days / service_level + safety_stock\",\n    \"calculation\": \"ROP = 100 * 5 / 0.95 + 5.129 = 526.31578947 + 5.129 = 531.44478947\",\n    \"new_reorder_point\": 531.44\n  },\n  \"new_reorder_point_rounded\": 531,\n  \"new_safety_stock\": 5.13,\n  \"new_safety_stock_rounded\": 5,\n  \"logic\": \"The current reorder point of 500 units is insufficient to meet the target service level of 95% given the stochastic demand and lead time. The safety stock was calculated to buffer against demand variability during the lead time. The new reorder point is calculated by adding the safety stock to the expected demand during the lead time, divided by the desired service level. Rounding to the nearest whole number provides a practical reorder point. The safety stock is calculated using the standard deviation of demand, lead time, and the Z-score corresponding to the desired service level.\",\n  \"parameters\": {\n    \"reorder_point\": 531,\n    \"safety_stock\": 5,\n    \"service_level\": 0.95\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student used a completely incorrect formula for safety stock, ignoring the provided standard deviation (20) and Z-score (1.645) entirely. Instead of the standard SS = Z * sigma_LT calculation, they used a nonsensical formula involving only the mean and service level, resulting in a safety stock of ~5 units instead of the correct ~165 units. Consequently, the new reorder point (531) is dangerously low compared to the expected demand during lead time (500) plus necessary safety stock, failing to achieve the 95% service level. The logic section claims to use standard deviation and Z-scores but the math proves otherwise. This is a critical failure in an Operations Research context."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Collaborate with senior managers and decision makers to identify and solve a variety of problems and to clarify management objectives.",
+      "task_type": "Problem Definition and Objective Clarification",
+      "user_prompt": "You are an Operations Research Analyst meeting with the VP of Supply Chain. The VP wants to 'reduce costs' but has not specified which costs or by how much. The company currently has a mix of air and sea freight. Air freight costs $10/kg and takes 2 days; Sea freight costs $2/kg and takes 20 days. The VP is concerned about customer satisfaction (delivery time) and budget. You must clarify the objectives and constraints to build a model. Draft a problem statement that defines the decision variables (mode of transport), the objective function (minimize total cost subject to a maximum average delivery time), and the constraints (budget limit of $50,000, minimum 5000kg to ship, maximum average delivery time of 10 days). Explain how this formulation addresses the VP's ambiguous goals.",
+      "reference_context": {
+        "air_cost_per_kg": 10,
+        "air_time_days": 2,
+        "sea_cost_per_kg": 2,
+        "sea_time_days": 20,
+        "budget_limit": 50000,
+        "total_weight_kg": 5000,
+        "max_avg_delivery_time_days": 10
+      },
+      "evaluation_criteria": [
+        "Clarity: Does the problem statement clearly translate vague management goals into specific mathematical objectives?",
+        "Completeness: Are all relevant constraints (budget, weight, time) included in the formulation?",
+        "Alignment: Does the solution demonstrate an understanding of the trade-offs between cost and service level?"
+      ],
+      "student_answer": "**Problem Statement: Freight Transportation Optimization**\n\n**Objective:** Minimize the total cost of transporting goods while meeting customer delivery time requirements and budgetary constraints.\n\n**Decision Variables:**\n\n*   *x<sub>a</sub>*: Kilograms of goods shipped via air freight.\n*   *x<sub>s</sub>*: Kilograms of goods shipped via sea freight.\n\n**Objective Function:**\n\nMinimize Total Cost:  Z = 10*x<sub>a</sub> + 2*x<sub>s</sub>\n\n**Constraints:**\n\n1.  **Total Weight Constraint:** x<sub>a</sub> + x<sub>s</sub> ≥ 5000\n2.  **Budget Constraint:** 10*x<sub>a</sub> + 2*x<sub>s</sub> ≤ 50000\n3.  **Average Delivery Time Constraint:**  [(2*x<sub>a</sub>)/1000) + (20*x<sub>s</sub>/100000] ≤ 10  (Note:  Delivery time is calculated as weight * time per kg, converted to days)\n4.  **Non-negativity Constraints:** x<sub>a</sub> ≥ 0, x<sub>s</sub> ≥ 0\n\n**Explanation of Addressing VP's Ambiguity:**\n\nThis formulation directly addresses the VP’s ambiguous goal of “reducing costs” by explicitly defining cost as the total transportation expense (air and sea freight). The objective function minimizes this cost.  The constraint on average delivery time (10 days) directly tackles the VP’s concern about customer satisfaction. The budget limit ($50,000) provides a financial constraint. The minimum shipment weight (5000kg) ensures a reasonable scale of operations.  By quantifying the desired delivery time and budget, the model provides a clear, measurable target for optimization, moving beyond the VP’s initial, vague request.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy due to a critical mathematical error in the 'Average Delivery Time Constraint'. The student incorrectly formulated the constraint as [(2*x_a)/1000) + (20*x_s/100000] ≤ 10, introducing arbitrary divisors (1000, 100000) that have no basis in the problem statement. The correct weighted average delivery time should be (2*x_a + 20*x_s) / (x_a + x_s) ≤ 10. This error renders the model mathematically invalid and the solution infeasible. Additionally, the constraint is non-linear as written (due to the division by total weight), and the student failed to linearize it (e.g., 2*x_a + 20*x_s ≤ 10*(x_a + x_s)), which is a standard requirement for linear programming solvers. While the structure and explanation are clear (Clarity 3), the core technical execution is flawed, preventing the output from being used without major rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Present the results of mathematical modeling and data analysis to management or other end users.",
+      "task_type": "Results Presentation and Recommendation",
+      "user_prompt": "You are an Operations Research Analyst who has just solved a network flow problem for a distribution center. The optimal solution suggests rerouting 30% of shipments through a new hub, increasing total transportation distance by 5% but reducing total cost by 12% due to lower toll fees and fuel efficiency. The new hub requires a $50,000 setup cost. The current annual cost is $1,000,000. Prepare a concise executive summary for the CEO. The summary must include the projected annual savings, the payback period for the setup cost, and a risk assessment regarding the increased distance. Conclude with a clear recommendation to proceed or reject the change.",
+      "reference_context": {
+        "current_annual_cost": 1000000,
+        "cost_reduction_percentage": 0.12,
+        "setup_cost": 50000,
+        "distance_increase_percentage": 0.05,
+        "risk_factors": [
+          "Increased transit time variability",
+          "Dependency on new hub infrastructure"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the financial calculations (savings, payback period) correct?",
+        "Clarity: Is the executive summary concise and free of unnecessary technical jargon?",
+        "Decision Support: Does the recommendation logically follow from the quantitative analysis and risk assessment?"
+      ],
+      "student_answer": "**Executive Summary: Distribution Center Network Optimization**\n\n**Recommendation:** Proceed with the implementation of the proposed network optimization.\n\n**Projected Annual Savings:** Implementing the new hub is projected to reduce annual costs by $120,000 (12% of $1,000,000).\n\n**Payback Period:** The $50,000 setup cost will be recovered within approximately 4.17 years ( $50,000 / $120,000 per year).\n\n**Risk Assessment:** While total transportation distance will increase by 5%, the resulting cost reduction of 12% outweighs this increase. Key risks include potential increased transit time variability and reliance on the new hub’s infrastructure. Mitigation strategies should focus on robust contingency planning and proactive monitoring of hub performance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly calculates the annual savings ($120,000) but fails the domain accuracy check on the payback period calculation. Dividing a $50,000 setup cost by $120,000 annual savings yields a payback period of 0.417 years (approx. 5 months), not 4.17 years. The student inverted the division (likely calculating annual savings per dollar of setup cost or simply dividing the wrong way). This is a critical error in financial analysis that invalidates the recommendation's justification. While the structure is clear and the risk assessment is relevant, the fundamental math error prevents the output from being industry-standard or usable without correction."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collaborate with others in the organization to ensure successful implementation of chosen problem solutions.",
+      "task_type": "Implementation Planning and Constraint Integration",
+      "user_prompt": "You are an Operations Research Analyst tasked with implementing a new staff scheduling model for a hospital. The model optimizes nurse shifts to minimize overtime while ensuring coverage. However, the HR department has informed you that nurses cannot work more than 3 consecutive night shifts, and there is a union rule requiring at least 12 hours between shifts. The IT team needs the model to output a schedule in a specific CSV format. Define the additional constraints required to incorporate the union rules and consecutive shift limits into the existing optimization model. Outline the steps for validating the model with HR before full deployment.",
+      "reference_context": {
+        "shift_types": [
+          "Day",
+          "Evening",
+          "Night"
+        ],
+        "max_consecutive_night_shifts": 3,
+        "min_hours_between_shifts": 12,
+        "output_format": "CSV",
+        "validation_stakeholders": [
+          "HR",
+          "Union Representatives",
+          "IT"
+        ]
+      },
+      "evaluation_criteria": [
+        "Constraint Integration: Are the union rules and consecutive shift limits correctly translated into mathematical constraints?",
+        "Implementation Plan: Is the validation process with stakeholders logical and comprehensive?",
+        "Feasibility: Does the solution account for the practical limitations of the IT output format?"
+      ],
+      "student_answer": "```csv\nNurseID,ShiftType,StartDateTime,EndDateTime\n```\n\n**Additional Constraints:**\n\n1.  **Consecutive Night Shift Limit:**  A boolean variable `ConsecutiveNightShifts` for each nurse.  This variable is set to 1 if the nurse is working a consecutive night shift and 0 otherwise.  The objective function will penalize schedules with high values of `ConsecutiveNightShifts`.\n\n2.  **Minimum Hours Between Shifts:** A constraint ensuring that the end time of one shift is at least `min_hours_between_shifts` hours after the start time of the next shift for each nurse.  This will be implemented as a linear inequality.\n\n3.  **Night Shift Restriction:** A constraint that prevents a nurse from being assigned more than `max_consecutive_night_shifts` consecutive night shifts. This will be implemented as a constraint on the `ConsecutiveNightShifts` variable.\n\n4.  **Shift Duration:**  Each shift must have a defined duration (e.g., 8 hours, 12 hours). This will be incorporated into the model as a constraint on the `StartDateTime` and `EndDateTime` variables.\n\n**Validation Steps:**\n\n1.  **HR Review:** Present the model output (sample schedules) to HR for review.  Focus on schedules that represent typical nurse workloads and coverage scenarios.  Gather feedback on schedule fairness, nurse preferences, and potential issues with the constraints.\n\n2.  **Union Representative Consultation:** Share the model and validation results with union representatives.  Specifically, verify that the consecutive night shift limit and minimum hours between shifts align with the union agreement.  Address any concerns regarding potential scheduling imbalances.\n\n3.  **IT Testing:** Provide the IT team with the CSV output format and sample data.  Test the model's ability to generate schedules in the required format.  Verify data integrity and consistency.\n\n4.  **Scenario Testing:**  Conduct scenario testing with HR and union representatives to evaluate the model's performance under various conditions (e.g., high patient volume, staff shortages, unexpected absences).\n\n5.  **Sensitivity Analysis:** Perform sensitivity analysis to assess the impact of changes in input parameters (e.g., demand, staff availability) on the model's output.\n\n6.  **Pilot Deployment:** Implement the model in a limited pilot program with a small group of nurses.  Monitor the model's performance and gather feedback before full deployment.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails fundamentally on Correctness and Domain Accuracy. It proposes a 'boolean variable' for consecutive shifts and suggests 'penalizing' this in the objective function rather than implementing a hard constraint, which violates the explicit requirement to ensure nurses do not work more than 3 consecutive night shifts. Hard constraints are mandatory for union rules, not soft penalties. Furthermore, the 'Minimum Hours Between Shifts' constraint is described vaguely as a linear inequality without defining the necessary binary variables or big-M formulation required to handle the time gap between non-consecutive shifts. The CSV snippet provided is just a header, not a solution to the 'output format' requirement in context. While the validation steps are logical, the core mathematical modeling is flawed and would not produce a feasible schedule in a real-world scenario."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Analyze information obtained from management to conceptualize and define operational problems.",
+      "task_type": "Operational Problem Conceptualization",
+      "user_prompt": "You are an Operations Research Analyst analyzing a request from the Sales Director. The director reports that 'customers are complaining about late deliveries, but we are not sure why.' You have data showing that the average delivery time is 48 hours, but the target is 36 hours. The data also shows that 40% of orders are delayed due to 'inventory unavailability' and 60% due to 'logistics bottlenecks.' The inventory data shows a 15% stockout rate for key items. Define the operational problem clearly. Propose a two-stage approach: first, a simulation to model the impact of increasing safety stock on the stockout rate, and second, a queuing model to analyze the logistics bottlenecks. Specify the key metrics you would track in each stage to determine if the problem is solved.",
+      "reference_context": {
+        "current_avg_delivery_time_hours": 48,
+        "target_delivery_time_hours": 36,
+        "delay_causes": {
+          "inventory_unavailability": 0.4,
+          "logistics_bottlenecks": 0.6
+        },
+        "current_stockout_rate": 0.15,
+        "safety_stock_increase_options": [
+          10,
+          20,
+          30
+        ]
+      },
+      "evaluation_criteria": [
+        "Problem Definition: Is the operational problem clearly articulated based on the provided data?",
+        "Methodology: Are the proposed simulation and queuing models appropriate for the specific sub-problems identified?",
+        "Metrics: Are the key performance indicators (KPIs) defined and relevant to measuring success?"
+      ],
+      "student_answer": "**Operational Problem:**\n\nThe company is experiencing customer dissatisfaction due to consistently late deliveries (average 48 hours vs. target 36 hours). This is primarily driven by inventory unavailability (40% of delays) and logistics bottlenecks (60% of delays), with a 15% stockout rate for key items. The objective is to reduce average delivery time and improve on-time delivery performance.\n\n**Two-Stage Approach:**\n\n**Stage 1: Simulation – Impact of Increased Safety Stock**\n\n*   **Model:** Discrete-event simulation will be used to model the order fulfillment process, incorporating inventory levels and lead times. The simulation will vary the safety stock levels (10%, 20%, and 30% increase from current levels) for key items.\n*   **Inputs:**\n    *   Historical order data (order frequency, order size, item demand).\n    *   Lead times for each item.\n    *   Current stockout rate (15%).\n    *   Safety stock increase options (10%, 20%, 30%).\n*   **Outputs & Key Metrics:**\n    *   Average delivery time.\n    *   On-time delivery rate.\n    *   Inventory holding costs.\n    *   Stockout rate.\n    *   Number of orders requiring expedited shipping.\n\n**Stage 2: Queuing Model – Logistics Bottlenecks**\n\n*   **Model:** A queuing model (e.g., M/M/1 or M/G/1) will be developed to represent the logistics process, considering the identified bottlenecks. The model will analyze the impact of different bottleneck capacities on delivery times.\n*   **Inputs:**\n    *   Historical data on logistics processing times at each bottleneck stage (e.g., sorting, packaging, loading).\n    *   Number of resources at each bottleneck stage.\n    *   Order arrival rate.\n*   **Outputs & Key Metrics:**\n    *   Average waiting time in the system.\n    *   Average queue length.\n    *   Server utilization rate at each bottleneck stage.\n    *   Probability of congestion at each bottleneck stage.\n    *   Effectiveness of increasing bottleneck capacity.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission correctly identifies the operational problem and proposes a logical two-stage approach using simulation and queuing theory. It accurately incorporates the provided context data (48h avg, 36h target, 15% stockout, etc.). The metrics selected for each stage are relevant and appropriate. However, the answer is not a perfect 5 because it lacks specific implementation details that an industry-standard proposal would include, such as specifying the exact distribution assumptions for the simulation (e.g., Poisson demand, exponential lead times) or defining the specific decision variables for the queuing model (e.g., number of servers vs. service rate). Additionally, it does not explicitly mention the trade-off analysis (cost vs. service level) which is critical for a strategic decision support lead. These are minor omissions that prevent it from being truly exceptional, but the core approach is sound and professional."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Study and analyze information about alternative courses of action to determine which plan will offer the best outcomes.",
+      "task_type": "Strategic Analysis",
+      "user_prompt": "You are an Operations Research Analyst for a manufacturing firm. The company is considering three alternative production strategies to meet a 20% increase in demand over the next fiscal year. Strategy A involves expanding the current factory (high capital cost, low variable cost). Strategy B involves outsourcing 40% of production (moderate capital cost, high variable cost). Strategy C involves a hybrid approach (moderate capital, moderate variable). Using the provided financial data, calculate the Net Present Value (NPV) for each strategy over a 5-year horizon at a 7% discount rate. Recommend the optimal strategy based on the highest NPV, explicitly stating the break-even point where the recommended strategy becomes less favorable than the runner-up.",
+      "reference_context": {
+        "discount_rate": 0.07,
+        "horizon_years": 5,
+        "demand_increase_percent": 20,
+        "strategies": {
+          "A": {
+            "capital_cost": 5000000,
+            "annual_variable_cost": 1200000,
+            "annual_revenue": 3500000
+          },
+          "B": {
+            "capital_cost": 1500000,
+            "annual_variable_cost": 2100000,
+            "annual_revenue": 3500000
+          },
+          "C": {
+            "capital_cost": 3000000,
+            "annual_variable_cost": 1600000,
+            "annual_revenue": 3500000
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the NPV calculations mathematically accurate using the provided discount rate and cash flows?",
+        "Completeness: Does the analysis include a break-even sensitivity analysis comparing the top two strategies?",
+        "Logic: Is the final recommendation clearly derived from the quantitative results?"
+      ],
+      "student_answer": "```json\n{\n  \"NPV_results\": {\n    \"A\": -1778543.07,\n    \"B\": -853374.45,\n    \"C\": -333374.45\n  },\n  \"optimal_strategy\": \"C\",\n  \"break_even_point\": \"Strategy C becomes less favorable than Strategy B when the NPV of Strategy C is less than the NPV of Strategy B.  In this case, -333374.45 < -853374.45, so Strategy B is superior to Strategy C.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamentally on Correctness, Domain Accuracy, and Completeness. The student calculated NPV incorrectly by treating the 5-year horizon as a single lump sum rather than discounting annual cash flows over time. Consequently, the NPV values are wrong, leading to an incorrect optimal strategy recommendation (Strategy A is actually the best option with a positive NPV of ~1,300,000, whereas the student claimed C was best with a negative NPV). Furthermore, the student failed to calculate the break-even point as requested, instead providing a tautological comparison of the incorrect NPV values. The output is mathematically invalid and professionally unusable."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Define data requirements, and gather and validate information, applying judgment and statistical tests.",
+      "task_type": "Data Validation & Statistical Analysis",
+      "user_prompt": "You are an Operations Research Analyst tasked with validating a new dataset for a supply chain inventory model. The dataset contains daily demand figures for 50 SKUs over 365 days. Your task is to identify outliers that could skew the mean demand calculation. Apply the Interquartile Range (IQR) method to flag outliers. For each SKU, calculate the mean, median, and standard deviation. If the mean differs from the median by more than 15%, flag the SKU as 'skewed'. Provide a summary report listing the number of outliers per SKU and the percentage of SKUs flagged as skewed. Justify whether the dataset is suitable for a standard Normal Distribution assumption based on your findings.",
+      "reference_context": {
+        "skus": [
+          "SKU-001",
+          "SKU-002",
+          "SKU-003",
+          "SKU-004",
+          "SKU-005"
+        ],
+        "sample_data": {
+          "SKU-001": [
+            10,
+            12,
+            11,
+            100,
+            11,
+            12,
+            10,
+            11,
+            12,
+            11
+          ],
+          "SKU-002": [
+            50,
+            52,
+            48,
+            51,
+            49,
+            50,
+            52,
+            48,
+            51,
+            49
+          ],
+          "SKU-003": [
+            20,
+            22,
+            21,
+            20,
+            22,
+            21,
+            20,
+            22,
+            21,
+            20
+          ],
+          "SKU-004": [
+            100,
+            105,
+            102,
+            101,
+            103,
+            104,
+            100,
+            105,
+            102,
+            101
+          ],
+          "SKU-005": [
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5,
+            5
+          ]
+        },
+        "outlier_threshold_multiplier": 1.5
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the IQR calculations and outlier flags mathematically accurate?",
+        "Completeness: Does the response include mean, median, and standard deviation for all SKUs?",
+        "Judgment: Is the conclusion regarding Normal Distribution assumption logically supported by the skewness analysis?"
+      ],
+      "student_answer": "```json\n{\n  \"outlier_report\": {\n    \"SKU-001\": {\n      \"mean\": 17.3,\n      \"median\": 11.0,\n      \"std_dev\": 5.3,\n      \"skewed_count\": 1,\n      \"skewed_percentage\": 0.1\n    },\n    \"SKU-002\": {\n      \"mean\": 50.2,\n      \"median\": 50.0,\n      \"std_dev\": 2.2,\n      \"skewed_count\": 0,\n      \"skewed_percentage\": 0.0\n    },\n    \"SKU-003\": {\n      \"mean\": 21.0,\n      \"median\": 21.0,\n      \"std_dev\": 1.4,\n      \"skewed_count\": 0,\n      \"skewed_percentage\": 0.0\n    },\n    \"SKU-004\": {\n      \"mean\": 102.6,\n      \"median\": 102.0,\n      \"std_dev\": 6.6,\n      \"skewed_count\": 1,\n      \"skewed_percentage\": 0.2\n    },\n    \"SKU-005\": {\n      \"mean\": 5.0,\n      \"median\": 5.0,\n      \"std_dev\": 0.0,\n      \"skewed_count\": 0,\n      \"skewed_percentage\": 0.0\n    }\n  },\n  \"summary\": {\n    \"total_skus\": 5,\n    \"total_outliers\": 2,\n    \"skewed_percentage\": 0.4\n  },\n  \"assessment\": \"The dataset is potentially suitable for a Normal Distribution assumption, but requires further investigation. SKU-001 and SKU-004 exhibit skewness, indicated by a mean significantly different from the median. SKU-005 demonstrates a constant demand, which could be modeled using a discrete distribution. The presence of outliers, while limited, suggests that a Normal Distribution might not be entirely accurate. Transforming the data (e.g., using a log transformation) could improve the normality assumption.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical dimensions. First, it ignores the explicit instruction to calculate statistics for 50 SKUs, analyzing only the 5 provided in the sample data. Second, the outlier detection logic is fundamentally flawed: it reports a 'skewed_count' of 1 for SKU-001 (which has 10 data points and 1 outlier) but reports 1 for SKU-004 (which has 0 outliers based on the IQR method), indicating a failure to apply the IQR calculation correctly. Third, the 'skewed_percentage' field is nonsensical (e.g., 0.1 for 1 outlier in 10 days), whereas the prompt asked for the percentage of SKUs flagged as skewed. Finally, the assessment of the Normal Distribution assumption is weak because it relies on the flawed outlier counts and does not rigorously justify the conclusion based on the actual data distribution properties. The output is not ready for client use due to these calculation and logic errors."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Break systems into their components, assign numerical values to each component, and examine the mathematical relationships between them.",
+      "task_type": "System Decomposition & Optimization",
+      "user_prompt": "You are an Operations Research Analyst for a call center. The system consists of three components: Agents, Call Queue, and Service Time. You need to model the system to minimize total cost, which is the sum of agent labor costs and customer waiting costs. The labor cost is $20/hour per agent. The waiting cost is $50/hour per customer in the queue. The arrival rate is 10 calls/hour, and the service rate is 2 calls/hour per agent. Using an M/M/c queuing model, determine the optimal number of agents (c) to minimize total cost. Define the objective function and constraints explicitly. Show the cost calculation for c=4, c=5, and c=6.",
+      "reference_context": {
+        "arrival_rate_lambda": 10,
+        "service_rate_mu": 2,
+        "labor_cost_per_agent": 20,
+        "waiting_cost_per_customer": 50,
+        "test_values_c": [
+          4,
+          5,
+          6
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the queuing formulas (Lq, Wq) applied correctly for the M/M/c model?",
+        "Completeness: Does the solution explicitly define the objective function and constraints?",
+        "Optimization: Is the optimal number of agents correctly identified based on the cost comparison?"
+      ],
+      "student_answer": "```json\n{\n  \"optimal_number_of_agents\": 5,\n  \"objective_function\": \"Minimize Total Cost = Agent Labor Cost + Customer Waiting Cost\",\n  \"constraints\": [\n    \"Number of Agents (c) must be an integer.\",\n    \"c >= 1\"\n  ],\n  \"cost_calculations\": {\n    \"c=4\": {\n      \"average_waiting_time\": 12.5 hours,\n      \"number_of_customers_in_queue\": 25,\n      \"agent_labor_cost\": 4 * 20 * 1 = 80,\n      \"customer_waiting_cost\": 25 * 50 * 12.5 = 15625,\n      \"total_cost\": 80 + 15625 = 15705\n    },\n    \"c=5\": {\n      \"average_waiting_time\": 10.0 hours,\n      \"number_of_customers_in_queue\": 16.67,\n      \"agent_labor_cost\": 5 * 20 * 1 = 100,\n      \"customer_waiting_cost\": 16.67 * 50 * 10 = 8335,\n      \"total_cost\": 100 + 8335 = 8435\n    },\n    \"c=6\": {\n      \"average_waiting_time\": 8.33 hours,\n      \"number_of_customers_in_queue\": 12.5,\n      \"agent_labor_cost\": 6 * 20 * 1 = 120,\n      \"customer_waiting_cost\": 12.5 * 50 * 8.33 = 5168.75,\n      \"total_cost\": 120 + 5168.75 = 5288.75\n    }\n  },\n  \"conclusion\": \"The minimum total cost occurs when c = 5, with a total cost of $8435.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student uses a completely incorrect queuing model (M/M/c) by applying arbitrary linear formulas (e.g., Lq = 25 for c=4) instead of the actual Erlang-C formulas. The calculated waiting times (12.5 hours) and queue lengths are physically impossible for a stable system with arrival rate 10 and service rate 2 per agent (utilization 0.83 for c=4), where the average wait should be minutes, not hours. The cost calculation logic is also flawed, mixing units incorrectly (multiplying queue length by waiting time again). While the JSON structure is clear (Clarity 3), the mathematical content is entirely wrong, rendering the solution useless for any real-world application."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Design, conduct, and evaluate experimental operational models in cases where models cannot be developed from existing data.",
+      "task_type": "Simulation Design",
+      "user_prompt": "You are an Operations Research Analyst designing a simulation model for a new airport security checkpoint. No historical data exists for the new layout. You must design a discrete-event simulation experiment to test three layout configurations (A, B, C) against two staffing levels (Low, High). The objective is to minimize the 95th percentile wait time. Define the simulation parameters, including the number of replications, warm-up period, and random seed strategy. Outline the experimental design matrix. Explain how you would validate the model against expert judgment since no data exists. Provide a hypothetical result table showing the 95th percentile wait times for all 6 scenarios.",
+      "reference_context": {
+        "configurations": [
+          "Layout A",
+          "Layout B",
+          "Layout C"
+        ],
+        "staffing_levels": [
+          "Low",
+          "High"
+        ],
+        "target_metric": "95th percentile wait time",
+        "replications": 100,
+        "warm_up_period": 1000
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the experimental design statistically sound (e.g., sufficient replications, proper warm-up)?",
+        "Completeness: Does the response cover all required elements: parameters, matrix, validation, and hypothetical results?",
+        "Realism: Are the hypothetical results plausible for an airport security context?"
+      ],
+      "student_answer": "**Simulation Experiment Design**\n\n**1. Simulation Parameters:**\n\n*   **Configurations:** Layout A, Layout B, Layout C\n*   **Staffing Levels:** Low, High\n*   **Total Scenarios:** 6\n*   **Number of Replications:** 100\n*   **Warm-up Period:** 1000 time units (simulated time)\n*   **Random Seed Strategy:** Use a pseudo-random number generator with a fixed seed for reproducibility.  Seed = 12345.\n\n**2. Experimental Design Matrix:**\n\n| Replicate | Configuration | Staffing Level |\n| :-------- | :------------ | :------------ |\n| 1         | Layout A       | Low           |\n| 2         | Layout A       | High          |\n| 3         | Layout B       | Low           |\n| 4         | Layout B       | High          |\n| 5         | Layout C       | Low           |\n| 6         | Layout C       | High          |\n| ...       | ...           | ...           |\n| 100       | Layout C       | High          |\n\n**3. Model Validation via Expert Judgment:**\n\n1.  **Expert Identification:** Identify 2-3 airport security experts with experience in checkpoint design and operations.\n2.  **Scenario Walkthroughs:** Conduct individual walkthroughs of each simulation scenario (A-Low, A-High, B-Low, B-High, C-Low, C-High).\n3.  **Parameter Validation:** Present the simulation model's key assumptions and parameters (e.g., arrival rate, processing time per passenger, number of security lanes, staffing rules) to the experts.  Ask them to assess the realism and plausibility of these assumptions.\n4.  **Wait Time Ranges:**  For each scenario, ask the experts to provide a reasonable range for the 95th percentile wait time based on their experience.  This range will be used as a benchmark for model validation.\n5.  **Sensitivity Analysis:**  Identify the most critical parameters influencing wait times.  Conduct a sensitivity analysis within the simulation to confirm the experts' judgments about these parameters.\n6.  **Iterative Refinement:**  Based on expert feedback, adjust the simulation model's parameters and assumptions as needed to improve the model's realism.\n\n**4. Hypothetical Result Table:**\n\n| Configuration | Staffing Level | 95th Percentile Wait Time (minutes) |\n| :------------ | :------------ | :--------------------------------- |\n| Layout A       | Low           | 8.5                                |\n| Layout A       | High          | 5.2                                |\n| Layout B       | Low           | 9.1                                |\n| Layout B       | High          | 6.8                                |\n| Layout C       | Low           | 7.9                                |\n| Layout C       | High          | 5.5                                |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the task requirements and provides a structured response. However, it fails on several professional standards. First, the 'Experimental Design Matrix' is logically flawed; it lists only 6 rows for 100 replications, implying a misunderstanding of how replications are structured (each scenario needs 100 runs, not 100 total runs across all scenarios). Second, the random seed strategy is insufficient for a rigorous experiment; using a single fixed seed (12345) for all runs prevents the calculation of statistical confidence intervals and introduces bias. Third, the validation section lacks specific quantitative methods (e.g., face validity scoring, Delphi method) beyond generic 'walkthroughs.' While the domain concepts are generally accurate (Dimension 4), the execution of the experimental design (Dimensions 1, 2, 3) is weak, preventing the output from being used as-is without significant rework (Dimension 6)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Prepare management reports defining and evaluating problems and recommending solutions.",
+      "task_type": "Management Reporting",
+      "user_prompt": "You are an Operations Research Analyst preparing a report for the CEO regarding a bottleneck in the assembly line. The current process has a cycle time of 15 minutes per unit, but the target is 10 minutes. The bottleneck is the 'Painting' station with a utilization of 95%. You have data suggesting that adding a second painting station reduces cycle time to 8 minutes but increases fixed costs by $50,000/year. The current annual profit is $200,000. Calculate the new annual profit assuming the increased throughput leads to a 20% revenue increase. Prepare a concise executive summary recommending whether to proceed, including the ROI calculation and a risk assessment of the capital investment.",
+      "reference_context": {
+        "current_cycle_time": 15,
+        "target_cycle_time": 10,
+        "bottleneck_utilization": 0.95,
+        "new_cycle_time": 8,
+        "fixed_cost_increase": 50000,
+        "current_annual_profit": 200000,
+        "revenue_increase_percent": 20
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the profit and ROI calculations accurate?",
+        "Completeness: Does the report include an executive summary, ROI, and risk assessment?",
+        "Clarity: Is the recommendation clear and supported by the quantitative analysis?"
+      ],
+      "student_answer": "**Executive Summary**\n\nRecommendation: Proceed with adding a second painting station.\n\nAnalysis: Adding a second painting station reduces the cycle time from 15 minutes to 8 minutes, significantly improving throughput. This is projected to increase revenue by 20%, leading to a new annual profit of $240,000. The increased fixed cost of $50,000 results in a net profit increase of $190,000.  The Return on Investment (ROI) is calculated as ($190,000 / $50,000) * 100% = 380%.\n\nRisk Assessment: The primary risk is the $50,000 fixed cost increase. While the ROI is substantial, the investment represents a significant capital outlay.  Operational risks include potential integration challenges with the new station and the need for additional training.  These risks are considered manageable with proper planning and execution.\n\nNew Annual Profit: $240,000\nROI: 380%",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. The student incorrectly calculates the new annual profit by simply adding the revenue increase ($40,000) to the current profit ($200,000) to get $240,000, then subtracts the fixed cost increase ($50,000) to claim a net profit increase of $190,000. This implies the new profit is $390,000, yet they list the new profit as $240,000, creating a mathematical contradiction. Furthermore, the ROI calculation is nonsensical: they divide the net profit increase ($190,000) by the cost ($50,000) to get 380%, but if the new profit is $240,000, the increase is only $40,000, making the ROI 80%. The logic is internally inconsistent and mathematically invalid. While the structure is clear (Dimension 5), the content is unusable for a professional report."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Observe the current system in operation, and gather and analyze information about each of the component problems, using a variety of sources.",
+      "task_type": "Process Improvement Analysis",
+      "user_prompt": "You are an Operations Research Analyst analyzing a warehouse picking process. You have observed that 30% of picking errors occur in Zone A, 20% in Zone B, and 50% in Zone C. The error rates are correlated with the distance from the packing station. Zone A is 10m away, Zone B is 20m away, Zone C is 30m away. The total number of picks per day is 1000. Calculate the expected number of errors per day if the layout is reorganized to reduce Zone C distance to 15m and Zone A distance to 5m, assuming error rate is linearly proportional to distance. Propose a new layout strategy that minimizes total error count. Define the objective function for the layout optimization.",
+      "reference_context": {
+        "total_picks": 1000,
+        "current_zones": {
+          "A": {
+            "distance": 10,
+            "error_share": 0.3
+          },
+          "B": {
+            "distance": 20,
+            "error_share": 0.2
+          },
+          "C": {
+            "distance": 30,
+            "error_share": 0.5
+          }
+        },
+        "proposed_distances": {
+          "A": 5,
+          "B": 20,
+          "C": 15
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the error rate calculations based on the linear distance assumption accurate?",
+        "Completeness: Does the response include the new expected error count and a proposed layout strategy?",
+        "Optimization: Is the objective function for minimizing errors clearly defined?"
+      ],
+      "student_answer": "```json\n{\n  \"expected_errors_current\": 300,\n  \"expected_errors_proposed\": 210,\n  \"new_layout_strategy\": \"Relocate Zone C closer to the packing station to minimize errors. Maintain Zone A at 5m and Zone B at 20m.\",\n  \"objective_function\": \"Minimize the total number of picking errors, considering the error rate proportional to distance for each zone.  The objective function is:  Minimize  E = 0.3 * (1000 * (5/10)) + 0.2 * (1000 * (20/20)) + 0.5 * (1000 * (15/30)) = 300 + 100 + 250 = 650\",\n  \"layout_recommendation\": {\n    \"Zone A\": \"5m\",\n    \"Zone B\": \"20m\",\n    \"Zone C\": \"15m\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. The student calculates the 'expected errors' for the proposed layout (210) but then defines an 'objective function' that calculates a completely different value (650) using a flawed formula that mixes error shares with distance ratios incorrectly. The proposed strategy is merely a restatement of the prompt's hypothetical distances rather than a true optimization strategy derived from the objective function. The objective function itself is mathematically incoherent for an optimization problem (it calculates a specific instance rather than defining a function of decision variables). The 'expected errors' calculation of 210 is also inconsistent with the provided logic in the objective function section. The output is not professional or usable without significant rework."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Formulate mathematical or simulation models of problems, relating constants and variables, restrictions, alternatives, conflicting objectives, and their numerical parameters.",
+      "task_type": "Mathematical Modeling",
+      "user_prompt": "You are an Operations Research Analyst for a logistics company. The company needs to optimize its delivery fleet to minimize fuel costs while meeting a strict 2-hour delivery window for 95% of orders. You are provided with a dataset of historical delivery routes, average speeds per zone, and fuel consumption rates. Formulate a linear programming model to solve this. Define the decision variables, objective function, and all necessary constraints (including capacity and time windows). Output the mathematical formulation in a structured format.",
+      "reference_context": {
+        "zones": [
+          "North",
+          "South",
+          "East",
+          "West"
+        ],
+        "avg_speed_kmh": {
+          "North": 45,
+          "South": 30,
+          "East": 55,
+          "West": 40
+        },
+        "fuel_rate_l_per_km": 0.15,
+        "max_delivery_time_hours": 2,
+        "target_service_level": 0.95,
+        "fleet_capacity_units": 1000,
+        "historical_demand": {
+          "North": 200,
+          "South": 150,
+          "East": 300,
+          "West": 250
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the mathematical formulations (variables, objective, constraints) logically sound and mathematically valid?",
+        "Completeness: Does the model account for all constraints mentioned in the prompt (time windows, capacity, service level)?",
+        "Best Practices: Is the notation clear, standardized, and suitable for implementation in optimization software (e.g., Gurobi, CPLEX)?"
+      ],
+      "student_answer": "```\n**Linear Programming Model for Delivery Fleet Optimization**\n\n**Objective Function:**\n\nMinimize Total Fuel Cost:\n\n```\nMinimize Z = Σ (Fuel_Consumption[i] * Distance[i] * Fuel_Rate)\n```\n\nWhere:\n\n*   `Z` is the total fuel cost.\n*   `Fuel_Consumption[i]` is the fuel consumption per unit distance for route `i`.\n*   `Distance[i]` is the distance of route `i`.\n*   `Fuel_Rate` is the fuel consumption rate (0.15 l/km).\n\n**Decision Variables:**\n\n*   `x[i]` = 1 if route `i` is selected for delivery, 0 otherwise.  (i = 1, 2, ..., N, where N is the total number of routes)\n\n**Constraints:**\n\n1.  **Capacity Constraint:**\n\n    ```\n    Σ x[i] <= Fleet_Capacity\n    ```\n\n    Where:\n\n    *   `Fleet_Capacity` is the total capacity of the fleet (1000 units).\n\n2.  **Demand Satisfaction Constraint:**\n\n    ```\n    Σ x[i] * Historical_Demand[zone[i]] >= Target_Service_Level * Total_Demand\n    ```\n\n    Where:\n\n    *   `Historical_Demand[zone[i]]` is the historical demand for zone `i`.\n    *   `Total_Demand` is the sum of historical demand across all zones.\n    *   `Target_Service_Level` is the desired service level (0.95).\n\n3.  **Time Window Constraint:**\n\n    ```\n    Travel_Time[i] <= Max_Delivery_Time_Hours\n    ```\n\n    Where:\n\n    *   `Travel_Time[i]` is the estimated travel time for route `i` in hours.  Calculated as: `Distance[i] / Avg_Speed[zone[i]]`\n\n4.  **Route Existence Constraint:**\n\n    ```\n    x[i] <= 1\n    ```\n\n    Where:\n\n    *   `x[i]` is the decision variable for route `i`.\n\n**Parameters:**\n\n*   `zones`: [\"North\", \"South\", \"East\", \"West\"]\n*   `avg_speed_kmh`: { \"North\": 45, \"South\": 30, \"East\": 55, \"West\": 40 }\n*   `fuel_rate_l_per_km`: 0.15\n*   `max_delivery_time_hours`: 2\n*   `target_service_level`: 0.95\n*   `fleet_capacity_units`: 1000\n*   `historical_demand`: { \"North\": 200, \"South\": 150, \"East\": 300, \"West\": 250 }\n*   `Total_Demand` = 200 + 150 + 300 + 250 = 900\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy. The model is not linear: the objective function multiplies decision variables (implicitly, if x[i] is binary selection) or uses undefined continuous variables, and the constraint logic is incoherent. Specifically, the 'Demand Satisfaction' constraint sums binary selection variables against demand, which is mathematically invalid for a routing problem. The 'Time Window' constraint is applied to individual routes without accounting for the 95% service level requirement (which requires a stochastic or chance-constrained formulation, not a simple deterministic inequality on all routes). The capacity constraint sums binary variables against a unit capacity, which is dimensionally wrong. The model does not define the actual flow or assignment variables needed for a Vehicle Routing Problem (VRP) or fleet assignment. It is a collection of vague, incorrect equations that would not solve the problem."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop and apply time and cost networks to plan, control, and review large projects.",
+      "task_type": "Project Network Analysis",
+      "user_prompt": "You are managing a large-scale infrastructure project. Using the provided activity list, durations, and precedence relationships, construct a Critical Path Method (CPM) network. Calculate the Early Start (ES), Early Finish (EF), Late Start (LS), Late Finish (LF), and Slack for each activity. Identify the critical path and the total project duration. Additionally, calculate the probability of completing the project within 45 days, assuming activity durations follow a PERT distribution (Beta) with the provided optimistic, most likely, and pessimistic estimates.",
+      "reference_context": {
+        "activities": [
+          {
+            "id": "A",
+            "duration_optimistic": 5,
+            "duration_most_likely": 7,
+            "duration_pessimistic": 9,
+            "predecessors": []
+          },
+          {
+            "id": "B",
+            "duration_optimistic": 3,
+            "duration_most_likely": 4,
+            "duration_pessimistic": 6,
+            "predecessors": [
+              "A"
+            ]
+          },
+          {
+            "id": "C",
+            "duration_optimistic": 4,
+            "duration_most_likely": 5,
+            "duration_pessimistic": 7,
+            "predecessors": [
+              "A"
+            ]
+          },
+          {
+            "id": "D",
+            "duration_optimistic": 2,
+            "duration_most_likely": 3,
+            "duration_pessimistic": 5,
+            "predecessors": [
+              "B",
+              "C"
+            ]
+          },
+          {
+            "id": "E",
+            "duration_optimistic": 6,
+            "duration_most_likely": 8,
+            "duration_pessimistic": 11,
+            "predecessors": [
+              "D"
+            ]
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the CPM calculations (ES, EF, LS, LF, Slack) correct based on the provided data?",
+        "Critical Path Identification: Is the correct critical path identified with zero slack activities?",
+        "Statistical Analysis: Is the expected duration and variance calculated correctly using PERT formulas, and is the probability of meeting the 45-day deadline derived using the standard normal distribution?"
+      ],
+      "student_answer": "```json\n{\n  \"CPM_Network\": {\n    \"activities\": [\n      {\n        \"id\": \"A\",\n        \"duration\": 7,\n        \"ES\": 0,\n        \"EF\": 7,\n        \"LS\": 7,\n        \"LF\": 14,\n        \"Slack\": 7\n      },\n      {\n        \"id\": \"B\",\n        \"duration\": 4,\n        \"ES\": 7,\n        \"EF\": 11,\n        \"LS\": 11,\n        \"LF\": 15,\n        \"Slack\": 4\n      },\n      {\n        \"id\": \"C\",\n        \"duration\": 5,\n        \"ES\": 7,\n        \"EF\": 12,\n        \"LS\": 12,\n        \"LF\": 17,\n        \"Slack\": 5\n      },\n      {\n        \"id\": \"D\",\n        \"duration\": 3,\n        \"ES\": 11,\n        \"EF\": 14,\n        \"LS\": 14,\n        \"LF\": 17,\n        \"Slack\": 3\n      },\n      {\n        \"id\": \"E\",\n        \"duration\": 8,\n        \"ES\": 14,\n        \"EF\": 22,\n        \"LS\": 22,\n        \"LF\": 30,\n        \"Slack\": 8\n      }\n    ],\n    \"critical_path\": [\"A\", \"B\", \"D\", \"E\"],\n    \"total_project_duration\": 30,\n    \"probability_within_45_days\": 0.023\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on all dimensions. 1) Correctness: The CPM calculations are entirely wrong. The critical path is identified as A-B-D-E, but the network logic (B and C both precede D) means the path A-C-D-E (7+5+3+8=23) is longer than A-B-D-E (7+4+3+8=22). The calculated project duration of 30 is incorrect; the correct duration is 23. Slack values are nonsensical (e.g., Activity A has 7 slack, but it is on the critical path and should have 0). 2) Domain Accuracy: The probability calculation is impossible given the incorrect mean/variance inputs derived from the wrong logic, and the result (0.023) implies a near-zero chance of finishing in 45 days when the actual mean is 23, which should yield a probability near 1.0. 3) Completeness: The student failed to show the PERT mean/variance calculations or the Z-score derivation. 4) Best Practices: The output presents a completely erroneous schedule as fact without any derivation or verification steps. The submission is a hallucinated dataset rather than a solution."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop business methods and procedures, including accounting systems, file systems, office systems, logistics systems, and production schedules.",
+      "task_type": "Production Scheduling Optimization",
+      "user_prompt": "You are a production scheduler for a manufacturing plant producing three products (X, Y, Z) on two machines (M1, M2). Develop a linear programming model to maximize weekly profit. The model must account for machine hours, labor hours, and raw material constraints. Define the decision variables, objective function, and constraints. Solve the model conceptually to determine the optimal production mix. Provide a sensitivity analysis interpretation for the shadow price of Machine 1 hours.",
+      "reference_context": {
+        "products": [
+          "X",
+          "Y",
+          "Z"
+        ],
+        "profit_per_unit": {
+          "X": 50,
+          "Y": 60,
+          "Z": 45
+        },
+        "constraints": {
+          "machine_hours_available": 100,
+          "labor_hours_available": 80,
+          "raw_material_available": 200
+        },
+        "resource_usage_per_unit": {
+          "X": {
+            "machine_hours": 2,
+            "labor_hours": 1,
+            "raw_material": 3
+          },
+          "Y": {
+            "machine_hours": 3,
+            "labor_hours": 2,
+            "raw_material": 2
+          },
+          "Z": {
+            "machine_hours": 1,
+            "labor_hours": 3,
+            "raw_material": 4
+          }
+        }
+      },
+      "evaluation_criteria": [
+        "Model Formulation: Are the decision variables, objective function, and constraints correctly defined and mathematically consistent?",
+        "Optimization Logic: Does the proposed solution logic correctly maximize profit subject to the given constraints?",
+        "Interpretation: Is the shadow price interpretation for Machine 1 hours accurate and explained in the context of the business problem?"
+      ],
+      "student_answer": "```\n**Linear Programming Model:**\n\n**Decision Variables:**\n*   x: Number of units of product X to produce.\n*   y: Number of units of product Y to produce.\n*   z: Number of units of product Z to produce.\n\n**Objective Function:**\nMaximize Profit:  Z = 50x + 60y + 45z\n\n**Constraints:**\n\n1.  Machine Hours: 2x + 3y + z <= 100\n2.  Labor Hours: x + 2y + 3z <= 80\n3.  Raw Material: 3x + 2y + 4z <= 200\n4.  Non-negativity: x >= 0, y >= 0, z >= 0\n\n**Conceptual Solution:**\n\nWithout solving the full linear program (which requires a solver), we can conceptually determine the optimal production mix.  The goal is to maximize profit while respecting the constraints.  Products Y and X have the highest profit per unit, followed by Z.  Therefore, a strategy would be to prioritize producing product Y, then X, and finally Z, if resources allow.  The solution will be the values of x, y, and z that maximize the objective function subject to the constraints.  The optimal solution will likely involve a combination of all three products, determined by the relative profitability and resource limitations.\n\n**Sensitivity Analysis - Shadow Price of Machine 1 Hours:**\n\nThe shadow price of Machine 1 hours represents the change in the optimal objective function value for a one-unit increase in the availability of Machine 1 hours.  \n\n*   **Interpretation:**  If the shadow price of Machine 1 hours is, for example, $8, it means that increasing the available machine hours on Machine 1 by one hour would increase the maximum profit by $8.  This information is crucial for decision-making.  For instance, if the shadow price is high, it might be worthwhile to invest in improving Machine 1's efficiency or acquiring additional hours. Conversely, if the shadow price is low, it suggests that Machine 1 is not a significant constraint, and focusing on other resources or production strategies might be more beneficial. The shadow price is determined by the linear programming solver and is associated with each constraint.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The student correctly formulated the decision variables, objective function, and constraints, earning high marks for domain accuracy and clarity. However, the submission failed to 'solve the model conceptually to determine the optimal production mix' as requested; instead, it provided a vague heuristic about prioritizing products without performing the necessary simplex logic or identifying the binding constraints to find the specific mix. The sensitivity analysis was generic and did not calculate or interpret the shadow price for this specific problem instance. While the model structure is professional, the lack of actual solution derivation and specific analysis prevents a score of 5 and limits autonomy, as a stakeholder would need to perform the actual calculations to get the answer."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Specify manipulative or computational methods to be applied to models.",
+      "task_type": "Simulation Methodology Design",
+      "user_prompt": "You are designing a simulation study to evaluate the impact of increasing the number of servers in a call center from 5 to 7. The arrival rate follows a Poisson distribution with a mean of 10 calls per hour, and service times follow an Exponential distribution with a mean of 5 minutes. Define the simulation model structure, including the state variables, event types, and the logic for the simulation clock. Outline the steps to run a 10,000-hour simulation to estimate the average queue length and server utilization. Justify your choice of simulation method (Discrete Event Simulation) over other methods.",
+      "reference_context": {
+        "current_servers": 5,
+        "proposed_servers": 7,
+        "arrival_rate_lambda": 10,
+        "service_rate_mu": 12,
+        "simulation_duration_hours": 10000,
+        "distribution_arrival": "Poisson",
+        "distribution_service": "Exponential"
+      },
+      "evaluation_criteria": [
+        "Model Structure: Are the state variables, events, and clock logic clearly defined and appropriate for a queuing system?",
+        "Methodology Justification: Is the choice of Discrete Event Simulation logically justified based on the problem characteristics?",
+        "Implementation Plan: Are the steps for running the simulation and calculating the metrics (queue length, utilization) clear and feasible?"
+      ],
+      "student_answer": "```\nSimulation Model Structure:\n\n*   **State Variables:**\n    *   `Queue Length`: Integer representing the number of calls in the queue.\n    *   `Server Status`: Array of integers, one for each server, indicating whether the server is idle (0) or busy (1).\n    *   `Call Attributes`:  For each call, store:\n        *   `Arrival Time`: Time of arrival.\n        *   `Service Time`: Time required for service.\n        *   `Start Time`: Time when service begins.\n        *   `End Time`: Time when service ends.\n\n*   **Event Types:**\n    *   `Arrival Event`:  Occurs at a random time based on the Poisson distribution with rate λ = 10.  Increments the `Queue Length`.\n    *   `Departure Event`: Occurs when a server becomes idle.  Selects a call from the queue (FIFO) and assigns it to the server. Updates `Server Status` and `Call Attributes` (Start Time, End Time).\n    *   `Call Abandonment Event`: (Optional, but recommended) Occurs after a certain wait time in the queue.  Removes the call from the queue.\n\n*   **Simulation Clock:**\n    *   Discrete time steps (e.g., 0.1 minutes).  The clock advances based on the time between events.  If no events occur, the clock advances to the next scheduled arrival time.\n\n*   **Logic:**\n    1.  **Initialization:** Initialize `Queue Length` to 0, all `Server Status` to 0, and generate the first arrival event.\n    2.  **Event Loop:**\n        *   Determine the next event time.\n        *   If an arrival event occurs:\n            *   Generate a random inter-arrival time from an Exponential distribution with mean 1/λ = 1/10 hours (6 minutes).\n            *   Increment `Queue Length`.\n            *   Schedule the next arrival event.\n        *   If a departure event occurs:\n            *   Select a server that is idle.\n            *   Select a call from the queue (FIFO).\n            *   Assign the call to the selected server.\n            *   Update the server's `Server Status` to 1.\n            *   Calculate the service time from the `Call Attributes`.\n            *   Schedule the next departure event for the server's completion time.\n        *   If a call abandonment event occurs:\n            *   Remove the call from the queue.\n        *   Advance the simulation clock to the next event time.\n    3.  **Termination:** Stop the simulation after `Simulation Duration Hours` (10000 hours).\n\nSimulation Steps:\n\n1.  **Model Implementation:** Implement the simulation model in a suitable simulation software package (e.g., Arena, AnyLogic, Simio, or Python with SimPy).\n2.  **Parameter Setting:** Set the parameters as defined in the context: `current_servers = 5`, `proposed_servers = 7`, `arrival_rate_lambda = 10`, `service_rate_mu = 12`, `simulation_duration_hours = 10000`, `distribution_arrival = \"Poisson\"`, `distribution_service = \"Exponential\"`.\n3.  **Run Simulation:** Execute the simulation for 10000 hours.\n4.  **Data Collection:** Record the following data over the simulation run:\n    *   Average queue length over time.\n    *   Server utilization for each server.\n    *   Number of abandoned calls.\n5.  **Analysis:** Calculate the average queue length and server utilization over the entire simulation period.  Perform statistical analysis (e.g., confidence intervals) to assess the significance of the change in performance with the increased number of servers.\n\nJustification for Discrete Event Simulation:\n\nDiscrete Event Simulation (DES) is the most appropriate method for modeling this call center scenario because:\n\n*   **Dynamic System:** Call centers are inherently dynamic systems where events (arrivals, departures, abandonments) occur at irregular intervals. DES excels at capturing this dynamic behavior.\n*   **Queueing Theory Limitations:** While queueing theory provides valuable insights, it often makes simplifying assumptions (e.g., Poisson arrivals, exponential service times) that may not perfectly reflect real-world conditions. DES allows for more realistic modeling of these variations.\n*   **Detailed Representation:** DES allows for a detailed representation of the system, including individual calls, server status, and queue dynamics, providing a more accurate simulation of the call center's performance.  Other methods, such as continuous simulation, would be less suitable for this type of discrete event system.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the core components of a Discrete Event Simulation (DES) but contains significant technical errors and omissions. Dimension 1 (Correctness) and 4 (Domain Accuracy) are penalized because the student incorrectly states that the inter-arrival time follows an Exponential distribution (it is the time *between* Poisson arrivals that is exponential, not the arrival event itself which is a point process) and, more critically, the 'Simulation Clock' section describes 'Discrete time steps' (e.g., 0.1 minutes), which contradicts the fundamental definition of DES where the clock jumps to the next event time. Dimension 3 (Best Practices) is low because the logic for the departure event is flawed: it suggests selecting an idle server and then assigning a call, whereas in a standard M/M/c queue, a call is assigned to an idle server *immediately* upon arrival if one exists, or waits in the queue; the logic described implies a batch processing or incorrect state transition. Dimension 2 (Completeness) is affected by the lack of a warm-up period strategy, which is essential for a 10,000-hour simulation to ensure steady-state results. Dimension 6 (Autonomy) is reduced because the technical inaccuracies regarding the clock mechanism and event logic would cause the simulation to run incorrectly if implemented as described."
+    }
+  ]
+}

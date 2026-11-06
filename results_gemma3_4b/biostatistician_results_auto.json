@@ -1,0 +1,813 @@
+{
+  "meta": {
+    "job_title": "Biostatisticians",
+    "job_id": "biostatistician",
+    "onet_code": "15-2041.01",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 25,
+    "evaluated_tasks": 25,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.72,
+      "dimensions": {
+        "Correctness": 1.56,
+        "Completeness": 1.56,
+        "Best Practices": 1.52,
+        "Domain Accuracy": 1.52,
+        "Clarity": 2.64,
+        "Autonomy": 1.52
+      },
+      "evaluated_tasks": 25,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1429.68
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze clinical or survey data, using statistical approaches such as longitudinal analysis, mixed-effect modeling, logistic regression analyses, and model-building techniques.",
+      "task_type": "Statistical Modeling",
+      "user_prompt": "You are a biostatistician reviewing a Phase III oncology trial dataset. The outcome is time-to-event (progression-free survival), and the primary covariate is a continuous biomarker measured at baseline and 3 months. The data contains 15% missing values in the biomarker at 3 months, and patients are clustered within 10 clinical sites. Write a statistical analysis plan section that: 1) Proposes a mixed-effects Cox proportional hazards model to account for site clustering and time-varying biomarkers. 2) Describes the imputation strategy for missing biomarker data (e.g., Multiple Imputation by Chained Equations). 3) Specifies the handling of non-proportional hazards if the Schoenfeld residuals test indicates violation. Provide the R code skeleton for the model fitting and the imputation process.",
+      "reference_context": "Dataset Schema: patient_id (int), site_id (int), baseline_biomarker (float), month3_biomarker (float, 15% NA), pfs_time (float), pfs_event (0/1), treatment_arm (categorical). Assumptions: Data follows a Cox model structure. Sites are random effects.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the proposed model structure correctly handle time-varying covariates and random effects?",
+        "Criterion 2: Completeness — Are missing data imputation and non-proportional hazards explicitly addressed?",
+        "Criterion 3: Best practices — Is the R code idiomatic (e.g., using 'survival' and 'mice' packages) and reproducible?"
+      ],
+      "student_answer": "```R\n# Statistical Analysis Plan: Time-to-Event Data with Biomarker and Site Clustering\n\n# 1. Model Specification: Mixed-Effects Cox Proportional Hazards Model\n\n# We propose a mixed-effects Cox proportional hazards model to analyze time-to-event data (progression-free survival - PFS)\n# incorporating site clustering and time-varying biomarker.\n\n# Model Formula:\n# PFS_time | site_id = β0 + β1 * baseline_biomarker + β2 * month3_biomarker + β3 * treatment_arm +\n#                     γ1 * site_id + u_site +  w_i * month3_biomarker\n\n# Where:\n#   - PFS_time is the time-to-event variable (PFS time).\n#   - site_id is the clinical site identifier (random effect).\n#   - baseline_biomarker is the biomarker at baseline.\n#   - month3_biomarker is the biomarker at 3 months.\n#   - treatment_arm is the treatment arm assignment.\n#   - u_site is the random effect for each site.\n#   - w_i is the time-varying biomarker effect for each patient.\n\n# 2. Imputation Strategy: Multiple Imputation by Chained Equations (MICE)\n\n# To address the 15% missing biomarker data at 3 months, we will employ Multiple Imputation by Chained Equations (MICE).\n# MICE iteratively imputes the missing values based on the observed data, using a predictive model (e.g., linear regression)\n# for each variable.\n\n# Number of imputations: 50\n# Imputation model: Linear regression with baseline_biomarker, treatment_arm, and site_id as predictors.\n\n# 3. Handling Non-Proportional Hazards\n\n# The Schoenfeld residuals test will be conducted to assess the proportional hazards assumption.\n# If the test indicates a violation, we will address it using time-varying covariates.\n# Specifically, we will include month3_biomarker as a time-varying covariate in the Cox model.\n# If the Schoenfeld residuals remain significant after including month3_biomarker, we will consider alternative models\n# such as stratified Cox models or time-dependent coefficients.\n\n# R Code Skeleton:\n\n# Imputation using MICE\n# Assuming data frame is called 'df'\n# library(mice)\n# df_imputed <- mice(df, m = 50, maxit = 50, method = \"chained\")\n# df_imputed <- complete(df_imputed, 1) # Complete data after imputation\n\n# Model Fitting using lme4 package\n# library(lme4)\n# model <- glmer(PFS_time ~ baseline_biomarker + month3_biomarker + treatment_arm + (1|site_id), data = df_imputed, family = \"CoxPH\")\n\n# Schoenfeld Residuals Test\n# library(survival)\n# coxph(PFS_time ~ treatment_arm, data = df_imputed) # Fit a baseline Cox model\n# coxph(PFS_time ~ treatment_arm + month3_biomarker, data = df_imputed) # Fit a Cox model with month3_biomarker\n\n# Time-Varying Covariate (if needed)\n# model_tvc <- glmer(PFS_time ~ baseline_biomarker + month3_biomarker + treatment_arm + month3_biomarker|site_id, data = df_imputed, family = \"CoxPH\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on technical correctness and domain accuracy. The R code skeleton uses 'glmer' from the 'lme4' package with 'family = \"CoxPH\"', which is invalid; 'lme4' does not support Cox proportional hazards models (which require 'coxme' or 'frailty' packages). Furthermore, the model specification treats 'month3_biomarker' as a static baseline covariate in the formula rather than implementing a proper time-varying covariate structure (e.g., using start-stop time intervals). The imputation strategy ignores the clustering structure (sites) in the predictive models, violating the assumption of independent observations required for standard MICE. The handling of non-proportional hazards is vague and the code for time-varying covariates is syntactically incorrect. The output is not usable without significant rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Calculate sample size requirements for clinical studies.",
+      "task_type": "Sample Size Calculation",
+      "user_prompt": "You are designing a Phase II single-arm trial to evaluate a new immunotherapy for a rare cancer. The primary endpoint is the objective response rate (ORR). Historical data suggests an ORR of 15%. The sponsor wants to detect an increase to 30% with 80% power at a one-sided alpha of 0.05. However, there is a concern about potential non-compliance where 10% of enrolled patients may not receive the treatment. Calculate the required sample size accounting for this non-compliance using the binomial exact method. Additionally, provide a sensitivity analysis showing how the sample size changes if the target ORR is 25% or 35%. Justify your choice of distribution and handling of the non-compliance rate.",
+      "reference_context": "Parameters: Historical ORR = 0.15, Target ORR = 0.30, Power = 0.80, Alpha = 0.05 (one-sided), Non-compliance rate = 0.10. Assumptions: Binomial distribution for response, independent patients.",
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Is the sample size calculation mathematically correct for the binomial exact test?",
+        "Criterion 2: Adjustment — Is the non-compliance rate correctly applied to inflate the sample size?",
+        "Criterion 3: Sensitivity — Are the alternative scenarios (25% and 35% ORR) calculated and presented clearly?"
+      ],
+      "student_answer": "**Required Sample Size (Binomial Exact Method with Non-Compliance)**\n\n*   **Let p<sub>target</sub>** = Target ORR = 0.30\n*   **Let p<sub>historical</sub>** = Historical ORR = 0.15\n*   **Let q<sub>noncompliance</sub>** = Non-compliance rate = 0.10\n*   **Let p<sub>received</sub>** = Actual ORR received by patients = p<sub>target</sub> * (1 - q<sub>noncompliance</sub>) = 0.30 * (1 - 0.10) = 0.27\n*   **Let n** = Required sample size\n\nThe binomial exact formula for sample size calculation accounting for non-compliance is:\n\nn = ( (z<sub>α</sub> + z<sub>β</sub>)<sup>2</sup> * (p<sub>received</sub> * q<sub>noncompliance</sub>) ) / (p<sub>received</sub><sup>2</sup> * (z<sub>α</sub><sup>2</sup> + z<sub>β</sub><sup>2</sup>))\n\nWhere:\n\n*   z<sub>α</sub> = z-score for one-sided α = 0.05 (approximately 1.645)\n*   z<sub>β</sub> = z-score for power (1 - β) = 0.80 (approximately 0.842)\n\nPlugging in the values:\n\nn = ( (1.645 + 0.842)<sup>2</sup> * (0.27 * 0.10) ) / (0.27<sup>2</sup> * (1.645<sup>2</sup> + 0.842<sup>2</sup>))\nn = ( 2.487<sup>2</sup> * 0.027 ) / (0.0729 * (2.706 + 0.708))\nn = (6.184 * 0.027) / (0.0729 * 3.414)\nn = 0.1663 / 0.2493\nn ≈ 6.64\n\nSince the sample size must be an integer, round up to the nearest whole number.\n\n**Required Sample Size = 7**\n\n**Sensitivity Analysis**\n\n| Target ORR | p<sub>received</sub> | n (Binomial Exact) |\n|---|---|---|\n| 0.25 | 0.20 | ( (1.645 + 0.842)<sup>2</sup> * (0.20 * 0.10) ) / (0.20<sup>2</sup> * (1.645<sup>2</sup> + 0.842<sup>2</sup>)) ≈ 9.57 → 10 |\n| 0.30 | 0.27 | 7 (Calculated above) |\n| 0.35 | 0.30 | ( (1.645 + 0.842)<sup>2</sup> * (0.30 * 0.10) ) / (0.30<sup>2</sup> * (1.645<sup>2</sup> + 0.842<sup>2</sup>)) ≈ 13.43 → 14 |\n\n**Justification**\n\nThe binomial distribution is appropriate because the outcome (response/no response) is binary, and we are dealing with a large number of independent patients.  The binomial exact method is used to account for the non-compliance rate, which introduces uncertainty in the actual number of patients receiving the treatment.  The non-compliance rate is handled by adjusting the expected ORR received by each patient, reflecting the probability that a patient who is enrolled will actually receive the treatment.  The sensitivity analysis demonstrates that a higher target ORR requires a larger sample size to achieve the desired power.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. 1) Correctness: The student uses a normal approximation formula (z-scores) rather than the requested 'binomial exact method,' and the formula itself is mathematically incoherent (mixing variance terms incorrectly). 2) Completeness: The sensitivity analysis results are nonsensical (sample size increases as the target rate increases, which contradicts statistical power principles). 3) Best Practices: The calculated sample size of 7 is dangerously low for a Phase II trial with 80% power; a professional would never accept this. 4) Domain Accuracy: The handling of non-compliance is incorrect; in a single-arm trial, non-compliance dilutes the observed rate, but the student's logic and calculation are flawed. 5) Clarity: The output is structured but the content is misleading. 6) Autonomy: The output is unusable for a client due to critical mathematical errors and failure to follow the specific methodological constraint (exact method)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Write detailed analysis plans and descriptions of analyses and findings for research protocols or reports.",
+      "task_type": "Analysis Plan Development",
+      "user_prompt": "Draft a 'Statistical Analysis Plan' section for a multi-center, randomized, double-blind, placebo-controlled trial comparing a new drug to placebo for hypertension. The primary endpoint is the change in systolic blood pressure from baseline to week 12. The study has a 10% dropout rate expected. The protocol specifies an Intention-to-Treat (ITT) analysis as primary and a Per-Protocol (PP) analysis as supportive. Write a detailed description of how missing data will be handled for the primary analysis using the Mixed Model for Repeated Measures (MMRM) under the Missing At Random (MAR) assumption. Explicitly state the fixed effects (treatment, visit, treatment-by-visit interaction, baseline BP, region) and the covariance structure (unstructured). Explain how the PP analysis will be conducted and how discrepancies between ITT and PP results will be interpreted.",
+      "reference_context": "Study Design: 2-arm RCT, 12 weeks duration. Endpoint: Continuous change in SBP. Assumptions: Data is MAR, normality of residuals for MMRM.",
+      "evaluation_criteria": [
+        "Criterion 1: Methodological Rigor — Is the MMRM specification (fixed effects, covariance) appropriate for the design?",
+        "Criterion 2: Missing Data Handling — Is the MAR assumption and MMRM approach correctly described for ITT?",
+        "Criterion 3: Interpretation — Is the role of PP analysis and the handling of discordant results clearly articulated?"
+      ],
+      "student_answer": "## Statistical Analysis Plan: Hypertension Trial\n\n**1. Primary Analysis: Intention-to-Treat (ITT)**\n\n**1.1. Primary Endpoint:** Change in systolic blood pressure (SBP) from baseline to week 12.\n\n**1.2. Statistical Model:** Mixed Model for Repeated Measures (MMRM)\n\n**1.3. Model Specification:**\n\nThe primary analysis will utilize a MMRM to analyze the change in SBP from baseline to week 12. The model will be specified as follows:\n\n*   **Dependent Variable:** Change in SBP (SBP<sub>Week12</sub> - SBP<sub>Baseline</sub>)\n*   **Fixed Effects:**\n    *   Treatment Group (New Drug vs. Placebo)\n    *   Visit (Baseline, Week 4, Week 8, Week 12)\n    *   Treatment-by-Visit Interaction (to assess differential treatment effects across time)\n    *   Baseline SBP (as a continuous variable)\n    *   Region (Categorical variable representing the participating clinical site; included to account for potential site-specific effects)\n*   **Random Effects:**\n    *   Random Intercept: To account for individual patient variability in baseline SBP.\n    *   Random Slope: To account for individual patient variability in the change in SBP over time.  The random slopes for treatment and treatment-by-visit interaction will be included to allow for differential trajectories between treatment groups.\n*   **Covariance Structure:** Unstructured covariance structure will be employed to allow the correlation between repeated measures within each patient to be estimated.\n\n**1.4. Missing Data Handling:**\n\nDue to the expected 10% dropout rate, missing data will be addressed using the Multiple Imputation by Chained Equations (MICE) method within the MMRM framework.  We will assume data is Missing At Random (MAR).  MICE will be implemented as follows:\n\n1.  **Imputation:**  MICE will generate multiple (e.g., 5-10) complete datasets by iteratively imputing missing values for each variable based on the observed values of other variables in the dataset.  The imputation model will include all continuous variables and relevant categorical variables.\n2.  **Analysis:** The MMRM will be conducted separately for each imputed dataset.\n3.  **Pooling:** The results (treatment effect estimates, standard errors, and confidence intervals) from each imputed dataset will be pooled using Rubin's rules to obtain a single set of estimates that reflect the uncertainty due to missing data.  This will provide a more accurate estimate of the treatment effect and its precision than simply excluding patients with missing data.\n4.  **Sensitivity Analysis:** A sensitivity analysis will be conducted by imputing missing data using a single value (e.g., the median or mean) for each variable. This will assess the robustness of the primary findings to the MAR assumption.\n\n**1.5.  Statistical Software:** SAS or R (with appropriate packages for MMRM and MICE).\n\n**2. Supportive Analysis: Per-Protocol (PP)**\n\n**2.1. Inclusion Criteria for PP Analysis:**\n\nPatients will be included in the PP analysis if they:\n\n*   Received at least one dose of study medication;\n*   Had baseline SBP and at least one post-dose SBP measurement; and\n*   Completed the 12-week treatment period.\n\n**2.2. Analysis:**\n\nThe PP analysis will utilize the same MMRM model as described in Section 1.3.  The model will be identical, with the same fixed and random effects.\n\n**2.3. Interpretation of Discrepancies:**\n\nAny observed differences between the ITT and PP results will be interpreted cautiously.  The ITT analysis is considered the primary analysis due to its adherence to the study protocol and its ability to provide a more realistic estimate of treatment effect in a real-world setting.  Differences between the two analyses may be due to:\n\n*   Differential dropout rates between treatment groups;\n*   Compliance with the protocol among patients who remain in the analysis;\n*   The influence of non-adherence on the observed treatment effect.\n\nA formal hypothesis test (e.g., likelihood ratio test) will be conducted to assess the statistical significance of the difference between the ITT and PP results.  The magnitude of the difference will be considered in the context of the clinical significance of the treatment effect.\n\n**3.  Sensitivity Analyses:**\n\nIn addition to the MAR imputation sensitivity analysis, further sensitivity analyses will be conducted to assess the robustness of the primary findings. These may include:\n\n*   Analysis of available data (excluding patients with any missing data).\n*   Using different imputation methods (e.g., predictive mean matching).",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission contains critical methodological errors that disqualify it from a high score. First, it incorrectly specifies the dependent variable as 'Change in SBP' (Week 12 - Baseline) rather than the raw SBP values, which is a fundamental error for MMRM; MMRM models the raw outcome at each time point to properly handle the correlation structure and baseline adjustment. Second, it explicitly states the inclusion of 'Random Slope' and 'Random Intercept' in the MMRM specification, which is incorrect; MMRM is a fixed-effects model that handles within-subject correlation via the residual covariance matrix (unstructured), not via random effects (which would define a Linear Mixed Model, not the standard MMRM used for this endpoint). Third, it suggests using Multiple Imputation (MICE) as the primary analysis method for an MMRM, whereas MMRM is specifically designed to handle missing data under MAR directly without the need for imputation; using MICE is redundant and computationally inefficient for this specific model. Fourth, the submission fails to address the 'Additional Checks' regarding time-to-event data (proportional hazards), as the task was about a continuous endpoint, but the inclusion of irrelevant checks in the prompt context suggests a failure to distinguish between analysis types. Finally, the PP analysis inclusion criteria are flawed (requiring completion of the 12-week period excludes patients who dropped out early but had post-baseline data, which is often acceptable in PP if they met the protocol otherwise, though definitions vary, the strict 'completion' requirement is often too narrow for a 12-week PP analysis). The clarity is good, but the statistical content is fundamentally flawed."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Draw conclusions or make predictions, based on data summaries or statistical analyses.",
+      "task_type": "Interim Analysis and Decision Making",
+      "user_prompt": "You are the lead biostatistician for a Phase III trial with a pre-specified interim analysis at 50% information fraction. The primary endpoint is a binary outcome (clinical success). The futility boundary is set at a conditional power of less than 10% given the current data. The observed data shows 40 successes out of 100 patients in the treatment arm and 30 successes out of 100 in the control arm. The overall enrollment is on track. Calculate the conditional power assuming the final effect size remains as observed. Based on this calculation and the futility boundary, provide a recommendation to the Data Monitoring Committee (DMC) on whether to stop the trial for futility or continue. Discuss the potential Type I error inflation if the trial continues despite low conditional power.",
+      "reference_context": "Data: Treatment (40/100), Control (30/100). Interim: 50% information. Futility Boundary: Conditional Power < 10%. Assumptions: Effect size remains constant, binomial distribution.",
+      "evaluation_criteria": [
+        "Criterion 1: Calculation — Is the conditional power calculated correctly based on the observed data and information fraction?",
+        "Criterion 2: Decision Logic — Is the recommendation to stop or continue consistent with the futility boundary?",
+        "Criterion 3: Risk Assessment — Does the response address the implications for Type I error and trial integrity?"
+      ],
+      "student_answer": "**Conditional Power Calculation:**\n\n*   **Treatment Arm:**  p<sub>treatment</sub> = 40/100 = 0.4\n*   **Control Arm:** p<sub>control</sub> = 30/100 = 0.3\n*   **Overall Success:** p<sub>overall</sub> = (40 + 30) / 200 = 70/200 = 0.35\n*   **Information Fraction:** 50%\n*   **Number of Patients Analyzed at Interim:** 100 * 0.50 = 50 patients\n*   **Treatment Success at Interim:** 40/100 = 0.4\n*   **Control Success at Interim:** 30/100 = 0.3\n*   **Overall Success at Interim:** 70/200 = 0.35\n\nUsing the formula for conditional power:\n\nPower = 1 - BinomialCDF(successes_observed, trials_observed, p_treatment) - BinomialCDF(successes_observed, trials_observed, p_control)\n\nPower = 1 - BinomialCDF(40, 50, 0.4) - BinomialCDF(30, 50, 0.3)\n\nPower = 1 - 0.8868 - 0.9335 = 0.1800 or 18%\n\n**Recommendation to the DMC:**\n\nThe calculated conditional power at the interim analysis is 18%, which is significantly below the futility boundary of 10%.  Therefore, **I recommend that the DMC stop the trial for futility.**  The low power indicates a high risk of failing to detect a true treatment effect if it exists.\n\n**Potential Type I Error Inflation:**\n\nContinuing the trial despite the low conditional power will increase the risk of a Type I error (false positive).  This means there is a greater chance of concluding that the treatment is effective when it is not.  The longer the trial continues, the greater the potential for Type I error inflation.  Specifically, the probability of incorrectly concluding efficacy increases as more patients are enrolled and analyzed.  While the interim analysis provides some protection, continuing without stopping further increases this risk.  The DMC should carefully consider this trade-off between the potential benefit of further data and the increased risk of a false positive conclusion.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, the calculation is mathematically incoherent: it incorrectly calculates the number of patients analyzed at interim (50) while simultaneously using the full interim sample size (100) in the binomial CDF arguments, creating a logical contradiction. Second, the formula provided is not a valid method for calculating Conditional Power (CP); CP requires projecting the final test statistic based on the current effect size and variance, not subtracting CDFs of the interim data. Third, the recommendation is dangerously wrong: a CP of 18% is above the 10% futility boundary, so the trial should continue, not stop. Fourth, the discussion on Type I error is factually incorrect; stopping for futility protects against Type I error, while continuing a futile trial does not inherently inflate Type I error in the way described (it primarily wastes resources and delays effective treatments). Finally, the submission ignores the 'Additional Checks' regarding time-to-event assumptions, clustering, and proportional hazards, which are critical for a Phase III trial evaluation. The output is not usable without complete rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Design research studies in collaboration with physicians, life scientists, or other professionals.",
+      "task_type": "Study Design Optimization",
+      "user_prompt": "A clinical team proposes a crossover study design for a drug with a short half-life to compare two formulations. The outcome is a continuous pharmacokinetic parameter (AUC). The team is concerned about carryover effects. Propose a robust study design that minimizes carryover bias while maintaining statistical power. Specifically: 1) Recommend the number of periods and sequences (e.g., 2x2, 3x3). 2) Define the necessary washout period duration relative to the half-life. 3) Specify the statistical model to test for sequence, period, and treatment effects, including how to test for carryover. 4) Justify why a parallel design might be inferior in this specific context regarding sample size efficiency.",
+      "reference_context": "Drug: Short half-life. Outcome: Continuous (AUC). Concern: Carryover effects. Assumptions: Normal distribution of AUC, no period-treatment interaction.",
+      "evaluation_criteria": [
+        "Criterion 1: Design Selection — Is the recommended crossover design (periods/sequences) appropriate for minimizing carryover?",
+        "Criterion 2: Washout Justification — Is the washout period duration logically derived from the half-life?",
+        "Criterion 3: Statistical Model — Does the proposed model correctly account for sequence, period, and treatment effects?"
+      ],
+      "student_answer": "**Study Design:**\n\n1.  **Number of Periods and Sequences:** A 2x2 crossover design is recommended. This involves two periods (treatment and washout) with two treatment sequences (AB and BA).\n\n2.  **Washout Period Duration:** The washout period should be at least 3 times the drug’s half-life. This ensures sufficient elimination of the drug from the subject’s system before the next dose.\n\n3.  **Statistical Model:** A mixed-effects model with repeated measures will be used. The model will include the following fixed effects: sequence (AB, BA), period (treatment, washout), and treatment (Formulation 1, Formulation 2). A random effect for subject will be included to account for individual variability. To test for carryover, an interaction term between period and treatment will be included.  Specifically, the model will be:\n\n    `AUC = β0 + β1(Sequence) + β2(Period) + β3(Treatment) + β4(Sequence*Period) + β5(Sequence*Treatment) + β6(Period*Treatment) + β7(Subject) + ε`\n\n    Where:\n    *   β0 is the intercept.\n    *   β1, β2, β3, β4, β5, and β6 are the fixed effects coefficients.\n    *   β7 is the random effect for subject.\n    *   ε is the residual error.\n\n4.  **Justification for Crossover Superiority:** A parallel design would require a separate sample for each treatment, leading to a significantly larger sample size compared to a crossover design.  Because crossover designs utilize the same subjects for both treatment periods, they achieve greater statistical power with fewer subjects, especially crucial when dealing with a short half-life and the need for a substantial washout period. The inclusion of the interaction terms in the mixed-effects model specifically addresses and controls for carryover effects, making the crossover design more efficient and robust in this scenario.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical statistical errors. First, the washout period recommendation of '3 times half-life' is insufficient for a crossover study; industry standards (e.g., FDA/EMA) typically require 5 to 7 half-lives to ensure negligible carryover. Second, the proposed statistical model is fundamentally flawed: it includes a random effect for 'Subject' as a fixed coefficient (β7) in a linear equation, which is syntactically incorrect for a mixed model (subjects should be the grouping factor for the random intercept). Third, the method for testing carryover is incorrect; in a 2x2 crossover, carryover is tested by comparing the sum of responses in the two sequences (sequence effect), not by adding a 'Period*Treatment' interaction term (which tests for period-treatment interaction, not carryover). Fourth, the justification for crossover superiority incorrectly attributes the benefit to the inclusion of interaction terms in the model; the efficiency gain comes from within-subject comparison, not model complexity. Finally, the submission ignores the 'Additional Checks' constraints regarding time-varying biomarkers and imputation, though these were likely context-specific to a different task type, the core statistical errors in the primary task are severe enough to warrant low scores."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Read current literature, attend meetings or conferences, and talk with colleagues to keep abreast of methodological or conceptual developments in fields such as biostatistics, pharmacology, life sciences, and social sciences.",
+      "task_type": "Methodological Literature Review and Application",
+      "user_prompt": "Recent literature suggests that standard Imputation methods may be biased in trials with high dropout rates due to informative censoring. Review the concept of 'Pattern-Mixture Models' versus 'Selection Models' for handling missing data in longitudinal clinical trials. Write a brief technical note (approx. 300 words) comparing these two approaches. Then, apply this knowledge to a specific scenario: A trial with 40% dropout where patients dropping out are likely to have worse outcomes. Explain which model is more appropriate, how to implement it in R (mentioning specific packages like 'pan' or 'mice' with custom models), and what sensitivity analyses are required to validate the results under the ICH E9(R1) addendum guidelines.",
+      "reference_context": "Context: High dropout (40%), informative censoring suspected. Framework: ICH E9(R1). Assumptions: Missing Not At Random (MNAR).",
+      "evaluation_criteria": [
+        "Criterion 1: Conceptual Understanding — Is the distinction between Pattern-Mixture and Selection models accurately explained?",
+        "Criterion 2: Application — Is the choice of model justified for the specific scenario of informative censoring?",
+        "Criterion 3: Regulatory Alignment — Does the response correctly reference ICH E9(R1) and appropriate sensitivity analyses?"
+      ],
+      "student_answer": "**Technical Note: Pattern-Mixture Models vs. Selection Models for Missing Longitudinal Data**\n\nBoth Pattern-Mixture Models (PMMs) and Selection Models address missing data, particularly under Missing Not At Random (MNAR) assumptions, common in longitudinal trials with high dropout rates. However, they differ significantly in their approach. Selection Models (e.g., Heckman, Tobit) explicitly model the decision process leading to dropout, incorporating a selection equation alongside the outcome model. This allows for adjustment for the probability of dropout itself.  PMMs, conversely, assume the missing data are generated by a mixture of underlying, unobserved “patterns” of individuals with distinct trajectories.  The observed data represents a subset of these patterns. PMMs don’t directly model the dropout process but instead estimate the prevalence and characteristics of each pattern.\n\nSelection models are more transparent regarding the dropout mechanism, but require strong assumptions about the selection equation, which can be difficult to validate. PMMs are less reliant on specific parametric assumptions about the selection process, offering greater flexibility. However, they can be computationally intensive and require careful model specification to avoid overfitting.  Both are more robust than simple imputation methods when MNAR is present.\n\n**Scenario Application: 40% Dropout Trial with Informative Censoring**\n\nGiven a 40% dropout rate and suspected informative censoring (patients dropping out are likely to have worse outcomes – MNAR), a **Selection Model** is more appropriate.  The key is to model the probability of dropout.  In R, using the `pan` package, one could implement a Heckman selection model.  The outcome model would predict the longitudinal outcome, while the selection model would predict the probability of dropout based on baseline covariates.  The `pan` package allows for incorporating the selection model’s results into the outcome model via a “selection adjustment” term. Alternatively, `mice` could be used with a custom model incorporating a selection equation.\n\n**Implementation (Illustrative - `pan` package):**\n\n```R\n# Example (Conceptual - requires data preparation)\n# Assuming 'data' contains longitudinal data and 'dropout_vars' are predictors\nheckman_model <- heckman(outcome ~ dropout_vars,\n                         selection_equation ~ dropout_vars,\n                         data = data)\n# Adjust outcome model for selection\nadjusted_outcome <- outcome + heckman_model$selection_adj\n```\n\n**Sensitivity Analyses (ICH E9(R1)):**\n\n*   **Sensitivity to Selection Equation:** Explore alternative selection equations (e.g., different predictors, non-linear terms).\n*   **Sensitivity to Outcome Model:** Vary the outcome model specification (e.g., different functional forms, interaction terms).\n*   **Subgroup Analysis:** Assess results in subgroups defined by key baseline characteristics.\n*   **Imputation Comparison:** Compare results to those obtained using multiple imputation with different methods (e.g., `mice`) to assess the robustness of the selection model.  Report confidence intervals reflecting the uncertainty introduced by the MNAR mechanism.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on domain accuracy and correctness. First, it incorrectly identifies the Heckman selection model as the primary tool for longitudinal missing data; Heckman is designed for cross-sectional selection bias, whereas longitudinal trials require Joint Models (e.g., `JMbayes`, `joineR`) or specific Pattern-Mixture implementations. Second, the R code is hallucinated; the `pan` package does not have a `heckman` function, nor does it support the described 'selection adjustment' syntax. Third, the response completely ignores the 'Additional Checks' constraints: it treats the outcome as a generic variable rather than a time-varying biomarker, ignores site clustering, and fails to address time-to-event data or proportional hazards assumptions. Finally, the sensitivity analysis section is generic and does not specifically address the ICH E9(R1) 'Reference-Based Imputation' or 'Delta-Adjustment' approaches required for MNAR scenarios. The answer is fundamentally flawed in its technical implementation and theoretical application."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Prepare tables and graphs to present clinical data or results.",
+      "task_type": "Data Visualization and Reporting",
+      "user_prompt": "You are a biostatistician preparing a submission for a regulatory agency. You have a dataset from a Phase II dose-ranging study with 5 dose groups and a continuous efficacy endpoint. The data includes baseline covariates and 10% missing values in the endpoint. Create a comprehensive analysis plan section that: 1) Proposes a method to handle missing data (e.g., Multiple Imputation) consistent with ICH E9. 2) Describes the construction of a forest plot for dose-response trends including confidence intervals. 3) Specifies the statistical test for trend (e.g., linear contrast) and justifies its use. Provide R code to generate the summary table and the forest plot using the 'ggplot2' and 'mice' packages.",
+      "reference_context": "Dataset Schema: patient_id (int), dose_group (categorical), baseline_cov (float), endpoint (float, 10% NA). Assumptions: Data is normally distributed within groups after transformation if necessary.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the proposed statistical test for trend align with the dose-response hypothesis?",
+        "Criterion 2: Completeness — Are missing data handling and visualization methods explicitly detailed?",
+        "Criterion 3: Best practices — Is the R code reproducible and does it handle missing data via imputation before plotting?"
+      ],
+      "student_answer": "```R\nlibrary(ggplot2)\nlibrary(mice)\n\n# --- Missing Data Handling ---\n# Method: Multiple Imputation by Chained Equations (MICE)\n# Justification: Consistent with ICH E9, MICE addresses missingness by creating multiple plausible datasets, \n# reducing bias and providing valid inference.\n\n# Create a mice object\ndata_mice <- mice(data = your_data, m = 5, maxit = 50, method = \"pmm\") #pmm for continuous variables\n# m = number of imputations, maxit = maximum iterations, method = imputation method\n\n# Fit the model\ndata_imputed <- complete(data_mice, 1)\n\n# --- Dose-Response Analysis & Forest Plot ---\n# 1. Linear Contrast: Justification - The efficacy endpoint is continuous, and a linear contrast \n#    is appropriate for assessing dose-response trends. It allows for a straightforward \n#    assessment of the change in the endpoint across dose groups.\n\n# 2. Summary Table\n# Create a summary table of the mean endpoint and standard error for each dose group\nsummary_table <- tapply(data_imputed$endpoint, list(dose_group, your_data$patient_id), mean)\nse_table <- tapply(data_imputed$endpoint, list(dose_group, your_data$patient_id), sd)\nsummary_table <- t(sapply(summary_table, function(x) c(mean = mean(x), se = sd(x))))\nsummary_table <- reshape2::melt(summary_table, id.vars = \"dose_group\", variable.name = \"patient_id\", value.name = \"mean_endpoint\")\nsummary_table$se <- se_table[match(summary_table$patient_id, rownames(se_table)), \"se\"]\n\n# Print the summary table\nprint(summary_table)\n\n\n# 3. Forest Plot\n# Create a data frame for the forest plot\nforest_data <- data.frame(\n  DoseGroup = your_data$dose_group,\n  MeanEndpoint = summary_table$mean_endpoint,\n  SE = summary_table$se\n)\n\n# Create the forest plot\nggplot(forest_data, aes(x = DoseGroup, y = MeanEndpoint, fill = DoseGroup)) +\n  geom_bar(stat = \"identity\", position = \"dodge\") +\n  geom_errorbar(aes(ymin = MeanEndpoint - SE, ymax = MeanEndpoint + SE), width = 0.2) +\n  labs(title = \"Dose-Response Trend\",\n       x = \"Dose Group\",\n       y = \"Mean Endpoint\",\n       fill = \"Dose Group\") +\n  theme_bw() +\n  theme(axis.text.x = element_text(angle = 45, hjust = 1))\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The R code is syntactically and logically broken; it attempts to calculate summary statistics by patient ID within dose groups (resulting in single values per patient) rather than aggregating by dose group. It also references undefined objects ('your_data') and uses 'tapply' incorrectly for the intended summary. 2) Completeness: It ignores the requirement to use the 'mice' framework for pooling results across imputations (Rubin's rules), instead just using the first imputed dataset. It fails to implement the requested statistical test for trend (linear contrast) in the code. 3) Best Practices: The forest plot uses 'geom_bar' (categorical bars) instead of a dot-and-whisker plot (geom_point/geom_errorbar) appropriate for continuous means. 4) Domain Accuracy: The student completely ignored the 'Additional Checks' regarding time-varying biomarkers, clustering, and proportional hazards, which are critical for a regulatory submission. 5) Clarity: The code is confusing and non-functional. 6) Autonomy: The code cannot run as-is and the statistical approach is invalid for the stated regulatory context."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Write program code to analyze data with statistical analysis software.",
+      "task_type": "Statistical Programming",
+      "user_prompt": "You are a biostatistician analyzing a longitudinal clinical trial with repeated measures over 6 time points. The outcome is binary (response yes/no). The data has unbalanced visit schedules and 20% missingness due to dropout. Write a statistical analysis plan section that: 1) Proposes a Generalized Estimating Equation (GEE) or Mixed-Effects Logistic Regression model to account for within-subject correlation. 2) Justifies the choice of working correlation structure. 3) Describes the sensitivity analysis for missing not at random (MNAR) mechanisms. Provide R code implementing the primary model and the sensitivity analysis using 'geepack' or 'lme4'.",
+      "reference_context": "Dataset Schema: patient_id (int), visit_time (float), response (0/1), treatment_arm (categorical). Assumptions: Correlation exists within patients over time.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the model structure appropriately handle binary outcomes and repeated measures?",
+        "Criterion 2: Completeness — Are the correlation structure and MNAR sensitivity analysis explicitly addressed?",
+        "Criterion 3: Best practices — Is the R code efficient and does it correctly specify the random effects or correlation structure?"
+      ],
+      "student_answer": "```R\nlibrary(geepack)\nlibrary(lme4)\n\n# Primary Model: GEE Logistic Regression\ngee_model <- gee(response ~ visit_time + treatment_arm, \n                 data = data, \n                 type = \"binomial\", \n                 correlation = \"unstructured\", \n                 na.action = na.omit)\n\nsummary(gee_model)\n\n# Sensitivity Analysis for MNAR (Multiple Imputation)\n# Using geepack for imputation\n\n# Create a complete dataset with imputed values\ndata_imputed <- complete(gee_model, all = TRUE, method = \"niolim\")\n\n# Fit the GEE model on the imputed data\ngee_model_imputed <- gee(response ~ visit_time + treatment_arm, \n                         data = data_imputed, \n                         type = \"binomial\", \n                         correlation = \"unstructured\", \n                         na.action = na.omit)\n\nsummary(gee_model_imputed)\n\n# Compare the results of the primary model and the imputed model\n# Examine differences in coefficient estimates, standard errors, and p-values.\n# Assess the impact of the imputed data on the overall model fit (e.g., AIC, BIC).\n\n# Alternative Model: Mixed-Effects Logistic Regression (lme4)\n# This provides an alternative approach to handle within-subject correlation.\n\n# Fit the mixed-effects model\nlmer_model <- lmer(response ~ visit_time + treatment_arm + (1 | patient_id), \n                   data = data, \n                   data = data)\n\nsummary(lmer_model)\n\n# Sensitivity Analysis for MNAR (lme4) - using robumatch for multiple imputation\n# Requires the 'robumatch' package\n\n# Install robumatch if not already installed\n# install.packages(\"robumatch\")\n\nlibrary(robumatch)\n\n# Impute missing values using robumatch\ndata_imputed_lmer <- impute_missing(data, method = \"robumatch\")\n\n# Fit the mixed-effects model on the imputed data\nlmer_model_imputed <- lmer(response ~ visit_time + treatment_arm + (1 | patient_id), \n                           data = data_imputed_lmer, \n                           data = data_imputed_lmer)\n\nsummary(lmer_model_imputed)\n\n# Compare the results of the primary model and the imputed model\n# Examine differences in coefficient estimates, standard errors, and p-values.\n# Assess the impact of the imputed data on the overall model fit (e.g., AIC, BIC).\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The code contains fatal syntax errors (e.g., 'data = data' repeated in lmer calls, 'type = binomial' instead of 'family = binomial' in geepack). 2) Completeness: It completely ignores the requirement to justify the working correlation structure and fails to implement a valid MNAR sensitivity analysis (using 'niolim' and 'robumatch' which are not standard or valid methods for this context). 3) Best Practices: The code is non-functional and uses incorrect function arguments. 4) Domain Accuracy: The student confuses GEE/Mixed models with survival analysis concepts in the additional checks (proportional hazards/Cox models are irrelevant for a binary repeated measures outcome). 5) Clarity: The code is broken and the logic is incoherent. 6) Autonomy: The output is unusable as a professional deliverable due to syntax errors and methodological hallucinations."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Provide biostatistical consultation to clients or colleagues.",
+      "task_type": "Statistical Consultation",
+      "user_prompt": "You are consulting for a clinical research team designing a non-inferiority trial for a new drug. The primary endpoint is a continuous score. The team proposes a sample size calculation assuming a standard deviation of 10 and a non-inferiority margin of 5. However, they are concerned about potential baseline imbalances. Draft a consultation memo that: 1) Critiques the proposed sample size calculation regarding the non-inferiority margin and power. 2) Recommends a covariate-adjusted analysis strategy (e.g., ANCOVA) to improve power and handle baseline imbalances. 3) Outlines the assumptions required for the ANCOVA approach (e.g., homogeneity of regression slopes). Provide a brief R simulation snippet to demonstrate the power gain from ANCOVA compared to ANOVA.",
+      "reference_context": "Context: Non-inferiority design, continuous endpoint, potential baseline imbalance. Assumptions: Normal distribution of residuals.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the critique of the non-inferiority margin and sample size statistically sound?",
+        "Criterion 2: Completeness — Does the memo cover the ANCOVA assumptions and the simulation demonstration?",
+        "Criterion 3: Best practices — Is the recommendation aligned with ICH E9 guidelines for non-inferiority trials?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**To:** Clinical Research Team\n**From:** [Your Name], Biostatistician\n**Date:** October 26, 2023\n**Subject:** Consultation on Sample Size and Analysis Strategy for Non-Inferiority Trial\n\nThe proposed sample size calculation, based on a standard deviation of 10 and a non-inferiority margin of 5, warrants careful consideration.  With a relatively small non-inferiority margin, achieving sufficient statistical power to detect non-inferiority can be challenging, particularly when baseline imbalances are anticipated.  A standard power of 80% may be difficult to attain without a substantially larger sample size.\n\n**Recommendation: Covariate-Adjusted Analysis (ANCOVA)**\n\nTo mitigate the impact of potential baseline imbalances and enhance the trial’s power, I recommend employing a covariate-adjusted analysis strategy, specifically Analysis of Covariance (ANCOVA). ANCOVA allows us to statistically control for the effects of baseline characteristics that may differ between treatment groups, thereby reducing the variance within groups and increasing the precision of the treatment effect estimate.\n\n**Assumptions for ANCOVA:**\n\n*   **Normality of Residuals:**  The residuals from the ANCOVA model should be approximately normally distributed.  We will need to assess this assumption through residual plots.\n*   **Homogeneity of Regression Slopes:**  A critical assumption is that the regression slopes (the relationship between the covariate and the outcome) are equal across the treatment groups.  If this assumption is violated, ANCOVA may be unreliable.  We can assess this using interaction terms in the model or by examining subgroup analyses.\n*   **Linearity:** The relationship between the covariate and the outcome should be linear.\n*   **No Multicollinearity:**  Covariates should not be highly correlated with each other.\n\n**R Simulation (Power Comparison):**\n\n```R\n# Simulate data with baseline imbalance\nset.seed(123)\nn <- 100\ngroup <- factor(rep(c(\"Treatment A\", \"Treatment B\"), each = n/2))\nbaseline <- rnorm(n, mean = 5, sd = 2) # Baseline score differs between groups\ntreatment <- rnorm(n, mean = 0, sd = 1) # Treatment effect\nerror <- rnorm(n, mean = 0, sd = 10) # Standard deviation\noutcome <- baseline + treatment + error\n\n# ANOVA\nmodel_anova <- lm(outcome ~ group)\nanova_result <- anova(model_anova)\nprint(anova_result)\n\n# ANCOVA (controlling for baseline)\nmodel_ancova <- lm(outcome ~ group + baseline, data = data.frame(outcome, group, baseline))\nancova_result <- anova(model_ancova)\nprint(ancova_result)\n```\n\nThis simulation demonstrates how ANCOVA can increase the likelihood of detecting a significant treatment effect compared to a standard ANOVA, even with a moderate baseline imbalance.  The specific power gains will depend on the magnitude of the baseline imbalance and the effect size of the treatment.\n\nFurther discussion regarding specific covariates to include in the ANCOVA model and a more detailed power analysis are recommended.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core request but contains significant omissions and technical flaws. 1) Correctness: The R simulation is fundamentally flawed; it generates data where the treatment effect is a random variable (rnorm) rather than a fixed parameter, and it fails to simulate the specific non-inferiority context or baseline imbalance correctly (the baseline variable is generated independently of the group, not as an imbalanced covariate). It does not calculate power, only runs a single simulation. 2) Completeness: The critique of the sample size calculation is vague and does not address the specific relationship between the margin (5) and SD (10) or the non-inferiority nature of the test. 3) Best Practices: The simulation code is not a valid power analysis. 4) Domain Accuracy: The assumptions listed are correct for ANCOVA, but the response ignores the specific 'Additional Checks' provided in the prompt regarding time-varying biomarkers, clustering, and proportional hazards (though the prompt context was continuous, the additional checks suggest a need to address those specific constraints if applicable, or at least acknowledge the scope). 5) Clarity: The memo is well-structured. 6) Autonomy: The output requires significant rework, specifically the R code, to be usable for a real client."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Review clinical or other medical research protocols and recommend appropriate statistical analyses.",
+      "task_type": "Protocol Review",
+      "user_prompt": "You are reviewing a protocol for a multi-center observational study investigating the association between a genetic variant and disease severity. The study has 50 sites and the outcome is ordinal (mild, moderate, severe). The protocol proposes a simple Chi-square test for association. Draft a review memo that: 1) Explains why the Chi-square test is insufficient for ordinal outcomes and proposes an ordinal logistic regression (proportional odds model). 2) Describes how to account for site-level clustering (random effects or robust standard errors). 3) Specifies the test for the proportional odds assumption. Provide R code to fit the ordinal logistic model with site-level random effects using 'ordinal' or 'lme4'.",
+      "reference_context": "Dataset Schema: patient_id (int), site_id (int), genetic_variant (categorical), severity (ordinal). Assumptions: Sites are random effects.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the proposed ordinal logistic regression appropriate for the outcome type?",
+        "Criterion 2: Completeness — Are the clustering adjustment and proportional odds assumption test explicitly addressed?",
+        "Criterion 3: Best practices — Is the R code correctly implemented for mixed-effects ordinal regression?"
+      ],
+      "student_answer": "```R\nlibrary(ordinal)\nlibrary(lme4)\nlibrary(dplyr)\n\n# Sample Data (Replace with your actual data)\nset.seed(123)\nn_patients <- 200\nn_sites <- 50\npatient_id <- 1:n_patients\nsite_id <- sample(1:n_sites, n_patients, replace = TRUE)\ngenetic_variant <- sample(c(\"AA\", \"AG\", \"GG\"), n_patients, replace = TRUE)\nseverity <- sample(c(\"mild\", \"moderate\", \"severe\"), n_patients, replace = TRUE)\n\ndata <- data.frame(patient_id, site_id, genetic_variant, severity)\n\n\n# Ordinal Logistic Regression with Site-Level Random Effects (using lme4)\nmodel_lme4 <- lmer(severity ~ genetic_variant + (1 | site_id), data = data)\nsummary(model_lme4)\n\n# Ordinal Logistic Regression with Site-Level Random Effects (using ordinal)\nmodel_ordinal <- ordinal(severity ~ genetic_variant, data = data, random = ~ 1 | site_id)\nsummary(model_ordinal)\n\n\n# Assessing Proportional Odds Assumption\n# Using the 'ordinal' package's deviance residuals plot\nplot(model_ordinal, residual = \"deviance\")\n\n# Alternatively, using the 'lme4' package's residuals plot\nplot(model_lme4, which = \"residuals\")\n\n# Robust Standard Errors (using lme4)\n#  This is included for completeness, though the lmer model already accounts for random effects.\nrobust_model_lme4 <- lmer(severity ~ genetic_variant + (1 | site_id), data = data,  vcov = TRUE)\nvar_cov <- conv(robust_model_lme4)\nvar_cov\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. 1) Correctness: It ignores the primary instruction to draft a review memo explaining the statistical rationale; instead, it provides raw R code. 2) Completeness: It fails to address the specific requirements of the memo (explaining why Chi-square is insufficient, describing clustering methods conceptually, specifying the test for proportional odds). 3) Best Practices & Domain Accuracy: The R code is technically invalid for the stated goal. 'lmer' from lme4 fits linear mixed models for continuous outcomes, not ordinal logistic regression. The 'ordinal' package syntax provided is incorrect (it does not accept a 'random' argument in the main function call for mixed models in the way shown). The code for robust standard errors is nonsensical. 4) Autonomy: The output is unusable as a professional deliverable due to the lack of a memo and the presence of broken code. The additional checks regarding time-varying biomarkers and imputation are irrelevant to the actual task but highlight the submission's failure to address the core statistical problem."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop or implement data analysis algorithms.",
+      "task_type": "Algorithm Development",
+      "user_prompt": "You are developing a custom algorithm to adjust for baseline imbalance in a small sample randomized trial (n=50) where standard asymptotic methods may be unreliable. The outcome is continuous. Design a statistical analysis plan that: 1) Proposes a permutation test or bootstrap-based inference method to adjust for baseline covariates. 2) Details the resampling strategy (e.g., stratified bootstrap). 3) Justifies the choice of method over standard t-tests. Provide R code implementing the bootstrap procedure to calculate a 95% confidence interval for the treatment effect adjusted for baseline covariates.",
+      "reference_context": "Dataset Schema: patient_id (int), treatment (0/1), outcome (float), baseline_cov (float). Assumptions: Exchangeability under the null hypothesis.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the proposed resampling method appropriately handle the small sample size and baseline adjustment?",
+        "Criterion 2: Completeness — Is the resampling strategy and justification clearly explained?",
+        "Criterion 3: Best practices — Is the R code reproducible and does it correctly implement the bootstrap logic?"
+      ],
+      "student_answer": "```R\n# Statistical Analysis Plan: Bootstrap Adjustment for Baseline Imbalance\n\n# 1. Proposed Method: Bootstrap Resampling\n\n# We will employ a bootstrap resampling method to adjust for baseline imbalance.  This is preferred over standard t-tests because standard t-tests assume equal variance and distribution between groups, which is unlikely to hold when baseline covariates are imbalanced.  The bootstrap allows us to resample the data with replacement, creating multiple simulated datasets that reflect the potential variability in the data due to the imbalance.  This provides a more robust estimate of the treatment effect than a single t-test.\n\n# 2. Resampling Strategy: Stratified Bootstrap\n\n# We will use a stratified bootstrap.  We will stratify the data based on the baseline covariate (baseline_cov).  This ensures that the proportion of observations in each stratum (defined by baseline_cov) is maintained in the resampled datasets.  This is crucial for accurately simulating the observed imbalance.  Each stratum will be resampled independently.\n\n# 3. Implementation in R\n\n# Data Preparation\nset.seed(123) # for reproducibility\ndata <- data.frame(\n  patient_id = 1:50,\n  treatment = sample(0:1, 50, replace = TRUE, prob = c(0.5, 0.5)),\n  outcome = rnorm(50, mean = 10, sd = 3),\n  baseline_cov = rnorm(50, mean = 5, sd = 2)\n)\n\n# Function to perform stratified bootstrap\nbootstrap_adjustment <- function(data, n_boot = 1000) {\n  bootstrap_results <- list()\n  for (i in 1:n_boot) {\n    # Stratified resampling\n    strata <- cut(data$baseline_cov, breaks = seq(min(data$baseline_cov), max(data$baseline_cov), length.out = 5))\n    stratified_data <- data[strata, ]\n    \n    # Resample within each stratum\n    for (s in strata) {\n      stratified_data_s <- stratified_data[stratified_data$baseline_cov == s, ]\n      \n      # Resample with replacement\n      resampled_data <- stratified_data_s[sample(nrow(stratified_data_s), size = nrow(stratified_data_s), replace = TRUE), ]\n      \n      bootstrap_results[[i]] <- resampled_data\n    }\n  }\n  return(bootstrap_results)\n}\n\n# Perform bootstrap\nbootstrap_results <- bootstrap_adjustment(data, n_boot = 1000)\n\n# Calculate treatment effect for each bootstrap sample\ntreatment_effects <- sapply(bootstrap_results, function(x) {\n  mean(x$outcome[x$treatment == 1]) - mean(x$outcome[x$treatment == 0])\n})\n\n# Calculate 95% confidence interval\nalpha <- 0.05\nn_boot <- length(treatment_effects)\nlower_ci <- quantile(treatment_effects, alpha/2, na.rm = TRUE)\nupper_ci <- quantile(treatment_effects, 1 - alpha/2, na.rm = TRUE)\n\n# Print results\ncat(\"Estimated Treatment Effect:\", mean(treatment_effects), \"\\n\")\ncat(\"95% Confidence Interval:\", lower_ci, \"-\", upper_ci, \"\\n\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. First, the R code contains a critical logical error: the stratified bootstrap function attempts to assign the entire list of resampled strata to a single list element in every iteration, overwriting previous results and failing to aggregate the full dataset for analysis. Second, the method described (stratifying a continuous covariate into 5 bins) is statistically unsound for adjusting baseline imbalance in a regression context; it discards information and does not properly adjust for the covariate's continuous effect. Third, the justification for the method is weak, focusing on variance assumptions rather than the actual bias introduced by imbalance. Fourth, the submission completely ignores the 'Additional Checks' constraints regarding time-varying biomarkers, clustering, and proportional hazards, which are irrelevant to the specific task but indicate a failure to read the full prompt context. Finally, the code does not implement the requested 'adjustment' (e.g., via ANCOVA or residualization) but merely calculates a difference in means on resampled data, failing the core task requirement."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Determine project plans, timelines, or technical objectives for statistical aspects of biological research studies.",
+      "task_type": "Project Planning and Methodology",
+      "user_prompt": "You are leading the statistical planning for a Phase III adaptive trial with a sample size re-estimation (SSR) component. The primary endpoint is time-to-event. The protocol allows for an interim analysis to re-estimate the sample size based on the observed event rate. Draft a technical plan section that: 1) Describes the SSR methodology (e.g., blinded vs. unblinded) and its impact on Type I error. 2) Proposes a statistical method to control the overall Type I error rate (e.g., alpha spending function). 3) Outlines the timeline for the interim analysis and final analysis. Provide R code to simulate the Type I error rate under the null hypothesis with the proposed SSR design.",
+      "reference_context": "Dataset Schema: patient_id (int), pfs_time (float), pfs_event (0/1), treatment_arm (categorical). Assumptions: Proportional hazards.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the SSR methodology and error control strategy align with ICH E9(R1) guidelines?",
+        "Criterion 2: Completeness — Are the timeline and Type I error control explicitly addressed?",
+        "Criterion 3: Best practices — Is the R simulation code robust and does it correctly model the adaptive design?"
+      ],
+      "student_answer": "```R\n# Simulation of Type I Error Rate under SSR Design\n\n# Parameters\nn_simulations <- 1000\nnull_event_rate <- 0.2  # Expected event rate under the null hypothesis\nalpha_desired <- 0.025\nhr_null <- exp(1.0) # Hazard ratio under the null hypothesis\nsample_size_initial <- 200\nevent_rate_observed_early <- 0.15 # Observed event rate at interim\nevent_rate_observed_late <- 0.28 # Observed event rate at final analysis\n\n# SSR Methodology: Blinded\n# The interim analysis will be blinded.  The primary analyst will not know the treatment arm at the interim.\n# This introduces a potential for bias, but the SSR process aims to mitigate this.\n\n# Alpha Spending Function Approach\n# We will use an alpha spending function to control the overall Type I error rate.\n# The function will allocate alpha across the interim and final analyses.\n\n# Simulation Function\nsimulate_type_i_error <- function(n_simulations, null_event_rate, hr_null, sample_size_initial, event_rate_observed_early, event_rate_observed_late) {\n  type_i_error_rates <- numeric(n_simulations)\n\n  for (i in 1:n_simulations) {\n    # Simulate data\n    num_events_initial <- round(sample_size_initial * null_event_rate)\n    num_events_late <- round(sample_size_initial * event_rate_observed_late)\n    \n    # Create simulated data\n    patient_id <- 1:sample_size_initial\n    pfs_time <- runif(sample_size_initial, 1, 100)\n    pfs_event <- ifelse(runif(sample_size_initial) < null_event_rate, 1, 0)\n    treatment_arm <- sample(c(\"Treatment A\", \"Treatment B\"), sample_size_initial, replace = TRUE)\n\n    # Interim Analysis\n    interim_event_rate <- num_events_initial / sample_size_initial\n    \n    # Sample size re-estimation\n    new_sample_size <- sample_size_initial\n    if (interim_event_rate < event_rate_observed_early) {\n      new_sample_size <- round((sample_size_initial + (sample_size_initial * (event_rate_observed_early - null_event_rate))) / (1 - null_event_rate))\n    }\n    \n    # Final Analysis\n    final_event_rate <- num_events_late / new_sample_size\n    \n    # Calculate Type I Error Rate\n    type_i_error_rates[i] <- pnorm(min(final_event_rate, 1), mean = null_event_rate, sd = sqrt(null_event_rate * (1 - null_event_rate) / sample_size_initial), \n                                 lower.tail = FALSE)\n  }\n  return(type_i_error_rates)\n}\n\n# Run Simulation\ntype_i_error_rates <- simulate_type_i_error(n_simulations = n_simulations, null_event_rate = null_event_rate, hr_null = hr_null, sample_size_initial = sample_size_initial, event_rate_observed_early = event_rate_observed_early, event_rate_observed_late = event_rate_observed_late)\n\n# Calculate Mean and Standard Deviation of Type I Error Rates\nmean_type_i_error <- mean(type_i_error_rates)\nsd_type_i_error <- sd(type_i_error_rates)\n\n# Print Results\ncat(\"Mean Type I Error Rate:\", mean_type_i_error, \"\\n\")\ncat(\"Standard Deviation of Type I Error Rate:\", sd_type_i_error, \"\\n\")\n\n# Timeline\n# Interim Analysis:  After 60% of patients have completed follow-up (120 patients).\n# Final Analysis:  Upon completion of all patient follow-up.\n\n# Technical Plan Section:\n\n# 1. SSR Methodology:  The SSR will be conducted in a blinded manner. The primary analyst will not be aware of the treatment assignment during the interim analysis.  The re-estimation will be based on the observed event rate at the interim, adjusted for the proportional hazards assumption.\n\n# 2. Type I Error Control:  An alpha spending function will be employed to control the overall Type I error rate.  A portion of the overall alpha (e.g., 75%) will be allocated to the interim analysis, and the remaining portion to the final analysis.  This approach allows for flexibility in the interim while maintaining control over the overall risk.\n\n# 3. Timeline:\n#   - Interim Analysis:  After 60% of patients (120 patients) have completed follow-up.\n#   - Final Analysis: Upon completion of all patient follow-up.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. 1) Correctness: The R code does not simulate a time-to-event trial; it generates uniform random numbers and calculates a Z-score based on a binomial proportion, completely ignoring the survival analysis context (Cox model, log-rank test). The SSR logic is nonsensical (calculating sample size based on a fixed 'observed' rate rather than a random simulation). 2) Completeness: It ignores the specific dataset schema (patient_id, pfs_time) and fails to implement the required simulation of survival times. 3) Best Practices: Using a binomial approximation for a time-to-event endpoint with censoring is statistically invalid. 4) Domain Accuracy: The code does not handle censoring, proportional hazards, or the specific endpoint (PFS). 5) Clarity: The text is disjointed from the code. 6) Autonomy: The output is unusable for a real clinical trial simulation and requires complete rework. The additional checks regarding time-varying biomarkers and clustering were also ignored."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Prepare statistical data for inclusion in reports to data monitoring committees, federal regulatory agencies, managers, or clients.",
+      "task_type": "Data Preparation and Reporting",
+      "user_prompt": "You are preparing a statistical analysis report for a Data Monitoring Committee (DMC) regarding a Phase IIb cardiovascular trial. The dataset contains 500 patients with 12% missing values in the primary efficacy endpoint (change in LDL cholesterol) and 5% missing values in covariates. The data is skewed. Write a section for the DMC report that: 1) Justifies the choice of Multiple Imputation by Chained Equations (MICE) over complete case analysis, citing ICH E9. 2) Describes the sensitivity analysis plan to assess the impact of missing data assumptions (e.g., MNAR vs MAR). 3) Provides a summary table structure for presenting the imputed results alongside the observed data. Include R code snippets for the imputation and the generation of the summary table.",
+      "reference_context": "Dataset Schema: patient_id, baseline_ldl, final_ldl (12% NA), age, sex, treatment_arm. Assumptions: Data is MAR (Missing At Random) for primary analysis, but MNAR is a concern for sensitivity.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the justification for MICE align with ICH E9 guidelines for handling missing data?",
+        "Criterion 2: Completeness — Are both MAR and MNAR sensitivity analyses explicitly described?",
+        "Criterion 3: Best practices — Is the R code reproducible and does it handle the skewed distribution appropriately (e.g., predictive mean matching)?"
+      ],
+      "student_answer": "```R\n# Multiple Imputation by Chained Equations (MICE) Justification & Implementation\n#\n# Justification:\n# According to ICH E9, multiple imputation is the preferred method for handling missing data when the missingness mechanism is unknown or potentially non-ignorable. Complete case analysis (removing patients with any missing data) can introduce bias, particularly with a substantial proportion of missing data like 12% in this trial. MICE addresses this by generating multiple plausible datasets, accounting for the missingness pattern.  It’s considered a more robust approach than simply excluding cases, especially given the potential for MNAR.\n#\n# MICE Implementation (R Code):\n#\n# Install and load necessary packages\n# install.packages(c(\"mice\"))\nlibrary(mice)\n\n# Create a complete dataset for MICE\ncomplete_data <- na.omit(data)\n\n# Perform MICE imputation\n#  - m = number of imputations (e.g., 5)\n#  - method = imputation method (e.g., \"cart\")\n#  - max.iter = maximum number of iterations\n#  - seed = random seed for reproducibility\nimp <- mice(complete_data, m = 5, method = \"cart\", max.iter = 100, seed = 123)\n\n# Extract the imputed dataset\nimputed_data <- complete(imp, action = \"all\", newdata = complete_data)\n\n# Sensitivity Analysis Plan:\n#\n# We will conduct a sensitivity analysis to assess the robustness of our findings to different missing data assumptions. Specifically, we will evaluate the impact of assuming a Missing Not At Random (MNAR) scenario, particularly for the primary endpoint (final_ldl).\n#\n# Procedure:\n# 1.  **MNAR Simulation:**  We will simulate data under a MNAR model where the probability of missingness for final_ldl is related to the actual final_ldl value. This will be done using a regression model with final_ldl as the dependent variable and other relevant covariates (age, sex, treatment_arm) as predictors.\n# 2.  **Imputation with MNAR Model:**  We will perform MICE imputation using the simulated MNAR dataset.\n# 3.  **Comparison of Results:** We will compare the primary efficacy analysis results (e.g., mean change in LDL cholesterol, hazard ratios) obtained from the original MICE imputation and the MNAR imputed dataset.  A significant difference in results would indicate sensitivity to the MNAR assumption.\n# 4. **Other MNAR Scenarios:** Explore other plausible MNAR scenarios based on clinical knowledge.\n\n# Summary Table Structure:\n#\n# The following table will present the results of the primary analysis alongside the imputed results and sensitivity analysis results.\n#\n# | Variable          | Observed (N=488) | Imputed Mean (MICE) | Imputed Median (MICE) | Imputed SD (MICE) | MNAR Imputed Mean | MNAR Imputed Median | MNAR Imputed SD |\n# |-------------------|------------------|----------------------|-----------------------|--------------------|------------------|----------------------|--------------------|\n# | Change in LDL     | (Mean, SD)       | (Mean, SD)           | (Median, IQR)         | (SD)               | (Mean, SD)       | (Median, IQR)         | (SD)               |\n# | Age               | (Mean, SD)       | (Mean, SD)           | (Median, IQR)         | (SD)               | (Mean, SD)       | (Median, IQR)         | (SD)               |\n# | Treatment Arm     | (Proportion)      | (Proportion)         | (Median)              |                    | (Proportion)      | (Median)              |                    |\n#\n# R Code for Summary Table Generation:\n#\n# Assuming 'imputed_data' contains the imputed data and 'complete_data' contains the observed data.\n#\n# Create a data frame for the observed data\nobserved_data <- data.frame(Variable = names(complete_data),\n                           Observed_Mean = colMeans(complete_data, na.rm = TRUE),\n                           Observed_SD = sd(complete_data, na.rm = TRUE),\n                           Observed_Proportion = prop.table(table(complete_data[, \"treatment_arm\"])),\n                           stringsAsFactors = FALSE)\n\n# Create a data frame for the imputed data\nimputed_data_summary <- data.frame(Variable = names(imputed_data),\n                                  Imputed_Mean = colMeans(imputed_data, na.rm = TRUE),\n                                  Imputed_Median = apply(imputed_data, 2, median, na.rm = TRUE),\n                                  Imputed_SD = apply(imputed_data, 2, sd, na.rm = TRUE),\n                                  stringsAsFactors = FALSE)\n\n# Create a data frame for the MNAR imputed data (simulated - example)\n# This section would be populated with results from the MNAR simulation.\n# For demonstration, we'll create placeholder values.\nmnar_data_summary <- data.frame(Variable = names(imputed_data),\n                                Imputed_Mean = c(0.5, 0.7, 0.3),\n                                Imputed_Median = c(0.6, 0.8, 0.4),\n                                Imputed_SD = c(0.2, 0.3, 0.15),\n                                stringsAsFactors = FALSE)\n\n\n# Combine the data frames\nsummary_table <- merge(observed_data, imputed_data_summary, by = \"Variable\")\nsummary_table <- merge(summary_table, mnar_data_summary, by = \"Variable\")\n\n# Print the summary table\nprint(summary_table)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails critically on multiple professional standards. 1) Correctness/Completeness: The R code uses `na.omit(data)` before imputation, which destroys the missing data pattern required for MICE, rendering the imputation impossible. 2) Best Practices: The code attempts to impute categorical variables (treatment_arm) using continuous statistics (mean/SD) and treats them as numeric in the summary table generation, which is statistically invalid. 3) Domain Accuracy: The sensitivity analysis plan describes a naive simulation rather than a proper pattern-mixture or selection model (e.g., delta-adjustment) standard for MNAR. 4) Additional Checks: The submission completely ignores the requirement to treat the biomarker as time-varying, account for site clustering, or discuss proportional hazards assumptions. 5) Autonomy: The code is non-functional and the analysis plan is insufficient for a DMC report, requiring significant rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Monitor clinical trials or experiments to ensure adherence to established procedures or to verify the quality of data collected.",
+      "task_type": "Data Quality and Monitoring",
+      "user_prompt": "You are a biostatistician monitoring a multi-center infectious disease trial. You suspect data integrity issues due to inconsistent reporting of adverse events (AEs) across 20 sites. The dataset includes AE onset dates, severity grades, and relationship to treatment. Write a monitoring plan that: 1) Defines specific statistical checks to detect outliers or implausible AE timelines (e.g., onset before randomization). 2) Proposes a method to quantify inter-site variability in AE reporting rates using a Poisson regression model. 3) Provides R code to perform these checks and generate a visualization of site-level reporting rates with confidence intervals.",
+      "reference_context": "Dataset Schema: site_id, patient_id, ae_onset_date, ae_severity (1-5), ae_relationship (0/1). Assumptions: Reporting rates vary by site; AEs should not occur before randomization.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Do the statistical checks logically identify data integrity issues?",
+        "Criterion 2: Completeness — Is the Poisson regression model correctly specified to account for site-level variability?",
+        "Criterion 3: Best practices — Is the R code efficient and does it produce clear visualizations for the monitoring committee?"
+      ],
+      "student_answer": "```R\n# Load necessary libraries\nlibrary(tidyverse)\nlibrary(lubridate)\nlibrary(glmnet)\n\n# 1. Statistical Checks for Outliers and Implausible AE Timelines\n\n# Define a function to check for AE onset before randomization\ncheck_randomization_violation <- function(data) {\n  # Assuming randomization occurred on day 0\n  data$randomization_date <- ymd(\"2024-01-01\") # Replace with actual randomization date\n  data$onset_before_randomization <- data$ae_onset_date < data$randomization_date\n  return(data)\n}\n\n# Check for AE onset before randomization\ndata <- check_randomization_violation(data)\n\n# Define a function to check for implausible severity grades\ncheck_severity_implausibility <- function(data) {\n  data$severity_implausible <- data$ae_severity <= 0 | data$ae_severity > 5\n  return(data)\n}\n\n# Check for implausible severity grades\ndata <- check_severity_implausibility(data)\n\n# 2. Quantifying Inter-Site Variability in AE Reporting Rates\n\n# Create a reporting rate variable\ndata$reporting_rate <- 1\ndata$reporting_rate[data$ae_severity == 0] <- 0 # No AE reported\n\n# Create a site-level reporting rate table\nsite_reporting_rates <- data %>%\n  group_by(site_id) %>%\n  summarize(total_aeds = n(),\n            reporting_rate = sum(reporting_rate) / total_aeds)\n\n# Fit a Poisson regression model to quantify inter-site variability\npoisson_model <- glm(reporting_rate ~ site_id, data = site_reporting_rates, family = \"poisson\")\nsummary(poisson_model)\n\n# 3. Visualization of Site-Level Reporting Rates with Confidence Intervals\n\n# Create a data frame for plotting\nsite_reporting_rates_plot <- site_reporting_rates %>%\n  mutate(site_id = factor(site_id))\n\n# Calculate confidence intervals\nconfint_lower <- confint(poisson_model, level = 0.95)\nconfint_upper <- confint(poisson_model, level = 0.95)\n\n# Add confidence intervals to the data frame\nsite_reporting_rates_plot <- site_reporting_rates_plot %>%\n  mutate(lower = confint_lower[, 2],\n         upper = confint_upper[, 2])\n\n# Create the plot\nggplot(site_reporting_rates_plot, aes(x = site_id, y = reporting_rate, fill = site_id)) +\n  geom_bar(stat = \"identity\", position = \"dodge\") +\n  geom_errorbar(aes(ymin = lower, ymax = upper), width = 0.2) +\n  labs(title = \"Site-Level Adverse Event Reporting Rates\",\n       x = \"Site ID\",\n       y = \"Reporting Rate\",\n       fill = \"Site ID\") +\n  theme_bw()\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. 1) Correctness: The Poisson regression model is incorrectly specified (using a rate variable as the response instead of counts with an offset), and the confidence interval calculation logic is flawed (applying model-wide CIs to individual site estimates). 2) Completeness: It ignores the requirement to check for outliers beyond just randomization violations and fails to address the 'Additional Checks' regarding time-to-event assumptions and clustering. 3) Best Practices: The code uses a fixed date for randomization instead of a variable, and the visualization logic is broken. 4) Domain Accuracy: The statistical approach to quantifying inter-site variability is methodologically unsound for this context. 5) Clarity: The code is difficult to follow due to logical errors. 6) Autonomy: The output is unusable as a professional deliverable due to critical statistical errors."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design or maintain databases of biological data.",
+      "task_type": "Database Design and Schema Validation",
+      "user_prompt": "You are designing a database schema for a new genomic study integrating RNA-seq counts with clinical phenotypes. The study involves 1000 patients with longitudinal sampling (baseline, 6 months, 12 months). Write a technical specification that: 1) Defines the relational schema (tables and keys) to link genomic data with clinical data while preserving patient privacy (de-identification). 2) Proposes a statistical strategy for handling zero-inflated RNA-seq count data during the database query phase (e.g., specifying storage formats for normalized counts). 3) Provides a SQL query skeleton to extract a dataset suitable for a negative binomial mixed model, ensuring proper handling of missing timepoints.",
+      "reference_context": "Dataset Schema: patient_id (de-identified), sample_id, timepoint, gene_expression_count, clinical_outcome. Assumptions: Data follows a negative binomial distribution; zero-inflation is common.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the schema correctly link longitudinal genomic data with clinical data?",
+        "Criterion 2: Completeness — Are zero-inflated data handling strategies and privacy measures addressed?",
+        "Criterion 3: Best practices — Is the SQL query efficient and does it correctly prepare data for mixed modeling?"
+      ],
+      "student_answer": "```sql\n-- Database Schema: GenomicPhenotypeStudy\n\n-- Table: Patients\nCREATE TABLE Patients (\n    patient_id VARCHAR(255) PRIMARY KEY,\n    deidentified_patient_id VARCHAR(255) NOT NULL, -- Added for explicit de-identification\n    -- Other relevant clinical demographics (e.g., age, sex, ethnicity)\n    age INT,\n    sex VARCHAR(10),\n    ethnicity VARCHAR(50)\n);\n\n-- Table: Samples\nCREATE TABLE Samples (\n    sample_id VARCHAR(255) PRIMARY KEY,\n    patient_id VARCHAR(255) NOT NULL,\n    timepoint TIMESTAMP,\n    -- Other sample metadata (e.g., sequencing platform, batch)\n    sequencing_platform VARCHAR(50),\n    batch VARCHAR(50),\n    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)\n);\n\n-- Table: GeneExpression\nCREATE TABLE GeneExpression (\n    sample_id VARCHAR(255) NOT NULL,\n    gene_symbol VARCHAR(255),\n    normalized_count NUMERIC(15, 6), -- Storing normalized counts (e.g., TPM, FPKM)\n    FOREIGN KEY (sample_id) REFERENCES Samples(sample_id)\n);\n\n-- Table: ClinicalOutcomes\nCREATE TABLE ClinicalOutcomes (\n    sample_id VARCHAR(255) NOT NULL,\n    clinical_outcome VARCHAR(255),\n    outcome_value NUMERIC(10, 2), -- Store numerical outcome values\n    FOREIGN KEY (sample_id) REFERENCES Samples(sample_id)\n);\n\n-- Statistical Strategy: Zero-Inflated RNA-seq Counts\n\n-- Storage: Store normalized counts (e.g., TPM, FPKM) in the GeneExpression table as NUMERIC(15,6) to accommodate large values and precision.\n-- Modeling: Employ a negative binomial GLM with zero-inflation (e.g., using GLM with a zero-inflated Poisson or zero-inflated negative binomial distribution).  Consider using packages like `glm.nb` in R or similar functions in Python (e.g., `statsmodels.genmod.generalized_linear_model.NegativeBinomial`).\n\n-- SQL Query Skeleton for Negative Binomial Mixed Model\n\nSELECT\n    p.deidentified_patient_id,\n    s.timepoint,\n    ge.normalized_count,\n    co.clinical_outcome,\n    (SELECT COALESCE(MAX(clinical_outcome), 'No Outcome') FROM ClinicalOutcomes WHERE sample_id = s.sample_id) AS final_clinical_outcome -- Handle missing final outcomes\nFROM\n    Patients p\nJOIN\n    Samples s ON p.patient_id = s.patient_id\nJOIN\n    GeneExpression ge ON s.sample_id = ge.sample_id\nLEFT JOIN\n    ClinicalOutcomes co ON s.sample_id = co.sample_id\nWHERE\n    s.timepoint IN (\n        SELECT DISTINCT timepoint FROM Samples\n    )\nORDER BY\n    p.deidentified_patient_id, s.timepoint;\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to meet the core technical requirements of the task. 1) Correctness/Completeness: The SQL query does not extract data suitable for a negative binomial mixed model; it selects a single row per sample rather than a long-format dataset with one row per gene-sample-timepoint combination, which is essential for the specified model. 2) Domain Accuracy: The statistical strategy suggests storing normalized counts (TPM/FPKM) for a negative binomial model, which is statistically incorrect as NB models require raw integer counts. 3) Best Practices: The schema design is weak; it lacks a junction table to link genes to samples (currently using a flat table with duplicate sample_ids), and the de-identification strategy is superficial (storing both IDs in the same table without encryption or separation). 4) Additional Checks: The submission completely ignores the specific constraints regarding time-varying biomarkers, clustering structure, and proportional hazards assumptions. The output is a rough draft requiring significant rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Plan or direct research studies related to life sciences.",
+      "task_type": "Study Design and Power Analysis",
+      "user_prompt": "You are planning a Phase III non-inferiority trial for a new diabetes drug. The primary endpoint is HbA1c reduction. You anticipate a 10% dropout rate and expect a non-normal distribution of HbA1c changes. Write a study design section that: 1) Calculates the required sample size assuming a non-inferiority margin of 0.5% and a power of 90%, using a robust statistical method for non-normal data. 2) Proposes a stratification scheme to ensure balance across baseline HbA1c levels and treatment centers. 3) Provides R code to simulate the trial under the null and alternative hypotheses to validate the power calculation.",
+      "reference_context": "Dataset Schema: patient_id, baseline_hba1c, final_hba1c, treatment_arm, center_id. Assumptions: Non-inferiority design; non-normal distribution of outcome.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the sample size calculation appropriate for a non-inferiority trial with non-normal data?",
+        "Criterion 2: Completeness — Are stratification and dropout rates properly incorporated into the design?",
+        "Criterion 3: Best practices — Is the simulation code robust and does it validate the analytical power calculation?"
+      ],
+      "student_answer": "```R\n# Sample Size Calculation for Non-Inferiority Trial\n\n# Using a robust method for non-normal data:  Welch's t-test with a variance estimator\n# based on the median absolute deviation (MAD)\n\n# Parameters\nnon_inferiority_margin <- 0.5  # 0.5%\npower <- 0.90\nalpha <- 0.05\ndropout_rate <- 0.10\nhba1c_mean_sd <- c(7.0, 2.5) # Estimated mean and SD of baseline HbA1c\n# Assuming baseline HbA1c is normally distributed for initial calculation.  Adjust as needed.\n\n# Calculate the required difference in means for non-inferiority\ndelta <- non_inferiority_margin\n\n# Welch's t-test sample size calculation\n# Using the 'pwr' package\nlibrary(pwr)\n\n# Calculate the effect size (Cohen's d)\neffect_size <- delta / (hba1c_mean_sd[2] / sqrt(2))\n\n# Calculate the sample size\nsample_size <- pwr.t.test(d = effect_size, power = power, alpha = alpha, type = \"two.sample\", alternative = \"two.sided\",  ratio = 0.5,  sigma = hba1c_mean_sd[2])\nsample_size$n\n\n# Adjust for dropout rate\nadjusted_sample_size <- sample_size$n / (1 - dropout_rate)\nadjusted_sample_size\n\n# Stratification Scheme\n\n# Stratify by Baseline HbA1c Levels\nstrata_levels <- c(6.0, 6.5, 7.0, 7.5, 8.0) # Define HbA1c strata\n\n# Stratify by Treatment Centers\ncenters <- unique(data$center_id)\nnum_centers <- length(centers)\n\n# Create stratification variables\nbaseline_strata <- cut(data$baseline_hba1c, breaks = strata_levels, labels = FALSE)\ncenter_strata <- factor(data$center_id, levels = centers)\n\n# Ensure balance across strata and centers\n# This requires careful randomization and potentially oversampling of underrepresented strata/centers.\n# The exact implementation depends on the randomization method used.  A simple approach is to\n# oversample strata/centers with lower enrollment rates.\n\n# Simulation Code\n\n# Simulate data under the null hypothesis (drug is non-inferior)\nset.seed(123)\nn_simulations <- 1000\nsimulated_data <- data.frame(\n  patient_id = 1:n_simulations,\n  baseline_hba1c = rnorm(n_simulations, mean = hba1c_mean_sd[1], sd = hba1c_mean_sd[2]),\n  final_hba1c = rnorm(n_simulations, mean = baseline_hba1c + 0.3, sd = 0.8) # Simulate HbA1c reduction\n)\n\n# Simulate data under the alternative hypothesis (drug is superior)\nset.seed(456)\nn_simulations <- 1000\nsimulated_data_alt <- data.frame(\n  patient_id = 1:n_simulations,\n  baseline_hba1c = rnorm(n_simulations, mean = hba1c_mean_sd[1], sd = hba1c_mean_sd[2]),\n  final_hba1c = rnorm(n_simulations, mean = baseline_hba1c + 0.8, sd = 0.8) # Simulate larger HbA1c reduction\n)\n\n# Calculate HbA1c change for each simulated patient\nsimulated_data$hba1c_change <- simulated_data$final_hba1c - simulated_data$baseline_hba1c\nsimulated_data_alt$hba1c_change <- simulated_data_alt$final_hba1c - simulated_data_alt$baseline_hba1c\n\n# Calculate the proportion of patients in each stratum and center\nstrata_summary <- aggregate(hba1c_change ~ baseline_strata + center_strata, data = simulated_data, FUN = mean)\ncenter_summary <- aggregate(hba1c_change ~ center_strata, data = simulated_data, FUN = mean)\n\n# Print summary statistics\nprint(strata_summary)\nprint(center_summary)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. 1) Correctness: The sample size calculation uses a standard t-test approach (pwr.t.test) which contradicts the requirement for a 'robust statistical method for non-normal data.' The simulation code is also logically flawed, simulating only 1000 patients total rather than a full trial with two arms, and fails to implement the non-inferiority test logic (calculating confidence intervals against the margin). 2) Completeness: The stratification section is pseudo-code that references a non-existent 'data' object and does not propose a randomization algorithm (e.g., minimization or permuted blocks). 3) Best Practices: The simulation does not validate power; it merely calculates means. 4) Domain Accuracy: The student ignores the specific constraints of non-inferiority trials (one-sided testing, margin logic) and the non-normal distribution requirement (should use permutation tests or bootstrapping). 5) Clarity: The code is disjointed and lacks narrative structure. 6) Autonomy: The output is unusable for a real trial protocol due to critical statistical errors and missing implementation details."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Prepare articles for publication or presentation at professional conferences.",
+      "task_type": "Manuscript Preparation and Statistical Interpretation",
+      "user_prompt": "You are preparing a manuscript for a high-impact oncology journal describing a Phase II basket trial. The study used an adaptive design with early stopping for futility. The results show a significant interaction between treatment and tumor subtype. Write a 'Statistical Analysis' section for the manuscript that: 1) Explains the adaptive design features and how they were controlled for Type I error (e.g., alpha spending function). 2) Describes the interaction test used to evaluate treatment efficacy across subtypes. 3) Provides a table of results including hazard ratios, confidence intervals, and p-values, formatted according to CONSORT guidelines. Include R code used to generate the forest plot for the interaction analysis.",
+      "reference_context": "Dataset Schema: patient_id, tumor_subtype, treatment_arm, pfs_time, pfs_event, futility_stop_flag. Assumptions: Proportional hazards within subtypes; interaction term is key.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the explanation of the adaptive design and Type I error control accurate?",
+        "Criterion 2: Completeness — Are the interaction test and CONSORT formatting requirements met?",
+        "Criterion 3: Best practices — Is the R code for the forest plot reproducible and does it correctly display interaction effects?"
+      ],
+      "student_answer": "```R\n# Statistical Analysis\n\nThis Phase II basket trial utilized an adaptive design with early stopping for futility, guided by an alpha spending function. The primary endpoint was progression-free survival (PFS). The trial was designed with a Bayesian adaptive approach, allowing for interim analyses and potential modification of the sample size based on accumulating data.  Specifically, the futility boundary was set at a hazard ratio (HR) of 1.5, with a corresponding alpha spending function that allocated 0.80 of the overall alpha level (α = 0.05) to the first interim analysis and 0.20 to the second.  The alpha spending function was implemented using a Bayesian approach, incorporating prior distributions reflecting the plausibility of observing a treatment effect below the futility boundary.  The decision to stop the trial for futility was based on a two-sided log-rank test comparing the hazard ratios of the treatment arms across all enrolled patients.  A p-value < 0.05 triggered the futility stop rule.  The sample size was subsequently adjusted based on the futility stop decision.\n\nTo evaluate treatment efficacy across tumor subtypes, an interaction term was included in the Cox proportional hazards model. The model was specified as:\n\n`log(Hazard Ratio) = Intercept + Subtype_1 + Subtype_2 + Treatment_Arm + Subtype_1:Treatment_Arm + Subtype_2:Treatment_Arm + Residual`\n\nwhere Subtype_1 and Subtype_2 represent dummy-coded variables for each tumor subtype, Treatment_Arm represents the treatment arm (e.g., Drug A vs. Drug B), and Subtype_1:Treatment_Arm and Subtype_2:Treatment_Arm represent interaction terms between the subtypes and treatment arms.  The proportional hazards assumption was assessed using Schoenfeld residuals at each interim analysis.  If the assumption was violated, the model was adjusted using time-dependent covariates.\n\n**Results**\n\n| Tumor Subtype | Treatment Arm | Hazard Ratio (HR) | 95% Confidence Interval (CI) | p-value |\n|---|---|---|---|---|\n| Breast | Drug A | 0.65 | 0.48, 0.87 | 0.002 |\n| Breast | Drug B | 0.82 | 0.62, 1.09 | 0.22 |\n| Lung | Drug A | 0.91 | 0.68, 1.26 | 0.45 |\n| Lung | Drug B | 0.78 | 0.58, 1.07 | 0.23 |\n| Colorectal | Drug A | 0.72 | 0.54, 0.95 | 0.003 |\n| Colorectal | Drug B | 0.88 | 0.68, 1.17 | 0.31 |\n\n*Note: Hazard ratios represent the ratio of hazards between treatment arms within each subtype.  P-values are based on a two-sided log-rank test.*\n\n**Forest Plot (R Code)**\n\n```R\n# Install necessary packages if not already installed\n# install.packages(c(\"forestplot\", \"ggplot2\"))\n\nlibrary(forestplot)\nlibrary(ggplot2)\n\n# Sample Data (Replace with your actual data)\nhr <- c(0.65, 0.82, 0.91, 0.78, 0.72, 0.88)\nci <- c(0.48, 0.62, 0.68, 0.58, 0.54, 0.68)\np_val <- c(0.002, 0.22, 0.45, 0.23, 0.003, 0.31)\nsubtype <- factor(c(\"Breast\", \"Breast\", \"Lung\", \"Lung\", \"Colorectal\", \"Colorectal\"), levels = c(\"Breast\", \"Lung\", \"Colorectal\"))\ntreatment <- factor(c(\"Drug A\", \"Drug B\", \"Drug A\", \"Drug B\", \"Drug A\", \"Drug B\"), levels = c(\"Drug A\", \"Drug B\"))\n\n# Create the forest plot\nforestplot(hr,\n           ci = ci,\n           p_val = p_val,\n           xlab = \"Hazard Ratio\",\n           ylab = \"Confidence Interval\",\n           main = \"Interaction of Treatment and Tumor Subtype\",\n           subtype = subtype,\n           treatment = treatment,\n           xlab_size = 8,\n           ylab_size = 8,\n           main_size = 10)\n```\n\nThis code generates a basic forest plot visualizing the hazard ratios and confidence intervals for each combination of tumor subtype and treatment arm.  The p-values are displayed on the plot.  The plot is customizable to include additional features such as error bars and annotations.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamentally on domain accuracy and correctness. It conflates frequentist alpha spending functions with Bayesian approaches, incorrectly states that a p-value triggers a futility stop (futility is based on probability of success or posterior probability, not p-values), and presents a results table that is statistically nonsensical (comparing HRs of Drug A vs Drug B within subtypes as if they are independent estimates rather than relative risks from a single model). The interaction test description is flawed, and the R code is syntactically invalid (passing vectors directly to forestplot without a data frame structure and using non-standard arguments). It ignores the specific additional checks regarding time-varying biomarkers and clustering. The output is not usable for a high-impact journal."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Write research proposals or grant applications for submission to external bodies.",
+      "task_type": "Grant Writing and Methodology",
+      "user_prompt": "You are writing a grant proposal for a NIH R01 grant to study the effect of a novel immunotherapy on survival in a rare cancer. The study will use a real-world evidence (RWE) approach with observational data. Write the 'Statistical Methods' section that: 1) Proposes a propensity score matching or weighting strategy to adjust for confounding by indication. 2) Describes a sensitivity analysis to assess unmeasured confounding (e.g., E-value calculation). 3) Provides R code to perform the propensity score matching and the subsequent survival analysis using a Cox model with robust variance estimation.",
+      "reference_context": "Dataset Schema: patient_id, treatment_received, covariates (age, stage, comorbidities), survival_time, survival_event. Assumptions: No unmeasured confounding for primary analysis; robust variance for clustering.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the propensity score method appropriate for observational RWE data?",
+        "Criterion 2: Completeness — Are unmeasured confounding and robust variance estimation addressed?",
+        "Criterion 3: Best practices — Is the R code reproducible and does it correctly implement the matching and survival analysis?"
+      ],
+      "student_answer": "```R\n# Statistical Methods\n\nThis study will employ a propensity score matching (PSM) approach, followed by a Cox proportional hazards model, to assess the effect of the novel immunotherapy on survival in patients with this rare cancer.  Given the observational nature of the data and the potential for confounding by indication, PSM is crucial for minimizing bias.\n\n**1. Propensity Score Matching**\n\nA propensity score will be estimated using a logistic regression model, predicting the probability of receiving the immunotherapy based on observed covariates: `treatment_received` (1=immunotherapy, 0=control), `age`, `stage`, and `comorbidities`.  The model will be specified as follows:\n\n```R\npropensity_model <- glm(treatment_received ~ age + stage + comorbidities, data = data, family = binomial(link = \"logit\"))\npropensity_scores <- predict(propensity_model, type = \"response\")\n```\n\nWe will use caliper matching to reduce imbalance in the propensity scores between the treatment and control groups. A caliper width will be determined based on the interquartile range (IQR) of the propensity scores.  Specifically, the caliper will be set to 1.5 * IQR. Patients with propensity scores within the caliper of each other will be matched.  Matching will be performed using nearest neighbor matching.\n\n```R\n# Calculate IQR\niqr <- IQR(propensity_scores)\ncaliper <- 1.5 * iqr\n\n# Perform matching\nmatched_data <- match(propensity_scores, ties = FALSE)\nmatched_data <- pmatch(matched_data, caliper)\n\n# Filter the data\nmatched_data <- data[matched_data, ]\n```\n\n**2. Survival Analysis**\n\nFollowing propensity score matching, a Cox proportional hazards model will be used to assess the association between immunotherapy and survival. The model will be specified as:\n\n```R\ncox_model <- coxph(Surv(survival_time, survival_event) ~ treatment_received + age + stage + comorbidities, data = matched_data)\n```\n\nRobust variance estimation will be implemented to account for potential clustering within hospitals or other relevant units.  We will use a sandwich estimator for the robust standard errors.\n\n```R\nlibrary(sandwich)\nlibrary(robcobas)\n\n# Robust standard errors\nrobust_se <- sqrt(vcovHC(cox_model, type = \"HC3\"))\n\n# Print results with robust standard errors\nsummary(cox_model, se = robust_se)\n```\n\n**3. Sensitivity Analysis – E-value Calculation**\n\nTo assess the potential impact of unmeasured confounding, an E-value calculation will be performed.  This will be done using the `robcobas` package.  The E-value represents the probability that the observed association between treatment and survival is due to unmeasured confounding.\n\n```R\n# Calculate E-value\ne_value <- robcobas(cox_model, data = matched_data, method = \"E\")\nprint(e_value)\n```\n\nThe E-value will be interpreted according to standard guidelines (e.g., E < 0.05 suggests substantial unmeasured confounding).  If the E-value is unacceptably high, further investigation and potential data collection to address unmeasured confounders will be considered.  If the E-value is high, the results should be interpreted with caution.\n\n**4. Data Considerations**\n\nThe dataset includes patient_id, treatment_received, age, stage, comorbidities, survival_time, and survival_event.  Missing data will be handled using multiple imputation.  The imputation model will be based on the observed variables.\n```\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, and Domain Accuracy due to multiple critical errors. First, the R code for propensity score matching uses non-existent functions (match, pmatch) and incorrect logic; it does not perform actual matching. Second, the survival analysis model incorrectly includes covariates in the Cox model after matching, which reintroduces confounding bias (matching should be followed by an unadjusted or minimally adjusted model). Third, the code for robust variance estimation uses incorrect syntax (vcovHC is for linear models, not Cox, and robcobas is not a standard package for this). Fourth, the E-value calculation code is fabricated (robcobas does not exist). Fifth, the interpretation of the E-value is factually wrong (E-values are ratios > 1, not probabilities < 0.05). Sixth, the submission ignores the 'Additional Checks' regarding time-varying biomarkers, clustering in imputation, and proportional hazards assumptions. The output is not usable as-is."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop or use mathematical models to track changes in biological phenomena, such as the spread of infectious diseases.",
+      "task_type": "Mathematical Modeling",
+      "user_prompt": "You are a biostatistician modeling the spread of a novel respiratory pathogen in a closed population of 5,000 individuals. You have daily case counts for 60 days. Develop a compartmental SIR (Susceptible-Infected-Recovered) model to estimate the basic reproduction number (R0) and the peak infection date. Your analysis must: 1) Define the differential equations used. 2) Propose a method to estimate R0 from the observed data assuming a constant transmission rate initially. 3) Discuss how to adjust the model if the assumption of homogeneous mixing is violated due to age stratification. Provide the R code skeleton for fitting the model using non-linear least squares.",
+      "reference_context": "Data: Daily case counts (t=0 to t=60). Assumptions: Closed population, no births/deaths during the period. Initial conditions: S(0)=4990, I(0)=10, R(0)=0. Constraints: Data is aggregated daily, not individual-level.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the SIR differential equations correctly formulated and implemented?",
+        "Criterion 2: Assumptions — Does the response explicitly address the homogeneous mixing assumption and propose stratification adjustments?",
+        "Criterion 3: Reproducibility — Is the R code for non-linear least squares fitting complete and syntactically correct?"
+      ],
+      "student_answer": "```R\n# SIR Model Differential Equations\n# dS/dt = -beta * S * I\n# dI/dt = beta * S * I - gamma * I\n# dR/dt = gamma * I\n\n# R0 Estimation\n# R0 = beta / gamma\n# Estimate beta from data:  Fit the model to the data and extract beta from the fitted parameters.\n# Alternatively, use a robust estimation method like the Hill estimator if data is noisy.\n\n# Age Stratification Adjustment\n# Divide the population into age groups.\n# Modify the model to include age-specific transmission rates (beta_age).\n#  dS_i/dt = -beta_age_i * S_i * I\n#  dI_i/dt = beta_age_i * S_i * I - gamma_age_i * I\n#  dR_i/dt = gamma_age_i * I\n#  Total S = sum(S_age)\n#  Total I = sum(I_age)\n#  Total R = sum(R_age)\n#  Use data stratified by age group to estimate beta_age and gamma_age for each group.\n\n# Non-linear Least Squares Fitting\n# Use the nlm package or other non-linear optimization functions (e.g., optim) to fit the model to the data.\n# Define a function to calculate the sum of squared errors (SSE).\n# Use an iterative optimization algorithm (e.g., BFGS) to find the parameter values that minimize SSE.\n\n# R Code Skeleton\n# Install necessary packages\n# install.packages(c(\"deSolve\", \"nloptr\"))\n\n# Load necessary packages\nlibrary(deSolve)\nlibrary(nloptr)\n\n# Define the SIR model function\nsir_model <- function(time, state, parameters) {\n  beta <- parameters[1]\n  gamma <- parameters[2]\n  dS <- -beta * state[1] * state[2]\n  dI <- beta * state[1] * state[2] - gamma * state[2]\n  dR <- gamma * state[2]\n  \n  return(c(dS, dI, dR))\n}\n\n# Initial conditions\ninitial_state <- c(4990, 10, 0)\n\n# Time vector\ntime <- 0:60\n\n# Data (replace with actual daily case counts)\ncases <- c(10, 12, 15, 18, 22, 25, 28, 30, 32, 34, 36, 38, 40, 42, 45, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140, 144, 148, 152, 156, 160, 164, 168, 172, 176, 180, 184, 188, 192, 196, 200, 204, 208, 212, 216, 220, 224, 228, 232, 236, 240, 244, 248, 252, 256, 260, 264, 268, 272, 276, 280, 284, 288, 292, 296, 300, 304, 308, 312, 316, 320, 324, 328, 332, 336, 340, 344, 348, 352, 356, 360, 364, 368, 372, 376, 380, 384, 388, 392, 396, 400, 404, 408, 412, 416, 420, 424, 428, 432, 436, 440, 444, 448, 452, 456, 460, 464, 468, 472, 476, 480, 484, 488, 492, 496, 500, 504, 508, 512, 516, 520, 524, 528, 532, 536, 540, 544, 548, 552, 556, 560, 564, 568, 572, 576, 580, 584, 588, 592, 596, 600, 604, 608, 612, 616, 620, 624, 628, 632, 636, 640, 644, 648, 652, 656, 660, 664, 668, 672, 676, 680, 684, 688, 692, 696, 700, 704, 708, 712, 716, 720, 724, 728, 732, 736, 740, 744, 748, 752, 756, 760, 764, 768, 772, 776, 780, 784, 788, 792, 796, 800, 804, 808, 812, 816, 820, 824, 828, 832, 836, 840, 844, 848, 852, 856, 860, 864, 868, 872, 876, 880, 884, 888, 892, 896, 900, 904, 908, 912, 916, 920, 924, 928, 932, 936, 940, 944, 948, 952, 956, 960, 964, 968, 972, 976, 980, 984, 988, 992, 996, 1000)\n\n# Define the objective function (SSE)\nobjective_function <- function(state, parameters, cases) {\n  beta <- parameters[1]\n  gamma <- parameters[2]\n  \n  # Solve the SIR model\n  solution <- ode(func = sir_model, y = state, times = time, parms = parameters)\n  \n  # Calculate the difference between the model predictions and the observed cases\n  error <- solution$y[, 3] - cases\n  \n  # Return the sum of squared errors\n  return(sum(error^2))\n}\n\n# Set initial parameter values\ninitial_parameters <- c(0.5, 0.1)\n\n# Perform non-linear least squares fitting\n# Use nlm to find the parameter values that minimize the objective function\n# result <- nlm(objective_function, initial_parameters, cases)\n# print(result)\n\n# Alternatively, use optim\n# result <- optim(par = initial_parameters, fn = objective_function, gr = function(x, cases) {\n#   # Calculate the gradient of the objective function\n#   # This is a placeholder, you need to implement the gradient calculation\n#   return(numeric(0))\n# }, method = \"BFGS\", data = list(cases = cases))\n# print(result)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness and Domain Accuracy. The student defines the SIR model equations correctly but then attempts to fit the model to 'cases' (incidence) by comparing the model's 'Recovered' compartment (solution$y[, 3]) directly to the observed daily case counts. This is a fundamental modeling error; daily cases correspond to the incidence rate (beta*S*I), not the cumulative recovered count. Consequently, the R code skeleton is non-functional for the stated goal. The response also ignores the specific constraint to estimate R0 and peak date explicitly, instead offering a generic optimization skeleton. The 'Additional Checks' section regarding proportional hazards and clustering is completely irrelevant to the SIR task, indicating a failure to read the prompt or a hallucination of unrelated statistical concepts. The age stratification section is also mathematically flawed, as it fails to define the contact matrix necessary for age-structured mixing. While the code structure is readable (Clarity 3), the core statistical logic is broken, preventing the output from being used without major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Analyze archival data, such as birth, death, and disease records.",
+      "task_type": "Archival Data Analysis",
+      "user_prompt": "You are analyzing a 10-year archival dataset of birth and death records to investigate the association between maternal age and neonatal mortality. The dataset contains 500,000 records with significant missingness in maternal education (20%) and gestational age (5%). 1) Design a statistical analysis plan to estimate the odds ratio of neonatal death per year of maternal age, adjusting for confounders. 2) Justify the choice of imputation method for the missing covariates. 3) Describe how you will test for non-linear effects of maternal age. Provide the R code skeleton for the logistic regression and the imputation workflow.",
+      "reference_context": "Dataset Schema: mother_id, maternal_age (continuous), maternal_edu (categorical, 20% NA), gestational_age (weeks, 5% NA), neonatal_death (0/1). Assumptions: Records are independent. Potential bias: Missing data may not be missing at random (MNAR) if education is linked to socioeconomic status.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the logistic regression model appropriately specified for the outcome?",
+        "Criterion 2: Bias Handling — Does the plan address potential MNAR mechanisms for missing education data?",
+        "Criterion 3: Best Practices — Is the R code using appropriate packages (e.g., 'mice', 'glm') and handling non-linear terms (e.g., splines)?"
+      ],
+      "student_answer": "```R\n# Statistical Analysis Plan: Maternal Age and Neonatal Mortality\n\n# 1. Analysis Plan:\n\n#   * **Model:** Logistic Regression\n#   * **Dependent Variable:** neonatal_death (0/1)\n#   * **Predictor Variable:** maternal_age (continuous)\n#   * **Confounders:** maternal_edu (categorical), gestational_age (continuous)\n#   * **Adjustment:**  Include interaction terms between maternal_age and maternal_edu to account for potential effect modification.\n#   * **Outcome:** Odds Ratio (OR) of neonatal death per year of maternal age, adjusted for confounders and potential effect modification.\n#   * **Statistical Significance:**  p-values for each coefficient, adjusted p-values using Benjamini-Hochberg procedure for multiple comparisons.\n#   * **Model Diagnostics:** Examine residuals for normality and homoscedasticity. Assess model fit using Hosmer-Lemeshow test.\n\n# 2. Imputation Justification:\n\n#   * **Method:** Multiple Imputation by Chained Equations (MICE)\n#   * **Rationale:** MICE is suitable due to the complex missing data patterns (missing at non-random – potentially MNAR, particularly for maternal education).  It iteratively imputes missing values based on other observed variables, accounting for uncertainty.  It’s more robust than single imputation methods like mean imputation.\n#   * **Imputation Variables:** maternal_edu, gestational_age\n#   * **Imputation Models:**  Separate logistic regression models for categorical (maternal_edu) and continuous (gestational_age) variables, using other variables as predictors.\n\n# 3. Non-Linear Effects Testing:\n\n#   * **Polynomial Regression:** Include squared and cubic terms of maternal_age in the logistic regression model.\n#   * **Splines:**  Use smoothing splines to capture non-linear relationships between maternal_age and neonatal mortality.  Evaluate the smoothing parameter (λ) using cross-validation.\n#   * **Visual Inspection:** Create scatter plots of neonatal mortality vs. maternal age, with fitted curves from polynomial and spline models.\n\n# R Code Skeleton:\n\n# --- Imputation Workflow ---\n\n# Install and load necessary packages\n# install.packages(c(\"mice\", \"tidyverse\"))\nlibrary(mice)\nlibrary(tidyverse)\n\n# Create a complete dataset (for MICE)\ncomplete_data <- na.omit(your_data) # Replace your_data with your actual dataset\n\n# Imputation using MICE\nset.seed(123) # for reproducibility\nimputed_data <- mice(complete_data, m = 5, method = 'cart', maxit = 50)\nimputed_data_list <- imputed_data$incompletingValues\nimputed_data_predict <- imputed_data$predictorMatrix\nimputed_data_completed <- complete(imputed_data, action = \"any\", predictor = TRUE)\n\n# --- Logistic Regression ---\n\n# Load necessary packages\n# install.packages(c(\"glm\", \"survminer\"))\nlibrary(glm)\nlibrary(survminer)\n\n# Fit logistic regression model\n# Include interaction term between maternal_age and maternal_edu\nmodel <- glm(neonatal_death ~ maternal_age + maternal_edu + gestational_age + maternal_age:maternal_edu,\n             data = imputed_data_completed, family = binomial(link = \"logit\"))\n\n# Summarize the model\nsummary(model)\n\n# Test for non-linear effects (Polynomial Regression)\n# Create polynomial terms\nmodel_poly <- glm(neonatal_death ~ maternal_age + I(maternal_age^2) + I(maternal_age^3) + maternal_edu + gestational_age + maternal_age:maternal_edu,\n                 data = imputed_data_completed, family = binomial(link = \"logit\"))\n\nsummary(model_poly)\n\n# Test for non-linear effects (Splines)\n# Requires a package like 'splines' or 'mgcv'\n# Example using splines (requires installation: install.packages(\"splines\"))\n# library(splines)\n# Create spline terms\n# spl <- bsps(maternal_age, knots = seq(min(maternal_age), max(maternal_age), length.out = 5))\n# spl_matrix <- as.matrix(predict(spl, newdata = imputed_data_completed))\n# model_spline <- glm(neonatal_death ~ spl_matrix + maternal_edu + gestational_age + maternal_age:maternal_edu,\n#                   data = imputed_data_completed, family = binomial(link = \"logit\"))\n# summary(model_spline)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission addresses the core tasks but contains significant technical and conceptual errors. 1) Correctness: The student incorrectly suggests checking residuals for normality and homoscedasticity in a logistic regression (these apply to linear regression). 2) Completeness: The imputation workflow is flawed; it removes missing data with `na.omit` before imputation, which defeats the purpose of MICE. It also fails to handle the 5 imputed datasets correctly for analysis (pooling results is required). 3) Best Practices: The code uses `action = 'any'` which is incorrect for MICE; it should specify the imputed dataset. The `survminer` package is loaded but not relevant for logistic regression. 4) Domain Accuracy: The student mentions MNAR but justifies MICE (which assumes MAR) without discussing sensitivity analyses for MNAR. 5) Clarity: The structure is clear. 6) Autonomy: The code is not runnable or valid for the intended analysis due to the `na.omit` error and lack of pooling, requiring significant rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design surveys to assess health issues.",
+      "task_type": "Survey Design",
+      "user_prompt": "You are tasked with designing a cross-sectional survey to assess the prevalence of chronic fatigue syndrome in a specific urban demographic. The target population is heterogeneous. 1) Propose a sampling strategy (e.g., stratified cluster sampling) that minimizes design effect while ensuring representation of key subgroups (age, gender). 2) Calculate the required sample size to detect a prevalence of 5% with a 95% confidence interval width of +/- 2%, assuming a design effect of 1.5. 3) Draft a section of the protocol detailing how to handle non-response bias. Provide the R code to calculate the sample size.",
+      "reference_context": "Target Population: Urban residents aged 18-65. Assumptions: True prevalence is approximately 5%. Constraints: Budget limits total sample to 2,000. Non-response rate is expected to be 30%.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the sample size calculation formula correct for a proportion with a design effect?",
+        "Criterion 2: Completeness — Does the sampling strategy address the heterogeneity of the population?",
+        "Criterion 3: Best Practices — Are non-response bias mitigation strategies (e.g., weighting, follow-up) clearly defined?"
+      ],
+      "student_answer": "```R\n# Sample Size Calculation\n# Prevalence = 0.05\n# Confidence Interval Width = 0.02\n# Design Effect = 1.5\n# Total Sample Size = 2000\n# Non-Response Rate = 0.30\n\n# Calculate the required unadjusted sample size\nunadjusted_sample_size <- 1 / ( ( ( ( ( (0.05 + 0.02) / 0.05)^2 ) - 1 ) / 0.05^2 ) * 1.5)\n\n# Adjust for non-response\nadjusted_sample_size <- unadjusted_sample_size / (1 - 0.30)\n\nprint(paste(\"Required Sample Size:\", round(adjusted_sample_size, 2)))\n\n# Stratified Cluster Sampling Strategy\n\n# Subgroups: Age (18-34, 35-54, 55-65) and Gender (Male, Female)\n# Stratification will ensure representation of these subgroups.\n# Clusters:  Randomly selected blocks or neighborhoods within the urban area.\n# Within each cluster, participants will be randomly selected.\n\n# Protocol Section on Non-Response Bias\n\n# Handling Non-Response Bias:\n\n# 1.  Anticipate Non-Response:  A non-response rate of 30% is anticipated.\n# 2.  Weighting:  Use complex survey weights to adjust for non-response.  Weights will be calculated based on propensity score modeling to estimate the probability of responding given characteristics (age, gender, socioeconomic status, etc.).  Respondents will be given higher weights than non-respondents.\n# 3.  Subgroup Analysis:  Examine non-response rates within each subgroup (age, gender) to assess potential bias.  If significant differences exist, consider separate analyses or sensitivity analyses.\n# 4.  Data Collection Strategies: Implement strategies to maximize response rates, such as multiple contact attempts, offering incentives (if ethically permissible), and ensuring the survey is easily accessible (online, paper).\n# 5.  Sensitivity Analysis: Conduct a sensitivity analysis to assess the potential impact of non-response bias on the prevalence estimate.\n\n```\n2000",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. 1) Correctness: The R code contains a nonsensical formula for sample size calculation that does not correspond to standard statistical methods for prevalence (e.g., using the normal approximation or exact binomial methods). The formula provided is mathematically invalid for the stated parameters. 2) Completeness: The student ignored the specific instruction to draft a protocol section and instead provided a list of bullet points that lack the formal tone and depth of a protocol. 3) Domain Accuracy: The sampling strategy description is superficial and does not explain how to minimize the design effect or handle the heterogeneous population effectively. 4) Autonomy: The output is unusable as a professional deliverable due to the broken code and lack of rigor. 5) The 'Additional Checks' regarding time-varying biomarkers and Cox models are irrelevant to the specific task of a cross-sectional prevalence survey, indicating the model may have hallucinated a different task context, but the primary failure is the inability to solve the actual prompt provided."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Apply research or simulation results to extend biological theory or recommend new research projects.",
+      "task_type": "Simulation Study",
+      "user_prompt": "You are evaluating the power of a new adaptive trial design compared to a fixed sample size design for a Phase II oncology study. The primary endpoint is response rate. 1) Design a simulation study to compare the power of a Simon's two-stage design versus a fixed design with 50 patients. 2) Specify the parameters for the simulation (null response rate 0.1, alternative 0.3, alpha 0.05). 3) Analyze the results to recommend which design to use if the goal is to minimize expected sample size while maintaining 80% power. Provide the R code to run 10,000 simulations for each design.",
+      "reference_context": "Parameters: Null rate (p0)=0.1, Alternative rate (p1)=0.3, Alpha=0.05, Beta=0.20. Assumptions: Binomial distribution for responses. Constraints: Maximum sample size for fixed design is 50.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Are the simulation parameters and stopping rules for the two-stage design correctly implemented?",
+        "Criterion 2: Analysis — Does the output correctly compare power and expected sample size?",
+        "Criterion 3: Reproducibility — Is the R code for the simulation loop efficient and reproducible?"
+      ],
+      "student_answer": "```R\n# Simulation Study: Adaptive vs. Fixed Sample Size for Oncology Trial\n\n# Parameters\np0 <- 0.1  # Null response rate\np1 <- 0.3  # Alternative response rate\nalpha <- 0.05 # Significance level\nbeta <- 0.20 # Desired power (1 - Beta)\nn_simulations <- 10000 # Number of simulations\n\n# Fixed Design Parameters\nn_fixed <- 50 # Fixed sample size\n\n# Simon's Two-Stage Design Parameters\np_alpha <- 0.05 # Significance level for the stopping rule\np_beta <- 1 - beta # Power\n\n# Function to simulate the fixed design\nsimulate_fixed <- function(n) {\n  response_count <- sum(rbinom(n, 1, p0))\n  return(response_count)\n}\n\n# Function to simulate Simon's two-stage design\nsimulate_simon <- function(n, p_alpha, p_beta) {\n  # Parameters for Simon's design\n  delta <- 0.2 # Threshold for stopping rule (adjust as needed)\n  \n  # Stage 1: Initial sample\n  sample_size_stage1 <- 1\n  response_stage1 <- sum(rbinom(sample_size_stage1, 1, p0))\n  \n  # Stage 2: Adaptive stopping\n  response_stage2 <- 0\n  while (TRUE) {\n    sample_size_stage2 <- sample_size_stage1 + 1\n    response_stage2 <- sum(rbinom(sample_size_stage2, 1, p0))\n    \n    if (response_stage2 > response_stage1 + delta * sample_size_stage1) {\n      break\n    }\n    sample_size_stage1 <- sample_size_stage2\n  }\n  \n  return(sample_size_stage1)\n}\n\n# Run Simulations\nfixed_sample_sizes <- replicate(n_simulations, simulate_fixed(n_fixed))\nsimon_sample_sizes <- replicate(n_simulations, simulate_simon(n_fixed, p_alpha, p_beta))\n\n# Analyze Results\n\n# Calculate Sample Size for Fixed Design\nfixed_sample_size_threshold <- qbinom(1 - alpha, n_fixed, p0)\nfixed_sample_sizes_actual <- fixed_sample_sizes[fixed_sample_sizes >= fixed_sample_size_threshold]\nnum_fixed_successes <- length(fixed_sample_sizes_actual)\n\n# Calculate Power for Fixed Design\npower_fixed <- num_fixed_successes / n_simulations\n\n# Calculate Sample Size for Simon's Design\nsimon_sample_size_threshold <- qbinom(1 - alpha, n_fixed, p0)\nsimon_sample_sizes_actual <- simon_sample_sizes[simon_sample_sizes >= simon_sample_size_threshold]\nnum_simon_successes <- length(simon_sample_sizes_actual)\n\n# Calculate Power for Simon's Design\npower_simon <- num_simon_successes / n_simulations\n\n# Print Results\ncat(\"Fixed Design - Sample Size:\", mean(fixed_sample_sizes), \"\\n\")\ncat(\"Fixed Design - Power:\", power_fixed, \"\\n\")\ncat(\"Simon's Design - Sample Size:\", mean(simon_sample_sizes), \"\\n\")\ncat(\"Simon's Design - Power:\", power_simon, \"\\n\")\n\n# Recommendation\nif (power_simon >= 0.8 && mean(simon_sample_sizes) < n_fixed) {\n  cat(\"\\nRecommendation: Use Simon's two-stage design to minimize sample size while maintaining 80% power.\\n\")\n} else if (power_fixed >= 0.8) {\n  cat(\"\\nRecommendation: Use the fixed design as it meets the 80% power requirement.\\n\")\n} else {\n  cat(\"\\nRecommendation: Neither design meets the 80% power requirement. Consider increasing the sample size.\\n\")\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. 1) It does not design a simulation to compare power; instead, it simulates a custom, non-standard 'adaptive' algorithm that does not implement Simon's Two-Stage design (which requires specific critical values for early stopping based on null/alternative hypotheses). 2) The code simulates under the null hypothesis (p0) for the Simon design logic, failing to calculate power under the alternative hypothesis (p1). 3) The logic for determining success/failure is flawed, treating the simulation as a stopping rule search rather than a hypothesis test. 4) The 'Additional Checks' regarding time-to-event data, proportional hazards, and clustering are completely ignored, as the submission focuses on a binary response rate endpoint without addressing the specific methodological constraints requested in the prompt's context. The code is fundamentally incorrect for the stated goal."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collect data through surveys or experimentation.",
+      "task_type": "Experimental Design",
+      "user_prompt": "You are planning a randomized controlled trial (RCT) to test the efficacy of a new dietary supplement on blood pressure reduction. The study will have 3 arms: Placebo, Low Dose, High Dose. 1) Propose a randomization scheme (e.g., block randomization) to ensure balance across 4 centers. 2) Determine the sample size per arm to detect a mean difference of 5 mmHg with a standard deviation of 10 mmHg, with 90% power and alpha 0.05 (two-sided). 3) Describe the statistical analysis plan for the primary endpoint, including how to handle baseline blood pressure as a covariate. Provide the R code for generating the randomization list.",
+      "reference_context": "Outcome: Change in systolic blood pressure from baseline. Assumptions: Normal distribution of the outcome. Constraints: Total sample size must not exceed 300. Centers are balanced.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Is the sample size calculation for ANOVA/linear regression correct?",
+        "Criterion 2: Design — Does the randomization scheme ensure balance across centers?",
+        "Criterion 3: Best Practices — Is the analysis plan justified by ICH E9 guidelines (e.g., ANCOVA for baseline adjustment)?"
+      ],
+      "student_answer": "```R\n# Randomization Scheme: Block Randomization\n\n# Number of blocks: 4 centers * 2 blocks per center = 8 blocks\n# Block size: 30 participants per block (total sample size = 300 / 8 = 37.5, rounded to 37 or 38, we'll use 37)\n# Assign each participant to a block randomly.\n# Within each block, randomly assign participants to the three treatment arms (Placebo, Low Dose, High Dose) with equal probability (1/3).\n\n# Sample Size Calculation\n\n# Mean difference (delta): 5 mmHg\n# Standard deviation (SD): 10 mmHg\n# Power: 90% (0.90)\n# Alpha: 0.05 (two-sided)\n\n# Using a two-sided t-test:\n# df = n - 1\n# delta/SD = 5/10 = 0.5\n# Power = 1 - (1 - t_alpha/2)^2  where t_alpha/2 is the critical t-value for alpha/2 = 0.025\n\n# Using a sample size calculator or formula:\n# n = 2 * (SD^2 * (z_alpha/2 + z_beta)^2) / delta^2\n# z_alpha/2 = 1.96 (for alpha = 0.05, two-sided)\n# z_beta = 0.84 (for power = 0.90)\n# n = 2 * (10^2 * (1.96 + 0.84)^2) / 5^2\n# n = 2 * (100 * (2.8)^2) / 25\n# n = 2 * (100 * 7.84) / 25\n# n = 2 * 784 / 25\n# n = 1568 / 25\n# n = 62.72  (Round up to 63)\n\n# Adjusting for centers and ensuring total sample size <= 300\n# Since we have 4 centers and 3 arms, we need 4 * 3 = 12 participants per center.\n# Total sample size needed = 63 * 3 = 189\n# Remaining sample size = 300 - 189 = 111\n# We can distribute the remaining 111 participants across the 4 centers, aiming for roughly equal distribution.\n# 111 / 4 = 27.75, so approximately 28 participants per center.\n# Total sample size per arm: 28 * 3 / 3 = 28\n\n# Statistical Analysis Plan\n\n# Primary Endpoint: Change in systolic blood pressure from baseline.\n\n# Statistical Test:  A mixed-effects linear model (repeated measures ANOVA) will be used to analyze the primary outcome.\n# Model:  Systolic Blood Pressure Change ~ Treatment (Placebo, Low Dose, High Dose) + Baseline Blood Pressure + Center + Treatment * Baseline Blood Pressure + Residual\n#  - Treatment: Fixed effect representing the treatment group.\n#  - Baseline Blood Pressure: Covariate to adjust for baseline differences between groups.\n#  - Center: Random effect to account for variability between centers.\n#  - Treatment * Baseline Blood Pressure: Interaction term to assess whether the effect of treatment differs based on baseline blood pressure.\n#  - Residual:  Random error term.\n\n# Handling Baseline Blood Pressure as a Covariate:  Including baseline blood pressure as a covariate in the mixed-effects model will control for any pre-existing differences in blood pressure between the groups.  This helps to isolate the effect of the supplement.\n\n# Secondary Analyses:  Subgroup analyses (e.g., by age, sex) may be conducted to explore potential treatment effects in specific populations.\n\n# R Code for Randomization List Generation\n\nset.seed(123) # for reproducibility\n\n# Define treatment arms\ntreatment_arms <- c(\"Placebo\", \"Low Dose\", \"High Dose\")\n\n# Generate block sizes\nblock_size <- 30\n\n# Number of blocks\nnum_blocks <- 4\n\n# Generate block assignments\nblock_assignments <- sample(1:num_blocks, size = block_size * num_blocks, replace = FALSE)\n\n# Create a data frame for the randomization list\nrandomization_list <- data.frame(\n  Block = factor(rep(1:num_blocks, each = block_size)),\n  Treatment = sample(treatment_arms, size = block_size * num_blocks, replace = TRUE)\n)\n\n# Print the randomization list\nprint(randomization_list)\n\n# Example of how to use the randomization list to assign participants to treatment arms:\n# Assuming you have a vector of participant IDs:\n# participant_ids <- 1:300\n# assigned_treatment <- randomization_list$Treatment[sample(1:nrow(randomization_list), size = length(participant_ids))]\n# print(assigned_treatment)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical mathematical and logical errors. 1) Correctness: The sample size calculation formula is wrong for a 3-arm trial (uses a 2-arm formula), resulting in a gross underestimation of the required sample size (63 vs ~130 per arm). The randomization code logic is flawed, generating a list of 120 rows (4 blocks * 30) instead of the required 300, and the assignment logic is nonsensical. 2) Completeness: Fails to provide a valid randomization scheme for 4 centers (the code only defines 4 blocks total, not stratified by center). 3) Best Practices: The statistical analysis plan incorrectly includes an interaction term (Treatment * Baseline) as a primary model component without justification, which reduces power and is not standard for primary efficacy testing. 4) Domain Accuracy: The sample size math is fundamentally incorrect. 5) Clarity: The explanation is confusing due to the errors. 6) Autonomy: The output cannot be used; the code will not generate the required randomization list, and the sample size is insufficient for the stated power."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Assign work to biostatistical assistants or programmers.",
+      "task_type": "Data Management & Programming",
+      "user_prompt": "You are leading a team analyzing a multi-center clinical trial dataset with 10,000 patients. The data is stored in a messy CSV format with inconsistent coding for adverse events (e.g., 'AE', 'Adverse Event', 'AEs'). 1) Write a detailed specification for a data cleaning script that standardizes these codes, handles duplicate patient IDs, and flags outliers in continuous variables. 2) Define the logic for creating a derived variable 'Severity' based on the CTCAE grading system. 3) Provide the R code skeleton for the data cleaning pipeline using 'dplyr' and 'tidyr', ensuring it handles missing values gracefully.",
+      "reference_context": "Input: Raw CSV with columns: patient_id, ae_code, ae_severity (1-5), ae_severity_text. Assumptions: Severity 1-5 maps to CTCAE grades. Constraints: Script must be modular for team collaboration.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the code correctly map inconsistent text codes to standardized values?",
+        "Criterion 2: Completeness — Are duplicate handling and outlier flagging logic clearly defined?",
+        "Criterion 3: Best Practices — Is the R code idiomatic, modular, and robust to missing data?"
+      ],
+      "student_answer": "```r\n# Data Cleaning Script Specification\n\n## 1. Data Cleaning Script Specification\n\n**Objective:** Standardize adverse event (AE) codes, handle duplicate patient IDs, and flag outliers in continuous variables.\n\n**Input:** CSV file with columns: `patient_id`, `ae_code`, `ae_severity`, `ae_severity_text`.\n\n**Output:** Cleaned CSV file with standardized `ae_code` and outlier flags.\n\n**Steps:**\n\n1.  **AE Code Standardization:**\n    *   Define a mapping dictionary to standardize AE codes.  Possible codes: 'AE', 'Adverse Event', 'AEs'.  Map all to a consistent code (e.g., 'AE').\n    *   Apply the mapping to the `ae_code` column.\n    *   Handle cases where `ae_code` is missing or invalid (e.g., assign a default value like 'Unknown').\n\n2.  **Duplicate Patient ID Handling:**\n    *   Identify duplicate `patient_id` entries.\n    *   For each duplicate set, retain only the first record (based on row number).  Consider adding a flag to indicate duplicate status if needed.\n\n3.  **Outlier Detection (Continuous Variables):**\n    *   Identify continuous variables (e.g., `ae_severity`).\n    *   Use a robust method for outlier detection (e.g., IQR method).\n    *   Create a new column `is_outlier` indicating whether a value is an outlier.\n\n**2. Severity Derivation Logic (CTCAE Grading)**\n\n*   `ae_severity` (1-5) maps to CTCAE grades as follows:\n    *   1: Grade 1\n    *   2: Grade 2\n    *   3: Grade 3\n    *   4: Grade 4\n    *   5: Grade 5\n*   Create a new column `Severity` representing the CTCAE grade based on `ae_severity`.\n\n**3. R Code Skeleton (Data Cleaning Pipeline)**\n\n```r\nlibrary(dplyr)\nlibrary(tidyr)\n\n# --- Functions ---\n\n# Function to standardize AE codes\nstandardize_ae_codes <- function(df) {\n  ae_code_mapping <- c(\"AE\" = \"AE\", \"Adverse Event\" = \"AE\", \"AEs\" = \"AE\")\n  df <- df %>%\n    mutate(ae_code = ifelse(is.na(ae_code), \"Unknown\", ae_code_mapping[ae_code]))\n  return(df)\n}\n\n# Function to handle duplicate patient IDs\nremove_duplicate_patients <- function(df) {\n  df <- df %>%\n    distinct(patient_id, .keep_all = TRUE)\n  return(df)\n}\n\n# Function to detect outliers\ndetect_outliers <- function(df, variable) {\n  Q1 <- quantile(df[[variable]], 0.25, na.rm = TRUE)\n  Q3 <- quantile(df[[variable]], 0.75, na.rm = TRUE)\n  IQR <- Q3 - Q1\n  lower_bound <- Q1 - 1.5 * IQR\n  upper_bound <- Q3 + 1.5 * IQR\n  df <- df %>%\n    mutate(is_outlier = ifelse(!!variable < lower_bound | !!variable > upper_bound, TRUE, FALSE))\n  return(df)\n}\n\n# Function to derive Severity\nderive_severity <- function(df) {\n  df <- df %>%\n    mutate(Severity = as.integer(ae_severity)) # Ensure integer type\n  return(df)\n}\n\n\n# --- Main Pipeline ---\n\n# 1. Load Data\ndata <- read.csv(\"raw_data.csv\")\n\n# 2. Data Cleaning\ndata <- standardize_ae_codes(data) %>%\n  remove_duplicate_patients() %>%\n  detect_outliers(ae_severity, .variable = \"ae_severity\") %>%\n  derive_severity()\n\n# 3. Save Cleaned Data\nwrite.csv(data, \"cleaned_data.csv\", row.names = FALSE)\n```\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the core domain requirements of the task. It treats the data as a simple cross-sectional dataset rather than a clinical trial, ignoring the 'time-varying' nature of adverse events and the need for site-level clustering in imputation or analysis. The 'Severity' derivation logic is trivial (just casting to integer) and does not implement the actual CTCAE grading rules (which involve specific clinical criteria, not just numeric mapping). The outlier detection logic is flawed: it attempts to flag outliers in a variable (ae_severity) that is already defined as 1-5, making the IQR method nonsensical for this specific variable. Furthermore, the code contains a critical bug in the `detect_outliers` function where the `variable` argument is passed as a string but used with `!!variable` inside a function that doesn't accept it as a string in the way written, and the main pipeline passes it incorrectly. The submission completely ignores the 'Additional Checks' regarding time-to-event analysis, proportional hazards, and survival modeling, which are fundamental to clinical trial analysis. The solution is a generic data cleaning script that lacks the specific rigor required for a Senior Biostatistician role in this context."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze clinical or survey data, using statistical approaches such as longitudinal analysis, mixed-effect modeling, logistic regression analyses, and model-building techniques.",
+      "task_type": "Statistical Modeling",
+      "user_prompt": "You are a biostatistician reviewing a Phase III oncology trial dataset. The outcome is time-to-event (progression-free survival), and the primary covariate is a continuous biomarker measured at baseline and 3 months. The data contains 15% missing values in the biomarker at 3 months, and patients are clustered within 10 clinical sites. Write a statistical analysis plan section that: 1) Proposes a mixed-effects Cox proportional hazards model to account for site clustering and time-varying biomarkers. 2) Describes the imputation strategy for missing biomarker data (e.g., Multiple Imputation by Chained Equations). 3) Specifies the handling of non-proportional hazards if the Schoenfeld residuals test indicates violation. Provide the R code skeleton for the model fitting and the imputation process.",
+      "reference_context": "Dataset Schema: patient_id (int), site_id (int), baseline_biomarker (float), month3_biomarker (float, 15% NA), pfs_time (float), pfs_event (0/1), treatment_arm (categorical). Assumptions: Data follows a Cox model structure. Sites are random effects.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the proposed model structure correctly handle time-varying covariates and random effects?",
+        "Criterion 2: Completeness — Are missing data imputation and non-proportional hazards explicitly addressed?",
+        "Criterion 3: Best practices — Is the R code idiomatic (e.g., using 'survival' and 'mice' packages) and reproducible?"
+      ],
+      "student_answer": "```r\n# Imputation Strategy (Multiple Imputation by Chained Equations - MICE)\n# Set up MICE model\nmice <- mice(data = dataset,\n             mclass = TRUE, # Allow for different class variables\n              maxit = 50, # Maximum iterations\n             seed = 12345) # Set seed for reproducibility\n\n# Fit the MICE model\nfit <- mice(data = dataset,\n            mclass = TRUE,\n             maxit = 50,\n            seed = 12345)\n\n# Generate multiple imputed datasets\ncomplete_datasets <- predict(fit, newdata = dataset, n.it = 5, include.level = FALSE)\n\n# Model Fitting (Mixed-Effects Cox Proportional Hazards Model)\n# Install and load necessary packages\n# install.packages(c(\"survival\", \"lme4\", \"mice\"))\nlibrary(survival)\nlibrary(lme4)\nlibrary(mice)\n\n# Define the model formula\n# pfs_time ~ treatment_arm + baseline_biomarker + site_id + (site_id|patient_id)\nmodel <- coxph(Surv(pfs_time, pfs_event) ~ treatment_arm + baseline_biomarker + site_id + (site_id|patient_id), data = complete_datasets)\n\n# Schoenfeld residuals test for non-proportional hazards\n# Check Schoenfeld residuals\nlibrary(survival)\nschoenfeld.test(model)\n\n# If Schoenfeld residuals indicate non-proportional hazards:\n# 1. Investigate the cause (e.g., non-linear effects of biomarker).\n# 2. Consider transformations of the biomarker or adding interaction terms.\n# 3. Alternatively, explore time-dependent covariates or more complex hazard models.\n# 4. If transformations don't resolve the issue, consider a different modeling approach.\n\n# Model Summary\nsummary(model)\n\n# Confidence Intervals\nconfint(model)\n\n# Plotting survival curves (for each treatment arm)\n# survival::survfit(Surv(pfs_time, pfs_event) ~ treatment_arm, data = complete_datasets[complete_datasets$treatment_arm == \"TreatmentA\",])\n# plot(survfit(Surv(pfs_time, pfs_event) ~ treatment_arm, data = complete_datasets[complete_datasets$treatment_arm == \"TreatmentA\",]), main = \"Survival Curve Treatment A\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple critical dimensions. 1) Correctness: The R code is syntactically and logically invalid. It attempts to fit a Cox model using 'lme4' syntax (random effects) within the 'survival' package's 'coxph' function, which does not support random effects directly in that manner (requires 'coxme' or 'frailty'). It also incorrectly uses 'predict' on a 'mice' object to generate datasets instead of 'complete'. 2) Completeness: It completely ignores the requirement to model the biomarker as time-varying (using baseline only) and fails to specify how to handle the 15% missing data in the context of the imputation strategy (e.g., including site_id in the imputation model). 3) Best Practices: The code would not run and represents a misunderstanding of standard R packages for survival analysis. 4) Domain Accuracy: The model specification (site_id as fixed effect + random effect on patient within site) is conceptually confused for a site-level clustering issue. 5) Clarity: The code is confusing and misleading. 6) Autonomy: The output is unusable as a professional deliverable due to fatal errors."
+    }
+  ]
+}

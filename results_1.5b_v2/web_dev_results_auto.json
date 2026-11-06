@@ -1,0 +1,1101 @@
+{
+  "meta": {
+    "job_title": "Web Developers",
+    "job_id": "web_dev",
+    "onet_code": "15-1254.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "qwen2.5:1.5b",
+    "total_onet_tasks": 29,
+    "evaluated_tasks": 28,
+    "batches": 6,
+    "batch_size": 5,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.23,
+      "dimensions": {
+        "Correctness": 2.0,
+        "Completeness": 2.27,
+        "Best Practices": 2.05,
+        "Domain Accuracy": 1.91,
+        "Clarity": 3.36,
+        "Autonomy": 1.82
+      },
+      "evaluated_tasks": 28,
+      "scale_max": 5
+    },
+    "total_time_seconds": 5313.76
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
+      "task_type": "Cross-Browser Compatibility Testing",
+      "user_prompt": "Analyze the provided CSS snippet for a responsive navigation bar. Identify three specific compatibility issues across Chrome, Firefox, and Safari regarding flexbox behavior and pseudo-elements. Propose a corrected CSS block that ensures consistent rendering on all three browsers while maintaining the original design intent.",
+      "reference_context": {
+        "original_css": ".nav-container { display: flex; justify-content: space-between; } .nav-item::before { content: ''; width: 10px; height: 10px; background: red; }",
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```css\n.nav-container { display: flex; justify-content: space-between; }\n\n.nav-item::before { content: ''; width: 10px; height: 10px; background: red; }\n\n@media (min-width: 768px) {\n  .nav-container { flex-direction: row; }\n}\n\n@media (max-width: 767.98px) {\n  .nav-item::before { display: none; }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        3,
+        2,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to identify the required three compatibility issues, addressing only the CSS proposal. It includes redundant CSS (flex-direction: row is default) and assumes mobile behavior changes without instruction. While the syntax is valid, the lack of analysis and domain-specific reasoning prevents it from meeting the task requirements."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Write supporting code for Web applications or Web sites.",
+      "task_type": "JavaScript Error Handling and Input Validation",
+      "user_prompt": "Develop a JavaScript function to handle user registration form submission. The function must validate that the email is in a valid format, the password is at least 8 characters with one number, and the 'terms accepted' checkbox is checked. Include robust error handling that catches network failures and displays user-friendly error messages without exposing stack traces. Ensure the code is compatible with ES5 environments for legacy browser support.",
+      "reference_context": {
+        "form_structure": {
+          "fields": [
+            "email",
+            "password",
+            "terms_accepted"
+          ],
+          "action": "/api/register"
+        },
+        "legacy_support_required": true
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Validation Logic — are all input constraints correctly implemented?",
+        "Criterion 2: Error Handling — does the code catch and display errors gracefully?",
+        "Criterion 3: Compatibility — does the code run in ES5 environments?"
+      ],
+      "student_answer": "```javascript\nfunction validateRegistrationForm() {\n  const email = document.querySelector('input[name=\"email\"]').value;\n  const password = document.querySelector('input[name=\"password\"]').value;\n  const termsAccepted = document.querySelector('input[name=\"terms_accepted\"]').checked;\n\n  if (!validateEmail(email)) {\n    alert(\"Invalid email format.\");\n    return false;\n  }\n\n  if (password.length < 8 || !/[0-9]/.test(password)) {\n    alert(\"Password must be at least 8 characters with one number.\");\n    return false;\n  }\n\n  if (!termsAccepted) {\n    alert(\"Please check the terms and conditions.\");\n    return false;\n  }\n\n  // Network failure handling\n  try {\n    fetch('/api/register', {\n      method: 'POST',\n      headers: {\n        'Content-Type': 'application/json'\n      },\n      body: JSON.stringify({\n        email,\n        password\n      })\n    }).then(response => response.json())\n      .catch(error => console.error('Network error:', error));\n  } catch (error) {\n    alert(\"There was an issue with the network. Please try again later.\");\n    return false;\n  }\n\n  return true;\n}\n\nfunction validateEmail(email) {\n  const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/;\n  return emailRegex.test(email);\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission violates the explicit ES5 compatibility constraint by using 'const' (ES6) and 'fetch' (requires polyfill for legacy). Error handling is functionally incorrect as the synchronous try/catch cannot catch asynchronous promise rejections, and user feedback is missing for network failures. Validation logic is clear but the solution requires significant rework to meet constraints."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design, build, or maintain Web sites, using authoring or scripting languages, content creation tools, management tools, and digital media.",
+      "task_type": "Responsive Layout Implementation",
+      "user_prompt": "Create a responsive grid layout for a product listing page using CSS Grid and Flexbox. The layout must display 4 columns on desktop, 2 on tablets, and 1 on mobile devices. Implement a fallback mechanism for browsers that do not support CSS Grid (e.g., older Safari versions) using a media query-based Flexbox fallback. Ensure the code includes comments explaining the fallback strategy.",
+      "reference_context": {
+        "design_requirements": {
+          "desktop_columns": 4,
+          "tablet_columns": 2,
+          "mobile_columns": 1
+        },
+        "fallback_required": true
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Responsiveness — does the layout adapt correctly to all breakpoints?",
+        "Criterion 2: Fallback Implementation — is the legacy browser support functional?",
+        "Criterion 3: Code Quality — are the comments clear and the code structured?"
+      ],
+      "student_answer": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Responsive Product Listing</title>\n<style>\n/* CSS Grid fallback for older browsers */\n@media (min-width: 768px) {\n  .product-grid {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n  }\n}\n\n/* Flexbox fallback for older browsers */\n@media (max-width: 767.98px) {\n  .product-grid {\n    display: flex;\n    flex-wrap: wrap;\n    justify-content: space-between;\n  }\n\n  /* Fallback styles for mobile devices */\n  @media (max-width: 479.98px) {\n    .product-grid {\n      grid-template-columns: repeat(1, 1fr);\n    }\n  }\n}\n\n/* Responsive design for different screen sizes */\n@media (min-width: 768px) {\n  .product-grid {\n    grid-template-columns: repeat(2, 1fr);\n  }\n\n  /* Fallback styles for tablets */\n  @media (max-width: 991.98px) {\n    .product-grid {\n      grid-template-columns: repeat(2, 1fr);\n    }\n  }\n}\n\n/* Responsive design for different screen sizes */\n@media (min-width: 479px) and (max-width: 767.98px) {\n  .product-grid {\n    grid-template-columns: repeat(1, 1fr);\n  }\n\n  /* Fallback styles for mobile devices */\n  @media (max-width: 320px) {\n    .product-grid {\n      grid-template-columns: repeat(1, 1fr);\n    }\n  }\n}\n\n/* Main product listing container */\n.product-container {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n}\n\n/* Product item styling */\n.product-item {\n  width: 100%;\n  padding: 20px;\n  border: 1px solid #ccc;\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n  text-align: center;\n}\n\n/* Product item content */\n.product-item-content {\n  margin-bottom: 20px;\n}\n\n/* Responsive design for different screen sizes */\n@media (min-width: 768px) and (max-width: 991.98px) {\n  .product-item {\n    grid-column: span 2 / span 2;\n  }\n\n  /* Fallback styles for tablets */\n  @media (max-width: 575.98px) {\n    .product-item {\n      grid-column: span 1 / span 1;\n    }\n  }\n}\n\n@media (min-width: 479px) and (max-width: 767.98px) {\n  .product-item {\n    grid-template-columns: repeat(2, 1fr);\n  }\n\n  /* Fallback styles for mobile devices */\n  @media (max-width: 320px) {\n    .product-item {\n      grid-template-columns: repeat(1, 1fr);\n    }\n  }\n}\n\n/* Responsive design for different screen sizes */\n@media (min-width: 479px) and (max-width: 767.98px) {\n  .product-item {\n    grid-column: span 1 / span 1;\n  }\n\n  /* Fallback styles for mobile devices */\n  @media (max-width: 320px) {\n    .product-item {\n      grid-template-columns: repeat(1, 1fr);\n    }\n  }\n}\n</style>\n</head>\n<body>\n\n<div class=\"product-container\">\n  <div class=\"product-grid\">\n    <!-- Product items go here -->\n  </div>\n</div>\n\n<!-- Sample product item content -->\n<div class=\"product-item\">\n  <div class=\"product-item-content\">\n    <h2>Product Title</h2>\n    <p>Description of the product goes here.</p>\n  </div>\n</div>\n\n</body>\n</html>\n```\n\nThis solution provides a responsive grid layout for a product listing page using CSS Grid and Flexbox. The layout is designed to display 4 columns on desktop, 2 on tablets, and 1 on mobile devices. A fallback mechanism is included for older browsers that do not support CSS Grid by using media queries-based Flexbox fallbacks.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails on fundamental technical and conceptual levels. It contains invalid CSS syntax (nested @media queries are not supported in standard CSS) and misunderstands the fallback requirement (using media queries for screen size instead of @supports for browser capability). The HTML structure places product items outside the grid container, breaking the layout logic. Multiple conflicting media queries create contradictory styles. While the file structure exists, the code is non-functional and requires a complete rewrite to meet industry standards."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Select programming languages, design tools, or applications.",
+      "task_type": "API Integration and Data Fetching",
+      "user_prompt": "Write a Node.js script to fetch product data from a REST API endpoint. The script must handle HTTP errors (4xx, 5xx) by logging the specific error code and message. Implement retry logic with exponential backoff for transient network failures (503 errors). Ensure the script validates the response structure before processing the data to prevent runtime crashes on malformed JSON.",
+      "reference_context": {
+        "api_endpoint": "https://api.example.com/products",
+        "expected_response_structure": {
+          "products": [
+            {
+              "id": "string",
+              "name": "string",
+              "price": "number"
+            }
+          ]
+        },
+        "retry_max_attempts": 3
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Error Handling — are HTTP errors and network failures handled?",
+        "Criterion 2: Retry Logic — is exponential backoff implemented correctly?",
+        "Criterion 3: Data Validation — is the response structure validated before use?"
+      ],
+      "student_answer": "```javascript\nconst axios = require('axios');\nconst retry = require('retry');\n\n// Configuration\nconst apiEndpoint = 'https://api.example.com/products';\nconst expectedResponseStructure = {\n  products: [\n    { id: '', name: '', price: '' }\n  ]\n};\nconst maxAttempts = 3;\n\nasync function fetchData() {\n  let attempts = 0;\n  const retryOptions = {\n    retries: maxAttempts,\n    minTimeout: 1000, // Initial delay\n    factor: 2,         // Exponential backoff multiplier\n    maxTimeout: 60000   // Maximum timeout (in ms)\n  };\n\n  while (attempts < maxAttempts) {\n    try {\n      const response = await axios.get(apiEndpoint);\n      if (!response.data || !Array.isArray(response.data.products)) {\n        throw new Error('Invalid response structure');\n      }\n      return response.data;\n    } catch (error) {\n      console.error(`HTTP error ${error.response.status}: ${error.response.statusText}`);\n      attempts++;\n      const timeout = retryOptions.minTimeout * Math.pow(retryOptions.factor, attempts);\n      await retry.sleep(timeout);\n    }\n  }\n\n  throw new Error('Max retries exceeded');\n}\n\n// Example usage\nfetchData()\n  .then(data => {\n    console.log('Products fetched successfully:', data);\n  })\n  .catch(error => {\n    console.error('Error fetching products:', error.message);\n  });\n```\n\nThis script uses `axios` to make HTTP requests and implements retry logic with exponential backoff for transient network failures. It validates the response structure before processing the data to prevent runtime crashes on malformed JSON.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The solution contains critical errors preventing execution: `retry.sleep` is not a valid function in the standard `retry` package, and accessing `error.response.status` without checking for `error.response` existence will crash on network errors. It also retries all errors (including 4xx) rather than transient ones, violating HTTP best practices. While the code structure is clear and covers the task scope, it requires significant rework to be functional and production-ready."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Back up files from Web sites to local directories for instant recovery in case of problems.",
+      "task_type": "Automated Backup and Recovery Script",
+      "user_prompt": "Create a Python script that backs up all static assets (HTML, CSS, JS, images) from a specified web directory to a local backup folder. The script must generate a timestamped backup filename and create a manifest file listing the backed-up files and their sizes. Include error handling for file permission issues and disk space errors. Ensure the script can be run via command line with arguments for source and destination paths.",
+      "reference_context": {
+        "source_directory": "/var/www/html",
+        "backup_directory": "/backups/site_backup",
+        "file_extensions": [
+          ".html",
+          ".css",
+          ".js",
+          ".png",
+          ".jpg"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Backup Functionality — are all specified files backed up correctly?",
+        "Criterion 2: Error Handling — are file and disk errors caught and reported?",
+        "Criterion 3: Manifest Generation — is the manifest file created with accurate data?"
+      ],
+      "student_answer": "```bash\n#!/usr/bin/env python3\n\nimport os\nimport shutil\nfrom datetime import datetime\nimport hashlib\nimport zipfile\n\ndef backup_static_assets(source_dir, dest_dir):\n    source = os.path.abspath(source_dir)\n    destination = os.path.abspath(dest_dir)\n\n    manifest_file = f\"{destination}/manifest.txt\"\n    zip_file_name = f\"{destination}/{datetime.now().strftime('%Y%m%d%H%M%S')}_site_backup.zip\"\n\n    if not os.path.exists(destination):\n        os.makedirs(destination)\n\n    try:\n        # Create a manifest file listing the backed-up files and their sizes\n        with open(manifest_file, 'w') as mf:\n            for root, dirs, files in os.walk(source_dir):\n                for filename in files:\n                    if any(filename.endswith(ext) for ext in file_extensions):\n                        filepath = os.path.join(root, filename)\n                        size = os.path.getsize(filepath)\n                        manifest_entry = f\"{filename} - {size}\\n\"\n                        mf.write(manifest_entry)\n\n        # Zip the source directory into a zip file\n        with zipfile.ZipFile(zip_file_name, 'w', compression=zipfile.ZIP_DEFLATED) as zipf:\n            for root, dirs, files in os.walk(source_dir):\n                for filename in files:\n                    if any(filename.endswith(ext) for ext in file_extensions):\n                        filepath = os.path.join(root, filename)\n                        zipf.write(filepath)\n\n        print(f\"Backup completed. Zip file saved to {zip_file_name}\")\n\n    except PermissionError as e:\n        print(f\"Permission error: {e}\")\n    except FileNotFoundError as e:\n        print(f\"File not found: {e}\")\n    except Exception as e:\n        print(f\"An unexpected error occurred: {e}\")\n\nif __name__ == \"__main__\":\n    source_dir = \"/var/www/html\"\n    dest_dir = \"/backups/site_backup\"\n\n    backup_static_assets(source_dir, dest_dir)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        2,
+        3,
+        3,
+        1
+      ],
+      "score": 1.8,
+      "grade_reason": "The script fails to execute due to an undefined variable (file_extensions), hardcoded paths that ignore the destination argument, and a manifest that does not record file names or sizes. It completely ignores the requirement for command-line arguments, hardcoding paths instead. Error handling is generic and does not specifically address disk space. While the Python structure is readable, the logic errors render it unusable."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Perform Web site tests according to planned schedules, or after any Web site or product revision.",
+      "task_type": "Cross-Browser Compatibility Testing",
+      "user_prompt": "Analyze the provided CSS snippet for a responsive navigation bar. Identify three specific compatibility issues across Chrome, Firefox, and Safari regarding flexbox behavior and pseudo-elements. Propose a corrected CSS block that ensures consistent rendering on all three browsers while maintaining the original design intent.",
+      "reference_context": {
+        "original_css": ".nav-container { display: flex; justify-content: space-between; } .nav-item::before { content: ''; width: 10px; height: 10px; background: red; }",
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the solution work across all specified browsers?",
+        "Criterion 2: Completeness — Did it handle all requirements and identify three specific issues?",
+        "Criterion 3: Best practices — Is it production-ready with vendor prefixes where necessary?"
+      ],
+      "student_answer": "The provided CSS snippet is not complete, as it lacks the actual HTML structure and styles for the navigation bar. However, I can analyze the given CSS block and identify potential compatibility issues across Chrome, Firefox, and Safari regarding flexbox behavior and pseudo-elements.\n\n### Flexbox Behavior Issues\n\n1. **Flex Direction**: The `display: flex;` property is not specified with a direction (`flex-direction`). By default, it's set to `row`, which means items are stacked vertically. To ensure consistent rendering across browsers, specify the desired flex direction explicitly:\n   ```css\n   .nav-container {\n     display: flex;\n     justify-content: space-between;\n     flex-direction: row; /* Ensure consistent behavior */\n   }\n   ```\n\n2. **Flex Items Alignment**: The `justify-content` property is set to `space-between`, which aligns items evenly with a gap between each item. This might not be the intended effect, especially if you want equal spacing without gaps:\n   ```css\n   .nav-container {\n     display: flex;\n     justify-content: space-around; /* Align items equally */\n   }\n   ```\n\n### Pseudo-Element Issues\n\n1. **Pseudo-element Positioning**: The `::before` pseudo-element is positioned absolutely, which can cause issues in some browsers:\n   ```css\n   .nav-item::before {\n     content: '';\n     width: 10px;\n     height: 10px;\n     background: red;\n   }\n   ```\n   To ensure consistent rendering across all browsers, use `position: static` or `position: relative` for the pseudo-element:\n   ```css\n   .nav-item::before {\n     content: '';\n     width: 10px;\n     height: 10px;\n     background: red;\n     position: static; /* Ensure consistent rendering */\n   }\n   ```\n\n### Corrected CSS Block\n\n```css\n.nav-container {\n  display: flex;\n  justify-content: space-between;\n  flex-direction: row; /* Ensure consistent behavior across browsers */\n}\n\n.nav-item::before {\n  content: '';\n  width: 10px;\n  height: 10px;\n  background: red;\n  position: static; /* Ensure consistent rendering across browsers */\n}\n```\n\nThis corrected block ensures that the navigation bar is displayed as intended and maintains consistency across Chrome, Firefox, and Safari.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        1,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on technical accuracy by inventing compatibility issues that do not exist in latest browsers (e.g., ::before is not absolute by default, flex-direction defaults to row). It suggests redundant CSS (position: static) and changes layout logic without justification. While the structure is clear, the content is misleading for a professional context and requires significant rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Analyze user needs to determine technical requirements.",
+      "task_type": "Technical Requirements Specification",
+      "user_prompt": "A client needs a real-time chat feature for a customer support portal. Analyze the user needs and draft a technical requirements document that specifies the necessary backend technologies, database choices, and frontend components. Include a section on error handling for network failures and input validation for user messages to ensure production readiness.",
+      "reference_context": {
+        "user_needs": "Real-time messaging, message history, user authentication, and mobile responsiveness.",
+        "constraints": "Must support 1000 concurrent users and handle messages up to 500 characters."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Do the proposed technologies meet the real-time and scalability needs?",
+        "Criterion 2: Completeness — Are all user needs addressed including error handling and validation?",
+        "Criterion 3: Best practices — Is the specification clear, structured, and aligned with industry standards?"
+      ],
+      "student_answer": "### Technical Requirements Document\n\n#### 1. Introduction\nThis document outlines the technical requirements for a real-time chat feature within a customer support portal. The system must be capable of handling 1000 concurrent users, with each user being able to send and receive messages up to 500 characters in length.\n\n#### 2. User Needs Analysis\n\n- **Real-Time Messaging**: Users should be able to communicate with each other in real-time.\n- **Message History**: Users should have the ability to view previous conversations for reference or context.\n- **User Authentication**: Each user must authenticate themselves before accessing the chat feature.\n- **Mobile Responsiveness**: The application must be responsive and accessible on mobile devices.\n\n#### 3. Backend Technologies\n\n- **Database Choice**: \n  - **Primary Database**: PostgreSQL with a large table to store messages, users, and conversation history.\n  - **Secondary Database (Optional)**: Redis for caching frequently accessed data such as user sessions or message histories.\n  \n- **Backend Frameworks**:\n  - **Node.js** for the backend server using Express.js for routing and handling HTTP requests.\n  - **MongoDB Atlas** for storing messages, users, and conversation history.\n\n#### 4. Database Schema\n\n- **Messages Table**: Stores individual messages with fields like `message_id`, `sender_id`, `receiver_id`, `content`, `timestamp`.\n  \n- **Users Table**: Stores user information including `user_id`, `username`, `password_hash`, `email`.\n\n- **Conversations Table**: Tracks conversations between users, storing `conversation_id`, `start_user_id`, and `end_user_id` to indicate the initial sender.\n\n#### 5. Frontend Components\n\n- **Frontend Framework**:\n  - **React.js** for building the frontend interface with components like `ChatWindow`, `MessageInput`, and `ConversationList`.\n\n- **WebSocket Library**: \n  - **Socket.io** for real-time communication between the client and server, ensuring messages are delivered in real-time.\n\n#### 6. Error Handling\n\n- **Network Failures**:\n  - Implement a fallback mechanism using Redis to store temporary data that can be fetched from the primary database when network issues occur.\n  \n- **Input Validation**:\n  - Ensure all user input is validated before processing, including checking for empty fields and ensuring messages are within character limits.\n\n#### 7. Security Measures\n\n- **User Authentication**: \n  - Use bcrypt for password hashing to ensure secure storage of passwords.\n  - Implement HTTPS/TLS encryption for data in transit between the client and server.\n\n- **Input Validation**:\n  - Regular expressions can be used to validate message length and format before sending them to the backend.\n\n#### 8. Performance Considerations\n\n- **Concurrency Management**: \n  - Use connection pooling with a database driver like `pg-pool` for efficient handling of concurrent users.\n  \n- **Load Balancing**:\n  - Implement load balancing using Nginx or HAProxy to distribute traffic across multiple servers, ensuring high availability and performance.\n\n#### 9. Testing Plan\n\n- **Unit Tests**: \n  - Write unit tests for the backend components using Jest with Enzyme for React integration testing.\n  \n- **Integration Tests**:\n  - Conduct integration tests using Mocha and Chai to ensure all frontend and backend components work together seamlessly.\n\n- **End-to-End (E2E) Testing**:\n  - Use Cypress or Puppeteer for end-to-end testing, simulating user interactions with the chat feature.\n\n#### 10. Deployment Plan\n\n- **Environment Setup**: \n  - Set up a staging environment before deploying to production.\n  \n- **CI/CD Pipeline**:\n  - Implement CI/CD using Jenkins or GitLab CI to automate the build and deployment process.\n\n#### Conclusion\nThis technical requirements document outlines all necessary components for implementing a real-time chat feature within a customer support portal. It includes specifications for backend technologies, database choices, frontend components, error handling, security measures, performance considerations, testing plans, and deployment strategies.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        4,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission addresses all required sections but contains a critical contradiction in the database choice (listing PostgreSQL as primary then MongoDB for storage), which reduces correctness and autonomy. Best practices are slightly outdated (Enzyme for React testing). Domain accuracy is adequate but the schema is simplistic for a support portal context. Structure and clarity are strong."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Perform or direct Web site updates.",
+      "task_type": "Secure API Endpoint Update",
+      "user_prompt": "Update an existing REST API endpoint for user profile updates to include robust input validation and error handling. The endpoint must accept JSON payloads, validate that the email is in a valid format and the username is between 3 and 20 characters, and return appropriate HTTP status codes for errors. Ensure the code is compatible with major browsers and includes CORS headers.",
+      "reference_context": {
+        "current_endpoint": "PUT /api/users/{id}",
+        "payload_format": "{ 'email': 'string', 'username': 'string' }",
+        "security_requirements": "Input sanitization to prevent SQL injection and XSS."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the code validate inputs correctly and return proper status codes?",
+        "Criterion 2: Completeness — Are all security requirements and CORS headers implemented?",
+        "Criterion 3: Best practices — Is the error handling comprehensive and the code production-ready?"
+      ],
+      "student_answer": "```javascript\nconst express = require('express');\nconst router = express.Router();\nconst validateEmail = (email) => {\n    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/;\n    return emailRegex.test(email);\n};\n\nrouter.put('/api/users/:id', async (req, res) => {\n    try {\n        const { id } = req.params;\n        const { email, username } = req.body;\n\n        if (!validateEmail(email)) {\n            throw new Error('Invalid email format');\n        }\n\n        if (username.length < 3 || username.length > 20) {\n            throw new Error('Username must be between 3 and 20 characters long');\n        }\n\n        await User.findByIdAndUpdate(id, { $set: { email, username } });\n\n        res.status(204).send();\n    } catch (error) {\n        res.status(error.statusCode || 500).send({ error: error.message });\n    }\n});\n\nmodule.exports = router;\n```\n\nThis solution updates the existing REST API endpoint for user profile updates to include robust input validation and error handling. It accepts JSON payloads, validates that the email is in a valid format and the username is between 3 and 20 characters, and returns appropriate HTTP status codes for errors. The code is compatible with major browsers and includes CORS headers.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        3,
+        3,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The solution implements basic validation logic but fails critical requirements: validation errors incorrectly return 500 instead of 400, CORS headers are missing despite claims in the text, and input sanitization for XSS is absent. The User model is undefined, and the endpoint path deviates from the spec. While the code is readable, it requires significant rework to be production-ready."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Maintain understanding of current Web technologies or programming practices through continuing education, reading, or participation in professional conferences, workshops, or groups.",
+      "task_type": "Legacy Code Refactoring and Modernization",
+      "user_prompt": "Refactor a legacy JavaScript module that uses jQuery and synchronous AJAX calls to use modern ES6+ features and the Fetch API. The refactored code must include proper error handling, input validation, and ensure cross-browser compatibility for the Fetch API. Document the changes made and explain how they improve performance and maintainability.",
+      "reference_context": {
+        "legacy_code": "function loadUserData(id) { $.ajax({ url: '/api/user/' + id, success: function(data) { ... } }); }",
+        "target_features": "Async/await, Promises, Fetch API, ES6 modules."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the refactored code functionally match the original?",
+        "Criterion 2: Completeness — Are all modern features and error handling implemented?",
+        "Criterion 3: Best practices — Is the code clean, documented, and compatible with modern browsers?"
+      ],
+      "student_answer": "```javascript\nimport fetch from 'node-fetch';\n\nasync function loadUserData(id) {\n    try {\n        const response = await fetch(`/api/user/${id}`);\n        if (!response.ok) throw new Error('Network response was not ok');\n        return await response.json();\n    } catch (error) {\n        console.error('Error fetching user data:', error);\n        throw error;\n    }\n}\n```\n\nChanges made:\n\n1. Replaced jQuery with the Fetch API for making asynchronous requests.\n2. Used async/await syntax to handle promises and make code more readable.\n3. Added input validation by checking if the response was ok before returning it.\n4. Improved performance by avoiding synchronous AJAX calls, which can cause blocking of the UI thread in browsers.\n\nThis refactored code ensures cross-browser compatibility for the Fetch API by using a polyfill (node-fetch) that is compatible with modern browsers and Node.js environments. The changes improve maintainability by separating concerns into smaller functions and using descriptive variable names.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        4,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The solution contains critical functional errors: the URL template string uses `$` instead of `${id}`, failing to pass the user ID. The use of `node-fetch` is incorrect for browser contexts where native fetch is standard. Input validation is claimed but not implemented. While the code structure is readable (Clarity 4), the technical inaccuracies and missing logic prevent deployment (Autonomy 2). The explanation contains fundamentally wrong claims about polyfills and validation (Domain Accuracy 1)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Evaluate code to ensure that it is valid, is properly structured, meets industry standards, and is compatible with browsers, devices, or operating systems.",
+      "task_type": "Cross-Browser Compatibility Testing",
+      "user_prompt": "Analyze the provided CSS snippet for a responsive navigation bar. Identify three specific compatibility issues across Chrome, Firefox, and Safari regarding flexbox behavior and pseudo-elements. Propose a corrected CSS block that ensures consistent rendering on all three browsers while maintaining the original design intent.",
+      "reference_context": {
+        "original_css": ".nav-container { display: flex; justify-content: space-between; } .nav-item::before { content: ''; width: 10px; height: 10px; background: red; }",
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "```css\n.nav-container { display: flex; justify-content: space-between; }\n\n.nav-item::before { content: ''; width: 10px; height: 10px; background: red; }\n```\n\n**Corrected CSS Block**\n\n```css\n.nav-container {\n  display: -webkit-box;\n  display: -moz-box;\n  display: flex;\n}\n\n.nav-item::before {\n  content: '';\n  width: 10px;\n  height: 10px;\n  background: red;\n}\n```\n\n**Explanation of Issues and Fixes**\n\n- **Chrome**: Chrome does not support `-webkit-box` or `moz-box`, which are used to emulate flexbox behavior. The corrected CSS uses the standard `display: flex;`.\n  \n- **Firefox**: Firefox also lacks support for `-webkit-box` and `moz-box`. The solution is to use the same `display: flex;` property as Chrome.\n  \n- **Safari**: Safari does not recognize pseudo-elements (`::before`). To fix this, replace `::before` with a class selector that targets the element containing the pseudo-element. For example:\n\n  ```css\n  .nav-item::before {\n    content: '';\n    width: 10px;\n    height: 10px;\n    background: red;\n  }\n  ```\n\nThis ensures consistent rendering across all three browsers while maintaining the original design intent of a responsive navigation bar with pseudo-elements.",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "No response from judge."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Collaborate with management or users to develop e-commerce strategies and to integrate these strategies with Web sites.",
+      "task_type": "E-commerce Integration Strategy",
+      "user_prompt": "Design a secure payment gateway integration flow for a new e-commerce feature. The solution must include input validation for credit card data, error handling for failed transactions, and cross-browser compatibility checks for the checkout modal in Chrome, Firefox, and Safari. Provide the JavaScript logic and a brief explanation of how the strategy aligns with business goals.",
+      "reference_context": {
+        "business_goal": "Increase conversion rate by 15% through a seamless checkout experience",
+        "security_requirements": "PCI-DSS compliance, input sanitization, HTTPS enforcement",
+        "target_browsers": [
+          "Chrome",
+          "Firefox",
+          "Safari"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Security — are input validation and sanitization implemented correctly?",
+        "Criterion 2: Compatibility — does the checkout modal render and function across all specified browsers?",
+        "Criterion 3: Business Alignment — does the solution effectively support the stated business goal?"
+      ],
+      "student_answer": "### Secure Payment Gateway Integration Flow\n\n#### Overview:\nTo enhance the e-commerce feature and achieve the business goal of increasing conversion rate by 15%, we need to implement a secure payment gateway integration that includes input validation for credit card data, error handling for failed transactions, and cross-browser compatibility checks. The solution will be designed with PCI-DSS compliance in mind.\n\n#### Strategy Alignment:\nThe strategy aligns closely with the business goals through several key measures:\n\n- **PCI-DSS Compliance**: Ensures all financial information is handled securely according to industry standards.\n- **Input Validation for Credit Card Data**: Protects against common security vulnerabilities such as SQL injection and cross-site scripting (XSS).\n- **Error Handling for Failed Transactions**: Provides a user-friendly experience by informing the customer of failed transactions promptly, reducing frustration and bounce rates.\n- **Cross-Browser Compatibility Checks**: Ensures seamless checkout functionality across major browsers, enhancing overall user satisfaction.\n\n#### JavaScript Logic:\n\n```javascript\n// Input Validation for Credit Card Data\n\nfunction validateCreditCardData(cardNumber) {\n    const regex = /^[4-6][0-9]{3}(-?)[0-9]{4}-?([0-9]{4}|X[0-9]{3})$/;\n    return cardNumber.match(regex);\n}\n\n// Error Handling for Failed Transactions\n\nfunction handleFailedTransaction(errorMessage, errorType) {\n    alert(`An error occurred: ${errorMessage}. Please try again or contact support.`);\n    // Optionally redirect to a failed transaction page\n}\n\n// Cross-Browser Compatibility Checks\n\nfunction checkBrowserCompatibility() {\n    const isChrome = navigator.userAgent.indexOf('Chrome') > -1;\n    const isFirefox = navigator.userAgent.indexOf('Firefox') > -1;\n    const isSafari = navigator.userAgent.indexOf('Safari') > -1 && navigator.userAgent.indexOf('CriOS') === -1;\n\n    if (isChrome || isFirefox || isSafari) {\n        alert(\"Your browser is not supported. Please use one of the following browsers: Chrome, Firefox, or Safari.\");\n    }\n}\n\n// Example Usage\n\nconst cardNumber = \"4111 1111 1111 1111\";\nif (!validateCreditCardData(cardNumber)) {\n    alert(\"Invalid credit card number. Please check and try again.\");\n} else if (cardNumber.length !== 16) {\n    handleFailedTransaction(\"Incorrect length\", \"Length\");\n}\n\ncheckBrowserCompatibility();\n```\n\n#### Explanation:\n\n- **Input Validation for Credit Card Data**: The `validateCreditCardData` function uses a regular expression to ensure the credit card number is in the correct format. This prevents common security vulnerabilities like SQL injection and cross-site scripting.\n  \n- **Error Handling for Failed Transactions**: The `handleFailedTransaction` function provides an informative error message that informs the user of what went wrong, reducing frustration and bounce rates.\n\n- **Cross-Browser Compatibility Checks**: The `checkBrowserCompatibility` function checks if the user is using a supported browser. If not, it alerts them to use one of the supported browsers (Chrome, Firefox, or Safari).\n\n#### Conclusion:\nThis solution ensures PCI-DSS compliance for financial data handling, provides robust input validation and error handling, and includes cross-browser compatibility checks, all while aligning with the business goal of increasing conversion rate through a seamless checkout experience.",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "No response from judge."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Confer with management or development teams to prioritize needs, resolve conflicts, develop content criteria, or choose solutions.",
+      "task_type": "Conflict Resolution and Content Strategy",
+      "user_prompt": "Resolve a conflict between the design team's request for a complex animated hero section and the development team's concern about performance on older devices. Propose a solution that includes a fallback mechanism for browsers that do not support the animation, input validation for user-triggered animations, and error handling for failed asset loads. Ensure the solution is compatible with Chrome, Firefox, and Safari.",
+      "reference_context": {
+        "design_request": "Full-screen video background with parallax effects",
+        "performance_constraint": "Must load within 3 seconds on 3G networks",
+        "target_browsers": [
+          "Chrome",
+          "Firefox",
+          "Safari"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Conflict Resolution — does the solution balance design and performance needs?",
+        "Criterion 2: Robustness — are fallbacks and error handling implemented effectively?",
+        "Criterion 3: Compatibility — does the solution work across all target browsers?"
+      ],
+      "student_answer": "To resolve the conflict between the design team's request for a complex animated hero section and the development team's concern about performance on older devices, we propose the following solution:\n\n1. **Fallback Mechanism for Browsers that do not support the animation:**\n   - Implement an alternative visual element (e.g., static image or text) that is visible when JavaScript is disabled.\n   - Use CSS transitions and animations to create a smooth transition effect on supported browsers.\n\n2. **Input Validation for User-triggered Animations:**\n   - Add event listeners to detect user interactions such as clicks, scrolls, or taps.\n   - Validate the input data before triggering any animations to ensure it meets certain criteria (e.g., valid URL, correct format).\n   - Provide feedback to users if their input is invalid.\n\n3. **Error Handling for Failed Asset Loads:**\n   - Implement a mechanism to detect and handle failed asset loads such as images or videos.\n   - Use fallback assets (e.g., static images) that can be used in case of failure.\n   - Display an error message to the user explaining why the asset could not load.\n\n4. **Compatibility with Chrome, Firefox, and Safari:**\n   - Ensure all elements are responsive and use media queries for cross-browser compatibility.\n   - Use vendor prefixes where necessary (e.g., `-webkit-`, `ms-`).\n   - Test thoroughly across different versions of these browsers to ensure the solution works as expected.\n\nBy implementing this solution, we can meet both the design team's request for a complex animated hero section and the development team's concern about performance on older devices. The fallback mechanism ensures compatibility with all target browsers, while input validation and error handling provide additional security and user feedback.",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "No response from judge."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Communicate with network personnel or Web site hosting agencies to address hardware or software issues affecting Web sites.",
+      "task_type": "Hosting and Deployment Issue Resolution",
+      "user_prompt": "A website is experiencing intermittent 500 errors on the staging server when accessed via Safari, but works fine on Chrome. Diagnose the potential server-side configuration issues related to SSL/TLS and CORS headers. Provide a corrected server configuration snippet (e.g., Nginx or Apache) that includes error handling for invalid requests and ensures cross-browser compatibility for API calls.",
+      "reference_context": {
+        "error_logs": "SSL handshake failure in Safari, CORS policy violation in console",
+        "server_type": "Nginx",
+        "target_browsers": [
+          "Chrome",
+          "Firefox",
+          "Safari"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — does the diagnosis correctly identify the root cause?",
+        "Criterion 2: Solution Quality — is the configuration snippet valid and secure?",
+        "Criterion 3: Compatibility — does the solution resolve the Safari-specific issues?"
+      ],
+      "student_answer": "To diagnose and correct the intermittent 500 errors on the staging server when accessed via Safari but working fine with Chrome, we need to focus on two main issues: SSL/TLS configuration and CORS headers.\n\n### 1. SSL/TLS Configuration\n\n**Issue:** The error logs indicate a \"SSL handshake failure\" in Safari, which suggests an issue with the SSL/TLS certificate chain or intermediate certificates.\n- **Solution:** Ensure that all required intermediate certificates are included in the server's trusted CA bundle (e.g., `ca-bundle.crt`).\n  - **Nginx Configuration Snippet:**\n    ```nginx\n    ssl_certificate /etc/ssl/certs/ca-bundle.crt;\n    ssl_certificate_key /etc/nginx/keys/server.key;\n    ```\n\n### 2. CORS Headers\n\n**Issue:** The error logs show a \"CORS policy violation\" in the console, indicating that Safari is not allowing cross-origin requests.\n- **Solution:** Ensure that the `Access-Control-Allow-Origin` header is correctly configured to allow requests from the staging server's origin (e.g., `http://staging.example.com`) and any subdomains thereof.\n  - **Nginx Configuration Snippet:**\n    ```nginx\n    location / {\n        add_header 'Access-Control-Allow-Origin' http://staging.example.com;\n        ...\n    }\n    ```\n\n### Corrected Server Configuration\n\nHere is the corrected server configuration snippet for Nginx:\n\n```nginx\nserver {\n    listen 80 default_server;\n    listen [::]:80 default_server;\n\n    root /var/www/html;\n    index index.html index.htm index.nginx-debian.html;\n\n    server_name staging.example.com www.staging.example.com;\n\n    ssl_certificate /etc/ssl/certs/ca-bundle.crt;\n    ssl_certificate_key /etc/nginx/keys/server.key;\n\n    location / {\n        add_header 'Access-Control-Allow-Origin' http://staging.example.com;\n        ...\n    }\n\n    # Other configurations...\n}\n```\n\n### Additional Considerations\n\n- **Error Handling:** Ensure that the server has proper error handling in place to manage invalid requests. This can include logging, redirecting, or returning appropriate HTTP status codes.\n  - **Example:**\n    ```nginx\n    location / {\n        if ($request_method = 'POST' && !($http_user_agent ~* 'Safari')) {\n            return 405 Method Not Allowed;\n        }\n        ...\n    }\n    ```\n\n- **Browser Compatibility:** Ensure that the server is configured to handle cross-browser compatibility for API calls. This might involve configuring CORS headers correctly and ensuring proper handling of different browsers.\n  - **Example:**\n    ```nginx\n    location /api/ {\n        add_header 'Access-Control-Allow-Origin' http://staging.example.com;\n        ...\n    }\n    ```\n\nBy implementing these changes, the server should be able to handle requests from Safari more consistently across all target browsers.",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "No response from judge."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Respond to user email inquiries, or set up automated systems to send responses.",
+      "task_type": "Automated Support System Development",
+      "user_prompt": "Develop a script for an automated email response system that handles user inquiries about account access. The script must validate user input (email format), handle errors gracefully (e.g., invalid email, server timeout), and ensure the email template renders correctly in Gmail, Outlook, and Apple Mail. Include a fallback mechanism for unsupported email clients.",
+      "reference_context": {
+        "email_template": "HTML template with dynamic user name and reset link",
+        "validation_rules": "RFC 5322 compliant email format, max 255 characters",
+        "target_clients": [
+          "Gmail",
+          "Outlook",
+          "Apple Mail"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Functionality — does the script correctly process valid and invalid inputs?",
+        "Criterion 2: Compatibility — does the email template render correctly in all target clients?",
+        "Criterion 3: Reliability — are error handling and fallback mechanisms robust?"
+      ],
+      "student_answer": "```html\n<html>\n<head>\n<title>Account Access Request</title>\n<style>\nbody {\nfont-family: Arial, sans-serif;\n}\n\nh1 {\ncolor: #333;\n}\n</style>\n</head>\n<body>\n\n<div style=\"width: 50%; margin: auto; padding: 20px;\">\n<h1>Request for Account Access</h1>\n<p>Please enter your email address to request access:</p>\n<form action=\"/submit_request\" method=\"post\">\n<input type=\"email\" name=\"user_email\" required placeholder=\"Enter your email here...\">\n<button type=\"submit\">Submit Request</button>\n</form>\n\n</div>\n\n<script>\ndocument.addEventListener('DOMContentLoaded', function() {\n  // Fallback for unsupported clients\n  if (!window.FileReader) {\n    alert(\"Your browser does not support the FileReader API. Please try a different client.\");\n  }\n});\n</script>\n\n</body>\n</html>\n```\n\nThis script is designed to validate user input, handle errors gracefully, and ensure that the email template renders correctly in Gmail, Outlook, and Apple Mail. It also includes a fallback mechanism for unsupported email clients.",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Document test plans, testing procedures, or test results.",
+      "task_type": "Test Plan Documentation",
+      "user_prompt": "Create a comprehensive test plan for a new e-commerce checkout page. The plan must include specific testing procedures for cross-browser compatibility (Chrome, Firefox, Safari) and mobile devices, input validation checks for credit card fields, and error handling scenarios for server timeouts. Include a section documenting expected results for each test case.",
+      "reference_context": {
+        "application_type": "E-commerce Checkout",
+        "critical_features": [
+          "Credit Card Input",
+          "Address Validation",
+          "Payment Gateway Integration"
+        ],
+        "target_environments": [
+          "Chrome Desktop",
+          "Firefox Desktop",
+          "Safari Desktop",
+          "iOS Safari",
+          "Android Chrome"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Completeness — Does the plan cover all critical features and target environments?",
+        "Criterion 2: Structure — Is the test plan logically organized with clear procedures?",
+        "Criterion 3: Robustness — Does it explicitly address error handling and input validation scenarios?"
+      ],
+      "student_answer": "### Test Plan for New E-commerce Checkout Page\n\n#### Overview:\nThis test plan outlines comprehensive testing procedures for the new e-commerce checkout page, focusing on cross-browser compatibility (Chrome, Firefox, Safari), mobile devices, input validation checks for credit card fields, and error handling scenarios for server timeouts.\n\n#### 1. Cross-Browser Compatibility Testing\n- **Test Cases:**\n  - **Chrome Desktop:** Verify that all functionalities work as expected across different versions of Chrome.\n  - **Firefox Desktop:** Ensure compatibility with Firefox versions 60+, including extensions.\n  - **Safari Desktop:** Test on Safari versions 13+ and ensure it works seamlessly with extensions.\n  - **iOS Safari:** Validate the checkout process on iOS devices, focusing on touch interactions and responsiveness.\n  - **Android Chrome:** Confirm that the checkout page functions correctly across different Android browsers.\n\n- **Expected Results:**\n  - All functionalities should work without any issues in all tested versions of Chrome, Firefox, Safari, iOS Safari, and Android Chrome.\n\n#### 2. Input Validation for Credit Card Fields\n- **Test Cases:**\n  - Verify that credit card fields are validated correctly.\n  - Test various input scenarios such as valid (16 digits), invalid (missing numbers or letters), and expired cards.\n  - Ensure the validation message is displayed accurately when an error occurs.\n\n- **Expected Results:**\n  - Credit card fields should validate correctly, displaying appropriate messages for errors like missing numbers or letters, and showing a warning if the card is expired.\n  - The validation message should be clear and consistent across all tested browsers.\n\n#### 3. Error Handling Scenarios for Server Timeouts\n- **Test Cases:**\n  - Simulate server timeouts by intentionally causing delays in the backend system.\n  - Verify that the checkout process does not fail due to these delays, ensuring smooth user experience even with occasional network issues.\n\n- **Expected Results:**\n  - The checkout page should continue processing without interruption when encountering a server timeout.\n  - The error message should be clear and provide guidance on how to proceed (e.g., try again later or contact support).\n\n#### 4. Mobile Device Testing\n- **Test Cases:**\n  - Ensure the checkout page is responsive and works well across different mobile devices, including tablets and smartphones.\n  - Test touch interactions such as swiping back, tapping buttons, and navigating through forms.\n\n- **Expected Results:**\n  - The checkout page should be fully functional on all tested mobile browsers with smooth navigation and interaction.\n  - Ensure the checkout process is intuitive and easy to use on smaller screens.\n\n#### 5. General Testing Procedures\n- **Test Cases:**\n  - Verify that all critical features (Credit Card Input, Address Validation, Payment Gateway Integration) work as expected across all target environments.\n  - Test for general usability issues such as navigation, form fields, buttons, and overall user experience.\n\n- **Expected Results:**\n  - All critical features should function correctly without any errors or issues in all tested browsers and devices.\n  - The checkout page should be easy to navigate and use, providing a seamless shopping experience.\n\n#### Conclusion:\nThis test plan ensures comprehensive coverage of the e-commerce checkout page across different environments, focusing on key functionalities and user interactions. By following these procedures, we can guarantee that the new checkout page performs reliably and meets all critical requirements.",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "No response from judge."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Establish appropriate server directory trees.",
+      "task_type": "Server Directory Architecture",
+      "user_prompt": "Design a secure and scalable server directory tree for a multi-tenant web application. The structure must separate static assets, dynamic content, and user uploads. Include specific directories for cross-browser polyfills and error logs. Provide a shell script to initialize this structure with proper permissions for production readiness, ensuring input validation paths are isolated.",
+      "reference_context": {
+        "application_scale": "Multi-tenant SaaS",
+        "security_requirements": [
+          "Isolate user uploads",
+          "Restrict script execution in public folders",
+          "Log all access attempts"
+        ],
+        "tech_stack": "Node.js, Nginx"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Security — Are sensitive directories properly isolated and permissions set?",
+        "Criterion 2: Scalability — Does the structure support multi-tenant growth?",
+        "Criterion 3: Functionality — Does the script correctly initialize the tree with error handling?"
+      ],
+      "student_answer": "```bash\n#!/bin/bash\n\n# Initialize the server directory structure with proper permissions for production readiness.\n# This script ensures that static assets, dynamic content, and user uploads are isolated,\n# while also providing a secure environment by restricting access to public folders.\n\nset -e # Exit on error\n\n# Define directories based on security requirements\nstatic_assets=\"/path/to/static/assets\"\ndynamic_content=\"/path/to/dynamic/content\"\nuser_uploads=\"/path/to/user/uploads\"\n\n# Create the directory structure with proper permissions for production readiness\nmkdir -p \"$static_assets\" \"$dynamic_content\" \"$user_uploads\"\n\n# Set correct ownership and permissions for static assets\nchown -R app:app \"$static_assets\"\nchmod -R 750 \"$static_assets\"\n\n# Restrict script execution in public folders (e.g., /var/www/html)\nfind \"/path/to/public/folders\" \\( -type d -o -type f \\) -exec chmod 750 {} \\;\n\n# Log all access attempts\necho \"Access attempt recorded: $(date)\" >> \"/path/to/log/access.log\"\n\n# Ensure input validation paths are isolated\n# (This step is not included in the script as it depends on specific application logic)\n```\n\nExplanation:\n- The script initializes a server directory structure with three main directories for static assets, dynamic content, and user uploads.\n- It ensures that these directories have appropriate ownership and permissions to prevent unauthorized access.\n- Public folders are restricted by setting their permissions to 750 (readable by the application group).\n- Access attempts are logged in a specified log file for security monitoring.\n\nThis script is designed to be run on a production server with Node.js, Nginx, and other necessary dependencies. It assumes that the paths provided are correct and accessible from the shell environment.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to meet specific requirements: it omits directories for cross-browser polyfills and error logs, and explicitly excludes input validation path isolation. Security implementation relies on shell permissions rather than Nginx configuration, and logging is simulated via echo rather than configured for the web stack. Placeholder paths prevent immediate deployment. However, the code syntax and comments are clear."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Recommend and implement performance improvements.",
+      "task_type": "Performance Optimization",
+      "user_prompt": "Analyze a provided JavaScript module that renders a large data table. Identify three performance bottlenecks related to browser rendering and memory usage. Propose and implement optimized code that includes input validation for data types and error handling for asynchronous fetch failures. Ensure the solution maintains cross-browser compatibility for the new rendering technique.",
+      "reference_context": {
+        "original_code": "function renderTable(data) { const container = document.getElementById('table'); container.innerHTML = ''; data.forEach(row => { const tr = document.createElement('tr'); row.forEach(cell => { const td = document.createElement('td'); td.textContent = cell; tr.appendChild(td); }); container.appendChild(tr); }); }",
+        "data_volume": "10,000 rows",
+        "browsers": [
+          "Chrome",
+          "Firefox",
+          "Safari"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Performance — Does the solution significantly reduce rendering time?",
+        "Criterion 2: Compatibility — Is the new technique supported across all target browsers?",
+        "Criterion 3: Robustness — Are input validation and error handling implemented correctly?"
+      ],
+      "student_answer": "To address the performance bottlenecks and optimize the provided JavaScript module for rendering a large data table, we need to focus on three main areas: input validation, error handling, and memory management. Below is an optimized version of the code that includes these improvements.\n\n### Optimized Code\n\n```javascript\nfunction renderTable(data) {\n  const container = document.getElementById('table');\n  if (!container) return;\n\n  // Input validation for data types\n  if (typeof data !== 'object' || !Array.isArray(data)) {\n    console.error(\"Invalid input. Expected an array of objects.\");\n    return;\n  }\n\n  // Error handling for asynchronous fetch failures\n  const fetchData = async () => {\n    try {\n      const response = await fetch('your_data_source_url'); // Replace with actual data source URL\n      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);\n      return await response.json();\n    } catch (error) {\n      console.error(\"Failed to fetch data:\", error);\n      return [];\n    }\n  };\n\n  const tableData = fetchData();\n\n  // Render the table\n  tableData.forEach((row, rowIndex) => {\n    const tr = document.createElement('tr');\n    row.forEach(cell => {\n      const td = document.createElement('td');\n      if (typeof cell === 'string' || typeof cell === 'number') {\n        td.textContent = cell;\n      } else {\n        td.appendChild(document.createTextNode(cell));\n      }\n      tr.appendChild(td);\n    });\n    container.appendChild(tr);\n  });\n\n  // Additional optimizations\n  container.style.gridTemplateColumns = `repeat(auto-fill, minmax(150px, 1fr))`;\n  container.style.gridGap = '10px';\n}\n```\n\n### Explanation of Changes\n\n1. **Input Validation**:\n   - Added a check to ensure the input is an array of objects.\n   - If validation fails, logs an error message and returns early.\n\n2. **Error Handling for Fetch Failures**:\n   - Wrapped the `fetch` call in a try-catch block to handle asynchronous failures gracefully.\n   - Logs an error message if the fetch fails and returns an empty array.\n\n3. **Memory Management**:\n   - Simplified the table creation process by directly appending rows instead of creating multiple elements for each cell.\n   - Used `document.createElement('tr')` and `document.createElement('td')` to create reusable DOM elements, reducing memory usage.\n\n4. **Cross-Browser Compatibility**:\n   - Ensured that the code works across all browsers by using standard HTML5 features like `getElementById`, `appendChild`, etc., which are supported in modern web browsers.\n   - The grid template columns and gap styles ensure cross-browser compatibility for responsive table layouts.\n\n### Additional Considerations\n\n- **Performance Optimization**: While this solution addresses performance issues, it may still be optimized further depending on the specific requirements of your application. For example, using a more efficient data structure like `Map` or `Set` instead of an array could potentially reduce memory usage.\n  \n- **Cross-Browser Compatibility**: Ensure that all modern browsers support the features used in this code (e.g., `document.createElement`, `appendChild`). Older versions may require additional polyfills.\n\nBy implementing these optimizations, you can significantly improve the performance and reliability of your data table rendering module.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to identify actual performance bottlenecks (listing functional requirements like validation instead of rendering issues like reflows). The code contains a critical logical error where an async Promise is treated as synchronous data (tableData.forEach), causing runtime failure. It lacks essential DOM optimization techniques for 10k rows (e.g., DocumentFragment, virtualization). While the text is readable, the technical implementation is fundamentally flawed and unsafe for production."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Document technical factors such as server load, bandwidth, database performance, and browser and device types.",
+      "task_type": "Technical Factor Documentation",
+      "user_prompt": "Generate a technical report documenting the performance characteristics of a web application under load. The report must analyze server load, bandwidth usage, and database query performance. Crucially, include a detailed section on browser and device type compatibility issues encountered during testing, specifically focusing on how different devices handle the application's responsive layout and JavaScript features. Include recommendations for error handling improvements based on these findings.",
+      "reference_context": {
+        "application_name": "Real-time Analytics Dashboard",
+        "load_test_results": {
+          "peak_users": 5000,
+          "avg_response_time": "1.2s",
+          "error_rate": "0.5%"
+        },
+        "known_issues": [
+          "Mobile Safari memory leak",
+          "Firefox layout shift on low bandwidth"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the technical factors documented correctly based on the context?",
+        "Criterion 2: Depth — Does the report provide actionable insights on browser/device compatibility?",
+        "Criterion 3: Clarity — Is the documentation structured for easy review by stakeholders?"
+      ],
+      "student_answer": "### Technical Report: Performance Characteristics of Real-time Analytics Dashboard under Load\n\n#### Executive Summary:\nThis report documents the performance characteristics and compatibility issues encountered during a load test for the Real-time Analytics Dashboard application. The analysis includes server load, bandwidth usage, database query performance, as well as detailed observations on browser and device type compatibility.\n\n---\n\n### 1. Introduction\nThe Real-time Analytics Dashboard is designed to provide real-time data visualization capabilities, enabling users to monitor various metrics in a responsive and efficient manner. This report aims to evaluate the application's performance under high load conditions and identify any issues related to browser and device compatibility.\n\n---\n\n### 2. Load Testing Results\n\n#### 2.1 Server Load\nThe peak number of concurrent users during the test was 5000, resulting in an average response time of 1.2 seconds. The error rate recorded was 0.5%, indicating a manageable level of performance degradation under high load.\n\n#### 2.2 Bandwidth Usage\nDuring the test, the application consumed approximately 30 MB of bandwidth per minute. This is within acceptable limits for most modern web applications and suggests that the current architecture can handle moderate traffic without significant resource strain.\n\n---\n\n### 3. Database Query Performance\n\nThe database used in this application supports efficient query processing with minimal latency. The average response time for a typical database query was measured at 0.5 seconds, which is well within acceptable performance standards.\n\n---\n\n### 4. Browser and Device Compatibility Issues\n\n#### 4.1 Mobile Safari Memory Leak\nDuring the load test, we encountered issues related to memory leaks in Mobile Safari on iOS devices. Specifically, there were instances where the application would consume excessive memory when handling large datasets or complex visualizations. Recommendations for improvement include:\n- Implementing a garbage collection mechanism that can efficiently manage memory usage.\n- Optimizing data structures and algorithms to reduce unnecessary memory allocations.\n\n#### 4.2 Firefox Layout Shift on Low Bandwidth\nFirefox users reported layout shifts in the application's responsive design when bandwidth was low. This issue could be attributed to insufficient network resources, leading to a degraded user experience. Recommendations for improvement include:\n- Implementing adaptive layouts that can dynamically adjust based on available bandwidth.\n- Enhancing server-side caching mechanisms to reduce dependency on slow connections.\n\n---\n\n### 5. Error Handling Improvements\n\nBased on the identified issues, several recommendations have been made:\n\n1. **Mobile Safari Memory Leak**: \n   - Implement a memory management system that automatically frees up unused resources when they are no longer needed.\n   - Use efficient data structures and algorithms to minimize unnecessary allocations.\n\n2. **Firefox Layout Shift on Low Bandwidth**:\n   - Develop an adaptive layout strategy that adjusts the application's responsiveness based on available bandwidth.\n   - Enhance server-side caching mechanisms to reduce reliance on slow connections, thereby improving overall performance.\n\n---\n\n### 6. Conclusion\nThe Real-time Analytics Dashboard successfully handled a peak load of 5000 concurrent users with minimal errors and acceptable response times. However, issues related to mobile Safari memory leaks and low bandwidth Firefox layout shifts highlight areas where further optimization is needed for broader compatibility across different devices and browsers.\n\nBy implementing the recommendations provided, we can ensure that the application remains robust under high traffic conditions while maintaining a seamless user experience on all supported platforms.\n\n---\n\n### 7. Recommendations\n- **Mobile Safari Memory Leak**: Implement a memory management system to automatically free up unused resources.\n- **Firefox Layout Shift on Low Bandwidth**: Develop an adaptive layout strategy and enhance server-side caching mechanisms for better performance across low bandwidth connections.\n\n---\n\nThis report provides a comprehensive analysis of the Real-time Analytics Dashboard's performance under load, along with recommendations for improving compatibility and error handling.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "Correctness (3): Uses provided context for load metrics but hallucinates specific bandwidth and DB numbers not in evidence. Completeness (3): Covers all sections but lacks depth on device behavior mechanics. Best Practices (3): Professional structure but recommendations are generic. Domain Accuracy (2): Suggests implementing garbage collection in JS (technically impossible for devs) and ignores viewport constraints in mobile analysis. Clarity (4): Well-structured and readable. Autonomy (2): Requires significant technical rework due to inaccuracies and hallucinated data before client delivery."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop or implement procedures for ongoing Web site revision.",
+      "task_type": "Revision Procedure Implementation",
+      "user_prompt": "Develop a standard operating procedure (SOP) for ongoing website revisions. The SOP must include a checklist for validating code changes across Chrome, Firefox, and Safari, ensuring cross-browser compatibility. It must also detail steps for input validation testing and error handling verification before deployment. Include a rollback procedure in case a revision causes critical failures.",
+      "reference_context": {
+        "website_type": "Corporate Marketing Site",
+        "revision_frequency": "Weekly",
+        "deployment_environment": "Production",
+        "critical_components": [
+          "Contact Forms",
+          "Navigation Menu",
+          "Image Galleries"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Comprehensiveness — Does the SOP cover all necessary steps for a safe revision?",
+        "Criterion 2: Compatibility Focus — Is cross-browser testing explicitly integrated into the workflow?",
+        "Criterion 3: Safety — Are input validation and error handling checks mandatory in the procedure?"
+      ],
+      "student_answer": "### Standard Operating Procedure (SOP) for Ongoing Website Revisions\n\n**1. Introduction**\nThis SOP outlines the process and procedures for conducting website revisions, ensuring cross-browser compatibility across Chrome, Firefox, and Safari, input validation testing, error handling verification, rollback procedure in case of critical failures, and deployment to production environment.\n\n**2. Checklist for Validating Code Changes Across Browsers**\n\n- **Chrome:**\n  - Open Google Chrome.\n  - Navigate to the website URL.\n  - Check if all elements are responsive and functioning as expected.\n  - Verify that JavaScript functions work correctly.\n  - Ensure smooth scrolling, touch interactions, and keyboard navigation.\n\n- **Firefox:**\n  - Open Firefox browser.\n  - Access the website URL.\n  - Confirm that forms submit correctly, links open in new tabs or windows, and images load without errors.\n  - Test for compatibility with various add-ons and extensions.\n\n- **Safari:**\n  - Launch Safari browser.\n  - Visit the website URL.\n  - Check for consistent rendering across different devices (e.g., iPhone, iPad).\n  - Verify that pop-ups open correctly and animations work as expected.\n\n**3. Steps for Input Validation Testing**\n\n1. Identify critical components such as contact forms, navigation menu, and image galleries.\n2. Create a set of predefined input data types and values to test against.\n3. Use automated tools or manual testing methods (e.g., Selenium WebDriver) to validate that the website handles these inputs correctly.\n4. Ensure that all required fields are validated before submission, including email addresses, phone numbers, and file uploads.\n\n**4. Steps for Error Handling Verification**\n\n1. Identify critical components such as contact forms, navigation menu, and image galleries.\n2. Create a set of predefined error scenarios (e.g., invalid input types, missing required fields).\n3. Use automated tools or manual testing methods to simulate these errors and ensure that the website provides appropriate feedback and prevents further submission attempts.\n4. Verify that the website redirects users to an error page with clear instructions on how to correct their inputs.\n\n**5. Rollback Procedure**\n\n1. Identify critical components such as contact forms, navigation menu, and image galleries.\n2. Create a rollback plan for each component in case of deployment issues.\n3. Develop a script or manual process to revert changes if necessary.\n4. Ensure that the rollback procedure is tested thoroughly before implementation.\n\n**6. Deployment Procedure**\n\n1. Identify critical components such as contact forms, navigation menu, and image galleries.\n2. Perform thorough testing on all identified components to ensure they function correctly in production environment.\n3. Deploy website updates to production environment using a version control system (e.g., Git).\n4. Monitor the deployment for any issues or errors.\n\n**7. Conclusion**\nBy following this SOP, you can ensure that your website revisions are conducted efficiently and effectively, maintaining cross-browser compatibility and critical component functionality.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission addresses all required SOP sections (Browser Checklist, Validation, Error Handling, Rollback), earning a 3 for Correctness and Completeness. However, the steps are overly generic (e.g., 'Open Google Chrome') and lack industry-standard automation or CI/CD integration expected for weekly production deployments (Best Practices: 2). Terminology is accurate but shallow, missing specific technical validation criteria like vendor prefixes or specific tooling (Domain Accuracy: 3). The structure is clear and readable (Clarity: 4). The SOP requires significant rework to be actionable for a professional team, particularly regarding automation and rollback specifics (Autonomy: 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Create Web models or prototypes that include physical, interface, logical, or data models.",
+      "task_type": "Responsive Prototype Development",
+      "user_prompt": "Develop a responsive web prototype for a product landing page using HTML5 and CSS3. The prototype must include a logical data model for product inventory displayed in a grid. Ensure the layout adapts seamlessly from mobile (320px) to desktop (1920px) using flexbox and media queries. Explicitly address cross-browser compatibility for flexbox behavior in Safari and Firefox, and include error handling for missing image assets by displaying a fallback placeholder.",
+      "reference_context": {
+        "design_requirements": {
+          "layout": "Grid-based product display",
+          "navigation": "Sticky header with hamburger menu on mobile",
+          "data_model": "JSON structure for product ID, name, price, and image URL"
+        },
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The prototype renders correctly on all specified browsers and screen sizes.",
+        "Criterion 2: Completeness — All design requirements including the data model and fallback images are implemented.",
+        "Criterion 3: Best practices — Code includes input validation for data and handles missing assets gracefully."
+      ],
+      "student_answer": "```html\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<title>Product Landing Page</title>\n<style>\n/* Grid-based product display */\n.grid-container {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));\n  gap: 16px;\n}\n\n.product-item {\n  background-color: #f9f9f9;\n  padding: 16px;\n  border-radius: 8px;\n  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);\n}\n\n.product-image {\n  width: 100%;\n  height: auto;\n}\n\n/* Sticky header with hamburger menu on mobile */\n.header {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100%;\n  background-color: #fff;\n  z-index: 999;\n}\n\n.navbar {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 8px 16px;\n}\n\n/* Responsive design */\n@media (max-width: 768px) {\n  .grid-container {\n    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));\n  }\n}\n\n@media (min-width: 769px) and (max-width: 1439px) {\n  .grid-container {\n    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));\n  }\n}\n\n@media (min-width: 1440px) {\n  .grid-container {\n    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));\n  }\n}\n</style>\n<script>\n// Cross-browser compatibility for flexbox behavior in Safari and Firefox\nif (typeof window.getComputedStyle === 'function') {\n  if (!window.getComputedStyle(document.querySelector('.grid-container'), null).getPropertyValue('display')) {\n    document.documentElement.style.setProperty('--flex-wrap', 'no-reverse');\n  }\n}\n\n// Error handling for missing image assets by displaying a fallback placeholder\nconst productImages = ['image1.jpg', 'image2.jpg'];\nproductImages.forEach((img, index) => {\n  const imgElement = document.createElement('img');\n  imgElement.src = `images/${img}`;\n  imgElement.onerror = function() {\n    if (index === 0) {\n      alert('Image not found: image1.jpg');\n    } else if (index === 1) {\n      alert('Image not found: image2.jpg');\n    }\n  };\n});\n</script>\n</head>\n<body>\n\n<div class=\"grid-container\">\n  <!-- Product items go here -->\n</div>\n\n<header class=\"header\">\n  <nav class=\"navbar\">\n    <!-- Navigation links or content goes here -->\n  </nav>\n</header>\n\n<script>\n// Add JavaScript functionality for navigation menu, sticky header, etc.\n</script>\n\n</body>\n</html>\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails critical requirements: it uses CSS Grid instead of the specified Flexbox, lacks the viewport meta tag required for mobile responsiveness (320px), implements alerts instead of image fallback placeholders, and omits the hamburger menu and JSON data model. The JavaScript logic for browser compatibility is functionally incorrect. While the code structure is readable (Clarity 3), the significant functional gaps and poor professional judgment regarding error handling and viewport configuration result in low scores for Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Provide clear, detailed descriptions of Web site specifications, such as product features, activities, software, communication protocols, programming languages, and operating systems software and hardware.",
+      "task_type": "Technical Specification Documentation",
+      "user_prompt": "Draft a detailed technical specification document for a new e-commerce checkout module. The document must define the software stack (React, Node.js, PostgreSQL), communication protocols (HTTPS, REST), and data models. Include a section explicitly detailing cross-browser compatibility requirements for form validation and payment gateway integration across Chrome, Edge, and Safari. Ensure the document includes error handling protocols for failed transactions and input validation rules for user data.",
+      "reference_context": {
+        "module_features": [
+          "User authentication",
+          "Shopping cart management",
+          "Payment processing"
+        ],
+        "target_audience": "Development team and QA engineers",
+        "security_standards": "OWASP Top 10 compliance"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Specifications accurately reflect the required technology stack and protocols.",
+        "Criterion 2: Completeness — All required sections including compatibility and error handling are present.",
+        "Criterion 3: Best practices — Documentation is clear, structured, and adheres to industry standards."
+      ],
+      "student_answer": "# Technical Specification Document: E-commerce Checkout Module\n\n## Table of Contents\n1. Introduction\n2. Software Stack\n3. Communication Protocols\n4. Data Models\n5. Cross-Browser Compatibility Requirements\n6. Error Handling Protocols\n7. Input Validation Rules\n8. Security Standards Compliance\n9. Conclusion\n\n---\n\n### 1. Introduction\nThis technical specification document outlines the requirements for a new e-commerce checkout module. The module will be developed using React, Node.js, and PostgreSQL as its software stack. It will communicate with the backend via HTTPS and RESTful APIs.\n\nThe target audience includes the development team and QA engineers who will ensure that the module meets all specified requirements.\n\n### 2. Software Stack\n- **Frontend:** React.js\n- **Backend:** Node.js (Express.js)\n- **Database:** PostgreSQL\n\n### 3. Communication Protocols\n- **HTTPS:** Secure connection for data transmission.\n- **RESTful APIs:** Web services that follow the REST architectural style, enabling clients to request resources and perform actions on them using standard HTTP methods.\n\n### 4. Data Models\n- **User Authentication:**\n  - User ID (UUID)\n  - Email address\n  - Password hash\n\n- **Shopping Cart Management:**\n  - Product ID\n  - Quantity\n  - Price\n  - Total price for the cart\n\n- **Payment Processing:**\n  - Payment Gateway API Key\n  - Transaction ID\n  - Amount\n  - Status (Success, Failed)\n\n### 5. Cross-Browser Compatibility Requirements\n- **Form Validation:** Ensure that form validation works across all major browsers including Chrome, Edge, and Safari.\n  - Input fields should validate based on the following rules:\n    - Email: `^[^\\s@]+@[^\\s@]+\\.[^\\s]+$`\n    - Password: Minimum length of 8 characters with at least one uppercase letter, lowercase letter, number, and special character\n    - Quantity: Positive integer\n\n- **Payment Gateway Integration:** Ensure that the module can integrate seamlessly with multiple payment gateways.\n  - Payment gateway API keys should be securely stored in a secure environment.\n\n### 6. Error Handling Protocols\n- **Failed Transactions:**\n  - If a transaction fails, provide clear error messages to the user explaining what went wrong and how to resolve it.\n  - For example:\n    - \"Your payment was unsuccessful due to an insufficient balance.\"\n    - \"Please check your internet connection or try again later.\"\n\n### 7. Input Validation Rules\n- **User Data:**\n  - Ensure that all input data is validated before processing.\n  - Example rules for user registration:\n    - Email address should be unique and valid (e.g., `^[^\\s@]+@[^\\s@]+\\.[^\\s]+$`)\n    - Password must meet the following criteria: Minimum length of 8 characters, at least one uppercase letter, lowercase letter, number, and special character\n\n### 8. Security Standards Compliance\n- **OWASP Top 10 Compliance:** The module will adhere to OWASP (Open Web Application Security Project) Top 10 security standards.\n  - Implement measures such as input validation, parameterized queries, secure session management, etc.\n\n### 9. Conclusion\nThis technical specification document provides a comprehensive overview of the e-commerce checkout module's software stack, communication protocols, data models, cross-browser compatibility requirements, error handling protocols, and input validation rules. It ensures that the module meets all specified requirements while adhering to security standards such as OWASP Top 10 compliance.\n\n---\n\nPlease let me know if you need any further information or clarification on this document.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        3,
+        3,
+        3,
+        5,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "The submission follows the requested structure and includes all required sections (Correctness: 4). However, the content lacks necessary depth for a technical spec: the Data Models omit the critical 'Order' entity and incorrectly list API keys as database fields (Best Practices: 3, Domain Accuracy: 3). Cross-browser requirements are vague regarding specific browser behaviors or mobile constraints (Completeness: 3). The document is well-written and structured (Clarity: 5) but requires significant security and architectural revisions before implementation (Autonomy: 3)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Evaluate or recommend server hardware or software.",
+      "task_type": "Server Configuration and Security Audit",
+      "user_prompt": "Configure an Nginx server to host a high-traffic web application. The configuration must include SSL/TLS setup, rate limiting, and caching strategies. Evaluate the configuration for security vulnerabilities and ensure compatibility with modern browsers (Chrome, Firefox, Safari) regarding HTTP/2 and TLS 1.3. Include error handling for server overload and input validation for incoming requests to prevent injection attacks.",
+      "reference_context": {
+        "traffic_expectations": "10,000 requests per minute",
+        "security_requirements": "PCI DSS compliance",
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The Nginx configuration is valid and functional.",
+        "Criterion 2: Completeness — All security and performance requirements are addressed.",
+        "Criterion 3: Best practices — Configuration includes robust error handling and input validation."
+      ],
+      "student_answer": "```nginx\nserver {\n    listen 443 ssl;\n    server_name example.com;\n\n    ssl_certificate /etc/nginx/ssl/example.crt;\n    ssl_certificate_key /etc/nginx/private/example.key;\n\n    location / {\n        proxy_pass http://localhost:8080;\n        proxy_set_header Host $host;\n        proxy_set_header X-Real-IP $remote_addr;\n        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n        proxy_set_header X-Forwarded-Proto $scheme;\n\n        # SSL/TLS setup\n        ssl on;\n        ssl_certificate /etc/nginx/ssl/example.crt;\n        ssl_certificate_key /etc/nginx/private/example.key;\n        ssl_protocols TLSv1.2 TLSv1.3;\n        ssl_ciphers HIGH:!aNULL:!MD5;\n        ssl_prefer_server_ciphers on;\n\n        # Rate limiting\n        client_max_body_size 0;\n        limit_rate 10000; # 10,000 requests per minute\n\n        # Caching strategies\n        proxy_cache_path /tmp levels=1:2 keys_zone=my_cache:10m max_size=5G inactive=60s use_temp_path=off;\n\n        # Error handling for server overload and input validation\n        error_page 429 403 503 = @rate_limit;\n        location @rate_limit {\n            internal;\n            proxy_pass http://localhost:8080;\n            add_header X-RateLimit-Remaining \"1\";\n        }\n\n        # Input validation for incoming requests to prevent injection attacks\n        location /validate {\n            if ($request_method !~ ^(GET|HEAD)$) {\n                return 405;\n            }\n            if ($query_string ~* '(.*)') {\n                return 403;\n            }\n        }\n    }\n\n    # SSL/TLS setup for modern browsers (Chrome, Firefox, Safari)\n    ssl_prefer_server_ciphers on;\n    ssl_protocols TLSv1.2 TLSv1.3;\n\n    # HTTP/2 and TLS 1.3 compatibility\n    gzip on;\n    add_header X-Frame-Options \"SAMEORIGIN\";\n    add_header X-XSS-Protection \"1; mode=block\";\n    add_header X-Content-Type-Options \"nosniff\";\n\n    # Error handling for server overload\n    error_page 429 503 = @rate_limit;\n\n    location @rate_limit {\n        internal;\n        proxy_pass http://localhost:8080;\n        add_header X-RateLimit-Remaining \"1\";\n    }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical configuration errors preventing deployment. Rate limiting uses `limit_rate` (bandwidth) instead of `limit_req` (requests). HTTP/2 is missing from the listen directive. `proxy_cache_path` is placed in the `server` context where it is invalid. `ssl on` is deprecated. Input validation logic is overly restrictive and incorrect. PCI DSS compliance is not met. The configuration will fail to start or function correctly, requiring major rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Monitor security system performance logs to identify problems and notify security specialists when problems occur.",
+      "task_type": "Security Log Analysis and Response",
+      "user_prompt": "Analyze a provided set of server logs to identify potential security breaches and performance bottlenecks. The analysis must include cross-browser compatibility checks for any client-side errors reported in the logs (e.g., JavaScript errors in Safari vs. Chrome). Propose a remediation plan that includes input validation fixes and error handling improvements for the identified issues. Ensure the response includes a notification protocol for security specialists.",
+      "reference_context": {
+        "log_sample": [
+          "ERROR: Failed to load resource: net::ERR_CERT_DATE",
+          "WARN: High latency detected on /api/checkout",
+          "ERROR: JavaScript TypeError: Cannot read property 'length' of undefined"
+        ],
+        "affected_browsers": [
+          "Chrome",
+          "Safari"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The analysis accurately identifies the root causes of the errors.",
+        "Criterion 2: Completeness — The remediation plan covers all identified issues and includes cross-browser considerations.",
+        "Criterion 3: Best practices — The response includes a clear notification protocol and input validation strategies."
+      ],
+      "student_answer": "### Analysis and Remediation Plan\n\n#### Identified Issues:\n1. **Cross-Browser Compatibility Check for Client-Side Errors**\n   - **Issue**: The logs indicate client-side errors in both Chrome and Safari.\n     - **Example Error Messages**:\n       - `ERROR: Failed to load resource: net::ERR_CERT_DATE`\n       - `WARN: High latency detected on /api/checkout`\n       - `ERROR: JavaScript TypeError: Cannot read property 'length' of undefined`\n\n2. **Potential Security Breaches**\n   - The logs contain errors related to network issues and client-side JavaScript execution, which could indicate potential security vulnerabilities or performance bottlenecks.\n\n#### Remediation Plan:\n\n1. **Cross-Browser Compatibility Check for Client-Side Errors**:\n   - Implement a cross-browser compatibility check in the affected codebase.\n     - For Chrome:\n       ```javascript\n       if (typeof window.chrome !== 'undefined') {\n           // Handle specific Chrome-specific issues\n       }\n       ```\n     - For Safari:\n       ```javascript\n       if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') === -1) {\n           // Handle specific Safari-specific issues\n       }\n       ```\n\n2. **Input Validation Fixes**:\n   - Ensure all user inputs are validated to prevent XSS and other security vulnerabilities.\n     ```javascript\n     function validateInput(inputValue, maxLength = 50) {\n         if (typeof inputValue === 'string' && inputValue.length > maxLength) {\n             return false;\n         }\n         return true;\n     }\n\n     // Example usage:\n     const userInput = prompt('Enter your input:');\n     if (!validateInput(userInput)) {\n         alert('Invalid input. Please enter a valid value.');\n         return;\n     }\n     ```\n\n3. **Error Handling Improvements**:\n   - Improve error handling to provide more informative and actionable feedback.\n     ```javascript\n     function handleErrors(error) {\n         switch (error.name) {\n             case 'TypeError':\n                 alert('An error occurred: ' + error.message);\n                 break;\n             default:\n                 console.error('Uncaught Error:', error);\n         }\n     }\n\n     // Example usage:\n     try {\n         // Code that might throw an exception\n     } catch (error) {\n         handleErrors(error);\n     }\n     ```\n\n4. **Notification Protocol for Security Specialists**:\n   - Establish a protocol to notify security specialists of potential issues.\n     ```javascript\n     function notifySecurity(str, type = 'ERROR') {\n         alert(`[${type}] ${str}`);\n     }\n\n     // Example usage:\n     notifySecurity('Failed to load resource: net::ERR_CERT_DATE', 'SECURITY');\n     ```\n\n#### Notification Protocol:\n\n- **Type**: `SECURITY`\n- **Subject**: \"Potential Security Breach Detected\"\n- **Body**:\n  - Brief description of the issue.\n  - Suggested remediation steps (e.g., cross-browser compatibility check, input validation).\n  - Contact information for security specialists.\n\n### Final Work Product\n\nThe provided logs indicate potential issues with client-side errors in both Chrome and Safari. To address these concerns:\n\n1. **Cross-Browser Compatibility Check**:\n   Implement a check to ensure the codebase is compatible with both browsers.\n   \n2. **Input Validation Fixes**:\n   Validate all user inputs to prevent security vulnerabilities.\n\n3. **Error Handling Improvements**:\n   Improve error handling to provide more informative feedback.\n\n4. **Notification Protocol for Security Specialists**:\n   Establish a protocol to notify security specialists of potential issues, including the type and body of the notification.\n\nBy implementing these changes, you can mitigate client-side errors and improve overall performance while ensuring security against potential vulnerabilities.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission addresses all required sections but contains significant technical inaccuracies. Correctness (2) and Domain Accuracy (2) are low because SSL certificate errors are server-side issues, not cross-browser JS problems, and the notification code is syntactically broken. Best Practices (2) are violated via browser sniffing, use of prompt/alert, and lack of feature detection. Completeness (3) is adequate as all headers are present, though depth is shallow. Clarity (4) is high due to good formatting. Autonomy (2) is low as the output requires major rework to be production-ready."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Install and configure hypertext transfer protocol (HTTP) servers and associated operating systems.",
+      "task_type": "HTTP Server Deployment and Validation",
+      "user_prompt": "Install and configure an Apache HTTP server on a Linux-based operating system. The configuration must support virtual hosts for multiple domains, enable HTTPS with Let's Encrypt, and optimize for performance. Validate the deployment by testing cross-browser compatibility for SSL handshake and resource loading in Chrome, Firefox, and Safari. Include error handling for certificate expiration and input validation for domain configuration.",
+      "reference_context": {
+        "domains": [
+          "example.com",
+          "shop.example.com"
+        ],
+        "operating_system": "Ubuntu 22.04 LTS",
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The server is installed and configured correctly.",
+        "Criterion 2: Completeness — All domains are accessible and SSL is properly configured.",
+        "Criterion 3: Best practices — The configuration includes error handling and input validation for production readiness."
+      ],
+      "student_answer": "### Step 1: Install Apache HTTP Server\n\n```bash\nsudo apt update && sudo apt upgrade -y\nsudo apt install apache2 libapache2-mod-wsgi-py3 python3-dev python3-venv python3-pip -y\n```\n\n### Step 2: Configure Virtual Hosts for Multiple Domains\n\nEdit the `sites-available` directory to create a new virtual host configuration file:\n\n```bash\nsudo nano /etc/apache2/sites-available/example.com.conf\n```\n\nAdd the following content:\n\n```apache\n<VirtualHost *:80>\n    ServerName example.com\n    DocumentRoot /var/www/html/example.com\n\n    <Directory \"/var/www/html/example.com\">\n        Options Indexes FollowSymLinks MultiViews\n        AllowOverride All\n        Require all granted\n    </Directory>\n\n    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log\n    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined\n</VirtualHost>\n```\n\nRepeat the above steps for each domain in your `domains` list.\n\n### Step 3: Enable HTTPS with Let's Encrypt\n\nInstall Certbot:\n\n```bash\nsudo apt install certbot python3-certbot-nginx -y\n```\n\nCreate a new directory to store SSL certificates and keys:\n\n```bash\nmkdir /etc/letsencrypt/live/example.com\nmkdir /var/www/html/example.com/.well-known\n```\n\nEdit the `example.com.conf` file again:\n\n```apache\n<VirtualHost *:80>\n    ServerName example.com\n\n    # Redirect HTTP to HTTPS\n    RewriteEngine On\n    RewriteCond %{HTTPS} off\n    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\n    DocumentRoot /var/www/html/example.com\n\n    <Directory \"/var/www/html/example.com\">\n        Options Indexes FollowSymLinks MultiViews\n        AllowOverride All\n        Require all granted\n    </Directory>\n\n    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log\n    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined\n\n    # Enable HTTPS\n    <VirtualHost *:443>\n        ServerName example.com\n        DocumentRoot /var/www/html/example.com\n\n        SSLEngine on\n        SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem\n        SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem\n        Include /etc/letsencrypt/options-ssl-apache.conf\n        SSLProxyEngine on\n        SSLProxyVerify none\n\n        <Directory \"/var/www/html/example.com\">\n            Options Indexes FollowSymLinks MultiViews\n            AllowOverride All\n            Require all granted\n        </Directory>\n\n        ErrorLog ${APACHE_LOG_DIR}/example.com-error.log\n        CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined\n    </VirtualHost>\n</VirtualHost>\n```\n\n### Step 4: Optimize for Performance\n\nEnable mod_rewrite and mod_headers:\n\n```bash\nsudo a2enmod rewrite headers\n```\n\nConfigure Apache to use the new virtual hosts:\n\n```bash\nsudo nano /etc/apache2/sites-enabled/example.com.conf\n```\n\nAdd the following content:\n\n```apache\n<VirtualHost *:80>\n    ServerName example.com\n\n    # Redirect HTTP to HTTPS\n    RewriteEngine On\n    RewriteCond %{HTTPS} off\n    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\n    DocumentRoot /var/www/html/example.com\n\n    <Directory \"/var/www/html/example.com\">\n        Options Indexes FollowSymLinks MultiViews\n        AllowOverride All\n        Require all granted\n    </Directory>\n\n    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log\n    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined\n\n    # Enable HTTPS\n    <VirtualHost *:443>\n        ServerName example.com\n        DocumentRoot /var/www/html/example.com\n\n        SSLEngine on\n        SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem\n        SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem\n        Include /etc/letsencrypt/options-ssl-apache.conf\n        SSLProxyEngine on\n        SSLProxyVerify none\n\n        <Directory \"/var/www/html/example.com\">\n            Options Indexes FollowSymLinks MultiViews\n            AllowOverride All\n            Require all granted\n        </Directory>\n\n        ErrorLog ${APACHE_LOG_DIR}/example.com-error.log\n        CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined\n    </VirtualHost>\n</VirtualHost>\n```\n\n### Step 5: Validate Deployment\n\nTest cross-browser compatibility for SSL handshake and resource loading in Chrome, Firefox, and Safari:\n\n1. Open each browser and navigate to `https://example.com`.\n2. Check the console for any errors related to certificate validation.\n3. Verify that resources (e.g., images) load correctly.\n\n### Step 6: Error Handling\n\nAdd error handling for certificate expiration:\n\n```apache\n<VirtualHost *:443>\n    ServerName example.com\n    DocumentRoot /var/www/html/example.com\n\n    SSLEngine on\n    SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem\n    SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem\n    Include /etc/letsencrypt/options-ssl-apache.conf\n    SSLProxyEngine on\n    SSLProxyVerify none\n\n    <Directory \"/var/www/html/example.com\">\n        Options Indexes FollowSymLinks MultiViews\n        AllowOverride All\n        Require all granted\n    </Directory>\n\n    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log\n    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined\n\n    # Enable HTTPS\n    <VirtualHost *:443>\n        ServerName example.com\n        DocumentRoot /var/www/html/example.com\n\n        SSLEngine on\n        SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem\n        SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem\n        Include /etc/letsencrypt/options-ssl-apache.conf\n        SSLProxyEngine on\n        SSLProxyVerify none\n\n        <Directory \"/var/www/html/example.com\">\n            Options Indexes FollowSymLinks MultiViews\n            AllowOverride All\n            Require all granted\n        </Directory>\n\n        ErrorLog ${APACHE_LOG_DIR}/example.com-error.log\n        CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined\n    </VirtualHost>\n</VirtualHost>\n```\n\n### Step 7: Input Validation\n\nAdd input validation for domain configuration:\n\n```bash\nsudo nano /etc/apache2/sites-available/example.com.conf\n```\n\nAdd the following content to validate the domains:\n\n```apache\n<VirtualHost *:80>\n    ServerName example.com\n\n    # Redirect HTTP to HTTPS\n    RewriteEngine On\n    RewriteCond %{HTTPS} off\n    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]\n\n    DocumentRoot /var/www/html/example.com\n\n    <Directory \"/var/www/html/example.com\">\n        Options Indexes FollowSymLinks MultiViews\n        AllowOverride All\n        Require all granted\n    </Directory>\n\n    ErrorLog ${APACHE_LOG_DIR}/example.com-error.log\n    CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined\n\n    # Enable HTTPS\n    <VirtualHost *:443>\n        ServerName example.com\n        DocumentRoot /var/www/html/example.com\n\n        SSLEngine on\n        SSLCertificateFile /etc/letsencrypt/live/example.com/fullchain.pem\n        SSLCertificateKeyFile /etc/letsencrypt/live/example.com/privkey.pem\n        Include /etc/letsencrypt/options-ssl-apache.conf\n        SSLProxyEngine on\n        SSLProxyVerify none\n\n        <Directory \"/var/www/html/example.com\">\n            Options Indexes FollowSymLinks MultiViews\n            AllowOverride All\n            Require all granted\n        </Directory>\n\n        ErrorLog ${APACHE_LOG_DIR}/example.com-error.log\n        CustomLog ${APACHE_LOG_DIR}/example.com-access.log combined\n    </VirtualHost>\n</VirtualHost>\n```\n\n### Step 8: Final Configuration\n\nSave the changes and restart Apache:\n\n```bash\nsudo systemctl restart apache2\n```\n\n### Step 9: Test Cross-Browser Compatibility\n\n1. Open each browser and navigate to `https://example.com`.\n2. Check the console for any errors related to certificate validation.\n3. Verify that resources (e.g., images) load correctly.\n\n### Final Work Product\n\nThe Apache HTTP server has been successfully installed, configured with virtual hosts for multiple domains, enabled HTTPS with Let's Encrypt, and optimized for performance. The deployment is validated by testing cross-browser compatibility for SSL handshake and resource loading in Chrome, Firefox, and Safari. Error handling for certificate expiration and input validation for domain configuration have also been added.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission contains critical syntax errors in Apache configuration (nested VirtualHosts, invalid RewriteCond/Rule variables, incorrect log paths) and installs the wrong Certbot module (-nginx instead of -apache). Security best practices are ignored (Options Indexes, AllowOverride All). Error handling and input validation are non-existent (just copy-pasted config blocks). While the structure is logical, the technical execution is fundamentally broken and unusable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Research, document, rate, or select alternatives for Web architecture or technologies.",
+      "task_type": "Technology Selection and Architecture Documentation",
+      "user_prompt": "A startup requires a real-time collaborative document editor. Analyze the provided requirements: 500 concurrent users, sub-100ms latency, and offline-first capability. Compare WebSocket vs. Server-Sent Events (SSE) vs. Long Polling for the transport layer. Select the optimal architecture, justify the choice based on the requirements, and document the proposed stack including a specific error handling strategy for connection drops.",
+      "reference_context": {
+        "requirements": {
+          "concurrent_users": 500,
+          "latency_target_ms": 100,
+          "offline_capability": true
+        },
+        "constraints": {
+          "budget": "medium",
+          "team_expertise": "JavaScript/Node.js"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The selected technology must technically satisfy the latency and concurrency constraints.",
+        "Criterion 2: Completeness — The response must include a comparison of at least three alternatives and a specific error handling strategy.",
+        "Criterion 3: Best practices — The proposed architecture must be documented clearly with justification for the selection."
+      ],
+      "student_answer": "### Proposed Stack\n\n#### Real-Time Collaborative Document Editor Architecture\n\n**Transport Layer:**\n- **WebSocket**: The optimal choice for this requirement due to its low latency and high throughput capabilities.\n- **Server-Sent Events (SSE)**: While SSE is simpler, it does not support concurrent connections as effectively as WebSocket. It also has a higher latency compared to WebSocket.\n- **Long Polling**: This method is less efficient in terms of performance and reliability, especially for high-concurrency scenarios.\n\n#### Stack\n\n1. **Frontend**:\n   - **Client-Side Libraries:**\n     - Use `WebSocket` or `Server-Sent Events (SSE)` libraries depending on the chosen transport layer.\n     - For WebSocket, use a library like `ws`.\n     - For SSE, use a library like `sse-js`.\n\n2. **Backend (Node.js)**:\n   - **Express**: A popular web framework for Node.js that can handle real-time communication using WebSockets or SSE.\n   - **Socket.io** (optional): An alternative to WebSocket that provides a simpler API and is easier to integrate with existing applications.\n\n3. **Database/Storage**:\n   - Use a database like MongoDB, PostgreSQL, or MySQL to store the document data.\n\n4. **Error Handling Strategy:**\n   - Implement a strategy where if a connection drops (e.g., due to network issues), the client will automatically reconnect within 5 seconds.\n   - If the reconnection fails after 10 attempts, consider using a fallback method like polling or long polling for low-concurrency scenarios.\n\n#### Proposed Stack\n\n- **Frontend**: Use `WebSocket` library (`ws`) on both the client and server sides to handle real-time communication with high concurrency support.\n- **Backend (Node.js)**: Use Express framework and Socket.io if needed, but WebSocket is preferred due to its better performance for concurrent connections.\n- **Database/Storage**: MongoDB or PostgreSQL for storing document data.\n\n#### Error Handling Strategy\n\n1. **Initial Connection Attempt**:\n   - If the initial connection attempt fails (e.g., due to network issues), automatically retry within 5 seconds using a simple loop with exponential backoff.\n   \n2. **Connection Drop Recovery**:\n   - Implement automatic reconnection logic that retries up to 10 times and falls back to polling or long polling if necessary.\n\n3. **Fallback Mechanism**:\n   - If the connection is dropped after 10 attempts, consider using a fallback method like polling or long polling for low-concurrency scenarios.\n   \n4. **Connection Timeout**:\n   - Set a timeout of 5 seconds on each attempt to avoid infinite loops and ensure efficient use of resources.\n\n#### Conclusion\n\nThe proposed architecture with WebSocket as the transport layer is optimal due to its ability to handle high concurrency, low latency, and offline-first capabilities. The error handling strategy ensures that connections are automatically recovered in case of network issues or connection drops, providing a reliable real-time collaborative document editor for 500 concurrent users within the given constraints.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "Critical technical errors undermine the submission: recommending the 'ws' library for the frontend client (it is Node.js server-side only) and omitting essential collaborative editing mechanics like CRDTs or OT. The offline-first requirement is mentioned but not architected (no local storage or sync strategy). Error handling suggests falling back to polling for high concurrency, which contradicts latency targets. The structure is repetitive. While readable, the solution requires major rework to be technically viable."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop system interaction or sequence diagrams.",
+      "task_type": "System Interaction Diagramming",
+      "user_prompt": "Design a sequence diagram for a 'Secure Password Reset' flow involving a User, Frontend, API Gateway, Auth Service, and Email Service. The flow must include: 1) Request initiation, 2) Token generation, 3) Email delivery, 4) Token validation, and 5) Password update. Ensure the diagram explicitly shows error handling paths for invalid tokens and rate-limiting triggers. Provide the Mermaid.js code for this diagram.",
+      "reference_context": {
+        "services": [
+          "User",
+          "Frontend",
+          "API Gateway",
+          "Auth Service",
+          "Email Service"
+        ],
+        "security_requirements": [
+          "Token expiration: 15 minutes",
+          "Rate limit: 3 attempts per IP"
+        ]
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The sequence must accurately reflect the logical flow of a password reset.",
+        "Criterion 2: Completeness — Error paths for invalid tokens and rate limiting must be explicitly included.",
+        "Criterion 3: Best practices — The Mermaid.js code must be syntactically valid and render correctly."
+      ],
+      "student_answer": "```mermaid\nsequenceDiagram\n    User->>Frontend: Request Initiation\n    Frontend-->>API Gateway: Password Reset Request\n    API Gateway->>Auth Service: Validate Token\n    Auth Service-->>User: Token Validation Result\n    IF (Token is valid)\n        THEN\n            API Gateway->>Email Service: Send Email\n            Email Service-->>User: Email Sent\n            User->>Frontend: Email Received\n        ELSE\n            Frontend-->>API Gateway: Invalid Token Error\n            API Gateway->>Auth Service: Revoke Token\n    END\n    IF (Rate Limit Exceeded)\n        THEN\n            Frontend-->>API Gateway: Rate Limit Triggered\n            API Gateway->>Auth Service: Reject Request\n    ELSE\n        Auth Service->>User: Password Reset Flow Initiated\n        User->>Frontend: Proceed to Password Reset\n        Frontend->>API Gateway: Token Generation\n        API Gateway->>Auth Service: Generate Token\n        Auth Service-->>User: Token Generated\n        IF (Token is valid)\n            THEN\n                API Gateway->>Email Service: Send Email\n                Email Service-->>User: Email Sent\n                User->>Frontend: Email Received\n                Frontend->>API Gateway: Password Reset Confirmation\n                API Gateway->>Auth Service: Validate Token\n                Auth Service-->>User: Token Validation Result\n                IF (Token is valid)\n                    THEN\n                        API Gateway->>Email Service: Send Password Reset Link\n                        Email Service-->>User: Email Sent\n                        User->>Frontend: Password Reset Link Sent\n                        Frontend->>API Gateway: New Password Request\n                        API Gateway->>Auth Service: Validate Token\n                        Auth Service-->>User: Token Validation Result\n                        IF (Token is valid)\n                            THEN\n                                Frontend->>API Gateway: Update Password\n                                API Gateway->>Email Service: Send Confirmation Email\n                                Email Service-->>User: Email Sent\n                                User->>Frontend: New Password Set\n                                Frontend->>API Gateway: Success Notification\n                                API Gateway->>Auth Service: Token Revoked\n                            ELSE\n                                Frontend-->>API Gateway: Invalid Token Error\n                                API Gateway->>Auth Service: Revoke Token\n                        ELSE\n                            Frontend-->>API Gateway: Rate Limit Triggered\n                            API Gateway->>Auth Service: Reject Request\n                    ELSE\n                        Frontend-->>API Gateway: Token Validation Failed\n                        API Gateway->>Auth Service: Revoke Token\n                ELSE\n                    Frontend-->>API Gateway: Password Reset Flow Failed\n                    API Gateway->>Auth Service: Revoke Token\n            ELSE\n                Frontend-->>API Gateway: Password Reset Flow Failed\n                API Gateway->>Auth Service: Revoke Token\n        ELSE\n            Frontend-->>API Gateway: Rate Limit Triggered\n            API Gateway->>Auth Service: Reject Request\n    END\n\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails on multiple critical levels. Correctness is 1 because the Mermaid syntax is invalid (uses IF/THEN/ELSE instead of alt/else/end), meaning the code will not render. Completeness is 2 as all required actors and steps are present but scrambled. Best Practices and Domain Accuracy are 1 due to fundamental logic errors (validating a token before generating it) and anti-pattern nesting. Clarity is 1 due to unreadable nested conditions. Autonomy is 1 as the output requires a complete rewrite to be functional."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design and implement Web site security measures, such as firewalls and message encryption.",
+      "task_type": "Security Implementation and Validation",
+      "user_prompt": "Implement a secure API endpoint in Node.js/Express for processing credit card data. The code must: 1) Validate all input fields using a strict schema, 2) Implement rate limiting to prevent brute force attacks, 3) Ensure all data is encrypted in transit (TLS configuration note) and at rest (hashing strategy), and 4) Include comprehensive error handling that does not leak stack traces or sensitive data. Provide the code and a brief explanation of the validation logic.",
+      "reference_context": {
+        "input_schema": {
+          "card_number": "string (16 digits)",
+          "expiry": "string (MM/YY)",
+          "cvv": "string (3-4 digits)"
+        },
+        "environment": "Production"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The code must successfully validate inputs and reject malformed data.",
+        "Criterion 2: Completeness — Rate limiting, input validation, and secure error handling must all be present.",
+        "Criterion 3: Best practices — No sensitive data (like full card numbers) should be logged, and error messages must be generic."
+      ],
+      "student_answer": "```javascript\nconst express = require('express');\nconst bodyParser = require('body-parser');\nconst crypto = require('crypto');\nconst mongoose = require('mongoose');\n\n// Connect to MongoDB database\nmongoose.connect('mongodb://localhost:27017/credit_card_db', { useNewUrlParser: true, useUnifiedTopology: true });\n\n// Define the credit card schema\nconst CreditCardSchema = new mongoose.Schema({\n  number: String,\n  expiry: String,\n  cvv: String\n});\n\nconst CreditCard = mongoose.model('CreditCard', CreditCardSchema);\n\n// Express app setup\nconst app = express();\napp.use(bodyParser.json());\n\n// Rate limiting middleware\nconst rateLimit = require('express-rate-limit');\nconst limiter = rateLimit({\n  windowMs: 60 * 1000, // 1 minute\n  max: 5 // limit each IP to 5 requests per windowMs\n});\n\n// Encrypt data in transit and at rest\nconst encrypt = (data) => {\n  return crypto.createHash('sha256').update(data).digest('hex');\n};\n\n// Secure API endpoint for processing credit card data\napp.post('/process', limiter, async (req, res) => {\n  try {\n    // Validate input fields using strict schema\n    const { number, expiry, cvv } = req.body;\n    if (!number || !expiry || !cvv) {\n      throw new Error('All fields are required');\n    }\n\n    // Encrypt data in transit and at rest\n    const encryptedNumber = encrypt(number);\n    const encryptedExpiry = encrypt(expiry);\n    const encryptedCvv = encrypt(cvv);\n\n    // Store credit card details securely\n    await CreditCard.create({\n      number: encryptedNumber,\n      expiry: encryptedExpiry,\n      cvv: encryptedCvv\n    });\n\n    res.status(201).send('Credit card data processed successfully');\n  } catch (error) {\n    console.error(error);\n    res.status(400).send({ message: error.message });\n  }\n});\n\n// Start the server\nconst PORT = process.env.PORT || 3000;\napp.listen(PORT, () => {\n  console.log(`Server is running on port ${PORT}`);\n});\n```\n\nExplanation of validation logic:\n\n1. **Input Validation**: The code checks if all required fields (`number`, `expiry`, and `cvv`) are present in the request body.\n\n2. **Encryption**: All sensitive data (credit card number, expiry date, and CVV) is encrypted using SHA-256 hashing before being stored in the database to ensure it's protected during transmission and storage.\n\n3. **Error Handling**: The code includes comprehensive error handling:\n   - It returns a 400 Bad Request response with an appropriate message if any required fields are missing.\n   - If there's an issue encrypting or storing data, it logs the error and sends back a 500 Internal Server Error response.\n\nThis implementation ensures that credit card data is processed securely while maintaining robust validation and error handling.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        1
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission contains critical errors preventing deployment and security flaws. Correctness (2): Syntax error in server startup ('port $'), logic error treating hashing as encryption. Completeness (2): No TLS configuration implemented, validation lacks regex/format checks. Best Practices (2): Uses deprecated packages (body-parser, old Mongoose options), stores sensitive data insecurely. Domain Accuracy (1): Fundamentally confuses hashing with encryption, violates PCI-DSS by storing CVV/Card numbers. Clarity (3): Code structure is readable, explanation is clear but factually incorrect. Autonomy (1): Cannot run due to syntax errors and is unsafe for production without major redesign."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Incorporate technical considerations into Web site design plans, such as budgets, equipment, performance requirements, and legal issues including accessibility and privacy.",
+      "task_type": "Accessibility and Performance Audit",
+      "user_prompt": "Audit the provided HTML/CSS snippet for a product card component. Identify three specific accessibility violations (WCAG 2.1 AA) and two performance bottlenecks related to rendering. Propose a corrected code block that fixes these issues while ensuring cross-browser compatibility (Chrome, Firefox, Safari) and maintaining the original visual design. Include input validation for any form elements within the card.",
+      "reference_context": {
+        "original_html": "<div class='product-card'><img src='product.jpg' alt=''><h3>Product Name</h3><button>Buy Now</button></div>",
+        "original_css": ".product-card { display: grid; grid-template-columns: 1fr; } button { background: blue; color: white; }",
+        "browser_versions": {
+          "chrome": "latest",
+          "firefox": "latest",
+          "safari": "latest"
+        }
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The solution must fix the identified accessibility and performance issues.",
+        "Criterion 2: Completeness — The response must address cross-browser compatibility and include input validation logic.",
+        "Criterion 3: Best practices — The corrected code must adhere to WCAG 2.1 AA standards and follow modern CSS practices."
+      ],
+      "student_answer": "```html\n<div class='product-card'>\n  <img src='product.jpg' alt='' loading=\"lazy\">\n  <h3>Product Name</h3>\n  <button onclick=\"validateForm()\">Buy Now</button>\n</div>\n\n<style>\n.product-card {\n  display: grid;\n  grid-template-columns: 1fr;\n}\n\nbutton {\n  background: blue;\n  color: white;\n}\n</style>\n\n<script>\nfunction validateForm() {\n  // Input validation for form elements within the card\n  const productName = document.querySelector('.product-card h3');\n  if (productName.value.trim() === '') {\n    alert('Please enter a product name.');\n    return false;\n  }\n  // Additional input validation logic can be added here\n}\n</script>\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The student added lazy loading, but failed to provide the required audit report identifying accessibility violations and performance bottlenecks. The code provided contains critical logical errors (accessing .value on an <h3>), leaves alt text empty, uses inline event handlers, and lacks focus states. It does not meet industry standards or task requirements."
+    }
+  ]
+}

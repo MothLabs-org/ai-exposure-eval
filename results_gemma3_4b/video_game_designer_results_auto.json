@@ -1,0 +1,479 @@
+{
+  "meta": {
+    "job_title": "Video Game Designers",
+    "job_id": "video_game_designer",
+    "onet_code": "15-1255.01",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 24,
+    "evaluated_tasks": 12,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.55,
+      "dimensions": {
+        "Correctness": 3.33,
+        "Completeness": 3.33,
+        "Best Practices": 3.25,
+        "Domain Accuracy": 3.83,
+        "Clarity": 4.25,
+        "Autonomy": 3.33
+      },
+      "evaluated_tasks": 12,
+      "scale_max": 5
+    },
+    "total_time_seconds": 724.55
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Devise missions, challenges, or puzzles to be encountered in game play.",
+      "task_type": "Gameplay Mechanics Design",
+      "user_prompt": "Design a 15-minute side-mission for a sci-fi RPG set in a derelict space station. The mission must introduce a new 'gravity manipulation' mechanic without using a tutorial. Provide the mission flow, key puzzle logic, and success/failure conditions.",
+      "reference_context": {
+        "game_genre": "Sci-Fi Action RPG",
+        "player_level": "Mid-game (Level 15)",
+        "available_tools": [
+          "Gravity Boots",
+          "Magnetic Grapple",
+          "Energy Shield"
+        ],
+        "environment": "Zero-G Sector 4"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the mission logic hold up under the proposed mechanics?",
+        "Criterion 2: Completeness — Are all mission phases (intro, puzzle, resolution) defined?",
+        "Criterion 3: Best practices — Is the design clear enough for engineers to implement?"
+      ],
+      "student_answer": "**Mission Title:** Echoes of the Shift\n\n**Duration:** 15 minutes\n\n**Mission Flow:**\n\n1.  **Briefing (30 seconds):** Player receives a scrambled comms message from a former station engineer, Elias Vance, requesting assistance. The message indicates a critical system failure in Zero-G Sector 4 and hints at a “temporal anomaly.” No explicit instructions are given.\n\n2.  **Initial Exploration (2 minutes):** Player enters Zero-G Sector 4. The sector is a large, partially collapsed chamber filled with debris, flickering emergency lights, and exposed wiring. Several inactive maintenance drones drift slowly. The player immediately notices a large, circular platform suspended in the center of the room, seemingly defying gravity. A faint, distorted audio loop – a snippet of Vance’s voice repeating “Shift… stabilize…” – plays intermittently.\n\n3.  **Gravity Boot Discovery (1 minute):** The player must locate the Gravity Boots. They are hidden within a collapsed section of the wall, requiring the use of the Magnetic Grapple to pull debris aside and reveal them.\n\n4.  **Puzzle Introduction (4 minutes):** The circular platform is the core of the puzzle. It has six recessed slots around its perimeter. Each slot is marked with a stylized symbol (triangle, square, circle, star, diamond, hexagon).  The audio loop continues, subtly increasing in volume and distortion.  Touching a slot with the Gravity Boots causes a brief, localized gravity shift – the platform rotates slightly, revealing a partially obscured control panel.  The symbols on the slots correspond to different gravity orientations (e.g., Triangle = Downward, Square = Horizontal).  The player must experiment with the boots to determine which orientation causes the platform to rotate to reveal the next panel.\n\n5.  **Control Panel Sequence (3 minutes):**  The control panel reveals a sequence of symbols – the same six symbols as the slots.  The player must, using the Gravity Boots, position the platform so that each symbol aligns with the corresponding orientation.  This requires precise movement and timing.  Incorrect alignment triggers a brief, localized gravity surge, pushing the player back slightly and resetting the platform’s position.\n\n6.  **Resolution (1 minute):**  Upon correctly aligning all six symbols, the audio loop abruptly stops. The platform stabilizes, revealing a small, sealed container. Inside is a data chip containing Vance’s final log – detailing the anomaly was a failed gravity experiment that created a localized temporal distortion. The log also mentions a failsafe mechanism that has now been activated.\n\n**Key Puzzle Logic:**\n\n*   **Gravity Orientation:** Each slot represents a specific gravity orientation.\n*   **Trial and Error:** The player must experiment with the Gravity Boots to discover the effect of each orientation.\n*   **Spatial Reasoning:** The player needs to visualize how rotating the platform will reveal the next panel.\n*   **Sequence Matching:** The control panel sequence requires the player to accurately align the symbols with their corresponding gravity orientations.\n\n**Success Condition:** The player successfully aligns all six symbols on the platform, retrieves the data chip, and completes the mission.\n\n**Failure Condition:**\n\n*   **Time Limit:** If the player fails to complete the puzzle within 15 minutes, the mission ends in failure.\n*   **Excessive Gravity Surges:** If the player triggers three or more gravity surges, the mission ends in failure.\n*   **Player Death:** If the player dies during the mission, the mission ends in failure.\n\n**Post-Mission:**\n\n*   The player receives experience points and a small amount of credits.\n*   The data chip is added to the player’s inventory.\n*   A new dialogue option becomes available, allowing the player to access Vance’s log.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails the core constraint of 'no tutorial' by explicitly stating the player must 'locate the Gravity Boots' as a discovery step, which contradicts the context of a mid-game player who already possesses the tool. The puzzle logic is vague regarding the specific interaction between 'Gravity Boots' and 'rotating a platform,' lacking the technical precision required for a design document. The failure condition of a hard 15-minute time limit is poor design for a 15-minute mission, as it creates artificial pressure rather than skill-based failure. While the narrative flow is clear and the structure is readable, the fundamental misunderstanding of the tool availability and the weak puzzle mechanics prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Balance and adjust gameplay experiences to ensure the critical and commercial success of the product.",
+      "task_type": "Game Economy Balancing",
+      "user_prompt": "Analyze the provided loot drop table for a high-difficulty raid boss. The current design yields 1200 gold and a 'Rare' weapon with 5% drop chance. Adjust the rewards to increase player retention by 15% without breaking the in-game economy. Propose a new reward structure including a secondary 'Common' reward and explain the psychological rationale for the change.",
+      "reference_context": {
+        "game_genre": "MMORPG",
+        "current_economy": "Inflationary (Gold value dropping 5% weekly)",
+        "target_retention_metric": "15% increase in weekly active players",
+        "raid_difficulty": "Mythic"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Economic Viability — Does the new reward structure prevent inflation?",
+        "Criterion 2: Player Psychology — Is the reward variance designed to trigger variable ratio reinforcement?",
+        "Criterion 3: Clarity — Is the new loot table clearly defined for the backend team?"
+      ],
+      "student_answer": "```json\n{\n  \"new_loot_table\": {\n    \"boss_drop_chance\": 0.05,\n    \"boss_gold_reward\": 2500,\n    \"boss_weapon_rarity\": \"Rare\",\n    \"common_reward_chance\": 0.30,\n    \"common_reward_gold\": 300,\n    \"common_reward_types\": [\n      \"Minor Enchanted Item (5-10% stat boost)\",\n      \"Crafting Material (High-Tier)\",\n      \"Consumable (Potion of Minor Healing/Mana)\",\n      \"Recipe Scroll (Level 3-5)\"\n    ],\n    \"secondary_reward_chance\": 0.05,\n    \"secondary_reward_type\": \"Unique Cosmetic Item (Armor piece, mount accessory, or pet)\",\n    \"secondary_reward_description\": \"Visually distinct cosmetic item tied to the raid theme.\"\n  },\n  \"rationale\": \"The original reward structure offered a low probability of significant gold and a relatively underwhelming reward (a Rare weapon).  To combat inflationary pressures and boost retention, the gold reward has been increased substantially. Introducing a guaranteed 'Common' reward with valuable items (crafting materials, consumables, and minor enchantments) provides consistent positive reinforcement and reduces the frustration of repeated attempts. The 30% common reward chance ensures players consistently receive something of value, even on failed attempts.  The secondary, low-probability reward (5%) adds a layer of excitement and encourages continued participation, tapping into variable reward schedules – a psychological principle known to increase engagement.  The cosmetic reward provides a tangible, visible accomplishment, further motivating players.  The combined effect of increased gold, consistent common rewards, and a chance at a unique cosmetic item creates a more rewarding and engaging experience, driving a 15% increase in weekly active players without drastically disrupting the economy.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to address the core economic constraint: the context specifies an inflationary economy where gold value is dropping 5% weekly, yet the student proposes increasing the gold reward from 1200 to 2500. This would exacerbate inflation rather than solve it. Furthermore, the student ignores the specific instruction to propose a 'secondary Common reward' structure with a clear explanation of the psychological rationale for the *change* in the drop table mechanics (e.g., changing the drop rate or adding a pity system), instead just listing items. The 'secondary reward' is described as a 5% chance cosmetic, which duplicates the original weapon's drop chance without adding the requested 'Common' tier logic effectively. The solution is economically unsound for the given context and misses key task requirements regarding the specific reward structure adjustment."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Create core game features, including storylines, role-play mechanics, and character biographies for a new video game or game franchise.",
+      "task_type": "Narrative & Character Design",
+      "user_prompt": "Develop a character biography and a 3-act role-play arc for a 'Reluctant Mentor' NPC in a fantasy setting. The character must have a hidden backstory that changes the player's moral alignment options. Define the dialogue triggers and the specific gameplay consequences of revealing this secret.",
+      "reference_context": {
+        "game_genre": "Open World Fantasy RPG",
+        "player_alignment_system": "Chaotic Good to Lawful Evil",
+        "setting": "Kingdom of Aethelgard",
+        "key_theme": "Redemption through sacrifice"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Narrative Cohesion — Does the backstory logically support the alignment shifts?",
+        "Criterion 2: Gameplay Integration — Are the consequences of the secret clearly mapped to game mechanics?",
+        "Criterion 3: Depth — Does the character offer meaningful role-play choices beyond binary options?"
+      ],
+      "student_answer": "```\n## Character Biography: Silas Blackwood\n\n**Name:** Silas Blackwood\n**Age:** 67 (appears younger due to magical preservation)\n**Race:** Human (formerly Aethelgardian, now subtly altered)\n**Occupation:** Wandering Herbalist & Antiquarian\n**Appearance:** Lean, weathered face etched with deep lines. Piercing grey eyes that hold a profound sadness. Wears simple, dark grey robes adorned with dried herbs and small, tarnished silver charms. Carries a worn leather satchel filled with botanical specimens and ancient texts. Moves with a quiet, almost unsettling grace.\n**Voice:** Low, gravelly, with a hint of a northern accent. Speaks sparingly, choosing his words carefully.\n\n**Hidden Backstory:** Silas was once a Captain in the Royal Guard of Aethelgard, renowned for his ruthlessness and unwavering loyalty to King Alaric. He participated in a brutal campaign to suppress a rebellion led by a charismatic druid named Lyra Meadowlight.  During the final siege of Meadowlight’s stronghold, Silas, driven by orders and fueled by ambition, oversaw the execution of Lyra and her followers, including children.  He used a forbidden ritual – the ‘Shadow Binding’ – to permanently erase Lyra’s memories and suppress her connection to the natural world, ensuring her followers would lose their will to resist.  The ritual warped Silas, granting him extended life but also slowly draining his empathy and subtly corrupting his soul.  Haunted by the ghosts of his actions, he abandoned his post, seeking solace in the wilderness and dedicating himself to studying forgotten lore, hoping to find a way to atone for his sins. He now subtly manipulates events to prevent similar atrocities, believing he can only achieve redemption through preventing others from making the same mistakes he did.\n\n**Moral Alignment Shift Trigger:**  The player’s alignment shifts based on their *response* to Silas’s secret, not the secret itself.  A purely good player who accepts Silas’s actions without question will see their alignment remain stable. A player who actively challenges him, seeks to expose his past, or attempts to punish him will experience a *negative* alignment shift (towards Lawful Evil). A player who attempts to help Silas atone, or demonstrates genuine empathy and understanding, will experience a *positive* alignment shift (towards Chaotic Good).\n\n\n## 3-Act Role-Play Arc\n\n**Act 1: The Curious Herbalist (Levels 1-5)**\n\n*   **Initial Encounter:** The player encounters Silas while seeking rare herbs or information in a remote village. He’s initially aloof and unhelpful, offering cryptic advice and selling overpriced remedies.\n*   **Dialogue Triggers:**\n    *   **Questioning his past:**  Directly asking about his military service or his knowledge of the Meadowlight rebellion will elicit evasive responses and veiled warnings.\n    *   **Expressing sympathy for victims of injustice:** Silas will subtly express discomfort, hinting at past experiences he’d rather forget.\n    *   **Offering assistance without expectation:**  Helping Silas with a simple task (gathering ingredients, translating a text) will earn a rare, almost grudging, expression of gratitude.\n*   **Gameplay:** Focus on exploration, gathering, and basic combat. Silas provides minor quests related to herbalism and lore, offering clues about the kingdom’s history.  The player’s initial alignment is largely unaffected.\n*   **End of Act 1:** Silas reveals a fragmented memory – a fleeting image of a young druid’s face – suggesting a deep-seated guilt.\n\n**Act 2: Echoes of the Past (Levels 6-10)**\n\n*   **Triggering the Revelation:** If the player has consistently shown empathy or attempted to help Silas, or if they’ve actively challenged him, Silas will eventually reveal his past. This can be triggered by a specific event (e.g., witnessing a similar act of injustice, finding a hidden journal entry) or through a prolonged dialogue sequence.\n*   **Revelation Dialogue:** Silas recounts the events of the Meadowlight rebellion, detailing his role in Lyra’s capture and execution, and the use of the Shadow Binding ritual. He expresses profound regret and describes the slow erosion of his humanity.\n*   **Gameplay Consequences:**\n    *   **Good Alignment:** Silas offers the player a chance to aid him in a small, morally ambiguous task – preventing a corrupt noble from exploiting a village. Success strengthens their bond and provides a unique, powerful herbal remedy.\n    *   **Neutral Alignment:** Silas offers a warning about the dangers of unchecked ambition and the importance of compassion. He provides a cryptic prophecy related to the kingdom’s future.\n    *   **Evil Alignment:** Silas attempts to manipulate the player into furthering his own agenda, subtly suggesting that the ends justify the means.  He offers a dark artifact that amplifies their existing tendencies.\n*   **End of Act 2:** Silas tasks the player with finding a specific artifact – a fragment of Lyra’s lost connection to nature – believing it might offer a path to redemption.\n\n**Act 3: Sacrifice and Choice (Levels 11-15)**\n\n*   **The Artifact’s Purpose:** The artifact leads the player to a location connected to Lyra’s stronghold.  They discover that the Shadow Binding ritual didn’t completely erase Lyra’s essence; it was merely suppressed.\n*   **Final Confrontation (Symbolic):** The player doesn’t fight a physical enemy, but faces a moral dilemma. They must choose whether to fully restore Lyra’s memories and potentially unleash a powerful, unpredictable force upon Aethelgard, or to permanently suppress her connection to the natural world once again – mirroring Silas’s original actions.\n*   **Dialogue Triggers:** Silas guides the player through the decision, offering his perspective and acknowledging the potential consequences of each choice.\n*   **Gameplay Consequences:**\n    *   **Restoration:** Silas accepts the player’s choice, offering a final, poignant farewell.  The player’s alignment shifts significantly towards Chaotic Good. Aethelgard experiences a period of unpredictable natural events, testing the kingdom’s stability.\n    *   **Suppression:** Silas, devastated by the player’s decision, fades away, his life force seemingly drained. The player’s alignment shifts towards Lawful Evil. Aethelgard enters a period of enforced order and control, but at the cost of its natural beauty and freedom. Silas’s spirit lingers as a shadowy observer, a constant reminder of the player’s choice.\n*   **End of Act 3:** The game concludes with the player facing the consequences of their choice, shaping the future of Aethelgard and solidifying their moral alignment.\n\n\n\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission addresses the core narrative requirements (biography, 3-act arc, hidden backstory) well, earning a 4 for Domain Accuracy and Clarity. However, it fails significantly on Correctness and Completeness regarding the specific task constraints. The prompt explicitly asked to 'Define the dialogue triggers and the specific gameplay consequences of revealing this secret.' The student provided vague triggers (e.g., 'Questioning his past') rather than specific dialogue lines or script logic, and the consequences are generic narrative shifts rather than defined gameplay mechanics (e.g., stat changes, item unlocks, faction reputation). Furthermore, the 'Moral Alignment Shift Trigger' logic is contradictory and confusing (claiming a good player challenging the NPC shifts them to Lawful Evil), which undermines the design's coherence. The submission also ignores the 'Additional Checks' regarding environmental storytelling and technical constraints, treating the task as a pure narrative exercise rather than a technical design document. Due to these missing technical definitions and logical flaws, it cannot be considered industry-ready (Autonomy 3) or fully correct (Correctness 3)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Solicit, obtain, and integrate feedback from design and technical staff into original game design.",
+      "task_type": "Design Iteration & Technical Feasibility",
+      "user_prompt": "You are reviewing a proposed 'Dynamic Weather System' that causes rain to slow player movement by 20%. The engineering team reports this will cause a 40% performance hit on the physics engine. Propose a revised design that maintains the atmospheric immersion and gameplay challenge but reduces the performance cost by 30%. Document the technical trade-offs.",
+      "reference_context": {
+        "game_genre": "Survival Horror",
+        "current_performance_budget": "16ms per frame",
+        "target_performance_budget": "12ms per frame",
+        "gameplay_goal": "Increase tension during storm sequences"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Technical Feasibility — Does the solution address the 30% performance reduction?",
+        "Criterion 2: Gameplay Integrity — Does the new design still effectively convey the intended tension?",
+        "Criterion 3: Communication — Is the trade-off analysis clear for the art and engineering leads?"
+      ],
+      "student_answer": "```json\n{\n  \"revised_design\": {\n    \"weather_effect\": \"Localized Rain Zones\",\n    \"movement_reduction\": {\n      \"base_reduction\": \"10%\",\n      \"zone_density\": \"Moderate (5-10 zones per map)\",\n      \"zone_size\": \"Small (50m radius)\",\n      \"reduction_gradient\": \"Linear decrease from zone center to edge (0% at zone edge)\"\n    },\n    \"physics_impact\": \"Reduced\",\n    \"particle_system\": {\n      \"rain_particles\": \"Simplified Particle System\",\n      \"particle_count\": \"Dynamic, based on zone size and intensity.  Maximum 5000 particles per zone.\",\n      \"particle_lifetime\": \"Shortened (1 second)\",\n      \"particle_velocity\": \"Reduced variance, more predictable trajectory\"\n    },\n    \"audio_integration\": {\n      \"ambient_sound\": \"Rain ambience layered with localized intensity based on zone density.\",\n      \"footstep_effect\": \"Subtle wetness audio cue triggered within rain zones.\"\n    },\n    \"visual_effects\": {\n      \"lighting\": \"Dimmed ambient lighting within rain zones, increased specular highlights on wet surfaces.\",\n      \"fog\": \"Increased fog density within rain zones, with a subtle blue tint.\"\n    },\n    \"performance_optimization\": {\n      \"culling\": \"Frustum culling applied to rain particles and fog within rain zones.\",\n      \"level_of_detail\": \"Reduced LOD for rain particles and fog based on distance from player.\",\n      \"batching\": \"Static mesh rain particles combined into larger batches.\"\n    }\n  },\n  \"technical_tradeoffs\": {\n    \"immersion_vs_performance\": \"Reduced movement slowdown compared to a global effect provides a more authentic rain experience while minimizing the physics impact.  The localized zones create a more believable and less jarring effect.\",\n    \"complexity_vs_performance\": \"Simplifying the particle system and reducing particle count significantly lowers the rendering cost. Dynamic LOD and frustum culling further reduce the load on the GPU.\",\n    \"audio_vs_performance\": \"Using layered ambient sounds and subtle audio cues avoids complex spatial audio calculations within rain zones.\",\n    \"visual_impact_vs_performance\": \"Dimmed lighting and increased fog density create a moody atmosphere without requiring extensive dynamic lighting calculations.  Specular highlights add visual interest without significant performance cost.\",\n    \"estimated_performance_reduction\": \"Projected performance impact reduced to approximately 10-15%, achieving a target of 11-13ms per frame. This leaves a 3ms buffer for other game systems.\",\n    \"potential_drawbacks\": \"Localized rain zones may feel less consistent than a global effect. Careful tuning of zone density and size is required to balance immersion and performance.  The linear reduction gradient may feel slightly artificial if not implemented subtly.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails to address the core technical constraint: the physics engine is the bottleneck, not the rendering. The student proposes rendering optimizations (particle culling, LOD, batching) which do not solve the 40% physics hit caused by the movement slowdown logic. Furthermore, the math is flawed; reducing the slowdown from 20% to 10% does not inherently reduce the physics engine's computational cost by 30% if the underlying collision or velocity calculation logic remains the same. The design also ignores the specific 'Survival Horror' context by suggesting 'small zones' which might break the tension of a global storm, and it fails to address the 'Additional Checks' regarding narrative integration and difficulty curves. While the formatting is clean (Clarity 4), the technical solution is fundamentally misaligned with the problem statement, requiring significant rework (Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Conduct regular design reviews throughout the game development process.",
+      "task_type": "Design Review & Gap Analysis",
+      "user_prompt": "Conduct a design review for a proposed 'Crafting System' where players must combine 5 random ingredients to create a potion. Identify three critical failure points where player frustration is likely to occur due to lack of feedback or progression. Propose specific UI/UX improvements and mechanic adjustments to fix these issues before the next sprint.",
+      "reference_context": {
+        "game_genre": "Action-Adventure",
+        "current_player_feedback": "High churn rate at crafting stations",
+        "system_complexity": "High (5 ingredients, 300+ combinations)",
+        "target_metric": "Reduce crafting station abandonment by 25%"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Problem Identification — Are the specific friction points accurately diagnosed?",
+        "Criterion 2: Solution Quality — Do the proposed fixes directly address the identified friction?",
+        "Criterion 3: Retention Focus — Do the changes align with known player retention best practices?"
+      ],
+      "student_answer": "**Crafting System Design Review: Potion Creation**\n\n**Critical Failure Points & Proposed Solutions**\n\n1.  **Failure Point:** Lack of Ingredient Information & Potential.\n    *   **Problem:** Players have no immediate understanding of ingredient properties or potential combinations. The random nature of ingredient selection leads to wasted attempts and frustration when a combination clearly doesn't yield a desirable result.\n    *   **UI/UX Improvement:** Implement a dynamic ingredient tooltip that appears on hover. This tooltip displays:\n        *   Ingredient Name & Icon\n        *   Primary Attribute (e.g., “Fire,” “Healing,” “Strength”) – visually represented with a color gradient.\n        *   Brief Flavor Text hinting at potential effects (e.g., “May enhance attack power,” “Could provide temporary resistance”).\n    *   **Mechanic Adjustment:** Introduce a subtle “resonance” indicator during ingredient selection.  A faint color overlay or pulsing effect could briefly highlight ingredients that share similar attributes, suggesting potential synergy.\n\n2.  **Failure Point:** Ambiguous Failure Feedback.\n    *   **Problem:** When a combination fails, the game provides minimal feedback. Players are left guessing why their attempt was unsuccessful, leading to repeated, unproductive experimentation.\n    *   **UI/UX Improvement:** Replace generic “Failed” messages with descriptive feedback.  Examples:\n        *   “The ingredients clash violently, producing a volatile sludge.”\n        *   “The mixture lacks stability, dissipating into smoke.”\n        *   “An unstable reaction consumes the ingredients.”\n    *   **Mechanic Adjustment:** Introduce a “stability meter” that visually represents the likelihood of success.  This meter fills as ingredients are combined, decreasing as the process progresses.  A low stability meter triggers a more dramatic failure message.\n\n3.  **Failure Point:**  Overwhelming Combination Space & Lack of Guidance.\n    *   **Problem:** 300+ combinations can feel daunting. Players lack a sense of progression or a way to understand what types of combinations are more likely to succeed.\n    *   **UI/UX Improvement:** Implement a “Recipe Log” that automatically records successful potion creations.  Players can browse past recipes and identify patterns.\n    *   **Mechanic Adjustment:** Introduce a “Discovery” system.  After a successful combination, a small chance (10-20%) triggers a “Discovery” notification: “You’ve identified a synergy between [Ingredient A] and [Ingredient B] – potions combining these ingredients have a higher chance of success.”  These discoveries should be visually represented (e.g., a small icon on the ingredient).",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies three relevant failure points and proposes logical UI/UX and mechanic fixes. However, it scores lower on Correctness and Completeness because it fails to address the specific 'Additional Checks' provided in the prompt context, specifically regarding the 'gravity mechanic' integration and the distinction between narrative and technical constraints. The solution is generic and does not tailor the feedback to the specific 'Action-Adventure' genre constraints or the high complexity (300+ combinations) mentioned in the context, resulting in a solid but not exceptional (4 or 5) response. The Autonomy score is 3 because the lack of specific technical implementation details for the 'resonance' and 'stability' mechanics means a developer would need to ask clarifying questions before execution."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Develop and maintain design level documentation, including mechanics, guidelines, and mission outlines.",
+      "task_type": "Technical Design Documentation",
+      "user_prompt": "Create a Technical Design Document (TDD) outline for a 'Multiplayer Co-op Boss Fight' mechanic. The document must specify the synchronization requirements, state machine transitions for the boss, and the exact data packets required for the network team. Ensure the documentation is structured for immediate handoff to the backend engineering team.",
+      "reference_context": {
+        "game_genre": "Co-op Shooter",
+        "player_count": "4 players",
+        "boss_health": "10,000 HP",
+        "network_protocol": "UDP with reliability layer"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Structure — Is the TDD organized logically for engineering consumption?",
+        "Criterion 2: Technical Specificity — Are state transitions and data packet definitions precise?",
+        "Criterion 3: Completeness — Does the document cover edge cases like desynchronization or player disconnect?"
+      ],
+      "student_answer": "```\n## Technical Design Document: Multiplayer Co-op Boss Fight\n\n**Document Version:** 1.0\n**Date:** October 26, 2023\n**Author:** AI Game Designer\n\n**1. Introduction**\n\nThis document outlines the technical design for implementing a cooperative boss fight mechanic in our co-op shooter game, supporting 4 players.  It details synchronization requirements, state machine transitions for the boss, and the necessary network data packets.\n\n**2. System Overview**\n\nThe core mechanic involves 4 players working together to defeat a single, powerful boss.  Synchronization is critical to ensure a consistent and responsive experience for all players.  The boss will have distinct states (e.g., idle, attacking, enraged) each with unique behaviors and visual effects.\n\n**3. Synchronization Requirements**\n\n*   **Player Position & Rotation:** 60Hz, 3D position (x, y, z) and rotation (quaternion) updates for each player.  Interpolation will be used to smooth movement.\n*   **Player Health:** 30Hz, integer value representing current health.\n*   **Player Damage Taken:** 30Hz, integer value representing damage received.\n*   **Boss Health:** 60Hz, integer value representing current health.\n*   **Boss State:** 60Hz, enum value indicating the current boss state (Idle, Attack1, Attack2, Enraged, Death).\n*   **Boss Attack Cooldowns:** 30Hz, float values representing remaining cooldowns for each attack.\n*   **Boss Visual Effects:** Trigger events for visual effects (e.g., particle spawns, screen shake) – triggered by boss state transitions.\n*   **Boss Projectile Positions:** 60Hz, 3D position (x, y, z) for each projectile fired by the boss.\n\n**4. Boss State Machine**\n\n| State        | Description              | Transitions                               | Duration (Approx.) | Visual Effects                               |\n|--------------|--------------------------|-------------------------------------------|--------------------|----------------------------------------------|\n| Idle         | Stationary, observing players | Triggered by Player Proximity, Attack Start | 5 seconds          | Minimal particle effects, subtle animations |\n| Attack1      | Basic attack pattern       | Idle -> Attack1, Enraged -> Attack1          | 3 seconds          | Projectile spawn, visual impact, sound effect |\n| Attack2      | More complex attack pattern | Idle -> Attack2, Attack1 -> Attack2          | 4 seconds          | Multiple projectiles, significant visual impact |\n| Enraged      | High damage, aggressive     | Attack1 -> Enraged, Health < 25% -> Enraged | 8 seconds          | Intense particle effects, screen shake, loud sound |\n| Death        | Boss is defeated          | Any attack (automatic)                     | N/A                | Dramatic visual and audio effects            |\n\n**5. Network Data Packets**\n\n| Packet ID | Data Type       | Size (Bytes) | Description                               | Frequency (Hz) |\n|----------|-----------------|-------------|-------------------------------------------|---------------|\n| 1        | Player Position | 12          | Player's 3D position (x, y, z)            | 60            |\n| 2        | Player Rotation  | 8           | Player's quaternion rotation              | 60            |\n| 3        | Player Health    | 4           | Player's current health                    | 30            |\n| 4        | Player Damage    | 4           | Damage taken by the player                 | 30            |\n| 5        | Boss Health      | 4           | Boss's current health                      | 60            |\n| 6        | Boss State       | 1           | Boss's current state (enum)                | 60            |\n| 7        | Boss Attack Cooldown | 4           | Remaining cooldown for each attack        | 30            |\n| 8        | Effect Trigger   | 1           | Trigger event for visual effects           | Variable      |\n| 9        | Projectile Position| 12          | Position of each projectile fired by boss | 60            |\n\n\n**6. Reliability & Error Handling**\n\n*   UDP with reliability layer:  Implement a sequence number and acknowledgement system to ensure packet delivery.  Retransmission logic will be implemented for lost packets.\n*   Timeout mechanism:  If a player fails to send data for a prolonged period, they will be marked as disconnected.\n*   Data validation:  Server-side validation of all received data to prevent cheating.\n\n**7. Future Considerations**\n\n*   Advanced synchronization techniques (e.g., delta compression) to reduce bandwidth usage.\n*   Support for more players.\n*   Dynamic boss behavior based on player actions.\n\n**8. Dependencies**\n\n*   Network Engine (Specify Engine)\n*   Serialization Library (Specify Library)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a structured outline but fails to meet the 'immediate handoff' standard required for a 5. Dimension 1 (Correctness) and 2 (Completeness) are rated 3 because the document lacks critical technical specifics: it does not define the exact binary structure of the packets (endianness, bit-packing), omits the specific reliability layer protocol (e.g., ARQ vs. UDP reliability), and fails to address the '4 players' constraint in the packet design (e.g., does Packet 1 send one player or a batch?). Dimension 3 (Best Practices) is 3 because sending 60Hz for Boss Health and Player Damage is inefficient and non-standard; these should be event-driven or lower frequency. Dimension 4 (Domain Accuracy) is 3 because the state machine logic is vague (e.g., 'Triggered by Player Proximity' is a design decision, not a technical trigger). Dimension 5 (Clarity) is 4 as the formatting is clean. Dimension 6 (Autonomy) is 3 because a backend team cannot implement this without clarifying the serialization format, reliability mechanism details, and handling of the 4-player data aggregation."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Oversee gameplay testing to ensure intended gaming experience and game adherence to original vision.",
+      "task_type": "Gameplay Testing & Iteration",
+      "user_prompt": "You are reviewing playtest data for a new stealth-action game. Players are failing a specific corridor section at a 65% rate, primarily due to confusion about enemy patrol patterns. The original vision was 'tense but fair'. Analyze the failure points and propose three specific design adjustments to the patrol logic or environmental cues that would reduce the failure rate to under 40% while maintaining the intended tension. Justify your choices based on player psychology.",
+      "reference_context": {
+        "game_genre": "Stealth-Action",
+        "current_failure_rate": "65%",
+        "primary_failure_mode": "Unpredictable patrol overlap",
+        "design_vision": "Tense but fair",
+        "player_feedback_summary": "Players feel the enemies are 'cheating' rather than 'smart'."
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Alignment - Do the proposed changes preserve the 'tense but fair' vision?",
+        "Criterion 2: Psychology - Does the solution address the specific player confusion regarding predictability vs. fairness?",
+        "Criterion 3: Actionability - Are the adjustments specific enough for engineering to implement immediately?"
+      ],
+      "student_answer": "```json\n{\n  \"design_adjustments\": [\n    {\n      \"adjustment_id\": \"A1\",\n      \"description\": \"Introduce Explicit Warning Signals: Implement visual and auditory cues 3-5 seconds before an enemy changes patrol route. This could be a subtle shift in lighting, a brief audio snippet (e.g., a guard’s footstep pattern change), or a momentary flicker of a light.  These signals should be distinct enough to be noticed but not so obvious as to negate the tension.\",\n      \"justification\": \"Players are experiencing 'cheating' because they perceive the enemy AI as unpredictable. Providing explicit warnings reduces this perception by signaling the AI's intent, aligning with the 'fair' aspect of the design vision.  This leverages cognitive load theory – reducing the mental effort required to predict enemy behavior increases player confidence and reduces frustration.\",\n      \"estimated_failure_rate_reduction\": \"15%\"\n    },\n    {\n      \"adjustment_id\": \"A2\",\n      \"description\": \"Segment Patrol Routes with 'Dead Zones': Divide the corridor into sections with clearly defined 'dead zones' – areas where enemies *will not* patrol. These zones should be strategically placed to offer brief, safe opportunities for players to reposition or plan their approach.  The size and frequency of these zones should be moderate, not overly generous.\",\n      \"justification\": \"The current overlap is causing confusion. 'Dead zones' introduce a degree of predictability and allow players to mentally map the patrol landscape. This aligns with the 'tense but fair' vision by providing tactical options while still demanding careful planning.  It taps into the player’s desire for agency and control within a challenging environment.\",\n      \"estimated_failure_rate_reduction\": \"10%\"\n    },\n    {\n      \"adjustment_id\": \"A3\",\n      \"description\": \"Reduce Patrol Route Complexity: Simplify the patrol routes, reducing the number of overlapping paths and the frequency of sudden changes. Focus on a core set of predictable routes with fewer branching paths.  Introduce minor, localized variations within these core routes to maintain a sense of dynamism, but avoid complex, seemingly random movements.\",\n      \"justification\": \"Overlapping routes are the primary cause of failure.  Reducing complexity directly addresses this issue.  This aligns with 'tense but fair' by creating a manageable challenge that rewards strategic thinking rather than memorization.  It utilizes the principle of cognitive load – simplifying the information presented to the player reduces the mental burden and improves performance.\",\n      \"estimated_failure_rate_reduction\": \"20%\"\n    }\n  ],\n  \"target_failure_rate\": \"35%\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies the core issue (unpredictability vs. fairness) and proposes three distinct, relevant adjustments (warning cues, dead zones, route simplification) with justifications tied to player psychology. The domain accuracy is high, using terms like 'cognitive load' and 'agency' appropriately. However, the solution scores a 4 rather than a 5 because the 'estimated failure rate reduction' percentages (15%, 10%, 20%) are arbitrary guesses without data backing, which is a minor professional gap. Additionally, the 'dead zones' concept risks reducing tension if not implemented with extreme precision, a nuance that could have been explored deeper. The output is well-structured and clear, requiring only minor review before stakeholder presentation."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Present new game design concepts to management and technical colleagues, including artists, animators, and programmers.",
+      "task_type": "Design Presentation & Specification",
+      "user_prompt": "Draft a design specification document for a new 'Dynamic Weather System' feature. The goal is to increase player retention by making the world feel alive. The document must be structured for immediate handoff to the Art and Engineering teams. Include: 1) A visual description of the weather states (Clear, Storm, Fog), 2) The mechanical impact of each state on gameplay (e.g., visibility, sound propagation), and 3) A list of required assets and logic triggers. Ensure the tone is professional and persuasive for management approval.",
+      "reference_context": {
+        "game_genre": "Open World Survival",
+        "target_retention_metric": "Increase session length by 15%",
+        "technical_constraints": "Must run on current-gen consoles without frame rate drops",
+        "art_style": "Realistic"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Clarity - Is the distinction between visual effects and gameplay mechanics clear for the respective teams?",
+        "Criterion 2: Completeness - Does the document cover all necessary triggers and asset requirements?",
+        "Criterion 3: Persuasion - Does the rationale clearly link the feature to retention metrics?"
+      ],
+      "student_answer": "## Dynamic Weather System - Design Specification\n\n**Version:** 1.0\n**Date:** October 26, 2023\n**Author:** AI Game Design Assistant\n\n**1. Introduction**\n\nThis document outlines the design specification for a Dynamic Weather System (DWS) intended to enhance the immersive experience and increase player retention in our Open World Survival game. The DWS will introduce realistic weather conditions, impacting gameplay mechanics and visually enriching the game world.  Successful implementation will contribute directly to our target retention metric of a 15% increase in average session length.\n\n**2. Visual Description of Weather States**\n\n| Weather State | Visual Appearance                               | Soundscape                               | Color Palette (Dominant) |\n|---------------|-------------------------------------------------|-------------------------------------------|---------------------------|\n| **Clear**      | Bright, blue skies.  Subtle atmospheric haze.  Sunlight realistically casting shadows. | Ambient birdsong, gentle wind rustling through foliage. | Blues, Yellows, Whites       |\n| **Storm**      | Dark, overcast skies.  Heavy rain, potentially with lightning.  Wind gusts visible. | Thunder, rain, howling wind, distant rumbles. | Grays, Blues, Purples       |\n| **Fog**        | Variable density.  Reduced visibility.  Subtle color tint based on ambient light.  Objects partially obscured. | Damp, muffled sounds.  Distant, echoing sounds. | Greens, Blues, Grays        |\n\n**3. Mechanical Impact on Gameplay**\n\n| Weather State | Gameplay Impact                                                                                             |\n|---------------|-------------------------------------------------------------------------------------------------------------|\n| **Clear**      | Standard gameplay.  Optimal visibility.  No gameplay modifiers.                                             |\n| **Storm**      | *   **Visibility:** Reduced visibility (50-75% depending on storm intensity).  Lightning temporarily blinds players.  *   **Sound Propagation:** Sound travels further and is distorted.  *   **Movement:** Reduced movement speed due to rain and wind.  *   **Fire:**  Increased fire spread rate.  *   **Crafting:**  Slightly reduced crafting speed. |\n| **Fog**        | *   **Visibility:** Significantly reduced visibility (75-95%).  Limited ranged combat.  *   **Navigation:**  Increased difficulty in navigation; reliance on landmarks and compass.  *   **Detection:**  Increased enemy detection range.  *   **Resource Gathering:** Reduced visibility for resource gathering. |\n\n**4. Required Assets**\n\n*   **Art Assets:**\n    *   New Skybox textures for each weather state.\n    *   Particle effects for rain, snow, lightning, and wind.\n    *   Fog density textures and shaders.\n    *   Animated foliage (rustling leaves, bending branches).\n    *   Weather-specific lighting shaders.\n    *   UI elements for displaying weather information (e.g., temperature, visibility).\n*   **Audio Assets:**\n    *   Ambient soundscapes for each weather state.\n    *   Sound effects for rain, thunder, wind, and lightning.\n    *   Music variations reflecting the current weather.\n*   **Logic Assets:**\n    *   Weather system core script (C# or equivalent).\n    *   Weather state transition logic.\n    *   Visibility calculation script.\n    *   Sound propagation script.\n    *   Gameplay modifier scripts (fire spread, movement speed, crafting speed).\n\n**5. Logic Triggers**\n\n*   **Procedural Generation:** Implement a procedural weather generation system that dynamically creates weather events based on a combination of:\n    *   **Time of Day:**  Sunrise/sunset transitions trigger weather changes.\n    *   **Location:**  Different biomes will have different weather probabilities and intensities.\n    *   **Randomness:** Introduce a degree of randomness to avoid predictable weather patterns.\n*   **Event Triggers:**\n    *   **World Events:**  Certain world events (e.g., volcanic eruptions, meteor showers) can trigger specific weather states.\n    *   **Player Actions:**  (Optional)  Player actions (e.g., building a large fire) could temporarily influence local weather.\n*   **Weather Cycle:** Implement a cyclical weather system, transitioning between states over time (e.g., Clear -> Storm -> Clear).  Cycle duration will be adjustable.\n\n**6. Technical Considerations**\n\n*   **Performance:**  All weather effects must be optimized to maintain a consistent frame rate on current-gen consoles (30-60 FPS).  Utilize LODs, occlusion culling, and other optimization techniques.\n*   **Shader Complexity:**  Minimize shader complexity to avoid performance bottlenecks.\n*   **Memory Usage:**  Manage memory usage effectively to prevent crashes or slowdowns.\n\n**7.  Success Metrics**\n\n*   Average session length increase by 15%.\n*   Player feedback (positive sentiment regarding the weather system).\n*   Reduced player complaints related to repetitive environments.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission is a well-structured, professional document that addresses all core requirements (visuals, mechanics, assets, triggers) and adheres to the specified tone. It correctly identifies the genre and retention goals. However, it falls short of a perfect 5 due to a few specific gaps: 1) The 'Mechanical Impact' section lacks specific numerical values for the 'Storm' movement speed reduction and crafting speed, which are critical for engineering implementation. 2) The 'Logic Triggers' section is somewhat generic regarding the transition algorithm (e.g., no mention of Markov chains or weighted probability tables), which is standard for industry-grade weather systems. 3) The 'Technical Considerations' section mentions optimization but lacks specific constraints on particle counts or draw calls to ensure the 'no frame rate drop' requirement is met. These are minor omissions that prevent it from being truly 'exceptional' and 'industry-standard' without further refinement, but the document is otherwise complete and usable."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Prepare two-dimensional concept layouts or three-dimensional mock-ups.",
+      "task_type": "Level Layout & Flow",
+      "user_prompt": "Create a text-based 2D layout description for a 'Hub World' in a fantasy MMORPG. The layout must facilitate social interaction and resource gathering while guiding players toward high-level content. Define the spatial relationship between the 'Marketplace', 'Training Grounds', and 'Dungeon Entrance'. Explain how the pathing encourages organic player discovery of new content without using explicit quest markers. Include notes on how this layout supports the 'social retention' pillar.",
+      "reference_context": {
+        "game_genre": "Fantasy MMORPG",
+        "player_demographic": "Casual to Hardcore",
+        "key_pillars": [
+          "Social Interaction",
+          "Resource Gathering",
+          "Progression"
+        ],
+        "constraint": "No explicit quest markers in the hub"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Spatial Logic - Does the layout naturally guide flow without forced markers?",
+        "Criterion 2: Social Design - Does the arrangement encourage player-to-player interaction?",
+        "Criterion 3: Retention - Does the design support long-term engagement through discovery?"
+      ],
+      "student_answer": "```\n## Hub World Layout: Silverhaven\n\n**Overall Design:** Silverhaven is a sprawling, slightly overgrown town nestled within a valley, centered around a natural stone plateau. The layout encourages exploration and social interaction through a combination of visual cues, natural landmarks, and subtly guided paths.\n\n**Spatial Relationships:**\n\n*   **Central Plateau (100x100 tiles):** The heart of Silverhaven. Features a large, central fountain (decorative, no interactive element), a weathered stone statue of a legendary hero, and several small, open-air seating areas. This area is consistently populated with players engaging in conversation, trading, and crafting.\n*   **Marketplace (North-West, 50x75 tiles):** Located adjacent to the plateau, partially enclosed by stalls and merchant tents.  A narrow, cobblestone path leads directly from the fountain towards the Marketplace. The Marketplace is visually distinct with brightly colored awnings and overflowing displays.  Several merchants are positioned near the edge of the Marketplace, creating natural points of interaction.\n*   **Training Grounds (South-East, 75x60 tiles):** Situated at the edge of the valley, overlooking a training field.  A well-worn dirt path, slightly elevated, leads from the Marketplace towards the Training Grounds. The Training Grounds feature basic weapon racks, target practice areas, and a small, dedicated area for mounted combat (limited slots).  A small, enclosed area houses a blacksmith and a stable master.\n*   **Dungeon Entrance (North-East, 30x40 tiles):**  Hidden behind a crumbling stone wall, partially obscured by overgrown vines. A faint, winding path, barely visible amidst the foliage, leads from the Training Grounds towards the Dungeon Entrance. The entrance is marked by a large, moss-covered archway and a flickering torch.  A small, locked chest sits just inside the entrance – visually suggesting a reward for those who venture within.\n*   **Residential District (Surrounding the Plateau, 200x200 tiles):**  A mix of small cottages and larger houses, radiating outwards from the central plateau.  Paths are narrow and winding, leading to various workshops, taverns, and small gardens.  These areas are less densely populated than the central hub but offer opportunities for side quests and resource gathering (herbs, wood, etc.).\n\n**Pathing & Discovery:**\n\n*   **Natural Flow:** The paths are designed to encourage a natural flow of movement. The path from the fountain to the Marketplace is the most direct and visually prominent. The path from the Marketplace to the Training Grounds is slightly longer and requires a minor elevation change, subtly guiding players away from the central hub. The path to the Dungeon Entrance is deliberately obscured and winding, requiring players to actively seek it out.\n*   **Visual Cues:**  The Marketplace is visually distinct, drawing players in with its activity and trade. The Training Grounds offer a clear visual representation of combat training. The Dungeon Entrance is deliberately hidden, creating a sense of mystery and reward.\n*   **Peripheral Exploration:** The Residential District encourages players to explore the surrounding area, discovering hidden resources and potential side quests.\n\n**Social Retention:**\n\n*   **Central Hub as a Social Anchor:** The Central Plateau is designed to be a consistently populated area, fostering social interaction.\n*   **Merchant Interaction:** Merchants in the Marketplace provide a constant stream of trade opportunities and conversation starters.\n*   **Training Ground Competition:** The Training Grounds naturally encourage player interaction through competition and shared learning.\n*   **Shared Discovery:** The hidden Dungeon Entrance encourages players to explore together, fostering a sense of community and shared accomplishment.\n*   **Dynamic Events:**  Small, randomized events (e.g., impromptu crafting demonstrations, merchant caravans) can be triggered within the hub to further stimulate social interaction.\n\n\n\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission is a strong, professional response that effectively addresses the core task of designing a hub world layout with organic pathing and social retention pillars. It correctly identifies spatial relationships and uses environmental storytelling (visual cues, obscured paths) to guide discovery without explicit markers. Domain accuracy is high, using appropriate MMORPG terminology. However, it scores a 4 on Correctness and Completeness because it fails to address the specific 'Additional Checks' provided in the prompt, which explicitly requested verification of a 'gravity mechanic' and 'difficulty curve' for mid-game players. While the prompt's main task did not mention gravity, the 'Additional Checks' section acts as a constraint for the review context, and ignoring specific mechanical constraints (like the gravity mechanic check) suggests the submission did not fully adhere to the comprehensive review criteria. The design is otherwise industry-standard and clear."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Keep abreast of game design technology and techniques, industry trends, or audience interests, reactions, and needs by reviewing current literature, talking with colleagues, participating in educational programs, attending meetings or workshops, or participating in professional organizations or conferences.",
+      "task_type": "Competitive Analysis & Trend Integration",
+      "user_prompt": "Conduct a comparative analysis of the 'Battle Pass' systems in three top-performing mobile games (e.g., Genshin Impact, Call of Duty Mobile, and Fortnite). Identify one unique engagement mechanic from each that is currently trending. Propose a hybrid mechanic for our upcoming mobile strategy game that combines elements from these three to maximize daily active user (DAU) retention. Explain the psychological hook of the hybrid mechanic and how it fits a strategy genre.",
+      "reference_context": {
+        "game_genre": "Mobile Strategy",
+        "target_metric": "Daily Active Users (DAU)",
+        "current_system": "Standard weekly quest loop",
+        "market_trend": "Gamified progression with social competition"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Insight - Does the analysis accurately reflect current industry trends?",
+        "Criterion 2: Synthesis - Is the proposed hybrid mechanic a logical combination of the three sources?",
+        "Criterion 3: Genre Fit - Does the mechanic suit the strategy genre without breaking core gameplay loops?"
+      ],
+      "student_answer": "**Comparative Analysis of Battle Pass Systems**\n\n*   **Genshin Impact:** *Persistent Progression & Gacha Integration*. The Battle Pass offers a tiered system with both reward tracks (Battle Pass and Paimon’s Banner Pass) that unlock characters, weapons, and resources. A key element is the *persistent* progression – rewards are earned continuously, not just at fixed intervals. The Gacha integration ensures that even completing the Battle Pass doesn’t guarantee the “best” rewards, driving continued engagement with the game’s core monetization system.\n\n*   **Call of Duty Mobile:** *Dynamic Challenges & Ranked Rewards*. The Battle Pass features a high volume of daily and weekly challenges, many of which are tied to ranked play. Rewards are directly linked to player skill and progression within the ranked system. The dynamic nature of challenges keeps players actively seeking out new objectives and competing for higher tiers.\n\n*   **Fortnite:** *Event-Driven Battle Pass & Creative Mode Integration*. Fortnite’s Battle Pass is heavily tied to in-game events (seasonal, limited-time).  A significant portion of rewards are unlocked through completing event-specific challenges, and the Creative Mode integration allows players to earn rewards by creating and sharing their own content. This creates a sense of urgency and community-driven engagement.\n\n\n\n**Trending Unique Engagement Mechanic:**\n\n*   **Fortnite’s Event-Driven Battle Pass:** The constant stream of new events and challenges provides a sustained sense of novelty and urgency.\n\n**Hybrid Mechanic Proposal: “Strategic Echoes”**\n\n**Description:** “Strategic Echoes” combines elements from Genshin Impact’s persistent progression, Call of Duty Mobile’s dynamic challenges, and Fortnite’s event-driven system.\n\n1.  **Persistent Core Progression:** Players earn “Echoes” daily through completing base game missions, resource gathering, and basic strategic actions (e.g., building units, researching technologies). These Echoes feed into a continuous Battle Pass track.\n\n2.  **Dynamic Challenge Sets:** Weekly “Echo Sets” are released, presenting a rotating selection of 3-5 strategic challenges (e.g., “Dominate a specific territory,” “Achieve a certain economic output,” “Defeat a specific enemy type”). These challenges have varying difficulty levels and reward tiers.\n\n3.  **Event-Driven “Resonance”:** Periodic in-game events (e.g., “Alliance Wars,” “Resource Scarcity,” “Technological Breakthrough”) trigger “Resonance” – temporary boosts to Echo rewards and unique event-specific challenges.  These events are themed and visually distinct.\n\n4.  **Social Competition Layer:**  Players can form alliances and compete on leaderboards for “Resonance Points,” unlocking exclusive rewards and boosting their individual Echo accumulation rate.\n\n**Psychological Hook:**\n\n*   **Variable Reward Schedule:** The combination of daily Echo accumulation, weekly challenge sets, and periodic Resonance events creates a highly variable reward schedule, triggering dopamine release and combating boredom.\n*   **Sense of Accomplishment:** Completing challenges and progressing on the Battle Pass provides a constant sense of accomplishment and tangible rewards.\n*   **Social Pressure & Competition:** The alliance leaderboard and event-specific competitions introduce social pressure and a desire to outperform rivals, driving engagement.\n*   **Novelty & Curiosity:**  The rotating challenge sets and event themes keep the gameplay fresh and encourage players to explore different strategic approaches.\n\n**Fit for Strategy Genre:**\n\n“Strategic Echoes” directly aligns with the core mechanics of a strategy game by rewarding players for actively engaging with the game’s strategic layers – resource management, unit deployment, territory control, and technological advancement. The challenges are designed to test and improve players’ strategic thinking, while the rewards incentivize continued strategic experimentation. The social competition element adds a layer of depth and replayability, fostering a thriving community.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the three games and proposes a hybrid mechanic, but it fails the core task requirement to identify a unique trending mechanic from EACH of the three games, selecting only Fortnite's. The analysis of Genshin's 'persistent progression' is vague and arguably inaccurate regarding the specific Battle Pass structure compared to its gacha loops. The proposed 'Strategic Echoes' mechanic is generic and lacks the specific technical or design depth expected of an industry-standard proposal for a strategy game (e.g., specific resource formulas or progression curves). While the psychological hooks are sound, the failure to address all parts of the prompt and the lack of specific implementation details for the strategy genre result in a '3' for Correctness, Completeness, and Best Practices. Domain accuracy is higher as the terminology is used correctly, and the output is clear and autonomous enough to be understood, though it requires significant content expansion to be usable."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Review or evaluate competitive products, film, music, television, and other art forms to generate new game design ideas.",
+      "task_type": "Cross-Media Inspiration & Adaptation",
+      "user_prompt": "Analyze the narrative structure of the film 'Inception' (specifically the concept of nested dream levels). Adapt this concept into a game design mechanic for a psychological horror game. Define how 'dream levels' would function as distinct gameplay layers with different physics or rules. Explain how the transition between layers affects player anxiety and retention. Provide a brief scenario illustrating a player navigating from a 'Surface Dream' to a 'Deep Dream'.",
+      "reference_context": {
+        "game_genre": "Psychological Horror",
+        "inspiration_source": "Film: Inception",
+        "core_mechanic": "Nested Reality Layers",
+        "goal": "Increase immersion and fear retention"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Adaptation - Is the film concept successfully translated into interactive mechanics?",
+        "Criterion 2: Atmosphere - Does the design effectively leverage the concept to enhance horror and anxiety?",
+        "Criterion 3: Clarity - Is the transition logic between layers clear for the development team?"
+      ],
+      "student_answer": "**Game Design Document: Echo Bloom**\n\n**I. Core Mechanic: Recursive Echoes**\n\n*   **Concept:** Players navigate a fractured psyche through nested dream levels, mirroring *Inception’s* layered dream structure. Each layer represents a fragmented memory, emotion, or suppressed trauma, manifesting as a distorted, surreal environment.\n*   **Dream Levels:**\n    *   **Surface Echoes (Level 1):** The initial dream state. Visually, this is characterized by muted colors, heavy rain, and a sense of oppressive familiarity. Physics are slightly distorted – objects might flicker, gravity fluctuates subtly, and sound echoes unnaturally.  Limited inventory and no direct combat. Focus on environmental storytelling and unsettling atmosphere.\n    *   **Mid-Depth Echoes (Level 2-3):**  Colors become more saturated, but with a sickly, unnatural quality. Physics become increasingly unreliable – time loops, perspective shifts, and objects phasing in and out of existence are common.  Players gain access to a limited “Resonance” ability – a short-range scan that reveals fragmented memories and potential pathways, but overuse causes mental strain.  Sparse, unsettling encounters with distorted reflections of past figures.\n    *   **Deep Echoes (Level 4+):**  The dream becomes intensely abstract and illogical.  Physics are almost entirely broken; gravity may reverse, objects transform into other objects, and the environment actively resists the player’s attempts to interact with it.  Sound is predominantly white noise punctuated by jarring, personalized whispers.  The Resonance ability is unreliable and drains sanity rapidly.  Direct encounters with the player’s core trauma manifest as monstrous, symbolic representations.  Limited puzzle elements based on manipulating dream logic.\n*   **Transition Mechanics:**\n    *   **Triggering Transitions:** Transitions between levels are triggered by specific environmental cues (e.g., finding a particular object, experiencing a strong emotional reaction, failing a puzzle).\n    *   **Echo Bleed:**  Elements from deeper dream levels “bleed” into shallower ones – a distorted reflection appearing in a Surface Echo, a brief flash of a Mid-Depth Echo’s illogical geometry. This creates a constant sense of unease and uncertainty.\n    *   **Sanity Meter:** A core mechanic. Actions (combat, prolonged exposure to disturbing imagery, overuse of Resonance) decrease sanity. Low sanity manifests as visual and auditory hallucinations, distorted controls, and increased vulnerability.  Sanity recovery is slow and requires finding “Anchor Points” – moments of relative stability within the dream.\n\n**II. Anxiety and Retention**\n\n*   **Gradual Escalation:** The game begins with a relatively manageable level of disorientation in Surface Echoes, gradually increasing the complexity and instability of subsequent layers.\n*   **Unreliable Information:**  Players are never entirely sure what is real and what is a product of the dream.  Environmental details shift, memories contradict each other, and the player’s perception is constantly challenged.\n*   **Personalized Horror:** The dream levels are heavily influenced by the player’s backstory (determined through a brief initial questionnaire).  Trauma manifests as unique, deeply personal horrors, increasing emotional investment and fear.\n*   **Limited Resources:**  The Resonance ability and sanity are finite resources, forcing players to make difficult choices about how to proceed.\n*   **Looping & Repetition:**  Subtle looping mechanics within individual dream levels (e.g., a hallway that resets after a certain time) and between levels (e.g., a recurring visual motif) create a sense of disorientation and dread.\n\n**III. Scenario: Descent into the Deep**\n\nThe player, Elias, is trapped in a Surface Echo – a perpetually rainy street reminiscent of his childhood home. He finds a tarnished music box, triggering a Resonance scan. The scan reveals a fragmented memory: a dark, overgrown garden.  He enters the garden (Level 2).  Time loops briefly, and the garden shifts into a distorted version of his grandmother’s house.  He discovers a broken mirror, reflecting a monstrous, shadowy figure – a manifestation of his repressed guilt.  He attempts to escape, triggering a Resonance scan again, revealing a swirling vortex of color and sound (Level 3).  He’s pulled into the vortex, the rain replaced by a blinding white light.  He finds himself in a vast, featureless plain where gravity intermittently reverses.  He hears his mother’s voice, whispering his name, but the voice is layered and distorted.  He stumbles upon a single, decaying rose bush.  As he reaches for it, the ground beneath him dissolves, and he plunges into an abyss filled with pulsating, bioluminescent fungi – the Deep Echo (Level 4+).  The white light is gone, replaced by a suffocating darkness.  The whispers intensify, coalescing into a single, terrifying voice: \"You can't escape yourself.\"\n\n\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission is strong and professionally written, effectively adapting the Inception concept into a psychological horror context. It correctly identifies the core mechanic, defines distinct layers with unique physics, and explains the anxiety/retention loop well. The scenario is vivid and illustrates the mechanics clearly. However, it scores a 4 rather than a 5 on Correctness, Completeness, and Best Practices because it lacks specific technical implementation details (e.g., how the 'gravity reversal' is technically handled in a physics engine, specific constraints on the 'questionnaire' data integration, or how 'Echo Bleed' is managed to avoid performance issues). The 'Personalized Horror' mechanic is conceptually sound but vague on execution, which is a gap for a professional design document. The Autonomy score is 4 because while the design is sound, a stakeholder would need clarification on the technical feasibility of the dynamic environment generation and the specific logic for the sanity/transition triggers before production could begin."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Collaborate with artists to achieve appropriate visual style.",
+      "task_type": "Visual Style & Gameplay Integration",
+      "user_prompt": "You are collaborating with the Art Director on a cyberpunk RPG. The current visual style is 'Neon-Noir'. However, the gameplay requires players to identify specific 'hacking terminals' in low-light environments. Propose a visual design solution that maintains the 'Neon-Noir' aesthetic while ensuring terminals are clearly identifiable for gameplay purposes. Describe the specific color palette, lighting effects, and particle interactions you would request from the art team. Explain how this solution balances artistic vision with player usability and retention.",
+      "reference_context": {
+        "game_genre": "Cyberpunk RPG",
+        "visual_style": "Neon-Noir",
+        "gameplay_requirement": "Terminal identification in low light",
+        "constraint": "Cannot break the 'gritty' atmosphere"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Aesthetic Consistency - Does the solution fit the 'Neon-Noir' style?",
+        "Criterion 2: Usability - Are the terminals clearly distinguishable from the background?",
+        "Criterion 3: Collaboration - Is the proposal actionable and clear for the art team to execute?"
+      ],
+      "student_answer": "**Terminal Visual Design: \"Ghostlight Echoes\"**\n\n**Color Palette:**\n\n*   **Dominant:** Deep Indigo (#483D8B) and Charcoal Gray (#36454F) – Establishing the core Neon-Noir base.\n*   **Accent 1 (Hacking Interface):** Teal (#00BCD4) – Used sparingly for active UI elements, data streams, and highlighting.  A slightly desaturated teal to avoid overly bright visuals.\n*   **Accent 2 (Terminal Frame):**  A subtle, almost ghost-like Pale Cyan (#B2DFDB) –  This provides a low-level glow and definition without overpowering the darkness.  It’s a very muted, washed-out cyan.\n*   **Error/Warning:**  Crimson (#E57373) –  Used for critical errors or system warnings, appearing as brief, sharp flashes.\n\n**Lighting Effects:**\n\n*   **Core Glow:** Each terminal emits a soft, pulsating teal glow – not a harsh light, but a subtle “ghostlight” effect. This glow originates *from within* the terminal casing, suggesting internal power. The intensity of the glow subtly increases with hacking activity.\n*   **Edge Bleed:**  The Pale Cyan frame emits a faint, radial edge bleed – a subtle halo effect that further defines the terminal’s boundaries in the darkness. This bleed is strongest at the bottom of the terminal, simulating light reflecting off wet surfaces.\n*   **Dynamic Reflections:**  Subtle, distorted reflections of nearby objects (rain, neon signs, other terminals) are cast onto the terminal surfaces, adding to the sense of depth and realism. These reflections are intentionally blurred and slightly desaturated.\n*   **Hacking Pulse:** During hacking attempts, the teal glow intensifies and is accompanied by a short, controlled burst of particles (see below).\n\n**Particle Interactions:**\n\n*   **Data Streams:** Thin, teal particles (like digital dust) flow along the edges of the terminal’s interface, representing data transmission. These particles are slow-moving and have a slight “jitter” effect to mimic digital interference.\n*   **Error/Warning Sparks:** When errors occur, brief, crimson sparks erupt from the terminal, quickly dissipating. These are small, contained bursts, not overwhelming explosions.\n*   **Hacking Pulse Visuals:**  During active hacking, a brief, stylized “pulse” of teal particles emanates from the terminal, visually indicating the player’s progress. This pulse is rhythmic and subtle, not distracting.\n\n**Usability & Retention Balance:**\n\n*   **Contrast:** The Teal UI elements are deliberately contrasted against the dark background, ensuring readability without sacrificing the Neon-Noir aesthetic.\n*   **Subtlety:** All visual effects are designed to be subtle and atmospheric, reinforcing the gritty, low-light environment rather than drawing attention away from it.\n*   **Feedback:** The pulsing glow and particle effects provide clear, immediate feedback to the player about terminal status and hacking progress.\n*   **Consistency:** The “Ghostlight Echoes” visual language is applied consistently across all terminals, creating a recognizable and intuitive system for players to learn.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission provides a highly professional and creative solution that effectively balances the 'Neon-Noir' aesthetic with gameplay usability. The color palette and lighting descriptions are specific and evocative. However, the answer scores a 4 on Correctness and Completeness because it fails to address the specific 'Additional Checks' provided in the prompt context, which explicitly asked to verify the integration of a 'gravity mechanic' into the puzzle and ensure the difficulty curve is appropriate. Since the student ignored these specific constraints and the prompt's instruction to check for them, the solution is not fully complete relative to the provided context. The domain accuracy and clarity are excellent, and the output is nearly ready for a client, warranting a 4 for Autonomy."
+    }
+  ]
+}

@@ -1,0 +1,417 @@
+{
+  "meta": {
+    "job_title": "Insurance Underwriters",
+    "job_id": "insurance_underwriter",
+    "onet_code": "13-2053.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 7,
+    "evaluated_tasks": 7,
+    "batches": 2,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.14,
+      "dimensions": {
+        "Correctness": 2.86,
+        "Completeness": 3.14,
+        "Best Practices": 2.86,
+        "Domain Accuracy": 3.0,
+        "Clarity": 4.14,
+        "Autonomy": 2.86
+      },
+      "evaluated_tasks": 7,
+      "scale_max": 5
+    },
+    "total_time_seconds": 245.87
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Examine documents to determine degree of risk from factors such as applicant health, financial standing and value, and condition of property.",
+      "task_type": "Risk Analysis and Documentation Review",
+      "user_prompt": "Analyze the attached applicant profile for a $5M commercial property insurance request. The applicant has a history of two fire claims in the last 5 years, a credit score of 620, and the property is located in a flood zone with no recent mitigation upgrades. Calculate the risk score based on the provided underwriting matrix, determine if the risk is acceptable, and if so, propose specific rating adjustments or endorsements required to bring the risk to an acceptable level. If the risk is unacceptable, draft a formal decline letter citing the specific policy clauses.",
+      "reference_context": {
+        "applicant_profile": {
+          "property_value": 5000000,
+          "location_risk_factor": "High (Flood Zone A)",
+          "claim_history": [
+            {
+              "year": 2021,
+              "type": "Fire",
+              "amount": 150000
+            },
+            {
+              "year": 2019,
+              "type": "Fire",
+              "amount": 85000
+            }
+          ],
+          "financial_standing": {
+            "credit_score": 620,
+            "debt_to_income_ratio": 0.45
+          }
+        },
+        "underwriting_matrix": {
+          "base_rate": 0.0025,
+          "flood_zone_multiplier": 1.5,
+          "claim_history_penalty": 0.0015,
+          "credit_score_penalty": 0.001,
+          "max_acceptable_risk_score": 0.006,
+          "decline_threshold": 0.0075
+        },
+        "policy_clauses": [
+          "Clause 4.2: Automatic decline for 2+ fire claims in 5 years",
+          "Clause 8.1: Mandatory flood mitigation endorsement for Zone A properties"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the calculated risk score accurately reflect the matrix inputs?",
+        "Completeness: Did the AI address all factors (financial, property, claims) and provide a clear decision?",
+        "Best practices: Are the proposed endorsements or decline reasons aligned with standard industry practices and the provided clauses?"
+      ],
+      "student_answer": "**Risk Score Calculation:**\n\n*   Base Rate: 0.0025\n*   Flood Zone Multiplier: 1.5\n*   Claim History Penalty: 2 claims * 0.0015 = 0.003\n*   Credit Score Penalty: 0.001\n*   Total Risk Score: 0.0025 + 1.5 + 0.003 + 0.001 = 1.5065\n\n**Risk Assessment:**\n\nThe calculated risk score of 1.5065 exceeds the maximum acceptable risk score of 0.006. Therefore, the risk is unacceptable.\n\n**Proposed Rating Adjustments/Endorsements:**\n\n1.  **Flood Mitigation Endorsement:** Mandatory endorsement requiring implementation of flood mitigation measures (e.g., elevation, floodproofing) at the applicant’s expense. Cost to be determined based on property specifics.\n2.  **Increased Deductible:** Increase the standard property deductible to $50,000 to reflect the elevated risk.\n3.  **Rate Increase:** Implement a significant rate increase to account for the combined risk factors. A preliminary rate increase of 75% would be considered.\n4.  **Loss Portfolio Review:** Conduct a comprehensive loss portfolio review to assess the applicant’s overall risk profile and identify any potential areas for improvement.\n\n**Decline Letter:**\n\n[Your Insurance Company Letterhead]\n\n[Date]\n\n[Applicant Name]\n\n[Applicant Address]\n\n**Subject: Policy Decline – Commercial Property Insurance**\n\nDear [Applicant Name],\n\nThank you for your interest in obtaining commercial property insurance coverage from [Your Insurance Company].  We have carefully reviewed your application and property profile.\n\nUnfortunately, we are unable to offer you coverage at this time. Our decision is based on significant concerns regarding the elevated risk associated with your property. Specifically, your application reveals a history of two fire claims within the past five years, a credit score of 620, and the property’s location within a designated Flood Zone A.\n\nThese factors, in conjunction with the underwriting guidelines, result in a risk score exceeding our acceptable threshold.  We refer specifically to Clause 4.2 of our policy, which states that automatic decline is triggered by two or more fire claims within a five-year period. Furthermore, Clause 8.1 requires a mandatory flood mitigation endorsement for properties located in Flood Zone A.\n\nWe understand this may be disappointing. We encourage you to address the identified risk factors, including implementing appropriate flood mitigation measures and improving your financial standing, before reapplying for coverage in the future.\n\nSincerely,\n\n[Your Name]\n\nUnderwriting Department\n\n[Your Insurance Company]\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission fails fundamentally on Correctness (1) and Domain Accuracy (1) due to a critical mathematical error: it adds the flood zone multiplier (1.5) directly to the base rate instead of multiplying the base rate by the factor, resulting in a nonsensical risk score of 1.5065. It also hallucinates a 'Loss Portfolio Review' as a rating adjustment (2) and incorrectly cites Clause 8.1 (Mandatory Flood Mitigation) as a reason for decline rather than a condition for acceptance, showing poor professional judgment (2). While the structure is clear (3) and it attempts the full task (2), the calculation error makes the output unusable without significant rework (2)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Decline excessive risks.",
+      "task_type": "Risk Rejection and Justification",
+      "user_prompt": "Review the provided life insurance application for a 55-year-old applicant seeking $2M coverage. The applicant has a BMI of 38, a history of untreated hypertension, and a family history of early-onset heart disease. Using the provided underwriting guidelines, determine if the risk exceeds the company's tolerance. If the risk is excessive, draft a formal decline letter to the applicant's broker that explicitly cites the specific medical and financial factors leading to the decision, ensuring the tone is professional and legally defensible.",
+      "reference_context": {
+        "applicant_profile": {
+          "age": 55,
+          "coverage_amount": 2000000,
+          "medical_status": {
+            "bmi": 38,
+            "blood_pressure": "160/100",
+            "diagnosis": "Hypertension (Untreated)"
+          },
+          "family_history": [
+            "Father: Heart Attack at 48",
+            "Mother: Stroke at 52"
+          ]
+        },
+        "underwriting_guidelines": {
+          "max_bmi_acceptable": 35,
+          "hypertension_decline_threshold": "Uncontrolled BP > 150/95 without medication",
+          "family_history_risk_multiplier": 1.4,
+          "decline_policy": "Automatic decline for uncontrolled hypertension combined with BMI > 35 and significant family history."
+        }
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the AI correctly identify the specific guideline violations (BMI, BP, family history)?",
+        "Tone: Is the decline letter professional, clear, and free of discriminatory language?",
+        "Compliance: Does the letter explicitly reference the specific underwriting guidelines provided?"
+      ],
+      "student_answer": "**Decline Letter**\n\n[Your Insurance Company Letterhead]\n\n[Date]\n\n[Broker Name]\n[Broker Address]\n\n**Subject: Decline of Life Insurance Application – [Applicant Name]**\n\nDear [Broker Name],\n\nFollowing a thorough review of the life insurance application submitted by [Applicant Name], we regret to inform you that we are unable to approve coverage at this time.\n\nBased on the applicant’s profile and our underwriting guidelines, several significant risk factors have been identified that exceed our company’s tolerance. Specifically:\n\n1.  **Obesity:** The applicant’s BMI of 38 exceeds our maximum acceptable BMI of 35.\n\n2.  **Hypertension:** The applicant’s reported blood pressure of 160/100, coupled with a diagnosis of untreated hypertension, constitutes an uncontrolled blood pressure reading exceeding our decline threshold of 150/95 without medication.\n\n3.  **Family History:** A significant family history of early-onset heart disease, including a father’s heart attack at age 48 and a mother’s stroke at age 52, introduces a substantial elevated risk factor. Our guidelines apply a 1.4 risk multiplier to such family histories.\n\nConsidering these combined factors – uncontrolled hypertension, a BMI above the acceptable limit, and a concerning family history – we have determined that the applicant’s risk profile presents an unacceptable level of potential morbidity and mortality.  Our underwriting guidelines specifically state that an automatic decline is triggered when uncontrolled hypertension is combined with a BMI greater than 35 and a significant family history.\n\nTherefore, we must decline this application for life insurance coverage.\n\nWe understand this may be disappointing for you and your client. We encourage you to explore alternative insurance options with other providers.\n\nSincerely,\n\n[Your Name]\nUnderwriting Department\n[Your Insurance Company] \n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission correctly identifies all relevant risk factors (BMI, BP, family history) and applies the specific logic from the provided guidelines to reach the correct conclusion of an automatic decline. The decline letter is professionally drafted, legally defensible, and explicitly cites the specific medical and policy criteria mentioned in the context. The 'Additional Checks' regarding flood zones and fire claims are correctly ignored as they are irrelevant to the provided life insurance context. The output is complete, accurate, and ready for use without modification."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Write to field representatives, medical personnel, or others to obtain further information, quote rates, or explain company underwriting policies.",
+      "task_type": "Information Request and Policy Explanation",
+      "user_prompt": "You are reviewing a commercial general liability application for a construction firm. The application is missing the last 3 years of workers' compensation loss runs and the specific safety protocols for their high-risk roofing division. Draft a formal letter to the field representative requesting these documents. Additionally, explain to the representative why the current information is insufficient to quote a rate, referencing the company's requirement for loss run history to calculate the experience modification factor.",
+      "reference_context": {
+        "application_status": "Incomplete",
+        "missing_documents": [
+          "Workers' Comp Loss Runs (2021-2023)",
+          "Roofing Division Safety Protocol Manual"
+        ],
+        "company_policy": {
+          "loss_run_requirement": "Minimum 3 years of loss history required to calculate Experience Modification Rate (EMR).",
+          "safety_protocol_requirement": "Specific safety manuals required for high-risk divisions to determine base rate adjustments.",
+          "consequence": "Cannot issue a quote without EMR calculation."
+        }
+      },
+      "evaluation_criteria": [
+        "Clarity: Is the request for documents specific and easy to understand?",
+        "Justification: Does the letter clearly explain the regulatory or policy reason for the missing data (EMR calculation)?",
+        "Professionalism: Is the tone appropriate for communication with a field representative?"
+      ],
+      "student_answer": "[Your Insurance Company Letterhead]\n\n[Date]\n\n[Field Representative Name]\n[Field Representative Title]\n[Field Representative Company]\n[Field Representative Address]\n\n**Subject: Request for Additional Information – Commercial General Liability Application – [Client Name]**\n\nDear [Field Representative Name],\n\nThis letter pertains to the Commercial General Liability application submitted for [Client Name].  Currently, the application is marked as incomplete due to the absence of critical documentation. Specifically, we require the following:\n\n*   Workers’ Compensation Loss Runs for the years 2021, 2022, and 2023.\n*   A copy of the Roofing Division Safety Protocol Manual.\n\nOur underwriting guidelines require a minimum of three years of loss run history to accurately calculate the Experience Modification Rate (EMR). The EMR is a crucial component in determining the base rate for your liability coverage, and without this historical data, we are unable to provide a definitive quote. Furthermore, specific safety protocols for your high-risk roofing division are necessary to assess and adjust the base rate accordingly.\n\nUntil these documents are received and reviewed, we cannot proceed with issuing a rate. We appreciate your prompt attention to this matter and look forward to receiving the requested information.\n\nSincerely,\n\n[Your Name]\nInsurance Underwriter\n[Your Insurance Company]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies the missing documents and explains the necessity of the EMR calculation, meeting the core task requirements. However, the letter is generic and lacks specific industry formatting nuances (e.g., policy numbers, specific deadlines, or contact instructions for submission) that would make it truly exceptional (5). The explanation of the EMR's role in the quote is accurate but could be more detailed regarding the specific impact on the premium. The 'Additional Checks' regarding flood zones and fire claims are not applicable as the task was a request for missing documents, not a full underwriting calculation or decline scenario, so no errors were found there. The output is professional and usable but requires minor customization for a specific client file before final delivery."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Evaluate possibility of losses due to catastrophe or excessive insurance.",
+      "task_type": "Catastrophe and Concentration Risk Assessment",
+      "user_prompt": "Analyze the portfolio of a regional insurer focusing on coastal properties. The insurer currently holds $500M in coverage for properties within 5 miles of the coastline. A Category 4 hurricane is forecasted to make landfall in this region. Using the provided catastrophe model parameters, estimate the potential aggregate loss exposure. Determine if the current retention limit of $50M per event is sufficient or if excess reinsurance is required to mitigate the risk of insolvency.",
+      "reference_context": {
+        "portfolio_data": {
+          "total_exposure": 500000000,
+          "location_concentration": "Coastal Zone (5 miles)",
+          "property_types": [
+            "Residential",
+            "Commercial"
+          ]
+        },
+        "catastrophe_model": {
+          "hurricane_category": 4,
+          "estimated_damage_percentage": 0.35,
+          "correlation_factor": 0.9
+        },
+        "reinsurance_structure": {
+          "retention_limit": 50000000,
+          "excess_reinsurance_available": true,
+          "excess_coverage_limit": 200000000
+        }
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the estimated aggregate loss calculated correctly based on the model parameters?",
+        "Analysis: Does the AI correctly compare the estimated loss against the retention limit?",
+        "Recommendation: Is the recommendation for reinsurance activation justified by the quantitative risk exposure?"
+      ],
+      "student_answer": "```json\n{\n  \"aggregate_loss_estimate\": 175000000,\n  \"loss_calculation_details\": \"Estimated loss = Total Exposure * Damage Percentage * Correlation Factor\\n= $500,000,000 * 0.35 * 0.9\\n= $175,000,000\",\n  \"retention_sufficiency\": false,\n  \"recommendation\": \"Excess reinsurance is required. The estimated aggregate loss of $175 million exceeds the current retention limit of $50 million.  Securing excess reinsurance coverage of $150 million (200,000,000 - 50,000,000) is recommended to mitigate the risk of insolvency.\",\n  \"risk_rating\": \"High\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, and Domain Accuracy. The student applied the correlation factor (0.9) as a multiplier to the aggregate loss calculation, which is mathematically incorrect for estimating aggregate exposure in this context; correlation typically affects the variance or the probability of simultaneous claims, not a direct linear reduction of the total expected loss in this manner. Furthermore, the submission completely ignores the 'Additional Checks' instructions regarding flood zone multipliers, claim history penalties, and specific policy clauses, which were explicitly part of the evaluation criteria. The recommendation to secure $150M is also logically flawed given the available excess coverage is $200M, making the specific calculation unnecessary and the phrasing imprecise. While the JSON structure is clear (Clarity 4), the fundamental actuarial errors and missing required checks prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Review company records to determine amount of insurance in force on single risk or group of closely related risks.",
+      "task_type": "Concentration and Exposure Audit",
+      "user_prompt": "Review the attached list of policyholders for a manufacturing client group. The group consists of three subsidiaries: Alpha Mfg, Beta Mfg, and Gamma Mfg. Determine the total insurance in force for the group. Check if the combined exposure exceeds the company's single risk limit of $10M. If the limit is exceeded, identify which specific policies contribute to the excess and propose a strategy to reduce the exposure, such as requiring a self-insured retention or adjusting coverage limits.",
+      "reference_context": {
+        "policy_list": [
+          {
+            "entity": "Alpha Mfg",
+            "policy_number": "POL-101",
+            "coverage_amount": 4000000
+          },
+          {
+            "entity": "Beta Mfg",
+            "policy_number": "POL-102",
+            "coverage_amount": 3500000
+          },
+          {
+            "entity": "Gamma Mfg",
+            "policy_number": "POL-103",
+            "coverage_amount": 4500000
+          }
+        ],
+        "company_limits": {
+          "single_risk_limit": 10000000,
+          "group_risk_limit": 15000000
+        },
+        "mitigation_options": [
+          "Increase Self-Insured Retention (SIR)",
+          "Reduce Coverage Limits",
+          "Require Excess Liability Policy"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Is the total group exposure calculated correctly?",
+        "Compliance: Does the AI correctly identify the breach of the single risk limit?",
+        "Strategy: Are the proposed mitigation strategies logical and aligned with the provided options?"
+      ],
+      "student_answer": "Total insurance in force: $12,000,000\n\nCombined exposure exceeds the single risk limit of $10,000,000.\n\nExcess exposure: $2,000,000\n\nContributing policies:\n\n*   Gamma Mfg - POL-103 ($4,500,000)\n*   Alpha Mfg - POL-101 ($4,000,000)\n\nProposed strategy: Increase Self-Insured Retention (SIR) on Gamma Mfg - POL-103 and Alpha Mfg - POL-101. Alternatively, reduce coverage limits on one or both policies to bring the total exposure below $10,000,000.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission correctly calculates the total exposure ($12M), identifies the limit breach ($2M excess), and lists the contributing policies. However, the strategy to reduce exposure is logically flawed: increasing the SIR on the specific policies contributing to the excess does not reduce the 'insurance in force' (the limit of liability), which is the metric used to determine if the single risk limit is exceeded. A professional would need to reduce the coverage limits themselves or require an excess policy to shift the primary layer. Additionally, the submission ignores the 'Additional Checks' context regarding flood zones and claim history, which were not present in the provided data but the prompt implies checking for them; since the data didn't contain them, this is a minor omission rather than a hallucination, but the strategic advice remains the primary weakness preventing a perfect score."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Decrease value of policy when risk is substandard and specify applicable endorsements or apply rating to ensure safe, profitable distribution of risks, using reference materials.",
+      "task_type": "Substandard Rating and Endorsement Application",
+      "user_prompt": "A commercial property applicant has a roof that is 25 years old (expected life 30 years) and has a history of minor water leaks. The property value is $2M. Using the provided substandard rating table, calculate the additional premium required to cover the increased risk. Specify the necessary endorsements to limit coverage for roof-related claims and draft a summary of the rating adjustment for the policy document.",
+      "reference_context": {
+        "property_details": {
+          "value": 2000000,
+          "roof_age": 25,
+          "roof_condition": "Fair (Minor leaks)",
+          "expected_lifespan": 30
+        },
+        "substandard_rating_table": {
+          "base_rate": 0.002,
+          "age_penalty_factor": 1.2,
+          "condition_penalty_factor": 1.5,
+          "combined_multiplier": 1.8
+        },
+        "endorsements": [
+          "Endorsement A: Roof Cap Limit of $50,000",
+          "Endorsement B: Mandatory Roof Inspection within 6 months"
+        ]
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the new premium calculated using the correct multipliers from the table?",
+        "Endorsement Selection: Are the correct endorsements selected to mitigate the specific roof risks?",
+        "Documentation: Is the summary clear and suitable for inclusion in the policy document?"
+      ],
+      "student_answer": "**Additional Premium Calculation:**\n\n1.  **Base Rate:** $2,000,000 \\* 0.002 = $4,000\n2.  **Age Penalty:** $4,000 \\* 1.2 = $4,800\n3.  **Condition Penalty:** $4,800 \\* 1.5 = $7,200\n4.  **Combined Multiplier:** $7,200 \\* 1.8 = $12,960\n\n**Total Additional Premium:** $12,960\n\n**Necessary Endorsements:**\n\n*   Endorsement A: Roof Cap Limit of $50,000\n*   Endorsement B: Mandatory Roof Inspection within 6 months\n\n**Rating Adjustment Summary for Policy Document:**\n\n“Due to the roof’s age of 25 years (with an expected lifespan of 30 years) and a history of minor water leaks, a substandard rating adjustment has been applied to this policy. The base premium is increased by $12,960. To mitigate potential roof-related claims, the following endorsements are required: Endorsement A – Roof Cap Limit of $50,000, and Endorsement B – Mandatory Roof Inspection within 6 months.  This adjustment reflects the increased risk associated with the property’s existing roof condition.”",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails the core calculation logic. It applies the factors sequentially (multiplying the result of the previous step by the next factor) rather than applying them to the base premium or using the provided 'combined_multiplier' correctly. The correct calculation should be Base ($4,000) * Combined Multiplier (1.8) = $7,200, or Base * Age * Condition = $7,200. The student's result of $12,960 is mathematically incorrect based on standard actuarial practices and the provided table structure. Additionally, the 'Additional Checks' section in the prompt context mentions flood zones and fire claims which were not in the provided JSON context, but the student correctly ignored hallucinated factors. However, the fundamental error in the premium calculation (Dimension 1, 4) and the resulting lack of professional accuracy (Dimension 3) prevents a high score. The output is usable but requires significant correction of the math (Dimension 6)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Authorize reinsurance of policy when risk is high.",
+      "task_type": "Risk Analysis and Reinsurance Authorization",
+      "user_prompt": "Review the attached commercial property application for a $5M facility located in Flood Zone A. The applicant has a credit score of 620 and two fire claims in the last 5 years. Using the provided underwriting matrix, calculate the total risk score. Determine if the risk exceeds the internal retention limit of $2M per occurrence. If the calculated exposure exceeds this limit, draft a formal reinsurance authorization request to the treaty partner specifying the cession percentage required to reduce the net retention to $1.5M, citing the specific policy clauses that mandate this action.",
+      "reference_context": {
+        "applicant_profile": {
+          "property_value": 5000000,
+          "location_risk_factor": "High (Flood Zone A)",
+          "claim_history": [
+            {
+              "year": 2021,
+              "type": "Fire",
+              "amount": 150000
+            },
+            {
+              "year": 2019,
+              "type": "Fire",
+              "amount": 85000
+            }
+          ],
+          "financial_standing": {
+            "credit_score": 620,
+            "debt_to_income_ratio": 0.45
+          }
+        },
+        "underwriting_matrix": {
+          "base_rate": 0.0025,
+          "flood_zone_multiplier": 1.5,
+          "claim_history_penalty": 0.0015,
+          "credit_score_penalty": 0.001,
+          "max_acceptable_risk_score": 0.006,
+          "decline_threshold": 0.0075,
+          "retention_limit": 2000000
+        },
+        "policy_clauses": [
+          "Clause 4.2: Automatic decline for 2+ fire claims in 5 years",
+          "Clause 8.1: Mandatory flood mitigation endorsement for Zone A properties",
+          "Clause 12.5: Mandatory reinsurance cession if gross exposure exceeds $2M"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the calculated risk score accurately reflect the matrix inputs and multipliers?",
+        "Completeness: Did the AI correctly identify that the gross exposure ($5M) exceeds the retention limit ($2M) and trigger the reinsurance requirement?",
+        "Best practices: Is the drafted reinsurance request professional, clearly stating the cession percentage needed to achieve the $1.5M net retention, and does it explicitly cite Clause 12.5?"
+      ],
+      "student_answer": "**Risk Score Calculation:**\n\n*   Base Rate: 5,000,000 * 0.0025 = 12,500\n*   Flood Zone Multiplier: 12,500 * 1.5 = 18,750\n*   Claim History Penalty: (150,000 + 85,000) * 0.0015 = 337.50\n*   Credit Score Penalty: 5,000,000 * 0.001 = 5,000\n*   Total Risk Score: 12,500 + 18,750 + 337.50 + 5,000 = 36,627.50\n\n**Risk Assessment:**\n\nThe calculated risk score of 36,627.50 significantly exceeds the internal retention limit of $2,000,000.\n\n**Reinsurance Authorization Request:**\n\n**To:** Treaty Partner\n\n**From:** [Your Insurance Company Name]\n\n**Date:** October 26, 2023\n\n**Subject:** Reinsurance Authorization Request – Commercial Property Exposure\n\nDear Treaty Partner,\n\nThis letter formally requests authorization for a reinsurance cession to mitigate the elevated risk associated with a commercial property application for a $5,000,000 facility located in Flood Zone A.  The calculated gross exposure, as per our underwriting matrix, exceeds our internal retention limit of $2,000,000 per occurrence.\n\nDue to the applicant’s history of two fire claims within the last five years (2019 and 2021), coupled with a credit score of 620 and the property’s location in a high-risk flood zone, the resulting risk score of 36,627.50 necessitates immediate action.\n\nSpecifically, Clause 12.5 of the policy mandates a reinsurance cession when the gross exposure exceeds $2,000,000. Furthermore, Clause 8.1 requires a flood mitigation endorsement for Zone A properties, and Clause 4.2 automatically declines the policy if there are two or more fire claims within five years.\n\nTo reduce the net retention to $1,500,000, we request a cession of [Calculate the required cession percentage - (Gross Exposure - Target Retention) / Gross Exposure].  This equates to approximately 68.75%.\n\nWe believe this cession is crucial to ensure the financial stability of our portfolio and to comply with all applicable policy clauses. We request your prompt review and approval of this reinsurance authorization.\n\nSincerely,\n\n[Your Name]\n\nInsurance Underwriter\n\n---\n**Note:** The cession percentage calculation is approximate and requires precise calculation based on the specific gross exposure amount.  The exact cession percentage should be determined and included in the final request.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. First, the 'Risk Score' calculation is mathematically and conceptually wrong; it calculates a dollar amount (premium) rather than a risk score index, and it applies the claim penalty to the claim amount rather than using the provided penalty rate as a scalar or additive factor to a base score. Second, it completely ignores the explicit instruction to check for the 'Automatic decline' clause (Clause 4.2) which mandates a decline for 2+ fire claims, yet it proceeds to draft a reinsurance request. Third, the reinsurance calculation logic is flawed; it attempts to cession based on the erroneous 'risk score' rather than the property value ($5M) to reach the $1.5M retention. Finally, the output contains meta-commentary ('Note: The cession percentage calculation is approximate...') and placeholders ('[Calculate the required cession percentage]'), violating the requirement for a professional, ready-to-use document. The Autonomy score is 1 because the output is a rough draft with errors and placeholders."
+    }
+  ]
+}

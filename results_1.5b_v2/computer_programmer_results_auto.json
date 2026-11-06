@@ -1,0 +1,558 @@
+{
+  "meta": {
+    "job_title": "Computer Programmers",
+    "job_id": "computer_programmer",
+    "onet_code": "15-1251.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "qwen2.5:1.5b",
+    "total_onet_tasks": 17,
+    "evaluated_tasks": 17,
+    "batches": 4,
+    "batch_size": 5,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.41,
+      "dimensions": {
+        "Correctness": 2.06,
+        "Completeness": 2.31,
+        "Best Practices": 2.25,
+        "Domain Accuracy": 2.19,
+        "Clarity": 3.75,
+        "Autonomy": 1.88
+      },
+      "evaluated_tasks": 17,
+      "scale_max": 5
+    },
+    "total_time_seconds": 2329.85
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Write, analyze, review, and rewrite programs, using workflow chart and diagram, and applying knowledge of computer capabilities, subject matter, and symbolic logic.",
+      "task_type": "Algorithm Refactoring and Optimization",
+      "user_prompt": "Refactor the provided legacy Python function to improve its time complexity from O(n^2) to O(n log n) while maintaining backward compatibility with the existing API. Include a brief explanation of the algorithmic changes and ensure all edge cases are handled.",
+      "reference_context": "def process_data(data_list):\n    results = []\n    for i in range(len(data_list)):\n        for j in range(len(data_list)):\n            if i != j:\n                if data_list[i] + data_list[j] == 100:\n                    results.append((data_list[i], data_list[j]))\n    return results",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The refactored function must return identical results to the original for all valid inputs, including empty lists and lists with duplicates.",
+        "Criterion 2: Completeness — The solution must explicitly achieve O(n log n) or better complexity and include a docstring explaining the algorithmic shift.",
+        "Criterion 3: Best Practices — Code must use standard naming conventions (PEP 8), include type hinting, and handle non-iterable inputs with appropriate exceptions."
+      ],
+      "student_answer": "```python\nimport math\n\ndef process_data_v2(data_list):\n    # Sort the list in ascending order to improve time complexity\n    sorted_data = sorted(data_list)\n    \n    # Use binary search to find pairs that sum up to 100\n    result_pairs = []\n    for i, value in enumerate(sorted_data):\n        target = 100 - value\n        left_index = bisect.bisect_left(sorted_data, target)\n        \n        if left_index < len(sorted_data) and sorted_data[left_index] == target:\n            # Check that the pair is not already included\n            if i != left_index:\n                result_pairs.append((value, target))\n    \n    return result_pairs\n```\n\nExplanation of Algorithmic Changes:\n\n1. **Sort the List**: The original function sorts the list in O(n log n) time using `sorted()`. This step improves the overall complexity from O(n^2) to O(n log n).\n\n2. **Binary Search for Pairs**: Instead of iterating through all pairs, we use binary search (`bisect.bisect_left`) to find the complement value (100 - current element). This reduces the time complexity further.\n\n3. **Edge Case Handling**: The function now handles edge cases more gracefully by checking that the pair is not already included before adding it to the result list.\n\n4. **Return Result**: Finally, the function returns a list of tuples containing pairs that sum up to 100.\n\nThis refactored version maintains backward compatibility with the existing API and improves performance significantly for large datasets.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        3,
+        3,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission correctly identifies the O(n log n) strategy using sorting and binary search, but contains critical errors. It fails to import the 'bisect' module, causing a runtime NameError, and imports unused 'math'. The function name was changed to 'process_data_v2', violating the backward compatibility requirement. Furthermore, the logic for handling duplicates differs from the original index-based approach, altering output semantics. The explanation is clear, but the code requires significant fixes to be functional and compatible."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Correct errors by making appropriate changes and rechecking the program to ensure that the desired results are produced.",
+      "task_type": "Debugging and Error Correction",
+      "user_prompt": "The provided inventory management script contains a critical logic error causing duplicate entries when stock levels are updated. Identify the bug, fix the logic to ensure idempotency, and add input validation to prevent negative stock values. Provide a test case demonstrating the fix.",
+      "reference_context": "def update_inventory(inventory, item_id, quantity_change):\n    if item_id in inventory:\n        inventory[item_id] += quantity_change\n    else:\n        inventory[item_id] = quantity_change\n    return inventory\n\n# Usage scenario: update_inventory({'A': 10}, 'A', 5) results in {'A': 15}. Calling it again with same args should not duplicate logic or crash.",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The function must correctly update existing keys and initialize new ones without creating duplicate entries or side effects.",
+        "Criterion 2: Completeness — The solution must include validation to raise a ValueError if quantity_change results in a negative stock level.",
+        "Criterion 3: Best Practices — The code must include a unit test function verifying the fix and adhere to standard error handling patterns."
+      ],
+      "student_answer": "The provided script has a logical error where the `update_inventory` function does not handle negative stock values correctly, leading to incorrect behavior when updating inventory levels.\n\nTo fix this issue and ensure idempotency (i.e., the update operation is equivalent to calling it multiple times with the same arguments), we need to add input validation for negative quantities. Additionally, we should check if the item already exists in the inventory before attempting to update its quantity.\n\nHere's the corrected script:\n\n```python\ndef update_inventory(inventory, item_id, quantity_change):\n    # Validate that the item exists and is not a negative value\n    if isinstance(quantity_change, int) and (quantity_change >= 0):\n        if item_id in inventory:\n            inventory[item_id] += quantity_change\n        else:\n            inventory[item_id] = quantity_change\n    else:\n        raise ValueError(\"Invalid quantity change: must be an integer greater than or equal to zero.\")\n    \n    return inventory\n\n# Usage scenario: update_inventory({'A': 10}, 'A', 5) results in {'A': 15}. Calling it again with same args should not duplicate logic or crash.\n```\n\n### Test Case\nTo demonstrate the fix, let's test the function with a few scenarios:\n\n```python\n# Initial inventory\ninitial_inventory = {\n    'A': 10,\n    'B': 20\n}\n\n# Update stock for item 'A' by adding 5 units\nupdated_inventory = update_inventory(initial_inventory, 'A', 5)\nprint(updated_inventory)  # Expected output: {'A': 15, 'B': 20}\n\n# Attempt to update the same item again with the same quantity change (should not duplicate logic or crash)\nupdated_inventory_again = update_inventory(updated_inventory, 'A', 5)\nprint(updated_inventory_again)  # Expected output: {'A': 15, 'B': 20}\n```\n\nIn this test case:\n- The initial inventory contains items 'A' and 'B'.\n- We update the stock for item 'A' by adding 5 units.\n- When we attempt to update the same item again with the same quantity change (5 units), the function correctly updates the inventory without duplicating logic or crashing.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        3,
+        2,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to address the core requirement of ensuring idempotency; the code accumulates values on repeated calls rather than maintaining state. The test case comments contradict the code execution (expecting 15 after two additions of 5). The bug identification focused on negative values instead of the duplicate/idempotency issue. Input validation is present but restricts changes to non-negative only, which may not align with inventory logic (returns). The code does not handle edge cases like empty lists or overflow mentioned in additional checks. While the code is syntactically valid, it requires significant rework to meet the task specifications."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Perform or direct revision, repair, or expansion of existing programs to increase operating efficiency or adapt to new requirements.",
+      "task_type": "System Expansion and Adaptation",
+      "user_prompt": "Expand the provided data retrieval module to support a new 'filter_by_date' requirement. The current function only retrieves by ID. Modify the code to accept an optional date range parameter, ensuring the function remains efficient for large datasets and handles invalid date formats gracefully.",
+      "reference_context": "def get_records(record_id):\n    # Simulated database lookup\n    return {'id': record_id, 'data': 'sample'}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The expanded function must return records matching the ID and, if provided, the date range, without altering the original ID-only behavior.",
+        "Criterion 2: Completeness — The solution must parse date strings robustly and return a clear error message for invalid formats.",
+        "Criterion 3: Best Practices — The implementation must use generator expressions or efficient filtering to handle large datasets and follow PEP 8 style guidelines."
+      ],
+      "student_answer": "```python\nimport re\n\ndef validate_date(date_str):\n    \"\"\"\n    Validates a date string against the format YYYY-MM-DD.\n    \n    Args:\n        date_str (str): The date string to validate.\n        \n    Returns:\n        bool: True if valid, False otherwise.\n    \"\"\"\n    pattern = r'^\\d{4}-\\d{2}-\\d{2}$'\n    return re.match(pattern, date_str) is not None\n\ndef get_records(record_id, start_date=None, end_date=None):\n    \"\"\"\n    Retrieves records by ID with optional filtering by date range.\n    \n    Args:\n        record_id (int): The ID of the record to retrieve.\n        start_date (str, optional): The start date for the filter. Defaults to None.\n        end_date (str, optional): The end date for the filter. Defaults to None.\n        \n    Returns:\n        dict: A dictionary containing the retrieved data.\n    \"\"\"\n    records = [{'id': 1, 'data': 'sample'}, {'id': 2, 'data': 'another sample'}]  # Simulated database\n    \n    if validate_date(start_date):\n        records = [record for record in records if start_date <= record['date'] <= end_date]\n    \n    return {record['id']: record['data'] for record in records if record['id'] == record_id}\n\n# Example usage\nprint(get_records(1, '2023-01-01', '2023-12-31'))\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        1
+      ],
+      "score": 1.8,
+      "grade_reason": "The regex pattern for date validation is incorrect for ISO 8601 format, causing the filter logic to be skipped entirely. The simulated database records lack the 'date' key, which would cause a KeyError if validation passed. The return type changes from a single object to a dictionary, breaking API consistency with the original function. Efficiency for large datasets is not addressed as it performs a linear scan. Date validation should utilize the datetime module rather than regex."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Write, update, and maintain computer programs or software packages to handle specific jobs such as tracking inventory, storing or retrieving data, or controlling other equipment.",
+      "task_type": "Data Persistence and Validation",
+      "user_prompt": "Create a robust data storage function that writes user input to a JSON file. The function must validate that the input is a dictionary with specific required keys ('user_id', 'timestamp', 'action'). If validation fails, log the error and return a failure status without modifying the file. Ensure thread-safe file writing.",
+      "reference_context": "import json\nimport os\n\ndef save_data(data):\n    # Placeholder for implementation\n    pass",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The function must strictly validate the input schema and only write to the file if all checks pass.",
+        "Criterion 2: Completeness — The solution must include error handling for file I/O errors and invalid JSON serialization.",
+        "Criterion 3: Best Practices — The code must implement thread-safe locking mechanisms for file operations and use descriptive variable names."
+      ],
+      "student_answer": "```python\nimport json\nimport os\n\ndef validate_input(input_dict):\n    required_keys = ['user_id', 'timestamp', 'action']\n    return all(key in input_dict for key in required_keys)\n\ndef write_to_json_file(file_path, data):\n    if not isinstance(data, dict) or not validate_input(data):\n        print(f\"Error: Invalid input. Expected a dictionary with keys {required_keys}.\")\n        return False\n\n    try:\n        with open(file_path, 'w') as file:\n            json.dump(data, file)\n        return True\n    except Exception as e:\n        print(f\"Failed to write data to JSON file: {e}\")\n        return False\n\ndef save_data(data):\n    required_keys = ['user_id', 'timestamp', 'action']\n    if not isinstance(data, dict) or not all(key in data for key in required_keys):\n        print(\"Error: Invalid input. Expected a dictionary with keys\", ', '.join(required_keys))\n        return False\n\n    file_path = \"data.json\"\n    if os.path.exists(file_path):\n        try:\n            with open(file_path, 'r') as file:\n                existing_data = json.load(file)\n        except Exception as e:\n            print(f\"Failed to read from JSON file: {e}\")\n            return False\n    else:\n        existing_data = {}\n\n    updated_data = {\n        **existing_data,\n        **data\n    }\n\n    if write_to_json_file(file_path, updated_data):\n        print(\"Data successfully written to JSON file.\")\n        return True\n\n    return False\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        3,
+        3,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission fails the critical requirement for thread-safe file writing, using a non-atomic read-modify-write pattern without locks, which constitutes a significant error for robust storage. It uses print statements instead of the logging module, reducing best practices. Validation logic is correct, and code is clear, but the concurrency gap prevents autonomous delivery without major rework. Additional checks for empty lists and duplicates were not explicitly addressed."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Consult with managerial, engineering, and technical personnel to clarify program intent, identify problems, and suggest changes.",
+      "task_type": "Requirement Analysis and Code Specification",
+      "user_prompt": "Analyze the provided pseudo-code for a payment processing system. Identify three potential logical flaws related to transaction rollback and security. Rewrite the code in Python to address these flaws, ensuring that partial transactions are rolled back and sensitive data is never logged in plain text.",
+      "reference_context": "pseudo_code:\n  function process_payment(amount, card_number):\n    log(card_number)\n    charge(amount)\n    if charge fails:\n      log('error')\n    else:\n      save_receipt()",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The rewritten code must implement a try-except block to ensure atomic transactions (rollback on failure).",
+        "Criterion 2: Completeness — The solution must explicitly mask or hash card numbers in logs and remove plain text logging of sensitive data.",
+        "Criterion 3: Best Practices — The code must include comprehensive docstrings explaining the security improvements and adhere to industry-standard logging practices."
+      ],
+      "student_answer": "### Identified Logical Flaws:\n\n1. **Transaction Rollback Mechanism**: The provided pseudo-code does not include a mechanism for rolling back transactions in case of failure, which could lead to partial or incomplete payments being processed.\n\n2. **Data Logging Security**: Sensitive data such as card numbers are logged without encryption, making them vulnerable to unauthorized access and potential security breaches.\n\n3. **Error Handling**: The code does not handle exceptions properly, leading to a single error message being displayed instead of providing detailed information about the failure.\n\n### Revised Python Code:\n\n```python\nimport hashlib\n\ndef process_payment(amount, card_number):\n    # Log the transaction details\n    log(card_number)\n    \n    try:\n        charge(amount)\n    except Exception as e:\n        print(f\"Error processing payment: {e}\")\n        return False\n    \n    save_receipt()\n    return True\n\ndef charge(amount):\n    # Simulate a failed charge attempt for demonstration purposes\n    if random.random() < 0.1:\n        raise ValueError(\"Charge failed due to an error\")\n    \n    # Simulate successful charge\n    print(f\"Charging {amount} successfully\")\n\ndef save_receipt():\n    receipt = hashlib.sha256(card_number.encode()).hexdigest()\n    with open('receipts.txt', 'a') as file:\n        file.write(receipt + '\\n')\n\n# Example usage\nprocess_payment(100, \"card1234\")\n```\n\n### Explanation of Changes:\n\n- **Transaction Rollback Mechanism**: The `try-except` block ensures that if the charge fails due to an error (e.g., insufficient funds), it will be logged and rolled back. This prevents partial transactions from being processed.\n  \n- **Data Logging Security**: Sensitive data like card numbers are hashed using SHA-256 before logging, which makes them unreadable in plain text. This enhances security by preventing unauthorized access to the log files.\n\n- **Error Handling**: The `except` block now handles exceptions properly, displaying a detailed error message instead of just a generic \"error\" message. This provides more context and helps in diagnosing issues faster.\n\nThis revised code ensures that partial transactions are rolled back if they fail, and sensitive data is logged securely without being stored in plain text.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The student correctly identified the logical flaws in the text analysis. However, the Python implementation fails critical requirements: it logs the card number in plain text (log(card_number)) despite claiming to fix security, contains scope errors (card_number undefined in save_receipt), and missing imports (random). This violates the core constraint of not logging sensitive data and prevents the code from running, necessitating significant rework."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Conduct trial runs of programs and software applications to be sure they will produce the desired information and that the instructions are correct.",
+      "task_type": "Unit Testing and Validation",
+      "user_prompt": "Write a comprehensive test suite for the provided Python function 'calculate_inventory'. The function must handle edge cases including empty inputs, negative values, and floating-point precision issues. Ensure the test suite covers at least 90% code coverage and includes assertions for expected outputs.",
+      "reference_context": "def calculate_inventory(items, tax_rate):\n    total = 0\n    for item in items:\n        total += item['price'] * item['quantity']\n    return total * (1 + tax_rate)",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — All test cases pass and produce expected results.",
+        "Criterion 2: Completeness — Edge cases (empty list, negative numbers, floats) are explicitly tested.",
+        "Criterion 3: Best practices — Tests use standard libraries (e.g., unittest or pytest) and follow naming conventions."
+      ],
+      "student_answer": "```python\nimport pytest\n\n# Test data points\ntest_data = [\n    ([{'name': 'item1', 'price': 5.99, 'quantity': 2}, {'name': 'item2', 'price': -3.49, 'quantity': 1}], 0),\n    (['apple', 'banana'], 0),\n    ([{'name': 'item3', 'price': 10.00, 'quantity': 5}], 60.0),\n    ([{'name': 'item4', 'price': -2.75, 'quantity': 3}, {'name': 'item5', 'price': 0.99, 'quantity': 4}], 18.96),\n    (['orange', 'grape'], 0)\n]\n\n# Test cases\n@pytest.mark.parametrize('items, expected', test_data)\ndef test_calculate_inventory(items, expected):\n    assert calculate_inventory(items, 0) == expected\n\n# Assertions for edge cases and negative values\nassert calculate_inventory([], 1.5) == 0\nassert calculate_inventory([{'name': 'item6', 'price': -2.75, 'quantity': 3}], 1.5) == -9.0\nassert calculate_inventory([{'name': 'item7', 'price': 10.00, 'quantity': 5}, {'name': 'item8', 'price': 2.75, 'quantity': 4}], 1.5) == 63.0\n\n# Assertions for floating-point precision issues\nassert calculate_inventory([{'name': 'item9', 'price': 10.00, 'quantity': 5}, {'name': 'item10', 'price': 2.75, 'quantity': 4}], 1.5) == pytest.approx(63.0)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        2,
+        1,
+        3,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "Fundamental mathematical errors in expected values (e.g., 10*5=60). Top-level assertions violate pytest standards. Missing import statement prevents execution. Invalid input types expected to return 0 instead of raising errors. No coverage verification or overflow checks. Requires significant rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare detailed workflow charts and diagrams that describe input, output, and logical operation, and convert them into a series of instructions coded in a computer language.",
+      "task_type": "Logic Implementation from Pseudocode",
+      "user_prompt": "Implement the 'UserAuthentication' workflow described in the provided pseudocode into a secure Python class. The implementation must include input validation for usernames and passwords, handle invalid inputs gracefully, and log authentication attempts. Ensure the code adheres to PEP 8 standards.",
+      "reference_context": "PSEUDOCODE:\n1. Start\n2. Input username, password\n3. If username is empty OR password is empty:\n   - Return Error: 'Missing credentials'\n4. If password length < 8:\n   - Return Error: 'Password too short'\n5. Check database for username\n6. If username exists:\n   - Verify password hash\n   - If match: Return Success\n   - Else: Return Error: 'Invalid password'\n7. Else:\n   - Return Error: 'User not found'\n8. End",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The logic strictly follows the provided pseudocode flow.",
+        "Criterion 2: Completeness — All error conditions defined in the pseudocode are implemented.",
+        "Criterion 3: Best practices — Code uses secure hashing (e.g., bcrypt), proper exception handling, and PEP 8 style."
+      ],
+      "student_answer": "```python\nimport hashlib\n\nclass UserAuthentication:\n    def __init__(self):\n        self.users = {\n            \"admin\": \"$2b$10$GZs5w9JfQaW6v7BqCpMjzOYnXKU8t4/3hNcRyVdEePmHrTlLkS\",\n            # Add more users and their hashed passwords here\n        }\n\n    def authenticate(self, username, password):\n        if not username or not password:\n            return \"Error: 'Missing credentials'\"\n        \n        if len(password) < 8:\n            return \"Error: 'Password too short'\"\n        \n        try:\n            user = self.users[username]\n        except KeyError:\n            return \"Error: 'User not found'\"\n        \n        hashed_password = hashlib.sha256(password.encode()).hexdigest()\n        if user == hashed_password:\n            return \"Success\"\n        else:\n            return \"Error: 'Invalid password'\"\n\n# Example usage\nauth = UserAuthentication()\nprint(auth.authenticate(\"admin\", \"securepassword123\"))\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        1,
+        1,
+        4,
+        1
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission follows the pseudocode structure but fails critical security requirements. It uses SHA256 for password hashing instead of a secure algorithm like bcrypt or argon2, and the stored hash format does not match the verification logic, causing authentication to always fail. The explicit requirement to log authentication attempts is missing. While the code is readable, it is fundamentally insecure and incomplete, making it unusable for production."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Compile and write documentation of program development and subsequent revisions, inserting comments in the coded instructions so others can understand the program.",
+      "task_type": "Code Documentation and Refactoring",
+      "user_prompt": "Refactor the provided 'DataProcessor' script to improve readability and add comprehensive documentation. Add docstrings to all functions, inline comments for complex logic, and a module-level description. Ensure the refactored code maintains the original functionality but uses descriptive variable names and follows industry standards.",
+      "reference_context": "def proc(d):\n    r = []\n    for x in d:\n        if x > 0:\n            r.append(x * 2)\n        else:\n            r.append(0)\n    return r\n\ndef main():\n    data = [1, -2, 3, 0]\n    print(proc(data))",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The refactored code produces the same output as the original.",
+        "Criterion 2: Completeness — All functions have docstrings, and complex logic is commented.",
+        "Criterion 3: Best practices — Variable names are descriptive (e.g., 'positive_doubled' instead of 'r'), and the code follows PEP 8."
+      ],
+      "student_answer": "```python\n# DataProcessor module for processing a list of integers.\n# This script takes a list of integers as input and returns a new list where each element is twice the original value if it's positive; otherwise, it remains unchanged.\n\ndef proc(d):\n    \"\"\"\n    Process a list of integers by doubling all positive numbers and leaving zeros as they are.\n    \n    :param d: List of integers to be processed\n    :return: A new list with modified values based on the input\n    \"\"\"\n    r = []\n    for x in d:\n        if x > 0:\n            r.append(x * 2)\n        else:\n            r.append(0)\n    return r\n\ndef main():\n    \"\"\"\n    Entry point of the DataProcessor script. Demonstrates usage with a sample list.\n    \"\"\"\n    data = [1, -2, 3, 0]\n    print(proc(data))\n\n# Example usage\nif __name__ == \"__main__\":\n    main()\n```\n\nThis refactored version improves readability by adding docstrings and inline comments for complex logic. It also includes comprehensive documentation through module-level description and function-level descriptions to enhance understanding of the script's purpose, input parameters, return values, and functionality.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        3,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission successfully adds docstrings and module descriptions, improving documentation. However, it fails the explicit requirement to use descriptive variable names (retaining d, r, x), which significantly impacts readability and industry standards. Inline comments were also omitted. While the code is syntactically correct and functional, it requires substantive rework on naming conventions before production use."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Consult with and assist computer operators or system analysts to define and resolve problems in running computer programs.",
+      "task_type": "Debugging and Error Resolution",
+      "user_prompt": "Analyze the provided 'NetworkService' code which is failing to connect to the database under high load. Identify the root cause of the connection timeout and race condition issues. Provide a fixed version of the code that implements connection pooling and proper error handling for network failures.",
+      "reference_context": "def connect_db(host, port):\n    conn = socket.socket()\n    conn.connect((host, port))\n    return conn\n\ndef query_data(conn, query):\n    conn.send(query.encode())\n    return conn.recv(1024)",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The solution resolves the timeout and race condition issues.",
+        "Criterion 2: Completeness — Connection pooling is implemented, and all network errors are caught and logged.",
+        "Criterion 3: Best practices — Code uses context managers for resource cleanup and follows asynchronous patterns if applicable."
+      ],
+      "student_answer": "The provided code is failing to connect to the database under high load due to a connection timeout and race condition issues. The root cause of these problems can be identified as follows:\n\n### Connection Timeout:\n- **Issue**: The `socket.socket()` creates a new socket each time it's called, which results in repeated attempts to establish a connection with the same host and port.\n- **Solution**: Use a single connection pool for all database connections. This ensures that the connection is reused instead of being created anew on every call.\n\n### Race Condition:\n- **Issue**: The `socket.connect()` method can be interrupted by other processes, leading to a timeout or failure.\n- **Solution**: Implement proper error handling and retry logic using a try-except block around the `connect` call. This ensures that if one connection attempt fails due to an interruption, another attempt will be made.\n\n### Fixed Version of the Code:\n```python\nimport socket\n\nclass DatabaseConnectionPool:\n    def __init__(self, host, port):\n        self.host = host\n        self.port = port\n        self.connection_pool = []\n\n    def get_connection(self):\n        if not self.connection_pool:\n            conn = socket.socket()\n            conn.connect((self.host, self.port))\n            self.connection_pool.append(conn)\n            return conn\n\n        for connection in self.connection_pool:\n            try:\n                connection.sendall(b\"Keep Connection Alive\")\n                # Simulate network failure\n                time.sleep(0.5)  # Replace with actual network delay simulation\n                if not connection.recv(1024):\n                    self.connection_pool.remove(connection)\n                    conn = socket.socket()\n                    conn.connect((self.host, self.port))\n                    self.connection_pool.append(conn)\n                    return conn\n\n            except (socket.timeout, ConnectionResetError):\n                continue  # Retry on timeout or reset error\n        raise Exception(\"Failed to connect to the database\")\n\n    def close_connection(self, connection):\n        if connection in self.connection_pool:\n            self.connection_pool.remove(connection)\n\n# Usage example\npool = DatabaseConnectionPool('localhost', 3306)\nconn = pool.get_connection()\ntry:\n    query_data(conn, \"SELECT * FROM table_name\")\nexcept Exception as e:\n    print(f\"An error occurred: {e}\")\nfinally:\n    pool.close_connection(conn)\n```\n\n### Explanation of the Fixed Code:\n1. **DatabaseConnectionPool Class**:\n   - This class manages a connection pool for database connections.\n   - It keeps track of all existing connections in `self.connection_pool`.\n   - The `get_connection` method returns an available connection from the pool or creates a new one if none are available.\n\n2. **Connection Pooling**:\n   - When calling `pool.get_connection()`, it checks if there's already a connection in the pool.\n   - If not, it creates a new socket and connects to the database host and port.\n   - The connections are added to the pool for future use.\n\n3. **Error Handling**:\n   - A try-except block is used around `connect` calls to handle potential timeouts or reset errors.\n   - If an error occurs (e.g., connection timeout), it removes the connection from the pool and retries connecting until a successful connection is established.\n\n4. **Close Connection Method**:\n   - The `close_connection` method allows for proper cleanup of connections, ensuring that resources are released correctly.\n\nThis fixed version should significantly improve performance under high load by reducing the overhead of creating new sockets repeatedly and mitigating race conditions through retry logic.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission correctly identifies the need for pooling but fails to implement it functionally. The code contains syntax errors (missing `import time`), logic errors (pool iteration never returns a valid connection), and lacks thread safety (no locks) required for high load. The diagnosis of race conditions is technically inaccurate regarding `socket.connect()`. Empty list handling is present, but resource cleanup is missing. While the explanation is clear, the solution is not production-ready."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Perform systems analysis and programming tasks to maintain and control the use of computer systems software as a systems programmer.",
+      "task_type": "System Maintenance and Control",
+      "user_prompt": "Develop a Python script to monitor system resource usage (CPU, Memory, Disk) and generate a report when thresholds are exceeded. The script must validate input parameters, handle missing system commands gracefully, and output the report in JSON format. Ensure the script is robust against permission errors.",
+      "reference_context": "THRESHOLDS: CPU > 80%, Memory > 90%, Disk > 85%\nOUTPUT FORMAT: {\"timestamp\": \"...\", \"status\": \"warning\", \"details\": {...}}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — The script accurately detects threshold breaches and outputs valid JSON.",
+        "Criterion 2: Completeness — Input validation is present, and system command failures are handled without crashing.",
+        "Criterion 3: Best practices — Code uses standard libraries (e.g., psutil), includes error handling for permissions, and follows naming conventions."
+      ],
+      "student_answer": "```python\nimport os\nimport json\nfrom datetime import datetime\n\ndef validate_input(parameters):\n    if 'cpu_threshold' not in parameters or 'memory_threshold' not in parameters:\n        return False, 'Missing required parameter: cpu_threshold and memory_threshold'\n    \n    if isinstance(parameters['cpu_threshold'], float) and 0 <= parameters['cpu_threshold'] <= 100:\n        pass\n    else:\n        return False, 'Invalid value for cpu_threshold. Must be a number between 0 and 100.'\n    \n    if isinstance(parameters['memory_threshold'], int) and 0 <= parameters['memory_threshold'] <= 100:\n        pass\n    else:\n        return False, 'Invalid value for memory_threshold. Must be an integer between 0 and 100.'\n\n    return True, None\n\ndef get_system_resources():\n    cpu_usage = os.popen('top -bn1 | grep \"Cpu(s)\" | awk \\'{print $2 + $4}\\'').read().strip()\n    if not cpu_usage:\n        return None\n    memory_usage = os.popen('free -m | awk \\'NR==2{printf \"%s %s\\n\", $2, $3}\\'').read().strip()\n    disk_usage = os.popen('df -h / | grep \"/\" | awk \\'{print $5}\\'').read().strip()\n\n    return {\n        'cpu': float(cpu_usage),\n        'memory': int(memory_usage.split()[1]),\n        'disk': disk_usage\n    }\n\ndef generate_report(thresholds, resources):\n    report = {'timestamp': datetime.now().isoformat(), 'status': 'ok', 'details': {}}\n    \n    for key in thresholds:\n        if resources[key] > thresholds[key]:\n            report['status'] = 'warning'\n            report['details'][key] = f'{resources[key]} ({thresholds[key]})'\n\n    return json.dumps(report, indent=2)\n\ndef main():\n    parameters = {\n        'cpu_threshold': 80,\n        'memory_threshold': 90\n    }\n    \n    if not validate_input(parameters):\n        print(f'Error: {validate_input(parameters)[1]}')\n        exit(1)\n    \n    resources = get_system_resources()\n    if resources is None:\n        print('Failed to retrieve system resource usage.')\n        exit(1)\n\n    report = generate_report(parameters, resources)\n    print(report)\n\nif __name__ == '__main__':\n    main()\n```\n\nThis script monitors CPU, Memory, and Disk usage on a Linux system. It outputs a JSON-formatted report when thresholds are exceeded. The input parameters validate the required fields (CPU threshold, memory threshold), handle missing commands gracefully, and output the report in JSON format.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "Correctness: Validation logic fails for integer inputs (CPU=80), and Disk threshold is missing from validation and main logic. Completeness: Missing permission error handling, Disk threshold configuration, and robustness checks (overflow). Best Practices: Uses os.popen instead of subprocess, brittle type checking. Domain Accuracy: Parsing top/free output is fragile and locale-dependent. Clarity: Code structure is logical and readable despite logic errors. Autonomy: Script crashes on startup due to validation bug; requires significant fixes."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Write or contribute to instructions or manuals to guide end users.",
+      "task_type": "Technical Documentation Generation",
+      "user_prompt": "Generate a comprehensive API usage guide for the provided Python function. The guide must include a description of parameters, return values, error conditions, and a code example demonstrating how to handle the ValueError exception. Ensure the tone is professional and suitable for external developers.",
+      "reference_context": "def calculate_discount(price, discount_rate):\n    if not isinstance(price, (int, float)) or price < 0:\n        raise ValueError(\"Price must be a non-negative number\")\n    if not isinstance(discount_rate, (int, float)) or discount_rate < 0 or discount_rate > 1:\n        raise ValueError(\"Discount rate must be between 0 and 1\")\n    return price * (1 - discount_rate)",
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Does the documentation correctly reflect the function's logic and constraints?",
+        "Criterion 2: Completeness — Are all parameters, return types, and exceptions documented?",
+        "Criterion 3: Clarity — Is the example code valid and does it demonstrate error handling?"
+      ],
+      "student_answer": "### Comprehensive API Usage Guide\n\n#### Overview\nThe `calculate_discount` function is designed to compute the discounted price of an item based on its original price and a specified discount rate. The function ensures that both the price and discount rate are valid inputs, raising a `ValueError` if they do not meet these criteria.\n\n#### Parameters\n- **price**: A non-negative number representing the original price of the item.\n  - Type: `int`, `float`\n  - Range: `>= 0`\n\n- **discount_rate**: A floating-point number between 0 and 1 representing the discount rate.\n  - Type: `int`, `float`\n  - Range: `(0, 1]`\n\n#### Return Values\nThe function returns a float representing the discounted price.\n\n#### Error Conditions\n- If either the price or discount rate is not valid:\n  - **ValueError**: Raised with an appropriate error message indicating which parameter(s) are invalid.\n  \n#### Code Example\n\n```python\n# Correct usage\nprice = 100.50\ndiscount_rate = 0.25\nresult = calculate_discount(price, discount_rate)\nprint(result)  # Output: 75.63\n\n# Incorrect usage - price is negative\ntry:\n    result = calculate_discount(-50, 0.5)\nexcept ValueError as e:\n    print(e)\n\n# Incorrect usage - discount rate exceeds valid range\ntry:\n    result = calculate_discount(120, 1.5)\nexcept ValueError as e:\n    print(e)\n```\n\n#### Handling `ValueError` Exception\n\n```python\ndef handle_discount_error(price, discount_rate):\n    if not isinstance(price, (int, float)) or price < 0:\n        raise ValueError(\"Price must be a non-negative number\")\n    if not isinstance(discount_rate, (int, float)) or discount_rate < 0 or discount_rate > 1:\n        raise ValueError(\"Discount rate must be between 0 and 1\")\n\n    return calculate_discount(price, discount_rate)\n\n# Example usage\ntry:\n    result = handle_discount_error(50.75, 0.3)\nexcept ValueError as e:\n    print(e)  # Output: Price must be a non-negative number\n\nresult = handle_discount_error(60, -0.1)\nprint(result)  # Output: Discount rate must be between 0 and 1\n```\n\n#### Conclusion\nThe `calculate_discount` function is designed to ensure that the input parameters are valid before performing calculations. It raises a `ValueError` for invalid inputs, making it easy to identify and correct errors in the application code. The provided examples demonstrate how to handle these exceptions gracefully, ensuring robust functionality without compromising user experience.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        4,
+        3,
+        3,
+        5,
+        4
+      ],
+      "score": 3.7,
+      "grade_reason": "The guide is well-structured and easy to read (Clarity: 5), covering all required sections (Completeness: 4). However, there is a factual discrepancy in the `discount_rate` documentation, stating the range is `(0, 1]` while the code allows 0, impacting Correctness (3) and Domain Accuracy (3). The 'Handling ValueError' section redundantly re-implements validation logic instead of demonstrating direct exception handling on the provided function, violating Best Practices (3). Minor edits are required to fix the documentation range and remove code duplication before the guide is production-ready (Autonomy: 4)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Investigate whether networks, workstations, the central processing unit of the system, or peripheral equipment are responding to a program's instructions.",
+      "task_type": "System Diagnostics and Debugging",
+      "user_prompt": "Analyze the provided log snippet to identify the root cause of the system hang. Propose a fix for the code that causes the deadlock and explain how the fix resolves the issue. Include a validation step to ensure the fix handles concurrent access safely.",
+      "reference_context": "import threading\n\nlock = threading.Lock()\n\ndef process_transaction(user_id, amount):\n    with lock:\n        # Simulate network call\n        time.sleep(2)\n        # Simulate database update\n        with lock:\n            update_database(user_id, amount)\n            return True",
+      "evaluation_criteria": [
+        "Criterion 1: Diagnosis — Does the solution correctly identify the nested lock acquisition as the cause?",
+        "Criterion 2: Solution — Is the proposed fix logically sound and does it remove the deadlock?",
+        "Criterion 3: Robustness — Does the solution include proper error handling for the database update?"
+      ],
+      "student_answer": "The log snippet indicates that the system is experiencing a deadlock. The root cause of the deadlock can be identified by examining the sequence of events and identifying where threads are waiting for locks.\n\n### Analysis:\n\n1. **Thread 1 (User A):**\n   - Acquires `lock`.\n   - Simulates network call.\n   - Sleeps for 2 seconds.\n   - Reacquires `lock`.\n\n2. **Thread 2 (User B):**\n   - Acquires `lock`.\n   - Simulates database update.\n   - Sleeps for 2 seconds.\n   - Reacquires `lock`.\n\n3. **Thread 1:**\n   - Waits to acquire `lock` again.\n\n4. **Thread 2:**\n   - Waits to acquire `lock` again.\n\n### Root Cause:\nThe deadlock occurs because both threads are waiting on the same lock (`lock`) and neither can proceed until it is released by another thread. This results in a circular wait where no progress can be made, leading to a system hang.\n\n### Proposed Fix:\n\nTo resolve this deadlock, we need to ensure that only one thread acquires the `lock` at any given time. We can achieve this by introducing an additional lock (`mutex`) and modifying the `process_transaction` function accordingly.\n\n#### Updated Code:\n```python\nimport threading\n\n# Additional lock for synchronization\nmutex = threading.Lock()\n\ndef process_transaction(user_id, amount):\n    with mutex:\n        # Simulate network call\n        time.sleep(2)\n        \n        # Simulate database update\n        with mutex:\n            update_database(user_id, amount)\n            return True\n```\n\n### Explanation of the Fix:\n\n1. **Introduction of `mutex`:**\n   - The addition of a new lock (`mutex`) ensures that only one thread can acquire it at any given time.\n   \n2. **Modification of `process_transaction` Function:**\n   - The function now acquires and releases the `mutex` instead of the original `lock`.\n   - This change prevents both threads from acquiring the same lock simultaneously, thus eliminating the deadlock.\n\n### Validation Step:\n\nTo ensure that the fix handles concurrent access safely, we can add a validation step to check if the database update is successful before returning. If the update fails (e.g., due to concurrency issues), the function should return `False` and handle the error appropriately.\n\n#### Updated Code with Validation:\n```python\nimport threading\n\n# Additional lock for synchronization\nmutex = threading.Lock()\n\ndef process_transaction(user_id, amount):\n    with mutex:\n        # Simulate network call\n        time.sleep(2)\n        \n        # Simulate database update\n        try:\n            update_database(user_id, amount)\n            return True\n        except Exception as e:\n            print(f\"Error updating database: {e}\")\n            return False\n\n# Example usage\nif __name__ == \"__main__\":\n    user1 = process_transaction(1, 50)  # Should succeed\n    user2 = process_transaction(2, 75)  # Should fail due to concurrency issue\n```\n\n### Conclusion:\n\nBy introducing an additional lock (`mutex`) and modifying the `process_transaction` function accordingly, we have resolved the deadlock. The fix ensures that only one thread can acquire the necessary locks at any given time, preventing circular waits and ensuring safe concurrent access.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        1
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission correctly identifies a deadlock but misdiagnoses the mechanism (intra-thread reentrancy vs inter-thread circular wait). The proposed fix uses nested non-reentrant locks, which will still cause a deadlock, failing the core task. Validation relies on exception handling rather than concurrency verification. While well-structured, the technical solution is fundamentally flawed and unsafe for production."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Assign, coordinate, and review work and activities of programming personnel.",
+      "task_type": "Code Review and Quality Assurance",
+      "user_prompt": "Review the provided legacy code module for security vulnerabilities and performance bottlenecks. List at least three specific issues found, explain the risk associated with each, and provide a refactored version of the code that addresses these issues while adhering to PEP 8 standards.",
+      "reference_context": "def get_user_input():\n    user = input(\"Enter username: \")\n    pwd = input(\"Enter password: \")\n    query = \"SELECT * FROM users WHERE user='\" + user + \"' AND pass='\" + pwd + \"'\"\n    cursor.execute(query)\n    return cursor.fetchall()\n\ndef process_large_file(filename):\n    with open(filename, 'r') as f:\n        lines = f.readlines()\n        for line in lines:\n            if 'error' in line:\n                print(line)",
+      "evaluation_criteria": [
+        "Criterion 1: Security — Does the solution identify and fix SQL injection vulnerabilities?",
+        "Criterion 2: Performance — Does the solution address memory inefficiency in file processing?",
+        "Criterion 3: Style — Does the refactored code follow standard naming conventions and error handling practices?"
+      ],
+      "student_answer": "### Issues Found and Risk Analysis\n\n1. **SQL Injection Vulnerability:**\n   - **Issue:** The `get_user_input` function directly concatenates user input into a SQL query without proper sanitization.\n   - **Risk:** An attacker could manipulate the input to inject malicious SQL code, leading to unauthorized access or data theft.\n\n2. **Hardcoded Passwords:**\n   - **Issue:** The password is hardcoded in the `get_user_input` function and not securely hashed or encrypted.\n   - **Risk:** This makes it easy for attackers to brute-force the password by simply trying common passwords.\n\n3. **File Reading Performance Bottleneck:**\n   - **Issue:** The `process_large_file` function reads all lines from a file into memory, which can be inefficient for large files and may cause performance issues.\n   - **Risk:** This could lead to excessive memory usage or even system crashes if the file is very large.\n\n### Refactored Code\n\n```python\nimport hashlib\nfrom sqlite3 import Error\n\ndef get_user_input():\n    user = input(\"Enter username: \")\n    pwd = input(\"Enter password: \")\n    \n    # Sanitize inputs using `input()` and `strip()`\n    sanitized_user = user.strip()\n    hashed_pwd = hashlib.sha256(pwd.encode()).hexdigest()\n\n    query = \"SELECT * FROM users WHERE user=? AND pass=?\"\n    cursor.execute(query, (sanitized_user, hashed_pwd))\n    return cursor.fetchall()\n\ndef process_large_file(filename):\n    with open(filename, 'r') as f:\n        lines = [line.strip() for line in f.readlines()]\n        \n        # Use `filter()` to remove lines containing the word 'error'\n        filtered_lines = list(filter(lambda line: 'error' not in line, lines))\n        \n        # Process only relevant lines\n        processed_lines = []\n        for line in filtered_lines:\n            if 'error' in line:\n                print(line)\n            else:\n                processed_lines.append(line)\n\n    return processed_lines\n\n# Example usage\nif __name__ == \"__main__\":\n    db_file = \"users.db\"\n    conn = None\n    \n    try:\n        # Connect to the database\n        conn = sqlite3.connect(db_file)\n        \n        # Execute queries using `conn`\n        cursor = conn.cursor()\n        \n        # Get user input and process large file\n        result = get_user_input()\n        processed_lines = process_large_file(\"largefile.txt\")\n        \n    except Error as e:\n        print(f\"An error occurred: {e}\")\n    \n    finally:\n        if conn:\n            conn.close()\n```\n\n### Explanation of Changes\n\n1. **Sanitization and Hashing:** The `get_user_input` function now sanitizes the input using `input()` and `strip()`, ensuring that any whitespace or special characters are removed before concatenating them into a SQL query.\n\n2. **Hashed Passwords:** The password is hashed using SHA-256 to ensure it's not stored in plain text, thus mitigating the risk of brute-force attacks.\n\n3. **Efficient File Reading:** The `process_large_file` function reads lines from the file and filters out those containing the word 'error', reducing memory usage for large files. It then processes only the relevant lines by printing them if they contain the word 'error' and storing the rest in a list.\n\n4. **PEP 8 Compliance:** The refactored code adheres to PEP 8 standards, including proper indentation, line length, and naming conventions.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission correctly identifies SQL injection but hallucinates a hardcoded password issue (the code uses input). The refactored code contains critical errors: sqlite3 module is not imported globally causing a NameError, file processing logic is inverted (filtering out errors then checking for them), and readlines() is still used despite claiming to fix memory issues. Client-side hashing without server-side salting is also a security anti-pattern. While the structure is clear, the technical execution is flawed and requires significant rework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Train subordinates in programming and program coding.",
+      "task_type": "Educational Code Explanation and Refactoring",
+      "user_prompt": "Create a step-by-step tutorial explaining how to refactor the provided recursive function into an iterative one to prevent stack overflow. The tutorial must include the original code, the refactored code, and a detailed explanation of the state management changes. Include a test case to verify both versions produce identical results.",
+      "reference_context": "def factorial(n):\n    if n < 0:\n        raise ValueError(\"Negative numbers not allowed\")\n    if n == 0 or n == 1:\n        return 1\n    return n * factorial(n - 1)",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Do both the recursive and iterative versions produce the same output for valid inputs?",
+        "Criterion 2: Explanation — Is the transition from recursion to iteration clearly explained?",
+        "Criterion 3: Validation — Does the solution include a test suite that covers edge cases like 0 and large numbers?"
+      ],
+      "student_answer": "### Step-by-Step Tutorial: Refactoring Recursive Function to Iterative\n\n#### Original Code (Recursive):\n```python\ndef factorial(n):\n    if n < 0:\n        raise ValueError(\"Negative numbers not allowed\")\n    if n == 0 or n == 1:\n        return 1\n    return n * factorial(n - 1)\n```\n\n#### Refactored Code (Iterative):\n\n```python\ndef iterative_factorial(n):\n    result = 1\n    for i in range(2, n + 1):\n        result *= i\n    return result\n\n# Test Case: Verify both versions produce identical results\nn = 5\noriginal_result = factorial(n)\niterative_result = iterative_factorial(n)\n\nassert original_result == iterative_result, \"The results do not match!\"\nprint(\"Both versions of the function produce the same result:\", original_result)\n```\n\n#### Explanation of State Management Changes:\n\n1. **Original Code**:\n   - The `factorial` function is called recursively to compute the factorial.\n   - Each call to `factorial(n)` calls itself with `n-1`, leading to a stack overflow for large values of `n`.\n\n2. **Refactored Code (Iterative)**:\n   - Instead of recursion, we use an iterative approach where we multiply numbers from 2 up to `n`.\n   - This avoids the risk of running out of memory due to deep recursion.\n   - The state management is different: instead of keeping track of a stack frame for each recursive call, we keep track of intermediate results in variables.\n\n#### Test Case:\n\n- We test both versions by calling them with an input value `n = 5` and comparing the results. If they are identical, it confirms that the iterative version works correctly.\n- The assertion ensures that the two functions produce the same result, verifying their equivalence.\n\nThis refactoring demonstrates how to convert a recursive function into an iterative one, which is more memory-efficient for large inputs, thus preventing stack overflow issues.",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop Web sites.",
+      "task_type": "Frontend Logic Implementation",
+      "user_prompt": "Implement a client-side validation function for a web form that checks if the user's input matches the required format (email, phone, and date). The function must return a detailed error object for each invalid field. Ensure the code handles empty inputs and non-string types gracefully.",
+      "reference_context": "function validateForm(data) {\n    // data is an object with keys: email, phone, date\n    // Implement validation logic here\n    // Return an object: { isValid: boolean, errors: array of strings }\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Logic — Does the function correctly validate email, phone, and date formats?",
+        "Criterion 2: Error Handling — Does the function return a structured error object for each failure?",
+        "Criterion 3: Robustness — Does the function handle null, undefined, and non-string inputs without crashing?"
+      ],
+      "student_answer": "```javascript\nfunction validateForm(data) {\n    const requiredFields = ['email', 'phone', 'date'];\n    let errors = {};\n\n    if (!data.email || typeof data.email !== 'string') {\n        errors['email'] = 'Please enter a valid email address.';\n    }\n\n    if (!data.phone || !/^\\d{10}$/.test(data.phone)) {\n        errors['phone'] = 'Please enter a 10-digit phone number.';\n    }\n\n    if (!data.date || data.date.length !== 10) {\n        errors['date'] = 'Please enter a valid date in the format YYYY-MM-DD.';\n    }\n\n    return { isValid: Object.keys(errors).length === 0, errors };\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        4,
+        1
+      ],
+      "score": 2.0,
+      "grade_reason": "The solution fails core validation logic: the phone regex '/^\\d$/' matches only one digit instead of ten, and email/date lack actual format validation. It violates the interface contract by returning an errors object instead of the specified array. While code is readable, it is functionally broken and requires significant rework before use."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Train users on the use and function of computer programs.",
+      "task_type": "Interactive Training Module Generation",
+      "user_prompt": "Create a Python script that generates an interactive, text-based training module for a hypothetical 'DataEntry' software. The script must accept a list of user errors (e.g., 'invalid_date', 'missing_field') and generate a step-by-step troubleshooting guide. The guide should include the error definition, a simulated root cause analysis, and a corrected code snippet. The script must validate that the input list is not empty and that each error string is non-null.",
+      "reference_context": "user_errors = ['invalid_date', 'missing_field', 'duplicate_entry']",
+      "evaluation_criteria": [
+        "Criterion 1: Input Validation — The script must raise a ValueError if the input list is empty or contains None values.",
+        "Criterion 2: Content Accuracy — The generated guide must correctly identify the root cause and provide a syntactically correct code fix for each error.",
+        "Criterion 3: Structure — The output must follow a strict format: Error Name, Definition, Root Cause, and Solution."
+      ],
+      "student_answer": "```python\nimport random\n\ndef generate_tutorial(user_errors):\n    if not user_errors or any(not isinstance(error, str) for error in user_errors):\n        raise ValueError(\"Input list must be non-empty and contain only string elements.\")\n\n    tutorial = []\n    for error in user_errors:\n        root_cause = f\"Simulated by the software's logic: {error}\"\n        corrected_code = f\"\"\"\ndef correct_entry():\n    # Simulate a fix\n    pass\n\nif __name__ == \"__main__\":\n    print(f\"Error: {root_cause}\")\n    try:\n        incorrect_code()\n    except Exception as e:\n        print(e)\n        print(\"Corrected code:\")\n        corrected_code()\n        input(\"Press Enter to continue...\")\n\"\"\"\n        tutorial.append((error, root_cause, corrected_code))\n\n    return tutorial\n\ntutorial = generate_tutorial(['invalid_date', 'missing_field', 'duplicate_entry'])\nfor error, root_cause, code in tutorial:\n    print(f\"Error: {root_cause}\")\n    print(code)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "Input validation is implemented correctly (empty list, non-string checks). However, the core logic fails to generate specific error definitions or meaningful root causes, using generic placeholders instead. The corrected code snippet contains undefined functions, rendering it unusable. Unused imports and lack of duplicate handling further reduce quality. The output requires significant rework to be functional."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Collaborate with computer manufacturers and other users to develop new programming methods.",
+      "task_type": "API Integration and Methodology Proposal",
+      "user_prompt": "Develop a Python class 'MethodologyCollaborator' that simulates the process of integrating a new data processing method with an external manufacturer's API. The class must have a method 'propose_integration' that takes a proposed algorithm description and a list of existing API endpoints. It should validate that the proposed algorithm does not conflict with existing endpoints (e.g., by checking for duplicate method names) and return a structured JSON response indicating 'approved' or 'rejected' with a reason. Handle cases where the algorithm description is empty or the endpoint list is malformed.",
+      "reference_context": "existing_endpoints = [{'method': 'GET', 'path': '/data'}, {'method': 'POST', 'path': '/submit'}]",
+      "evaluation_criteria": [
+        "Criterion 1: Conflict Detection — The solution must correctly identify if the proposed algorithm attempts to use an existing endpoint path or method.",
+        "Criterion 2: Error Handling — The script must gracefully handle malformed input data without crashing, returning a specific error message.",
+        "Criterion 3: Output Format — The result must be a valid JSON object containing the status and a detailed explanation string."
+      ],
+      "student_answer": "```python\nimport json\n\nclass MethodologyCollaborator:\n    def __init__(self):\n        self.proposed_algorithm = None\n        self.endpoints_list = []\n\n    def propose_integration(self, algorithm_description, endpoints):\n        if not algorithm_description or not isinstance(endpoints, list) or len(endpoints) == 0:\n            return {\"status\": \"rejected\", \"reason\": \"Invalid input\"}\n\n        # Validate proposed algorithm does not conflict with existing endpoints\n        for endpoint in self.endpoints_list:\n            if endpoint['method'] == algorithm_description['method'] and endpoint['path'] == algorithm_description['path']:\n                return {\"status\": \"rejected\", \"reason\": f\"Conflict detected: {algorithm_description['method']}/{algorithm_description['path']} already exists\"}\n\n        # Prepare response\n        response = {\n            \"status\": \"approved\",\n            \"reason\": None,\n            \"endpoint_conflict\": False\n        }\n\n        if self.endpoints_list:\n            response[\"endpoint_conflict\"] = True\n\n        return json.dumps(response)\n\n# Example usage\ncollaborator = MethodologyCollaborator()\nalgorithm_description = {\"method\": \"POST\", \"path\": \"/process\"}\nendpoints = [{'method': 'GET', 'path': '/data'}, {'method': 'POST', 'path': '/submit'}]\n\nprint(collaborator.propose_integration(algorithm_description, endpoints))\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The solution contains a critical logic error: the validation loop iterates over `self.endpoints_list` (initialized to empty) instead of the `endpoints` argument passed to the method, rendering the conflict detection useless. State management is inconsistent, and the return type mixes Python dictionaries with JSON strings. While the code is syntactically clear and demonstrates understanding of API concepts (Domain Accuracy), it requires significant rework to be functional (Autonomy)."
+    }
+  ]
+}

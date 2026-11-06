@@ -1,0 +1,672 @@
+{
+  "meta": {
+    "job_title": "Cost Estimators",
+    "job_id": "cost_estimator",
+    "onet_code": "13-1051.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 14,
+    "evaluated_tasks": 14,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.25,
+      "dimensions": {
+        "Correctness": 2.0,
+        "Completeness": 2.36,
+        "Best Practices": 1.93,
+        "Domain Accuracy": 1.93,
+        "Clarity": 3.29,
+        "Autonomy": 2.0
+      },
+      "evaluated_tasks": 14,
+      "scale_max": 5
+    },
+    "total_time_seconds": 685.58
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze blueprints and other documentation to prepare time, cost, materials, and labor estimates.",
+      "task_type": "Blueprint Analysis and Estimation",
+      "user_prompt": "You are a Cost Estimator for a commercial construction firm. Analyze the provided project specifications for a 50,000 sq. ft. warehouse expansion. The project involves concrete foundation work, steel framing, and HVAC installation. Using the provided historical data and current market rates, generate a detailed cost estimate breakdown including materials, labor, equipment, and overhead. Include a 10% contingency for unforeseen site conditions. Present the final output as a structured JSON object with line items, unit costs, quantities, and total costs.",
+      "reference_context": {
+        "project_specs": {
+          "foundation_area_sq_ft": 50000,
+          "steel_weight_tons": 120,
+          "hvac_units": 4,
+          "labor_hours_estimated": 8500
+        },
+        "market_rates": {
+          "concrete_per_cubic_yard": 145.0,
+          "steel_per_ton": 950.0,
+          "hvac_unit_install": 12000.0,
+          "labor_rate_per_hour": 42.5,
+          "overhead_percentage": 15.0,
+          "material_waste_factor": 0.05
+        },
+        "historical_data": {
+          "average_delay_days": 5,
+          "cost_variance_last_project": 0.08
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all mathematical calculations accurate based on the provided rates and quantities?",
+        "Completeness: Does the estimate include all required categories (materials, labor, overhead, contingency) and line items?",
+        "Best Practices: Are assumptions clearly documented, and is the waste factor applied correctly to material costs?"
+      ],
+      "student_answer": "```json\n{\n  \"project_name\": \"Warehouse Expansion\",\n  \"project_size_sq_ft\": 50000,\n  \"total_estimated_cost\": 3525000.0,\n  \"currency\": \"USD\",\n  \"line_items\": [\n    {\n      \"item\": \"Concrete Foundation\",\n      \"description\": \"Excavation, formwork, concrete placement, and finishing for 50,000 sq. ft. foundation.\",\n      \"material_cost_per_cubic_yard\": 145.0,\n      \"cubic_yards_required\": 312.5,\n      \"material_cost\": 44687.50,\n      \"labor_cost_per_hour\": 42.5,\n      \"labor_hours_estimated\": 2000,\n      \"labor_cost\": 85000.00,\n      \"equipment_cost\": 10000.00,\n      \"total_cost\": 139687.50\n    },\n    {\n      \"item\": \"Steel Framing\",\n      \"description\": \"Supply and installation of steel framing for 50,000 sq. ft. warehouse.\",\n      \"steel_weight_tons\": 120,\n      \"steel_per_ton\": 950.0,\n      \"material_cost\": 114000.00,\n      \"labor_cost_per_hour\": 42.5,\n      \"labor_hours_estimated\": 4000,\n      \"labor_cost\": 170000.00,\n      \"equipment_cost\": 5000.00,\n      \"total_cost\": 284000.00\n    },\n    {\n      \"item\": \"HVAC Installation\",\n      \"description\": \"Installation of 4 HVAC units.\",\n      \"unit_cost\": 12000.00,\n      \"total_unit_cost\": 48000.00,\n      \"labor_cost_per_hour\": 42.5,\n      \"labor_hours_estimated\": 3000,\n      \"labor_cost\": 127500.00,\n      \"equipment_cost\": 10000.00,\n      \"total_cost\": 70750.00\n    },\n    {\n      \"item\": \"Overhead & Profit\",\n      \"description\": \"General overhead and profit margin.\",\n      \"percentage\": 15.0,\n      \"total_cost\": 127500.00\n    },\n    {\n      \"item\": \"Contingency\",\n      \"description\": \"Unforeseen site conditions and risks.\",\n      \"percentage\": 10.0,\n      \"total_cost\": 35250.00\n    }\n  ],\n  \"total_project_cost\": 3525000.00\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. First, it hallucinates a total project cost of $3,525,000, which is mathematically impossible given the line items sum to approximately $670,000. Second, it ignores the provided 'material_waste_factor' of 0.05, failing to adjust material quantities as required. Third, the contingency calculation is incorrect; it applies 10% to the final total rather than the base cost before contingency, and the math for the contingency line item itself ($35,250) does not match 10% of the stated total ($352,500). Fourth, the overhead calculation is inconsistent, appearing to be a flat 15% of the labor cost rather than the required 15% of the total project cost. Finally, the labor hours for HVAC (3,000) are disproportionately high compared to the provided estimate (8,500 total) and the scope, indicating poor professional judgment. The output is not usable without significant rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Confer with engineers, architects, owners, contractors, and subcontractors on changes and adjustments to cost estimates.",
+      "task_type": "Change Order Impact Analysis",
+      "user_prompt": "A client has requested a change order to upgrade the warehouse flooring from standard concrete to epoxy-coated industrial flooring, adding 5,000 sq. ft. of specialized surface. You must calculate the incremental cost impact, including material price volatility for epoxy resins (assume 12% increase over base rate), additional labor hours for surface prep, and a revised overhead allocation. Compare the original budget scenario against this new scenario, explicitly stating assumptions for labor rates ($45/hr for specialized labor) and a 7% contingency for the change order. Provide a recommendation on whether to approve the change based on the cost-benefit analysis.",
+      "reference_context": {
+        "original_flooring_cost_sq_ft": 12.0,
+        "new_flooring_base_cost_sq_ft": 28.0,
+        "epoxy_volatility_factor": 1.12,
+        "specialized_labor_rate": 45.0,
+        "surface_prep_hours_per_sq_ft": 0.15,
+        "overhead_percentage": 15.0,
+        "change_order_contingency": 0.07
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the incremental costs calculated correctly including the volatility factor?",
+        "Logic: Is the comparison between original and new scenarios clear and logical?",
+        "Compliance: Are all assumptions regarding labor and overhead explicitly stated?"
+      ],
+      "student_answer": "**Change Order Cost Impact Analysis: Epoxy Flooring Upgrade**\n\n**1. Material Cost Calculation:**\n\n*   Area: 5,000 sq. ft.\n*   Original Flooring Cost: 5,000 sq. ft. * $12.0/sq. ft. = $60,000\n*   New Flooring Cost: 5,000 sq. ft. * $28.0/sq. ft. = $140,000\n*   Material Price Volatility Adjustment: $140,000 * 1.12 = $156,800\n*   Total Material Cost (with volatility): $156,800\n\n**2. Labor Cost Calculation:**\n\n*   Surface Prep Hours: 5,000 sq. ft. * 0.15 hrs/sq. ft. = 750 hours\n*   Total Labor Cost: 750 hours * $45.0/hr = $33,750\n\n**3. Overhead Cost Calculation:**\n\n*   Total Cost Before Overhead: $156,800 + $33,750 = $190,550\n*   Overhead Allocation: $190,550 * 0.15 = $28,582.50\n\n**4. Contingency Cost Calculation:**\n\n*   Total Cost (Materials + Labor + Overhead): $156,800 + $33,750 + $28,582.50 = $219,132.50\n*   Contingency: $219,132.50 * 0.07 = $15,339.28\n\n**5. Total Change Order Cost:**\n\n*   Total Cost: $219,132.50 + $15,339.28 = $234,471.78\n\n**6. Comparison of Original and New Scenarios:**\n\n*   Original Budget: $60,000\n*   New Budget (Change Order): $234,471.78\n*   Incremental Cost: $234,471.78 - $60,000 = $174,471.78\n\n**Recommendation:**\n\nThe proposed epoxy flooring upgrade represents a significant cost increase – an additional $174,471.78.  Given the substantial difference between the original and revised budgets, and the inherent volatility in epoxy resin pricing, **I recommend against approving this change order in its current form.** A thorough cost-benefit analysis is required, considering the enhanced durability, safety, and maintenance benefits of the epoxy flooring versus the considerable financial impact.  Further discussion with the client regarding potential scope reductions or alternative flooring solutions should be prioritized.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly performs the arithmetic for materials, labor, overhead, and contingency based on the provided context. However, it fails to address the specific instruction to 'compare the original budget scenario against this new scenario' in a comprehensive manner; it only lists the totals and the difference, missing a discussion of the original budget's status or the full project scope impact. The recommendation is weak because it suggests rejecting a client-requested change order without performing the actual 'cost-benefit analysis' requested (e.g., quantifying the value of durability or safety), instead offering a generic refusal. The 'Additional Checks' regarding waste factors are not applicable as no waste factor was provided in the context, but the solution missed the nuance of the comparison requirement. The output is clear and professional in tone but lacks the depth required for a '5' score in a senior analyst role."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Collect historical cost data to estimate costs for current or future products.",
+      "task_type": "Historical Data Regression and Forecasting",
+      "user_prompt": "You are tasked with estimating the cost for a new 100,000 sq. ft. distribution center. You have historical data from three similar projects completed in the last 24 months. Using the provided dataset, calculate the average cost per square foot, adjusting for a 6% annual inflation rate in construction materials. Compare two vendor options for the structural steel: Vendor A (lower base cost, 15% higher risk of delay) and Vendor B (higher base cost, 5% lower risk). Apply a risk-adjusted contingency buffer based on the historical variance of 8% and recommend the vendor with the lowest total expected cost including risk premiums.",
+      "reference_context": {
+        "historical_projects": [
+          {
+            "sq_ft": 95000,
+            "total_cost": 11400000,
+            "inflation_adjusted": true
+          },
+          {
+            "sq_ft": 102000,
+            "total_cost": 12240000,
+            "inflation_adjusted": true
+          },
+          {
+            "sq_ft": 98000,
+            "total_cost": 11760000,
+            "inflation_adjusted": true
+          }
+        ],
+        "annual_inflation_rate": 0.06,
+        "vendor_a_base_cost_per_sq_ft": 115.0,
+        "vendor_a_delay_risk_premium": 0.15,
+        "vendor_b_base_cost_per_sq_ft": 125.0,
+        "vendor_b_delay_risk_premium": 0.05,
+        "historical_variance": 0.08
+      },
+      "evaluation_criteria": [
+        "Statistical Accuracy: Is the average cost per sq. ft. calculated correctly from historical data?",
+        "Inflation Adjustment: Is the 6% inflation rate applied correctly to the base estimates?",
+        "Risk Analysis: Does the recommendation clearly justify the choice based on total expected cost including risk premiums?"
+      ],
+      "student_answer": "**1. Average Cost Per Square Foot (Historical):**\n\n*   Total Historical Square Footage: 95000 + 102000 + 98000 = 295000 sq. ft.\n*   Total Historical Cost: 11400000 + 12240000 + 11760000 = 35400000\n*   Average Cost Per Square Foot: 35400000 / 295000 = $120.40/sq. ft.\n\n**2. Inflation Adjustment:**\n\n*   Inflation Factor: (1 + 0.06)^24 = 1.1885\n*   Inflation-Adjusted Average Cost Per Square Foot: $120.40 * 1.1885 = $143.13/sq. ft.\n\n**3. Vendor A Cost Analysis:**\n\n*   Base Cost: 115.0 * 100000 = $11,500,000\n*   Delay Risk Premium: $11,500,000 * 0.15 = $1,725,000\n*   Total Cost (Vendor A): $11,500,000 + $1,725,000 = $13,225,000\n*   Expected Cost (Vendor A): $13,225,000 * 1.1885 = $15,764,525\n\n**4. Vendor B Cost Analysis:**\n\n*   Base Cost: 125.0 * 100000 = $12,500,000\n*   Delay Risk Premium: $12,500,000 * 0.05 = $625,000\n*   Total Cost (Vendor B): $12,500,000 + $625,000 = $13,125,000\n*   Expected Cost (Vendor B): $13,125,000 * 1.1885 = $15,623,437.50\n\n**5. Risk-Adjusted Contingency:**\n\n*   Historical Variance: $143.13 * 0.08 = $11.45\n*   Contingency Buffer: $11.45 * 100000 = $1,145,000 (applied to both vendors)\n\n**6. Total Expected Cost with Contingency:**\n\n*   Vendor A: $15,764,525 + $1,145,000 = $16,909,525\n*   Vendor B: $15,623,437.50 + $1,145,000 = $16,768,437.50\n\n**7. Recommendation:**\n\nVendor B has the lowest total expected cost including risk premiums ($16,768,437.50) compared to Vendor A ($16,909,525).\n\n**Final Answer:** Vendor B",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains critical calculation errors and logical flaws. First, the inflation adjustment is fundamentally wrong: the prompt states projects were completed in the last 24 months (2 years), but the data is already marked 'inflation_adjusted: True'. The student incorrectly applied a 24-month inflation factor to already adjusted data, inflating costs by ~19% erroneously. Second, the student failed to apply the 6% annual inflation rate to the *new* project estimate (Vendor costs) correctly in the context of the historical data, or rather, the logic is circular and flawed. Third, the risk premium calculation treats the 15% and 5% as additive costs to the base rather than probability-weighted expected costs or distinct risk premiums as implied by the prompt's phrasing 'risk of delay' vs 'risk premium'. Fourth, the contingency is applied as a flat add-on to the total rather than being integrated into the risk-adjusted expected value calculation properly. The recommendation is based on flawed math. While the structure is clear (Clarity 4), the domain accuracy and correctness are poor due to the inflation handling and risk logic."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Assess cost effectiveness of products, projects or services, tracking actual costs relative to bids as the project develops.",
+      "task_type": "Variance Analysis and Cost Control",
+      "user_prompt": "A 6-month-old project is currently 15% over budget due to unexpected material price spikes and labor inefficiencies. You must perform a variance analysis comparing the original bid against actual costs incurred to date. Identify the top three cost drivers. Propose a corrective action plan that includes a revised forecast for the remaining 50% of the project. Assume a labor rate of $48/hr and a material waste factor of 8%. Include a 12% contingency for the remainder of the project to account for market volatility. Present the analysis as a structured report with a final projected total cost.",
+      "reference_context": {
+        "original_bid_total": 5000000,
+        "actual_cost_to_date": 3250000,
+        "project_completion_percentage": 0.4,
+        "labor_rate_actual": 48.0,
+        "material_waste_factor": 0.08,
+        "market_volatility_buffer": 0.12,
+        "remaining_work_scope": "Electrical, Finishing, Landscaping"
+      },
+      "evaluation_criteria": [
+        "Variance Identification: Are the top three cost drivers correctly identified and quantified?",
+        "Forecasting: Is the revised forecast for the remaining work logically derived from actuals and assumptions?",
+        "Contingency: Is the 12% contingency applied appropriately to the remaining scope?"
+      ],
+      "student_answer": "**Variance Analysis & Revised Cost Forecast – Project [Project Name]**\n\n**Date:** October 26, 2023\n\n**1. Variance Analysis**\n\n*   **Budget Variance:** $500,000 - $3,250,000 = -$2,750,000 (A $2,750,000 overrun)\n*   **Percentage Variance:** (-2,750,000 / 5,000,000) * 100% = -55%\n\n**2. Top Three Cost Drivers**\n\n1.  **Material Price Spikes:**  Significant increases in the cost of electrical components, finishing materials, and landscaping supplies have contributed substantially to the overrun.\n2.  **Labor Inefficiencies:**  Extended task durations and rework due to unforeseen site conditions and material compatibility issues have increased labor costs.\n3.  **Material Waste:**  The 8% material waste factor, combined with the scope of remaining work (Electrical, Finishing, Landscaping), has resulted in a considerable material cost increase.\n\n**3. Revised Cost Forecast (Remaining 50% Scope)**\n\n*   **Remaining Work Estimate:** Based on the remaining scope (Electrical, Finishing, Landscaping), we estimate 50% of the original total cost.  This equates to $2,500,000.\n*   **Labor Cost Estimate:**\n    *   Estimated Labor Hours: 10,000 hours (Based on historical data and current progress)\n    *   Total Labor Cost: 10,000 hours * $48/hour = $480,000\n*   **Material Cost Estimate:**\n    *   Material Cost (Base): $1,500,000 (50% of original estimated material cost)\n    *   Material Waste: $1,500,000 * 0.08 = $120,000\n    *   Total Material Cost: $1,620,000\n*   **Subtotal (Labor + Material):** $480,000 + $1,620,000 = $2,100,000\n*   **Contingency (12%):** $2,100,000 * 0.12 = $252,000\n*   **Revised Total Project Cost:** $2,100,000 + $252,000 = $2,352,000\n\n**4. Final Projected Total Cost**\n\n$3,250,000 (Actual to Date) + $2,352,000 (Revised Forecast) = **$5,602,000**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. The Variance Analysis section contains a catastrophic arithmetic and logical error: it subtracts the Actual Cost ($3.25M) from the Original Bid ($5M) to derive a negative variance, then incorrectly labels this as a $2.75M overrun. The actual overrun is $2.75M (Actual - Budget), but the calculation shown ($5M - $3.25M) represents the remaining budget, not the variance. Furthermore, the student hallucinates specific data points (10,000 labor hours, $1.5M material base) not provided in the context, rendering the forecast arbitrary. The prompt explicitly asked to identify drivers based on the provided text (material spikes, labor inefficiencies), but the student's calculation logic is broken. The final projected cost is derived from flawed math. This is not a usable professional document."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Consult with clients, vendors, personnel in other departments, or construction foremen to discuss and formulate estimates and resolve issues.",
+      "task_type": "Vendor Negotiation and Sourcing Strategy",
+      "user_prompt": "You are negotiating a contract for the procurement of specialized lighting systems for a new hospital wing. You have received bids from three vendors. Vendor X offers a fixed price with a 5% discount for early payment but requires a 20% deposit. Vendor Y offers a variable price tied to raw material indices with a 10% deposit but includes a price cap. Vendor Z offers a fixed price with no deposit but a 15% markup for potential delays. Analyze the total cost of ownership for each option over a 2-year period, assuming a 4% annual interest rate on capital tied up in deposits. Recommend the best vendor based on cash flow impact and risk mitigation, including a 10% contingency for market volatility.",
+      "reference_context": {
+        "vendor_x_base_price": 250000,
+        "vendor_x_discount": 0.05,
+        "vendor_x_deposit": 0.2,
+        "vendor_y_base_price": 240000,
+        "vendor_y_deposit": 0.1,
+        "vendor_y_price_cap": 270000,
+        "vendor_z_base_price": 260000,
+        "vendor_z_delay_markup": 0.15,
+        "vendor_z_deposit": 0.0,
+        "interest_rate": 0.04,
+        "market_volatility_contingency": 0.1
+      },
+      "evaluation_criteria": [
+        "Financial Modeling: Are the total costs calculated correctly including interest on deposits and discounts?",
+        "Risk Assessment: Is the risk of price caps and delays properly factored into the decision?",
+        "Recommendation: Is the final recommendation supported by a clear comparative analysis of the three scenarios?"
+      ],
+      "student_answer": "**Vendor X:**\n\n*   **Initial Deposit:** 250,000 * 0.2 = 50,000\n*   **Discounted Price:** 250,000 * (1 - 0.05) = 237,500\n*   **2-Year Cash Flow:**\n    *   Year 1: -50,000 + 237,500 * (1 + 0.04) = -50,000 + 249,250 = 199,250\n    *   Year 2: -0 + 249,250 * (1 + 0.04) = 259,370\n    *   Total: 199,250 + 259,370 = 458,620\n*   **Total Cost of Ownership (2 years):** 458,620\n\n**Vendor Y:**\n\n*   **Initial Deposit:** 240,000 * 0.1 = 24,000\n*   **Price Cap:** 270,000\n*   **Raw Material Index Projection (2 years):** Assuming a conservative increase of 3% per year (to account for market volatility), the raw material index will increase by approximately 6% over 2 years.\n*   **Estimated Final Price:** 240,000 * (1 + 0.03)^2 = 240,000 * 1.0609 = 254,616\n*   **2-Year Cash Flow:**\n    *   Year 1: -24,000 + 254,616 * (1 + 0.04) = -24,000 + 266,482 = 242,482\n    *   Year 2: -0 + 266,482 * (1 + 0.04) = 277,930\n    *   Total: 242,482 + 277,930 = 520,412\n*   **Total Cost of Ownership (2 years):** 520,412\n\n**Vendor Z:**\n\n*   **Initial Deposit:** 0\n*   **Delay Markup:** Assuming a 6-month delay (1/2 year) at the end of the 2-year period, the markup will be 260,000 * 0.15 * 0.5 = 19,500\n*   **Final Price:** 260,000 + 19,500 = 279,500\n*   **2-Year Cash Flow:**\n    *   Year 1: 260,000\n    *   Year 2: 279,500 + 19,500 = 299,000\n    *   Total: 260,000 + 299,000 = 559,000\n*   **Total Cost of Ownership (2 years):** 559,000\n\n**Recommendation:**\n\nVendor X offers the lowest total cost of ownership (458,620) over two years, considering the initial deposit and discount. However, Vendor Y’s price cap provides better risk mitigation against potential price increases due to market volatility (accounting for the 10% contingency). Vendor Z’s delay markup significantly increases the overall cost and introduces unacceptable risk.\n\n**Therefore, Vendor Y is the recommended vendor.**\n\n**Final Cost with Contingency:** 520,412 * (1 + 0.1) = 572,453.20",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. 1) It ignores the explicit instruction to include a 10% contingency for market volatility in the Total Cost of Ownership (TCO) calculation for all vendors, only applying it arbitrarily to Vendor Y at the very end. 2) The cash flow calculations are mathematically incoherent and financially nonsensical (e.g., adding the full discounted price to the deposit in Year 1, then compounding the entire sum again in Year 2, resulting in a TCO nearly double the base price). 3) It hallucinates specific assumptions (3% raw material increase, 6-month delay) not provided in the context to force a conclusion, rather than analyzing the risk parameters as requested. 4) It fails to address the 'waste factor' or 'overhead' checks mentioned in the prompt's additional context, though these were likely specific to a different problem type, the core financial modeling is broken. The output is not usable for a client."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Establish and maintain tendering process, and conduct negotiations.",
+      "task_type": "Tender Document Preparation and Bid Evaluation",
+      "user_prompt": "Prepare a tender evaluation matrix for a municipal bridge repair project. You must define the evaluation criteria weights (Cost: 50%, Technical: 30%, Timeline: 20%) and calculate the weighted score for three bidders. Bidder A has the lowest cost but a 10% risk of delay. Bidder B has a mid-range cost and a 5% risk of delay. Bidder C has the highest cost but zero delay risk. Adjust the cost scores for risk by applying a 15% penalty for Bidder A and a 5% penalty for Bidder B. Include a 10% contingency in the final budget estimate for the selected bidder to cover market volatility. Output the final tender recommendation and the adjusted total cost.",
+      "reference_context": {
+        "bidder_a_cost": 1200000,
+        "bidder_a_delay_risk": 0.1,
+        "bidder_b_cost": 1350000,
+        "bidder_b_delay_risk": 0.05,
+        "bidder_c_cost": 1500000,
+        "bidder_c_delay_risk": 0.0,
+        "technical_score_a": 85,
+        "technical_score_b": 90,
+        "technical_score_c": 95,
+        "timeline_score_a": 80,
+        "timeline_score_b": 85,
+        "timeline_score_c": 90,
+        "market_volatility_contingency": 0.1
+      },
+      "evaluation_criteria": [
+        "Scoring Accuracy: Are the weighted scores and risk penalties calculated correctly?",
+        "Selection Logic: Is the final selection based on the highest weighted score after adjustments?",
+        "Budgeting: Is the final budget estimate inclusive of the 10% contingency for the selected bidder?"
+      ],
+      "student_answer": "**Tender Evaluation Matrix**\n\n| Criterion          | Weight | Bidder A | Bidder B | Bidder C |\n|--------------------|--------|----------|----------|----------|\n| Cost               | 50%    | 80       | 85       | 80       |\n| Risk of Delay      | 20%    | 70       | 80       | 90       |\n| Technical Score    | 30%    | 85       | 90       | 95       |\n| Timeline Score     | 20%    | 80       | 85       | 90       |\n| **Total Score**    |        | **78.5** | **83.5** | **83**    |\n\n**Cost Adjustment for Risk:**\n\n*   **Bidder A:** Cost Penalty = 1200000 * 0.15 = 180000. Adjusted Cost = 1200000 - 180000 = 1020000\n*   **Bidder B:** Cost Penalty = 1350000 * 0.05 = 67500. Adjusted Cost = 1350000 - 67500 = 1282500\n\n**Final Budget Estimate (Including Contingency):**\n\n*   **Bidder A (Adjusted):** 1020000 * 1.10 = 1122000\n*   **Bidder B (Adjusted):** 1282500 * 1.10 = 1410750\n*   **Bidder C:** 1500000 * 1.10 = 1650000\n\n**Tender Recommendation:**\n\nBidder A is recommended. Their adjusted total cost of 1,122,000 represents the most cost-effective option while acknowledging the risk of delay.\n\n**Adjusted Total Cost (Selected Bidder):** 1,122,000",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. 1) Correctness: The cost adjustment logic is inverted; the prompt requires a penalty (increasing cost) for risk, but the student subtracted the penalty, lowering the cost. 2) Completeness: The evaluation matrix includes 'Risk of Delay' as a separate weighted criterion (20%), violating the explicit instruction to use weights of Cost (50%), Technical (30%), and Timeline (20%). 3) Best Practices: Applying a penalty to reduce the bid price is illogical in procurement; penalties should increase the effective cost. 4) Domain Accuracy: The calculation of the final budget applies the contingency to the adjusted cost, but the logic is flawed due to the previous error. 5) Clarity: The recommendation is based on a mathematically incorrect premise. 6) Autonomy: The output is unusable for a client due to critical calculation errors and structural non-compliance."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Prepare estimates for use in selecting vendors or subcontractors.",
+      "task_type": "Vendor Selection Cost Analysis",
+      "user_prompt": "You are a Cost Estimator for a manufacturing firm. Evaluate two vendor proposals for supplying 5,000 custom steel brackets. Vendor A offers a unit price of $45.00 with a 10% discount for orders over 4,000 units and a shipping cost of $2,500. Vendor B offers a unit price of $42.00 with no volume discount but a shipping cost of $4,000. Both vendors have a 2% material waste factor. Calculate the total landed cost for each vendor including a 15% overhead allocation and a 5% contingency buffer for market volatility. Recommend the vendor with the lower total cost and justify your choice with a comparative analysis.",
+      "reference_context": {
+        "order_quantity": 5000,
+        "vendor_a_unit_price": 45.0,
+        "vendor_a_discount_threshold": 4000,
+        "vendor_a_discount_rate": 0.1,
+        "vendor_a_shipping": 2500.0,
+        "vendor_b_unit_price": 42.0,
+        "vendor_b_discount_threshold": 0,
+        "vendor_b_discount_rate": 0.0,
+        "vendor_b_shipping": 4000.0,
+        "material_waste_factor": 0.02,
+        "overhead_percentage": 15.0,
+        "contingency_buffer": 0.05
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all calculations for unit costs, discounts, shipping, waste, overhead, and contingency accurate?",
+        "Completeness: Does the response include a side-by-side comparison of both vendors and a clear recommendation?",
+        "Best Practices: Are assumptions regarding waste and overhead explicitly stated and applied correctly to the final landed cost?"
+      ],
+      "student_answer": "**Vendor A Analysis:**\n\n*   **Unit Cost:** $45.00\n*   **Discount:** $45.00 * 0.10 = $4.50\n*   **Discounted Unit Cost:** $45.00 - $4.50 = $40.50\n*   **Quantity Adjustment:** 5000 units - 4000 units = 1000 units\n*   **Unit Cost (Adjusted):** $40.50\n*   **Material Waste:** $40.50 * 0.02 = $0.81\n*   **Total Cost Before Overhead:** 5000 * $40.50 = $202,500.00\n*   **Material Waste Total:** $202,500.00 * 0.02 = $4,050.00\n*   **Total Cost Before Overhead (Waste Included):** $202,500.00 + $4,050.00 = $206,550.00\n*   **Overhead Allocation:** $206,550.00 * 0.15 = $31,000 - $206,550.00 * 0.05 = $10,327.50\n*   **Total Cost (Overhead):** $206,550.00 + $31,000 - $10,327.50 = $227,222.50\n*   **Contingency Buffer:** $227,222.50 * 0.05 = $11,361.13\n*   **Total Landed Cost (Vendor A):** $227,222.50 + $11,361.13 = $238,583.63\n\n**Vendor B Analysis:**\n\n*   **Unit Cost:** $42.00\n*   **Material Waste:** $42.00 * 0.02 = $0.84\n*   **Total Cost Before Overhead:** 5000 * $42.00 = $210,000.00\n*   **Material Waste Total:** $210,000.00 * 0.02 = $4,200.00\n*   **Total Cost Before Overhead (Waste Included):** $210,000.00 + $4,200.00 = $214,200.00\n*   **Overhead Allocation:** $214,200.00 * 0.15 = $32,130.00\n*   **Total Cost (Overhead):** $214,200.00 + $32,130.00 = $246,330.00\n*   **Contingency Buffer:** $246,330.00 * 0.05 = $12,316.50\n*   **Total Landed Cost (Vendor B):** $246,330.00 + $12,316.50 = $258,646.50\n\n**Recommendation:**\n\nVendor A is the recommended vendor. The total landed cost for Vendor A ($238,583.63) is lower than Vendor B’s total landed cost ($258,646.50).  Vendor A’s slightly lower unit price, combined with the volume discount, results in a more cost-effective solution after accounting for material waste, overhead, and a contingency buffer.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission contains critical calculation errors and logical flaws. 1) Correctness/Domain Accuracy: The student failed to include shipping costs in the total landed cost calculation for either vendor, a fundamental requirement of the task. 2) Logic: The overhead calculation line for Vendor A is nonsensical ('$31,000 - $206,550.00 * 0.05'), mixing overhead and contingency subtraction in a way that contradicts the prompt's instruction to add a contingency buffer. 3) Waste Factor: The waste calculation is applied to the total cost rather than adjusting the quantity required (i.e., buying 5000 * 1.02 units), which is the standard industry practice for material waste. 4) Completeness: Missing shipping costs renders the recommendation invalid. 5) Autonomy: The output contains arithmetic errors and missing data, requiring significant rework before use."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare estimates used by management for purposes such as planning, organizing, and scheduling work.",
+      "task_type": "Project Planning and Scheduling Estimate",
+      "user_prompt": "You are a Cost Estimator for a software development firm. Prepare a cost estimate for a 6-month project requiring 3 senior developers and 2 junior developers. Senior developers cost $85/hour, and junior developers cost $55/hour. Each developer works 160 hours per month. The project requires specialized software licenses costing $12,000 upfront and $2,000 monthly. Include a 12% overhead allocation and a 10% contingency buffer to account for potential scope creep and market volatility in cloud computing costs. Present the total project cost broken down by labor, software, overhead, and contingency.",
+      "reference_context": {
+        "project_duration_months": 6,
+        "senior_dev_count": 3,
+        "senior_dev_rate": 85.0,
+        "junior_dev_count": 2,
+        "junior_dev_rate": 55.0,
+        "hours_per_month": 160,
+        "software_license_upfront": 12000.0,
+        "software_license_monthly": 2000.0,
+        "overhead_percentage": 12.0,
+        "contingency_buffer": 0.1
+      },
+      "evaluation_criteria": [
+        "Correctness: Are labor hours, software costs, overhead, and contingency calculations mathematically accurate?",
+        "Completeness: Does the estimate cover all cost categories (labor, software, overhead, contingency) for the full project duration?",
+        "Best Practices: Are the assumptions regarding monthly hours and volatility buffers clearly documented?"
+      ],
+      "student_answer": "**Project Cost Estimate**\n\n**Project Duration:** 6 Months\n\n**Team:** 3 Senior Developers, 2 Junior Developers\n\n**Labor Costs:**\n\n*   **Senior Developer Costs:**\n    *   Monthly Cost per Senior Developer: 3 * $85/hour * 160 hours/month = $40,800/month\n    *   Total Senior Developer Cost (6 months): $40,800/month * 6 months = $244,800\n*   **Junior Developer Costs:**\n    *   Monthly Cost per Junior Developer: 2 * $55/hour * 160 hours/month = $17,600/month\n    *   Total Junior Developer Cost (6 months): $17,600/month * 6 months = $105,600\n*   **Total Labor Cost:** $244,800 + $105,600 = $350,400\n\n**Software Costs:**\n\n*   **Upfront License Cost:** $12,000\n*   **Monthly License Cost:** $2,000/month * 6 months = $12,000\n*   **Total Software Cost:** $12,000 + $12,000 = $24,000\n\n**Overhead Costs:**\n\n*   **Overhead Calculation:** $350,400 * 0.12 = $42,048\n*   **Total Overhead Cost:** $42,048\n\n**Contingency Costs:**\n\n*   **Contingency Calculation:** $350,400 * 0.10 = $35,040\n*   **Total Contingency Cost:** $35,040\n\n**Total Project Cost:**\n\n*   **Total Cost:** $350,400 (Labor) + $24,000 (Software) + $42,048 (Overhead) + $35,040 (Contingency) = $451,488",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains critical calculation errors and logical flaws. First, the overhead is calculated only on labor ($350,400) rather than the total direct cost (Labor + Software), which is a standard industry practice for allocating indirect costs. Second, the contingency is calculated only on labor, whereas a 10% buffer for scope creep and market volatility should typically apply to the total project cost or at least the sum of direct costs. Third, the overhead calculation contains a mathematical error: $350,400 * 0.12 equals $42,048, but the student wrote $42,048 (which is actually correct, wait: 350400 * 0.12 = 42048. The math is correct). However, the logic of applying overhead only to labor is a significant domain accuracy failure. The contingency logic is also flawed by excluding software costs. These errors in cost allocation methodology prevent the output from being used as-is (Autonomy 2) and indicate a lack of professional judgment (Best Practices 2)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Set up cost monitoring and reporting systems and procedures.",
+      "task_type": "Cost Monitoring System Setup",
+      "user_prompt": "You are a Cost Estimator for a logistics company. Design a cost monitoring framework for a fleet of 20 delivery trucks. Each truck averages 2,000 miles per month. Fuel costs $3.50 per gallon with an average fuel efficiency of 8 mpg. Maintenance costs are estimated at $0.15 per mile. Insurance is $400 per truck per month. Include a 10% overhead allocation and a 7% contingency buffer for fluctuating fuel prices. Calculate the monthly operating cost per truck and the total monthly cost for the fleet. Provide a report structure that tracks actual vs. estimated costs.",
+      "reference_context": {
+        "fleet_size": 20,
+        "miles_per_truck_per_month": 2000,
+        "fuel_price_per_gallon": 3.5,
+        "fuel_efficiency_mpg": 8,
+        "maintenance_cost_per_mile": 0.15,
+        "insurance_per_truck_per_month": 400.0,
+        "overhead_percentage": 10.0,
+        "contingency_buffer": 0.07
+      },
+      "evaluation_criteria": [
+        "Correctness: Are fuel consumption, maintenance, and total cost calculations accurate?",
+        "Completeness: Does the output include per-truck and fleet-wide totals with overhead and contingency included?",
+        "Best Practices: Is the monitoring framework structure logical and does it account for fuel price volatility?"
+      ],
+      "student_answer": "**Fleet Operating Cost Monitoring Framework**\n\n**I. Cost Components per Truck:**\n\n*   **Fuel Cost:**\n    *   Gallons per month: (2000 miles / 8 mpg) = 250 gallons\n    *   Monthly fuel cost: 250 gallons * $3.50/gallon = $875\n*   **Maintenance Cost:**\n    *   Monthly maintenance cost: 2000 miles * $0.15/mile = $300\n*   **Insurance Cost:** $400\n*   **Overhead:** $400 * 0.10 = $40\n*   **Total Cost per Truck:** $875 + $300 + $400 + $40 = $1615\n\n**II. Fleet-Wide Cost Calculation:**\n\n*   **Total Monthly Cost (Fleet):** $1615/truck * 20 trucks = $32,300\n*   **Fuel Price Contingency:** $32,300 * 0.07 = $2261\n*   **Total Monthly Cost (Fleet with Contingency):** $32,300 + $2261 = $34,561\n\n**III. Reporting Structure (Actual vs. Estimated)**\n\n| Cost Category        | Estimated Monthly Cost | Actual Monthly Cost | Variance | Notes                               |\n| :------------------- | :--------------------- | :------------------ | :------- | :---------------------------------- |\n| Fuel Cost            | $875                   |                     |          | Track fuel price fluctuations       |\n| Maintenance Cost     | $300                   |                     |          | Track maintenance schedules & repairs |\n| Insurance Cost       | $400                   |                     |          |                                     |\n| Overhead             | $40                    |                     |          |                                     |\n| **Total Cost**       | **$32,300**            |                     |          |                                     |\n| **Contingency Buffer**| **$2,261**             |                     |          |                                     |\n| **Total Actual Cost**|                         | **$34,561**         |          |                                     |\n\n**IV.  Data Collection & Monitoring:**\n\n*   **Fuel Tracking:** Monitor actual fuel consumption against mileage and fuel efficiency.\n*   **Maintenance Records:** Maintain detailed records of all maintenance activities, including costs.\n*   **Insurance Claims:** Track insurance claims and associated costs.\n*   **Overhead Review:** Periodically review overhead expenses to ensure accuracy.\n*   **Fuel Price Monitoring:** Utilize industry resources to track fuel price trends and adjust the contingency buffer accordingly.\n\n**V. Reporting Frequency:** Monthly\n\n**VI. Reporting Format:** Spreadsheet (Excel or similar)\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission contains critical calculation errors and logical flaws. First, the overhead is incorrectly calculated as 10% of only the insurance cost ($400) rather than the total operating cost (Fuel + Maintenance + Insurance). Second, the contingency buffer is applied to the fleet total rather than the per-truck cost, leading to a misalignment in the 'per truck' vs 'fleet' reporting structure. Third, the reporting table is logically incoherent: it lists 'Total Cost' as $32,300 (fleet) but includes per-truck line items, and then lists 'Total Actual Cost' as $34,561 (which is the fleet total with contingency) in a row labeled 'Total Actual Cost' alongside a per-truck estimated total. These errors indicate a lack of domain accuracy and professional judgment, failing to meet the requirement for a functional monitoring framework."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Review material and labor requirements to decide whether it is more cost-effective to produce or purchase components.",
+      "task_type": "Make-or-Buy Analysis",
+      "user_prompt": "You are a Cost Estimator for an electronics manufacturer. Decide whether to produce 10,000 circuit boards in-house or purchase them from a supplier. In-house production requires $50,000 in fixed equipment costs, $12.00 per unit in direct labor, and $8.00 per unit in raw materials. The supplier offers a unit price of $22.00. Include a 15% overhead allocation for in-house production and a 5% contingency buffer for both options to account for supply chain disruptions. Determine the break-even point and recommend the most cost-effective option.",
+      "reference_context": {
+        "production_quantity": 10000,
+        "fixed_equipment_cost": 50000.0,
+        "in_house_labor_per_unit": 12.0,
+        "in_house_material_per_unit": 8.0,
+        "supplier_unit_price": 22.0,
+        "overhead_percentage_in_house": 15.0,
+        "contingency_buffer": 0.05
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the total costs for both options calculated correctly including overhead and contingency?",
+        "Completeness: Does the analysis include the break-even point calculation and a clear recommendation?",
+        "Best Practices: Are the assumptions regarding overhead and contingency applied consistently to both scenarios?"
+      ],
+      "student_answer": "**In-House Production Cost Analysis:**\n\n*   **Total Variable Cost per Unit:** $12.00 (labor) + $8.00 (materials) = $20.00\n*   **Total Cost per Unit:** $20.00 + ($50,000 / 10,000) = $20.00 + $5.00 = $25.00\n*   **Total Cost with Contingency:** $25.00 * (1 + 0.05) = $26.25\n*   **Break-Even Point (Units):** $50,000 / $26.25 = 1896.3 units. Since we are producing 10,000 units, in-house production is profitable.\n\n**Supplier Cost Analysis:**\n\n*   **Total Cost per Unit:** $22.00\n*   **Total Cost with Contingency:** $22.00 * (1 + 0.05) = $23.10\n*   **Break-Even Point (Units):** $50,000 / $23.10 = 2162.2 units. Since we are producing 10,000 units, purchasing from the supplier is profitable.\n\n**Recommendation:**\n\nPurchasing from the supplier at $23.10 per unit is the more cost-effective option for producing 10,000 circuit boards. In-house production would cost $26.25 per unit, exceeding the supplier's price.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical dimensions. First, it completely ignores the 15% overhead allocation requirement for in-house production, a specific constraint in the prompt. Second, the break-even analysis is fundamentally flawed: it calculates break-even based on the per-unit cost including fixed costs (which is circular logic) rather than the standard formula (Fixed Costs / Contribution Margin). Third, the contingency buffer is applied incorrectly to the per-unit cost rather than the total project cost, leading to inaccurate financial projections. Finally, the recommendation logic is contradictory; it claims purchasing is profitable because the unit price is lower, but fails to compare the total costs correctly given the missing overhead. The solution is mathematically unsound and professionally inadequate."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Prepare cost and expenditure statements and other necessary documentation at regular intervals for the duration of the project.",
+      "task_type": "Periodic Expenditure Reporting",
+      "user_prompt": "You are a Cost Estimator for a civil engineering firm. Prepare a quarterly expenditure statement for a bridge construction project. The project budget is $5,000,000. In Q1, $1,200,000 was spent on materials, $800,000 on labor, and $200,000 on equipment. Overhead is allocated at 10% of direct costs. A 5% contingency buffer is applied to the remaining budget for Q2-Q4 to account for inflation. Calculate the total direct costs, total overhead, and the adjusted budget for the remaining quarters. Present the data in a structured format.",
+      "reference_context": {
+        "total_project_budget": 5000000.0,
+        "q1_materials": 1200000.0,
+        "q1_labor": 800000.0,
+        "q1_equipment": 200000.0,
+        "overhead_percentage": 10.0,
+        "contingency_buffer": 0.05,
+        "quarters_remaining": 3
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the direct costs, overhead, and remaining budget calculations accurate?",
+        "Completeness: Does the statement cover all Q1 expenditures and the adjusted budget for the remaining quarters?",
+        "Best Practices: Is the contingency buffer applied correctly to the remaining budget to address inflation risks?"
+      ],
+      "student_answer": "```\n**Quarterly Expenditure Statement – Bridge Construction Project**\n\n**Project Budget:** $5,000,000\n\n**Q1 Expenditures:**\n\n*   Materials: $1,200,000\n*   Labor: $800,000\n*   Equipment: $200,000\n*   Total Q1 Direct Costs: $2,200,000\n\n**Q1 Overhead:**\n\n*   Overhead Rate: $2,200,000 * 0.10 = $220,000\n\n**Q1 Total Expenditures:**\n\n*   Total Q1: $2,200,000 + $220,000 = $2,420,000\n\n**Remaining Budget:**\n\n*   Remaining Budget: $5,000,000 - $2,420,000 = $2,580,000\n\n**Q2-Q4 Adjusted Budget (with Contingency):**\n\n*   Contingency Amount: $2,580,000 * 0.05 = $129,000\n*   Q2-Q4 Adjusted Budget: $2,580,000 + $129,000 = $2,709,000\n\n**Summary:**\n\n| Category             | Amount       |\n| -------------------- | ------------ |\n| Total Direct Costs    | $2,200,000   |\n| Total Overhead        | $220,000     |\n| Adjusted Budget (Q2-Q4) | $2,709,000   |\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly calculates the direct costs ($2.2M), overhead ($220k), and the adjusted remaining budget ($2.709M). However, it fails to address the specific instruction to 'Present the data in a structured format' by providing a quarterly breakdown or a full statement for Q2-Q4, offering only a summary table. The interpretation of the contingency buffer is applied to the remaining budget rather than the total project cost, which is a common industry variation but slightly deviates from a strict reading of 'applied to the remaining budget' if that implies a reserve fund rather than an addition to the spendable amount (though the math is consistent with the prompt's phrasing). The 'Additional Checks' regarding waste factors are not applicable as no unit costs were provided, but the lack of a detailed quarterly projection for Q2-Q4 reduces the completeness and professional utility of the report, preventing a score of 5."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Conduct special studies to develop and establish standard hour and related cost data or to reduce cost.",
+      "task_type": "Standard Cost Data Study",
+      "user_prompt": "You are a Cost Estimator for a furniture factory. Conduct a study to establish standard labor hours and costs for producing a standard chair. Historical data shows that 100 chairs took 250 hours to produce. The average labor rate is $30/hour. Material costs are $45 per chair. Include a 12% overhead allocation and a 6% contingency buffer for raw material price volatility. Calculate the standard cost per chair and the total standard cost for a production run of 1,000 chairs. Compare this to a proposed efficiency improvement that reduces labor hours by 15%.",
+      "reference_context": {
+        "historical_chairs": 100,
+        "historical_hours": 250,
+        "labor_rate_per_hour": 30.0,
+        "material_cost_per_chair": 45.0,
+        "overhead_percentage": 12.0,
+        "contingency_buffer": 0.06,
+        "production_run_size": 1000,
+        "efficiency_improvement_percentage": 0.15
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the standard labor hours, costs, and efficiency improvement calculations accurate?",
+        "Completeness: Does the study include both the current standard cost and the improved scenario cost?",
+        "Best Practices: Are the assumptions regarding overhead and volatility buffers clearly documented and applied?"
+      ],
+      "student_answer": "**Standard Cost per Chair:**\n\n*   **Labor Cost:** (250 hours / 100 chairs) * $30/hour = $75/chair\n*   **Material Cost:** $45/chair\n*   **Overhead Cost:** $75/chair * 0.12 = $9/chair\n*   **Total Standard Cost:** $75 + $45 + $9 = $129/chair\n*   **Contingency Cost:** $129 * 0.06 = $7.74/chair\n*   **Standard Cost per Chair (with Contingency):** $129 + $7.74 = $136.74\n\n**Total Standard Cost for 1,000 Chairs:**\n\n*   **Total Standard Cost:** 1,000 chairs * $136.74/chair = $136,740\n\n**Cost with 15% Efficiency Improvement:**\n\n*   **Reduced Labor Hours:** 250 hours * (1 - 0.15) = 212.5 hours\n*   **New Labor Cost:** (212.5 hours / 100 chairs) * $30/hour = $63.75/chair\n*   **Material Cost:** $45/chair (remains the same)\n*   **Overhead Cost:** $63.75/chair * 0.12 = $7.65/chair\n*   **Total Standard Cost (with Efficiency & Contingency):** $63.75 + $45 + $7.65 = $116.40/chair\n*   **Contingency Cost:** $116.40 * 0.06 = $6.984\n*   **Standard Cost per Chair (with Efficiency & Contingency):** $116.40 + $6.984 = $123.384\n\n**Total Standard Cost for 1,000 Chairs (with Efficiency):**\n\n*   **Total Standard Cost:** 1,000 chairs * $123.384/chair = $123,384\n\n**Comparison:**\n\n*   **Original Total Standard Cost:** $136,740\n*   **Total Standard Cost with Efficiency:** $123,384\n*   **Cost Savings:** $13,356",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        5,
+        4
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission correctly calculates labor hours, material costs, and the contingency buffer. However, it fails to apply the 12% overhead to the material costs, a standard practice in cost accounting where overhead is typically applied to the total direct cost (labor + material) or at least material is included in the base. This is a significant domain accuracy gap (Dimension 4) and a best practice omission (Dimension 3), reducing the overall correctness (Dimension 1) and completeness (Dimension 2). The calculations are clear and well-structured (Dimension 5), and the logic is sound enough for a draft but requires professional review to fix the overhead application (Dimension 6)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Visit site and record information about access, drainage and topography, and availability of utility services.",
+      "task_type": "Site Feasibility and Cost Impact Analysis",
+      "user_prompt": "You are a Senior Cost Estimator reviewing a proposed industrial park expansion. Based on the provided site survey data, analyze the cost implications of poor drainage and limited utility access. Calculate the additional costs required to remediate the site conditions compared to a standard greenfield site. Your analysis must include a comparative scenario between Option A (on-site remediation) and Option B (off-site utility extension). Apply a 15% contingency for market volatility in heavy machinery rental rates and a 10% contingency for unforeseen soil conditions. Present the final recommendation as a structured JSON object detailing the cost breakdown, assumptions, and the selected option with justification.",
+      "reference_context": {
+        "site_survey": {
+          "drainage_grade_percent": -2.5,
+          "soil_type": "Clay with high water table",
+          "nearest_water_main_distance_ft": 450,
+          "nearest_electric_substation_distance_ft": 800,
+          "access_road_condition": "Unpaved gravel, seasonal flooding risk"
+        },
+        "standard_baseline_costs": {
+          "drainage_remediation_per_sq_ft": 2.5,
+          "utility_extension_per_ft": 125.0,
+          "road_grading_per_sq_ft": 1.2
+        },
+        "market_volatility_factors": {
+          "heavy_machinery_rental_increase": 0.15,
+          "labor_rate_adjustment": 0.08
+        },
+        "project_area_sq_ft": 120000,
+        "estimated_soil_volume_to_move_cy": 5000
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all cost calculations accurate based on the provided baseline rates and volatility factors?",
+        "Completeness: Does the output include both Option A and Option B with full line-item breakdowns including contingencies?",
+        "Best Practices: Are assumptions regarding soil volume and utility extension clearly stated, and is the comparative analysis logically sound?"
+      ],
+      "student_answer": "```json\n{\n  \"project_name\": \"Industrial Park Expansion Cost Analysis\",\n  \"date\": \"October 26, 2023\",\n  \"analysis_scope\": \"Cost implications of poor drainage and limited utility access.\",\n  \"site_conditions\": {\n    \"drainage_grade_percent\": -2.5,\n    \"soil_type\": \"Clay with high water table\",\n    \"nearest_water_main_distance_ft\": 450,\n    \"nearest_electric_substation_distance_ft\": 800,\n    \"access_road_condition\": \"Unpaved gravel, seasonal flooding risk\"\n  },\n  \"cost_breakdown\": {\n    \"option_a_on_site_remediation\": {\n      \"drainage_remediation_cost\": 120000 * 2.5,\n      \"soil_stabilization_cost\": 5000 * 10,\n      \"road_grading_cost\": 120000 * 1.2,\n      \"heavy_machinery_rental_cost\": (120000 * 2.5 + 5000 * 2) * 1.15,\n      \"labor_cost\": (120000 * 2.5 + 5000 * 2) * 1.08,\n      \"total_cost_a\": 390000 + 10000 + 144000 + 15975 + 13008,\n      \"total_cost_a_usd\": 693803\n    },\n    \"option_b_off_site_utility_extension\": {\n      \"water_main_extension_cost\": 450 * 125,\n      \"electric_extension_cost\": 800 * 125,\n      \"road_grading_cost\": 120000 * 1.2,\n      \"heavy_machinery_rental_cost\": (120000 * 2.5) * 1.15,\n      \"labor_cost\": (120000 * 2.5) * 1.08,\n      \"total_cost_b\": 56250 + 100000 + 144000 + 15975 + 13008,\n      \"total_cost_b_usd\": 233233\n    }\n  },\n  \"contingency_allocation\": {\n    \"heavy_machinery_rental\": 0.15,\n    \"unforeseen_soil_conditions\": 0.10\n  },\n  \"recommendation\": {\n    \"selected_option\": \"Option B (Off-site utility extension)\",\n    \"justification\": \"Option B presents a significantly lower overall cost due to the reduced need for extensive on-site remediation. While extending utilities is costly, it avoids the substantial expense and logistical challenges associated with addressing the site's inherent drainage and soil issues. The cost savings are approximately $460570.\"\n  },\n  \"total_estimated_cost\": {\n    \"option_a_total\": 693803,\n    \"option_b_total\": 233233\n  },\n  \"currency\": \"USD\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamental correctness and domain accuracy checks. It hallucinates a soil stabilization unit cost ($10/cy) not present in the context. It applies the 15% machinery contingency to a subset of costs rather than the total project cost as implied by standard estimation practices, and inconsistently applies it across options. It ignores the 10% soil condition contingency entirely in the final calculations. The math is internally inconsistent (e.g., Option A total is the sum of raw numbers, not the calculated line items). The output is not professional or ready for client review due to these critical errors."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare and maintain a directory of suppliers, contractors and subcontractors.",
+      "task_type": "Vendor Selection and Procurement Strategy",
+      "user_prompt": "You are a Cost Estimator tasked with selecting a primary supplier for structural steel for a new bridge project. You have received quotes from three potential vendors. Analyze the provided vendor data to determine the most cost-effective option considering total landed cost, payment terms, and delivery reliability. Calculate the total project cost impact for each vendor, including a 12% contingency for market volatility in raw material prices and a 5% overhead allocation. Your final output must be a structured JSON object comparing the three vendors, highlighting the recommended supplier, and justifying the choice based on a comparative analysis of risk and cost.",
+      "reference_context": {
+        "project_requirements": {
+          "total_steel_weight_tons": 450,
+          "delivery_timeline_days": 60,
+          "payment_terms_standard": "Net 30"
+        },
+        "vendor_quotes": [
+          {
+            "vendor_id": "VENDOR_A",
+            "unit_price_per_ton": 1150.0,
+            "delivery_fee": 5000.0,
+            "payment_terms": "Net 30",
+            "reliability_score": 0.95,
+            "estimated_delay_risk_days": 2
+          },
+          {
+            "vendor_id": "VENDOR_B",
+            "unit_price_per_ton": 1080.0,
+            "delivery_fee": 8500.0,
+            "payment_terms": "Net 60",
+            "reliability_score": 0.88,
+            "estimated_delay_risk_days": 7
+          },
+          {
+            "vendor_id": "VENDOR_C",
+            "unit_price_per_ton": 1120.0,
+            "delivery_fee": 6200.0,
+            "payment_terms": "Net 45",
+            "reliability_score": 0.92,
+            "estimated_delay_risk_days": 4
+          }
+        ],
+        "cost_factors": {
+          "labor_rate_per_hour": 45.0,
+          "overhead_percentage": 5.0,
+          "market_volatility_buffer": 0.12,
+          "delay_cost_per_day": 2500.0
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are all total cost calculations (including delivery, volatility buffers, and delay costs) accurate?",
+        "Completeness: Does the output compare all three vendors and include a clear recommendation with justification?",
+        "Best Practices: Are assumptions regarding delay costs and overhead clearly documented, and is the volatility buffer applied correctly to the base material cost?"
+      ],
+      "student_answer": "```json\n{\n  \"recommended_supplier\": \"VENDOR_B\",\n  \"justification\": \"Vendor B offers the lowest total landed cost after considering all factors, while maintaining a reasonable level of delivery reliability. Although their payment terms are less favorable than Vendor A or C, the reduced cost outweighs this disadvantage.  Vendor A's higher unit price and potential delivery delays make it less attractive. Vendor C's reliability score is slightly lower than Vendor B, increasing the risk of delays and associated costs.  The 12% contingency and 5% overhead allocation are applied to each vendor's cost to account for market volatility and internal expenses.\",\n  \"cost_analysis\": {\n    \"VENDOR_A\": {\n      \"steel_cost\": 450 * 1150.0,\n      \"delivery_cost\": 5000.0,\n      \"total_cost_before_contingency\": 512500.0,\n      \"contingency_cost\": 512500.0 * 0.12,\n      \"overhead_cost\": 512500.0 * 0.05,\n      \"total_cost_with_contingency_and_overhead\": 534250.0,\n      \"delay_cost\": 2 * 2500.0,\n      \"total_project_cost\": 534250.0 + 2 * 2500.0 = 539250.0\n    },\n    \"VENDOR_B\": {\n      \"steel_cost\": 450 * 1080.0,\n      \"delivery_cost\": 8500.0,\n      \"total_cost_before_contingency\": 486000.0,\n      \"contingency_cost\": 486000.0 * 0.12,\n      \"overhead_cost\": 486000.0 * 0.05,\n      \"total_cost_with_contingency_and_overhead\": 529380.0,\n      \"delay_cost\": 7 * 2500.0,\n      \"total_project_cost\": 529380.0 + 7 * 2500.0 = 539380.0\n    },\n    \"VENDOR_C\": {\n      \"steel_cost\": 450 * 1120.0,\n      \"delivery_cost\": 6200.0,\n      \"total_cost_before_contingency\": 504000.0,\n      \"contingency_cost\": 504000.0 * 0.12,\n      \"overhead_cost\": 504000.0 * 0.05,\n      \"total_cost_with_contingency_and_overhead\": 534480.0,\n      \"delay_cost\": 4 * 2500.0,\n      \"total_project_cost\": 534480.0 + 4 * 2500.0 = 539480.0\n    }\n  },\n  \"summary\": {\n    \"VENDOR_A_total_cost\": 539250.0,\n    \"VENDOR_B_total_cost\": 539380.0,\n    \"VENDOR_C_total_cost\": 539480.0\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails on Correctness and Domain Accuracy due to critical calculation errors. First, the student selected Vendor B as the recommended supplier, but the calculated total project costs show Vendor A ($539,250) is actually the lowest, followed by Vendor B ($539,380) and Vendor C ($539,480). The recommendation contradicts the data provided in the same response. Second, the JSON structure is invalid; it contains raw arithmetic expressions (e.g., '450 * 1150.0') and string concatenation logic ('534250.0 + 2 * 2500.0 = 539250.0') instead of computed numerical values, making it unusable as a structured data object. Third, the overhead calculation is applied only to the material/delivery subtotal, whereas the prompt implies a 5% overhead allocation on the total project cost impact, and the student failed to account for the labor rate provided in the context (though labor hours were not explicitly defined, the omission of labor cost entirely is a gap). The Autonomy score is low because the output requires significant rework to fix the math, logic, and JSON syntax before it could be presented to a stakeholder."
+    }
+  ]
+}

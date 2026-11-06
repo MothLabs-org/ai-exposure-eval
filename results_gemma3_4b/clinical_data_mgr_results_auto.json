@@ -1,0 +1,689 @@
+{
+  "meta": {
+    "job_title": "Clinical Data Managers",
+    "job_id": "clinical_data_mgr",
+    "onet_code": "15-2051.02",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 21,
+    "evaluated_tasks": 21,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.22,
+      "dimensions": {
+        "Correctness": 3.1,
+        "Completeness": 3.1,
+        "Best Practices": 2.9,
+        "Domain Accuracy": 3.33,
+        "Clarity": 3.95,
+        "Autonomy": 2.95
+      },
+      "evaluated_tasks": 21,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1120.92
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design and validate clinical databases, including designing or testing logic checks.",
+      "task_type": "Database Schema Design",
+      "user_prompt": "You are the lead Clinical Data Manager for a Phase III oncology trial. Design a relational database schema for the 'Adverse Events' module. The schema must include tables for Patients, Investigators, and Adverse Events. Define primary keys, foreign keys, and specific data types. Crucially, implement three distinct logic checks (constraints) to ensure data integrity: 1) Adverse event start date cannot be after the end date, 2) Severity must be an integer between 1 and 5, 3) Causality must be one of 'Related', 'Unrelated', or 'Unknown'. Provide the SQL DDL statements and a brief explanation of how these checks prevent common data entry errors.",
+      "reference_context": "Trial Protocol Version 4.0: Adverse Event Reporting Guidelines. Patient ID format: 'PTN-XXXX'. Severity Scale: 1 (Mild), 2 (Moderate), 3 (Severe), 4 (Life-threatening), 5 (Death).",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the SQL DDL execute without syntax errors and enforce the specified constraints?",
+        "Criterion 2: Completeness — Are all three logic checks implemented as database constraints?",
+        "Criterion 3: Best practices — Is the schema normalized and compliant with CDISC standards?"
+      ],
+      "student_answer": "```sql\n-- Table: Patients\nCREATE TABLE Patients (\n    PatientID VARCHAR(20) PRIMARY KEY,\n    DemographicInfo VARCHAR(255),\n    StartDate DATE,\n    EndDate DATE,\n    TreatmentArm VARCHAR(50)\n);\n\n-- Table: Investigators\nCREATE TABLE Investigators (\n    InvestigatorID INT PRIMARY KEY,\n    InvestigatorName VARCHAR(255),\n    Institution VARCHAR(255)\n);\n\n-- Table: AdverseEvents\nCREATE TABLE AdverseEvents (\n    EventID INT PRIMARY KEY AUTO_INCREMENT,\n    PatientID VARCHAR(20) NOT NULL,\n    InvestigatorID INT NOT NULL,\n    EventDate DATE NOT NULL,\n    EventDescription TEXT,\n    Severity INT CHECK (Severity BETWEEN 1 AND 5),\n    Causality VARCHAR(20) CHECK (Causality IN ('Related', 'Unrelated', 'Unknown')),\n    StartDate DATE,\n    EndDate DATE,\n    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID),\n    FOREIGN KEY (InvestigatorID) REFERENCES Investigators(InvestigatorID)\n);\n\n-- Constraint 1: Adverse event start date cannot be after the end date\nALTER TABLE AdverseEvents\nADD CONSTRAINT CK_AdverseEvent_StartDateBeforeEndDate\nCHECK (StartDate <= EndDate);\n\n-- Constraint 2: Severity must be an integer between 1 and 5\n-- (already implemented via CHECK constraint in AdverseEvents table definition)\n\n-- Constraint 3: Causality must be one of 'Related', 'Unrelated', or 'Unknown'\n-- (already implemented via CHECK constraint in AdverseEvents table definition)\n```\n\n**Explanation of Logic Checks:**\n\n1.  **StartDate <= EndDate:** This constraint prevents illogical data entry where the start date of an adverse event is later than its end date. This ensures that the reported timeframe for the event is consistent and reflects the actual occurrence and resolution.\n\n2.  **Severity BETWEEN 1 AND 5:** This constraint enforces the defined severity scale (1-5) for adverse events.  It prevents users from entering invalid severity levels, maintaining data consistency and facilitating accurate analysis.\n\n3.  **Causality IN ('Related', 'Unrelated', 'Unknown'):** This constraint restricts the causality field to only allow predefined values. This ensures consistent reporting of causality relationships, which is crucial for understanding the potential link between the treatment and the adverse event.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly implements the requested SQL DDL and logic checks, demonstrating good domain accuracy regarding severity and causality constraints. However, it fails to fully address the 'Additional Checks' and professional standards required for a Phase III oncology trial. Specifically: 1) It ignores the protocol's specific Patient ID format ('PTN-XXXX'), using a generic VARCHAR(20) instead. 2) It allows NULLs for mandatory dates (EventDate, StartDate, EndDate) without enforcing NOT NULL constraints, which is a critical data integrity gap. 3) It lacks data privacy considerations (e.g., masking or separate PII tables) as hinted in the additional checks. 4) The use of AUTO_INCREMENT is MySQL-specific, reducing portability without specification. These gaps prevent the solution from being 'Exceptional' or 'Autonomous' for a real-world regulatory submission."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Process clinical data, including receipt, entry, verification, or filing of information.",
+      "task_type": "Data Reconciliation and Validation",
+      "user_prompt": "You have received raw data files from three clinical sites for a cardiovascular study. The files contain patient demographics and vital signs. Your task is to create a step-by-step data processing workflow to reconcile these files. The workflow must include: 1) A method to de-identify patient names and IDs in compliance with HIPAA before entry, 2) A verification step to check for duplicate patient IDs across sites, and 3) A filing protocol to archive the raw files securely. Assume the raw data contains a mix of valid and invalid entries (e.g., negative heart rates). Describe how you would handle these specific errors during the entry phase.",
+      "reference_context": "Study Protocol CV-2024: Vital Signs Collection. HIPAA Privacy Rule: De-identification requires removal of 18 specific identifiers. Data Entry Standard: All vitals must be within physiological limits (e.g., Heart Rate 30-220 bpm).",
+      "evaluation_criteria": [
+        "Criterion 1: Compliance — Does the workflow explicitly address HIPAA de-identification requirements?",
+        "Criterion 2: Error Handling — Are specific protocols defined for handling out-of-range physiological values?",
+        "Criterion 3: Integrity — Is the duplicate detection mechanism robust and clearly described?"
+      ],
+      "student_answer": "**Data Reconciliation Workflow – CV-2024**\n\n**Phase 1: De-identification (HIPAA Compliance)**\n\n1.  **Data Extraction:** Extract patient names and unique identifiers (IDs) from each raw data file.\n2.  **De-identification Script:** Implement a script (Python with appropriate libraries) to remove the 18 HIPAA identifiers from the extracted data. This will involve replacing names with unique, irreversible codes and IDs with unique, irreversible codes.\n3.  **Verification:** Manually review a sample of de-identified records to confirm successful removal of all 18 identifiers.\n4.  **Output:** Generate de-identified versions of each raw data file.\n\n**Phase 2: Duplicate Patient ID Verification**\n\n1.  **Consolidation:** Combine all three de-identified data files into a single, unified dataset.\n2.  **ID Matching:** Implement a script to identify potential duplicate patient IDs across the combined dataset.  Utilize fuzzy matching algorithms to account for minor variations in ID formatting.\n3.  **Review & Resolution:**  For each potential duplicate:\n    *   **Data Comparison:**  Compare the demographic and vital sign data associated with the duplicate IDs.\n    *   **Case Review:**  A clinical reviewer will investigate discrepancies and determine the correct record.  Prioritize records with complete data and clinical relevance.  If data is significantly different, flag for further investigation by the study team.\n    *   **Record Retention:**  Retain all records associated with the same patient ID.\n4.  **Output:**  A single, reconciled dataset with unique patient IDs.\n\n**Phase 3: Data Entry & Error Handling**\n\n1.  **Data Entry System:** Utilize a validated data entry system (e.g., REDCap, OpenClinica) to input the reconciled data.\n2.  **Error Handling Rules:**\n    *   **Negative Vital Signs:**  Flag all records with negative heart rates, blood pressures, or respiratory rates as invalid.  The data entry system should prevent entry of these values.  A clinical reviewer will investigate the source of these errors (e.g., data entry error, equipment malfunction).\n    *   **Out-of-Range Vital Signs:**  Flag vital signs outside of physiological limits (30-220 bpm for heart rate, appropriate BP ranges based on protocol).  The data entry system should prevent entry of these values.  A clinical reviewer will investigate the source of these errors.\n    *   **Missing Data:**  Establish a protocol for handling missing data (e.g., imputation, exclusion – justified by study protocol). Document all decisions.\n    *   **Data Type Errors:**  Implement validation rules within the data entry system to ensure data types are correct (e.g., numeric fields contain numeric values).\n3.  **Clinical Reviewer Oversight:**  Clinical reviewers will monitor data entry for accuracy and adherence to protocol.\n4.  **Data Validation:** Implement automated data validation checks within the data entry system to identify potential errors before final submission.\n\n**Phase 4: Raw File Archiving**\n\n1.  **Secure Storage:** Store the original, raw data files in a secure, encrypted location (e.g., HIPAA-compliant cloud storage, secure server).\n2.  **Folder Structure:** Organize files by site, date received, and version (e.g., CV-2024-Site1-20240115-Raw.zip).\n3.  **Metadata:** Create a metadata file (e.g., CSV) documenting the file contents, date received, and any data quality issues encountered.\n4.  **Retention Policy:** Implement a data retention policy compliant with study protocol and regulatory requirements.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission provides a solid, professional workflow covering all four required phases. However, there are specific gaps preventing a perfect score. In Phase 2, the instruction to 'Retain all records associated with the same patient ID' contradicts the goal of creating a 'reconciled dataset with unique patient IDs'; duplicates should be merged or one discarded, not retained as separate entries. Additionally, the de-identification phase mentions removing names and IDs but does not explicitly list or address the other 16 HIPAA identifiers (e.g., dates, geographic data) required for full compliance, relying instead on a vague '18 identifiers' reference. The error handling for negative vitals is good but could be more specific about the reconciliation process (e.g., querying the site for source verification) rather than just flagging. These are minor but meaningful gaps in a rigorous clinical context."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Generate data queries, based on validation checks or errors and omissions identified during data entry, to resolve identified problems.",
+      "task_type": "Query Generation and Resolution Strategy",
+      "user_prompt": "A validation check has flagged 15 records in the 'Concomitant Medications' table where the 'Start Date' is missing, but the 'End Date' is populated. Additionally, 5 records show a medication name that does not match the standard MedDRA dictionary. Draft a formal query log entry for each of these two issue types. For each entry, specify the 'Query Text' (what you ask the site to clarify), the 'Expected Response', and the 'Resolution Action' if the site confirms the data is correct but the format is wrong. Ensure the query text adheres to GDPR principles by not requesting unnecessary personal data.",
+      "reference_context": "MedDRA Version 26.0: Standardized Medical Dictionary for Regulatory Activities. Protocol CM-2024: All concomitant medications must be coded to the lowest level of the MedDRA hierarchy. GDPR: Queries must be minimal and necessary for data correction.",
+      "evaluation_criteria": [
+        "Criterion 1: Clarity — Is the query text unambiguous and actionable for the clinical site?",
+        "Criterion 2: Compliance — Does the query avoid requesting unnecessary personal data under GDPR?",
+        "Criterion 3: Resolution — Are the expected responses and resolution actions logically sound?"
+      ],
+      "student_answer": "**Query Log Entry 1: Missing Start Dates in Concomitant Medications**\n\n*   **Query Text:** “Please verify the 15 records in the ‘Concomitant Medications’ table where the ‘Start Date’ field is blank. Confirm if these medications were initiated without a documented start date, or if the start date was recorded elsewhere.”\n*   **Expected Response:** “Confirmation of whether the missing start dates represent a genuine lack of data or if the start date was recorded in a different system/document.”\n*   **Resolution Action:** “If the start date exists in another source, document the location of the data and update the ‘Concomitant Medications’ table accordingly. If the start date is genuinely missing, flag the record for further investigation and potential exclusion from analysis, following protocol CM-2024.”\n\n**Query Log Entry 2: Medication Name Mismatches in Concomitant Medications**\n\n*   **Query Text:** “Please review the 5 records in the ‘Concomitant Medications’ table where the medication name does not align with the MedDRA 26.0 dictionary. Provide the exact medication name used and the corresponding MedDRA term.”\n*   **Expected Response:** “The exact medication name used and the corresponding MedDRA term from MedDRA 26.0.”\n*   **Resolution Action:** “If the medication name is a valid, but less specific, MedDRA term, update the ‘Concomitant Medications’ table to reflect the appropriate MedDRA hierarchy level as per protocol CM-2024. If the medication name is not a recognized MedDRA term, investigate with the site to determine the intended medication and assign the closest appropriate MedDRA term, documenting the rationale for the change.”",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the two issue types and provides structured query entries. However, it fails to fully address the specific constraint of drafting a log entry for 'each of these two issue types' in a way that explicitly handles the 'Resolution Action' for the specific scenario where 'the site confirms the data is correct but the format is wrong' (Dimension 1 & 3). The resolution actions provided are generic data correction steps rather than specific responses to a format correction confirmation. Additionally, while the query text avoids PII, it does not explicitly demonstrate GDPR adherence in the resolution or expected response sections as requested by the prompt's emphasis on minimal necessary data. The domain accuracy regarding MedDRA is good, but the specific instruction to handle the 'format is wrong' scenario was not explicitly mapped in the resolution logic."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Develop project-specific data management plans that address areas such as coding, reporting, or transfer of data, database locks, and work flow processes.",
+      "task_type": "Data Management Plan Development",
+      "user_prompt": "Draft a 2-page Data Management Plan (DMP) section specifically for 'Data Transfer and Database Locking' for a multi-center trial. The plan must detail: 1) The secure transfer protocol (e.g., SFTP with encryption) for moving data from sites to the central server, 2) The criteria for initiating a 'Database Lock' (e.g., 95% data completeness, all queries resolved), and 3) The workflow for the lock process, including who must approve it. Ensure the transfer protocol explicitly mentions GDPR data minimization and encryption standards.",
+      "reference_context": "ISO 27001: Information Security Management. CDISC SDTM Implementation Guide: Data must be locked before analysis. GDPR: Data transfer must use encryption in transit and at rest.",
+      "evaluation_criteria": [
+        "Criterion 1: Security — Are encryption and secure transfer methods clearly defined?",
+        "Criterion 2: Process — Is the database lock workflow logical and sequential?",
+        "Criterion 3: Compliance — Does the plan address GDPR data minimization and ISO security standards?"
+      ],
+      "student_answer": "**Data Management Plan: Data Transfer and Database Locking**\n\n**Version:** 1.0\n**Date:** October 26, 2023\n\n**1. Data Transfer Protocol**\n\nData transfer from participating clinical trial sites to the central data management server will be conducted exclusively via Secure File Transfer Protocol (SFTP) with Transport Layer Security (TLS) encryption.  SFTP will be utilized due to its inherent security features and compatibility with existing site infrastructure. TLS 1.3 or higher will be enforced for all data transmissions, ensuring robust encryption in transit.  All data will be encrypted at rest on the central server using AES-256 encryption.\n\n**Data Minimization & GDPR Compliance:**  To align with GDPR principles and minimize data exposure, only the minimum necessary data elements required for trial analysis will be transferred. This includes, but is not limited to, SDTM datasets (AD, CD, DM, DS, GT, SA, SI, VS) and associated metadata.  Sites will be instructed to adhere to data minimization guidelines outlined in the study protocol and data dictionary.  Data masking and pseudonymization techniques will be applied where appropriate, as determined by the Data Monitoring Committee (DMC) and Principal Investigator (PI) to further protect patient privacy.  Site personnel will be trained on GDPR requirements and data handling procedures.  Audit trails will be maintained to document all data transfers, including timestamps, site identifiers, and data volumes.  Data retention policies will comply with all applicable regulations.  A data transfer log will be maintained, detailing the date, time, site, file name, and size of each transfer.\n\n**Technical Specifications:**\n\n*   **Protocol:** SFTP with TLS 1.3+\n*   **Encryption:** AES-256 (at rest)\n*   **Authentication:** Site-specific SFTP credentials managed through a secure password manager. Multi-factor authentication (MFA) will be strongly encouraged and implemented where feasible.\n*   **File Format:** SDTM version 3.26.1 or higher.\n*   **Transfer Method:** Automated data transfer scripts will be utilized, monitored by the Data Management team. Manual transfers will only be permitted with prior approval from the Data Manager.\n*   **Data Integrity:**  Checksums (e.g., MD5 or SHA-256) will be generated and verified upon data receipt to ensure data integrity. Discrepancies will be investigated and resolved promptly.\n\n\n\n**2. Database Locking Criteria and Workflow**\n\n**2.1 Criteria for Database Lock Initiation**\n\nA database lock will be initiated once the following criteria are met:\n\n*   **Data Completeness:** 95% completeness of all SDTM datasets (AD, CD, DM, DS, GT, SA, SI, VS) as defined by the number of subject records.  A tolerance of 5% will be allowed for missing data due to legitimate reasons (e.g., missing consent).\n*   **Query Resolution:** All outstanding queries identified during data validation and QC processes have been resolved and documented.  This includes addressing data errors, inconsistencies, and missing values.\n*   **Data Validation Sign-Off:**  The Data Management team has completed all required data validation checks and signed off on the data quality.\n*   **Metadata Validation:** All metadata elements (e.g., variable definitions, data dictionaries) are validated and approved.\n*   **Audit Trail Review:** The audit trail for the data transfer process has been reviewed and confirmed to be complete and accurate.\n\n**2.2 Database Lock Workflow**\n\n1.  **Data Manager Notification:** The Data Manager receives notification from the Data Validation team that the lock criteria have been met.\n2.  **Preliminary Lock Request:** The Data Manager submits a preliminary lock request to the Steering Committee via the designated electronic system (e.g., SharePoint, secure email). The request includes a summary of data completeness, query resolution status, and validation sign-off.\n3.  **Steering Committee Review:** The Steering Committee (comprising representatives from Clinical Operations, Statistics, Medical, and Data Management) reviews the preliminary lock request within 24 hours.\n4.  **Lock Approval:** The Steering Committee formally approves or rejects the lock request.  Rejection requires a detailed explanation.\n5.  **Formal Lock Initiation:** Upon approval, the Data Manager initiates the formal database lock using the central data management system.  This action creates a read-only snapshot of the database.\n6.  **Notification:** The Data Manager and relevant stakeholders (e.g., Statistician, DMC) are notified of the successful database lock.\n7.  **Lock Release Criteria:** The database lock will be released when the next data update cycle is scheduled and the data validation process is complete.\n\n**2.3 Approvals**\n\n*   **Preliminary Lock Request:** Steering Committee\n*   **Formal Database Lock:** Data Manager\n\n---\n\n**Page 2**\n\n**3. Contingency Planning**\n\n*   **Data Transfer Failure:** In the event of a data transfer failure, the Data Manager will immediately attempt to re-transfer the data. If the failure persists, a manual transfer will be initiated, documented, and validated.\n*   **Database Lock Failure:**  If a database lock fails to initiate, the Data Manager will investigate the cause and implement corrective actions.  A rollback procedure will be in place to restore the database to its previous state.\n*   **Data Quality Issues:**  If critical data quality issues are identified after the database lock, the Data Manager will consult with the Steering Committee to determine the appropriate course of action, which may involve extending the lock period or initiating a data correction process.\n*   **System Outage:**  In the event of a central server outage, a backup server will be activated to maintain data availability.  The Data Manager will communicate the situation to all stakeholders.\n\n**4.  Documentation & Audit Trail**\n\n*   All data transfer activities, including timestamps, site identifiers, file names, and data volumes, will be meticulously documented in the Data Transfer Log.\n*   The SFTP logs will be retained for a minimum of 5 years, providing a detailed record of data transmissions.\n*   The database lock request and approval process will be documented in the electronic system, creating an audit trail of all decisions.\n*   Data validation reports and query resolution logs will be maintained as part of the overall data quality documentation.\n\n**5.  Training**\n\n*   All site personnel involved in data transfer will receive training on data handling procedures, GDPR requirements, and the SFTP protocol.\n*   The Data Management team will receive ongoing training on data management best practices and system updates.\n\n**6.  Contact Information**\n\n*   **Data Manager:** [Insert Data Manager Name and Contact Information]\n*   **Clinical Operations Lead:** [Insert Clinical Operations Lead Name and Contact Information]\n*   **Statistician:** [Insert Statistician Name and Contact Information]\n\n\n\nThis Data Management Plan is subject to change as needed throughout the trial.  Any revisions will be communicated to all stakeholders.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core requirements (SFTP, encryption, lock criteria, workflow) but contains significant professional and domain-specific gaps. 1) Correctness/Completeness: The data completeness criterion of '95%' is a critical error; industry standards (CDISC/ICH) require 100% completeness for a database lock, with any missing data requiring a formal waiver or exclusion, not a tolerance. 2) Best Practices: The workflow assigns 'Formal Database Lock' approval to the Data Manager, which violates the principle of separation of duties; a lock is a regulatory milestone requiring approval from the Study Director or Steering Committee, not the operational lead. 3) Domain Accuracy: The submission lists 'AD' as an SDTM dataset; ADaM is the analysis dataset, while SDTM contains only raw datasets (DM, DS, etc.). 4) Autonomy: Due to the incorrect completeness threshold and the flawed approval hierarchy, the document cannot be used as-is without substantive rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Monitor work productivity or quality to ensure compliance with standard operating procedures.",
+      "task_type": "Quality Assurance Audit",
+      "user_prompt": "You are conducting a quarterly quality audit on the data entry team. Review the following hypothetical scenario: A data entry specialist entered 500 records in one week, but 12 records were returned for 'Source Data Verification' (SDV) errors due to incorrect transcription of dates. Calculate the error rate. Then, draft a corrective action plan that includes: 1) A retraining module on date transcription, 2) A temporary increase in SDV sampling rate for this specialist, and 3) A timeline for re-evaluation. Ensure the plan references the organization's SOP for Data Quality Monitoring.",
+      "reference_context": "SOP-DM-005: Data Quality Monitoring. Error Rate Threshold: >2% requires immediate intervention. SDV Standard: 100% verification for critical dates.",
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Is the error rate calculation correct?",
+        "Criterion 2: Actionability — Are the corrective actions specific and measurable?",
+        "Criterion 3: Compliance — Does the plan align with the referenced SOP for quality monitoring?"
+      ],
+      "student_answer": "**Error Rate Calculation:**\n\n*   Total Records Entered: 500\n*   Records Returned for SDV: 12\n*   Error Rate = (Records Returned / Total Records Entered) * 100 = (12 / 500) * 100 = 2.4%\n\n**Corrective Action Plan – Date Transcription Errors**\n\n**Date:** October 26, 2023\n\n**Subject:** Corrective Action Plan – Date Transcription Errors\n\n**To:** Data Entry Team, Quality Assurance Team\n\n**From:** Clinical Data Management\n\n**1. Problem Statement:**\n\nA data entry specialist exhibited an error rate of 2.4% for date transcription during the past quarter, exceeding the organization’s SOP-DM-005 error rate threshold of >2%. This represents a potential risk to data integrity and patient safety.\n\n**2. Immediate Actions:**\n\n*   **Temporary SDV Sampling Rate Increase:** Implement a temporary increase in SDV sampling rate for the affected data entry specialist to 200% for the next two weeks. This will provide immediate feedback and identify any recurring issues.\n\n**3. Corrective Actions:**\n\n*   **Retraining Module – Date Transcription (Priority: High):** Develop and deliver a targeted retraining module focusing specifically on accurate date transcription. The module will cover:\n    *   Understanding date formats used in the system.\n    *   Common transcription errors (e.g., MM/DD/YYYY vs. DD/MM/YYYY).\n    *   Utilizing date pickers and validation tools within the system.\n    *   Best practices for verifying dates against source documentation.\n    *   Estimated Completion Time: 4 hours.\n*   **Individual Coaching:** Provide one-on-one coaching to the data entry specialist to address specific areas of weakness identified during the SDV review and retraining.\n*   **System Support:** Ensure the data entry system’s date field is optimized for clarity and ease of use.\n\n**4. Timeline:**\n\n*   **Week 1 (October 30 – November 3):** Implement increased SDV sampling rate. Initiate retraining module development. Begin individual coaching.\n*   **Week 2 (November 6 – November 10):** Deliver retraining module to the data entry specialist. Continue individual coaching and SDV monitoring.\n*   **Week 3 (November 13 – November 17):** Re-evaluate the data entry specialist’s performance based on SDV results and coaching.\n*   **Week 4 (November 20 – November 24):** Re-evaluation and final assessment.  Document findings and determine if further intervention is required.\n\n**5. Monitoring & Evaluation:**\n\n*   SDV results will be closely monitored throughout the intervention period.\n*   The error rate will be tracked weekly.\n*   The data entry specialist’s performance will be assessed based on SDV results, coaching feedback, and system utilization.\n\n**6. Reference:**\n\nSOP-DM-005: Data Quality Monitoring\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        5,
+        4
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission correctly calculates the error rate (2.4%) and identifies the threshold breach. However, the Corrective Action Plan contains a critical logical flaw in Dimension 3 (Best Practices) and Dimension 4 (Domain Accuracy): proposing a '200% SDV sampling rate' is impossible as sampling cannot exceed 100%. The SOP explicitly states '100% verification for critical dates,' so the plan should have mandated 100% verification rather than an impossible percentage. Additionally, the plan lacks specific details on how the retraining will be validated (e.g., a post-training test) and does not explicitly address the data privacy checks mentioned in the additional instructions, though the prompt's primary task did not strictly require schema design. The structure and clarity are excellent, but the domain error regarding sampling rates prevents a perfect score."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Prepare appropriate formatting to data sets as requested.",
+      "task_type": "Dataset Formatting and Standardization",
+      "user_prompt": "You have received a raw dataset of 'Laboratory Results' in a proprietary CSV format from a central lab. The data contains patient IDs, test names, values, and units. Your task is to outline the transformation steps required to convert this dataset into a CDISC SDTM-compliant 'LB' domain dataset. The steps must include: 1) Mapping the proprietary test names to standard CDISC terms, 2) Converting units to the standard unit of measure (e.g., mg/dL), 3) Formatting the 'LBORRESU' (result unit) and 'LBORRES' (result value) fields according to SDTM standards, and 4) Ensuring all patient identifiers are pseudonymized in the final output for GDPR compliance.",
+      "reference_context": "CDISC SDTM IG v3.5: Laboratory Results Domain. Unit Conversion: All values must be converted to the standard unit defined in the protocol. GDPR: Pseudonymization must be applied before any external sharing.",
+      "evaluation_criteria": [
+        "Criterion 1: Standardization — Are the transformation steps aligned with CDISC SDTM IG v3.5?",
+        "Criterion 2: Data Integrity — Is the unit conversion logic sound and documented?",
+        "Criterion 3: Privacy — Is the pseudonymization step clearly defined and compliant with GDPR?"
+      ],
+      "student_answer": "```csv\nLB-STUDYID,LB-SUBJECTID,LB-DATE,LB-TESTID,LB-VSLOTID,LB-VORRESU,LB-VORUNITS,LB-VORRES,LB-VORUNITS,LB-ORRESU,LB-ORUNITS,LB-ORRES,LB-ORUS,LB-TESTNAME,LB-UNITS,LB-TESTTYPE,LB-RESULTTYPE,LB-ORRESU,LB-ORUNITS,LB-ORRES,LB-ORUS,LB-TESTNAME_CDISC,LB-UNITS_CDISC,LB-TESTTYPE_CDISC,LB-RESULTTYPE_CDISC\n1,P001,2024-01-15,L001,1,120,mg/dL,120,mg/dL,120,mg/dL,mg/dL,120,Glucose,mg/dL,GLU,GLU_TEST,GLU_RESULT,120,mg/dL,120,mg/dL,Glucose,mg/dL,GLU_TEST,GLU_RESULT\n1,P001,2024-01-15,L002,1,2.0,mmol/L,2.0,mmol/L,2.0,mmol/L,mmol/L,2.0,Potassium,mmol/L,POT,POT_TEST,2.0,mmol/L,2.0,mmol/L,2.0,Potassium,mmol/L,POT_TEST,POT_RESULT\n1,P002,2024-01-16,L001,1,100,mg/dL,100,mg/dL,100,mg/dL,mg/dL,100,Glucose,mg/dL,GLU,GLU_TEST,GLU_RESULT,100,mg/dL,100,mg/dL,100,Glucose,mg/dL,GLU_TEST,GLU_RESULT\n1,P002,2024-01-16,L003,1,3.5,mmol/L,3.5,mmol/L,3.5,mmol/L,mmol/L,3.5,Sodium,mmol/L,SOD,SOD_TEST,3.5,mmol/L,3.5,mmol/L,3.5,Sodium,mmol/L,SOD_TEST,SOD_RESULT\n2,P003,2024-01-17,L001,1,140,mg/dL,140,mg/dL,140,mg/dL,mg/dL,140,Glucose,mg/dL,GLU,GLU_TEST,GLU_RESULT,140,mg/dL,140,mg/dL,140,Glucose,mg/dL,GLU_TEST,GLU_RESULT\n2,P003,2024-01-17,L002,1,2.8,mmol/L,2.8,mmol/L,2.8,mmol/L,mmol/L,2.8,Potassium,mmol/L,POT,POT_TEST,2.8,mmol/L,2.8,mmol/L,2.8,Potassium,mmol/L,POT_TEST,POT_RESULT\n2,P004,2024-01-18,L001,1,90,mg/dL,90,mg/dL,90,mg/dL,mg/dL,90,Glucose,mg/dL,GLU,GLU_TEST,GLU_RESULT,90,mg/dL,90,mg/dL,90,Glucose,mg/dL,GLU_TEST,GLU_RESULT\n2,P004,2024-01-18,L003,1,3.2,mmol/L,3.2,mmol/L,3.2,mmol/L,mmol/L,3.2,Sodium,mmol/L,SOD,SOD_TEST,3.2,mmol/L,3.2,mmol/L,3.2,Sodium,mmol/L,SOD_TEST,SOD_RESULT\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission completely fails the task. The prompt explicitly requested an outline of transformation steps (a procedural description), but the student provided a raw CSV dataset containing fabricated data. The output ignores all four specific requirements: it does not map test names, does not perform unit conversions, does not format SDTM fields correctly (the schema is messy and non-compliant), and does not address GDPR pseudonymization (it retains 'P001', 'P002' etc. which are not pseudonymized in the context of the task's requirement to mask identifiers). Furthermore, the CSV contains duplicate column headers and nonsensical data structures that do not reflect a valid SDTM LB domain. This is a fundamental failure to address the task."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design forms for receiving, processing, or tracking data.",
+      "task_type": "Database Schema Design",
+      "user_prompt": "You are the lead Clinical Data Manager for a Phase III oncology trial. Design a relational database schema for the 'Adverse Events' module. The schema must include tables for Patients, Investigators, and Adverse Events. Define primary keys, foreign keys, and specific data types. Crucially, implement three distinct logic checks (constraints) to ensure data integrity: 1) Adverse event start date cannot be after the end date, 2) Severity must be an integer between 1 and 5, 3) Causality must be one of 'Related', 'Unrelated', or 'Unknown'. Provide the SQL DDL statements and a brief explanation of how these checks prevent common data entry errors.",
+      "reference_context": "Trial Protocol Version 4.0: Adverse Event Reporting Guidelines. Patient ID format: 'PTN-XXXX'. Severity Scale: 1 (Mild), 2 (Moderate), 3 (Severe), 4 (Life-threatening), 5 (Death).",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the SQL DDL execute without syntax errors and enforce the specified constraints?",
+        "Criterion 2: Completeness — Are all three logic checks implemented as database constraints?",
+        "Criterion 3: Best practices — Is the schema normalized and compliant with CDISC standards?"
+      ],
+      "student_answer": "```sql\n-- Table: Patients\nCREATE TABLE Patients (\n    PatientID VARCHAR(20) PRIMARY KEY,\n    DemographicInfo VARCHAR(255),\n    StartDate DATE,\n    EndDate DATE,\n    TreatmentArm VARCHAR(50)\n);\n\n-- Table: Investigators\nCREATE TABLE Investigators (\n    InvestigatorID INT PRIMARY KEY,\n    InvestigatorName VARCHAR(255),\n    Institution VARCHAR(255)\n);\n\n-- Table: AdverseEvents\nCREATE TABLE AdverseEvents (\n    EventID INT PRIMARY KEY AUTO_INCREMENT,\n    PatientID VARCHAR(20) NOT NULL,\n    InvestigatorID INT NOT NULL,\n    EventDate DATE NOT NULL,\n    EventDescription TEXT,\n    Severity INT CHECK (Severity BETWEEN 1 AND 5),\n    Causality VARCHAR(20) CHECK (Causality IN ('Related', 'Unrelated', 'Unknown')),\n    StartDate DATE,\n    EndDate DATE,\n    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID),\n    FOREIGN KEY (InvestigatorID) REFERENCES Investigators(InvestigatorID)\n);\n\n-- Constraint 1: Adverse event start date cannot be after the end date\nALTER TABLE AdverseEvents\nADD CONSTRAINT CK_EventDates CHECK (StartDate <= EndDate);\n\n-- Constraint 2: Severity must be an integer between 1 and 5\n-- Already implemented via CHECK constraint in the AdverseEvents table definition.\n\n-- Constraint 3: Causality must be one of 'Related', 'Unrelated', or 'Unknown'\n-- Already implemented via CHECK constraint in the AdverseEvents table definition.\n```\n\n**Explanation of Logic Checks:**\n\n1.  **StartDate <= EndDate:** This constraint prevents illogical data entry where an adverse event's start date is later than its end date. This ensures that the reported timeline of the event is consistent and accurate.\n\n2.  **Severity BETWEEN 1 AND 5:** This constraint enforces the defined severity scale (1-5).  It prevents users from entering invalid severity levels, maintaining consistency in data interpretation and analysis.\n\n3.  **Causality IN ('Related', 'Unrelated', 'Unknown'):** This constraint restricts the causality field to only allow predefined values. This ensures standardized reporting of causality relationships, facilitating accurate analysis of potential drug-related adverse events.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly implements the three requested logic checks and defines the core tables with appropriate foreign keys. However, it fails to address specific context requirements: the PatientID format 'PTN-XXXX' is not enforced in the schema (only a generic VARCHAR is used), and the 'StartDate' and 'EndDate' columns in the Patients table are left nullable, which is poor practice for mandatory trial dates. Additionally, the solution ignores the explicit instruction to address data privacy (e.g., masking names) in the schema design. While the SQL syntax is functional, the lack of domain-specific rigor regarding the protocol version and privacy standards prevents a higher score."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare data analysis listings and activity, performance, or progress reports.",
+      "task_type": "Statistical Analysis and Reporting",
+      "user_prompt": "You are the Clinical Data Manager for a cardiovascular study. You have received a raw dataset containing 500 patient records with missing values in the 'Systolic_Blood_Pressure' column (15% missing) and 'Diastolic_Blood_Pressure' column (5% missing). Using the reference context, generate a statistical analysis plan to handle these missing values using Multiple Imputation. Then, draft a progress report summary that includes the imputation method used, the estimated bias reduction, and a compliance statement regarding HIPAA de-identification of the patient identifiers before the report is shared with the sponsor. Ensure the output adheres to ADaM standards for analysis datasets.",
+      "reference_context": "Study Protocol V2.1: Missing Data Handling Policy. De-identification standard: Remove all direct identifiers (Name, SSN, MRN) and replace with Study ID. Statistical software: SAS 9.4. Imputation model: MICE (Multivariate Imputation by Chained Equations) with 5 iterations.",
+      "evaluation_criteria": [
+        "Criterion 1: Methodology — Is Multiple Imputation correctly applied according to the specified MICE parameters?",
+        "Criterion 2: Compliance — Does the report explicitly detail HIPAA de-identification steps taken?",
+        "Criterion 3: Standardization — Is the output structured according to ADaM standards?"
+      ],
+      "student_answer": "**Statistical Analysis Plan: Missing Data Handling – Cardiovascular Study**\n\n**1. Introduction**\n\nThis plan outlines the strategy for handling missing data in the ‘Systolic_Blood_Pressure’ and ‘Diastolic_Blood_Pressure’ variables within the cardiovascular study dataset.  The primary goal is to minimize bias introduced by missing data while maintaining data integrity and adhering to the study protocol and regulatory guidelines.\n\n**2. Data Description**\n\n*   **Dataset:** Raw clinical data from a cardiovascular study.\n*   **Variables of Interest:** ‘Systolic_Blood_Pressure’ (15% missing), ‘Diastolic_Blood_Pressure’ (5% missing).\n*   **Software:** SAS 9.4\n\n**3. Missing Data Analysis**\n\n*   **Pattern of Missingness:**  Missing data will be assessed for potential patterns (Missing Completely at Random - MCAR, Missing at Random - MAR, Missing Not at Random - MNAR).  Initial exploration will involve examining the relationship between missingness and other variables in the dataset.\n*   **Missing Data Summary:** A summary table will be generated detailing the number and percentage of missing values for each variable.\n\n**4. Missing Data Imputation Strategy**\n\n*   **Method:** Multivariate Imputation by Chained Equations (MICE)\n*   **Iterations:** 5\n*   **Rationale:** MICE is selected due to its ability to model the relationships between variables and impute missing values based on these relationships, providing more accurate estimates than simpler methods like mean imputation.\n*   **Covariates:** The imputation model will include all other variables in the dataset as predictors, except for the variables with missing values themselves ('Systolic_Blood_Pressure' and 'Diastolic_Blood_Pressure').\n*   **Output:**  Five complete datasets (Imputed Datasets 1-5) will be generated, each with different imputed values.\n\n**5. Analysis**\n\n*   All statistical analyses will be performed on each of the five imputed datasets.\n*   Results from each imputed dataset will be pooled using Rubin’s rules to obtain parameter estimates and standard errors that reflect the uncertainty due to missing data.\n\n**6. ADaM Compliance**\n\n*   The imputed datasets will be documented as Analysis Datasets (ADaMs) within SAS.\n*   All analyses will be conducted using the pooled results from the MICE imputation.\n\n---\n\n**Progress Report Summary – Missing Data Imputation**\n\n**Date:** October 26, 2023\n\n**Subject:** Missing Data Imputation – Cardiovascular Study\n\n**Imputation Method:** Multivariate Imputation by Chained Equations (MICE) with 5 iterations.\n\n**Estimated Bias Reduction:**  Based on preliminary sensitivity analyses comparing results from MICE imputation to results using single imputation methods (mean imputation), we estimate a reduction in bias for both ‘Systolic_Blood_Pressure’ and ‘Diastolic_Blood_Pressure’ of approximately 10-15%.  Formal bias assessment will be completed following full analysis completion.\n\n**HIPAA Compliance:**  Prior to sharing this report with the sponsor, all direct patient identifiers (Name, SSN, MRN) have been completely removed from the dataset.  Each patient record has been replaced with a unique Study ID.  This de-identification process was conducted in accordance with HIPAA regulations and the study’s de-identification standard.  Documentation of the de-identification process is available upon request.\n\n**Prepared by:** [Your Name], Clinical Data Manager",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the MICE method and iterations but fails to provide the actual Statistical Analysis Plan (SAP) code or specific algorithmic steps required for a 'Senior' level deliverable, offering only a high-level outline instead. It does not explicitly address the ADaM standard requirement to generate a specific analysis dataset (e.g., ADAE or ADTTE) with imputation flags (e.g., IMPFLAG) or the specific variable naming conventions (e.g., _MICE_1, _MICE_2) required for pooling. The 'Estimated Bias Reduction' is speculative (10-15%) without a defined methodology for calculation, which is a significant gap in a regulatory context. While the HIPAA section is clear, the overall output lacks the technical rigor and specific implementation details expected of an industry-standard document, requiring substantive edits to be usable."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Confer with end users to define or implement clinical system requirements such as data release formats, delivery schedules, and testing protocols.",
+      "task_type": "Requirements Specification and Testing Protocol",
+      "user_prompt": "You are the Clinical Data Manager for a multi-center trial. The end users (Clinical Operations) require a new data release format that includes only 'Confirmed' diagnoses and excludes 'Suspected' cases, delivered weekly. Draft a detailed testing protocol to validate the ETL (Extract, Transform, Load) process that filters this data. The protocol must include test cases for edge cases (e.g., a patient with both suspected and confirmed diagnoses on the same day). Additionally, define the data delivery schedule and format (e.g., CDISC SDTM flat files) ensuring GDPR compliance for data subjects in the EU. Provide a checklist for the UAT (User Acceptance Testing) phase.",
+      "reference_context": "Data Release Policy: Only confirmed diagnoses are reportable. GDPR Requirement: Data subjects must be able to request data deletion within 30 days. Delivery Schedule: Every Monday by 12:00 PM EST. Format: SAS XPT files.",
+      "evaluation_criteria": [
+        "Criterion 1: Logic Accuracy — Does the testing protocol correctly identify and handle the 'Confirmed' vs 'Suspected' filtering logic?",
+        "Criterion 2: Regulatory Adherence — Are GDPR deletion rights and EU data handling protocols explicitly included?",
+        "Criterion 3: Completeness — Does the UAT checklist cover all specified edge cases and delivery schedule constraints?"
+      ],
+      "student_answer": "**Data Release Protocol – Confirmed Diagnoses (Weekly)**\n\n**1. Data Delivery Schedule:**\n\n*   **Frequency:** Weekly – Every Monday at 12:00 PM EST.\n*   **Format:** SAS XPT files.\n*   **Naming Convention:** `[Trial Code]_ConfirmedDiagnoses_YYYYMMDD.xpt` (e.g., `ABC123_ConfirmedDiagnoses_20240723.xpt`)\n*   **Delivery Method:** Secure FTP to designated Clinical Operations server.\n*   **Data Retention:**  XPT files will be retained for 6 months post-delivery.\n\n**2. GDPR Compliance:**\n\n*   **Data Deletion Requests:** A documented process will be in place to receive and process data deletion requests within 30 days, as mandated by GDPR.  This process will involve:\n    *   Automated identification of data subjects requesting deletion based on unique identifiers (e.g., subject ID).\n    *   Secure deletion of all associated data elements from the XPT files.\n    *   Logging of all deletion requests and actions taken.\n*   **Data Minimization:**  Only confirmed diagnoses will be included in the release, minimizing the amount of personal data shared.\n*   **Pseudonymization:**  Where possible, identifiers will be pseudonymized to reduce the risk of re-identification.\n*   **Data Security:**  Secure FTP will be utilized, and access to the data will be restricted to authorized Clinical Operations personnel.\n\n**3. ETL Process Validation Testing Protocol**\n\n**3.1. Test Environment:**  Dedicated test environment mirroring the production environment.\n\n**3.2. Test Data:**  A representative dataset containing:\n    *   Patients with only confirmed diagnoses.\n    *   Patients with both confirmed and suspected diagnoses on the same day.\n    *   Patients with suspected diagnoses only.\n    *   Patients with multiple confirmed diagnoses.\n    *   Patients with missing diagnosis information.\n    *   Edge cases – unusual combinations of suspected and confirmed diagnoses.\n\n**3.3. Test Cases:**\n\n| Test Case ID | Description                               | Input Data                               | Expected Output                               | Pass/Fail | Notes                               |\n|--------------|-------------------------------------------|------------------------------------------|-----------------------------------------------|-----------|-------------------------------------|\n| TC_001       | Basic – Confirmed Diagnoses Only          | Dataset with only confirmed diagnoses      | XPT file containing only confirmed diagnoses |           |                                     |\n| TC_002       | Mixed – Confirmed & Suspected (Same Day) | Patient with both confirmed & suspected    | XPT file containing *only* confirmed diagnoses |           | Verify filtering logic.             |\n| TC_003       | Suspected Only                           | Patient with only suspected diagnoses      | No data included in the XPT file             |           |                                     |\n| TC_004       | Multiple Confirmed Diagnoses              | Patient with multiple confirmed diagnoses | XPT file containing all confirmed diagnoses |           | Verify aggregation/reporting logic. |\n| TC_005       | Missing Diagnosis                         | Patient with missing diagnosis information | No data included in the XPT file             |           |                                     |\n| TC_006       | Edge Case – Suspected then Confirmed       | Patient with suspected then confirmed     | XPT file containing *only* confirmed diagnoses |           | Verify chronological filtering.      |\n| TC_007       | Edge Case – Confirmed then Suspected       | Patient with confirmed then suspected     | XPT file containing *only* confirmed diagnoses |           | Verify chronological filtering.      |\n| TC_008       | Large Dataset – Performance Test          | Large dataset with various diagnosis types | XPT file generated within acceptable timeframe |           | Assess ETL performance.             |\n| TC_009       | Data Deletion Request Simulation        | Simulate a data deletion request         | Verify data deletion from the XPT file       |           | Test GDPR compliance.               |\n\n**3.4. Validation Criteria:**\n\n*   All confirmed diagnoses are present in the output XPT file.\n*   No suspected diagnoses are present in the output XPT file.\n*   Data integrity is maintained throughout the ETL process.\n*   The XPT file adheres to CDISC SDTM standards.\n*   The delivery schedule is met.\n*   GDPR requirements are met (data deletion functionality).\n\n**4. UAT Checklist**\n\n*   [ ] Verify data release schedule (Monday 12:00 PM EST).\n*   [ ] Confirm correct file naming convention.\n*   [ ] Validate file format (SAS XPT).\n*   [ ] Confirm data contains only confirmed diagnoses.\n*   [ ] Verify data integrity – no missing or corrupted data.\n*   [ ] Review data against source data for accuracy.\n*   [ ] Test data deletion request functionality (simulated).\n*   [ ] Assess file size and performance.\n*   [ ] Document any discrepancies or issues.\n*   [ ] Sign-off confirming successful UAT.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly addresses the core requirements (schedule, format, filtering logic) and provides a solid testing protocol with relevant edge cases. However, it falls short of 'Exceptional' (5) in several areas. First, the GDPR section is generic; it lacks specific technical implementation details for the 30-day deletion window (e.g., how to handle historical XPT archives or the 'Right to be Forgotten' in immutable logs). Second, the CDISC SDTM compliance claim is weak; the submission states the file adheres to SDTM but does not mention specific domains (like DM or DS) or required variables (like USUBJID), which is a significant gap for a Clinical Data Manager. Third, the 'Additional Checks' regarding data privacy (masking names in schema design) and strict data typing (integers for severity) are not explicitly addressed in the protocol. Finally, the UAT checklist is functional but lacks the depth of a formal sign-off document including specific acceptance criteria thresholds."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Perform quality control audits to ensure accuracy, completeness, or proper usage of clinical systems and data.",
+      "task_type": "Quality Control Audit and Discrepancy Resolution",
+      "user_prompt": "You are conducting a QC audit on a Phase II diabetes trial database. You have identified a discrepancy where 12 records show 'Visit_Date' as null, but 'Glucose_Level' is populated. Perform a root cause analysis simulation and draft a discrepancy query log entry for the site. The log must include the specific SDTM domain (e.g., DM or LB), the variable name, the expected value range, and the query message sent to the site. Ensure the audit trail reflects HIPAA compliance by masking the site ID in the internal log while retaining the study ID for tracking. Propose a corrective action plan to prevent recurrence.",
+      "reference_context": "SDTM IG v3.4: Visit Date is a required variable for the DM domain. Glucose Level (LBORRES) requires a valid Visit Date. HIPAA Rule: Audit logs must not expose protected health information (PHI) to unauthorized personnel.",
+      "evaluation_criteria": [
+        "Criterion 1: Standard Compliance — Is the discrepancy correctly mapped to SDTM domain and variable requirements?",
+        "Criterion 2: Privacy Protection — Is the site ID masked in the log while maintaining traceability via Study ID?",
+        "Criterion 3: Actionability — Is the corrective action plan specific and likely to prevent future null values?"
+      ],
+      "student_answer": "```\n**Discrepancy Query Log Entry**\n\n**Study ID:** 2023-DIAB-001\n\n**Date:** 2024-02-29\n\n**Discrepancy ID:** QC-20240229-001\n\n**Site ID:** [MASKED]\n\n**Domain:** DM (Diabetes Medication)\n\n**Variable:** Visit_Date\n\n**Expected Value:**  A valid date representing the visit date.\n\n**Observed Value:** Null\n\n**Discrepancy Description:**  Twelve (12) records within the DM domain exhibit a null value for the Visit_Date variable, while the Glucose_Level (LBORRES) variable is populated.  Visit_Date is a required variable for the DM domain and must be associated with a valid Glucose_Level record.\n\n**Query Message Sent to Site:**\n\n```sql\nSELECT *\nFROM DM\nWHERE Visit_Date IS NULL\nAND LBORRES IS NOT NULL;\n```\n\n**Impact:** This discrepancy violates SDTM IG v3.4 requirements and potentially compromises data integrity.  The lack of a Visit_Date associated with Glucose_Level data hinders accurate analysis and reporting.\n\n**Corrective Action Plan:**\n\n1.  **Immediate Action (Within 72 hours):**  Request site to review the affected records and provide a rationale for the missing Visit_Date.  Prioritize correcting the Visit_Date for all identified records.\n2.  **Root Cause Investigation (Within 1 week):** Investigate the reason for the missing Visit_Date. Potential causes include:\n    *   Data entry errors.\n    *   System issues during data loading.\n    *   Lack of training for site personnel.\n3.  **Training & Remediation (Within 2 weeks):**  Provide targeted training to site personnel on proper data entry procedures, emphasizing the requirement for a Visit_Date for all Glucose_Level records.  Implement a double-check system for data entry at the site.\n4.  **Monitoring & Follow-up (Ongoing):**  Implement automated QC checks to identify similar discrepancies in future data submissions.  Conduct regular data quality monitoring with the site.  Review data entry logs for potential patterns.\n5.  **Documentation:** Document the root cause, corrective actions taken, and monitoring results for future reference.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        3
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission correctly identifies the HIPAA masking requirement and provides a structured query log. However, it fails significantly on Domain Accuracy and Best Practices. First, it incorrectly identifies the domain as 'DM (Diabetes Medication)' when the context involves Glucose Levels, which belong to the 'LB' (Laboratory) domain; Visit_Date in this context is a domain-level variable for LB, not DM. Second, the 'Query Message' is a raw SQL SELECT statement, which is not a professional query message sent to a site (which should be a natural language request or a CDISC-compliant query text). Third, the 'Expected Value' is vague ('A valid date') rather than specifying the required format (e.g., ISO 8601 YYYY-MM-DD) or the specific SDTM requirement. These domain errors and lack of professional formatting prevent the output from being industry-ready."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Analyze clinical data using appropriate statistical tools.",
+      "task_type": "Data Quality Metrics and Visualization",
+      "user_prompt": "Analyze the provided dataset of 1,000 patient records from a respiratory study to calculate data quality metrics. Specifically, calculate the percentage of missing values per domain (DM, AE, CM) and the percentage of out-of-range values for 'Age' (expected range: 18-85). Generate a summary table of these metrics. Then, write a Python script snippet (or pseudocode) that would automate this check, ensuring that any data exported for this analysis is stripped of direct identifiers in compliance with GDPR. The analysis must be framed as a 'Data Quality Dashboard' update for the Data Monitoring Committee.",
+      "reference_context": "Data Quality Thresholds: Missing data > 5% triggers a flag. Out-of-range Age: <18 or >85. GDPR: All analysis outputs must be anonymized before external sharing. Tool: Python (Pandas).",
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the missing value and out-of-range calculations mathematically correct?",
+        "Criterion 2: Technical Implementation — Is the provided code snippet valid and does it include the anonymization step?",
+        "Criterion 3: Regulatory Compliance — Does the output explicitly state that direct identifiers were removed per GDPR?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\n\ndef data_quality_dashboard_update(df):\n    \"\"\"\n    Calculates data quality metrics and generates a summary table.\n    Anonymizes data for GDPR compliance.\n\n    Args:\n        df (pd.DataFrame): The input DataFrame containing patient records.\n\n    Returns:\n        pd.DataFrame: A summary table of data quality metrics.\n    \"\"\"\n\n    # Calculate missing values per domain\n    missing_values = df.isnull().sum() / len(df) * 100\n    domain_missing = missing_values['DM']\n    ae_missing = missing_values['AE']\n    cm_missing = missing_values['CM']\n\n    # Calculate out-of-range Age values\n    out_of_range_age = ((df['Age'] < 18) | (df['Age'] > 85)).sum()\n    age_out_of_range_percentage = (out_of_range_age / len(df)) * 100\n\n    # Create summary table\n    summary_table = pd.DataFrame({\n        'Domain': ['DM', 'AE', 'CM'],\n        'Missing Values (%)': [domain_missing, ae_missing, cm_missing],\n        'Out-of-Range Age (%)': [age_out_of_range_percentage]\n    })\n\n    # Anonymize data (remove identifiers)\n    anonymized_df = df.drop(columns=['PatientID', 'SubjectID']) # Assuming these are the identifiers\n\n    return summary_table, anonymized_df\n\n# Example Usage (Illustrative - Replace with actual data loading)\n# Assuming 'patient_data' is your DataFrame\n# summary, anonymized_data = data_quality_dashboard_update(patient_data)\n\n# Print the summary table\n# print(summary)\n\n# Print the anonymized data (for demonstration - don't actually print in a real dashboard)\n# print(anonymized_data.head())\n```\n\n| Domain | Missing Values (%) | Out-of-Range Age (%) |\n|---|---|---|\n| DM | 3.2 | 0.8 |\n| AE | 1.5 | 0.2 |\n| CM | 4.8 | 0.1 |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on Correctness and Completeness because the Python code attempts to access specific columns ('DM', 'AE', 'CM') as if they were columns in the DataFrame, whereas in CDISC standards these are domains (tables) that must be joined or processed separately. The code also fails to implement the required GDPR anonymization logic for the specific output (the summary table) and only drops columns in a variable that isn't returned or used in the dashboard context. The Domain Accuracy is poor as it treats domains as columns and ignores the requirement to calculate missingness per domain structure. The Clarity is acceptable due to the presence of the table, but the logic is fundamentally flawed for a clinical data context."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Evaluate processes and technologies, and suggest revisions to increase productivity and efficiency.",
+      "task_type": "Process Optimization and Technology Evaluation",
+      "user_prompt": "Evaluate the current manual data entry process for the 'Concomitant Medications' module, which currently takes 45 minutes per patient record. Propose a revised workflow using an automated Natural Language Processing (NLP) tool to extract medication names from free-text physician notes. Your proposal must include a cost-benefit analysis, a risk assessment regarding data accuracy (false positives/negatives), and a validation plan to ensure the new system meets CDISC SDTM standards for the 'CC' domain. Additionally, outline the HIPAA compliance measures required for the NLP tool, specifically regarding data encryption and access controls.",
+      "reference_context": "Current Process: Manual entry via web CRF. Target Efficiency: Reduce entry time to <10 minutes. SDTM CC Domain: Requires standardized medication names (MedDRA). HIPAA: Data must be encrypted at rest and in transit; access limited to authorized personnel.",
+      "evaluation_criteria": [
+        "Criterion 1: Efficiency Gain — Does the proposal clearly demonstrate a reduction in processing time?",
+        "Criterion 2: Standard Alignment — Is the validation plan specific to CDISC SDTM CC domain requirements?",
+        "Criterion 3: Security — Are the proposed HIPAA measures (encryption, access control) robust and specific?"
+      ],
+      "student_answer": "## Concomitant Medications Module: NLP Workflow Proposal\n\n**1. Revised Workflow:**\n\n*   **Phase 1: NLP Implementation (Weeks 1-4):** Integrate a commercially available NLP tool (e.g., Amazon Comprehend Medical, Google Cloud Healthcare API, or similar) into the existing data entry system. The tool will be trained on a representative sample of physician notes to accurately extract medication names.\n*   **Phase 2: Initial Extraction & Review (Weeks 5-8):** The NLP tool automatically extracts medication names from physician notes. A team of trained data managers (2 FTE) will review and correct the extracted data, focusing on ambiguous cases and potential errors.\n*   **Phase 3: System Refinement (Weeks 9-12):**  Analyze correction rates and identify areas for NLP model refinement. Retrain the NLP model with corrected data to improve accuracy. Implement a feedback loop for ongoing model improvement.\n*   **Phase 4: Full Automation (Week 13+):** Transition to fully automated extraction with continuous monitoring and periodic model retraining.\n\n**2. Cost-Benefit Analysis:**\n\n| Category           | Year 1 Cost      | Year 1 Benefit     | Year 2 Cost      | Year 2 Benefit     |\n|--------------------|------------------|--------------------|------------------|--------------------|\n| NLP Tool License   | $30,000           | $150,000 (Time Saved)| $30,000           | $150,000            |\n| Training (Staff)   | $10,000           | N/A                 | $2,000            | N/A                 |\n| System Integration | $15,000           | N/A                 | $5,000            | N/A                 |\n| Ongoing Maintenance| $5,000            | N/A                 | $5,000            | N/A                 |\n| **Total**          | **$60,000**       | **$150,000**        | **$62,000**       | **$150,000**        |\n| **Net Benefit**     | **$90,000**       | **$150,000**        | **$88,000**       | **$150,000**        |\n\n*   **Assumptions:**  Reduction of 41.67% in manual entry time (45 mins/record to 10 mins/record).  NLP tool cost based on annual license.  Staff training costs are one-time.  Maintenance includes minor updates and support.\n\n**3. Risk Assessment (Data Accuracy):**\n\n*   **False Positives:** Potential for the NLP tool to identify substances not actually medications (e.g., lab results, food items). Mitigation:  Manual review by trained data managers.\n*   **False Negatives:**  The NLP tool may fail to identify medications due to variations in phrasing, abbreviations, or handwriting. Mitigation:  Comprehensive NLP training data, ongoing model refinement, and a process for data managers to flag potential omissions.\n*   **MedDRA Mapping:**  Risk of incorrect MedDRA mapping. Mitigation:  Utilize a MedDRA lookup table integrated within the data entry system and provide training on MedDRA coding guidelines.\n\n**4. Validation Plan (SDTM CC Domain):**\n\n*   **Data Completeness:**  Verify that all relevant concomitant medications are extracted.\n*   **Data Accuracy:**  Compare extracted medication names to the original physician notes and MedDRA codes.\n*   **Data Consistency:**  Ensure consistent use of medication names and MedDRA codes across all patient records.\n*   **SDTM Compliance:**  Validate that extracted data conforms to SDTM CC domain requirements, including standardized medication names, dosage, frequency, and route.\n*   **Validation Metrics:**  Calculate precision, recall, and F1-score for medication extraction.  Track the number of discrepancies identified during manual review.\n\n**5. HIPAA Compliance Measures:**\n\n*   **Data Encryption:** Implement end-to-end encryption using AES-256 for data at rest (stored on servers) and in transit (transmitted between systems).\n*   **Access Controls:**\n    *   Role-Based Access Control (RBAC):  Restrict access to the NLP tool and extracted data based on job function.\n    *   Multi-Factor Authentication (MFA):  Require MFA for all users accessing the system.\n    *   Audit Logging:  Maintain detailed audit logs of all user activity, including data access and modifications.\n    *   Data Masking/De-identification:  Consider de-identifying data for internal analysis and reporting, adhering to HIPAA Safe Harbor or Expert Determination methods.\n*   **Business Associate Agreement (BAA):**  Execute a BAA with the NLP tool vendor to ensure they comply with HIPAA regulations.\n*   **Data Use Agreement (DUA):** Establish a DUA to govern the use and sharing of patient data.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission is strong and professionally structured, addressing all core components of the prompt. However, it falls short of a perfect 5 due to specific gaps: 1) The Cost-Benefit Analysis contains a logical error in the 'Net Benefit' row calculation (subtracting costs from benefits incorrectly in the table structure) and relies on an unrealistic assumption that time savings alone equal $150k without defining the hourly rate of the data managers. 2) The Validation Plan lacks specific statistical thresholds (e.g., '95% accuracy required') or a defined sample size for the validation study, which is critical for regulatory acceptance. 3) While HIPAA measures are listed, the 'Additional Checks' regarding explicit schema-level data privacy (masking patient names in the design) are only briefly mentioned as 'consider' rather than a definitive implementation step. These issues prevent a score of 5 but keep it well above a 3."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop technical specifications for data management programming and communicate needs to information technology staff.",
+      "task_type": "Database Schema Design",
+      "user_prompt": "You are the lead Clinical Data Manager for a Phase III oncology trial. Design a relational database schema for the 'Adverse Events' module. The schema must include tables for Patients, Investigators, and Adverse Events. Define primary keys, foreign keys, and specific data types. Crucially, implement three distinct logic checks (constraints) to ensure data integrity: 1) Adverse event start date cannot be after the end date, 2) Severity must be an integer between 1 and 5, 3) Causality must be one of 'Related', 'Unrelated', or 'Unknown'. Provide the SQL DDL statements and a brief explanation of how these checks prevent common data entry errors.",
+      "reference_context": "Trial Protocol Version 4.0: Adverse Event Reporting Guidelines. Patient ID format: 'PTN-XXXX'. Severity Scale: 1 (Mild), 2 (Moderate), 3 (Severe), 4 (Life-threatening), 5 (Death).",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the SQL DDL execute without syntax errors and enforce the specified constraints?",
+        "Criterion 2: Completeness — Are all three logic checks implemented as database constraints?",
+        "Criterion 3: Best practices — Is the schema normalized and compliant with CDISC standards?"
+      ],
+      "student_answer": "```sql\n-- Table: Patients\nCREATE TABLE Patients (\n    PatientID VARCHAR(20) PRIMARY KEY,\n    DemographicInfo VARCHAR(255),\n    StartDate DATE,\n    EndDate DATE,\n    TreatmentArm VARCHAR(50)\n);\n\n-- Table: Investigators\nCREATE TABLE Investigators (\n    InvestigatorID INT PRIMARY KEY,\n    InvestigatorName VARCHAR(255),\n    Institution VARCHAR(255)\n);\n\n-- Table: AdverseEvents\nCREATE TABLE AdverseEvents (\n    EventID INT PRIMARY KEY AUTO_INCREMENT,\n    PatientID VARCHAR(20) NOT NULL,\n    InvestigatorID INT NOT NULL,\n    EventDate DATE NOT NULL,\n    EventType VARCHAR(255),\n    Severity INT CHECK (Severity BETWEEN 1 AND 5),\n    Causality VARCHAR(10) CHECK (Causality IN ('Related', 'Unrelated', 'Unknown')),\n    Description TEXT,\n    StartDate DATE,\n    EndDate DATE,\n    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID),\n    FOREIGN KEY (InvestigatorID) REFERENCES Investigators(InvestigatorID)\n);\n\n-- Constraint 1: Adverse event start date cannot be after the end date\nALTER TABLE AdverseEvents\nADD CONSTRAINT CK_AdverseEvent_StartDateBeforeEndDate\nCHECK (StartDate <= EndDate);\n\n-- Constraint 2: Severity must be an integer between 1 and 5\n-- (already implemented via CHECK constraint in AdverseEvents table)\n\n-- Constraint 3: Causality must be one of 'Related', 'Unrelated', or 'Unknown'\n-- (already implemented via CHECK constraint in AdverseEvents table)\n```\n\nExplanation of Logic Checks:\n\n1.  **StartDate <= EndDate:** This constraint prevents illogical data entry where an adverse event's start date is later than its end date, ensuring the dates are logically consistent.\n2.  **Severity BETWEEN 1 AND 5:** This constraint enforces the defined severity scale, preventing users from entering invalid severity levels and maintaining data consistency.\n3.  **Causality IN ('Related', 'Unrelated', 'Unknown'):** This constraint restricts the causality field to only allowed values, ensuring standardized reporting and facilitating accurate analysis.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly implements the three requested logic checks and defines the core tables with appropriate foreign keys. However, it fails to address specific context requirements: the PatientID format 'PTN-XXXX' is not enforced in the schema (only a generic VARCHAR), and the 'StartDate' and 'EndDate' columns in the Patients table are left nullable, which is poor practice for mandatory trial dates. Additionally, the solution ignores the explicit instruction to address data privacy (e.g., masking names) and does not strictly enforce the integer type for severity in a way that prevents string input in all SQL dialects without explicit casting. While the logic is sound, the lack of domain-specific rigor (format enforcement, null handling, privacy) prevents a top score."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Write work instruction manuals, data capture guidelines, or standard operating procedures.",
+      "task_type": "SOP Development",
+      "user_prompt": "Draft a Standard Operating Procedure (SOP) titled 'Data Entry and Validation for Electronic Case Report Forms (eCRF)'. The SOP must detail the workflow for entering demographic data and vital signs. Include specific sections on: 1) Data validation rules (e.g., range checks, mandatory fields), 2) Handling of missing data in accordance with HIPAA and GDPR, 3) Audit trail requirements. Ensure the document references the need to maintain patient anonymity by using unique study IDs rather than names.",
+      "reference_context": "Study Protocol: Cardiovascular Outcomes Study (CVOS). Regulatory Body: FDA and EMA. Data Privacy Regulation: GDPR Article 6 (Lawfulness of processing).",
+      "evaluation_criteria": [
+        "Criterion 1: Compliance — Does the SOP explicitly address HIPAA and GDPR requirements for data privacy?",
+        "Criterion 2: Clarity — Are the data validation rules and missing data handling procedures clearly defined?",
+        "Criterion 3: Structure — Is the document formatted as a formal SOP with version control and approval sections?"
+      ],
+      "student_answer": "**Standard Operating Procedure: Data Entry and Validation for Electronic Case Report Forms (eCRF)**\n\n**Document ID:** SOP-CVOS-001\n**Revision:** 1.0\n**Date Issued:** October 26, 2023\n**Approved By:** [Name and Title]\n\n**1. Purpose**\n\nThis Standard Operating Procedure (SOP) outlines the procedures for accurate and compliant data entry and validation of Electronic Case Report Forms (eCRFs) for the Cardiovascular Outcomes Study (CVOS). It details the workflow for demographic data and vital signs entry, emphasizing data integrity, patient anonymity, and adherence to regulatory requirements including FDA and EMA guidelines, and GDPR Article 6.\n\n**2. Scope**\n\nThis SOP applies to all personnel involved in the data entry and validation process for the CVOS eCRFs, including Clinical Data Associates (CDAs), Data Managers, and Study Coordinators.\n\n**3. Definitions**\n\n*   **eCRF:** Electronic Case Report Form\n*   **Study ID:** A unique identifier assigned to each patient, replacing the patient’s name to maintain anonymity.\n*   **Data Quality:** The accuracy, completeness, consistency, and validity of data.\n*   **HIPAA:** Health Insurance Portability and Accountability Act\n*   **GDPR:** General Data Protection Regulation\n\n**4. Procedure**\n\n**4.1 Data Entry Workflow**\n\n4.1.1 **Training:** All personnel must complete training on this SOP and the specific eCRF design for the CVOS study.\n\n4.1.2 **eCRF Access:** Access to the eCRF system will be granted based on role-based access controls.\n\n4.1.3 **Data Entry:** Data will be entered into the eCRF fields according to the study protocol and data dictionary.  Data should be entered directly into the eCRF, avoiding manual data transfer.\n\n**4.2 Data Validation Rules**\n\n4.2.1 **General Rules:** All fields are subject to validation rules.  Data entry will not proceed if validation rules are not met.\n\n4.2.2 **Demographic Data Validation:**\n    *   **Study ID:** Required. Must be a unique, randomly generated alphanumeric code.\n    *   **Age:** Range check: 18-100 years.\n    *   **Sex:**  Mandatory.  Options: Male, Female, Other (with justification).\n    *   **Race:**  Select from predefined categories.\n    *   **Ethnicity:** Select from predefined categories.\n    *   **Address:**  Format validation – ensure consistent address format.\n\n4.2.3 **Vital Signs Validation:**\n    *   **Blood Pressure (Systolic/Diastolic):** Range checks: Systolic: 80-220 mmHg, Diastolic: 40-120 mmHg.\n    *   **Heart Rate:** Range check: 40-200 bpm.\n    *   **Respiratory Rate:** Range check: 12-30 breaths per minute.\n    *   **Temperature:** Range check: 35.0-42.0°C.\n    *   **Weight:** Range check: 30-300 kg.\n    *   **Height:** Range check: 100-200 cm.\n\n4.2.4 **Data Type Validation:**  Each field will have a defined data type (e.g., numeric, text, date) to ensure data consistency.\n\n**4.3 Handling of Missing Data**\n\n4.3.1 **HIPAA and GDPR Compliance:**  All missing data will be handled in accordance with HIPAA and GDPR regulations.\n\n4.3.2 **Documentation:**  Any missing data must be clearly documented in the “Reason for Missing Data” field within the eCRF.  Acceptable reasons include: “Not Collected,” “Patient Refusal,” “Unavailable,” or a detailed justification.\n\n4.3.3 **Imputation:**  Imputation will *only* be performed under the direction of the Principal Investigator (PI) and documented thoroughly.  Standardized imputation methods will be used and documented.\n\n**4.4 Audit Trail Requirements**\n\n4.4.1 **Data Entry Timestamp:**  The system will automatically record the date and time of each data entry.\n\n4.4.2 **User ID:**  The system will record the user ID of the individual entering the data.\n\n4.4.3 **Data Change Log:**  A complete audit trail will be maintained, documenting all changes made to the eCRF, including the user ID, date/time of change, and the nature of the change.  This log will be accessible to authorized personnel for review.\n\n4.4.4 **Data Reconciliation:** Regular data reconciliation will be performed to identify and resolve discrepancies.\n\n**5.  Patient Anonymity**\n\nPatient names and other directly identifying information will *never* be entered into the eCRF. Only Study IDs will be used.  Data linkage will be performed using the Study ID, ensuring patient anonymity throughout the study.\n\n**6.  Responsibilities**\n\n*   **Clinical Data Associates (CDAs):** Responsible for accurate data entry and adherence to this SOP.\n*   **Data Managers:** Responsible for overseeing data quality, implementing data validation rules, and maintaining the audit trail.\n*   **Study Coordinators:** Responsible for ensuring data entry is completed in a timely manner and that all necessary documentation is available.\n*   **Principal Investigator (PI):** Responsible for approving any imputation procedures.\n\n**7.  References**\n\n*   FDA Regulations\n*   EMA Guidelines\n*   GDPR Article 6\n*   CVOS Study Protocol\n\n---\n\nThis document is subject to change.  Please refer to the latest version for the most up-to-date information.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        3
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission is a well-structured SOP that correctly addresses the core requirements: defining validation rules for demographics and vitals, referencing HIPAA/GDPR, and mandating unique Study IDs for anonymity. However, it falls short of a perfect score (5) due to specific gaps. First, the 'Handling of Missing Data' section is vague regarding GDPR Article 6; it mentions compliance but fails to explicitly address the legal basis for processing missing data or the specific prohibition on re-identification, which is critical for a Senior Specialist level. Second, the 'Additional Checks' prompt asked for explicit schema-level privacy measures (masking), which the SOP addresses only procedurally, not technically. Third, the audit trail section lacks specific details on the immutability of the log (e.g., 'read-only' or 'write-once'), a key industry standard. Finally, the document does not explicitly handle the 'improper date handling' check mentioned in the prompt, leaving a potential gap in data integrity for mandatory dates. These issues prevent it from being 'exceptional' and 'client-ready' without minor substantive edits, resulting in a 3 for Autonomy."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Track the flow of work forms, including in-house data flow or electronic forms transfer.",
+      "task_type": "Data Flow Analysis",
+      "user_prompt": "Analyze the data flow for a multi-center Phase II trial involving 10 sites. Create a step-by-step process map describing the journey of a 'Lab Result' from the site's eCRF to the central database. Identify three potential bottlenecks or points of failure in the transfer process. Propose specific mitigation strategies for each bottleneck, ensuring that data encryption is applied at every transfer point to comply with GDPR.",
+      "reference_context": "Current System: Site eCRF (Vendor A) -> Secure FTP -> Central Database (Vendor B). Transfer Frequency: Daily. Encryption Standard: TLS 1.3.",
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Does the process map correctly reflect the data journey from site to central database?",
+        "Criterion 2: Risk Identification — Are at least three distinct bottlenecks identified with logical mitigation strategies?",
+        "Criterion 3: Security — Is encryption explicitly mentioned as a control measure at every transfer point?"
+      ],
+      "student_answer": "## Lab Result Data Flow – Multi-Center Phase II Trial\n\n**Process Map:**\n\n1.  **Data Entry (Site):** Lab results are entered into the Site eCRF (Vendor A).\n2.  **Data Validation (Site):** Site personnel validate entered data against pre-defined criteria.\n3.  **Data Export (Site):** Site eCRF exports data in a standardized format (e.g., CSV, FHIR) to a secure FTP server.\n4.  **Secure FTP Transfer:** Data is transferred via Secure FTP to the central server. TLS 1.3 encryption is applied.\n5.  **Central Server Reception:** Central server receives the data file.\n6.  **Data Verification (Central):** Central system verifies data integrity and completeness.\n7.  **Data Transformation (Central):** Data is transformed into the format required by the Central Database (Vendor B).\n8.  **Data Loading (Central):** Data is loaded into the Central Database (Vendor B).\n9.  **Data Reconciliation (Central):** Central system reconciles data with source data.\n10. **Data Audit Trail Generation (Central):** A complete audit trail is generated, documenting all data transformations and transfers.\n\n**Potential Bottlenecks & Mitigation Strategies:**\n\n1.  **Bottleneck:** **Site eCRF Downtime/Technical Issues:** Site eCRF outages or technical problems can delay data export.\n    *   **Mitigation:** Implement a redundant data backup system at each site. Establish a clear communication protocol between sites and the central team regarding eCRF downtime. Schedule regular eCRF system maintenance during off-peak hours.  Data encryption is already in place during transfer.\n\n2.  **Bottleneck:** **Secure FTP Server Capacity/Performance:**  Daily transfers, especially with 10 sites, could strain the Secure FTP server’s capacity, leading to delays or failed transfers.\n    *   **Mitigation:** Implement bandwidth monitoring and scaling. Consider a more robust and scalable FTP solution or explore alternative transfer methods (e.g., SFTP with enhanced security features).  Data encryption is already in place during transfer. Implement data compression to reduce file sizes.\n\n3.  **Bottleneck:** **Central Database Load/Transformation Errors:** The Central Database (Vendor B) may experience high load or encounter errors during data transformation, causing delays or data loss.\n    *   **Mitigation:**  Conduct thorough performance testing of the Central Database before the trial launch. Implement automated data validation checks during transformation. Establish a clear process for investigating and resolving transformation errors, with documented escalation procedures. Data encryption is already in place during transfer.  Implement a robust error logging and alerting system.\n\n**GDPR Compliance Note:** TLS 1.3 encryption is applied at every transfer point.  Data at rest within the Central Database (Vendor B) should also be encrypted according to GDPR requirements.  Data access controls should be strictly enforced to limit access to authorized personnel only. Audit trails should be regularly reviewed to ensure data integrity and compliance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly outlines the data flow and identifies relevant bottlenecks. However, it fails to fully meet the task requirements in several areas. First, the process map is a linear list rather than a 'step-by-step process map' that explicitly visualizes the flow or decision points, and it lacks the granularity expected for a multi-center trial (e.g., handling of 10 sites specifically). Second, the mitigation strategies are generic and do not sufficiently address the specific constraint of 'data encryption at every transfer point' beyond a repetitive, perfunctory sentence; they lack technical depth (e.g., specific encryption protocols for data at rest vs. in transit, key management). Third, the submission ignores the 'Additional Checks' section regarding schema design, patient ID masking, and data type validation, which are critical for a Clinical Data Manager role. While the domain terminology is accurate (Dimension 4), the lack of specific technical implementation details and the failure to address the schema/privacy checks prevent a score of 5 and limit the autonomy of the output (Dimension 6) as it would require significant professional refinement before use."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Supervise the work of data management project staff.",
+      "task_type": "Staff Performance Review",
+      "user_prompt": "You are supervising a team of 5 data entry clerks. Review the following performance metrics for the last month: Clerk A (Error rate: 0.5%, Turnaround: 2 days), Clerk B (Error rate: 4.2%, Turnaround: 1 day), Clerk C (Error rate: 1.1%, Turnaround: 3 days), Clerk D (Error rate: 0.8%, Turnaround: 2 days), Clerk E (Error rate: 3.5%, Turnaround: 1.5 days). Draft a performance feedback plan for Clerk B and Clerk E, focusing on reducing error rates without compromising turnaround time. Include specific training recommendations related to CDISC SDTM standards.",
+      "reference_context": "Team Goal: Maintain error rate below 1.0% and turnaround under 2 days. Training Resource: CDISC SDTM Implementation Guide v3.4.",
+      "evaluation_criteria": [
+        "Criterion 1: Analysis — Does the feedback plan accurately address the specific performance gaps of Clerk B and E?",
+        "Criterion 2: Strategy — Are the proposed training recommendations relevant to reducing errors and improving data quality?",
+        "Criterion 3: Balance — Does the plan attempt to balance error reduction with turnaround time goals?"
+      ],
+      "student_answer": "**Performance Feedback Plan – Clerk B & Clerk E**\n\n**Overall Goal:** Reduce error rates to below 1.0% while maintaining turnaround times under 2 days.\n\n**Clerk B – Error Rate: 4.2%, Turnaround: 1 day**\n\n*   **Feedback:** Clerk B’s turnaround time is excellent, demonstrating efficiency. However, the error rate of 4.2% is significantly above the team goal and requires immediate attention. This level of error necessitates a focused intervention to improve data accuracy.\n*   **Specific Concerns:** Review of recent data entry indicates inconsistencies in variable coding, particularly with [mention specific variable examples if available from review – e.g., ‘demographic variables’ or ‘medication codes’].  Potential root cause may be a lack of thorough understanding of CDISC SDTM standards.\n*   **Action Plan:**\n    1.  **Targeted CDISC SDTM Training:** Mandatory attendance at a 4-hour refresher course on CDISC SDTM standards, with a specific focus on variable definitions, data type requirements, and coding conventions. (Resource: CDISC SDTM Implementation Guide v3.4)\n    2.  **Shadowing:** Pair Clerk B with Clerk A (Error Rate: 0.5%) for a 2-day shadowing period to observe best practices in data entry and quality control.\n    3.  **Data Quality Review:** Weekly 30-minute one-on-one review of Clerk B’s data entry with a focus on identifying and correcting errors.  Utilize a checklist based on common SDTM errors.\n    4.  **Performance Monitoring:** Track error rate weekly and provide immediate feedback.\n\n**Clerk E – Error Rate: 3.5%, Turnaround: 1.5 days**\n\n*   **Feedback:** Clerk E’s turnaround time is commendable, demonstrating a strong ability to process data quickly. However, the error rate of 3.5% is above the team goal and requires improvement.\n*   **Specific Concerns:**  Review of data entry reveals inconsistencies in the application of domain codes and missing data elements.  There appears to be a need to strengthen understanding of data element dependencies within the SDTM structure.\n*   **Action Plan:**\n    1.  **CDISC SDTM Domain Code Training:**  Attend a 2-hour training session specifically focused on CDISC SDTM domain codes and their correct application. (Resource: CDISC SDTM Implementation Guide v3.4)\n    2.  **Data Element Dependency Workshop:** Participate in a 1-hour workshop to reinforce understanding of data element dependencies and the impact of missing data.\n    3.  **Quality Control Checklist Review:**  Review and practice using the team’s standard quality control checklist, paying particular attention to domain code validation and completeness checks.\n    4.  **Peer Review:** Implement a peer review process where Clerk E’s data is reviewed by another clerk before submission.\n\n**General Notes for Both Clerks:**\n\n*   Reinforce the importance of double-checking all data entries against source documents and established coding guidelines.\n*   Encourage proactive questioning regarding any uncertainties in data definitions or coding requirements.\n*   Regularly utilize the CDISC SDTM Implementation Guide v3.4 as a primary reference.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the performance gaps and proposes a structured feedback plan with specific CDISC SDTM references. However, it fails the 'Correctness' and 'Completeness' checks by using placeholders (e.g., '[mention specific variable examples...]') instead of providing concrete, hypothetical examples or analyzing the provided metrics to infer likely errors. The 'Domain Accuracy' is adequate but generic; it mentions SDTM standards without detailing specific implementation guide sections (e.g., specific domains like DM or LB) that would be relevant to clerks. The 'Autonomy' score is 3 because the presence of placeholders and generic placeholders prevents the document from being delivered to a stakeholder without human review and editing. The 'Clarity' is good, but the lack of specific technical depth limits the overall quality."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Contribute to the compilation, organization, and production of protocols, clinical study reports, regulatory submissions, or other controlled documentation.",
+      "task_type": "Regulatory Submission Preparation",
+      "user_prompt": "Prepare a checklist for the 'Clinical Study Report (CSR) Data Appendix' submission to the FDA. The checklist must verify that all datasets are mapped to CDISC ADaM standards. Include specific checks for: 1) Derivation logic documentation, 2) Analysis flags (e.g., 'ANALYSIS_DATASET'), 3) Imputation methods for missing data. Ensure the checklist also includes a section for verifying that all patient identifiers have been de-identified in accordance with HIPAA Safe Harbor methods before submission.",
+      "reference_context": "Submission Type: New Drug Application (NDA). Standard: CDISC ADaM IG v1.3. De-identification Standard: HIPAA Safe Harbor.",
+      "evaluation_criteria": [
+        "Criterion 1: Standard Adherence — Does the checklist correctly reference CDISC ADaM requirements?",
+        "Criterion 2: Compliance — Does the checklist include specific HIPAA Safe Harbor verification steps?",
+        "Criterion 3: Completeness — Are derivation logic, flags, and imputation methods all covered?"
+      ],
+      "student_answer": "## Clinical Study Report (CSR) Data Appendix - FDA Submission Checklist (ADaM & De-identification)\n\n**Submission Type:** NDA\n**Standard:** CDISC ADaM IG v1.3\n**De-identification Standard:** HIPAA Safe Harbor\n\n**I. Data Mapping to CDISC ADaM Standards**\n\n*   **[ ] Dataset Review:** All datasets listed in the CSR Data Appendix are present.\n*   **[ ] Dataset Naming Conventions:** Datasets adhere to CDISC naming conventions (e.g., consistent use of underscores, descriptive names).\n*   **[ ] Primary Endpoint Dataset:**  A dedicated dataset exists for the primary endpoint analysis.\n*   **[ ] Secondary Endpoint Datasets:**  Datasets exist for all secondary endpoints.\n*   **[ ] Demographic Dataset:** A dataset contains demographic information.\n*   **[ ] Adverse Event Dataset:** A dataset contains adverse event information.\n*   **[ ] Vital Signs Dataset:** A dataset contains vital signs information.\n*   **[ ] Laboratory Dataset:** A dataset contains laboratory test results.\n*   **[ ] Other Relevant Datasets:** (Specify any other datasets included)\n\n**II. Derivation Logic Documentation**\n\n*   **[ ] Derivation Logic Documentation Review:**  Complete and accurate derivation logic documentation exists for *all* derived variables.\n*   **[ ] Logic Traceability:**  Each derived variable can be traced back to its source variables and the specific derivation logic.\n*   **[ ] Logic Validation:**  Derivation logic has been validated to ensure accuracy and consistency.\n*   **[ ] Logic Reproducibility:**  Derivation logic is documented in a format that allows for reproducibility (e.g., SQL, SAS, R code).\n*   **[ ] Logic Version Control:**  Derivation logic is under version control.\n\n**III. Analysis Flags**\n\n*   **[ ] ANALYSIS_DATASET Flag:** The `ANALYSIS_DATASET` flag is populated correctly for each dataset.\n*   **[ ] Analysis Flag Consistency:** Analysis flags are consistent across all datasets.\n*   **[ ] Flag Definitions:** Definitions of all analysis flags are clearly documented.\n*   **[ ] Flag Values:**  All flag values are clearly defined and consistently used.\n\n**IV. Missing Data Imputation**\n\n*   **[ ] Missing Data Assessment:**  A comprehensive assessment of missing data has been performed for each variable.\n*   **[ ] Imputation Method Documentation:**  The method used for imputing missing data is clearly documented for *all* variables with missing data.\n*   **[ ] Imputation Justification:**  The rationale for selecting a specific imputation method is documented.\n*   **[ ] Imputation Sensitivity Analysis:**  Sensitivity analyses have been performed to assess the impact of different imputation methods on the results.\n*   **[ ] Imputation Method Consistency:** Imputation methods are consistent across datasets.\n\n**V. De-identification Verification (HIPAA Safe Harbor)**\n\n*   **[ ] Patient Identifier List:** A complete list of all patient identifiers used in the datasets is provided.\n*   **[ ] De-identification Process Documentation:**  Detailed documentation of the de-identification process is provided, demonstrating compliance with HIPAA Safe Harbor.\n*   **[ ] Removal of Direct Identifiers:** All direct identifiers (e.g., name, address, phone number, SSN, MRN) have been removed.\n*   **[ ] Removal of Quasi-Identifiers:**  All quasi-identifiers (e.g., date of birth, zip code) have been suppressed or pseudonymized to a degree that renders re-identification highly unlikely.\n*   **[ ] Risk Assessment:** A risk assessment demonstrating the effectiveness of the de-identification process has been conducted and documented.\n*   **[ ] Verification of De-identification:**  Independent verification of the de-identification process has been performed.\n*   **[ ] Data Use Agreement (DUA):** A DUA is in place for the use of the de-identified data.\n\n**VI. General Review**\n\n*   **[ ] Data Quality Checks:** Data quality checks have been performed and documented.\n*   **[ ] Data Validation:** Data has been validated against source data.\n*   **[ ] Metadata Review:** Metadata is complete, accurate, and consistent.\n*   **[ ] Data Dictionary Review:** Data dictionary is complete and accurate.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a structured checklist but fails to meet the specific technical depth required for an industry-standard ADaM submission. Dimension 1 (Correctness) and 4 (Domain Accuracy) are limited because the checklist lacks specific ADaM IG v1.3 technical requirements, such as verifying the existence of specific required variables (e.g., STUDYID, DOMAIN, USUBJID), checking the 'analysis dataset' flag values against the specific CDISC standard (e.g., 'Y'/'N' or specific dataset names), and explicitly mentioning the 'ADaM Dataset Structure' (e.g., checking for the 'ADSL' dataset linkage). The 'Analysis Flags' section is vague, merely asking if the flag exists rather than verifying it matches the CDISC standard's specific definitions. Dimension 5 (Clarity) is strong as the format is readable. Dimension 6 (Autonomy) is reduced because a reviewer would need to add specific variable names and CDISC-specific logic to make this actionable for a real submission, rather than just generic data governance checks."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Read technical literature and participate in continuing education or professional associations to maintain awareness of current database technology and best practices.",
+      "task_type": "Technology Assessment Report",
+      "user_prompt": "Write a 500-word technical assessment report on the adoption of 'Blockchain for Clinical Trial Data Integrity'. Your report must summarize current best practices found in recent literature (2020-2024). Discuss the potential benefits for audit trails and data immutability. Crucially, analyze the challenges regarding GDPR 'Right to be Forgotten' and HIPAA data portability. Conclude with a recommendation on whether to pilot this technology for a Phase III trial.",
+      "reference_context": "Context: Current database technology relies on centralized SQL servers. Regulatory Constraints: GDPR Article 17 (Right to erasure), HIPAA Security Rule.",
+      "evaluation_criteria": [
+        "Criterion 1: Research Quality — Does the report accurately reflect current literature and best practices?",
+        "Criterion 2: Regulatory Analysis — Are the conflicts between blockchain immutability and GDPR/HIPAA clearly articulated?",
+        "Criterion 3: Recommendation — Is the final recommendation logical and supported by the preceding analysis?"
+      ],
+      "student_answer": "**Technical Assessment Report: Blockchain for Clinical Trial Data Integrity**\n\n**Date:** October 26, 2023\n\n**Subject:** Evaluation of Blockchain Technology for Clinical Trial Data Integrity\n\n**1. Executive Summary:**\n\nBlockchain technology presents a potentially transformative approach to enhancing data integrity within clinical trials. Recent literature (2020-2024) highlights its suitability for immutable audit trails and improved data security. However, significant challenges remain regarding compliance with data privacy regulations, specifically GDPR’s ‘Right to be Forgotten’ and HIPAA’s data portability requirements.  A cautious approach is recommended, suggesting a pilot program for a Phase III trial with careful consideration of these regulatory hurdles.\n\n**2. Current Best Practices & Literature Review:**\n\nResearch indicates blockchain’s value lies primarily in its decentralized, tamper-proof ledger.  Studies (e.g., [Hypothetical Citation 1:  \"Blockchain for Clinical Trials: A Systematic Review,\" *Journal of Clinical Trials*, 2023]) demonstrate its effectiveness in tracking data provenance – recording every change and modification to clinical trial data, creating a verifiable audit trail.  Permissioned blockchain networks, utilizing consortium models involving sponsors, CROs, and regulatory bodies, are increasingly favored to maintain control and data access.  Smart contracts can automate data validation and consent management, reducing human error and improving efficiency.  Notable implementations focus on tracking adverse events, patient consent, and supply chain integrity for investigational drugs.  The use of hash functions and cryptographic signatures ensures data authenticity and non-repudiation.  Several pilot projects (e.g., [Hypothetical Citation 2: “Blockchain Implementation in a Phase II Oncology Trial,” *Clinical Trials Today*, 2022]) have shown improved data accuracy and reduced discrepancies compared to traditional systems.\n\n**3. Benefits for Audit Trails & Data Immutability:**\n\nBlockchain’s inherent characteristics directly address key challenges in clinical trial data management. The immutable nature of the ledger prevents unauthorized alterations, providing a robust audit trail. Each transaction (data update) is linked to the previous one, creating a chronological record. This significantly strengthens data integrity and facilitates regulatory compliance.  The distributed consensus mechanism ensures that all participants have a synchronized view of the data, minimizing the risk of single points of failure or manipulation.  Automated data validation through smart contracts further enhances reliability.\n\n**4. Challenges – GDPR & HIPAA Compliance:**\n\nThe application of blockchain to clinical trials raises critical concerns regarding data privacy regulations.\n\n*   **GDPR ‘Right to be Forgotten’:**  Blockchain’s immutability directly conflicts with GDPR Article 17.  Deleting data from a blockchain is exceptionally difficult, if not impossible, without compromising the integrity of the entire ledger.  Potential solutions involve off-chain storage of personal data linked to blockchain records, requiring complex key management and data retrieval processes.  Data minimization strategies are crucial.\n*   **HIPAA Data Portability:**  HIPAA mandates patients’ right to access and transfer their health information.  Blockchain’s decentralized nature complicates data portability.  Retrieving specific patient data requires accessing multiple nodes, potentially creating logistical and security challenges.  Standardized APIs and interoperability protocols are needed to facilitate data transfer.  Secure data aggregation and anonymization techniques are paramount.\n\n**5. Recommendation:**\n\nA full-scale implementation of blockchain for clinical trials is premature given the current regulatory landscape. However, a carefully designed pilot program for a Phase III trial warrants consideration.  The pilot should focus on a limited scope, such as tracking adverse events or managing patient consent, utilizing a permissioned blockchain network.  Crucially, the pilot must incorporate robust off-chain data storage strategies to address GDPR’s ‘Right to be Forgotten’ and prioritize HIPAA data portability through standardized APIs.  Legal counsel specializing in data privacy regulations must be involved throughout the pilot’s design and execution.  Further research and development are needed to establish clear regulatory guidelines and interoperability standards.\n\n---\n\n**Disclaimer:** *Hypothetical citations are placeholders. Actual references should be included in a full report.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission addresses the core prompt but fails on specific constraints and professional rigor. Dimension 1 (Correctness) and 2 (Completeness) are penalized because the student included a 'Disclaimer' about hypothetical citations rather than synthesizing actual literature as requested, and the report is significantly under the 500-word limit. Dimension 3 (Best Practices) is low because a professional report would not use placeholder citations like '[Hypothetical Citation 1]' without explicitly stating they are examples, nor would it fail to provide real references. Dimension 4 (Domain Accuracy) is adequate but lacks depth on the technical implementation of GDPR compliance (e.g., zero-knowledge proofs or specific off-chain hashing strategies). Dimension 5 (Clarity) is strong with good structure. Dimension 6 (Autonomy) is low because the output is not ready for a client; it contains placeholder text and fails the word count constraint, requiring significant editing and content generation before use."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design and validate clinical databases, including designing or testing logic checks.",
+      "task_type": "Database Schema Design",
+      "user_prompt": "You are the lead Clinical Data Manager for a Phase III oncology trial. Design a relational database schema for the 'Adverse Events' module. The schema must include tables for Patients, Investigators, and Adverse Events. Define primary keys, foreign keys, and specific data types. Crucially, implement three distinct logic checks (constraints) to ensure data integrity: 1) Adverse event start date cannot be after the end date, 2) Severity must be an integer between 1 and 5, 3) Causality must be one of 'Related', 'Unrelated', or 'Unknown'. Provide the SQL DDL statements and a brief explanation of how these checks prevent common data entry errors.",
+      "reference_context": "Trial Protocol Version 4.0: Adverse Event Reporting Guidelines. Patient ID format: 'PTN-XXXX'. Severity Scale: 1 (Mild), 2 (Moderate), 3 (Severe), 4 (Life-threatening), 5 (Death).",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Does the SQL DDL execute without syntax errors and enforce the specified constraints?",
+        "Criterion 2: Completeness — Are all three logic checks implemented as database constraints?",
+        "Criterion 3: Best practices — Is the schema normalized and compliant with CDISC standards?"
+      ],
+      "student_answer": "```sql\n-- Table: Patients\nCREATE TABLE Patients (\n    PatientID VARCHAR(20) PRIMARY KEY,\n    DemographicInfo VARCHAR(255),\n    StartDate DATE,\n    EndDate DATE,\n    TreatmentArm VARCHAR(50)\n);\n\n-- Table: Investigators\nCREATE TABLE Investigators (\n    InvestigatorID INT PRIMARY KEY,\n    InvestigatorName VARCHAR(255),\n    Institution VARCHAR(255)\n);\n\n-- Table: AdverseEvents\nCREATE TABLE AdverseEvents (\n    EventID INT PRIMARY KEY AUTO_INCREMENT,\n    PatientID VARCHAR(20) NOT NULL,\n    InvestigatorID INT NOT NULL,\n    EventDate DATE NOT NULL,\n    EventDescription TEXT,\n    Severity INT CHECK (Severity BETWEEN 1 AND 5),\n    Causality VARCHAR(20) CHECK (Causality IN ('Related', 'Unrelated', 'Unknown')),\n    StartDate DATE,\n    EndDate DATE,\n    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID),\n    FOREIGN KEY (InvestigatorID) REFERENCES Investigators(InvestigatorID)\n);\n\n-- Constraint 1: Adverse event start date cannot be after the end date\nALTER TABLE AdverseEvents\nADD CONSTRAINT CK_AdverseEvent_StartDateBeforeEndDate\nCHECK (StartDate <= EndDate);\n\n-- Constraint 2: Severity must be an integer between 1 and 5\n-- (already implemented via CHECK constraint in AdverseEvents table definition)\n\n-- Constraint 3: Causality must be one of 'Related', 'Unrelated', or 'Unknown'\n-- (already implemented via CHECK constraint in AdverseEvents table definition)\n```\n\nExplanation of Logic Checks:\n\n1.  **StartDate <= EndDate:** This constraint prevents illogical data entry where an adverse event's start date is later than its end date, ensuring chronological consistency.\n2.  **Severity BETWEEN 1 AND 5:** This constraint enforces the defined severity scale, preventing users from entering invalid severity levels and maintaining data standardization.\n3.  **Causality IN ('Related', 'Unrelated', 'Unknown'):** This constraint restricts the causality field to predefined values, ensuring consistent reporting and facilitating accurate analysis.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly implements the core SQL DDL and the three requested logic checks, demonstrating good domain accuracy regarding the severity scale and causality values. However, it fails to fully address the 'Additional Checks' and professional standards: 1) It allows NULLs for mandatory dates (StartDate/EndDate) which contradicts the logic check requirement for valid events; 2) It uses generic VARCHAR for PatientID instead of the specific 'PTN-XXXX' format or a check constraint to enforce it; 3) It lacks data privacy considerations (e.g., masking PII) as requested in the additional checks; 4) The 'DemographicInfo' column is a poor design choice for a relational schema. While the logic is sound, these omissions prevent it from being an industry-standard, production-ready schema without human review."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Train staff on technical procedures or software program usage.",
+      "task_type": "Training Module Development",
+      "user_prompt": "Develop a comprehensive training module for a new cohort of Clinical Research Associates (CRAs) on the usage of the 'DataQuery Pro' software for managing Phase II cardiovascular data. The module must include: 1) A step-by-step guide on how to resolve 'Critical' vs 'Warning' data discrepancies, 2) A demonstration of how to export data in CDISC SDTM format while ensuring all PHI is stripped according to HIPAA, and 3) A quiz with 5 questions to verify understanding. The content must explicitly reference the protocol's data entry deadlines and the specific GDPR requirements for handling patient data in the EU sub-study.",
+      "reference_context": "DataQuery Pro User Manual v2.1. Protocol Section 8.3: Data Entry Deadlines. GDPR Article 9: Processing of Special Categories of Personal Data. HIPAA Privacy Rule: De-identification Standards (Safe Harbor Method).",
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — Are the software steps and data transformation rules technically correct based on the provided manual?",
+        "Criterion 2: Compliance — Does the module explicitly address HIPAA de-identification and GDPR special category data handling?",
+        "Criterion 3: Effectiveness — Is the training material structured logically and does the quiz effectively test the key learning objectives?"
+      ],
+      "student_answer": "## DataQuery Pro Training Module: Phase II Cardiovascular Data\n\n**Module Objective:** To equip CRAs with the necessary skills to effectively utilize DataQuery Pro for managing Phase II cardiovascular data, ensuring data quality, compliance with regulatory requirements, and adherence to protocol timelines.\n\n**I. Introduction (5 minutes)**\n\n*   Welcome and Module Overview\n*   DataQuery Pro Purpose: Centralized platform for managing, querying, and reporting Phase II cardiovascular data.\n*   Importance of Data Accuracy & Timeliness – Referencing Protocol Section 8.3 (Data Entry Deadlines).  Missed deadlines impact study timelines and regulatory submissions.\n\n**II. Resolving Critical vs. Warning Data Discrepancies (30 minutes)**\n\n*   **Understanding Discrepancy Types:**\n    *   **Critical Discrepancy:** Indicates a significant data error requiring immediate investigation and correction. Examples: Missing vital signs, incorrect medication dosages, protocol deviations.\n    *   **Warning Discrepancy:** Indicates a potential data issue needing review and clarification. Examples: Inconsistent units of measurement, unclear data entry, potential data quality concerns.\n*   **Step-by-Step Resolution Process:**\n    1.  **Identify the Discrepancy:** Navigate to the relevant patient record in DataQuery Pro.  Highlight the discrepancy using the ‘Flag’ function.\n    2.  **Review Supporting Documentation:** Consult the patient’s CRF, electronic medical record (EMR), and study protocol for clarification.\n    3.  **Contact Principal Investigator (PI) or Study Physician:**  If the discrepancy requires clinical judgment or further investigation. Document the communication in DataQuery Pro’s audit trail.\n    4.  **Correct the Data:**  Modify the data in DataQuery Pro, ensuring accuracy and consistency.\n    5.  **Resolve the Discrepancy:**  Change the discrepancy status from ‘Open’ to ‘Resolved’ and add a brief explanation.  For Critical Discrepancies, include the corrective action taken.\n    6.  **Escalation:** If unable to resolve within 24 hours, escalate to the Data Manager.\n*   **Example Scenario:**  Demonstration of resolving a critical discrepancy related to a blood pressure reading.\n\n**III. CDISC SDTM Export with HIPAA De-identification (45 minutes)**\n\n*   **Overview of CDISC SDTM:**  Standardized Data Model for Transmission – essential for regulatory submissions.\n*   **Export Process:**\n    1.  **Select Data Set:** Choose the relevant data set (e.g., DS, DM, VS) for export.\n    2.  **Configure Export Parameters:** Specify the output format (SDTM), variable selection, and date range.\n    3.  **PHI Stripping (HIPAA Safe Harbor Method):**\n        *   DataQuery Pro automatically applies the Safe Harbor method for de-identification. This involves removing all identifiers and quasi-identifiers.\n        *   **Specifically:**  All patient names, addresses, dates of birth, social security numbers, and other directly identifiable information will be removed.\n        *   **Verification:**  Review the exported SDTM dataset to confirm that all PHI has been successfully removed.\n    4.  **Export the Data:** Initiate the export process.\n    5.  **Data Validation:**  Upon completion, verify the exported file’s structure and content against the SDTM standard.\n*   **GDPR Considerations (EU Sub-study):**\n    *   **Article 9 Compliance:**  Recognizing that certain data (e.g., health status, genetic data) falls under GDPR’s Special Categories of Personal Data.\n    *   **Data Minimization:**  Only export the minimum necessary data required for the study.\n    *   **Pseudonymization:**  While HIPAA Safe Harbor is used, ensure pseudonymization techniques are applied where appropriate to further protect patient privacy.\n    *   **Data Subject Rights:**  Understand the process for responding to data subject access requests (DSARs) – DataQuery Pro logs all data access.\n\n**IV. Quiz (15 minutes)**\n\n1.  What is the primary difference between a ‘Critical’ and a ‘Warning’ discrepancy in DataQuery Pro?\n    a) Critical discrepancies require immediate action, while warning discrepancies are minor.\n    b) Critical discrepancies are automatically resolved, while warning discrepancies require manual correction.\n    c) Critical discrepancies indicate a significant data error, while warning discrepancies indicate a potential data issue.\n    d) There is no difference; both types of discrepancies require the same level of attention.\n\n2.  When exporting data to CDISC SDTM format, what is the primary method used for HIPAA de-identification?\n    a) Encryption\n    b) Pseudonymization\n    c) Safe Harbor Method\n    d) Data Masking\n\n3.  According to Protocol Section 8.3, what is the consequence of missing a data entry deadline?\n    a) No impact on the study timeline.\n    b) A minor delay in data analysis.\n    c) Potential impact on study timelines and regulatory submissions.\n    d) Automatic extension of the deadline.\n\n4.  Under GDPR, what is the key principle related to processing ‘Special Categories of Personal Data’?\n    a) Data can be processed without consent.\n    b) Data minimization should be applied.\n    c) Data can be freely shared with all stakeholders.\n    d) Data subject rights are not relevant.\n\n5.  What should a CRA do if they are unable to resolve a critical discrepancy within 24 hours?\n    a) Ignore the discrepancy and proceed with the study.\n    b) Contact the PI and continue working on other tasks.\n    c) Escalate the discrepancy to the Data Manager.\n    d) Modify the data and mark the discrepancy as resolved without further investigation.\n\n---\n\n**Answer Key:** 1. c, 2. c, 3. c, 4. b, 5. c\n\n**Resources:** DataQuery Pro User Manual v2.1, Protocol Section 8.3, GDPR Article 9, HIPAA Privacy Rule.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the general structure of a training module but fails significantly on specific task requirements and domain accuracy. 1) Correctness/Completeness: The prompt explicitly requested a 'step-by-step guide' on resolving discrepancies, but the student provided a generic 6-point list without specific DataQuery Pro UI actions (e.g., specific button clicks, field names, or navigation paths). 2) Domain Accuracy: The student incorrectly states that DataQuery Pro 'automatically applies the Safe Harbor method' for PHI stripping. In reality, CDISC SDTM exports require the CRA to manually select variables to exclude or apply specific transformation rules; the software does not automatically strip PHI based on the Safe Harbor method without user configuration. 3) GDPR: The response mentions Article 9 but fails to explicitly address the specific requirement for handling special category data in the EU sub-study beyond a generic mention of minimization. 4) Best Practices: The training module lacks the depth required for a 'Senior' level deliverable, reading more like a high-level summary than a functional training guide. 5) Autonomy: Due to the lack of specific software instructions and the factual error regarding automatic PHI stripping, this output cannot be used as-is without significant human review and correction."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Provide support and information to functional areas such as marketing, clinical monitoring, and medical affairs.",
+      "task_type": "Cross-Functional Data Support",
+      "user_prompt": "The Medical Affairs team has requested a summary report of 'Patient Disposition' for the recent Phase III diabetes trial to support a manuscript submission. Generate a data extraction plan and a sample output table that aligns with the CDISC ADaM standards. The plan must detail how to filter the raw database to include only patients who completed the study, excluding those with missing primary endpoint data. Additionally, provide a risk assessment for sharing this dataset with the external medical writer, ensuring all direct identifiers are removed in compliance with GDPR and HIPAA before the data is released.",
+      "reference_context": "CDISC ADaM Implementation Guide v1.3. Patient Disposition Definitions: 'Completed' = Final Visit Date <= Protocol End Date. Data Sharing Agreement: External parties must sign NDA. Direct Identifiers: Name, DOB, Address, MRN.",
+      "evaluation_criteria": [
+        "Criterion 1: Standard Adherence — Does the extraction plan and output structure strictly follow CDISC ADaM conventions?",
+        "Criterion 2: Data Integrity — Is the filtering logic for 'Completed' patients accurate and reproducible?",
+        "Criterion 3: Privacy Compliance — Is the risk assessment comprehensive and does the data release plan ensure full removal of direct identifiers per HIPAA/GDPR?"
+      ],
+      "student_answer": "## Patient Disposition Data Extraction Plan - Phase III Diabetes Trial\n\n**1. Objective:** To extract a Patient Disposition summary report for manuscript submission, focusing on patients who completed the study and excluding those with missing primary endpoint data.\n\n**2. Data Source:** Clinical Database (Specify Database System - e.g., Medidata Rave)\n\n**3. Data Elements:**\n\n*   **PatientID:** Unique patient identifier within the database.\n*   **VisitDate:** Date of each visit.\n*   **VisitType:** Type of visit (e.g., Screening, Baseline, Follow-up).\n*   **ProtocolEndDate:** Date the protocol was completed.\n*   **FinalVisitDate:** Date of the last visit for the patient.\n*   **PrimaryEndpoint:**  Indicator of primary endpoint attainment (Yes/No).\n*   **MissingPrimaryEndpoint:** Indicator of missing primary endpoint data (Yes/No).\n\n**4. Extraction Steps:**\n\n1.  **Database Connection:** Establish secure connection to the clinical database.\n2.  **Data Filtering (Step 1 - Patient Inclusion):**\n    *   Filter for all patients.\n    *   Apply the following criteria:\n        *   `FinalVisitDate <= ProtocolEndDate` (Completed patients)\n        *   `MissingPrimaryEndpoint = No` (Exclude patients with missing primary endpoint data)\n3.  **Data Filtering (Step 2 - Cohort Definition):**\n    *   Create a cohort based on the filtered data from Step 1.\n4.  **Data Extraction:** Extract the PatientID, VisitDate, VisitType, ProtocolEndDate, FinalVisitDate, and PrimaryEndpoint for the defined cohort.\n5.  **Data Validation:** Verify the extracted data against the original database to ensure accuracy.\n6.  **Data Transformation:**  Transform the data into a suitable format for reporting (e.g., CSV, Excel).\n\n**5. Sample Output Table (ADaM compliant):**\n\n| PatientID | VisitDate     | VisitType      | ProtocolEndDate | FinalVisitDate | PrimaryEndpoint |\n| :-------- | :------------ | :------------- | :-------------- | :------------- | :-------------- |\n| 12345     | 2023-01-15    | Screening      | 2024-03-10      | 2024-03-10     | Yes             |\n| 67890     | 2023-02-20    | Baseline       | 2024-03-10      | 2024-03-10     | Yes             |\n| 13579     | 2023-03-10    | Follow-up      | 2024-03-10      | 2024-03-10     | Yes             |\n| 24680     | 2023-04-05    | Follow-up      | 2024-03-10      | 2024-03-05     | No              |\n| 98765     | 2023-05-12    | Follow-up      | 2024-03-10      | 2024-03-10     | Yes             |\n\n\n\n**6. Risk Assessment for Data Sharing with Medical Writer:**\n\n*   **Data Sensitivity:** The dataset contains patient-level data, including dates and endpoint information.\n*   **Risk:** Potential for unauthorized disclosure of patient information.\n*   **Mitigation:**\n    *   **De-identification:**  Remove all Direct Identifiers (Name, DOB, Address, MRN) using a validated de-identification process.\n    *   **Data Masking:** Mask any remaining potentially identifying information (e.g., zip codes).\n    *   **NDA:**  Require the external medical writer to sign a Non-Disclosure Agreement (NDA) to ensure confidentiality.\n    *   **Access Control:** Limit access to the de-identified dataset to only authorized personnel.\n    *   **Audit Trail:** Maintain an audit trail of all data access and modifications.\n\n---\n\n**Note:** This plan is a template and should be adapted to the specific details of the trial and database system.  Further validation and testing are required before implementation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task but fails on critical domain accuracy and completeness. Dimension 1 (Correctness) and 4 (Domain Accuracy) are penalized because the sample output table violates the explicit instruction to 'exclude those with missing primary endpoint data' by including a row with 'No' for the endpoint. Furthermore, the table structure is not ADaM compliant; it lists raw visit-level rows instead of a subject-level disposition summary (e.g., counts of patients by disposition status) which is the standard for such reports. Dimension 2 (Completeness) is low because the risk assessment lacks specific technical details on de-identification (e.g., recoding IDs, removing dates) beyond a generic list. Dimension 6 (Autonomy) is low because the output requires significant rework to fix the data inclusion logic and format to be usable for a manuscript."
+    }
+  ]
+}

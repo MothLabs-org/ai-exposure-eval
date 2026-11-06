@@ -1,0 +1,1440 @@
+{
+  "meta": {
+    "job_title": "Logistics Engineers",
+    "job_id": "logistics_engineer",
+    "onet_code": "13-1081.01",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 30,
+    "evaluated_tasks": 30,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.22,
+      "dimensions": {
+        "Correctness": 2.03,
+        "Completeness": 2.07,
+        "Best Practices": 2.0,
+        "Domain Accuracy": 2.07,
+        "Clarity": 3.13,
+        "Autonomy": 2.0
+      },
+      "evaluated_tasks": 30,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1369.45
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop logistic metrics, internal analysis tools, or key performance indicators for business units.",
+      "task_type": "KPI Development and Analysis",
+      "user_prompt": "You are a Logistics Engineer. A retail client is experiencing high inventory holding costs and wants to implement a new KPI dashboard. Using the provided historical data for 12 months, calculate the current 'Inventory Turnover Ratio' and 'Days Sales of Inventory (DSI)'. Then, propose a target KPI value for the next quarter based on a desired 15% reduction in holding costs. Output a JSON object containing the calculated current metrics, the proposed target metrics, and a brief justification for the targets based on the data trends.",
+      "reference_context": {
+        "monthly_data": [
+          {
+            "month": "Jan",
+            "cost_of_goods_sold": 120000,
+            "average_inventory": 45000
+          },
+          {
+            "month": "Feb",
+            "cost_of_goods_sold": 125000,
+            "average_inventory": 46000
+          },
+          {
+            "month": "Mar",
+            "cost_of_goods_sold": 130000,
+            "average_inventory": 44000
+          },
+          {
+            "month": "Apr",
+            "cost_of_goods_sold": 135000,
+            "average_inventory": 43000
+          },
+          {
+            "month": "May",
+            "cost_of_goods_sold": 140000,
+            "average_inventory": 42000
+          },
+          {
+            "month": "Jun",
+            "cost_of_goods_sold": 145000,
+            "average_inventory": 41000
+          },
+          {
+            "month": "Jul",
+            "cost_of_goods_sold": 150000,
+            "average_inventory": 40000
+          },
+          {
+            "month": "Aug",
+            "cost_of_goods_sold": 155000,
+            "average_inventory": 39000
+          },
+          {
+            "month": "Sep",
+            "cost_of_goods_sold": 160000,
+            "average_inventory": 38000
+          },
+          {
+            "month": "Oct",
+            "cost_of_goods_sold": 165000,
+            "average_inventory": 37000
+          },
+          {
+            "month": "Nov",
+            "cost_of_goods_sold": 170000,
+            "average_inventory": 36000
+          },
+          {
+            "month": "Dec",
+            "cost_of_goods_sold": 180000,
+            "average_inventory": 35000
+          }
+        ],
+        "holding_cost_rate": 0.25
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the Inventory Turnover and DSI calculations mathematically accurate for the 12-month period?",
+        "Completeness: Does the response include current metrics, target metrics, and a justification?",
+        "Best practices: Is the target KPI realistic given the 15% cost reduction goal and historical trends?"
+      ],
+      "student_answer": "```json\n{\n  \"current_metrics\": {\n    \"inventory_turnover_ratio\": 3.6,\n    \"days_sales_of_inventory\": 60\n  },\n  \"proposed_target_metrics\": {\n    \"inventory_turnover_ratio\": 4.2,\n    \"days_sales_of_inventory\": 50\n  },\n  \"justification\": \"The current inventory turnover ratio is 3.6, indicating relatively slow inventory movement.  A 15% reduction in holding costs necessitates a corresponding decrease in inventory levels.  Based on the historical trend of decreasing average inventory over the past 12 months, a target inventory turnover ratio of 4.2 and a DSI of 50 are proposed to achieve this reduction while maintaining sales levels. This assumes a consistent growth in COGS, which is observed in the data.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy. First, the calculations are incorrect: the annual COGS is 1,775,000 and average inventory is 40,500, yielding a turnover of ~43.8, not 3.6. The student likely divided monthly averages incorrectly or used a flawed formula. Second, the justification for the target (4.2 turnover) is mathematically inconsistent with the goal of a 15% holding cost reduction; reducing holding costs by 15% requires reducing inventory by 15%, which would increase turnover to ~51.5, not 4.2. Third, the submission ignores the 'Additional Checks' requirements: it does not apply the volume cost formula, does not mention 'volume consolidation', and contains no ROI calculation. The output is not usable for a client due to these fundamental errors."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Conduct logistics studies or analyses, such as time studies, zero-base analyses, rate analyses, network analyses, flow-path analyses, or supply chain analyses.",
+      "task_type": "Network Flow Analysis",
+      "user_prompt": "You are a Logistics Engineer. A manufacturing firm operates three plants (P1, P2, P3) and two distribution centers (DC1, DC2). Using the provided capacity constraints and shipping costs, determine the optimal shipping plan to meet demand at DC1 and DC2 while minimizing total transportation costs. Assume P1 has 500 units, P2 has 600 units, and P3 has 400 units. DC1 needs 700 units and DC2 needs 800 units. Output the shipping plan (units from each plant to each DC) and the total minimized cost.",
+      "reference_context": {
+        "supply": {
+          "P1": 500,
+          "P2": 600,
+          "P3": 400
+        },
+        "demand": {
+          "DC1": 700,
+          "DC2": 800
+        },
+        "shipping_costs_per_unit": {
+          "P1_to_DC1": 10,
+          "P1_to_DC2": 15,
+          "P2_to_DC1": 12,
+          "P2_to_DC2": 9,
+          "P3_to_DC1": 8,
+          "P3_to_DC2": 14
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the solution satisfy all supply and demand constraints without exceeding capacity?",
+        "Optimization: Is the total transportation cost the minimum possible given the cost matrix?",
+        "Clarity: Is the shipping plan clearly presented with specific unit allocations?"
+      ],
+      "student_answer": "```json\n{\n  \"shipping_plan\": {\n    \"P1_to_DC1\": 300,\n    \"P1_to_DC2\": 200,\n    \"P2_to_DC1\": 200,\n    \"P2_to_DC2\": 400,\n    \"P3_to_DC1\": 700,\n    \"P3_to_DC2\": 0\n  },\n  \"total_cost\": 14000\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, the solution is mathematically incorrect: the total supply (1500) does not equal the total demand (1500) in the student's plan because P3_to_DC1 is listed as 700 while P3 only has 400 units capacity, violating the supply constraint. Second, the total cost calculation (14000) is wrong based on the provided plan and costs. Third, the submission ignores the 'Additional Checks' instructions regarding variable cost formulas, volume consolidation, and ROI calculations, which were part of the prompt's verification requirements. Finally, the output format is a raw JSON without the requested critique or reasoning structure, and the content is not usable as a professional deliverable."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Identify cost-reduction or process-improvement logistic opportunities.",
+      "task_type": "Process Improvement Strategy",
+      "user_prompt": "You are a Logistics Engineer. A client's current order fulfillment process has a 48-hour lead time from order receipt to shipment. The client wants to reduce this to 24 hours. Analyze the provided process steps and identify bottlenecks. Propose a revised workflow that includes specific process changes (e.g., parallel processing, automation) and calculate the expected ROI based on reduced labor costs and increased order volume. Output a structured report with the bottleneck analysis, the new workflow steps, and the ROI calculation.",
+      "reference_context": {
+        "current_process": [
+          {
+            "step": "Order Receipt",
+            "duration_hours": 2
+          },
+          {
+            "step": "Inventory Check",
+            "duration_hours": 12,
+            "bottleneck": true
+          },
+          {
+            "step": "Picking",
+            "duration_hours": 8
+          },
+          {
+            "step": "Packing",
+            "duration_hours": 6
+          },
+          {
+            "step": "Handover to Carrier",
+            "duration_hours": 20
+          }
+        ],
+        "current_labor_cost_per_order": 15.0,
+        "projected_volume_increase_if_24h": 0.2,
+        "implementation_cost": 50000,
+        "annual_orders": 100000
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the proposed workflow logically reduce the lead time to 24 hours?",
+        "Feasibility: Are the proposed changes realistic for a logistics environment?",
+        "ROI Accuracy: Is the ROI calculation based on the provided volume increase and cost savings?"
+      ],
+      "student_answer": "**Logistics Process Improvement Report – Order Fulfillment Lead Time Reduction**\n\n**1. Bottleneck Analysis**\n\n*   **Primary Bottleneck:** Inventory Check (12 hours) – Significantly contributes to the 48-hour lead time.\n*   **Secondary Bottlenecks:** Handover to Carrier (20 hours) – While substantial, it’s influenced by the Inventory Check.\n\n**2. Revised Workflow**\n\n| Step                      | Description                               | Duration (Hours) | Changes Proposed                                                              |\n| ------------------------- | ----------------------------------------- | ---------------- | ----------------------------------------------------------------------------- |\n| Order Receipt             | Customer places order.                     | 2                | Maintain current process.                                                    |\n| Inventory Check           | System verifies stock availability.       | 2                | Implement real-time inventory tracking system (RFID/Barcode) and automated inventory updates. |\n| Picking                   | Items are retrieved from storage.          | 4                | Implement automated picking system (e.g., robotic picking, conveyor system). |\n| Packing                   | Items are packaged for shipment.          | 3                | Optimize packing process – standardize box sizes, implement automated packing machines. |\n| Handover to Carrier       | Shipment is handed off to the carrier.     | 4                | Integrate carrier system for automated label printing and shipment tracking. |\n\n**3. ROI Calculation**\n\n*   **Current Labor Cost:** 100,000 orders * $15/order = $1,500,000\n*   **Annual Orders (with 24-hour lead time):** 100,000 orders * 1.2 (projected volume increase) = 120,000 orders\n*   **New Labor Cost:** 120,000 orders * $15/order = $1,800,000\n*   **Labor Cost Savings:** $1,800,000 - $1,500,000 = $300,000\n*   **Net Benefit (Savings - Implementation Cost):** $300,000 - $50,000 = $250,000\n*   **ROI:** ($250,000 / $50,000) * 100% = 500%\n\n**4. Summary**\n\nReducing the order fulfillment lead time from 48 to 24 hours is achievable through targeted process improvements. The proposed changes, particularly the implementation of real-time inventory tracking and automated picking, will significantly reduce the primary bottleneck.  The projected ROI of 500% demonstrates a strong return on investment, making this a financially viable and strategically beneficial undertaking.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy due to a fundamental logical error in the ROI calculation. The student calculated 'Labor Cost Savings' by comparing the total labor cost of the new volume (120k orders) against the old volume (100k orders), resulting in a higher cost ($1.8M vs $1.5M), yet incorrectly labeled the difference as savings. A true reduction in lead time should lower the cost per order (e.g., via automation efficiency) or the calculation should reflect the net benefit of volume growth minus the cost increase, not 'savings' from increased volume. The student also hallucinated that the $15 labor cost per order remains constant despite proposing automation (which typically reduces unit labor cost), and failed to address the 'Additional Checks' regarding volume consolidation or specific variable cost formulas. While the structure is clear (Clarity 4), the financial logic is flawed, preventing the output from being client-ready (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Review contractual commitments, customer specifications, or related information to determine logistics or support requirements.",
+      "task_type": "Contractual Compliance Analysis",
+      "user_prompt": "You are a Logistics Engineer. A client has a contract requiring 99.5% on-time delivery and a maximum of 2% damaged goods. Review the provided 6-month performance data. Determine if the client is in compliance. If not, identify the specific months of non-compliance and propose a corrective action plan to achieve compliance in the next quarter. Output a JSON object with the compliance status, a list of non-compliant months, and the corrective action plan.",
+      "reference_context": {
+        "contract_requirements": {
+          "on_time_delivery_pct": 99.5,
+          "max_damage_pct": 2.0
+        },
+        "performance_data": [
+          {
+            "month": "Jan",
+            "on_time_pct": 99.2,
+            "damage_pct": 1.5
+          },
+          {
+            "month": "Feb",
+            "on_time_pct": 99.8,
+            "damage_pct": 2.1
+          },
+          {
+            "month": "Mar",
+            "on_time_pct": 99.6,
+            "damage_pct": 1.8
+          },
+          {
+            "month": "Apr",
+            "on_time_pct": 99.1,
+            "damage_pct": 1.9
+          },
+          {
+            "month": "May",
+            "on_time_pct": 99.7,
+            "damage_pct": 2.3
+          },
+          {
+            "month": "Jun",
+            "on_time_pct": 99.4,
+            "damage_pct": 1.7
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the compliance checks against the contract requirements accurate?",
+        "Identification: Are all non-compliant months correctly identified?",
+        "Actionability: Is the corrective action plan specific and likely to improve the metrics?"
+      ],
+      "student_answer": "```json\n{\n  \"compliance_status\": \"Non-compliant\",\n  \"non_compliant_months\": [\"Jan\", \"Apr\", \"May\", \"Jun\"],\n  \"corrective_action_plan\": {\n    \"quarter\": \"Next Quarter\",\n    \"actions\": [\n      {\n        \"month\": \"July\",\n        \"strategy\": \"Root Cause Analysis - Damage\",\n        \"details\": \"Conduct a thorough investigation into the causes of increased damage in May and June. Focus on packaging, handling procedures, and supplier quality. Implement immediate improvements based on findings.\"\n      },\n      {\n        \"month\": \"August\",\n        \"strategy\": \"Process Optimization - On-Time Delivery\",\n        \"details\": \"Analyze shipment routing and scheduling to identify bottlenecks. Implement a more robust tracking system and proactively address potential delays. Explore partnerships with expedited shipping providers for critical shipments.\"\n      },\n      {\n        \"month\": \"September\",\n        \"strategy\": \"Supplier Performance Monitoring\",\n        \"details\": \"Implement stricter quality control measures for incoming materials. Establish clear performance metrics for suppliers and hold them accountable for meeting delivery and quality standards.\"\n      },\n      {\n        \"month\": \"October\",\n        \"strategy\": \"Employee Training\",\n        \"details\": \"Provide additional training to warehouse and shipping personnel on proper handling techniques and damage prevention.\"\n      }\n    ]\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails the core task of determining compliance based on the provided data. It incorrectly identifies Jan, Apr, May, and Jun as non-compliant. In reality, only Feb (damage 2.1%) and May (damage 2.3%) violated the 2% damage limit; Jan, Apr, and Jun met the 99.5% on-time requirement (99.2, 99.1, 99.4 are all below 99.5, so actually Jan, Apr, Jun are non-compliant for on-time, but the student missed Feb's on-time success and May's on-time success). Wait, let's re-evaluate: Jan (99.2 < 99.5) -> Fail. Feb (99.8 > 99.5, 2.1 > 2.0) -> Fail. Mar (99.6 > 99.5, 1.8 < 2.0) -> Pass. Apr (99.1 < 99.5, 1.9 < 2.0) -> Fail. May (99.7 > 99.5, 2.3 > 2.0) -> Fail. Jun (99.4 < 99.5, 1.7 < 2.0) -> Fail. The student correctly identified Jan, Apr, May, Jun as non-compliant but missed Feb. This is a critical data analysis error. Furthermore, the 'Additional Checks' section of the prompt explicitly required applying a variable cost formula, mentioning 'volume consolidation', and calculating ROI. The student's response completely ignored these specific constraints, hallucinating a generic plan instead of addressing the specific analytical requirements. The corrective plan is also misaligned with the timeline (Next Quarter is July-Sept, but the plan lists Oct). The output is fundamentally flawed in data interpretation and instruction following."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Propose logistics solutions for customers.",
+      "task_type": "Multi-Modal Solution Design",
+      "user_prompt": "You are a Logistics Engineer. A customer needs to ship 50,000 units of perishable goods from City A to City B (2,000 miles). The customer has a strict temperature control requirement and a 5-day delivery window. Compare three options: Refrigerated Truck, Rail with Refrigerated Containers, and Air Freight. For each option, calculate the total cost (transport + handling + insurance) and estimated transit time. Recommend the best option based on cost and reliability, providing a justification. Output the comparison table and the recommendation.",
+      "reference_context": {
+        "distance_miles": 2000,
+        "volume_units": 50000,
+        "options": {
+          "Refrigerated_Truck": {
+            "cost_per_mile": 4.5,
+            "handling_cost": 2000,
+            "insurance_rate": 0.005,
+            "transit_days": 4
+          },
+          "Rail_Refrigerated": {
+            "cost_per_mile": 2.0,
+            "handling_cost": 5000,
+            "insurance_rate": 0.003,
+            "transit_days": 6
+          },
+          "Air_Freight": {
+            "cost_per_unit": 12.0,
+            "handling_cost": 10000,
+            "insurance_rate": 0.008,
+            "transit_days": 1
+          }
+        },
+        "penalty_for_delay": 5000
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the total cost calculations for each option accurate?",
+        "Constraint Adherence: Does the recommendation respect the 5-day delivery window?",
+        "Reasoning: Is the final recommendation logically supported by the cost and time analysis?"
+      ],
+      "student_answer": "```\n| Option              | Total Cost (USD) | Estimated Transit Time (Days) |\n|----------------------|------------------|-----------------------------|\n| Refrigerated Truck   | $45,000          | 5                           |\n| Rail Refrigerated    | $30,000          | 7                           |\n| Air Freight          | $600,000         | 2                           |\n\n**Recommendation:**\n\nRefrigerated Truck\n\n**Justification:**\n\nConsidering both cost and reliability, the Refrigerated Truck is the most suitable option. While the total cost of $45,000 is higher than Rail Refrigerated ($30,000), it offers a significantly shorter transit time of 5 days, well within the customer's 5-day delivery window. Air Freight, despite its fastest transit time of 2 days, is prohibitively expensive at $600,000, making it impractical. The truck option balances cost and the critical requirement of meeting the delivery deadline, minimizing the risk of incurring the $5,000 per day penalty for delays.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student ignored the provided context data entirely, using arbitrary numbers (e.g., Truck cost $45,000 vs calculated $90,000+) and hallucinating transit times (Truck 5 days vs 4 days, Rail 7 days vs 6 days). The cost calculation logic is completely wrong; it did not apply the provided formulas (e.g., Air Freight should be 50,000 units * $12 = $600,000, which matches, but Truck and Rail were calculated incorrectly or arbitrarily). The justification mentions a '$5,000 per day penalty' which contradicts the context's '$5,000 total penalty for delay'. The submission does not follow the required output format (JSON) and fails to perform the actual calculations requested. While the table structure is clear (Clarity 3), the content is factually incorrect based on the prompt's constraints."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Evaluate effectiveness of current or future logistical processes.",
+      "task_type": "Process Effectiveness Evaluation",
+      "user_prompt": "You are a Logistics Engineer. A warehouse has implemented a new 'Zone Picking' system. Evaluate its effectiveness by comparing the 'Orders Per Hour' (OPH) and 'Error Rate' before and after implementation. The data shows a 20% increase in OPH but a 5% increase in error rate. Calculate the net operational value considering the cost of errors (rework cost per error) versus the labor savings from increased productivity. Recommend whether to keep, modify, or revert the system. Output the net value calculation and the final recommendation.",
+      "reference_context": {
+        "pre_implementation": {
+          "oph": 50,
+          "error_rate_pct": 1.0,
+          "labor_cost_per_hour": 25
+        },
+        "post_implementation": {
+          "oph": 60,
+          "error_rate_pct": 1.05,
+          "labor_cost_per_hour": 25
+        },
+        "daily_orders": 1000,
+        "rework_cost_per_error": 15.0,
+        "working_days_per_month": 22
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the labor savings and rework costs calculated correctly?",
+        "Net Value: Is the net operational value (savings minus rework costs) accurately determined?",
+        "Recommendation: Is the final recommendation consistent with the calculated net value?"
+      ],
+      "student_answer": "```json\n{\n  \"net_value_calculation\": {\n    \"oph_increase\": 60 - 50,\n    \"oph_increase_orders\": (60 - 50) * 1000,\n    \"oph_increase_labor_savings\": (60 - 50) * 22 * 25,\n    \"error_rate_increase\": 1.05 - 1.0,\n    \"error_rate_increase_orders\": (1.05 - 1.0) * 1000,\n    \"error_rate_increase_rework_cost\": (1.05 - 1.0) * 1000 * 15.0,\n    \"total_labor_savings\": (60 - 50) * 22 * 25,\n    \"total_rework_cost\": (1.05 - 1.0) * 1000 * 15.0,\n    \"net_value\": (total_labor_savings) - (total_rework_cost),\n    \"net_value_numeric\": 33000 - 15000,\n    \"net_value_units\": \"33000\"\n  },\n  \"recommendation\": \"Keep and Modify. The net operational value of 33000 indicates a positive return on investment. However, the 5% increase in error rate warrants modification. Implement quality control checks within the Zone Picking system to mitigate errors. Focus on training and process optimization to reduce the error rate further. Continuous monitoring of OPH and error rate is crucial to ensure sustained operational improvements.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. First, the JSON structure is invalid as it contains raw arithmetic expressions (e.g., '60 - 50') instead of calculated numeric values, making it unusable for automated systems. Second, the calculation logic is fundamentally flawed: it calculates labor savings based on the difference in OPH (10) multiplied by daily orders (1000), which incorrectly implies the labor cost is incurred per order rather than per hour worked. The correct approach requires calculating total hours worked (Orders / OPH) to determine labor savings. Third, the error rate increase is calculated as an absolute difference (0.05) applied to total orders, which is mathematically incorrect; the increase should be based on the difference in error rates applied to the volume, or the total error count difference. Fourth, the recommendation suggests 'Keep and Modify' but fails to address the specific 'Additional Checks' regarding volume consolidation or the specific ROI formula requested. Finally, the output is not autonomous (Score 2) because it requires significant human intervention to fix the syntax and math errors before it can be used."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop or maintain cost estimates, forecasts, or cost models.",
+      "task_type": "Cost Modeling and Forecasting",
+      "user_prompt": "You are a Logistics Engineer. A client needs a 12-month cost forecast for a new distribution center. Given the attached operational data (fixed costs, variable shipping rates, projected volume growth), calculate the total projected cost for Year 1. Then, propose a cost-reduction strategy that leverages volume consolidation, estimating the potential savings. Output your response as a structured JSON object containing the forecast table, the strategy description, and the calculated ROI.",
+      "reference_context": {
+        "fixed_costs": {
+          "rent": 150000,
+          "labor": 450000,
+          "utilities": 60000
+        },
+        "variable_costs": {
+          "shipping_per_unit": 12.5,
+          "handling_per_unit": 3.2
+        },
+        "projected_volume": [
+          10000,
+          11500,
+          13000,
+          14500,
+          16000,
+          17500,
+          19000,
+          20500,
+          22000,
+          23500,
+          25000,
+          26500
+        ],
+        "current_strategy": "Standard shipping with no consolidation"
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the mathematical calculations for the 12-month forecast accurate?",
+        "Completeness: Does the response include both the forecast table and the proposed strategy?",
+        "Best practices: Is the cost-reduction strategy logically sound and feasible for a logistics environment?"
+      ],
+      "student_answer": "```json\n{\n  \"forecast_table\": {\n    \"year\": [\n      1\n    ],\n    \"volume\": 26500,\n    \"fixed_costs\": {\n      \"rent\": 150000,\n      \"labor\": 450000,\n      \"utilities\": 60000\n    },\n    \"variable_costs\": {\n      \"shipping_per_unit\": 12.5,\n      \"handling_per_unit\": 3.2\n    },\n    \"total_cost\": 1778750\n  },\n  \"cost_reduction_strategy\": \"Volume Consolidation - Implement a dedicated LTL carrier for shipments exceeding 500 units. This will reduce shipping rates by 10% due to bulk discounts and optimized routing.  Additionally, implement a cross-docking strategy to reduce handling costs by 5% by minimizing storage time.\",\n  \"estimated_savings\": {\n    \"shipping_savings\": 26500 * (0.10 * 12.5),\n    \"handling_savings\": 26500 * (0.05 * 3.2),\n    \"total_savings\": 33250 + 880 = 34130\n  },\n  \"roi\": {\n    \"savings\": 34130,\n    \"original_cost\": 1778750,\n    \"roi_percentage\": (34130 / 1778750) * 100,\n    \"roi_percentage_formatted\": \"1.92%\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. The task explicitly requested a 12-month forecast based on monthly volume growth, but the student aggregated all volume into a single year-end figure (26,500) rather than summing the 12 monthly projections. This results in a massive underestimation of costs (calculating for ~26k units instead of ~215k units). The 'estimated_savings' and 'roi' sections contain raw mathematical expressions (e.g., '26500 * (0.10 * 12.5)') instead of calculated numerical values, which violates the requirement for a professional, usable JSON output. The strategy mentions volume consolidation but is based on flawed data. While the JSON structure is syntactically valid, the content is mathematically incorrect and incomplete, failing the 'Autonomy' criterion as it cannot be delivered to a client without immediate correction."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Analyze or interpret logistics data involving customer service, forecasting, procurement, manufacturing, inventory, transportation, or warehousing.",
+      "task_type": "Inventory Optimization Analysis",
+      "user_prompt": "You are a Logistics Engineer. Analyze the provided quarterly inventory turnover data for a manufacturing plant. The current average inventory value is $2.5M with a COGS of $10M annually. Calculate the current turnover ratio and days sales of inventory (DSI). Then, identify the bottleneck causing the DSI to exceed the industry benchmark of 45 days. Propose a specific procurement adjustment to reduce DSI to 40 days, calculating the resulting cash flow improvement.",
+      "reference_context": {
+        "current_inventory_value": 2500000,
+        "annual_cogs": 10000000,
+        "industry_benchmark_dsi": 45,
+        "target_dsi": 40,
+        "quarterly_turnover_data": [
+          {
+            "q1": 3.2
+          },
+          {
+            "q2": 3.5
+          },
+          {
+            "q3": 3.1
+          },
+          {
+            "q4": 3.8
+          }
+        ],
+        "lead_time_days": 14,
+        "safety_stock_days": 10
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the turnover ratio and DSI calculations correct based on the provided data?",
+        "Analysis: Does the response correctly identify the bottleneck relative to the benchmark?",
+        "Quantification: Is the cash flow improvement calculated accurately based on the proposed adjustment?"
+      ],
+      "student_answer": "**Turnover Ratio:**\n\n*   Annual Inventory Turnover = Annual COGS / Average Inventory Value\n*   Annual Inventory Turnover = $10,000,000 / $2,500,000 = 4\n*   Quarterly Inventory Turnover = Annual Inventory Turnover / 4\n*   Quarterly Inventory Turnover = 4 / 4 = 1\n\n**Days Sales of Inventory (DSI):**\n\n*   DSI = 365 days / Quarterly Inventory Turnover\n*   DSI = 365 days / 1 = 365 days\n\n**Bottleneck Identification:**\n\nThe DSI of 365 days significantly exceeds the industry benchmark of 45 days. The primary bottleneck is likely a combination of low inventory turnover and a long lead time.  The current turnover ratio of 1 indicates extremely slow sales relative to inventory levels.\n\n**Procurement Adjustment:**\n\nImplement a Just-In-Time (JIT) procurement strategy focused on reducing lead times and increasing order frequency. Specifically, negotiate with key suppliers to reduce lead times from 14 days to 10 days. This will require a 33% reduction in lead time.\n\n**Cash Flow Improvement Calculation:**\n\n*   Current Annual COGS = $10,000,000\n*   Reduced Lead Time Impact: Assuming a linear relationship between lead time and inventory holding costs, a 33% reduction in lead time will reduce inventory holding costs proportionally.  Let's estimate inventory holding costs at 20% of average inventory value.\n*   Current Inventory Holding Costs = 0.20 * $2,500,000 = $500,000\n*   Reduced Inventory Holding Costs = 0.77 * $500,000 = $385,000\n*   Annual COGS Reduction = $385,000\n*   New Annual COGS = $10,000,000 - $385,000 = $9,615,000\n*   Cash Flow Improvement = $10,000,000 - $9,615,000 = $385,000\n\n**Output:**\n\n*   Turnover Ratio: 1\n*   DSI: 365 days\n*   Bottleneck: Low inventory turnover and long lead times.\n*   Procurement Adjustment: Implement JIT procurement to reduce lead time from 14 to 10 days.\n*   Cash Flow Improvement: $385,000",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The student calculated DSI as 365 days by incorrectly dividing 365 by the quarterly turnover (1) instead of the annual turnover (4), resulting in a 91% error. Consequently, the bottleneck analysis and procurement strategy are based on false premises. The proposed 'Cash Flow Improvement' calculation is mathematically incoherent, treating inventory holding cost reductions as a reduction in COGS and claiming the savings equal the reduction in COGS, which is a logical fallacy. The submission ignores the specific target of reducing DSI to 40 days and fails to calculate the required inventory reduction to achieve that specific metric. While the formatting is clear (Clarity: 3), the content is unusable for a professional context."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Prepare logistic strategies or conceptual designs for production facilities.",
+      "task_type": "Facility Layout Strategy",
+      "user_prompt": "You are a Logistics Engineer. Design a conceptual layout for a new assembly line that must handle 500 units per hour. The process involves 5 stations with specific cycle times: Station A (10s), Station B (12s), Station C (8s), Station D (15s), Station E (10s). Calculate the theoretical maximum throughput and identify the bottleneck station. Propose a layout configuration that minimizes material handling distance while addressing the bottleneck, assuming a 100m x 50m floor space. Include a justification for the layout based on flow efficiency.",
+      "reference_context": {
+        "target_throughput": 500,
+        "cycle_times": {
+          "Station A": 10,
+          "Station B": 12,
+          "Station C": 8,
+          "Station D": 15,
+          "Station E": 10
+        },
+        "floor_dimensions": {
+          "length": 100,
+          "width": 50
+        },
+        "material_handling_cost_per_meter": 0.5
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the bottleneck station correctly identified based on cycle times?",
+        "Feasibility: Is the proposed layout physically possible within the given floor dimensions?",
+        "Optimization: Does the layout strategy effectively minimize handling distance while addressing the bottleneck?"
+      ],
+      "student_answer": "**Layout Configuration:**\n\n```\n+-------------------------------------------------+\n|                                                 |\n|   Station E (10s)  <--  Station D (15s)          |\n|                                                 |\n|   Station C (8s)   <--  Station B (12s)          |\n|                                                 |\n|   Station A (10s)  <--  Start --> Finish        |\n|                                                 |\n+-------------------------------------------------+\n```\n\n**Dimensions:**\n\n*   **Length:** 100m (approximate)\n*   **Width:** 50m (approximate)\n\n**Justification:**\n\nThe bottleneck is Station D with a cycle time of 15 seconds. To achieve 500 units per hour, the overall cycle time must be no longer than 6 seconds (500 units / 83.33 minutes = 6 seconds).  Station D dictates the maximum throughput.\n\nThis linear layout places Stations A, B, C, and E sequentially, minimizing the distance each unit travels. Station D is positioned at the end of the line to directly receive units from the preceding stations and send them to the next. This configuration ensures a direct flow of materials, reducing unnecessary movement and congestion. The layout utilizes the available floor space efficiently, with Stations A-C arranged along the 100m length and Station D at the end. Station E is placed adjacent to Station D to minimize the distance between the last and first stations.\n\n**Theoretical Maximum Throughput:**\n\nThe theoretical maximum throughput is limited by the slowest station, which is Station D with a cycle time of 15 seconds.  Therefore, the maximum throughput is 1 / 15 = 66.67 units per minute, or 396.67 units per hour.  Since we need to achieve 500 units per hour, this layout will not meet the target throughput without adjustments (e.g., process time reduction, additional stations).\n\n**Material Handling Cost Estimate:**\n\n*   Total length of the line: 100m\n*   Width of the line: 50m\n*   Area: 5000 sq meters\n*   Material handling cost: 5000 sq meters * 0.5 $/meter = $2500",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The student calculates the theoretical maximum throughput as 396.67 units/hour, which is correct based on the bottleneck, but then incorrectly claims the target of 500 units/hour requires a cycle time of 6 seconds (500 units / 3600 seconds = 7.2s, not 6s). More critically, the layout diagram is nonsensical; it shows a disconnected, non-linear arrangement (E<-D, C<-B, A<-Start) that contradicts the concept of a single assembly line. 2) Completeness: The student fails to propose a viable solution to the bottleneck (e.g., parallel stations) to meet the 500 units/hour target, simply stating it won't work. 3) Best Practices: The material handling cost calculation is hallucinated and mathematically invalid (multiplying area in sq meters by a cost per linear meter). 4) Domain Accuracy: The layout logic is incoherent, and the flow efficiency justification is based on a broken diagram. 5) Clarity: The diagram and text are confusing. 6) Autonomy: The output is unusable for a client due to fundamental calculation errors and a broken layout design."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Determine logistics support requirements, such as facility details, staffing needs, or safety or maintenance plans.",
+      "task_type": "Staffing and Safety Planning",
+      "user_prompt": "You are a Logistics Engineer. Determine the staffing requirements and safety maintenance plan for a 24/7 warehousing operation expanding to handle 20,000 orders daily. The current shift pattern is 3 shifts of 8 hours. Calculate the total number of full-time equivalents (FTEs) needed if the standard pick rate is 60 units per hour per worker, assuming a 15% buffer for breaks and non-productive time. Additionally, draft a maintenance schedule for the automated conveyor system that ensures 99% uptime, considering a mean time between failures (MTBF) of 500 hours.",
+      "reference_context": {
+        "daily_orders": 20000,
+        "shifts": 3,
+        "hours_per_shift": 8,
+        "pick_rate_per_hour": 60,
+        "buffer_percentage": 15,
+        "mtbf_hours": 500,
+        "target_uptime": 0.99
+      },
+      "evaluation_criteria": [
+        "Calculation: Are the FTE calculations accurate including the buffer?",
+        "Compliance: Does the maintenance schedule align with the 99% uptime target?",
+        "Completeness: Are both staffing and safety maintenance requirements fully addressed?"
+      ],
+      "student_answer": "**Staffing Requirements:**\n\n*   **Total Pick Rate Needed:** 20000 orders / 8 hours/shift * 60 units/hour = 150,000 units/day\n*   **Total Pick Rate with Buffer:** 150,000 units * 1.15 = 172,500 units/day\n*   **Required Workers:** 172,500 units / 60 units/hour = 2875 hours/day\n*   **Full-Time Equivalents (FTEs):** 2875 hours/day / 8 hours/shift / 3 shifts = 96.40 FTEs\n*   **Rounded FTEs:** 97 FTEs\n\n**Maintenance Schedule (Automated Conveyor System):**\n\n*   **Mean Time Between Failures (MTBF):** 500 hours\n*   **Target Mean Time To Repair (MTTR):** 8 hours (Conservative estimate – requires dedicated technicians and parts availability)\n*   **Availability Target:** 99% = 0.99\n*   **Required Reliability:** 1 / 0.99 = 1.0101 (or 101%)\n\n**Preventive Maintenance Schedule:**\n\n1.  **Daily:** Visual inspection of belts, rollers, and sensors. Lubrication of moving parts.\n2.  **Weekly:** Motor checks, belt tension adjustments, sensor calibration.\n3.  **Monthly:** Thorough cleaning of conveyor system, inspection of drive components, testing of emergency stop systems.\n4.  **Quarterly:** Replace conveyor belts (based on wear and tear analysis – estimated replacement rate based on MTBF), inspection and testing of PLC logic.\n5.  **Semi-Annually:** Full system diagnostic testing, software updates, component replacement (e.g., bearings, gears).\n6.  **Annually:** Major overhaul of drive motors and gearboxes, complete system inspection and documentation update.\n\n**Corrective Maintenance:**\n\n*   Implement a rapid response team (2 technicians) available 24/7 to address failures.\n*   Maintain a stock of critical spare parts (belts, sensors, motors) to minimize downtime.\n*   Utilize remote diagnostics capabilities where available.\n*   Track all failures and repairs to identify recurring issues and optimize the preventive maintenance schedule.\n\n**Uptime Calculation:**\n\n*   **Scheduled Downtime:** (MTTR / MTBF) * Operating Hours = (8 hours / 500 hours) * 24 hours/day = 0.0384 days/week = 0.98 days/year\n*   **Total Downtime (Planned + Unplanned):** 0.98 days/year\n*   **Estimated Uptime:** 1 - (Downtime / Operating Hours) = 1 - (0.98 / 24) = 0.9917 or 99.17%\n\n**Note:** This maintenance schedule is a starting point and should be adjusted based on actual system performance and failure data. Continuous monitoring and analysis are crucial for maintaining high system uptime.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical calculation errors and logical flaws. First, the staffing calculation incorrectly treats 'orders' as 'units' without a defined units-per-order ratio, leading to a massive overestimation of FTEs (97 vs likely 10-20). Second, the maintenance section fails to calculate the required MTTR to achieve 99% uptime; instead, it arbitrarily sets MTTR to 8 hours and then performs a nonsensical reliability calculation (1/0.99). The uptime formula used is also incorrect for the context. While the maintenance schedule structure is professional, the underlying math and logic are fundamentally flawed, failing the 'Correctness' and 'Domain Accuracy' criteria."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Provide logistics technology or information for effective and efficient support of product, equipment, or system manufacturing or service.",
+      "task_type": "Technology Implementation Strategy",
+      "user_prompt": "You are a Logistics Engineer. Evaluate the implementation of a Warehouse Management System (WMS) upgrade for a facility with 50,000 SKUs. The current system has a 5% error rate in order picking. The new WMS costs $250,000 to implement and is projected to reduce errors to 0.5%. If the average cost of a picking error is $45 and the facility processes 10,000 orders daily, calculate the annual ROI. Also, specify the data integration requirements needed to ensure the new system interfaces with the existing ERP.",
+      "reference_context": {
+        "current_error_rate": 0.05,
+        "target_error_rate": 0.005,
+        "implementation_cost": 250000,
+        "cost_per_error": 45,
+        "daily_orders": 10000,
+        "operating_days": 365,
+        "erp_system": "SAP S/4HANA"
+      },
+      "evaluation_criteria": [
+        "Accuracy: Is the annual ROI calculated correctly based on error reduction and volume?",
+        "Technical Depth: Are the data integration requirements specific and realistic for the mentioned ERP?",
+        "Clarity: Is the justification for the investment clear and data-driven?"
+      ],
+      "student_answer": "**Annual ROI Calculation:**\n\n1.  **Annual Error Rate (Current):** 0.05 * 10,000 orders/day * 365 days/year = 18,250 errors/year\n2.  **Annual Error Rate (New):** 0.005 * 10,000 orders/day * 365 days/year = 182.5 errors/year\n3.  **Annual Error Cost (Current):** 18,250 errors/year * $45/error = $821,250\n4.  **Annual Error Cost (New):** 182.5 errors/year * $45/error = $8,212.50\n5.  **Annual Savings:** $821,250 - $8,212.50 = $813,037.50\n6.  **ROI:** ($813,037.50 - $250,000) / $250,000 = 2.45 or 245%\n\n**Data Integration Requirements (SAP S/4HANA):**\n\n*   **Order Data:** Real-time synchronization of order details (items, quantities, shipping addresses) from SAP S/4HANA to the WMS.\n*   **Inventory Data:** Bi-directional synchronization of inventory levels between SAP S/4HANA and the WMS.  This includes updates for received goods, issued goods, and adjustments.\n*   **Product Data:**  Consistent product master data (SKU descriptions, dimensions, weights, etc.) between SAP S/4HANA and the WMS.\n*   **Shipping Data:**  Transmission of shipping information (carrier, tracking numbers) from the WMS to SAP S/4HANA for order fulfillment status updates.\n*   **Putaway Recommendations:**  Integration to receive putaway recommendations from the WMS to SAP S/4HANA for efficient storage.\n*   **Exception Handling:**  Mechanism for propagating WMS-identified exceptions (e.g., low stock, damaged goods) back to SAP S/4HANA for resolution.\n*   **API Integration:** Utilize SAP’s APIs (e.g., BAPI, IDoc) for robust and reliable data exchange. Consider a middleware layer for complex transformations if direct API integration is not feasible.\n*   **Data Mapping:** Detailed data mapping documentation to ensure accurate data translation between the two systems.\n*   **Security:** Secure data transfer protocols (e.g., HTTPS) and access controls to protect sensitive information.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.5,
+      "grade_reason": "The submission correctly calculates the ROI (245%) and accurately identifies key data integration requirements for SAP S/4HANA. The math is flawless, and the domain terminology is appropriate. However, the answer scores a 4 on Completeness and Best Practices because it lacks critical implementation details expected of a Senior Specialist, such as a timeline, change management strategy, or specific middleware recommendations beyond generic API mentions. The 'Additional Checks' in the prompt regarding volume consolidation and monthly variable cost formulas appear to be irrelevant to the specific task of calculating annual ROI based on error reduction, so they do not penalize the student's correct approach to the stated problem. The output is professional and usable but lacks the strategic depth of a perfect 5."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Direct the work of logistics analysts.",
+      "task_type": "Transportation Route Optimization",
+      "user_prompt": "You are a Logistics Engineer. Direct a team of analysts to optimize a regional delivery network serving 12 cities. The current network uses a hub-and-spoke model with a central depot. Total annual transportation cost is $1.2M. Propose a hybrid model (direct shipping for high-volume cities) that reduces total distance by 15%. Calculate the projected annual savings assuming fuel and labor costs are 80% of the total transportation cost. Outline the key performance indicators (KPIs) you would assign to the analysts to monitor the transition.",
+      "reference_context": {
+        "current_annual_cost": 1200000,
+        "distance_reduction_target": 0.15,
+        "cost_composition": {
+          "fuel_labor_percentage": 0.8,
+          "other_costs_percentage": 0.2
+        },
+        "high_volume_cities": [
+          "City A",
+          "City B",
+          "City C"
+        ],
+        "total_cities": 12
+      },
+      "evaluation_criteria": [
+        "Financial Accuracy: Is the projected savings calculation correct based on the cost composition?",
+        "Strategic Fit: Is the hybrid model proposal logical for the specified high-volume cities?",
+        "Management: Are the proposed KPIs relevant for monitoring the transition and performance?"
+      ],
+      "student_answer": "**Proposed Hybrid Delivery Network Optimization**\n\n**1. Hybrid Model Implementation:**\n\nDirect analysts to implement a hybrid delivery model focusing on direct shipping for “City A”, “City B”, and “City C”.  All other cities will continue to utilize the existing hub-and-spoke model.\n\n**2. Distance Reduction Calculation:**\n\n*   Calculate the current total annual distance traveled:  Assume current distance is proportional to the current cost.  A 15% distance reduction translates to a projected annual savings of $180,000 (15% of $1.2M).\n\n**3. Projected Annual Savings:**\n\n*   Fuel and Labor Cost: $1.2M * 0.8 = $960,000\n*   Projected Savings: $180,000\n*   Remaining Costs (Other): $1.2M * 0.2 = $240,000\n*   Total Projected Annual Savings: $180,000\n\n**4. Key Performance Indicators (KPIs):**\n\n*   **Total Transportation Cost:** Track the overall cost of delivery monthly.\n*   **Distance Traveled:** Monitor total distance traveled by all routes, segmented by hub-and-spoke and direct shipping.\n*   **Delivery Time (Average):** Measure the average delivery time for each city, comparing pre- and post-implementation.\n*   **On-Time Delivery Rate:** Track the percentage of deliveries completed within the agreed-upon timeframe.\n*   **Fuel Consumption:** Monitor fuel usage across all routes.\n*   **Labor Hours:** Track labor hours associated with delivery operations.\n*   **Route Efficiency (Miles per Delivery):** Calculate the average miles traveled per delivery for each route type.\n*   **Cost per Delivery:** Calculate the cost per delivery for each route type.\n*   **Customer Satisfaction (Delivery Related):**  Monitor customer feedback related to delivery performance.\n\n**5. Analyst Tasks:**\n\n*   Detailed route analysis for all 12 cities.\n*   Mapping of direct shipping routes for “City A”, “City B”, and “City C”.\n*   Simulation of the hybrid model to validate distance reduction and cost savings.\n*   Development of a reporting dashboard to track KPIs.\n*   Ongoing monitoring and adjustment of routes based on performance data.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails the core mathematical requirement of the task. It incorrectly calculates savings by applying the 15% distance reduction directly to the total transportation cost ($1.2M), rather than applying it only to the variable cost component (fuel and labor, which is 80% of the total). This results in a significant overestimation of savings ($180k vs the correct $144k). Additionally, the response ignores the 'Additional Checks' regarding volume consolidation mechanisms and ROI calculations. While the KPIs are relevant and the structure is clear, the fundamental error in cost modeling and the lack of strategic depth regarding the 'how' of the hybrid model (beyond just naming cities) prevent a higher score."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Evaluate the use of inventory tracking technology, Web-based warehousing software, or intelligent conveyor systems to maximize plant or distribution center efficiency.",
+      "task_type": "Technology Evaluation and Efficiency Analysis",
+      "user_prompt": "You are a Logistics Engineer. A distribution center is experiencing a 15% error rate in order picking due to manual barcode scanning delays. Evaluate the feasibility of implementing an automated RFID-based inventory tracking system versus upgrading to a Web-based warehousing software with barcode optimization. Given the current annual labor cost of $200,000, a projected 20% reduction in labor hours with RFID, and a 10% reduction with software, calculate the ROI for both options over 3 years. Assume RFID hardware costs $150,000 and software implementation costs $40,000. Propose the optimal solution based on ROI and implementation lead time (6 months for RFID, 1 month for software).",
+      "reference_context": {
+        "current_error_rate": 0.15,
+        "annual_labor_cost": 200000,
+        "rfid_hardware_cost": 150000,
+        "software_implementation_cost": 40000,
+        "rfid_labor_reduction": 0.2,
+        "software_labor_reduction": 0.1,
+        "rfid_lead_time_months": 6,
+        "software_lead_time_months": 1,
+        "analysis_period_years": 3
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the ROI calculations for both options accurate over the 3-year period?",
+        "Completeness: Does the response compare both options and explicitly recommend one?",
+        "Best practices: Does the recommendation account for the lead time constraint and operational disruption?"
+      ],
+      "student_answer": "```json\n{\n  \"analysis\": {\n    \"rfid_roi\": {\n      \"initial_investment\": 150000,\n      \"annual_labor_savings\": 200000 * 0.2,\n      \"annual_savings\": 200000 * 0.2,\n      \"projected_savings_years\": 3,\n      \"total_savings\": 600000,\n      \"net_roi\": 600000 - 150000,\n      \"roi_percentage\": (net_roi / 150000) * 100\n    },\n    \"software_roi\": {\n      \"initial_investment\": 40000,\n      \"annual_labor_savings\": 200000 * 0.1,\n      \"annual_savings\": 200000 * 0.1,\n      \"projected_savings_years\": 3,\n      \"total_savings\": 600000,\n      \"net_roi\": 600000 - 40000,\n      \"roi_percentage\": (net_roi / 40000) * 100\n    }\n  },\n  \"recommendation\": \"RFID\",\n  \"justification\": \"The RFID solution offers a higher ROI (78.33%) over 3 years compared to the software upgrade (15%).  Although the software has a lower initial investment, the cumulative savings over three years are less than the initial RFID hardware cost.  Additionally, the RFID implementation has a shorter lead time (6 months) compared to the software (1 month).\",\n  \"summary\": {\n    \"rfid_roi_percentage\": 78.33,\n    \"software_roi_percentage\": 15.00,\n    \"implementation_lead_time_months_rfid\": 6,\n    \"implementation_lead_time_months_software\": 1\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it violates the output format constraint by including code fences () instead of raw JSON. Second, the content is mathematically and logically incoherent: it uses Python syntax (e.g., '200000 * 0.2') instead of calculated values, resulting in a JSON parse error. Third, the calculations are factually wrong; the student claims total savings for software are $600,000 (same as RFID) despite a 10% reduction vs 20%, and calculates an ROI of 15% for software when the actual ROI is 125%. Fourth, the justification contains a hallucinated contradiction, stating RFID has a 'shorter lead time (6 months)' compared to software (1 month), which is logically impossible. Finally, the recommendation is based on these flawed calculations and ignores the lead time trade-off correctly."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop specifications for equipment, tools, facility layouts, or material-handling systems.",
+      "task_type": "Facility Layout and Equipment Specification",
+      "user_prompt": "You are a Logistics Engineer. Design a material-handling system specification for a new 50,000 sq. ft. cold storage facility. The facility must handle 500 pallets per hour with a peak throughput of 750 pallets. The current layout uses manual forklifts, but you must specify a system using automated guided vehicles (AGVs). Calculate the required number of AGVs assuming each travels 200 feet per cycle, cycles every 4 minutes, and has a 90% availability rate. Include a brief specification for the charging infrastructure and safety sensors required. Ensure the system meets the peak throughput requirement with a 10% safety buffer.",
+      "reference_context": {
+        "facility_size_sq_ft": 50000,
+        "average_throughput_pph": 500,
+        "peak_throughput_pph": 750,
+        "agv_cycle_distance_ft": 200,
+        "agv_cycle_time_min": 4,
+        "agv_availability_rate": 0.9,
+        "safety_buffer_percent": 0.1
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the number of AGVs calculated correctly to meet peak throughput with the safety buffer?",
+        "Completeness: Does the response include specifications for charging infrastructure and safety sensors?",
+        "Best practices: Are the specifications realistic for a cold storage environment (e.g., battery performance, sensor reliability)?"
+      ],
+      "student_answer": "**Material Handling System Specification: Cold Storage Facility**\n\n**1. System Overview:**\n\nThis specification details the design for an Automated Guided Vehicle (AGV) based material handling system for a 50,000 sq. ft. cold storage facility, designed to handle an average throughput of 500 pallets per hour and a peak throughput of 750 pallets per hour. The system will replace existing manual forklift operations.\n\n**2. AGV Requirements:**\n\n*   **Number of AGVs:**\n    *   **Theoretical AGV Requirement:** (Peak Throughput / (AGV Cycle Distance * AGV Cycle Time)) = (750 pallets/hour) / (200 feet/cycle * 4 minutes/cycle) = 9.375 AGVs.\n    *   **Safety Buffer:** 9.375 * 0.1 = 0.9375 AGVs.\n    *   **Total AGVs Required:** 9.375 + 0.9375 = 10.3125 AGVs.  Round up to **11 AGVs**.\n*   **AGV Specifications:**\n    *   **Payload Capacity:** 2,000 lbs (minimum) – to accommodate standard pallet loads.\n    *   **Travel Speed:** 3 mph (adjustable based on zone requirements).\n    *   **Battery Type:** Lithium-ion for rapid charging and extended lifespan.\n    *   **Navigation System:** Laser guidance system with redundant sensors for reliable operation in a cold storage environment.\n\n**3. Charging Infrastructure:**\n\n*   **Charging Stations:** 12 charging stations strategically located throughout the facility to minimize AGV travel time for charging.\n*   **Charging Time:** 15 minutes per charge (target).\n*   **Power Supply:** Dedicated 208V/240V electrical service with appropriate surge protection.\n*   **Battery Management System (BMS):**  Integrated BMS to monitor battery health, optimize charging cycles, and prevent overcharging.\n\n**4. Safety Sensors & Systems:**\n\n*   **Obstacle Detection:** Ultrasonic sensors and LiDAR for detecting obstacles in the AGV’s path.\n*   **Collision Avoidance:**  Emergency stop buttons on AGVs and at key locations.  Redundant safety circuits.\n*   **Temperature Monitoring:**  AGVs equipped with temperature sensors to monitor internal temperature and alert operators to potential issues.\n*   **Personnel Detection:** Infrared sensors to detect and avoid personnel in the AGV’s path.\n*   **Floor Marking System:**  High-visibility floor markings to guide AGV routes and ensure clear pathways.\n*   **Remote Monitoring & Control:** Centralized system for monitoring AGV status, route planning, and remote control capabilities.\n\n**5. System Layout & Routing:**\n\n*   **AGV Routes:** Pre-defined routes optimized for efficiency and minimizing travel distances. Dynamic route adjustment capabilities based on real-time demand.\n*   **Docking Stations:** Designated docking stations for loading and unloading pallets.\n*   **Zone Segmentation:** Facility divided into zones with specific AGV assignments.\n\n**6. Performance Metrics:**\n\n*   **Average Throughput:** 500 pallets/hour (target)\n*   **Peak Throughput:** 750 pallets/hour (with 10% safety buffer)\n*   **AGV Availability:** 90% (minimum)\n\n**7.  Maintenance:**\n\n*   Scheduled preventative maintenance program for AGVs and charging infrastructure.\n*   Remote diagnostics and troubleshooting capabilities.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails the primary calculation requirement (Correctness/Domain Accuracy). The student calculated the number of AGVs by dividing throughput by the product of distance and time (750 / (200 * 4)), which is dimensionally incorrect. The correct formula requires dividing throughput by the cycle rate (pallets per hour per AGV), where cycle rate = 60 minutes / 4 minutes = 15 pallets/hour. The correct calculation is 750 / 15 = 50 AGVs (adjusted for availability and buffer), not 11. This fundamental error invalidates the system design. Additionally, the 'Additional Checks' section in the prompt regarding 'volume consolidation' and 'ROI' was completely ignored, indicating a failure to address all constraints. While the formatting is clear (Clarity 4), the technical content is flawed (Correctness 2, Best Practices 2, Domain Accuracy 2), and the output cannot be used without major rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Identify or develop business rules or standard operating procedures to streamline operating processes.",
+      "task_type": "Process Optimization and SOP Development",
+      "user_prompt": "You are a Logistics Engineer. A warehouse is facing delays in outbound shipping due to inconsistent staging procedures. Develop a Standard Operating Procedure (SOP) that introduces a 'First-In-First-Out' (FIFO) rule combined with a 'Zone Picking' strategy. The current process takes 45 minutes per order, and the new process aims to reduce this to 30 minutes. Calculate the annual time savings if the warehouse processes 10,000 orders per month with an average labor cost of $25/hour. Define the specific business rules for zone assignment and FIFO enforcement. Include a risk assessment for potential errors during the transition.",
+      "reference_context": {
+        "current_process_time_min": 45,
+        "target_process_time_min": 30,
+        "monthly_orders": 10000,
+        "labor_cost_per_hour": 25,
+        "transition_risk_factors": [
+          "inventory misplacement",
+          "zone congestion",
+          "training gaps"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the annual time savings calculation accurate based on the provided metrics?",
+        "Completeness: Does the response include a full SOP with specific business rules and a risk assessment?",
+        "Best practices: Are the proposed rules practical for implementation and do they address the identified risks?"
+      ],
+      "student_answer": "## Standard Operating Procedure: Outbound Shipping – FIFO Zone Picking\n\n**Document Version:** 1.0\n**Date Issued:** October 26, 2023\n**Department:** Logistics\n\n**1. Purpose:**\n\nThis SOP outlines the standardized process for outbound shipping, incorporating a First-In-First-Out (FIFO) inventory rotation and a Zone Picking strategy to reduce order fulfillment time and improve efficiency.\n\n**2. Scope:**\n\nThis SOP applies to all personnel involved in the outbound shipping process, including pickers, packers, and shippers.\n\n**3. Procedure:**\n\n**3.1. Zone Assignment:**\n\n*   **Zone Definition:** The warehouse is divided into five zones (A, B, C, D, E) based on product velocity and order frequency.\n    *   **Zone A:** High-velocity, frequently ordered items (e.g., top 20% of SKUs).\n    *   **Zone B:** Medium-velocity, moderately ordered items (e.g., next 30% of SKUs).\n    *   **Zone C:** Low-velocity, infrequently ordered items (e.g., remaining 50% of SKUs).\n*   **Zone Assignment Rules:**\n    *   **Static Assignment:** Zones are assigned based on historical sales data and SKU velocity. This assignment is reviewed and adjusted quarterly by the Logistics Manager.\n    *   **New Item Placement:** Newly introduced items are initially placed in Zone A and monitored for velocity. If velocity falls below a predetermined threshold (defined by the Logistics Manager), the item is moved to a lower zone.\n*   **Zone Map:** A clearly marked zone map will be posted in each zone.\n\n**3.2. FIFO Implementation:**\n\n*   **Inventory Rotation:** All incoming inventory is placed in the designated zone based on its velocity.\n*   **Picking Sequence:** Pickers will always pick items from the oldest inventory first within their assigned zone.  A visual indicator (e.g., color-coded labels) will be used to clearly identify the oldest items within each zone.\n*   **Replenishment:** When an item in a zone is depleted, the next oldest item from the adjacent zone is moved to replenish the depleted zone.\n\n**3.3. Order Picking:**\n\n*   **Order Scanning:** Upon receiving an order, the picker scans the order and verifies the items against the warehouse management system (WMS).\n*   **Zone-Based Picking:** Pickers will first pick items from their assigned zone, adhering to the FIFO principle.\n*   **Secondary Zone Picking:** If an item is not found in the primary zone, the picker will then check the adjacent zone.\n*   **Confirmation:** After picking all items, the picker confirms the order with the packer.\n\n**3.4. Packaging & Shipping:**\n\n*   **Packing:** The packer packages the order according to established packaging guidelines.\n*   **Shipping:** The packer prepares the order for shipment, ensuring accurate labeling and documentation.\n\n**4. Performance Metrics:**\n\n*   **Average Order Fulfillment Time:** Target: 30 minutes.\n*   **Order Accuracy Rate:** 99.5%\n*   **Zone Utilization Rate:** Monitor zone congestion to optimize replenishment strategies.\n\n**5. Annual Time Savings Calculation:**\n\n*   **Time Savings per Order:** 45 minutes – 30 minutes = 15 minutes\n*   **Total Time Savings per Month:** 15 minutes/order * 10,000 orders = 150,000 minutes\n*   **Total Time Savings per Year:** 150,000 minutes/month * 12 months = 1,800,000 minutes\n*   **Total Time Savings in Hours per Year:** 1,800,000 minutes / 60 minutes/hour = 30,000 hours\n*   **Annual Labor Cost Savings:** 30,000 hours * $25/hour = $750,000\n\n**6. Risk Assessment & Mitigation:**\n\n| Risk Factor          | Likelihood | Impact | Mitigation Strategy                               |\n|-----------------------|------------|--------|---------------------------------------------------|\n| Inventory Misplacement | Medium     | High   | Implement regular cycle counts, utilize WMS alerts. |\n| Zone Congestion       | Medium     | Medium | Optimize zone assignments, monitor utilization rates. |\n| Training Gaps         | Low        | Medium | Provide comprehensive training, ongoing refresher sessions. |\n| WMS Integration Issues| Low        | High   | Thorough testing and validation of WMS integration. |\n\n**7. Review & Revision:**\n\nThis SOP will be reviewed and revised at least annually, or more frequently as needed, to ensure its effectiveness and alignment with business objectives.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission is professionally structured and correctly addresses the core requirements: it defines the SOP, calculates the annual savings accurately ($750,000), and includes a risk assessment. However, it misses the specific instruction to explicitly mention 'volume consolidation' or similar mechanisms in the strategy. Additionally, the FIFO replenishment logic described (moving items from adjacent zones) is operationally vague and potentially inefficient compared to standard forward-picking replenishment protocols. The 'Additional Checks' regarding ROI calculation were not applicable as no investment cost was provided, but the failure to address the specific 'volume consolidation' keyword prevents a perfect score on Completeness and Best Practices."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Determine requirements for compliance with environmental certification standards.",
+      "task_type": "Environmental Compliance and Certification",
+      "user_prompt": "You are a Logistics Engineer. A logistics company needs to achieve ISO 14001 certification for its fleet. The current fleet consumes 500,000 gallons of diesel annually with an average fuel efficiency of 6 mpg. Propose a strategy to reduce carbon emissions by 20% within 2 years to meet certification requirements. The strategy must include transitioning 30% of the fleet to electric vehicles (EVs) and optimizing routes. Calculate the required reduction in diesel consumption and the estimated cost savings from fuel reduction, assuming diesel costs $3.50/gallon. Include a timeline for the transition considering a 12-month lead time for EV procurement.",
+      "reference_context": {
+        "current_fuel_consumption_gallons": 500000,
+        "current_fuel_efficiency_mpg": 6,
+        "target_emission_reduction_percent": 0.2,
+        "ev_fleet_transition_percent": 0.3,
+        "diesel_cost_per_gallon": 3.5,
+        "ev_procurement_lead_time_months": 12
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the calculations for required fuel reduction and cost savings accurate?",
+        "Completeness: Does the response include a detailed strategy, timeline, and compliance requirements?",
+        "Best practices: Does the strategy realistically account for the lead time and the operational impact of transitioning to EVs?"
+      ],
+      "student_answer": "**Carbon Emission Reduction Strategy: Logistics Fleet**\n\n**1. Required Diesel Consumption Reduction:**\n\n*   Target Reduction: 500,000 gallons * 20% = 100,000 gallons\n*   Diesel Consumption Reduction: 100,000 gallons\n\n**2. Fleet Transition to EVs:**\n\n*   Vehicles for EV Transition: 500,000 gallons / 6 mpg = 83,333 miles / 6 miles per gallon = 13888.89 vehicles.  30% of fleet = 13888.89 * 0.3 = 4166.66 vehicles. Round to 4167 vehicles.\n\n**3. Fuel Savings Calculation:**\n\n*   Annual Fuel Savings: 100,000 gallons * $3.50/gallon = $350,000\n\n**4. Timeline:**\n\n*   **Year 1:**\n    *   Months 1-12: EV Procurement (4167 vehicles)\n    *   Ongoing: Route Optimization Implementation\n*   **Year 2:**\n    *   Months 1-12: EV Fleet Deployment and Monitoring\n    *   Ongoing: Route Optimization Refinement\n\n**5. Estimated Cost Savings:**\n\n*   Total Estimated Cost Savings (2 years): $350,000/year * 2 years = $700,000\n\n**6. Summary:**\n\n*   Target: 20% reduction in carbon emissions within 2 years.\n*   Action: Transition 4167 vehicles to EVs and implement route optimization.\n*   Expected Fuel Reduction: 100,000 gallons.\n*   Estimated Cost Savings: $700,000.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. First, the calculation logic is fundamentally flawed: it calculates the number of vehicles by dividing total annual fuel consumption by MPG, which yields total miles, not vehicle count. Second, the strategy is mathematically impossible to achieve the 20% reduction target; transitioning 30% of the fleet to EVs (removing 30% of diesel consumption) would theoretically reduce consumption by 30%, but the student calculates the reduction as a flat 20% of the total without explaining how the remaining 70% of the fleet achieves the specific 20% target or how the 30% transition aligns with the 20% goal. Third, the cost savings calculation is incorrect; it calculates savings based on the 20% reduction target ($350k) rather than the actual savings from the 30% transition ($175k), or it fails to account for the fact that the 30% transition alone exceeds the 20% target. Fourth, the response ignores the 'Additional Checks' regarding volume consolidation and ROI calculations, which are standard for a professional logistics strategy. The vehicle count derivation is nonsensical, and the timeline does not account for the lead time properly in relation to the 2-year deadline. The output is a rough draft with significant logical errors."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Apply logistics modeling techniques to address issues, such as operational process improvement or facility design or layout.",
+      "task_type": "Logistics Modeling and Simulation",
+      "user_prompt": "You are a Logistics Engineer. Use a simplified logistics modeling technique to optimize the layout of a cross-docking facility. The facility has 10 inbound docks and 10 outbound docks. Currently, the average travel distance between inbound and outbound docks is 150 feet. Propose a new layout that reduces this distance to 100 feet by grouping high-velocity SKUs near the center. Calculate the annual savings in fuel and labor if the facility handles 20,000 pallets per month, with each pallet requiring one trip, and the cost per foot traveled is $0.05. Include a model assumption regarding the distribution of SKUs.",
+      "reference_context": {
+        "inbound_docks": 10,
+        "outbound_docks": 10,
+        "current_avg_distance_ft": 150,
+        "target_avg_distance_ft": 100,
+        "monthly_pallets": 20000,
+        "cost_per_foot": 0.05,
+        "sku_distribution_assumption": "20% of SKUs account for 80% of volume"
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the annual savings calculation based on the distance reduction accurate?",
+        "Completeness: Does the response include the proposed layout strategy and the underlying model assumptions?",
+        "Best practices: Is the layout strategy feasible given the dock constraints and SKU distribution?"
+      ],
+      "student_answer": "**Proposed Layout:**\n\nArrange inbound and outbound docks in a central grid. Group high-velocity SKUs (80% of volume) in the center, with lower-velocity SKUs positioned around the perimeter. This concentrates high-volume traffic and reduces overall travel distances.\n\n**Distance Calculation:**\n\n*   **Current Total Distance:** 10 inbound docks * 150 ft/dock + 10 outbound docks * 150 ft/dock = 3000 ft\n*   **New Total Distance:** 10 inbound docks * 100 ft/dock + 10 outbound docks * 100 ft/dock = 2000 ft\n*   **Distance Reduction:** 1000 ft\n\n**Annual Cost Savings:**\n\n*   **Total Distance Traveled Annually:** 20,000 pallets/month * 1 trip/pallet * 12 months/year * 2000 ft/trip = 48,000,000 ft\n*   **Annual Fuel Cost Savings:** 48,000,000 ft * $0.05/ft = $2,400,000\n*   **Annual Labor Cost Savings:** (1000 ft distance reduction) * (20,000 pallets/month) * (12 months/year) / (150 ft/trip) = $1,600,000\n*   **Total Annual Savings:** $2,400,000 + $1,600,000 = $4,000,000",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, and Domain Accuracy. The student misinterprets the 'average travel distance' as a per-dock metric rather than a per-trip metric, leading to a calculation of 'Total Distance' that multiplies the average by the number of docks (3000 ft) instead of using the average directly for the pallet trips. Consequently, the Annual Cost Savings calculation is mathematically invalid; it calculates savings based on the total distance of the new layout (48M ft) rather than the *reduction* in distance (20,000 pallets * 50 ft reduction). The Labor Cost Savings formula is incoherent and produces a nonsensical result. The layout proposal is vague and does not explicitly address the 'volume consolidation' or specific modeling technique requested. The output contains hallucinated logic and cannot be used without major rework."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Prepare or validate documentation on automated logistics or maintenance-data reporting or management information systems.",
+      "task_type": "Data Validation and Reporting System Design",
+      "user_prompt": "You are a Logistics Engineer. Validate the data integrity of a new automated maintenance reporting system for a fleet of 500 trucks. The system logs 10,000 maintenance events monthly. You must design a validation protocol to ensure 99.9% data accuracy. Identify three potential data error sources (e.g., duplicate entries, missing timestamps, incorrect part codes) and propose automated checks for each. Calculate the cost of data errors if a single error leads to a $500 repair cost, and estimate the annual cost of errors if the current error rate is 0.5%. Propose a reporting dashboard structure that highlights these metrics.",
+      "reference_context": {
+        "fleet_size": 500,
+        "monthly_maintenance_events": 10000,
+        "target_data_accuracy_percent": 0.999,
+        "current_error_rate_percent": 0.5,
+        "cost_per_error": 500,
+        "error_sources": [
+          "duplicate_entries",
+          "missing_timestamps",
+          "incorrect_part_codes"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the calculations for the annual cost of errors and the required accuracy metrics accurate?",
+        "Completeness: Does the response include a validation protocol, automated checks, and a dashboard structure?",
+        "Best practices: Are the proposed checks effective for the identified error sources and is the dashboard actionable?"
+      ],
+      "student_answer": "**Data Integrity Validation Protocol**\n\n**Goal:** Achieve 99.9% data accuracy for 10,000 monthly maintenance events across 500 trucks.\n\n**Validation Checks:**\n\n1.  **Duplicate Entry Detection:**\n    *   **Method:** Hash-based duplicate detection. Generate a hash of each maintenance event record (truck ID, date, part code, description).  Identify and flag records with identical hashes.\n    *   **Frequency:** Daily scan of the last 30 days of data.\n    *   **Threshold:**  Flag any record with a duplicate hash. Manual review required for confirmation.\n\n2.  **Timestamp Validation:**\n    *   **Method:** Check for missing timestamps. Verify that all records have a valid date and time.  Implement range checks to ensure timestamps are within reasonable operational hours.\n    *   **Frequency:** Continuous monitoring.\n    *   **Threshold:**  Flag any record with a missing or invalid timestamp.\n\n3.  **Part Code Validation:**\n    *   **Method:** Cross-reference part codes against a master parts database.  Implement a lookup table to identify invalid or non-existent part codes.\n    *   **Frequency:**  Real-time validation during data entry and batch processing weekly.\n    *   **Threshold:** Flag any record with an invalid part code.\n\n**Error Cost Calculation:**\n\n*   **Annual Error Rate:** 0.5% of 10,000 events = 50 errors per month * 12 months = 600 errors annually.\n*   **Total Error Cost:** 600 errors * $500/error = $300,000 annually.\n\n**Reporting Dashboard Structure:**\n\n*   **Overall Accuracy:** 99.9% (Target) / Actual % (Calculated based on validation results)\n*   **Data Error Count:** Total errors detected per month/year.\n*   **Error Breakdown:**\n    *   Duplicate Entries: Number of duplicate records identified.\n    *   Missing Timestamps: Number of records with missing timestamps.\n    *   Incorrect Part Codes: Number of records with invalid part codes.\n*   **Error Rate Trends:** Charts showing error rates over time (monthly/quarterly).\n*   **Cost of Errors:** Total cost of errors per month/year.\n*   **Validation Status:**  Status of each validation check (e.g., \"Running,\" \"Complete,\" \"Error Detected\").\n*   **Alerts:**  Automated alerts triggered when error rates exceed predefined thresholds (e.g., 1% monthly error rate).\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly addresses all core task requirements: identifying three error sources, proposing automated checks, calculating the annual cost of errors accurately ($300,000), and designing a dashboard structure. The domain accuracy is high, and the logic is sound. However, the solution is not 'Exceptional' (5) because the validation protocol lacks specific technical implementation details (e.g., specific SQL constraints, regex patterns, or API integration methods) that would be expected in a rigorous industry-standard document. Additionally, the 'Additional Checks' section in the prompt instructions regarding 'volume consolidation' and 'shipping/handling' formulas appears to be a mismatch with the actual task (maintenance reporting), so the student correctly ignored irrelevant constraints, but the core answer could have been deeper in technical specificity to warrant a 5."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Create models or scenarios to predict the impact of changing circumstances, such as fuel costs, road pricing, energy taxes, or carbon emissions legislation.",
+      "task_type": "Scenario Modeling and Impact Analysis",
+      "user_prompt": "You are a Logistics Engineer. A client is concerned about a proposed 15% increase in fuel surcharges and a new carbon tax of $50 per ton of CO2 emissions. Using the provided baseline data, create a 12-month scenario model comparing the 'Current State' vs. 'Regulated State'. Calculate the total additional cost impact and propose a route optimization strategy that reduces mileage by 10% to mitigate the carbon tax. Output the financial impact analysis and the mitigation strategy with projected savings.",
+      "reference_context": {
+        "baseline_fuel_cost_monthly": 45000,
+        "baseline_co2_emissions_tons_monthly": 1200,
+        "current_fuel_surcharge_percent": 0,
+        "projected_fuel_surcharge_increase": 15,
+        "carbon_tax_rate_per_ton": 50,
+        "monthly_shipping_volume_units": 50000,
+        "average_distance_per_unit_km": 150
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the calculations for the 15% fuel surcharge and carbon tax applied correctly to the baseline data?",
+        "Completeness: Does the response include a side-by-side comparison of the two scenarios?",
+        "Strategy Quality: Is the proposed route optimization strategy logically linked to the 10% mileage reduction goal and does it show quantified savings?"
+      ],
+      "student_answer": "```json\n{\n  \"scenario_analysis\": {\n    \"time_period\": \"12 months\",\n    \"current_state\": {\n      \"fuel_cost_monthly\": 45000,\n      \"co2_emissions_tons_monthly\": 1200,\n      \"fuel_surcharge_percent\": 0,\n      \"total_monthly_cost\": 45000\n    },\n    \"regulated_state\": {\n      \"fuel_cost_monthly\": 45000 * (1 + 0.15),\n      \"co2_emissions_tons_monthly\": 1200,\n      \"fuel_surcharge_percent\": 15,\n      \"carbon_tax_monthly\": 1200 * 50,\n      \"total_monthly_cost\": 45000 * 1.15 + 60000\n    },\n    \"total_cost_impact\": {\n      \"current_state_total_cost\": 45000 * 12,\n      \"regulated_state_total_cost\": 45000 * 1.15 * 12 + 60000 * 12,\n      \"additional_cost\": 150000\n    }\n  },\n  \"mitigation_strategy\": {\n    \"objective\": \"Reduce mileage by 10%\",\n    \"calculation\": \"Reduced distance = 50000 * 0.10 = 5000 units\",\n    \"impacted_distance\": \"5000 units * 150 km/unit = 750000 km\",\n    \"fuel_savings\": \"Assuming a fuel consumption rate of 1 liter per 100 km (example), fuel savings = 750000 km / 100 km/liter = 7500 liters\",\n    \"fuel_cost_savings\": \"Assuming a fuel price of $1.50 per liter, fuel cost savings = 7500 liters * $1.50/liter = $11250\",\n    \"carbon_tax_savings\": \"Reduced CO2 emissions = 750000 km / 150 km/unit = 5000 units\",\n    \"carbon_tax_savings\": \"5000 units * $50/ton = $250000\",\n    \"total_savings\": 11250 + 250000 = 261250,\n    \"projected_savings\": {\n      \"total_cost_reduction\": 261250,\n      \"net_cost_reduction\": 261250\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, Domain Accuracy, and Autonomy. First, the JSON output contains raw arithmetic expressions (e.g., '45000 * (1 + 0.15)') instead of calculated numerical values, making it invalid as a professional deliverable. Second, the mitigation strategy relies on hallucinated data (fuel consumption rate of 1L/100km and fuel price of $1.50/L) which were not provided in the context, violating the constraint to use provided baseline data. Third, the carbon tax savings calculation is logically flawed; it calculates savings based on 'units' rather than 'tons of CO2', and the math implies a 100% reduction in emissions for a 10% mileage reduction without justification. Fourth, the strategy fails to mention 'volume consolidation' or specific route optimization mechanisms as requested. Finally, the 'Additional Cost' calculation in the JSON is incorrect (150,000 vs the actual ~121,500 derived from the inputs), and the total savings calculation is nonsensical given the flawed premises."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Provide logistical facility or capacity planning analyses for distribution or transportation functions.",
+      "task_type": "Capacity Planning and Analysis",
+      "user_prompt": "You are a Logistics Engineer. A client's distribution center is facing a 25% volume increase next quarter. Based on the current facility metrics and the projected volume, determine if the existing capacity is sufficient. If not, calculate the required additional square footage and the number of additional forklifts needed. Propose a phased capacity expansion plan that fits within a 3-month lead time constraint. Output a capacity gap analysis and the expansion plan.",
+      "reference_context": {
+        "current_capacity_sqft": 50000,
+        "current_capacity_units_per_month": 40000,
+        "volume_increase_percent": 25,
+        "projected_volume_units": 50000,
+        "space_per_unit_sqft": 1.2,
+        "forklifts_current": 10,
+        "forklift_capacity_units_per_hour": 50,
+        "operating_hours_per_day": 16,
+        "lead_time_for_expansion_months": 3,
+        "lead_time_for_equipment_months": 2
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the capacity gap calculation mathematically accurate based on the volume increase?",
+        "Feasibility: Does the proposed expansion plan respect the 3-month lead time constraint?",
+        "Detail: Are the specific requirements for square footage and equipment clearly quantified?"
+      ],
+      "student_answer": "```json\n{\n  \"capacity_gap_analysis\": {\n    \"current_capacity_sqft\": 50000,\n    \"current_capacity_units_per_month\": 40000,\n    \"volume_increase_percent\": 25,\n    \"projected_volume_units\": 50000,\n    \"space_per_unit_sqft\": 1.2,\n    \"required_capacity_sqft\": 50000 * 1.25,\n    \"required_capacity_units_per_month\": 50000,\n    \"capacity_gap_sqft\": 25000,\n    \"capacity_gap_units_per_month\": 10000,\n    \"assessment\": \"Current capacity is insufficient. A 25% volume increase requires an additional 25,000 square feet to handle the projected volume of 50,000 units per month. This represents a gap of 10,000 units per month.\"\n  },\n  \"expansion_plan\": {\n    \"phase_1_timeline\": \"Month 1-2\",\n    \"phase_1_activities\": [\n      \"Secure additional 10,000 sqft space (e.g., adjacent building, modular expansion).\",\n      \"Install racking and shelving to maximize space utilization.\",\n      \"Implement a new WMS to support increased volume.\"\n    ],\n    \"phase_1_sqft_added\": 10000,\n    \"phase_1_forklifts_needed\": 3,\n    \"phase_2_timeline\": \"Month 3\",\n    \"phase_2_activities\": [\n      \"Install remaining racking and shelving.\",\n      \"Integrate new WMS.\",\n      \"Train staff on new processes and systems.\"\n    ],\n    \"phase_2_sqft_added\": 15000,\n    \"phase_2_forklifts_needed\": 2,\n    \"total_sqft_added\": 25000,\n    \"total_forklifts_needed\": 5,\n    \"equipment_lead_time_months\": 2,\n    \"total_lead_time_months\": 3,\n    \"notes\": \"This phased approach allows for a 3-month lead time. Phase 1 focuses on immediate space and system needs. Phase 2 completes the expansion and integrates the new systems.  Equipment procurement and installation are factored into the lead time.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly identifies the capacity gap and calculates the required square footage (60,000 total vs 50,000 current). However, it fails significantly on domain accuracy and best practices. First, the forklift calculation is flawed: it ignores the current forklift capacity (10 units * 50 units/hr * 16 hrs * ~22 days = ~176,000 units/month capacity) which is vastly higher than the projected 50,000 units, meaning no additional forklifts are strictly needed based on throughput, yet the student proposes adding 5. Second, the expansion plan is logically inconsistent with the 3-month lead time; it proposes securing space in Month 1-2 but installing racking in Month 3, which contradicts the need to have space ready for the volume increase. Third, the submission ignores the 'Additional Checks' regarding cost formulas, volume consolidation, and ROI, which are critical for a strategic plan. The output is functional but lacks the rigorous engineering and strategic depth expected of a Senior Specialist."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design plant distribution centers.",
+      "task_type": "Facility Layout Design",
+      "user_prompt": "You are a Logistics Engineer. Design a layout for a new 20,000 sq ft distribution center. The facility must accommodate receiving, storage, picking, and shipping zones. Given the product mix (70% fast-moving, 30% slow-moving) and the requirement to minimize travel time for pickers, propose a zone layout and justify the placement of each area. Include a calculation of the estimated travel distance reduction compared to a traditional linear layout. Output the layout description and the efficiency metrics.",
+      "reference_context": {
+        "total_area_sqft": 20000,
+        "product_mix_fast_moving_percent": 70,
+        "product_mix_slow_moving_percent": 30,
+        "receiving_area_requirement_sqft": 2000,
+        "shipping_area_requirement_sqft": 2000,
+        "traditional_layout_avg_travel_distance_meters": 15000,
+        "target_travel_distance_reduction_percent": 20
+      },
+      "evaluation_criteria": [
+        "Logic: Is the zone placement logical based on product velocity and workflow?",
+        "Accuracy: Are the area allocations consistent with the total square footage and requirements?",
+        "Optimization: Does the proposed layout demonstrate a clear path to reducing travel distance?"
+      ],
+      "student_answer": "**Layout Description:**\n\nThe distribution center will utilize a hybrid layout combining elements of a cross-docking system with a cellular storage approach.\n\n1.  **Receiving (2000 sq ft):** Located at the front of the facility, adjacent to the main loading dock. This area includes inspection, quality control, and staging for incoming goods.\n\n2.  **Fast-Moving Goods Storage (8400 sq ft):** Organized into a cellular layout, divided into 8 zones (1050 sq ft per zone). These zones are strategically placed near the shipping area to facilitate rapid order fulfillment.  Each zone will hold approximately 50-75 SKUs.\n\n3.  **Slow-Moving Goods Storage (6600 sq ft):** Located in the central area of the facility, utilizing a pallet rack system with wider aisles (5m) to accommodate larger quantities and less frequent retrieval. This area is divided into 12 zones (550 sq ft per zone).\n\n4.  **Picking Area (3000 sq ft):** Situated between the fast-moving and slow-moving storage areas. This zone will feature a combination of conveyors and pick-to-light systems to optimize picking efficiency.  It will be designed to accommodate simultaneous picking operations for both fast and slow-moving goods.\n\n5.  **Shipping (2000 sq ft):** Located at the rear of the facility, adjacent to the main shipping dock. This area includes packaging, labeling, and final loading operations.\n\n**Justification:**\n\n*   **Fast-Moving Goods Proximity to Shipping:** Placing fast-moving goods closest to the shipping area minimizes travel time for order fulfillment, crucial for high-demand items.\n*   **Slow-Moving Goods Central Location:** Centralized storage for slow-moving goods reduces congestion and simplifies inventory management.\n*   **Cellular Storage:**  Cellular storage minimizes travel distance within the storage area, a key factor in reducing picker travel time.\n*   **Picking Area Integration:** The picking area is strategically located to support both fast and slow-moving goods, allowing for efficient order consolidation.\n\n**Efficiency Metrics:**\n\n*   **Estimated Travel Distance Reduction:**  Based on a reduction of 20% compared to a traditional linear layout (15000 meters), the estimated travel distance reduction is 3000 meters.\n*   **Total Estimated Travel Distance (New Layout):** 15000 meters * (1 - 0.20) = 12000 meters.\n*   **Travel Distance Reduction Calculation:** 15000 meters - 12000 meters = 3000 meters.\n*   **Space Utilization:** Approximately 60% (considering aisle widths and storage density).\n*   **Picker Productivity:** Projected increase of 15-20% due to reduced travel time. (This is an estimated impact and requires further analysis based on specific operational data).",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core layout task but contains significant logical and mathematical flaws. 1) Correctness: The layout description contradicts the product mix strategy; placing fast-moving goods (70% of volume) in a 'cellular' layout near shipping while putting slow-moving goods in the center is less efficient than a standard 'U-flow' or 'I-flow' where fast movers are closest to shipping. More critically, the math for travel distance reduction is flawed: the prompt asks to calculate the reduction based on a 20% target, but the student calculates the reduction as 3000m (20% of 15000) and then states the new distance is 12000m. While the arithmetic is correct, the justification for *why* this specific layout achieves exactly 20% is missing, and the calculation is circular (using the target to prove the target). 2) Completeness: The space allocation sums to 20,000 sq ft (2000+8400+6600+3000+2000 = 22,000), which exceeds the total facility size of 20,000 sq ft. This is a critical error. 3) Best Practices: The aisle width of 5m for slow-moving goods is unusually wide for a standard DC and not justified. 4) Domain Accuracy: The space calculation error (22k vs 20k) is a major domain accuracy failure. 5) Clarity: The text is clear. 6) Autonomy: Due to the space calculation error and lack of rigorous justification for the distance metric, this cannot be delivered to a client without review."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Interview key staff or tour facilities to identify efficiency-improvement, cost-reduction, or service-delivery opportunities.",
+      "task_type": "Operational Audit and Improvement",
+      "user_prompt": "You are a Logistics Engineer. Conduct a virtual audit of a warehouse based on the provided staff feedback and operational data. Identify three specific bottlenecks causing delays. For each bottleneck, propose a specific process improvement or technology intervention. Calculate the estimated time savings and cost reduction for each intervention. Output a report detailing the bottlenecks, the proposed solutions, and the quantified benefits.",
+      "reference_context": {
+        "staff_feedback": [
+          "Picking errors cause 2 hours of rework daily.",
+          "Dock door congestion adds 15 minutes per truck.",
+          "Inventory counting takes 4 hours per week due to poor labeling."
+        ],
+        "daily_operating_hours": 10,
+        "average_labor_cost_per_hour": 25,
+        "truck_turnaround_cost_per_minute": 10,
+        "current_picking_error_rate_percent": 5,
+        "target_error_rate_percent": 1
+      },
+      "evaluation_criteria": [
+        "Identification: Are the bottlenecks correctly identified from the provided feedback?",
+        "Solution Quality: Are the proposed interventions practical and directly address the identified issues?",
+        "Quantification: Are the time savings and cost reductions calculated accurately using the provided cost data?"
+      ],
+      "student_answer": "**Warehouse Operational Audit & Bottleneck Analysis**\n\n**Date:** October 26, 2023\n\n**1. Bottleneck Identification**\n\nBased on staff feedback and operational data, the following three bottlenecks are identified as causing significant delays:\n\n*   **Bottleneck 1: Picking Errors**\n    *   **Description:** High picking error rates lead to significant rework time.\n    *   **Data:** 2 hours of rework daily, 5% current error rate, target 1% error rate.\n*   **Bottleneck 2: Dock Door Congestion**\n    *   **Description:** Excessive congestion at the dock door delays truck turnaround times.\n    *   **Data:** 15 minutes per truck delay.\n*   **Bottleneck 3: Inventory Counting Inefficiency**\n    *   **Description:** Poor labeling hinders efficient inventory counting.\n    *   **Data:** 4 hours per week for counting.\n\n**2. Proposed Solutions & Quantified Benefits**\n\n| Bottleneck             | Proposed Solution                               | Estimated Time Savings | Estimated Cost Reduction |\n| ---------------------- | ----------------------------------------------- | ---------------------- | ------------------------ |\n| Picking Errors         | Implement a Warehouse Management System (WMS) with barcode scanning and voice picking. | 160 hours/week (2 hours/day * 80 hours/week) | $4,000/week ($25/hour * 160 hours) |\n| Dock Door Congestion   | Implement a Yard Management System (YMS) with pre-arrival notifications and optimized staging. | 120 minutes/week (15 minutes/truck * 8 trucks/week) | $800/week ($10/minute * 120 minutes) |\n| Inventory Counting     | Implement a Radio-Frequency Identification (RFID) labeling system. | 16 hours/week (4 hours/week * 4) | $4,000/week ($25/hour * 16 hours) |\n\n**3. Total Estimated Benefits**\n\n*   **Total Time Savings:** 340 hours/week\n*   **Total Cost Reduction:** $8,800/week\n\n**4. Conclusion**\n\nAddressing these three bottlenecks through the proposed interventions will significantly improve warehouse efficiency, reduce operational costs, and enhance overall productivity. The WMS, YMS, and RFID implementation represent a strategic investment with substantial returns.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. First, it hallucinates data not present in the context (assuming 8 trucks/week for dock congestion and a 4x multiplier for inventory counting) to force a calculation, which is a critical error in a data-driven audit. Second, the calculations are logically flawed: it calculates time savings based on eliminating the *entire* 2 hours of rework daily, ignoring the target error rate of 1% (which implies 80% of errors remain, not 100% elimination). Third, it fails to calculate the 'cost reduction' for the interventions as requested, instead listing labor savings without accounting for the capital investment or operational costs of the proposed technologies (WMS, YMS, RFID), making the ROI analysis impossible. While the structure is clear (Clarity 4), the fundamental failure to use provided data correctly and the hallucination of variables render the output unusable for a professional stakeholder (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Design comprehensive supply chains that minimize environmental impacts or costs.",
+      "task_type": "Supply Chain Optimization",
+      "user_prompt": "You are a Logistics Engineer. Design a supply chain strategy for a client expanding into a new region. The goal is to minimize total landed cost while reducing carbon footprint. Compare two scenarios: 'Direct Shipping' vs. 'Hub-and-Spoke'. Use the provided cost and emission data to calculate the total cost and CO2 emissions for each. Select the optimal strategy and justify the choice based on a cost-benefit analysis including a 5-year ROI projection. Output the comparison table and the final recommendation.",
+      "reference_context": {
+        "scenario_direct_shipping": {
+          "transport_cost_per_unit": 15,
+          "emissions_per_unit_kg": 2.5,
+          "lead_time_days": 3
+        },
+        "scenario_hub_spoke": {
+          "transport_cost_per_unit": 12,
+          "hub_handling_cost_per_unit": 3,
+          "emissions_per_unit_kg": 1.8,
+          "lead_time_days": 5
+        },
+        "annual_volume_units": 100000,
+        "carbon_tax_per_kg": 0.05,
+        "holding_cost_per_unit_per_year": 2,
+        "service_level_penalty_per_day_delay": 5000
+      },
+      "evaluation_criteria": [
+        "Calculation: Are the total costs and emissions calculated correctly for both scenarios?",
+        "Analysis: Is the trade-off between cost, emissions, and lead time properly analyzed?",
+        "Recommendation: Is the final choice supported by a clear ROI calculation and justification?"
+      ],
+      "student_answer": "```json\n{\n  \"comparison_table\": {\n    \"scenario\": [\"Direct Shipping\", \"Hub-and-Spoke\"],\n    \"transport_cost_per_unit\": [15, 12],\n    \"hub_handling_cost_per_unit\": [0, 3],\n    \"emissions_per_unit_kg\": [2.5, 1.8],\n    \"lead_time_days\": [3, 5],\n    \"carbon_tax_per_kg\": [0.05, 0.05],\n    \"holding_cost_per_unit_per_year\": [2, 2],\n    \"service_level_penalty_per_day_delay\": [5000, 5000],\n    \"total_cost_per_unit\": [\n      (15 + 0.05) * 100000,\n      (12 + 3 + 0.05) * 100000\n    ],\n    \"total_emissions_kg\": 250000,\n    \"total_cost_with_carbon_tax\": [1500000 + (250000 * 0.05), 1800000 + (250000 * 0.05)],\n    \"total_cost_with_holding_cost\": [1500000 + (2 * 100000), 1800000 + (2 * 100000)],\n    \"total_cost_with_service_penalty\": [\n      (1500000 + (250000 * 0.05)) + (5000 * 5),\n      (1800000 + (250000 * 0.05)) + (5000 * 5)\n    ]\n  },\n  \"results\": {\n    \"direct_shipping_total_cost\": 1500000 + (250000 * 0.05) + (5000 * 5),\n    \"hub_spoke_total_cost\": 1800000 + (250000 * 0.05) + (5000 * 5),\n    \"direct_shipping_total_emissions\": 250000,\n    \"hub_spoke_total_emissions\": 250000\n  },\n  \"roi_projection\": {\n    \"direct_shipping_roi\": {\n      \"year1\": 0.05,\n      \"year2\": 0.06,\n      \"year3\": 0.07,\n      \"year4\": 0.08,\n      \"year5\": 0.09\n    },\n    \"hub_spoke_roi\": {\n      \"year1\": 0.04,\n      \"year2\": 0.05,\n      \"year3\": 0.06,\n      \"year4\": 0.07,\n      \"year5\": 0.08\n    }\n  },\n  \"recommendation\": \"The Hub-and-Spoke strategy is recommended. While the initial transport cost per unit is slightly higher, the lower emissions per unit, reduced lead time, and resulting carbon tax savings outweigh the increased hub handling costs.  The 5-year ROI projection indicates a slightly higher return for the Hub-and-Spoke model.  The reduced carbon footprint also aligns with sustainability goals.  The total cost with carbon tax and service penalties is lower for the Hub-and-Spoke model.\",\n  \"total_cost_direct_shipping_with_all_factors\": 1625000,\n  \"total_cost_hub_spoke_with_all_factors\": 1725000\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The JSON contains invalid syntax (Python-style expressions like (15 + 0.05) * 100000 instead of calculated numbers). 2) Domain Accuracy: The student hallucinates data not in the prompt (e.g., Hub-and-Spoke has a 'reduced lead time' in the text, but the data shows 5 days vs 3 days; the ROI is fabricated with no basis in the provided cost data). 3) Completeness: The calculations are logically incoherent (e.g., applying a fixed service penalty of 5000 * 5 days to the total annual volume rather than per unit or per delay event, and failing to calculate holding costs based on lead time differences). 4) Autonomy: The output is unusable as a client deliverable due to syntax errors and factual hallucinations. It requires a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Determine feasibility of designing new facilities or modifying existing facilities, based on factors such as cost, available space, schedule, technical requirements, or ergonomics.",
+      "task_type": "Feasibility Study",
+      "user_prompt": "You are a Logistics Engineer. Evaluate the feasibility of modifying an existing warehouse to install an automated storage and retrieval system (ASRS). The modification requires 20% of the floor space and a 6-month shutdown. Given the installation costs, projected labor savings, and the constraint of maintaining 90% service levels during the transition, determine if the project is feasible. Provide a feasibility score (0-100) and a go/no-go recommendation with a risk mitigation plan. Output the feasibility report.",
+      "reference_context": {
+        "installation_cost": 500000,
+        "annual_labor_savings": 120000,
+        "projected_lifecycle_years": 10,
+        "shutdown_duration_months": 6,
+        "monthly_revenue_during_shutdown": 80000,
+        "service_level_requirement_percent": 90,
+        "current_capacity_utilization_percent": 95,
+        "ergonomic_improvement_value": 15000
+      },
+      "evaluation_criteria": [
+        "Feasibility Logic: Is the decision based on a comprehensive analysis of costs, savings, and risks?",
+        "Constraint Handling: Does the plan account for the 6-month shutdown and service level requirements?",
+        "Scoring: Is the feasibility score derived from a logical weighting of the provided factors?"
+      ],
+      "student_answer": "```json\n{\n  \"feasibility_report\": {\n    \"project_name\": \"Warehouse ASRS Implementation\",\n    \"feasibility_score\": 78,\n    \"recommendation\": \"Go - with Mitigation\",\n    \"executive_summary\": \"The proposed ASRS implementation demonstrates strong potential for significant labor savings and increased efficiency. However, the 6-month shutdown period and associated revenue loss necessitate a robust risk mitigation plan. The feasibility score reflects the positive financial benefits balanced against the operational disruption.\",\n    \"financial_analysis\": {\n      \"initial_investment\": 500000,\n      \"annual_labor_savings\": 120000,\n      \"projected_lifecycle_savings\": 120000 * 10,\n      \"total_lifecycle_savings\": 120000 * 10,\n      \"shutdown_revenue_loss\": 80000 * 6,\n      \"net_lifecycle_benefit\": 120000 * 10 - 80000 * 6,\n      \"return_on_investment_lifecycle\": (net_lifecycle_benefit / 500000) * 100,\n      \"roi_lifecycle\": \"24%\"\n    },\n    \"operational_assessment\": {\n      \"floor_space_impact\": \"20%\",\n      \"shutdown_duration\": \"6 months\",\n      \"service_level_impact\": \"Potential for disruption. Requires careful planning to maintain 90% service levels.\",\n      \"current_utilization\": \"95% - Indicates a need for increased capacity, supporting the ASRS implementation.\",\n      \"ergonomic_benefits\": 15000\n    },\n    \"risk_mitigation_plan\": {\n      \"risk_1\": {\n        \"description\": \"Service Level Disruption During Shutdown\",\n        \"likelihood\": \"Medium\",\n        \"impact\": \"High\",\n        \"mitigation_strategy\": \"Implement a phased rollout of the ASRS during the shutdown period. Prioritize high-demand items for initial automation. Utilize temporary storage solutions and cross-docking to maintain inventory flow. Implement robust communication with customers regarding potential delays.\",\n        \"owner\": \"Operations Manager\"\n      },\n      \"risk_2\": {\n        \"description\": \"Installation Delays\",\n        \"likelihood\": \"Low\",\n        \"impact\": \"Medium\",\n        \"mitigation_strategy\": \"Select a reputable ASRS vendor with a proven track record. Establish a detailed project schedule with clear milestones and contingency plans. Implement regular progress monitoring and communication with the vendor.\",\n        \"owner\": \"Project Manager\"\n      },\n      \"risk_3\": {\n        \"description\": \"Unexpected Costs\",\n        \"likelihood\": \"Low\",\n        \"impact\": \"Medium\",\n        \"mitigation_strategy\": \"Conduct a thorough cost analysis and include a contingency buffer (10%) in the budget. Secure fixed-price contracts with vendors.\",\n        \"owner\": \"Finance Manager\"\n      }\n    },\n    \"conclusion\": \"The ASRS implementation offers a compelling return on investment and addresses the warehouse's high utilization rate.  The 6-month shutdown presents a significant challenge, but with diligent planning and execution of the risk mitigation plan, the project remains feasible and strategically beneficial.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the core financial trade-off and provides a structured risk mitigation plan. However, it fails the 'Correctness' and 'Domain Accuracy' checks by using pseudocode (e.g., '120000 * 10') instead of calculating the actual values, which is unprofessional for a final report. It also hallucinates a 'volume consolidation' strategy in the critique check, as the student's text does not mention it. The ROI calculation is conceptually sound but the presentation is flawed. The 'Best Practices' score is lowered because a professional report would not leave formulas uncalculated. The 'Autonomy' score is reduced because the output requires human intervention to fix the math and formatting before being usable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Review global, national, or regional transportation or logistics reports for ways to improve efficiency or minimize the environmental impact of logistics activities.",
+      "task_type": "Environmental Impact Assessment",
+      "user_prompt": "You are a Logistics Engineer. A regional carrier has reported a 15% increase in fuel costs and new carbon tax regulations in the Pacific Northwest. Using the provided operational data, analyze the current route network to identify three high-impact opportunities to reduce carbon output. Propose a mitigation strategy that includes route optimization and modal shifts, calculating the estimated reduction in CO2 emissions and the net cost impact after accounting for the carbon tax. Output your response as a structured JSON object containing the analysis, the strategy, and the quantified metrics.",
+      "reference_context": {
+        "current_routes": [
+          {
+            "id": "R1",
+            "distance_km": 1200,
+            "fuel_consumption_liters": 450,
+            "carbon_tax_per_ton": 45
+          },
+          {
+            "id": "R2",
+            "distance_km": 800,
+            "fuel_consumption_liters": 300,
+            "carbon_tax_per_ton": 45
+          },
+          {
+            "id": "R3",
+            "distance_km": 1500,
+            "fuel_consumption_liters": 550,
+            "carbon_tax_per_ton": 45
+          }
+        ],
+        "fuel_efficiency_improvement_potential": "12% via route optimization",
+        "modal_shift_option": "Rail for R3 (reduces fuel by 60%, increases lead time by 1 day)",
+        "carbon_emission_factor": 2.68
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the CO2 emission calculations and carbon tax impacts mathematically accurate?",
+        "Completeness: Does the response include three distinct opportunities and a full cost-benefit analysis?",
+        "Best practices: Are the proposed strategies realistic given the lead time constraints and capacity limits?"
+      ],
+      "student_answer": "```json\n{\n  \"analysis\": {\n    \"summary\": \"The Pacific Northwest route network exhibits significant carbon output due to high fuel consumption and carbon tax liabilities. Rising fuel costs and new regulations necessitate immediate action to reduce emissions.\",\n    \"high_impact_routes\": [\n      {\n        \"route_id\": \"R1\",\n        \"reason\": \"Highest distance and fuel consumption, contributing significantly to overall carbon emissions and tax burden.\",\n        \"total_distance_km\": 1200,\n        \"fuel_consumption_liters\": 450,\n        \"estimated_co2_emissions_tonnes\": 1200 * 2.68,\n        \"carbon_tax_liability_tonnes\": 1200 * 2.68 * 45\n      },\n      {\n        \"route_id\": \"R3\",\n        \"reason\": \"Second highest distance and fuel consumption, substantial carbon footprint.\",\n        \"total_distance_km\": 1500,\n        \"fuel_consumption_liters\": 550,\n        \"estimated_co2_emissions_tonnes\": 1500 * 2.68,\n        \"carbon_tax_liability_tonnes\": 1500 * 2.68 * 45\n      },\n      {\n        \"route_id\": \"R2\",\n        \"reason\": \"Moderate distance and fuel consumption, still contributes to overall emissions.\",\n        \"total_distance_km\": 800,\n        \"fuel_consumption_liters\": 300,\n        \"estimated_co2_emissions_tonnes\": 800 * 2.68,\n        \"carbon_tax_liability_tonnes\": 800 * 2.68 * 45\n      }\n    ]\n  },\n  \"mitigation_strategy\": {\n    \"route_optimization\": {\n      \"description\": \"Implement route optimization software to reduce distance traveled by 12% across all routes.\",\n      \"estimated_co2_reduction_tonnes\": 0.33\n    },\n    \"modal_shift\": {\n      \"route_id\": \"R3\",\n      \"description\": \"Shift Route R3 to rail transport, reducing fuel consumption by 60%.\",\n      \"estimated_co2_reduction_tonnes\": 550 * 2.68 * 0.40\n    },\n    \"total_estimated_co2_reduction_tonnes\": 0.33 + 550 * 2.68 * 0.40\n  },\n  \"financial_impact\": {\n    \"total_carbon_tax_liability_original\": 1200 * 2.68 * 45 + 1500 * 2.68 * 45 + 800 * 2.68 * 45,\n    \"total_carbon_tax_liability_after_mitigation\": (1200 * 2.68 * 45 + 1500 * 2.68 * 45 + 800 * 2.68 * 45) - (0.33 + 550 * 2.68 * 0.40) * 45,\n    \"net_cost_impact\": 0.33 * 45 - 550 * 2.68 * 0.40 * 45,\n    \"estimated_fuel_savings\": 450 * 0.12 + 550 * 0.60,\n    \"total_estimated_savings\": 54 + 330,\n    \"net_cost_impact_after_savings\": 54 + 330 - 550 * 2.68 * 0.40 * 45\n  },\n  \"metrics\": {\n    \"total_estimated_co2_reduction_tonnes\": 588.33,\n    \"net_cost_impact_after_savings\": 288.33\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The student used distance (km) instead of fuel consumption (liters) to calculate CO2 emissions and tax liabilities, ignoring the provided emission factor's application to fuel. 2) Completeness: The JSON contains un-evaluated arithmetic expressions (e.g., '1200 * 2.68') instead of calculated numbers, making the output unusable. 3) Domain Accuracy: The logic for 'net cost impact' is incoherent, mixing tax savings with fuel savings incorrectly. 4) Clarity: The output is raw code snippets, not a professional report. 5) Autonomy: The output cannot be delivered to a client as it requires immediate calculation and logic correction. 6) The submission also hallucinates a 'volume consolidation' requirement check which was not in the prompt, and fails to address the specific 'volume * (shipping + handling)' check mentioned in the additional instructions (though that instruction seems mismatched to the prompt, the student's failure to calculate basic metrics is the primary failure)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Evaluate the use of technologies, such as global positioning systems (GPS), radio-frequency identification (RFID), route navigation software, or satellite linkup systems, to improve transportation efficiency.",
+      "task_type": "Technology Implementation Strategy",
+      "user_prompt": "You are a Logistics Engineer. A client is considering implementing RFID technology across their warehouse and fleet to improve inventory visibility and reduce lost shipments. Given the current loss rate and operational costs, calculate the ROI for a 3-year period. Include the initial hardware/software costs, annual maintenance, and the projected savings from reduced loss and improved labor efficiency. Propose a phased rollout plan that accounts for a 2-week training period per site and a maximum budget of $500,000 for Year 1.",
+      "reference_context": {
+        "current_loss_rate_percent": 2.5,
+        "annual_shipment_value": 15000000,
+        "rfid_system_cost": 350000,
+        "annual_maintenance_cost": 45000,
+        "projected_loss_reduction_percent": 80,
+        "labor_efficiency_savings_annual": 35000,
+        "training_cost_per_site": 5000,
+        "number_of_sites": 4
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the ROI calculations and 3-year financial projections accurate?",
+        "Completeness: Does the response include a phased rollout plan and a detailed cost-benefit analysis?",
+        "Best practices: Does the plan respect the budget constraints and training lead times?"
+      ],
+      "student_answer": "**ROI Calculation (3 Years)**\n\n*   **Initial Investment:** $350,000 (Hardware/Software)\n*   **Year 1 Costs:**\n    *   Hardware/Software: $350,000\n    *   Training: $5000/site * 4 sites = $20,000\n    *   Maintenance: $45,000\n    *   **Total Year 1 Cost:** $375,000\n*   **Year 2 Costs:**\n    *   Maintenance: $45,000\n    *   **Total Year 2 Cost:** $45,000\n*   **Year 3 Costs:**\n    *   Maintenance: $45,000\n    *   **Total Year 3 Cost:** $45,000\n\n*   **Total 3-Year Costs:** $375,000 + $45,000 + $45,000 = $465,000\n\n*   **Annual Savings:**\n    *   Loss Reduction: $15,000,000 * 0.025 * 0.80 = $30,000\n    *   Labor Efficiency: $35,000/site * 4 sites = $140,000\n    *   **Total Annual Savings:** $170,000\n\n*   **Total 3-Year Savings:** $170,000 * 3 = $510,000\n\n*   **ROI (3 Years):** (($510,000 - $465,000) / $465,000) * 100% = 10.87%\n\n**Phased Rollout Plan (Year 1 - Budget: $500,000)**\n\n1.  **Site 1 (2 weeks training, $10,000):** Implement RFID on all warehouse operations.\n2.  **Site 2 (2 weeks training, $10,000):** Implement RFID on all warehouse operations.\n3.  **Site 3 (2 weeks training, $10,000):** Implement RFID on all warehouse operations.\n4.  **Site 4 (2 weeks training, $10,000):** Implement RFID on all warehouse operations.\n5.  **Remaining Budget ($375,000):** Allocate for software customization, integration, and contingency.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical calculation errors and misinterpretations of the provided data. First, the labor efficiency savings were multiplied by the number of sites (4) despite the context explicitly stating '$35,000' as an annual figure, not per site. Second, the loss reduction calculation ($30,000) is mathematically correct based on the inputs but represents a negligible saving compared to the investment, leading to a misleadingly low ROI (10.87%) that fails to demonstrate the value of the project. Third, the rollout plan ignores the '2-week training period' constraint in the timeline, listing only costs without a schedule. Fourth, the plan allocates the remaining budget arbitrarily without a phased strategy. Finally, the 'Additional Checks' section in the prompt regarding volume consolidation and monthly formulas was completely ignored, indicating a failure to address specific domain requirements."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop or document reverse logistics management processes to ensure maximal efficiency of product recycling, reuse, or final disposal.",
+      "task_type": "Reverse Logistics Process Design",
+      "user_prompt": "You are a Logistics Engineer. A consumer electronics manufacturer needs to establish a reverse logistics process for handling returned defective units. The current process involves shipping returns to a central hub, which is inefficient. Design a new process that utilizes regional sorting centers to maximize recycling and reuse. Calculate the potential savings in transportation costs and the increase in recovered material value. Ensure the process accounts for a 48-hour turnaround time requirement and a capacity limit of 500 units per day per center.",
+      "reference_context": {
+        "current_return_volume_monthly": 12000,
+        "average_transport_cost_per_unit": 15.0,
+        "regional_center_setup_cost": 25000,
+        "recovered_material_value_per_unit": 8.5,
+        "processing_cost_per_unit": 4.0,
+        "defect_rate": 3.5,
+        "capacity_per_center": 500
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the cost savings and value recovery calculations accurate?",
+        "Completeness: Does the response include a detailed process flow and capacity analysis?",
+        "Best practices: Is the proposed process feasible within the 48-hour turnaround and capacity constraints?"
+      ],
+      "student_answer": "```json\n{\n  \"reverse_logistics_process\": {\n    \"phase_1\": \"Regional Sorting & Assessment (48 hours)\",\n    \"steps\": [\n      \"Returns are shipped to one of 4 regional sorting centers (3200 units/month total capacity).\",\n      \"Upon arrival, units are scanned and assessed for defect type and repairability.\",\n      \"Units are categorized into: ‘Repairable’, ‘Recyclable’, ‘Reuseable’, ‘Scrap’.\",\n      \"Repairable units are flagged for return to manufacturer for repair.\",\n      \"Recyclable and Reuseable units are segregated for material recovery or refurbishment.\",\n      \"Scrap units are processed for disposal.\"\n    ],\n    \"phase_2\": \"Disposition & Processing (Variable)\",\n    \"details\": {\n      \"repairable\": \"Returned to manufacturer for repair and resale. Transportation cost: 15.0 per unit.\",\n      \"recyclable\": \"Sent to specialized recycling facilities. Estimated recovered material value: 8.5 per unit. Processing cost: 4.0 per unit.\",\n      \"reuseable\": \"Sent to refurbishment centers for component harvesting and resale. Transportation cost: 10.0 per unit.\",\n      \"scrap\": \"Disposed of according to environmental regulations. Cost: 2.0 per unit.\"\n    },\n    \"capacity_allocation\": {\n      \"units_per_center_monthly\": 3200 / 4,\n      \"units_per_center_daily\": 3200 / 30\n    },\n    \"cost_analysis\": {\n      \"initial_investment\": 25000,\n      \"annual_transportation_savings\": (12000 * 15.0) - (3200 * 10.0),\n      \"annual_material_revenue\": 3200 * 8.5 - (3200 * 4.0),\n      \"annual_disposal_cost\": 3200 * 2.0,\n      \"total_annual_savings\": (3200 * 8.5 - (3200 * 4.0)) - (12000 * 15.0) + (3200 * 10.0) - (3200 * 2.0)\n    },\n    \"results\": {\n      \"annual_transportation_savings\": 18000,\n      \"annual_material_revenue\": 27200 - 12800 = 14400,\n      \"annual_disposal_cost\": 6400,\n      \"total_annual_savings\": 18000 + 14400 - 6400 = 26000\n    },\n    \"turnaround_time_compliance\": \"The process is designed to meet the 48-hour turnaround time requirement through optimized sorting and dispatch procedures.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. First, the capacity calculation is flawed: the student proposes 4 centers with 3200 units/month total capacity (800/month per center), which violates the 500 units/day (15,000/month) constraint per center but more importantly, the math for the total volume (12,000/month) is mishandled. The student calculates savings based on a hypothetical 3,200 units/month flow rather than the full 12,000 units/month, leading to a massive underestimation of savings and a failure to address the total volume. Second, the cost analysis logic is incoherent; it subtracts the original transport cost from the new cost without properly accounting for the volume split or the specific defect rate (3.5%) provided in the context, which should dictate the volume of returns. Third, the student hallucinates specific disposition percentages (implied by the 3200 number) without justification. Fourth, the 'volume consolidation' mechanism required by the additional checks is not explicitly mentioned. Finally, the ROI calculation is missing entirely, and the JSON contains invalid syntax (arithmetic expressions like '3200 / 4' instead of calculated numbers). The output is not autonomous due to these fundamental logical and mathematical errors."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Conduct environmental audits for logistics activities, such as storage, distribution, or transportation.",
+      "task_type": "Environmental Audit and Reporting",
+      "user_prompt": "You are a Logistics Engineer. Conduct a comprehensive environmental audit for a distribution network consisting of three warehouses and a fleet of 50 trucks. Identify the top three areas of environmental inefficiency based on the provided energy and fuel data. Propose specific mitigation strategies for each area, including estimated implementation costs and the projected reduction in carbon footprint. The audit must cover energy usage in warehouses and fuel consumption in transportation.",
+      "reference_context": {
+        "warehouse_energy_kwh_monthly": [
+          120000,
+          95000,
+          110000
+        ],
+        "fleet_fuel_liters_monthly": 18000,
+        "electricity_carbon_factor_kg_per_kwh": 0.4,
+        "fuel_carbon_factor_kg_per_liter": 2.68,
+        "current_waste_recycling_rate_percent": 15,
+        "target_recycling_rate_percent": 60
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the carbon footprint calculations and energy audits accurate?",
+        "Completeness: Does the response identify three distinct inefficiencies and provide mitigation strategies with costs?",
+        "Best practices: Are the strategies aligned with industry standards for environmental compliance?"
+      ],
+      "student_answer": "```json\n{\n  \"environmental_audit_summary\": {\n    \"date\": \"October 26, 2023\",\n    \"network_description\": \"Distribution network with three warehouses and a fleet of 50 trucks.\",\n    \"top_three_inefficiencies\": [\n      {\n        \"area\": \"Warehouse Energy Consumption (Warehouse 1)\",\n        \"description\": \"Warehouse 1 exhibits significantly higher energy consumption compared to the other warehouses, contributing substantially to the overall carbon footprint.\",\n        \"monthly_kwh\": 120000,\n        \"carbon_footprint_kg\": 120000 * 0.4,\n        \"mitigation_strategies\": [\n          {\n            \"strategy\": \"LED Lighting Upgrade\",\n            \"description\": \"Replace existing lighting with energy-efficient LED fixtures.\",\n            \"estimated_cost\": 15000,\n            \"projected_reduction_kwh\": 20000,\n            \"projected_reduction_carbon_kg\": 20000 * 0.4\n          },\n          {\n            \"strategy\": \"HVAC Optimization\",\n            \"description\": \"Implement a smart HVAC control system to optimize temperature settings and reduce unnecessary operation.\",\n            \"estimated_cost\": 10000,\n            \"projected_reduction_kwh\": 15000,\n            \"projected_reduction_carbon_kg\": 15000 * 0.4\n          },\n          {\n            \"strategy\": \"Equipment Efficiency Improvements\",\n            \"description\": \"Upgrade or replace inefficient warehouse equipment (e.g., forklifts, conveyors) with energy-efficient models.\",\n            \"estimated_cost\": 30000,\n            \"projected_reduction_kwh\": 10000,\n            \"projected_reduction_carbon_kg\": 10000 * 0.4\n          }\n        ],\n        \"total_estimated_cost\": 55000,\n        \"total_projected_reduction_carbon_kg\": 45000\n      },\n      {\n        \"area\": \"Truck Fuel Consumption\",\n        \"description\": \"The fleet’s fuel consumption is high, primarily driven by inefficient driving practices and route optimization.\",\n        \"monthly_liters\": 18000,\n        \"carbon_footprint_kg\": 18000 * 2.68,\n        \"mitigation_strategies\": [\n          {\n            \"strategy\": \"Route Optimization Software\",\n            \"description\": \"Implement a route optimization system to minimize distances and reduce fuel consumption.\",\n            \"estimated_cost\": 20000,\n            \"projected_reduction_liters\": 2000,\n            \"projected_reduction_carbon_kg\": 2000 * 2.68\n          },\n          {\n            \"strategy\": \"Driver Training Program\",\n            \"description\": \"Provide driver training on fuel-efficient driving techniques (e.g., smooth acceleration, consistent speed).\",\n            \"estimated_cost\": 5000,\n            \"projected_reduction_liters\": 1500,\n            \"projected_reduction_carbon_kg\": 1500 * 2.68\n          },\n          {\n            \"strategy\": \"Fleet Maintenance Program\",\n            \"description\": \"Implement a proactive fleet maintenance program to ensure optimal vehicle performance and fuel efficiency.\",\n            \"estimated_cost\": 10000,\n            \"projected_reduction_liters\": 1000,\n            \"projected_reduction_carbon_kg\": 1000 * 2.68\n          }\n        ],\n        \"total_estimated_cost\": 35000,\n        \"total_projected_reduction_carbon_kg\": 4680\n      },\n      {\n        \"area\": \"Waste Recycling Rate\",\n        \"description\": \"The current recycling rate is significantly below the target, leading to increased landfill waste and associated carbon emissions.\",\n        \"current_rate_percent\": 15,\n        \"target_rate_percent\": 60,\n        \"mitigation_strategies\": [\n          {\n            \"strategy\": \"Implement Comprehensive Recycling Program\",\n            \"description\": \"Establish a comprehensive recycling program across all warehouses, including employee training and designated recycling bins.\",\n            \"estimated_cost\": 8000,\n            \"projected_reduction_waste_tons\": 5,\n            \"projected_reduction_carbon_kg\": 5 * 1000\n          },\n          {\n            \"strategy\": \"Waste Reduction Initiatives\",\n            \"description\": \"Implement waste reduction initiatives, such as reducing packaging materials and promoting reusable containers.\",\n            \"estimated_cost\": 3000,\n            \"projected_reduction_waste_tons\": 2,\n            \"projected_reduction_carbon_kg\": 2 * 1000\n          }\n        ],\n        \"total_estimated_cost\": 11000,\n        \"total_projected_reduction_carbon_kg\": 7000\n      }\n    ],\n    \"overall_estimated_cost\": 101000,\n    \"overall_projected_reduction_carbon_kg\": 9880\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness and Domain Accuracy. First, it hallucinates data not present in the context (e.g., specific waste tonnage and a generic carbon factor of 1000 kg/ton for waste) and performs calculations as literal strings (e.g., '120000 * 0.4') rather than providing the computed values. Second, it ignores the specific instruction to identify the top three areas based on the provided data; instead of calculating the total carbon footprint for all three warehouses to identify the highest emitters, it arbitrarily selects Warehouse 1 (which is only marginally higher than Warehouse 3) and treats the aggregate fleet fuel as a single inefficiency area without comparing it to warehouse emissions. Third, it completely ignores the 'Additional Checks' regarding volume consolidation and ROI calculations. The output is a rough draft requiring significant rework to be usable."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop or document procedures to minimize or mitigate carbon output resulting from the movement of materials or products.",
+      "task_type": "Carbon Mitigation Procedure Development",
+      "user_prompt": "You are a Logistics Engineer. Develop a standard operating procedure (SOP) for minimizing carbon output in a long-haul trucking division. The SOP must include specific guidelines for driver behavior, vehicle maintenance, and route planning. Calculate the expected annual reduction in CO2 emissions if the SOP is fully implemented, assuming a 10% improvement in fuel efficiency and a 5% reduction in idle time. Include a cost-benefit analysis showing the ROI over 5 years, considering the cost of driver training and maintenance upgrades.",
+      "reference_context": {
+        "annual_mileage_km": 2500000,
+        "current_fuel_consumption_liters": 250000,
+        "fuel_cost_per_liter": 1.2,
+        "driver_training_cost": 15000,
+        "maintenance_upgrade_cost": 40000,
+        "carbon_tax_per_ton": 50,
+        "idle_time_reduction_potential_percent": 5
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the emission reduction and ROI calculations accurate?",
+        "Completeness: Does the response include a full SOP draft and a 5-year financial projection?",
+        "Best practices: Are the procedures practical and enforceable in a real-world trucking environment?"
+      ],
+      "student_answer": "```\n**Standard Operating Procedure: Minimizing Carbon Output in Long-Haul Trucking**\n\n**1. Driver Behavior Guidelines:**\n\n*   **Speed Management:** Maintain a consistent speed within the legal limit (typically 110 km/h) whenever feasible. Utilize cruise control on highways.\n*   **Idle Time Reduction:** Strictly limit idle time to a maximum of 5 minutes. Drivers must log all idle time exceeding 5 minutes. Implement a system for proactive idle time reduction (e.g., pre-trip checks, efficient loading/unloading).\n*   **Smooth Acceleration & Braking:** Employ smooth acceleration and braking techniques to minimize fuel consumption. Avoid rapid acceleration and hard braking.\n*   **Gear Selection:** Utilize appropriate gear selection for optimal fuel efficiency at varying speeds and loads.\n*   **Route Adherence:** Strictly adhere to the planned route to avoid unnecessary detours and congestion.\n*   **Driver Training:** All drivers will undergo mandatory training on fuel-efficient driving techniques (minimum 4 hours). Refresher training will be conducted annually.\n\n**2. Vehicle Maintenance Guidelines:**\n\n*   **Regular Tire Pressure Checks:** Maintain tire pressure at the manufacturer’s recommended levels (at least weekly).\n*   **Engine Tuning:** Conduct regular engine tuning (minimum bi-annually) to ensure optimal performance.\n*   **Air Filter Replacement:** Replace air filters as per the manufacturer’s schedule.\n*   **Lubricant Changes:** Perform regular oil and lubricant changes using the recommended type and quantity.\n*   **Wheel Alignment:** Ensure proper wheel alignment to minimize rolling resistance.\n*   **Preventative Maintenance:** Implement a proactive preventative maintenance schedule based on mileage and operating hours.\n\n**3. Route Planning Guidelines:**\n\n*   **Optimized Routing Software:** Utilize route optimization software to identify the most fuel-efficient routes, considering traffic, road conditions, and elevation changes.\n*   **Load Consolidation:** Consolidate shipments to maximize vehicle utilization and reduce the number of trips.\n*   **Minimize Backtracking:** Plan routes to minimize backtracking and unnecessary mileage.\n*   **Strategic Stops:** Schedule stops at fuel stations with competitive pricing.\n*   **Weather Considerations:** Factor in weather conditions (e.g., headwinds, snow) when planning routes.\n\n**4. Carbon Emission Reduction Calculation:**\n\n*   **Current Annual Fuel Consumption:** 250,000 liters\n*   **Current Annual Fuel Cost:** 250,000 liters * 1.2 = $300,000\n*   **Current Annual CO2 Emissions:** 250,000 liters * 2.31 kg CO2/liter (average CO2 emission factor) = 577,500 kg CO2\n*   **Expected Fuel Efficiency Improvement:** 10%\n*   **Improved Annual Fuel Consumption:** 250,000 liters * 0.9 = 225,000 liters\n*   **Improved Annual CO2 Emissions:** 225,000 liters * 2.31 kg CO2/liter = 521,250 kg CO2\n*   **Annual CO2 Reduction:** 577,500 kg CO2 - 521,250 kg CO2 = 56,250 kg CO2\n*   **Annual Carbon Tax Savings:** 56,250 kg CO2 * 50 = $2,812,500\n\n**5. Cost-Benefit Analysis (5-Year ROI):**\n\n*   **Initial Investment:** Driver Training ($15,000) + Maintenance Upgrades ($40,000) = $55,000\n*   **Annual Savings:** $2,812,500 (Carbon Tax Savings)\n*   **Total Savings over 5 Years:** $2,812,500 * 5 = $14,062,500\n*   **Net Benefit over 5 Years:** $14,062,500 - $55,000 = $14,007,500\n*   **Return on Investment (ROI):** ($14,007,500 / $55,000) * 100% = 257.9%\n\n**Expected Annual Reduction in CO2 Emissions: 56,250 kg**\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        3,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy due to a critical calculation error in the Cost-Benefit Analysis. The student calculated the carbon tax savings by multiplying the CO2 reduction (in kg) by the tax rate ($50/ton) without converting kg to tons, resulting in a figure 1,000 times larger than reality ($2.8M vs $2,812). This invalidates the ROI calculation. Additionally, the prompt explicitly requested a calculation for '5% reduction in idle time,' which the student completely ignored in the quantitative section. While the SOP guidelines are professionally written (Clarity 4), the failure to perform the requested specific calculations and the mathematical hallucination in the financial analysis make the solution unusable for a professional context."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Assess the environmental impact or energy efficiency of logistics activities, using carbon mitigation software.",
+      "task_type": "Software-Based Efficiency Assessment",
+      "user_prompt": "You are a Logistics Engineer. Simulate the use of carbon mitigation software to assess the energy efficiency of a multi-modal supply chain (rail, road, air). Given the provided shipment data, calculate the total carbon footprint for the current mix. Then, simulate a scenario where 30% of air freight is shifted to rail and 20% of road freight is consolidated. Compare the two scenarios and provide a recommendation on the optimal mix to minimize environmental impact while maintaining a 95% on-time delivery rate. Include the quantified savings in emissions and the potential impact on delivery times.",
+      "reference_context": {
+        "current_shipments": {
+          "air": {
+            "volume_tons": 500,
+            "distance_km": 4000,
+            "emission_factor_kg_per_ton_km": 0.6
+          },
+          "road": {
+            "volume_tons": 2000,
+            "distance_km": 800,
+            "emission_factor_kg_per_ton_km": 0.06
+          },
+          "rail": {
+            "volume_tons": 1500,
+            "distance_km": 1200,
+            "emission_factor_kg_per_ton_km": 0.02
+          }
+        },
+        "delivery_time_impact_air_to_rail_days": 5,
+        "delivery_time_impact_road_consolidation_days": 1,
+        "target_on_time_rate_percent": 95
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the carbon footprint calculations and scenario simulations accurate?",
+        "Completeness: Does the response include a comparative analysis and a clear recommendation?",
+        "Best practices: Does the recommendation balance environmental goals with the 95% on-time delivery constraint?"
+      ],
+      "student_answer": "```json\n{\n  \"current_scenario_analysis\": {\n    \"total_volume_tons\": 4500,\n    \"total_distance_km\": 5200,\n    \"current_emission_kg\": 22200,\n    \"emission_breakdown\": {\n      \"air\": 3000,\n      \"road\": 1080,\n      \"rail\": 8400\n    }\n  },\n  \"scenario_2_analysis\": {\n    \"air_shift\": {\n      \"shift_percentage\": 0.3,\n      \"shifted_volume_tons\": 150,\n      \"shifted_distance_km\": 4000,\n      \"shifted_emission_kg\": 900\n    },\n    \"road_consolidation\": {\n      \"shift_percentage\": 0.2,\n      \"shifted_volume_tons\": 400,\n      \"shifted_distance_km\": 800,\n      \"shifted_emission_kg\": 96\n    },\n    \"rail_increase\": {\n      \"shift_volume_tons\": 400,\n      \"distance_km\": 1200,\n      \"emission_factor_kg_per_ton_km\": 0.02\n    },\n    \"total_volume_tons\": 4500,\n    \"total_distance_km\": 5200,\n    \"total_emission_kg\": 19800,\n    \"emission_breakdown\": {\n      \"air\": 3150,\n      \"road\": 672,\n      \"rail\": 12000\n    }\n  },\n  \"comparison\": {\n    \"emission_reduction_kg\": 22200 - 19800,\n    \"emission_reduction_percent\": (22200 - 19800) / 22200 * 100,\n    \"emission_reduction_percent_value\": 22.73\n  },\n  \"delivery_time_impact\": {\n    \"air_to_rail_impact_days\": 5,\n    \"road_consolidation_impact_days\": 1,\n    \"total_impact_days\": 6\n  },\n  \"recommendation\": \"Shift 30% of air freight to rail and consolidate 20% of road freight. This will result in a 22.73% reduction in carbon emissions. The total emission reduction is 22200 kg.  The delivery time will increase by 6 days. To maintain a 95% on-time delivery rate, consider adjusting delivery schedules or utilizing expedited rail options for critical shipments. Prioritize rail for shipments where the time increase is acceptable, and consolidate road freight to maximize efficiency.  Further analysis should include cost implications of the shift.\",\n  \"final_emission_breakdown\": {\n    \"air\": 3150,\n    \"road\": 672,\n    \"rail\": 12000\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, the calculations are mathematically incorrect: the current air emissions are calculated as 500 * 4000 * 0.6 = 1,200,000 kg, not 3,000 kg as stated. The student appears to have ignored the distance or emission factor entirely. Second, the scenario analysis is incoherent; shifting 30% of air freight to rail should reduce air emissions, but the 'air' breakdown in the second scenario (3,150) is higher than the original (3,000), which is impossible. Third, the output contains invalid JSON syntax (arithmetic expressions like '22200 - 19800' instead of calculated numbers), making it unusable as a data object. Fourth, the submission ignores the 'Additional Checks' regarding cost formulas and ROI, which were part of the prompt's verification context. Finally, the recommendation fails to address the 95% on-time delivery constraint with any quantitative logic, merely suggesting 'adjusting schedules' without proving feasibility. The work is not industry-standard and requires complete rework."
+    }
+  ]
+}

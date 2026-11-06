@@ -1,0 +1,954 @@
+{
+  "meta": {
+    "job_title": "Accountants and Auditors",
+    "job_id": "accountant_auditor",
+    "onet_code": "13-2011.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 30,
+    "evaluated_tasks": 30,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 3.11,
+      "dimensions": {
+        "Correctness": 2.75,
+        "Completeness": 3.21,
+        "Best Practices": 2.93,
+        "Domain Accuracy": 2.89,
+        "Clarity": 4.39,
+        "Autonomy": 2.5
+      },
+      "evaluated_tasks": 30,
+      "scale_max": 5
+    },
+    "total_time_seconds": 4974.84
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Prepare detailed reports on audit findings.",
+      "task_type": "Report Generation",
+      "user_prompt": "Analyze the provided transaction log and control matrix to identify three distinct audit findings related to non-compliance with internal policies. Draft a formal executive summary report that details each finding, its potential financial impact, and the specific control failure. Ensure the report adheres to GAAP standards for disclosure and includes a section on data privacy compliance regarding the handling of the PII found in the logs.",
+      "reference_context": "{\n  \"transaction_log\": [\n    {\"id\": \"TXN-9981\", \"date\": \"2023-10-15\", \"amount\": 15000, \"category\": \"Consulting\", \"approver\": \"J. Doe\", \"policy_violation\": \"Exceeds $10k limit without board approval\"},\n    {\"id\": \"TXN-9982\", \"date\": \"2023-10-16\", \"amount\": 5000, \"category\": \"Travel\", \"approver\": \"A. Smith\", \"pii_exposed\": \"SSN: 123-45-6789\"},\n    {\"id\": \"TXN-9983\", \"date\": \"2023-10-17\", \"amount\": 2000, \"category\": \"Supplies\", \"approver\": \"J. Doe\", \"policy_violation\": \"Duplicate invoice submitted\"}\n  ],\n  \"control_matrix\": {\n    \"limit_threshold\": 10000,\n    \"pii_handling_policy\": \"SSN must be masked in all reports\",\n    \"duplicate_check\": \"Enabled\"\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: All three findings are accurately identified from the log data.",
+        "Completeness: The report includes financial impact estimates, control failure analysis, and GAAP-compliant disclosure language.",
+        "Best practices: PII is masked in the output, and risk mitigation strategies are actionable."
+      ],
+      "student_answer": "**Executive Summary Report – Audit Findings**\n\n**Date:** October 26, 2023\n\n**To:** Senior Management\n\n**From:** [Your Name/Audit Department]\n\n**Subject:** Audit Findings – Non-Compliance with Internal Policies\n\nThis report details three audit findings identified during a review of recent transactions and associated controls. These findings indicate potential non-compliance with established internal policies and raise concerns regarding financial reporting accuracy and data privacy.\n\n**Finding 1: Excessive Expenditure – Consulting Services**\n\n*   **Description:** Transaction TXN-9981, dated 2023-10-15, represents a consulting expense of $15,000. This amount exceeds the established policy limit of $10,000 without prior board approval.\n*   **Potential Financial Impact:**  The unapproved expenditure could represent a material misstatement if not properly documented and justified.  A full investigation is required to determine the legitimacy of the expense and its impact on the company’s financial statements.\n*   **Control Failure:**  Lack of adherence to the established expenditure approval process. Specifically, the absence of board approval for transactions exceeding the defined limit.\n*   **GAAP Disclosure:**  This finding necessitates a review of the company’s expense reporting procedures and potential adjustments to financial statements if the expenditure is deemed unsupported.\n\n**Finding 2: PII Exposure – Travel Expense**\n\n*   **Description:** Transaction TXN-9982, dated 2023-10-16, includes a travel expense accompanied by the exposure of Personally Identifiable Information (PII) – specifically, an SSN (123-45-6789).\n*   **Potential Financial Impact:** While the immediate financial impact is minimal, the exposure of SSN data presents a significant risk of identity theft and potential legal liabilities.  The cost of remediation and potential fines associated with data breach regulations could be substantial.\n*   **Control Failure:** Failure to comply with the PII handling policy, specifically the requirement to mask SSNs in all reports.\n*   **GAAP Disclosure:**  This finding requires immediate attention to ensure compliance with data privacy regulations and to mitigate the risk of financial loss and reputational damage.  Disclosure of the incident, if required by applicable regulations, should be prepared.\n\n**Finding 3: Duplicate Invoice Submission**\n\n*   **Description:** Transaction TXN-9983, dated 2023-10-17, involves the submission of a duplicate invoice for supplies.\n*   **Potential Financial Impact:**  The duplicate invoice could lead to overpayment of suppliers and an inaccurate record of expenses.\n*   **Control Failure:**  Despite the “duplicate check” control being enabled, the duplicate invoice was successfully submitted.  Further investigation is needed to determine the root cause of the failure.\n*   **GAAP Disclosure:**  This finding necessitates a review of the invoice processing procedures to ensure the effectiveness of the duplicate check control.  Any overpayments must be corrected in the financial statements.\n\n**Data Privacy Compliance:**\n\nThe exposure of SSN data in Transaction TXN-9982 represents a direct violation of the PII handling policy.  Immediate steps must be taken to investigate the source of the data exposure, implement corrective actions to prevent future occurrences, and ensure compliance with all applicable data privacy regulations (e.g., GDPR, CCPA).  A thorough review of data security protocols and employee training is recommended.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission is professionally structured and addresses all core task requirements, including the three findings, financial impacts, control failures, and a dedicated data privacy section. However, technical precision regarding GAAP standards is slightly imprecise; specifically, labeling the PII breach disclosure under 'GAAP Disclosure' conflates financial reporting standards (ASC 450) with regulatory compliance requirements (GDPR/CCPA), which is a minor domain accuracy gap. Additionally, the presence of a placeholder name ('[Your Name]') requires minor editing before client delivery, affecting the Autonomy score. Clarity is excellent, but the technical nuances prevent a perfect score on correctness and domain accuracy."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Collect and analyze data to detect deficient controls, duplicated effort, extravagance, fraud, or non-compliance with laws, regulations, and management policies.",
+      "task_type": "Fraud Detection Analysis",
+      "user_prompt": "Review the provided vendor payment dataset and identify patterns indicative of fraud or extravagance. Specifically, look for duplicate payments, payments to vendors with matching employee addresses, and payments exceeding budget thresholds. Calculate the total potential loss and recommend immediate remediation steps that comply with GDPR regarding the investigation of the involved employees.",
+      "reference_context": "{\n  \"vendor_payments\": [\n    {\"vendor_id\": \"V101\", \"amount\": 5000, \"date\": \"2023-09-01\", \"employee_id\": \"E001\", \"vendor_address\": \"123 Main St\"},\n    {\"vendor_id\": \"V102\", \"amount\": 5000, \"date\": \"2023-09-02\", \"employee_id\": \"E002\", \"vendor_address\": \"123 Main St\"},\n    {\"vendor_id\": \"V103\", \"amount\": 12000, \"date\": \"2023-09-03\", \"employee_id\": \"E001\", \"vendor_address\": \"456 Oak Ave\"},\n    {\"vendor_id\": \"V104\", \"amount\": 5000, \"date\": \"2023-09-04\", \"employee_id\": \"E001\", \"vendor_address\": \"123 Main St\"}\n  ],\n  \"employee_records\": [{\"id\": \"E001\", \"address\": \"123 Main St\", \"budget_limit\": 10000}],\n  \"budget_limits\": {\"V101\": 5000, \"V102\": 5000, \"V103\": 10000, \"V104\": 5000}\n}",
+      "evaluation_criteria": [
+        "Correctness: Duplicate payments and address matches are correctly flagged.",
+        "Completeness: Total loss is calculated accurately, and GDPR compliance steps for employee data are included.",
+        "Best practices: Recommendations include specific forensic accounting steps and immediate payment holds."
+      ],
+      "student_answer": "**Analysis:**\n\n*   **Duplicate Payments:** Vendor V104 was paid $5000 on 2023-09-04 by employee E001, who already received $5000 from V101 on 2023-09-01.\n*   **Matching Employee Addresses:** Vendor V102 was paid $5000 on 2023-09-02 by employee E002, whose address matches Vendor V102’s address.\n*   **Exceeding Budget Thresholds:** Employee E001 exceeded their budget limit of $10,000 with a payment of $12,000 to Vendor V103.\n\n**Total Potential Loss:**\n\n*   Duplicate Payment: $5000\n*   Vendor V103 Exceeding Budget: $2000\n\n**Total Potential Loss: $7000**\n\n**Remediation Steps (GDPR Compliant):**\n\n1.  **Secure Data:** Immediately secure the vendor payment dataset and employee records to prevent further unauthorized access or alteration.\n2.  **Initial Investigation (Data Protection Impact Assessment):** Conduct a preliminary investigation focusing solely on the data necessary to identify the scope of the potential fraud. This includes reviewing payment details, employee records, and vendor information.  Document the data processing activities and their purpose.\n3.  **Notification to Data Subjects (Employees):**  If the investigation reveals potential misuse of employee data (e.g., using employee addresses to identify vendors), notify the involved employees (E001 and E002) *in writing* about the investigation.  Provide a concise explanation of the investigation’s purpose, the data being reviewed, and the potential implications.  Ensure the notification is clear, accurate, and avoids any speculation.\n4.  **Limited Data Access:** Restrict access to the investigation data to a limited number of authorized personnel (e.g., legal counsel, internal audit).\n5.  **Documentation:** Maintain meticulous records of all investigation activities, including data access logs, correspondence with employees, and findings.\n6.  **Data Minimization:** Only collect and retain data strictly necessary for the investigation.  Once the investigation is complete, securely delete any unnecessary data.\n7.  **Transparency:**  Be transparent with employees about the investigation process, while respecting their privacy rights.\n8.  **Legal Counsel Review:** Consult with legal counsel to ensure all remediation steps comply with GDPR requirements, including data subject rights (right to access, right to rectification, right to erasure).",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        5,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission is well-structured and clear (Clarity 5) but contains critical factual errors. It hallucinates E002's address (not provided in context) and excludes the V102 address-match risk from the Total Potential Loss calculation (Correctness 2, Domain Accuracy 2). While patterns are identified, the financial loss calculation is incomplete (Completeness 3). The GDPR remediation advice is professionally risky, suggesting immediate notification of suspects which could compromise a fraud investigation (Best Practices 2). Due to these factual and procedural errors, the output requires significant rework before client delivery (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Inspect account books and accounting systems for efficiency, effectiveness, and use of accepted accounting procedures to record transactions.",
+      "task_type": "System Efficiency Audit",
+      "user_prompt": "Evaluate the provided accounting system schema and transaction recording logic against IFRS standards. Identify three inefficiencies in the current workflow that could lead to material misstatement or delayed reporting. Propose a revised workflow diagram description that improves efficiency while ensuring all transactions are recorded in the correct period and with proper valuation.",
+      "reference_context": "{\n  \"system_schema\": {\n    \"modules\": [\"Accounts Payable\", \"General Ledger\", \"Inventory\"],\n    \"sync_frequency\": \"Daily batch at 11:59 PM\",\n    \"valuation_method\": \"FIFO (Manual override allowed)\"\n  },\n  \"transaction_flow\": {\n    \"step_1\": \"Invoice received\",\n    \"step_2\": \"Manual entry to AP\",\n    \"step_3\": \"Batch sync to GL\",\n    \"step_4\": \"Inventory update\"\n  },\n  \"ifr_requirements\": {\n    \"period_closing\": \"Must be real-time for revenue recognition\",\n    \"valuation\": \"Consistent application required, no manual overrides\"\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: Inefficiencies are logically derived from the schema and IFRS requirements.",
+        "Completeness: The revised workflow addresses all three identified inefficiencies.",
+        "Best practices: The solution ensures real-time revenue recognition and prevents manual valuation overrides."
+      ],
+      "student_answer": "**Inefficiencies:**\n\n1.  **Manual Invoice Entry:** Step 2 introduces a significant risk of human error and delays the recording process.\n2.  **Batch Sync:** The daily batch sync at 11:59 PM doesn’t meet real-time requirements for revenue recognition as mandated by IFRS.\n3.  **Manual Valuation Override:** Allowing manual FIFO overrides undermines consistent application of valuation principles and increases the risk of misstatement.\n\n**Revised Workflow Diagram:**\n\n1.  **Invoice Receipt:** Invoice received.\n2.  **Automated AP Entry:** Invoice data automatically entered into Accounts Payable module.\n3.  **Real-time GL Posting:** Transactions automatically posted to the General Ledger in real-time upon invoice creation.\n4.  **Inventory Update:** Inventory levels updated immediately upon GL posting.\n5.  **Period-End Reconciliation:** Automated reconciliation process performed daily to ensure accuracy and compliance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies the three key inefficiencies (manual entry, batch sync, manual override) and proposes a logical automated workflow that addresses the core IFRS requirements. However, the revised workflow lacks specific control language regarding the prevention of valuation overrides (e.g., system-enforced FIFO) in the step descriptions, which is a minor gap for an audit recommendation. Clarity and domain accuracy are strong, but the output requires minor substantive edits to fully ensure client readiness regarding valuation controls."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Report to management about asset utilization and audit results, and recommend changes in operations and financial activities.",
+      "task_type": "Strategic Recommendation",
+      "user_prompt": "Based on the provided asset utilization report, analyze the underutilization of fixed assets in the manufacturing division. Calculate the opportunity cost of this underutilization and prepare a briefing for the CFO that recommends specific operational changes to improve asset turnover. Ensure the recommendations include a risk mitigation strategy for potential production delays during the transition.",
+      "reference_context": "{\n  \"asset_report\": {\n    \"division\": \"Manufacturing\",\n    \"total_assets\": 5000000,\n    \"utilized_capacity\": 60,\n    \"industry_benchmark\": 85,\n    \"annual_revenue\": 10000000,\n    \"depreciation_rate\": 0.10\n  },\n  \"operational_constraints\": {\n    \"transition_time\": \"3 months\",\n    \"risk_factors\": [\"Supply chain disruption\", \"Labor shortage\"]\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: Opportunity cost is calculated using the provided depreciation and revenue data.",
+        "Completeness: The briefing includes specific operational changes and addresses all risk factors.",
+        "Best practices: Recommendations are actionable and include a phased implementation plan to mitigate transition risks."
+      ],
+      "student_answer": "**Briefing to CFO – Manufacturing Division Asset Underutilization**\n\n**Executive Summary:**\n\nThe Manufacturing Division is significantly underutilizing its fixed assets, resulting in a substantial opportunity cost. Current utilization at 60% is considerably below the industry benchmark of 85%, impacting revenue generation and profitability. This briefing outlines the opportunity cost, recommends operational changes to improve asset turnover, and details a risk mitigation strategy for a proposed transition.\n\n**Analysis of Underutilization:**\n\n*   **Utilization Gap:** The division is operating at 60% capacity, representing a 25% gap compared to the industry benchmark.\n*   **Opportunity Cost:**  Based on the industry benchmark of 85%, the potential annual revenue that could be generated with optimal utilization is approximately 10000000 * 0.85 = 8,500,000.  The current revenue of 10,000,000 suggests some revenue is being generated, but the potential is significantly higher.  The difference between potential revenue and current revenue represents the opportunity cost – approximately 1,500,000 annually.\n*   **Depreciation Impact:** The 10% depreciation rate further reduces the effective return on assets, exacerbating the underutilization issue.\n\n**Recommended Operational Changes:**\n\n1.  **Demand Forecasting Enhancement:** Implement a more sophisticated demand forecasting system incorporating real-time market data and predictive analytics.  This will allow for proactive adjustments to production schedules.\n2.  **Production Scheduling Optimization:**  Employ lean manufacturing principles and optimize production scheduling to minimize idle time and maximize throughput.  Consider implementing a Kanban system.\n3.  **Product Mix Review:** Analyze the product mix to identify opportunities to shift towards higher-demand, higher-margin products.\n4.  **Capacity Expansion (Strategic):** Evaluate the feasibility of strategically expanding capacity to meet anticipated future demand, considering the 3-month transition timeline. This could involve targeted investments in specific equipment or processes.\n\n**Risk Mitigation Strategy (3-Month Transition):**\n\n*   **Phase 1 (Month 1):**  Initial operational changes – demand forecasting, production scheduling optimization.  Monitor key performance indicators (KPIs) closely.\n*   **Phase 2 (Month 2):**  Introduce product mix adjustments.  Conduct pilot programs to test new processes.\n*   **Phase 3 (Month 3):**  Implement strategic capacity expansion (if feasible).\n*   **Supply Chain Diversification:**  Identify and qualify alternative suppliers to mitigate potential supply chain disruptions.  Maintain safety stock levels for critical components.\n*   **Labor Contingency Plan:**  Develop a cross-training program to address potential labor shortages.  Explore temporary staffing options.\n*   **Communication Plan:**  Maintain open communication with employees and stakeholders regarding the transition plan and potential challenges.\n\n**Financial Implications:**\n\n*   Investment in demand forecasting and scheduling software: $50,000 - $100,000\n*   Training costs for employees: $10,000 - $20,000\n*   Potential costs associated with supply chain diversification: Variable, dependent on supplier selection.\n*   Cost of temporary staffing (if required): Variable.\n\n**Conclusion:**\n\nAddressing the underutilization of fixed assets is critical to improving the Manufacturing Division’s profitability and competitiveness. Implementing the recommended operational changes, coupled with a robust risk mitigation strategy, will enable the division to realize its full potential and generate significant returns on investment.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        4,
+        4,
+        2,
+        5,
+        2
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission follows a professional structure and addresses all required sections, earning high scores for Completeness, Best Practices, and Clarity. However, the core financial analysis contains a critical logical error: the opportunity cost calculation implies potential revenue ($8.5M) is lower than current revenue ($10M), contradicting the premise of underutilization. This fundamental domain accuracy and correctness issue prevents the output from being used without significant rework, resulting in lower scores for those dimensions."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Supervise auditing of establishments, and determine scope of investigation required.",
+      "task_type": "Audit Scope Definition",
+      "user_prompt": "You are supervising an audit of a new retail establishment. Based on the provided risk profile and historical data, define the scope of the investigation. Specify the sampling methodology, the specific accounts to be tested, and the depth of testing required for high-risk areas. Justify your scope decisions based on the risk of material misstatement and compliance with CCPA.",
+      "reference_context": "{\n  \"risk_profile\": {\n    \"high_risk_areas\": [\"Cash handling\", \"Customer data processing\", \"Inventory shrinkage\"],\n    \"low_risk_areas\": [\"Administrative expenses\", \"Fixed asset depreciation\"]\n  },\n  \"historical_data\": {\n    \"last_audit_errors\": 12,\n    \"error_types\": [\"Cash discrepancy\", \"Data privacy breach\", \"Inventory count error\"],\n    \"sample_size_last_year\": 100\n  },\n  \"compliance_requirements\": {\n    \"ccpa\": \"Must verify consent management for all customer data transactions\"\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: Sampling methodology is appropriate for the risk levels identified.",
+        "Completeness: The scope covers all high-risk areas and includes specific CCPA verification steps.",
+        "Best practices: The scope is justified by material misstatement risk and includes a clear timeline for execution."
+      ],
+      "student_answer": "**Audit Scope Definition – Retail Establishment**\n\n**I. Overall Scope:**\n\nThe audit will focus on assessing the reliability of the client’s financial statements and compliance with relevant regulations, particularly the California Consumer Privacy Act (CCPA). Given the identified high-risk areas and historical audit deficiencies, the audit will be conducted with a heightened level of scrutiny.\n\n**II. Sampling Methodology:**\n\n*   **Overall Sample Size:** 250 transactions across all accounts.\n*   **Risk-Based Sampling:** A combination of judgment and statistical sampling will be employed.\n*   **High-Risk Area Sampling:** 100% testing of cash receipts and disbursements, customer data consent records, and a sample of 20% of inventory counts.\n*   **Low-Risk Area Sampling:** Statistical sampling (n=50) for administrative expenses and fixed asset depreciation.\n\n**III. Accounts to be Tested:**\n\n*   **High-Risk Accounts:**\n    *   Cash (Receipts and Disbursements): 100% testing.\n    *   Customer Data (Consent Records, Data Processing Logs): 100% testing.\n    *   Inventory (Beginning Balance, Purchases, Sales, Adjustments): 20% of transactions.\n    *   Point of Sale (POS) System Data: 100% testing of daily reconciliation reports.\n*   **Low-Risk Accounts:**\n    *   Accounts Payable: Statistical sample (n=50).\n    *   Salaries and Wages: Statistical sample (n=50).\n    *   Rent Expense: Statistical sample (n=50).\n    *   Utilities Expense: Statistical sample (n=50).\n    *   Depreciation Expense: Statistical sample (n=50).\n\n**IV. Depth of Testing – High-Risk Areas:**\n\n*   **Cash Handling:**\n    *   Detailed examination of cash register tapes, bank reconciliations, and supporting documentation.\n    *   Physical observation of cash counts and reconciliation procedures.\n    *   Tracing cash transactions from POS system to bank statements.\n*   **Customer Data Processing (CCPA Compliance):**\n    *   Review of consent management system configuration and operation.\n    *   Testing of consent records to ensure accuracy and completeness.\n    *   Verification of data deletion requests and compliance with CCPA data retention policies.\n    *   Examination of data security controls and procedures.\n*   **Inventory Shrinkage:**\n    *   Review of inventory control procedures, including receiving, storage, and shipping.\n    *   Physical inventory count verification.\n    *   Analysis of inventory discrepancies and investigation of root causes.\n\n**V. Justification:**\n\nThe scope is driven by the high-risk areas identified in the risk profile and the historical audit errors. The 100% testing of cash handling, customer data, and inventory is crucial due to the potential for material misstatement and significant compliance violations under CCPA. The increased sample size (250 transactions) compared to last year’s (100) reflects the need to address the previous audit deficiencies. The depth of testing for high-risk areas will provide assurance regarding the effectiveness of internal controls and the accuracy of financial reporting.  The CCPA compliance requirement necessitates a thorough review of consent management practices, data security, and data deletion procedures.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        5,
+        5,
+        5,
+        5,
+        3
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission demonstrates strong domain knowledge and structure, covering all task requirements with appropriate risk-based methodology and CCPA alignment (Completeness, Best Practices, Domain Accuracy, Clarity all 5). However, there is a critical logical inconsistency in the sample size calculation (Section II states 250 total, while Section III lists 5 low-risk accounts at n=50 each = 250 alone, excluding high-risk testing). This factual error reduces the plan's immediate usefulness (Correctness 3) and requires substantive content edits before client delivery (Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Confer with company officials about financial and regulatory matters.",
+      "task_type": "Stakeholder Communication",
+      "user_prompt": "Draft a formal communication plan for a meeting with the Board of Directors regarding a recent change in tax regulations that impacts the company's deferred tax assets. The plan must outline the key discussion points, the financial implications of the change, and the proposed strategy for compliance. Ensure the communication respects data privacy laws when discussing specific financial projections.",
+      "reference_context": "{\n  \"regulation_change\": {\n    \"name\": \"New Tax Act 2024\",\n    \"impact\": \"Reduces deferred tax asset valuation by 15%\",\n    \"effective_date\": \"2024-01-01\"\n  },\n  \"company_financials\": {\n    \"deferred_tax_assets\": 2000000,\n    \"projected_impact\": -300000,\n    \"tax_rate\": 0.21\n  },\n  \"privacy_constraints\": {\n    \"data_handling\": \"Do not include individual employee tax data in board materials\"\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: Financial impact calculation is accurate based on the provided data.",
+        "Completeness: The communication plan covers all key discussion points and compliance strategies.",
+        "Best practices: The plan explicitly excludes individual employee data and adheres to privacy constraints."
+      ],
+      "student_answer": "**Formal Communication Plan: Board of Directors – Impact of New Tax Act 2024**\n\n**1. Purpose:** To inform the Board of Directors regarding the impact of the New Tax Act 2024 on the company’s deferred tax assets and to outline the proposed strategy for compliance.\n\n**2. Date & Time:** [Insert Date and Time]\n\n**3. Attendees:** Board of Directors, CFO, Head of Tax, Lead Auditor\n\n**4. Communication Channels:** Formal Presentation & Written Summary\n\n**5. Key Discussion Points:**\n\n*   **Executive Summary:** Briefly introduce the New Tax Act 2024 and its primary impact.\n*   **Regulation Overview:**  A concise explanation of the key provisions of the New Tax Act 2024, focusing on the changes affecting deferred tax asset valuation.\n*   **Financial Impact:**\n    *   Current Deferred Tax Asset Balance: $2,000,000\n    *   Projected Reduction: -$300,000 (15% reduction)\n    *   Revised Deferred Tax Asset Balance: $1,700,000\n    *   Impact on Tax Liability:  Reduction in projected future tax expense due to the decreased asset value. (Specific figures will be presented in the written summary, avoiding granular detail).\n*   **Audit Review:**  Summary of the internal audit review confirming the valuation methodology and the impact of the regulation change.\n*   **Compliance Strategy:**\n    *   Updated Tax Modeling:  Explanation of how the company’s tax models have been adjusted to reflect the new regulations.\n    *   Documentation Review:  Confirmation that all relevant documentation supporting the deferred tax asset valuation has been reviewed and updated.\n    *   Ongoing Monitoring:  Plan for continuous monitoring of tax regulations and adjustments to the tax strategy as needed.\n\n**6. Supporting Materials:**\n\n*   **Presentation Slides:**  Visually engaging slides summarizing the key information.\n*   **Written Summary:**  A detailed written report including:\n    *   A comprehensive explanation of the New Tax Act 2024.\n    *   A breakdown of the financial impact, presented in aggregate terms (e.g., total impact on future tax expense, not individual departmental figures).\n    *   Documentation of the audit review findings.\n    *   The proposed compliance strategy.\n*   **Appendix:** Relevant regulatory excerpts (redacted to remove sensitive data).\n\n**7. Data Privacy Considerations:**\n\n*   All financial projections and data presented will be aggregated and anonymized to protect individual employee tax information. No specific employee-level data will be included in any board materials.\n\n**8.  Action Items:**\n\n*   Board approval of the proposed compliance strategy.\n*   Ongoing monitoring and reporting on the impact of the New Tax Act 2024.\n\n**9. Contact:** [Name and Contact Information of Lead Auditor/CFO]",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        3,
+        5,
+        3
+      ],
+      "score": 3.7,
+      "grade_reason": "The submission correctly structures a communication plan with clear headings and accurate arithmetic for the DTA reduction (Correctness 4, Completeness 4, Clarity 5). However, it lacks specific references to accounting standards (GAAP/IFRS) and risk assessment language expected of a Senior Auditor (Best Practices 3). There is a technical inaccuracy regarding the impact on tax expense (stating a reduction when a DTA write-down typically increases expense or reduces benefit), which requires substantive correction before Board delivery (Domain Accuracy 3, Autonomy 3)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Examine and evaluate financial and information systems, recommending controls to ensure system reliability and data integrity.",
+      "task_type": "System Audit",
+      "user_prompt": "Analyze the provided system architecture for the Accounts Payable module. Identify three specific control weaknesses that could lead to data integrity issues or fraud. For each weakness, propose a technical control implementation and a procedural mitigation strategy that aligns with GAAP standards.",
+      "reference_context": "{\n  \"system_name\": \"AP_Module_v2\",\n  \"architecture\": {\n    \"input_layer\": \"Direct CSV upload by clerks without manager approval workflow\",\n    \"processing_layer\": \"Automated matching against PO database\",\n    \"output_layer\": \"Direct journal entry posting to GL\"\n  },\n  \"current_controls\": [\"Password protection\", \"Backup daily\"]\n}",
+      "evaluation_criteria": [
+        "Correctness: Identifies at least three distinct, plausible control weaknesses based on the provided architecture.",
+        "Completeness: Provides both a technical control and a procedural mitigation for each identified weakness.",
+        "Best practices: Recommendations adhere to segregation of duties principles and GAAP internal control frameworks."
+      ],
+      "student_answer": "**Control Weaknesses, Technical Controls, and Procedural Mitigations**\n\n**1. Weakness:** Lack of Managerial Oversight on Invoice Input\n\n*   **Description:** Direct CSV upload by clerks without manager approval creates a significant risk of fraudulent invoices being entered into the system.\n*   **Technical Control:** Implement a mandatory workflow requiring invoice data to be reviewed and approved by a designated manager before processing. This could be achieved through a system integration with a workflow engine.\n*   **Procedural Mitigation:** Establish a policy mandating that all invoices must be reviewed and approved by a manager with appropriate authority.  Managers must document their review and approval, including any discrepancies or concerns.  Maintain a log of all invoices reviewed and approved.\n\n**2. Weakness:** Automated Matching with Potential PO Discrepancies\n\n*   **Description:** Relying solely on automated matching against the PO database without human verification increases the risk of matching invoices to incorrect or outdated purchase orders, leading to inaccurate payments.\n*   **Technical Control:** Implement a reconciliation process where a designated user reviews a sample of matched invoices and POs to identify and resolve any discrepancies.  The system should flag potential mismatches for review.\n*   **Procedural Mitigation:**  Require a secondary review of all automated matches by a senior accountant or AP specialist.  Document the reconciliation process, including any discrepancies identified and resolved, and the rationale for resolution.\n\n**3. Weakness:** Direct Journal Entry Posting\n\n*   **Description:** Direct journal entry posting from the AP module to the General Ledger bypasses a critical review step, increasing the risk of unauthorized or inaccurate journal entries.\n*   **Technical Control:** Implement a system that requires a supervisor to approve all journal entries before they are posted to the GL.  The system should restrict direct posting access to authorized personnel only.\n*   **Procedural Mitigation:** Establish a policy requiring all journal entries to be reviewed and approved by a supervisor.  Maintain a log of all journal entries approved, including the date, time, and approver’s signature.  Implement a two-person verification process for all journal entries.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        4,
+        5,
+        4,
+        5,
+        4
+      ],
+      "score": 4.5,
+      "grade_reason": "The submission correctly identifies three valid control weaknesses and proposes appropriate technical and procedural controls that inherently align with GAAP principles. However, it fails to explicitly reference GAAP standards in the text as requested, impacting Completeness and Domain Accuracy. Weakness 2's technical control description conflates procedural review with system configuration. The structure is clear, but minor edits regarding explicit GAAP alignment and technical specificity are needed before client delivery."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Inspect cash on hand, notes receivable and payable, negotiable securities, and canceled checks to confirm records are accurate.",
+      "task_type": "Cash Reconciliation",
+      "user_prompt": "Review the provided bank statement and internal ledger data for Q3. Identify all unreconciled items. Calculate the adjusted cash balance and determine if there are any discrepancies exceeding $500 that require investigation. Draft a summary report listing the discrepancies and the specific account codes involved.",
+      "reference_context": "{\n  \"bank_statement\": [\n    {\"date\": \"2023-09-05\", \"description\": \"Wire Transfer\", \"amount\": 15000.00, \"balance\": 125000.00},\n    {\"date\": \"2023-09-12\", \"description\": \"Check #4001\", \"amount\": -2500.00, \"balance\": 122500.00}\n  ],\n  \"internal_ledger\": [\n    {\"date\": \"2023-09-05\", \"description\": \"Wire Transfer\", \"amount\": 15000.00, \"account\": \"1001-Cash\"},\n    {\"date\": \"2023-09-15\", \"description\": \"Check #4001\", \"amount\": -2500.00, \"account\": \"1001-Cash\"},\n    {\"date\": \"2023-09-10\", \"description\": \"Service Fee\", \"amount\": -50.00, \"account\": \"1001-Cash\"}\n  ]\n}",
+      "evaluation_criteria": [
+        "Correctness: Accurately calculates the adjusted cash balance and identifies the missing service fee transaction.",
+        "Completeness: Lists all discrepancies and maps them to the correct account codes.",
+        "Best practices: Report format is professional and clearly distinguishes between timing differences and errors."
+      ],
+      "student_answer": "**Unreconciled Items Summary - Q3**\n\n| Date       | Description          | Bank Amount | Ledger Amount | Account Code | Discrepancy |\n|------------|----------------------|-------------|---------------|--------------|-------------|\n| 2023-09-15 | Check #4001          | -2500.00    | -2500.00      | 1001-Cash     | 0           |\n| 2023-09-10 | Service Fee          |             | -50.00        | 1001-Cash     | 50.00       |\n\n**Adjusted Cash Balance:** $122500.00\n\n**Discrepancies Exceeding $500:** None",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission contains significant domain accuracy and correctness errors. The Adjusted Cash Balance ($122,500) is incorrect; it ignores the $50 service fee, making the true cash balance $122,450. Additionally, listing Check #4001 as an 'Unreconciled Item' with a 0 discrepancy is terminologically incorrect as it appears on both statements. Completeness is adequate (3) as data points were provided, but the lack of a narrative report structure and risk assessment language lowers Best Practices (2) and Autonomy (2). Clarity is high (4) due to the table format."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Examine records and interview workers to ensure recording of transactions and compliance with laws and regulations.",
+      "task_type": "Compliance Review",
+      "user_prompt": "Evaluate the provided expense reimbursement logs against the company's travel policy and GDPR regulations. Flag any transactions that violate the policy (e.g., missing receipts, excessive per diem) or data privacy rules (e.g., storing unencrypted PII in the notes field). Generate a compliance violation report.",
+      "reference_context": "{\n  \"policy\": {\n    \"max_per_diem\": 150.00,\n    \"receipt_required\": true,\n    \"data_storage\": \"Encrypted only\"\n  },\n  \"transactions\": [\n    {\"id\": \"EXP-001\", \"employee_id\": \"E123\", \"amount\": 200.00, \"receipt\": \"missing\", \"notes\": \"John Doe SSN: 123-45-6789\"},\n    {\"id\": \"EXP-002\", \"employee_id\": \"E456\", \"amount\": 100.00, \"receipt\": \"present\", \"notes\": \"Client meeting\"}\n  ]\n}",
+      "evaluation_criteria": [
+        "Correctness: Correctly identifies the per diem excess and the missing receipt in EXP-001.",
+        "Completeness: Flags the GDPR violation regarding the storage of SSN in unencrypted notes.",
+        "Best practices: The report clearly categorizes violations by type (Policy vs. Legal) and suggests immediate remediation steps."
+      ],
+      "student_answer": "**Compliance Violation Report**\n\n**Date:** October 26, 2023\n\n**Subject:** Expense Reimbursement Log Review – GDPR and Travel Policy Compliance\n\n**Findings:**\n\n*   **Transaction ID:** EXP-001\n    *   **Employee ID:** E123\n    *   **Violation:** Policy Violation – Receipt Required. The receipt is missing.\n    *   **Violation:** GDPR Violation – Potential Data Privacy Risk. The inclusion of an employee’s Social Security Number (SSN: 123-45-6789) in the notes field is a violation of GDPR data minimization principles and poses a significant data privacy risk.\n*   **Transaction ID:** EXP-002\n    *   **Employee ID:** E456\n    *   **Status:** Compliant – Meets both travel policy and GDPR requirements.\n\n**Recommendations:**\n\n*   Immediately require a receipt for EXP-001.\n*   Remove the SSN from all expense notes.  Employee data should not be stored in plain text.\n*   Reinforce the travel policy regarding receipt requirements.\n*   Provide training to employees on GDPR compliance and data privacy best practices.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        3,
+        3,
+        5,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission correctly identifies the missing receipt and GDPR violation (SSN) for EXP-001 and validates EXP-002. However, it critically fails to flag the per diem limit violation (200.00 > 150.00) for EXP-001, which is a core task requirement. This omission renders the report unsafe for stakeholder use (Autonomy) and incorrect (Correctness). The formatting and clarity are excellent, but the audit logic is incomplete."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare, examine, or analyze accounting records, financial statements, or other financial reports to assess accuracy, completeness, and conformance to reporting and procedural standards.",
+      "task_type": "Financial Statement Analysis",
+      "user_prompt": "Analyze the provided draft Income Statement and Balance Sheet. Verify that the accounting equation holds true. Identify any line items that appear inconsistent with industry standards (e.g., unusually high bad debt expense). Calculate the current ratio and quick ratio, and flag any ratios that fall outside the acceptable range of 1.5 to 2.5 for current ratio.",
+      "reference_context": "{\n  \"income_statement\": {\"revenue\": 500000, \"cogs\": 200000, \"expenses\": 150000, \"bad_debt\": 80000},\n  \"balance_sheet\": {\n    \"assets\": {\"cash\": 50000, \"receivables\": 100000, \"inventory\": 60000, \"total\": 210000},\n    \"liabilities\": {\"payables\": 40000, \"short_term_debt\": 30000, \"total\": 70000},\n    \"equity\": 140000\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: Confirms Assets = Liabilities + Equity and correctly calculates Current Ratio (1.71) and Quick Ratio (0.86).",
+        "Completeness: Identifies the bad debt expense as an anomaly relative to revenue.",
+        "Best practices: Analysis includes a clear statement on whether the financial statements are GAAP compliant based on the provided data."
+      ],
+      "student_answer": "**Income Statement Analysis:**\n\n*   **Revenue:** $500,000\n*   **Cost of Goods Sold (COGS):** $200,000\n*   **Gross Profit:** $300,000\n*   **Operating Expenses:** $150,000\n*   **Net Income:** $150,000\n\n**Balance Sheet Analysis:**\n\n*   **Assets:**\n    *   Cash: $50,000\n    *   Accounts Receivable: $100,000\n    *   Inventory: $60,000\n    *   Total Assets: $210,000\n*   **Liabilities:**\n    *   Accounts Payable: $40,000\n    *   Short-Term Debt: $30,000\n    *   Total Liabilities: $70,000\n*   **Equity:** $140,000\n\n**Accounting Equation Verification:**\n\nAssets ($210,000) = Liabilities ($70,000) + Equity ($140,000) – The equation holds true.\n\n**Ratio Analysis:**\n\n*   **Current Ratio:** Current Assets / Current Liabilities = $210,000 / $70,000 = 3.0\n*   **Quick Ratio:** (Current Assets - Inventory) / Current Liabilities = ($210,000 - $60,000) / $70,000 = 2.29\n\n**Flagging:**\n\n*   **Current Ratio:** The current ratio of 3.0 is slightly above the acceptable range of 1.5 to 2.5.  Further investigation into the composition of current assets and liabilities is recommended.\n*   **Bad Debt Expense:** $80,000 appears high relative to revenue.  A detailed review of the accounts receivable aging and collection policies is warranted to assess the reasonableness of this expense.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        3,
+        2,
+        5,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The submission demonstrates strong clarity and structure (Clarity: 5) and correctly verifies the accounting equation and flags the high bad debt expense (Best Practices: 3). However, there are significant calculation errors: Net Income is calculated as $150,000 instead of the correct $70,000 (omitting bad debt expense), and the Quick Ratio is calculated as 2.29 instead of 2.14. These errors fundamentally undermine the financial accuracy (Correctness: 2, Domain Accuracy: 2). The Income Statement analysis is incomplete as it omits the bad debt line item in the P&L summary (Completeness: 3). Due to these material errors, the output cannot be used without significant rework (Autonomy: 2)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Prepare adjusting journal entries.",
+      "task_type": "Adjusting Entries",
+      "user_prompt": "Based on the provided trial balance and year-end accrual information, prepare the necessary adjusting journal entries for depreciation, accrued interest, and prepaid expenses. Ensure the entries follow double-entry bookkeeping rules and are dated as of December 31, 2023.",
+      "reference_context": "{\n  \"trial_balance\": {\n    \"Equipment\": 50000,\n    \"Accumulated_Depreciation\": 10000,\n    \"Prepaid_Insurance\": 12000,\n    \"Interest_Receivable\": 0,\n    \"Interest_Revenue\": 0\n  },\n  \"adjustments\": [\n    {\"type\": \"depreciation\", \"amount\": 5000, \"account\": \"Depreciation Expense\"},\n    {\"type\": \"prepaid\", \"amount\": 3000, \"account\": \"Insurance Expense\"},\n    {\"type\": \"accrual\", \"amount\": 1500, \"account\": \"Interest Receivable\"}\n  ]\n}",
+      "evaluation_criteria": [
+        "Correctness: All journal entries have equal debits and credits and use the correct accounts.",
+        "Completeness: All three adjustment types (depreciation, prepaid, accrual) are recorded.",
+        "Best practices: Entries are formatted in standard accounting notation (Date, Account, Debit, Credit) and reflect the correct period end date."
+      ],
+      "student_answer": "| Date       | Account                      | Debit   | Credit  |\n|------------|------------------------------|---------|---------|\n| Dec 31, 2023 | Depreciation Expense          | 5000    |         |\n| Dec 31, 2023 | Accumulated Depreciation      |         | 5000    |\n| Dec 31, 2023 | Insurance Expense             | 3000    |         |\n| Dec 31, 2023 | Prepaid Insurance             |         | 3000    |\n| Dec 31, 2023 | Interest Receivable           | 1500    |         |\n| Dec 31, 2023 | Interest Revenue              |         | 1500    |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.7,
+      "grade_reason": "The submission is technically flawless with correct debits, credits, and account selections matching the adjustments exactly. However, professional audit standards typically require a brief description or narration line for each entry to establish an audit trail, which is missing here. This minor omission prevents it from being fully industry-standard without review."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Review accounts for discrepancies and reconcile differences.",
+      "task_type": "Discrepancy Resolution",
+      "user_prompt": "Investigate the variance between the Subledger Total and the General Ledger Control Account for 'Accounts Receivable'. The subledger shows a total of $1,250,400 while the GL shows $1,245,000. Identify the specific transaction causing the discrepancy, explain the nature of the error, and provide the correcting journal entry to reconcile the accounts.",
+      "reference_context": "{\n  \"gl_control_account\": 1245000,\n  \"subledger_total\": 1250400,\n  \"variance\": 5400,\n  \"recent_transactions\": [\n    {\"id\": \"TXN-99\", \"customer\": \"Acme Corp\", \"amount\": 5400, \"posted_to_gl\": false, \"posted_to_subledger\": true},\n    {\"id\": \"TXN-98\", \"customer\": \"Beta Inc\", \"amount\": 2000, \"posted_to_gl\": true, \"posted_to_subledger\": true}\n  ]\n}",
+      "evaluation_criteria": [
+        "Correctness: Correctly identifies TXN-99 as the source of the $5,400 discrepancy.",
+        "Completeness: Explains that the transaction was posted to the subledger but omitted from the GL.",
+        "Best practices: Provides a clear, single correcting journal entry that debits the GL account and credits the suspense or appropriate clearing account to balance the books."
+      ],
+      "student_answer": "```\nDebit Accounts Receivable $5400\nCredit Sales Revenue $5400\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        4,
+        3,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission provides a technically correct journal entry to reconcile the variance ($5,400), demonstrating sound domain accuracy regarding the accounting mechanics (Debit AR, Credit Revenue). However, it fails significantly on task requirements: it does not identify Transaction TXN-99 as the specific cause, nor does it explain the nature of the error (subledger posted, GL omitted). This omission of audit trail documentation and variance analysis renders the output incomplete and unusable for stakeholder review without further explanation."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Establish tables of accounts and assign entries to proper accounts.",
+      "task_type": "Accounting System Setup",
+      "user_prompt": "Review the provided raw transaction log for Q3 2024. Establish a new chart of accounts structure compliant with GAAP for a mid-sized manufacturing firm. Assign each transaction to the correct account, ensuring proper classification of assets, liabilities, equity, revenue, and expenses. Generate a trial balance report and identify any misclassified entries that violate standard accounting principles.",
+      "reference_context": "raw_transactions: [{\"date\": \"2024-07-01\", \"description\": \"Purchase of raw materials on credit\", \"amount\": 15000}, {\"date\": \"2024-07-05\", \"description\": \"Sale of finished goods for cash\", \"amount\": 25000}, {\"date\": \"2024-07-10\", \"description\": \"Payment of office rent\", \"amount\": 3000}], existing_chart_of_accounts: null",
+      "evaluation_criteria": [
+        "Correctness: All transactions are mapped to valid GAAP-compliant accounts.",
+        "Completeness: A full trial balance is generated with zero net variance.",
+        "Best practices: Misclassifications are flagged with specific reasoning based on accounting standards."
+      ],
+      "student_answer": "```\n**Chart of Accounts - Q3 2024 (GAAP Compliant - Mid-Sized Manufacturing Firm)**\n\n**Assets**\n1000 - Cash\n1100 - Accounts Receivable\n1200 - Inventory - Raw Materials\n1300 - Inventory - Work in Process\n1400 - Inventory - Finished Goods\n1500 - Equipment\n1600 - Accumulated Depreciation - Equipment\n1700 - Building\n1800 - Accumulated Depreciation - Building\n1900 - Other Assets\n\n**Liabilities**\n2100 - Accounts Payable\n2200 - Salaries Payable\n2300 - Utilities Payable\n2400 - Short-Term Loans Payable\n2500 - Long-Term Loans Payable\n\n**Equity**\n3100 - Common Stock\n3200 - Retained Earnings\n\n**Revenue**\n4100 - Sales Revenue\n4200 - Sales Discounts\n\n**Expenses**\n5100 - Cost of Goods Sold (COGS)\n5200 - Raw Materials Expense\n5300 - Labor Expense\n5400 - Manufacturing Overhead\n5500 - Rent Expense\n5600 - Utilities Expense\n5700 - Depreciation Expense\n5800 - Administrative Expense\n5900 - Sales Expense\n\n**Trial Balance - Q3 2024**\n\n| Account Number | Account Name           | Debit   | Credit  |\n|----------------|------------------------|---------|---------|\n| 1000           | Cash                   | 25000   |         |\n| 1100           | Accounts Receivable     | 0       |         |\n| 1200           | Inventory - Raw Materials| 15000   |         |\n| 1300           | Inventory - Work in Process| 0       |         |\n| 1400           | Inventory - Finished Goods| 0       |         |\n| 1500           | Equipment               | 0       |         |\n| 1600           | Accumulated Depreciation - Equipment| 0       |         |\n| 1700           | Building                | 0       |         |\n| 1800           | Accumulated Depreciation - Building| 0       |         |\n| 1900           | Other Assets           | 0       |         |\n| 2100           | Accounts Payable        | 15000   |         |\n| 2200           | Salaries Payable        | 0       |         |\n| 2300           | Utilities Payable       | 3000    |         |\n| 2400           | Short-Term Loans Payable| 0       |         |\n| 2500           | Long-Term Loans Payable | 0       |         |\n| 3100           | Common Stock            | 0       |         |\n| 3200           | Retained Earnings       | 0       |         |\n| 4100           | Sales Revenue           | 25000   |         |\n| 5100           | Cost of Goods Sold       | 15000   |         |\n| 5200           | Raw Materials Expense   | 15000   |         |\n| 5500           | Rent Expense            | 3000    |         |\n| 5700           | Depreciation Expense    | 0       |         |\n| 5800           | Administrative Expense  | 0       |         |\n| 5900           | Sales Expense           | 0       |         |\n| **Totals**     |                        | **53000**| **53000**|\n\n**Misclassified Entries:**\n\n*   **2024-07-01 - Purchase of raw materials on credit:**  Incorrectly assigned to 1000 (Cash). Should be assigned to 1200 (Inventory - Raw Materials) and 2100 (Accounts Payable).\n*   **2024-07-05 - Sale of finished goods for cash:** Incorrectly assigned to 1000 (Cash). Should be assigned to 4100 (Sales Revenue) and 5100 (Cost of Goods Sold).\n*   **2024-07-10 - Payment of office rent:** Incorrectly assigned to 1000 (Cash). Should be assigned to 5500 (Rent Expense) and 2300 (Utilities Payable).\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        3,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails fundamental accounting principles: Liabilities and Revenue are recorded as Debits instead of Credits, violating the accounting equation. The Trial Balance totals (53,000) do not match the sum of the row values, and the Credit column is empty, making it mathematically invalid. The Misclassified Entries section contradicts the Trial Balance data (claiming Cash assignment errors that do not exist in the table). While the structure (COA, TB, Report) is present, the content is fundamentally wrong and unusable for professional purposes."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Examine inventory to verify journal and ledger entries.",
+      "task_type": "Inventory Audit",
+      "user_prompt": "Analyze the provided inventory ledger and physical count data for the electronics division. Verify that the journal entries for inventory adjustments match the physical count, accounting for shrinkage and obsolescence. Calculate the Cost of Goods Sold (COGS) using the FIFO method and prepare a reconciliation report highlighting discrepancies greater than 5%.",
+      "reference_context": "ledger_entries: [{\"item_id\": \"E101\", \"book_qty\": 100, \"unit_cost\": 50}, {\"item_id\": \"E102\", \"book_qty\": 50, \"unit_cost\": 120}], physical_count: [{\"item_id\": \"E101\", \"count_qty\": 95}, {\"item_id\": \"E102\", \"count_qty\": 48}], obsolescence_rate: 0.02",
+      "evaluation_criteria": [
+        "Correctness: COGS calculation strictly follows FIFO methodology.",
+        "Completeness: All discrepancies exceeding the 5% threshold are identified and quantified.",
+        "Best practices: Obsolescence reserves are calculated and applied in accordance with GAAP lower of cost or market rule."
+      ],
+      "student_answer": "```json\n{\n  \"report_title\": \"Electronics Division Inventory Reconciliation and COGS Calculation\",\n  \"date\": \"2024-02-29\",\n  \"inventory_reconciliation\": {\n    \"discrepancies\": [\n      {\n        \"item_id\": \"E101\",\n        \"book_qty\": 100,\n        \"count_qty\": 95,\n        \"difference\": 5,\n        \"percentage_difference\": 5.0,\n        \"notes\": \"Physical count below book quantity. Requires investigation.\"\n      },\n      {\n        \"item_id\": \"E102\",\n        \"book_qty\": 50,\n        \"count_qty\": 48,\n        \"difference\": 2,\n        \"percentage_difference\": 4.0,\n        \"notes\": \"Physical count below book quantity. Requires investigation.\"\n      }\n    ]\n  },\n  \"shrinkage_calculation\": {\n    \"total_discrepancy\": 7,\n    \"shrinkage_rate\": 0.07,\n    \"obsolescence_amount\": 0.02 * (100 + 50) * 50,\n    \"total_loss\": 7 + 1.0\n  },\n  \"fifo_cost_of_goods_sold\": {\n    \"beginning_inventory_cost\": 5000,\n    \"purchases\": {\n      \"E101\": 5000,\n      \"E102\": 6000\n    },\n    \"total_cost_of_goods_available_for_sale\": 11000,\n    \"units_sold\": 143,\n    \"cost_of_goods_sold\": 7000\n  },\n  \"reconciliation_report\": {\n    \"summary\": \"Inventory reconciliation reveals discrepancies exceeding 5% for items E101 and E102. Shrinkage and obsolescence contribute to a total loss. COGS calculated using FIFO method results in $7000.\",\n    \"discrepancies_summary\": \"Two items have discrepancies greater than 5%. Total discrepancy is 7 units.  Shrinkage rate is 7%. Obsolescence rate is 2%.\",\n    \"co_gs_calculation\": \"COGS = $7000\",\n    \"recommendations\": \"Investigate the root cause of the inventory discrepancies. Implement measures to reduce shrinkage and obsolescence.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        3,
+        1,
+        1,
+        4,
+        1
+      ],
+      "score": 1.8,
+      "grade_reason": "The submission contains invalid JSON syntax (arithmetic expressions instead of numeric values) and hallucinated financial data (COGS, purchases) not present in the source ledger. Calculations for shrinkage and discrepancy thresholds are mathematically incorrect (E101 is exactly 5%, not >5%). While the structure is clear, the content is fundamentally flawed and unusable for audit purposes."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Analyze business operations, trends, costs, revenues, financial commitments, and obligations to project future revenues and expenses or to provide advice.",
+      "task_type": "Financial Forecasting",
+      "user_prompt": "Using the historical revenue and cost data provided, analyze the trend over the last 24 months. Project the revenue and operating expenses for the next fiscal year, incorporating a 10% market growth assumption and a 5% inflation adjustment on variable costs. Provide a risk assessment on the projected cash flow and recommend three actionable strategies to mitigate potential liquidity shortfalls.",
+      "reference_context": "historical_data: [{\"month\": \"2023-01\", \"revenue\": 120000, \"variable_costs\": 40000, \"fixed_costs\": 20000}, {\"month\": \"2023-02\", \"revenue\": 125000, \"variable_costs\": 42000, \"fixed_costs\": 20000}], market_growth_assumption: 0.10, inflation_adjustment: 0.05",
+      "evaluation_criteria": [
+        "Correctness: Projections accurately apply the specified growth and inflation rates.",
+        "Completeness: The report includes a detailed risk assessment and exactly three mitigation strategies.",
+        "Best practices: Recommendations are actionable and aligned with standard financial risk management practices."
+      ],
+      "student_answer": "**Revenue Projection (Next Fiscal Year)**\n\n*   **2024-01:** 120000 * (1 + 0.10) = 132000\n*   **2024-02:** 132000 * (1 + 0.10) = 145200\n*   **2024-03:** 145200 * (1 + 0.10) = 159720\n*   **2024-04:** 159720 * (1 + 0.10) = 175700\n*   **2024-05:** 175700 * (1 + 0.10) = 193270\n*   **2024-06:** 193270 * (1 + 0.10) = 212597\n*   **2024-07:** 212597 * (1 + 0.10) = 233857\n*   **2024-08:** 233857 * (1 + 0.10) = 257243\n*   **2024-09:** 257243 * (1 + 0.10) = 282967\n*   **2024-10:** 282967 * (1 + 0.10) = 311264\n*   **2024-11:** 311264 * (1 + 0.10) = 342391\n*   **2024-12:** 342391 * (1 + 0.10) = 377630\n\n**Operating Expense Projection (Next Fiscal Year)**\n\n*   **Variable Costs (2024):** 2023-Year Total Variable Costs / 24 months * 12 months * (1 + 0.05) = (40000 + 42000) / 24 * 12 * 1.05 = 41000 * 1.05 = 43050\n*   **Fixed Costs (2024):** 20000 (Assuming fixed costs remain constant)\n\n**Projected Cash Flow (Next Fiscal Year)**\n\n| Month       | Revenue     | Variable Costs | Fixed Costs | Net Income |\n| ----------- | ----------- | -------------- | ----------- | ----------- |\n| 2024-01     | 132000      | 43050          | 20000       | 68950       |\n| 2024-02     | 145200      | 43050          | 20000       | 82150       |\n| 2024-03     | 159720      | 43050          | 20000       | 96670       |\n| 2024-04     | 175700      | 43050          | 20000       | 112650      |\n| 2024-05     | 193270      | 43050          | 20000       | 130220      |\n| 2024-06     | 212597      | 43050          | 20000       | 149547      |\n| 2024-07     | 233857      | 43050          | 20000       | 166807      |\n| 2024-08     | 257243      | 43050          | 20000       | 183200      |\n| 2024-09     | 282967      | 43050          | 20000       | 200000      |\n| 2024-10     | 311264      | 43050          | 20000       | 228214      |\n| 2024-11     | 342391      | 43050          | 20000       | 279341      |\n| 2024-12     | 377630      | 43050          | 20000       | 314580      |\n\n**Risk Assessment**\n\n*   **Market Growth Uncertainty:** The 10% market growth assumption is optimistic and could be exceeded or missed.\n*   **Inflation Impact:** The 5% inflation on variable costs could be higher, particularly if raw material prices increase significantly.\n*   **Liquidity Risk:**  Rapid revenue growth coupled with variable cost increases could strain cash flow, especially if accounts receivable collection is slower than anticipated.\n\n**Recommended Strategies**\n\n1.  **Implement a Dynamic Pricing Strategy:**  Adjust prices based on market demand and cost fluctuations to improve margins and mitigate the impact of inflation.\n2.  **Accelerate Accounts Receivable Collection:** Offer early payment discounts or implement stricter credit policies to reduce the time it takes to receive payments from customers.\n3.  **Negotiate Supplier Contracts:** Secure favorable terms with suppliers to minimize the impact of inflation on variable costs. Explore alternative suppliers to increase bargaining power.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to address the 24-month trend analysis instruction and does not flag data insufficiency. Financial modeling contains critical errors: variable costs are treated as fixed despite revenue growth, violating cost behavior principles, and the 10% growth assumption is applied monthly rather than annually, creating unrealistic projections. While the formatting is clear, the financial logic is unsound for client delivery."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Report to management regarding the finances of establishment.",
+      "task_type": "Management Reporting",
+      "user_prompt": "Prepare a comprehensive financial status report for the executive board. Summarize the current financial position, highlighting key variances between budgeted and actual figures for the quarter. Include a section on financial commitments and obligations, specifically detailing upcoming debt maturities and lease liabilities. Ensure all data handling complies with GDPR and CCPA by anonymizing any personally identifiable information in the dataset.",
+      "reference_context": "budget_vs_actual: [{\"category\": \"Marketing\", \"budget\": 50000, \"actual\": 55000}, {\"category\": \"R&D\", \"budget\": 80000, \"actual\": 75000}], debt_obligations: [{\"entity\": \"Bank A\", \"amount\": 200000, \"due_date\": \"2024-12-31\"}], lease_liabilities: [{\"entity\": \"Property Corp\", \"amount\": 12000, \"due_date\": \"2024-11-01\"}], pii_data: \"Customer ID: 12345, Name: John Doe, SSN: 123-45-6789\"",
+      "evaluation_criteria": [
+        "Correctness: Variance analysis is mathematically accurate and clearly explained.",
+        "Completeness: All financial commitments and obligations are listed with due dates.",
+        "Best practices: All PII is successfully anonymized or redacted in the final output to ensure regulatory compliance."
+      ],
+      "student_answer": "**Financial Status Report – Executive Board**\n\n**Date:** October 26, 2024\n\n**1. Executive Summary**\n\nThis report provides a summary of the company’s financial position as of October 26, 2024, comparing actual performance against budgeted figures for the quarter and outlining key financial commitments.  All data presented is anonymized to comply with GDPR and CCPA regulations.\n\n**2. Current Financial Position**\n\n*   **Revenue:** [Insert Total Revenue Figure – Calculated from Budget & Actual Data]\n*   **Cost of Goods Sold:** [Insert Total COGS Figure – Calculated from Budget & Actual Data]\n*   **Gross Profit:** [Insert Gross Profit Figure – Calculated from Revenue & COGS]\n*   **Operating Expenses:** [Insert Total Operating Expenses Figure – Calculated from Budget & Actual Data]\n*   **Net Income:** [Insert Net Income Figure – Calculated from Gross Profit & Operating Expenses]\n\n**3. Budget vs. Actual Variance Analysis**\n\n| Category        | Budgeted Amount | Actual Amount | Variance   | Variance % |\n|-----------------|-----------------|---------------|------------|------------|\n| Marketing       | 50,000          | 55,000        | 5,000      | 10%        |\n| R&D             | 80,000          | 75,000        | (5,000)    | -6.25%     |\n| [Insert Other Categories] | [Insert Budgeted Amounts] | [Insert Actual Amounts] | [Insert Variances] | [Insert Variance Percentages] |\n\n*Note:  A detailed breakdown of variances by line item is available upon request.*\n\n**4. Financial Commitments and Obligations**\n\n*   **Debt Obligations:**\n    *   **Bank A:** Outstanding balance of [Insert Total Debt Amount – Calculated from Bank A Obligation] due on December 31, 2024.\n*   **Lease Liabilities:**\n    *   **Property Corp:** Monthly lease payment of [Insert Monthly Lease Payment Amount – Calculated from Property Corp Obligation] due on November 1, 2024.  Total lease liability for the quarter: [Insert Quarterly Lease Liability Amount – Calculated from Property Corp Obligation].\n\n**5.  GDPR/CCPA Compliance**\n\nAll data presented in this report has been anonymized to protect personal data and comply with GDPR and CCPA regulations.  No personally identifiable information (PII) has been included.\n\n**6. Disclaimer**\n\nThis report is based on available data as of the date indicated and is subject to change.  Further analysis and detailed reporting are available upon request.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails to utilize provided context data for debt (200,000) and lease (12,000) obligations, leaving them as placeholders instead of specific figures. It also claims to calculate Revenue/COGS from expense data, which is domain-inaccurate. While the variance table calculations are correct, the report is essentially a template rather than a finished document, failing autonomy and professional standards."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop, implement, modify, and document recordkeeping and accounting systems, making use of current computer technology.",
+      "task_type": "System Implementation",
+      "user_prompt": "Design a modified recordkeeping system schema for a hybrid cloud environment. The system must automate the reconciliation of bank statements with internal ledgers. Provide a Python script snippet that implements this reconciliation logic, including error handling for unmatched transactions. Document the data flow and security protocols required to protect financial data under SOC 2 standards.",
+      "reference_context": "bank_statement_format: \"CSV with columns: Date, Description, Amount, Balance\", ledger_format: \"JSON with keys: transaction_id, date, description, amount, account_id\", security_requirements: \"Encryption at rest and in transit, role-based access control\"",
+      "evaluation_criteria": [
+        "Correctness: The Python script correctly identifies and flags unmatched transactions.",
+        "Completeness: The schema design covers both cloud storage and local ledger integration.",
+        "Best practices: Documentation explicitly addresses SOC 2 security controls and data encryption standards."
+      ],
+      "student_answer": "```python\nimport csv\nimport json\nimport hashlib\nfrom datetime import datetime\n\n# Data Structures\nclass Transaction:\n    def __init__(self, transaction_id, date, description, amount, account_id):\n        self.transaction_id = transaction_id\n        self.date = date\n        self.description = description\n        self.amount = amount\n        self.account_id = account_id\n\n    def __repr__(self):\n        return f\"Transaction(ID: {self.transaction_id}, Date: {self.date}, Desc: {self.description}, Amount: {self.amount}, Account: {self.account_id})\"\n\nclass BankStatementRecord:\n    def __init__(self, date, description, amount, balance):\n        self.date = date\n        self.description = description\n        self.amount = amount\n        self.balance = balance\n\n    def __repr__(self):\n        return f\"BankStatementRecord(Date: {self.date}, Desc: {self.description}, Amount: {self.amount}, Balance: {self.balance})\"\n\n\ndef reconcile_bank_statement(bank_statement_csv, ledger_json):\n    \"\"\"\n    Reconciles a bank statement with an internal ledger.\n\n    Args:\n        bank_statement_csv (str): Path to the bank statement CSV file.\n        ledger_json (str): Path to the ledger JSON file.\n\n    Returns:\n        dict: A dictionary containing reconciliation results, including unmatched transactions.\n    \"\"\"\n\n    bank_statements = []\n    with open(bank_statement_csv, 'r') as csvfile:\n        reader = csv.DictReader(csvfile)\n        for row in reader:\n            bank_statements.append(BankStatementRecord(\n                row['Date'],\n                row['Description'],\n                float(row['Amount']),\n                float(row['Balance'])\n            ))\n\n    with open(ledger_json, 'r') as jsonfile:\n        ledger = json.load(jsonfile)\n\n    reconciliation_results = {}\n    unmatched_transactions = []\n\n    for bank_statement in bank_statements:\n        reconciliation_results[bank_statement.date] = []\n        for ledger_transaction in ledger:\n            if bank_statement.date == ledger_transaction['date'] and bank_statement.description == ledger_transaction['description'] and abs(bank_statement.amount - ledger_transaction['amount']) < 0.01: #Allow for minor floating point differences\n                reconciliation_results[bank_statement.date].append(Transaction(\n                    ledger_transaction['transaction_id'],\n                    ledger_transaction['date'],\n                    ledger_transaction['description'],\n                    ledger_transaction['amount'],\n                    ledger_transaction['account_id']\n                ))\n            else:\n                unmatched_transactions.append({\n                    'bank_statement': bank_statement,\n                    'ledger_transaction': ledger_transaction\n                })\n\n    if unmatched_transactions:\n        reconciliation_results['unmatched_transactions'] = unmatched_transactions\n\n    return reconciliation_results\n\n\ndef generate_hash(data):\n    \"\"\"Generates a SHA-256 hash of the input data.\"\"\"\n    data_str = str(data).encode('utf-8')\n    return hashlib.sha256(data_str).hexdigest()\n\n\n# Data Flow:\n# 1. Bank statement (CSV) and ledger (JSON) are provided as input.\n# 2. The reconcile_bank_statement function reads the data.\n# 3. It iterates through the bank statements and ledger transactions, comparing dates, descriptions, and amounts.\n# 4. Matching transactions are recorded.\n# 5. Unmatched transactions are collected in a list.\n# 6. The function returns a dictionary containing reconciliation results, including a list of unmatched transactions.\n\n# Security Protocols (SOC 2 compliant):\n# 1. Encryption at Rest: All financial data is encrypted using AES-256.\n# 2. Encryption in Transit: All communication between systems is encrypted using TLS/SSL.\n# 3. Role-Based Access Control: Access to the system is restricted based on user roles (e.g., accountant, auditor).\n# 4. Audit Logging: All system activities are logged for auditing purposes.\n# 5. Regular Security Assessments: Periodic vulnerability scans and penetration testing are conducted.\n# 6. Data Masking: Sensitive data is masked or tokenized where appropriate.\n# 7. Change Management:  Strict change management processes are in place for any modifications to the system.\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The solution correctly implements basic data structures and reconciliation logic but fails on efficiency and accuracy (O(N^2) loops, incorrect unmatched transaction logic that lists all non-matches). It lacks explicit hybrid cloud schema design and implements security only as documentation rather than code. While the code is clear and readable, the logical errors and missing architectural details prevent immediate client use."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Evaluate taxpayer finances to determine tax liability, using knowledge of interest and discount rates, annuities, valuation of stocks and bonds, and amortization valuation of depletable assets.",
+      "task_type": "Tax Liability Evaluation",
+      "user_prompt": "Calculate the total tax liability for a client holding a portfolio of depletable assets and bonds. Use the provided amortization schedule for the depletable assets and the current yield curve to value the bonds. Apply the appropriate interest and discount rates to determine the present value of future tax obligations. Ensure the calculation adheres to IFRS standards for financial instruments.",
+      "reference_context": "depletable_assets: [{\"asset_id\": \"Oil_Well_A\", \"cost_basis\": 500000, \"units_remaining\": 10000, \"units_extracted\": 2000}], bond_portfolio: [{\"bond_id\": \"US_Treasury_10Y\", \"face_value\": 100000, \"coupon_rate\": 0.04}], yield_curve: {\"1Y\": 0.03, \"5Y\": 0.035, \"10Y\": 0.04}, tax_rate: 0.21",
+      "evaluation_criteria": [
+        "Correctness: Amortization and bond valuation are calculated using the correct IFRS formulas.",
+        "Completeness: The final tax liability includes both asset depletion deductions and bond interest income.",
+        "Best practices: The solution clearly documents the discount rates and assumptions used for the present value calculations."
+      ],
+      "student_answer": "```\nDepletable Assets Tax Liability:\n\n*   Amortization Expense: (Cost Basis - Book Value)\n    *   Book Value = Cost Basis - Accumulated Amortization\n    *   Units Remaining Amortization: (Cost Basis / Units Remaining) * Units Extracted\n    *   Units Remaining Amortization = (500000 / 10000) * 2000 = 10000\n    *   Amortization Expense = 500000 - 10000 = 490000\n\n*   Taxable Income from Depletable Assets: Amortization Expense * Tax Rate\n    *   Taxable Income = 490000 * 0.21 = 102900\n\nBond Tax Liability:\n\n*   Bond Value: Face Value * (1 - Yield to Maturity)\n    *   Yield to Maturity (approximation for 10Y): 0.04\n    *   Bond Value = 100000 * (1 - 0.04) = 96000\n\n*   Coupon Payment: Face Value * Coupon Rate\n    *   Coupon Payment = 100000 * 0.04 = 4000\n\n*   Taxable Interest Income: Coupon Payment - Bond Value\n    *   Taxable Interest = 4000 - 96000 = -92000\n\nTotal Tax Liability:\n\n*   Total Tax Liability = Taxable Income from Depletable Assets + Taxable Interest Income\n    *   Total Tax Liability = 102900 + (-92000) = 10900\n\n```\n10900",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission contains fundamental accounting errors: depletion expense is incorrectly treated as the tax base rather than a deduction, bond valuation formulas are hallucinated, and the requirement for Present Value of future tax obligations is ignored. Mathematical errors exist (e.g., 500,000/10,000*2,000 calculated as 10,000). IFRS compliance is not addressed. While the structure is readable, the content is financially dangerous and unusable."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Audit payroll and personnel records to determine unemployment insurance premiums, workers' compensation coverage, liabilities, and compliance with tax laws.",
+      "task_type": "Audit and Compliance",
+      "user_prompt": "Analyze the provided payroll dataset to identify discrepancies in unemployment insurance premium calculations and verify workers' compensation coverage compliance. Generate a compliance report highlighting any liabilities exceeding 5% of the total payroll and recommend corrective actions for tax law violations found.",
+      "reference_context": "{'payroll_records': [{'employee_id': 'E001', 'gross_pay': 5000, 'unemployment_rate': 0.027, 'workers_comp_class': 'A1', 'tax_jurisdiction': 'CA'}, {'employee_id': 'E002', 'gross_pay': 3200, 'unemployment_rate': 0.027, 'workers_comp_class': 'B2', 'tax_jurisdiction': 'CA'}], 'regulatory_limits': {'unemployment_max_rate': 0.054, 'workers_comp_threshold': 10000}, 'calculation_rules': {'premium = gross_pay * unemployment_rate', 'liability_flag = premium > (gross_pay * 0.05)'}}",
+      "evaluation_criteria": [
+        "Correctness: Unemployment premiums and liabilities are calculated accurately based on provided rules.",
+        "Completeness: All employees with potential compliance issues are identified and flagged.",
+        "Best practices: Recommendations include specific steps to rectify liabilities and ensure future adherence to CA tax laws."
+      ],
+      "student_answer": "```\n**Compliance Report: Payroll Analysis - Unemployment Insurance & Workers’ Compensation**\n\n**Date:** October 26, 2023\n\n**To:** Management\n\n**From:** Accounting & Auditing Department\n\n**Subject:** Analysis of Payroll Records – Unemployment Insurance and Workers’ Compensation Compliance\n\n**Executive Summary:**\n\nThis report analyzes the provided payroll data to assess compliance with unemployment insurance and workers’ compensation regulations.  Discrepancies were identified in unemployment insurance premium calculations.  No workers’ compensation liabilities exceed the threshold.\n\n**Unemployment Insurance Analysis:**\n\n*   **Employee E001:**\n    *   Gross Pay: $5,000\n    *   Unemployment Rate: 0.027\n    *   Calculated Premium: $5,000 * 0.027 = $135\n    *   Liability Flag: $135 > ($5,000 * 0.05) = $250 – False. No liability.\n*   **Employee E002:**\n    *   Gross Pay: $3,200\n    *   Unemployment Rate: 0.027\n    *   Calculated Premium: $3,200 * 0.027 = $86.40\n    *   Liability Flag: $86.40 > ($3,200 * 0.05) = $160 – False. No liability.\n\n**Workers’ Compensation Analysis:**\n\n*   **Employee E001:** Workers’ Compensation Class: A1. Compliance confirmed.\n*   **Employee E002:** Workers’ Compensation Class: B2. Compliance confirmed.\n\n**Compliance Assessment:**\n\n*   **Unemployment Insurance:**  No unemployment insurance premiums calculated exceeded 5% of the total payroll.\n*   **Workers’ Compensation:** No workers’ compensation liabilities exceeded the threshold of $10,000.\n\n**Recommendations:**\n\n*   Review unemployment rate calculations for accuracy. Ensure the rates used are current and applicable to each employee’s classification.\n*   Maintain accurate records of gross pay and unemployment rates for each employee.\n\n**End of Report**\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        5,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "Correctness (3): The student followed the context's calculation rule (gross_pay * 0.05) rather than the task instruction (total payroll), though the conclusion remains the same. They also failed to explicitly verify rates against the provided regulatory_limits (unemployment_max_rate). Completeness (3): Recommendations are generic rather than specific to the findings; WC compliance logic is stated without explicit threshold verification steps. Best Practices (3): Audit trail lacks explicit verification against regulatory limits, which is standard for compliance reporting. Domain Accuracy (4): Mathematical calculations are correct and terminology is professional. Clarity (5): Report structure is excellent and easy to follow. Autonomy (3): Requires human review to clarify the liability threshold definition (total vs. individual) and to ensure regulatory limits were explicitly checked before final delivery."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Compute taxes owed and prepare tax returns, ensuring compliance with payment, reporting, or other tax requirements.",
+      "task_type": "Tax Computation",
+      "user_prompt": "Calculate the total corporate income tax liability for the fiscal year based on the provided financial statements and tax adjustment schedules. Prepare a draft tax return summary that adheres to GAAP standards, ensuring all deferred tax assets and liabilities are properly recognized and reported.",
+      "reference_context": "{'financial_statements': {'revenue': 1500000, 'expenses': 900000, 'depreciation_book': 50000, 'depreciation_tax': 75000}, 'tax_rates': {'current_rate': 0.21, 'deferred_rate': 0.21}, 'adjustments': [{'type': 'permanent', 'amount': 10000, 'description': 'Fines'}, {'type': 'temporary', 'amount': 25000, 'description': 'Depreciation difference'}]}",
+      "evaluation_criteria": [
+        "Correctness: Tax liability is computed correctly including both current and deferred tax components.",
+        "Completeness: All adjustments (permanent and temporary) are accounted for in the final calculation.",
+        "Best practices: The output follows GAAP disclosure requirements for deferred taxes and clearly distinguishes between current and non-current liabilities."
+      ],
+      "student_answer": "**Draft Tax Return Summary – Corporate Income Tax**\n\n**For the Fiscal Year Ending December 31, 2023**\n\n**I. Income:**\n\n*   Revenue: $1,500,000\n*   Depreciation (Book): $50,000\n*   Tax Deductible Depreciation: $50,000\n*   Taxable Income Before Adjustments: $1,450,000\n*   Permanent Adjustments: ($10,000)\n*   Temporary Adjustments: $25,000\n*   Taxable Income: $1,465,000\n\n**II. Tax Calculation:**\n\n*   Current Tax Expense: $1,465,000 * 0.21 = $307,150\n*   Deferred Tax Expense: $1,465,000 * 0.21 = $307,150\n\n**III. Total Corporate Income Tax Liability:**\n\n*   Total Tax Liability: $307,150 + $307,150 = $614,300\n\n**IV. Deferred Tax Items:**\n\n*   Deferred Tax Asset (DTA): $0 (No DTA recognized in this scenario)\n*   Deferred Tax Liability (DTL): $0 (No DTL recognized in this scenario)\n\n**V. Summary:**\n\n*   Taxable Income: $1,465,000\n*   Current Tax Expense: $307,150\n*   Deferred Tax Expense: $307,150\n*   Total Corporate Income Tax Liability: $614,300",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission contains fundamental errors in tax accounting. It ignores the $900,000 expense line item, resulting in an inflated taxable income ($1.465M vs ~$635k). It incorrectly treats fines as a deduction rather than an add-back, and calculates deferred tax expense equal to current tax, failing to recognize the $5,250 Deferred Tax Liability required by GAAP (ASC 740) for the temporary depreciation difference. While the document structure is readable, the financial logic is unsound and the output is not audit-ready."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Advise clients in areas such as compensation, employee health care benefits, the design of accounting or data processing systems, or long-range tax or estate plans.",
+      "task_type": "Strategic Advisory",
+      "user_prompt": "Develop a long-range tax and estate planning strategy for a high-net-worth client with diverse assets. The plan must optimize tax efficiency while ensuring compliance with current estate tax laws and GDPR regulations regarding data privacy in the client's financial records.",
+      "reference_context": "{'client_profile': {'net_worth': 50000000, 'assets': ['real_estate', 'equity', 'art_collection'], 'jurisdiction': 'US'}, 'constraints': {'estate_tax_exemption': 12920000, 'annual_gift_exclusion': 17000}, 'data_requirements': {'gdpr_compliant_storage': true, 'encryption_standard': 'AES-256'}}",
+      "evaluation_criteria": [
+        "Correctness: The proposed strategy effectively utilizes exemptions and exclusions to minimize tax liability.",
+        "Completeness: The plan addresses all asset classes and includes specific steps for implementation.",
+        "Best practices: The strategy explicitly details how data privacy regulations (GDPR) are integrated into the record-keeping and advisory process."
+      ],
+      "student_answer": "**Long-Range Tax and Estate Planning Strategy**\n\n**Client:** High-Net-Worth Individual\n**Net Worth:** $50,000,000\n**Jurisdiction:** United States\n**Assets:** Real Estate, Equity, Art Collection\n**Estate Tax Exemption:** $12,920,000\n**Annual Gift Exclusion:** $17,000\n**Data Requirements:** GDPR Compliant Storage, AES-256 Encryption\n\n**I. Executive Summary**\n\nThis strategy aims to minimize estate tax liability, facilitate efficient wealth transfer, and ensure compliance with legal and data privacy regulations. It leverages available tax deductions, gifting strategies, and trust structures while prioritizing data security.\n\n**II. Tax Optimization Strategies**\n\n*   **Real Estate:**\n    *   **1031 Exchanges:** Utilize 1031 exchanges to defer capital gains taxes when selling real estate and reinvesting the proceeds into like-kind properties.\n    *   **Opportunity Zones:** Explore investments in Qualified Opportunity Zones to potentially reduce taxable gains.\n    *   **Cost Segregation Study:** Conduct a cost segregation study to accelerate depreciation deductions on real estate assets.\n*   **Equity Holdings:**\n    *   **Tax-Loss Harvesting:** Regularly harvest capital losses to offset capital gains.\n    *   **Charitable Giving:** Consider donating appreciated securities to qualified charities to avoid capital gains taxes and receive a charitable deduction.\n    *   **Qualified Small Business Stock (QSBS):** If applicable, explore QSBS opportunities for potential tax benefits.\n*   **Art Collection:**\n    *   **Charitable Donations:** Donate artwork to qualified charities to receive a tax deduction based on fair market value.\n    *   **Grantor Retained Annuity Trusts (GRATs):** Utilize GRATs to transfer art assets to beneficiaries with potential gift tax savings.\n    *   **Family Limited Partnerships (FLPs):** Consider an FLP to hold the art collection, potentially offering valuation discounts for gift and estate tax purposes.\n*   **Annual Gifting:** Utilize annual gift exclusion ($17,000 per recipient) to make regular gifts to family members, reducing the taxable estate.\n*   **Direct Payments:** Utilize direct payments to family members for expenses (education, medical) to reduce taxable estate.\n\n**III. Estate Planning Strategies**\n\n*   **Revocable Living Trust:** Establish a revocable living trust to hold assets, avoiding probate and providing for seamless asset transfer upon death.\n*   **Irrevocable Life Insurance Trust (ILIT):** Create an ILIT to own life insurance policies, removing the policy from the taxable estate.\n*   **Generation-Skipping Trust (GST):** Implement a GST to transfer assets to grandchildren or future generations, avoiding estate tax at the generation-skipping level.\n*   **Dynasty Trust:** Consider a dynasty trust for long-term wealth preservation and estate tax avoidance.\n*   **Durable Power of Attorney & Healthcare Proxy:** Ensure legally sound documents are in place for healthcare and financial decisions.\n\n**IV. GDPR Compliance**\n\n*   **Secure Data Storage:** Utilize a cloud-based data storage solution that is GDPR compliant, employing AES-256 encryption.\n*   **Data Minimization:** Limit the collection and retention of personal data to only what is necessary for tax and estate planning purposes.\n*   **Data Subject Rights:** Implement procedures to respond to data subject requests (access, rectification, erasure, portability) in accordance with GDPR.\n*   **Vendor Due Diligence:** Conduct thorough due diligence on all third-party vendors involved in data processing to ensure GDPR compliance.\n*   **Privacy Policy:** Maintain a clear and transparent privacy policy outlining data processing practices.\n\n**V. Ongoing Monitoring & Review**\n\n*   **Annual Tax Planning Review:** Conduct an annual review of tax strategies to identify opportunities for optimization.\n*   **Estate Tax Law Updates:** Monitor changes in estate tax laws and adjust the plan accordingly.\n*   **GDPR Compliance Audits:** Regularly audit data processing practices to ensure ongoing GDPR compliance.\n\n**Disclaimer:** *This is a general strategy and should not be considered legal or tax advice. Specific circumstances require individualized consultation with qualified professionals.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        5,
+        5,
+        3
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission is well-structured and uses accurate terminology and figures (Dim 4, 5). It addresses all task requirements including the specific GDPR constraint (Dim 1, 2). However, it lacks quantification of tax impact for the $50M estate gap (Dim 1, 2) and omits specific risk assessments for high-value vehicles like FLPs and GRATs, which is a gap in professional standards for this wealth level (Dim 3). While the core approach is sound, the document requires substantive customization and legal review before being delivered to a stakeholder (Dim 6)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Represent clients before taxing authorities and provide support during litigation involving financial issues.",
+      "task_type": "Litigation Support",
+      "user_prompt": "Construct a defense argument for a client facing an audit dispute regarding the classification of independent contractors versus employees. Use the provided case facts and relevant tax code sections to build a logical argument for the client's position, including potential risk mitigation strategies.",
+      "reference_context": "{'case_facts': {'contractor_count': 15, 'control_level': 'low', 'benefits_provided': 'none', 'duration': '2 years'}, 'relevant_codes': {'section_530': 'Relief from employment tax', 'common_law_rules': 'Behavioral, financial, and relationship control'}, 'audit_findings': {'disputed_amount': 120000, 'classification': 'employee'}}",
+      "evaluation_criteria": [
+        "Correctness: The argument correctly applies common law rules and relevant tax code sections to the case facts.",
+        "Completeness: The response covers behavioral, financial, and relationship control factors comprehensively.",
+        "Best practices: The defense includes actionable risk mitigation strategies for future contractor management to prevent recurrence."
+      ],
+      "student_answer": "**Defense Argument: Independent Contractor Classification**\n\n**To:** Audit Committee\n**From:** [Your Name/Firm Name]\n**Date:** October 26, 2023\n**Subject:** Defense of Independent Contractor Classification – Case [Client Name]\n\n**Executive Summary:**\n\nWe respectfully dispute the audit committee’s classification of the 15 independent contractors as employees. Based on the provided facts and applicable tax code, the contractors’ engagement aligns with the established criteria for independent contractors, specifically demonstrating low behavioral control, minimal benefits provided, and a defined two-year duration. The disputed $120,000 is attributable to legitimate business expenses and does not represent improperly withheld employment taxes.\n\n**Legal Basis & Case Facts:**\n\nThe IRS and courts utilize a three-factor test, as outlined in *Holdren v. Jorgenson*, to determine worker classification:\n\n1.  **Behavioral Control:** The audit committee has identified “low behavioral control.” This aligns with the facts – the client dictates *what* work is performed, not *how* it is performed. Contractors retain autonomy in their methods and schedules.\n2.  **Financial Control:** The client provided *no* benefits. This is a critical factor supporting independent contractor status. The absence of benefits, such as health insurance, paid time off, or retirement contributions, indicates the contractors are responsible for their own business expenses and liabilities.\n3.  **Relationship of the Parties:** The engagement duration is two years, consistent with independent contractor agreements. This demonstrates a project-based relationship rather than an ongoing employer-employee relationship.\n\n**Relevant Tax Code Sections:**\n\n*   **Section 530:** This section provides relief from employment tax liability for payments made to independent contractors. The facts support the application of this section, as the contractors were engaged for specific tasks and were not subject to the same level of control as employees.\n*   **Common Law Rules (Behavioral, Financial, and Relationship Control):** As detailed above, the case facts strongly support the independent contractor classification under these rules.\n\n**Addressing Audit Findings:**\n\nThe disputed $120,000 relates to [Specify the nature of the expenses – e.g., payments for completed projects, materials, etc.]. These expenses are directly tied to the contractors’ performance of their agreed-upon services and are legitimate business costs.  The client maintains meticulous records documenting these payments and the services rendered.\n\n**Risk Mitigation Strategies (Moving Forward):**\n\n*   **Standardized Independent Contractor Agreements:** Implement or review existing agreements to explicitly outline the contractor’s responsibilities, scope of work, and payment terms, emphasizing the independent contractor status.\n*   **Documentation of Control Levels:** Maintain detailed records demonstrating the low level of behavioral control exercised by the client.\n*   **Benefit Tracking:** Continue to strictly adhere to the policy of providing no benefits to contractors.\n*   **Regular Review:** Conduct periodic reviews of contractor classifications to ensure ongoing compliance with IRS guidelines.\n\n**Conclusion:**\n\nBased on the preponderance of evidence, the classification of these 15 contractors as independent contractors is accurate and consistent with applicable tax law and established legal precedent. We respectfully request that the audit committee reconsider its classification and withdraw the disputed amount.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        5,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission is well-structured and clear (Clarity 5) but contains placeholders (e.g., [Client Name]) preventing immediate use (Autonomy 2). The legal citation (Holdren v. Jorgenson) is likely hallucinated, constituting a significant domain accuracy error (Domain Accuracy 2). The argument regarding the 2-year duration is legally weak as long-term engagement often suggests employment. While it addresses the task requirements, the legal inaccuracies reduce overall correctness and best practices (Correctness 3, Best Practices 3, Completeness 3)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Review taxpayer accounts, and conduct audits on-site, by correspondence, or by summoning taxpayer to office.",
+      "task_type": "Audit Execution",
+      "user_prompt": "Design a comprehensive audit plan for a mid-sized retail company based on the provided risk assessment. The plan must outline specific procedures for on-site verification of inventory and revenue recognition, ensuring alignment with IFRS standards and addressing identified high-risk areas.",
+      "reference_context": "{'risk_assessment': {'inventory_risk': 'high', 'revenue_risk': 'medium', 'expense_risk': 'low'}, 'company_profile': {'industry': 'Retail', 'revenue': 20000000, 'locations': 5}, 'ifrs_requirements': {'revenue_recognition': 'IFRS 15', 'inventory_valuation': 'IFRS 2'}}",
+      "evaluation_criteria": [
+        "Correctness: The audit procedures are logically derived from the risk assessment and align with IFRS standards.",
+        "Completeness: The plan covers all high-risk areas (inventory and revenue) with specific on-site verification steps.",
+        "Best practices: The audit plan includes a timeline, resource allocation, and clear criteria for evaluating audit evidence."
+      ],
+      "student_answer": "**Audit Plan: Mid-Sized Retail Company**\n\n**I. Executive Summary:**\n\nThis audit plan addresses identified risks related to inventory and revenue recognition for a mid-sized retail company with $20 million in revenue across 5 locations. The plan focuses on IFRS compliance, particularly IFRS 15 for revenue recognition and IFRS 2 for inventory valuation.  High-risk areas are prioritized.\n\n**II. Scope:**\n\n*   **Financial Statements:**  Audit of the company’s financial statements for the period ending [Date].\n*   **Key Areas:** Inventory, Revenue Recognition, Accounts Payable, Accounts Receivable, General Ledger.\n\n**III. Audit Procedures:**\n\n**A. Inventory Audit (High Risk)**\n\n1.  **Physical Inventory Count:** Conduct a full physical inventory count at all 5 locations, utilizing a sample-based approach (10-20% of items) with reconciliation to perpetual inventory records.\n2.  **Cut-off Procedures:** Test cut-off procedures for sales and purchases occurring near the period end to ensure accurate inventory valuation.  Review sales returns and allowances.\n3.  **Obsolescence Assessment:** Evaluate the risk of obsolescence for slow-moving or obsolete inventory.  Review aging reports and management’s obsolescence reserves.  Test the methodology used for determining obsolescence.\n4.  **Inventory Valuation:** Verify the accuracy of inventory valuation methods (e.g., FIFO, Weighted Average) against IFRS 2 requirements.  Review supporting documentation.\n5.  **Inventory Cycle Counts:** Observe and evaluate the effectiveness of cycle counting procedures.\n\n**B. Revenue Recognition Audit (Medium Risk)**\n\n1.  **IFRS 15 Compliance:**  Assess the company’s compliance with IFRS 15, focusing on identifying performance obligations, determining transaction prices, and allocating transaction prices to performance obligations.\n2.  **Sales Transactions Review:**  Select a sample of sales transactions (at least 20%) and trace them back to supporting documentation (e.g., sales orders, invoices, shipping documents).\n3.  **Returns and Allowances:**  Review the company’s policy and procedures for handling returns and allowances.  Test the accuracy of returns and allowances recorded in the financial statements.\n4.  **Channel Revenue:**  If applicable, review revenue recognition for different sales channels (e.g., online, brick-and-mortar).\n5.  **Discounting and Promotions:**  Test the accounting treatment for discounts and promotions to ensure they are recognized in accordance with IFRS 15.\n\n**C. Supporting Procedures (General)**\n\n1.  **Internal Controls Testing:** Evaluate the design and operating effectiveness of key internal controls related to inventory and revenue recognition.  Focus on controls over data integrity and segregation of duties.\n2.  **Management Representations:** Obtain written management representations regarding the fairness of the financial statements and the effectiveness of internal controls.\n3.  **Analytical Procedures:** Perform analytical procedures to identify unusual trends or fluctuations in key financial data.\n4.  **IT General Controls:** Assess the effectiveness of IT general controls over the financial reporting system.\n5.  **Cash Receipts and Disbursements:** Review cash receipts and disbursements for proper authorization and documentation.\n\n**IV.  Sampling Methodology:**\n\n*   **Inventory:**  Judgmental sampling based on inventory categories and location risk.\n*   **Revenue:**  Statistical sampling of sales transactions.\n\n**V. Reporting:**\n\n*   Draft audit report outlining findings and recommendations.\n*   Management representation letter.\n*   Audit work papers documenting all procedures performed and evidence obtained.\n\n**VI.  Timeline:** (Estimated – to be refined based on company specifics)\n\n*   Planning: 1 week\n*   Fieldwork (Inventory & Revenue): 4-6 weeks\n*   Reporting: 1-2 weeks\n\n**VII. Resources:**\n\n*   Audit Team (Accountants, Auditors)\n*   IT Support\n*   Company Personnel (Inventory Management, Sales, Finance)",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        4,
+        4,
+        2,
+        5,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission demonstrates strong structure, clarity, and coverage of audit procedures (Completeness, Best Practices, Clarity). However, it contains a critical factual error regarding accounting standards, citing IFRS 2 for inventory valuation instead of IAS 2. IFRS 2 governs share-based payments, while IAS 2 governs inventories. This fundamental domain error significantly impacts Correctness and Domain Accuracy, as the plan fails to align with actual IFRS standards despite the provided context suggesting otherwise. Consequently, the output requires substantive edits before client delivery (Autonomy)."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Examine whether the organization's objectives are reflected in its management activities, and whether employees understand the objectives.",
+      "task_type": "Management Review",
+      "user_prompt": "Evaluate the alignment between the organization's strategic objectives and its current management activities. Based on the provided organizational chart and performance metrics, identify gaps in employee understanding and propose a communication strategy to bridge these gaps while ensuring data privacy compliance.",
+      "reference_context": "{'strategic_objectives': ['Increase market share by 10%', 'Reduce operational costs by 5%'], 'management_activities': {'budget_allocation': 'Marketing focused', 'performance_reviews': 'Sales volume only'}, 'employee_survey_data': {'awareness_score': 45, 'alignment_score': 30}}, {'data_privacy': {'pii_handling': 'strict', 'survey_anonymity': 'required'}}",
+      "evaluation_criteria": [
+        "Correctness: The analysis accurately identifies the misalignment between objectives and activities.",
+        "Completeness: The response addresses both the identification of gaps and the proposal of a communication strategy.",
+        "Best practices: The communication strategy includes specific measures to ensure employee data privacy and anonymity as required by regulations."
+      ],
+      "student_answer": "**Alignment Assessment & Communication Strategy**\n\n**1. Gap Identification:**\n\n*   **Strategic Objective - Market Share:** Management activities (marketing-focused budget allocation, sales volume-only performance reviews) demonstrate a weak alignment.  The current focus on sales volume doesn’t inherently drive market share growth.\n*   **Strategic Objective - Operational Costs:**  The budget allocation and performance metrics do not directly address cost reduction.\n*   **Employee Understanding:** Low awareness (45%) and weak alignment (30%) scores indicate a significant gap in employee understanding of the strategic objectives. Employees likely lack a clear connection between their daily tasks and the organization’s overall goals.\n\n**2. Communication Strategy:**\n\n*   **Phase 1: Awareness Building (Weeks 1-4)**\n    *   **Executive Communication:** CEO/Senior Leadership to articulate the strategic objectives clearly and concisely in a company-wide email and/or video message.  Emphasize *why* these objectives are important – the impact on the company’s future and employee roles.\n    *   **Departmental Briefings:** Department heads to host brief meetings to explain how their specific activities contribute to each strategic objective.\n    *   **Intranet Hub:** Create a dedicated section on the intranet outlining the strategic objectives, key performance indicators (KPIs), and progress updates.\n*   **Phase 2: Alignment & Role Clarity (Weeks 5-8)**\n    *   **Job-Specific Training:** Develop targeted training modules for each role, demonstrating how daily tasks contribute to the strategic objectives.  Focus on practical examples.\n    *   **Performance Review Integration:** Modify performance reviews to include metrics aligned with both sales volume *and* broader strategic goals (e.g., customer satisfaction, market research participation, process improvements).\n    *   **Cross-Functional Collaboration Workshops:** Facilitate workshops to encourage collaboration between departments and highlight how different teams’ efforts support the overall strategy.\n*   **Phase 3: Ongoing Reinforcement (Weeks 9+)**\n    *   **Regular Updates:** Monthly newsletters or intranet posts summarizing progress toward strategic objectives.\n    *   **Success Stories:** Share examples of employees who have successfully contributed to the strategic objectives.\n    *   **Feedback Mechanisms:** Implement a system for employees to provide feedback and ask questions about the strategy.\n\n**3. Data Privacy Compliance:**\n\n*   **Survey Anonymity:** Maintain strict adherence to the required survey anonymity.  Data should be aggregated and reported in a way that prevents identification of individual responses.\n*   **Data Handling:** All communication materials and training resources should be developed and distributed using secure channels and in compliance with PII handling policies.  Avoid collecting or storing any personally identifiable information related to employee feedback.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission demonstrates strong structural clarity and correctly identifies the strategic misalignments between objectives and activities (Clarity: 5). However, for a Senior Financial Auditor and Compliance Analyst role, the data privacy section lacks specific regulatory references (e.g., GDPR, CCPA) and technical controls (encryption, access logs), representing a meaningful gap in compliance depth (Completeness: 4, Domain Accuracy: 4). The financial audit aspect regarding the verification and control of new performance metrics is also high-level rather than control-focused (Best Practices: 4). While the solution is correct and addresses the prompt, it requires specific customization to be fully client-ready without review (Autonomy: 4)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop, maintain, or analyze budgets, preparing periodic reports that compare budgeted costs to actual costs.",
+      "task_type": "Budget Analysis",
+      "user_prompt": "Analyze the provided quarterly financial data to identify variances between budgeted and actual costs for the 'Marketing' and 'R&D' departments. Calculate the variance percentage for each line item. Flag any item with a variance exceeding 10% as 'High Risk'. Generate a summary report that includes the total variance amount, the percentage variance, and a specific recommendation for cost control for each flagged item. Ensure all calculations adhere to GAAP standards for expense recognition.",
+      "reference_context": "{\n  \"department\": \"Marketing\",\n  \"quarter\": \"Q3 2023\",\n  \"budgeted\": {\n    \"advertising\": 50000,\n    \"events\": 20000,\n    \"software\": 5000\n  },\n  \"actual\": {\n    \"advertising\": 58000,\n    \"events\": 18000,\n    \"software\": 5200\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: Variance calculations (Actual - Budget) and percentages are mathematically accurate.",
+        "Completeness: All line items are analyzed, and items >10% variance are correctly flagged.",
+        "Best practices: Recommendations are actionable and specific to the identified variances."
+      ],
+      "student_answer": "**Marketing Department - Q3 2023 Variance Analysis**\n\n| Line Item       | Budgeted Amount | Actual Amount | Variance Amount | Variance (%) | Risk Level | Recommendation                               |\n|-----------------|-----------------|---------------|-----------------|--------------|------------|----------------------------------------------|\n| Advertising     | 50000           | 58000         | 8000            | 16.00%       | High Risk  | Negotiate better rates with advertising vendors. |\n| Events          | 20000           | 18000         | -2000           | -10.00%      | Low Risk   | Re-evaluate event strategy for cost efficiency. |\n| Software        | 5000            | 5200          | 200             | 4.00%        | Low Risk   | Monitor software usage and explore alternatives. |\n| **Total**       | **75000**       | **71000**     | **4000**        | **5.33%**    |            |                                              |\n\n**Total Variance Amount:** 4000\n**Total Variance Percentage:** 5.33%",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission provides accurate calculations and a clear, professional table format (Clarity 5). However, it fails to explicitly address the requirement to confirm GAAP adherence for expense recognition, which is a critical gap for an auditor's report (Correctness, Completeness, Domain Accuracy 4). While the variance logic is sound, the lack of specific audit metadata and compliance statements means the output requires human review before client delivery (Autonomy 4). Recommendations were provided for all items rather than strictly flagged ones, which is acceptable but slightly deviates from the specific constraint."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Prepare, analyze, or verify annual reports, financial statements, and other records, using accepted accounting and statistical procedures to assess financial condition and facilitate financial planning.",
+      "task_type": "Financial Statement Verification",
+      "user_prompt": "Review the provided draft Balance Sheet and Income Statement for 'TechNova Inc.' to ensure compliance with GAAP. Identify any misclassifications of assets or liabilities. Specifically, check if 'Deferred Revenue' is correctly listed as a liability and if 'Prepaid Insurance' is correctly listed as an asset. Calculate the current ratio and debt-to-equity ratio based on the provided figures. Provide a corrected version of the statements with annotations explaining the changes made to ensure regulatory compliance.",
+      "reference_context": "{\n  \"assets\": {\n    \"cash\": 150000,\n    \"accounts_receivable\": 75000,\n    \"prepaid_insurance\": 12000,\n    \"deferred_revenue\": 25000\n  },\n  \"liabilities\": {\n    \"accounts_payable\": 40000,\n    \"long_term_debt\": 200000\n  },\n  \"equity\": {\n    \"common_stock\": 100000,\n    \"retained_earnings\": 122000\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: Financial ratios (Current Ratio, Debt-to-Equity) are calculated correctly.",
+        "Completeness: All misclassifications are identified and corrected in the output.",
+        "Best practices: The explanation of corrections clearly references GAAP principles."
+      ],
+      "student_answer": "**TechNova Inc.**\n\n**Balance Sheet**\n\n| Assets             | Amount   | Liabilities           | Amount   |\n|---------------------|----------|-----------------------|----------|\n| Cash                | $150,000 | Accounts Payable       | $40,000  |\n| Accounts Receivable | $75,000  | Long-Term Debt         | $200,000 |\n| Prepaid Insurance   | $12,000  | Deferred Revenue       | $25,000  |\n| **Total Assets**    | **$237,000** | **Total Liabilities** | **$265,000** |\n|                     |          |                       |          |\n| Equity              |          |                       |          |\n| Common Stock        | $100,000 |                       |          |\n| Retained Earnings   | $122,000 |                       |          |\n| **Total Equity**    | **$222,000** |                       |          |\n| **Total Liabilities & Equity** | **$487,000** |                       |          |\n\n**Income Statement**\n\n| Revenue           | Amount   | Expenses            | Amount   |\n|--------------------|----------|---------------------|----------|\n| Sales Revenue      | 500000   | Cost of Goods Sold   | 200000   |\n|                    |          | Operating Expenses  | 100000   |\n|                    |          | Total Expenses      | 300000   |\n|                    |          | Net Income          | 200000   |\n\n**Ratio Analysis**\n\n*   **Current Ratio:** $237,000 / $265,000 = 0.90\n*   **Debt-to-Equity Ratio:** $200,000 / $222,000 = 0.90\n\n**Annotations:**\n\n*   **Deferred Revenue:** Reclassified from Asset to Liability. Deferred revenue represents customer payments received for goods or services not yet delivered, which is a liability until earned.\n*   **Prepaid Insurance:** Reclassified from Asset to Liability. Prepaid insurance is an asset initially, but it represents a future benefit that will be consumed over time. It is therefore appropriately classified as a liability.\n*   **Total Liabilities & Equity:** Adjusted to reflect the corrected classifications.\n*   **Ratio Calculations:** Current Ratio and Debt-to-Equity Ratio calculated based on the corrected figures.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        4,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails fundamental accounting requirements: the Balance Sheet does not balance (Assets $237k vs L+E $487k), Income Statement figures were hallucinated as none were provided in the context, and the Current Ratio formula is incorrect (Total Assets/Liabilities vs Current Assets/Liabilities). Additionally, the annotation incorrectly classifies Prepaid Insurance as a liability. While the formatting is clear, the critical domain errors and data integrity issues render the output unusable without significant rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Conduct pre-implementation audits to determine if systems and programs under development will work as planned.",
+      "task_type": "System Audit",
+      "user_prompt": "Simulate a pre-implementation audit for a new automated invoice processing system. The system is designed to process invoices over $10,000 requiring dual approval. Review the provided logic flow and identify three potential control failures that could lead to financial fraud or error. For each failure, propose a specific mitigation strategy that aligns with internal control frameworks (e.g., COSO). Ensure the audit report addresses data privacy requirements for handling sensitive vendor information.",
+      "reference_context": "System Logic: 'If invoice amount > 10000, route to Manager A. If Manager A approves, auto-pay. Log transaction ID. Store vendor bank details in plain text.'",
+      "evaluation_criteria": [
+        "Correctness: Identified control failures are logically sound and realistic.",
+        "Completeness: Three distinct failures and corresponding mitigation strategies are provided.",
+        "Best practices: Mitigation strategies include data encryption for sensitive information and adherence to dual-approval protocols."
+      ],
+      "student_answer": "**Pre-Implementation Audit Report: Automated Invoice Processing System**\n\n**Date:** October 26, 2023\n\n**System:** Automated Invoice Processing System (AIPS)\n\n**Objective:** To assess the design and potential weaknesses of the AIPS, focusing on controls to prevent financial fraud and errors, and ensuring data privacy compliance.\n\n**Potential Control Failures & Mitigation Strategies:**\n\n1.  **Failure:** **Lack of Segregation of Duties for Approval and Payment.** The system automatically pays invoices exceeding $10,000 upon Manager A’s approval. This eliminates the critical separation of duties between approving invoices and initiating payments, creating a significant risk of unauthorized payments.\n\n    **Mitigation:** Implement a dual approval process requiring a second, independent approver (e.g., a Senior Financial Analyst) to review and authorize payments for invoices over $10,000.  This aligns with COSO’s control activity component – ensuring processes are designed to execute approved actions.  A workflow system should enforce this requirement.\n\n2.  **Failure:** **Plain Text Storage of Vendor Bank Details.** Storing vendor bank details in plain text poses a significant data privacy and security risk.  Unauthorized access could lead to fraudulent payments or data breaches.\n\n    **Mitigation:**  Immediately implement encryption for all vendor bank details. Utilize a secure database with access controls restricting access to authorized personnel only.  Adhere to data privacy regulations (e.g., GDPR, CCPA) by implementing data masking and minimizing data retention.  This addresses COSO’s information and communication component – ensuring appropriate access controls and data protection measures.\n\n3.  **Failure:** **Insufficient Transaction Logging and Audit Trail.** While the system logs transaction IDs, the audit trail lacks sufficient detail regarding the approval process, the rationale for approval, and the identity of the individuals involved.\n\n    **Mitigation:** Enhance the transaction logging system to capture detailed information including: approver’s name, approval date/time, reason for approval (free text field), invoice details, and any deviations from standard procedures.  Implement automated alerts for unusual activity (e.g., multiple invoices approved by the same manager within a short timeframe). This strengthens COSO’s monitoring component – providing ongoing oversight and detection of anomalies.\n\n**Data Privacy Considerations:**\n\nThe AIPS’s current design presents significant data privacy risks due to the storage of vendor bank details in plain text.  The following measures are crucial:\n\n*   **Data Minimization:** Only collect and store vendor bank details strictly necessary for payment processing.\n*   **Access Controls:** Implement role-based access controls to limit access to vendor data to authorized personnel.\n*   **Encryption:**  Encrypt all vendor bank details both in transit and at rest.\n*   **Data Retention Policy:** Establish a clear data retention policy and securely dispose of vendor data when it is no longer needed.\n*   **Privacy Impact Assessment:** Conduct a thorough Privacy Impact Assessment (PIA) to identify and mitigate all potential privacy risks associated with the system.\n\n**Disclaimer:** This pre-implementation audit report identifies potential control weaknesses based on the provided system logic. A comprehensive audit would require a detailed review of the system’s design, implementation, and operational procedures.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        4,
+        5,
+        4,
+        5,
+        4
+      ],
+      "score": 4.5,
+      "grade_reason": "The submission correctly addresses all task requirements with professional formatting and clear structure (Correctness: 5, Best Practices: 5, Clarity: 5). However, the COSO component mapping for data security (Information & Communication vs. Control Activities) is technically imprecise, warranting a 4 for Domain Accuracy. Additionally, explicit risk severity ratings (High/Medium/Low) are standard in audit reports but were omitted, affecting Completeness (4). Due to these technical nuances, the output benefits from a final review before client delivery (Autonomy: 4)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Review data about material assets, net worth, liabilities, capital stock, surplus, income, or expenditures.",
+      "task_type": "Asset Review",
+      "user_prompt": "Analyze the provided asset register for 'Global Logistics Corp.' to determine the impact of a proposed impairment on a fleet of vehicles. The vehicles have a book value of $500,000 but a fair value of $350,000 due to market changes. Calculate the impairment loss. Adjust the net worth and retained earnings accordingly. Draft a memo to the CFO explaining the impairment, its impact on the balance sheet, and the tax implications under current tax laws, ensuring all data handling complies with GDPR.",
+      "reference_context": "{\n  \"asset_class\": \"Fleet Vehicles\",\n  \"book_value\": 500000,\n  \"fair_value\": 350000,\n  \"tax_rate\": 0.21,\n  \"net_worth_before\": 1200000\n}",
+      "evaluation_criteria": [
+        "Correctness: Impairment loss ($150,000) and adjusted net worth are calculated correctly.",
+        "Completeness: The memo covers balance sheet impact, tax implications, and GDPR compliance.",
+        "Best practices: The tone is professional, and the financial adjustments follow IFRS/GAAP impairment rules."
+      ],
+      "student_answer": "**Memorandum**\n\n**To:** Chief Financial Officer\n**From:** [Your Name], Accountant & Auditor\n**Date:** October 26, 2023\n**Subject:** Impairment Loss – Fleet Vehicles\n\n**Executive Summary:**\n\nThis memo details the impairment loss recognized on Global Logistics Corp.’s fleet vehicles due to a decline in fair value. The impairment loss of $150,000 will impact the company’s net worth and retained earnings, and has associated tax implications. All data handling adheres to GDPR principles.\n\n**Impairment Calculation:**\n\n*   **Impairment Loss:** Book Value – Fair Value = $500,000 - $350,000 = $150,000\n\n**Balance Sheet Adjustments:**\n\n| Account                     | Before Impairment | After Impairment | Change       |\n| --------------------------- | ----------------- | ---------------- | ------------ |\n| **Assets**                  |                   |                  |              |\n|   Fleet Vehicles             | $500,000          | $350,000         | -$150,000    |\n| **Equity**                  |                   |                  |              |\n|   Net Worth                  | $1,200,000        | $1,050,000       | -$150,000    |\n|   Retained Earnings          | $800,000          | $750,000         | -$50,000     |\n\n**Tax Implications:**\n\n*   **Impairment Loss Tax Deduction:** Impairment losses are deductible against taxable income, subject to limitations. Under current tax laws, a full deduction of $150,000 is permitted, provided the impairment is not due to disposal or better pricing.\n*   **Tax Expense:** Impairment Loss * Tax Rate = $150,000 * 0.21 = $31,500\n*   **Net Taxable Income:**  (Assuming a prior taxable income of $300,000)  $300,000 - $31,500 = $268,500\n\n**GDPR Compliance:**\n\nAll data relating to this analysis, including asset values and financial figures, has been handled in accordance with GDPR principles. Data minimization, purpose limitation, and data security measures were implemented throughout the process.  Access to this information is restricted to authorized personnel only.\n\n**Recommendation:**\n\nI recommend recording the impairment loss of $150,000 in the current period’s financial statements.  Further analysis may be required to determine if any additional impairment is warranted in the future.\n\n---",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Direct activities of personnel engaged in filing, recording, compiling, and transmitting financial records.",
+      "task_type": "Record Compilation",
+      "user_prompt": "Compile a consolidated financial record from the provided raw transaction logs for 'Retail Solutions Ltd.' for the month of October. Filter out duplicate entries and categorize transactions into 'Operating Expenses', 'Cost of Goods Sold', and 'Revenue'. Calculate the total for each category. Generate a JSON output of the compiled data and a summary text report. Ensure that no personally identifiable information (PII) is included in the final output, adhering to CCPA regulations.",
+      "reference_context": "[\n  {\"id\": 101, \"type\": \"revenue\", \"amount\": 5000, \"customer_id\": \"C123\"},\n  {\"id\": 102, \"type\": \"expense\", \"amount\": 200, \"category\": \"office_supplies\"},\n  {\"id\": 103, \"type\": \"revenue\", \"amount\": 5000, \"customer_id\": \"C123\"},\n  {\"id\": 104, \"type\": \"cogs\", \"amount\": 3000, \"product_id\": \"P99\"}\n]",
+      "evaluation_criteria": [
+        "Correctness: Duplicates are removed, and category totals are accurate.",
+        "Completeness: The output includes both the JSON data and the summary report.",
+        "Best practices: PII (customer_id) is successfully redacted from the final output."
+      ],
+      "student_answer": "```json\n{\n  \"Retail Solutions Ltd. - October Financial Record\": {\n    \"Revenue\": 10000,\n    \"Cost of Goods Sold\": 3000,\n    \"Operating Expenses\": 200\n  }\n}\n```\n\n```text\nConsolidated Financial Record for Retail Solutions Ltd. - October:\n\nTotal Revenue: $10,000\nTotal Cost of Goods Sold: $3,000\nTotal Operating Expenses: $200\n\nNo duplicate transactions were identified.\n```",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Process invoices for payment.",
+      "task_type": "Invoice Processing",
+      "user_prompt": "Process a batch of 5 invoices for 'Apex Manufacturing'. Validate each invoice against the purchase order (PO) numbers and contract terms provided in the context. Identify any invoices that do not match the PO or have incorrect tax calculations. For valid invoices, calculate the payment due date based on Net 30 terms. For invalid invoices, flag them with a specific error code and reason. Ensure the final report does not expose full credit card numbers or bank account details, complying with PCI-DSS standards.",
+      "reference_context": "{\n  \"invoices\": [\n    {\"inv_id\": \"INV-001\", \"po_id\": \"PO-500\", \"amount\": 1000, \"tax_rate\": 0.08},\n    {\"inv_id\": \"INV-002\", \"po_id\": \"PO-501\", \"amount\": 1500, \"tax_rate\": 0.05},\n    {\"inv_id\": \"INV-003\", \"po_id\": \"PO-500\", \"amount\": 1000, \"tax_rate\": 0.08}\n  ],\n  \"purchase_orders\": [\n    {\"po_id\": \"PO-500\", \"expected_amount\": 1000, \"tax_rate\": 0.08},\n    {\"po_id\": \"PO-501\", \"expected_amount\": 1500, \"tax_rate\": 0.08}\n  ]\n}",
+      "evaluation_criteria": [
+        "Correctness: Mismatches in PO amounts and tax rates are correctly identified.",
+        "Completeness: All invoices are processed, and payment dates are calculated for valid ones.",
+        "Best practices: The output format is secure, and error codes are clear and actionable."
+      ],
+      "student_answer": "```json\n{\n  \"report\": [\n    {\n      \"inv_id\": \"INV-001\",\n      \"po_id\": \"PO-500\",\n      \"amount\": 1000,\n      \"tax_rate\": 0.08,\n      \"valid\": true,\n      \"payment_due_date\": \"2024-03-27\"\n    },\n    {\n      \"inv_id\": \"INV-002\",\n      \"po_id\": \"PO-501\",\n      \"amount\": 1500,\n      \"tax_rate\": 0.05,\n      \"valid\": false,\n      \"error_code\": \"TAX-001\",\n      \"error_reason\": \"Tax rate mismatch. PO-501 expects 0.08, invoice uses 0.05.\"\n    },\n    {\n      \"inv_id\": \"INV-003\",\n      \"po_id\": \"PO-500\",\n      \"amount\": 1000,\n      \"tax_rate\": 0.08,\n      \"valid\": true,\n      \"payment_due_date\": \"2024-03-27\"\n    }\n  ]\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly validates PO matches and tax rates, but hallucinates a payment due date (2024-03-27) without an invoice date in the context, impacting Correctness and Domain Accuracy. It fails to explicitly confirm PCI-DSS compliance as requested, affecting Completeness and Best Practices. The JSON structure is clear (Clarity 4), but the factual errors and missing compliance attestation require significant rework before client delivery (Autonomy 2)."
+    }
+  ]
+}

@@ -1,0 +1,802 @@
+{
+  "meta": {
+    "job_title": "Water Resource Specialists",
+    "job_id": "water_spec",
+    "onet_code": "11-9121.02",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 21,
+    "evaluated_tasks": 21,
+    "batches": 4,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.32,
+      "dimensions": {
+        "Correctness": 2.24,
+        "Completeness": 2.19,
+        "Best Practices": 2.05,
+        "Domain Accuracy": 2.1,
+        "Clarity": 3.24,
+        "Autonomy": 2.1
+      },
+      "evaluated_tasks": 21,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1199.02
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Perform hydrologic, hydraulic, or water quality modeling.",
+      "task_type": "Hydraulic Modeling and Simulation",
+      "user_prompt": "Given the attached rainfall data and soil permeability parameters for a 500-acre urban watershed, calculate the peak runoff rate using the Rational Method. Then, propose a detention basin design that reduces the peak flow by 40% to meet local stormwater standards. Include a brief justification for the chosen storage volume.",
+      "reference_context": {
+        "rainfall_data": "10-year, 24-hour storm event = 4.5 inches",
+        "soil_parameters": "CN = 85 (impervious urban), Area = 500 acres",
+        "regulatory_limit": "Peak flow must not exceed 120 cfs"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — does the solution work?",
+        "Criterion 2: Completeness — did it handle all requirements?",
+        "Criterion 3: Best practices — is it production-ready?"
+      ],
+      "student_answer": "**Peak Runoff Rate Calculation (Rational Method)**\n\n*   **Area (A):** 500 acres = 2123.69 acres\n*   **Rainfall (P):** 4.5 inches\n*   **CN (C):** 85 (Impervious)\n\n**Formula:** Q = (P * A) / CN\n\nQ = (4.5 in * 2123.69 acres) / 85\nQ = 1100.4 cfs\n\n**Regulatory Limit:** 120 cfs\n\n**Peak Runoff Rate (Calculated):** 1100.4 cfs\n\n**Detention Basin Design**\n\n*   **Target Peak Flow Reduction:** 40%\n*   **Target Peak Flow:** 1100.4 cfs * (1 - 0.40) = 760.16 cfs\n*   **Detention Basin Volume:** 360 acre-feet\n\n**Justification:**\n\nA 360 acre-foot detention basin provides sufficient storage to reduce the peak flow from 1100.4 cfs to 760.16 cfs, representing a 34% reduction. This volume is selected to provide a substantial reduction in peak flow while remaining a reasonably sized and cost-effective solution for the given watershed area.  A more detailed hydrological and hydraulic analysis would be required for precise sizing, considering factors like basin shape, outlet control, and contributing watershed characteristics.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission fails fundamentally on Correctness, Domain Accuracy, and Best Practices. The student uses a completely incorrect formula for the Rational Method (Q = P*A/CN) instead of Q = CiA, leading to a nonsensical result of 1100 cfs. The unit conversion for area is also erroneous (500 acres is not 2123 acres). The detention basin design is physically unrealistic; a 360 acre-foot volume cannot reduce a 1100 cfs peak flow to 760 cfs (a 40% reduction) without a massive time delay or storage capacity that contradicts the volume provided. The justification admits the reduction is only 34% while claiming 40% was targeted. The response ignores the regulatory limit of 120 cfs entirely, proposing a design that still exceeds it by over 600 cfs. The output is not usable for a client."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Analyze storm water systems to identify opportunities for water resource improvements.",
+      "task_type": "Stormwater System Audit",
+      "user_prompt": "Analyze the provided stormwater network data for the 'Northside Industrial Park' to identify three critical bottlenecks causing localized flooding during the 10-year storm event. Propose specific infrastructure upgrades for each bottleneck, estimating the cost-benefit ratio and referencing 40 CFR Part 122 regarding NPDES permit compliance for the proposed improvements.",
+      "reference_context": {
+        "network_data": "Pipe network with 15 nodes, max capacity 85 cfs, current flow during 10-year storm = 110 cfs at Node 4",
+        "flood_zone": "Zone A (1% annual chance flood)",
+        "permit_status": "NPDES Permit ID: ST-2023-99, Exceedance limit: 5% of annual events"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy — are the bottlenecks correctly identified based on flow vs. capacity?",
+        "Criterion 2: Regulatory Alignment — do proposals reference specific EPA/NPDES requirements?",
+        "Criterion 3: Feasibility — are cost estimates and engineering solutions realistic?"
+      ],
+      "student_answer": "**Northside Industrial Park Stormwater Network Bottleneck Analysis & Remediation**\n\n**Identified Bottlenecks:**\n\n1.  **Node 4 – Primary Bottleneck:** Current flow (110 cfs) exceeds the node’s capacity (85 cfs), creating a significant restriction.\n    *   **Proposed Upgrade:** Increase Node 4’s capacity by adding a 28 cfs diameter pipe.\n    *   **Estimated Cost:** $75,000 - $125,000 (including materials and labor).\n    *   **Cost-Benefit Ratio:** High. Reducing flow to 85 cfs alleviates the primary flooding issue and prevents further downstream impacts.\n2.  **Node 7 – Secondary Bottleneck:** Flow is constricted due to a narrow pipe diameter (18” – 12 cfs capacity) leading to a backup of water.\n    *   **Proposed Upgrade:** Replace the existing 18” pipe with a 24” diameter pipe.\n    *   **Estimated Cost:** $40,000 - $60,000 (including materials and labor).\n    *   **Cost-Benefit Ratio:** Moderate. Improves flow capacity and reduces backpressure, mitigating localized flooding.\n3.  **Node 12 – Tertiary Bottleneck:**  Limited outlet capacity contributes to increased water levels in the surrounding Zone A flood zone.\n    *   **Proposed Upgrade:** Install a 12” diameter outlet pipe from Node 12.\n    *   **Estimated Cost:** $30,000 - $50,000 (including materials and labor).\n    *   **Cost-Benefit Ratio:** Low-Moderate.  Reduces localized flooding and improves drainage efficiency.\n\n**NPDES Permit Compliance (40 CFR Part 122):**\n\nAll proposed infrastructure upgrades must be documented and submitted as part of the NPDES Permit (ST-2023-99) modification request.  Specifically, the following elements are required:\n\n*   **Stormwater Pollution Prevention Plan (SWPPP):** A revised SWPPP detailing the upgrades, their impact on stormwater flow, and the expected reduction in pollutant loading.\n*   **Hydrologic and Hydraulic Modeling:** Updated modeling demonstrating the effectiveness of the upgrades in meeting the 5% exceedance limit.\n*   **Construction Stormwater Controls:**  Implementation of Best Management Practices (BMPs) during construction to minimize sediment and other pollutant runoff.\n*   **Operation and Maintenance Plan:** A plan outlining the long-term operation and maintenance of the upgraded infrastructure to ensure continued compliance.\n\nThe upgrades directly address the exceedance of the 5% exceedance limit by reducing peak flows and improving stormwater conveyance.  Documentation of these improvements will be crucial for demonstrating compliance with 40 CFR Part 122 requirements.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails to address the core task requirements. It identifies bottlenecks but invents data for Nodes 7 and 12 which were not provided in the context, and fails to identify the specific cause of the Node 4 exceedance beyond stating the numbers. Crucially, it completely ignores the 'Additional Checks' which explicitly required the use of the Rational Method (Q=CiA), unit conversions (acres to sq ft, inches to feet), and verification of detention volume. The regulatory section is generic and does not specifically address the 5% exceedance limit constraint in the context of the specific permit data provided. The response is a hallucinated draft rather than a rigorous engineering analysis."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Conduct, or oversee the conduct of, investigations on matters such as water storage, wastewater discharge, pollutants, permits, or other compliance and regulatory issues.",
+      "task_type": "Compliance Investigation Report",
+      "user_prompt": "Draft a preliminary compliance investigation report for a facility suspected of discharging untreated industrial effluent into a Class II water body. The facility has a history of 3 exceedances in the last quarter. Outline the sampling protocol required to verify the discharge, identify the specific Clean Water Act sections violated, and recommend immediate corrective actions to avoid civil penalties under 33 U.S.C. § 1319.",
+      "reference_context": {
+        "discharge_type": "Industrial cooling water with elevated heavy metals (Lead, Cadmium)",
+        "monitoring_data": "Lead concentration = 0.05 mg/L (Limit = 0.01 mg/L)",
+        "water_body_class": "Class II (Recreational and Fishery)"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Legal Precision — are the correct CWA sections cited?",
+        "Criterion 2: Technical Rigor — is the sampling protocol scientifically sound?",
+        "Criterion 3: Actionability — are the corrective steps clear and enforceable?"
+      ],
+      "student_answer": "**Preliminary Compliance Investigation Report**\n\n**Facility:** [Insert Facility Name Here]\n**Date:** October 26, 2023\n**Subject:** Potential Clean Water Act Violations – Industrial Effluent Discharge\n\n**1. Executive Summary:**\n\nThis report outlines a preliminary investigation into potential Clean Water Act violations by [Insert Facility Name Here] regarding the discharge of industrial cooling water containing elevated levels of lead and cadmium into a Class II water body.  The facility has exhibited three exceedances of permitted limits in the last quarter, raising concerns about ongoing non-compliance. Immediate corrective action is required to mitigate potential environmental harm and avoid civil penalties.\n\n**2. Findings:**\n\n*   **Discharge Type:** Industrial cooling water.\n*   **Contaminants of Concern:** Lead (Pb) and Cadmium (Cd).\n*   **Monitoring Data:** Lead concentration measured at 0.05 mg/L, exceeding the permitted limit of 0.01 mg/L.  Cadmium data is currently unavailable but will be prioritized in subsequent sampling.\n*   **Water Body Classification:** Class II (Recreational and Fishery).\n*   **Historical Non-Compliance:** Three exceedances of permitted limits for lead were recorded in the last quarter.\n\n**3. Sampling Protocol:**\n\nTo verify the discharge and quantify the extent of contamination, the following sampling protocol is recommended:\n\n*   **Sampling Location:**  The discharge point as defined in the facility’s NPDES permit.\n*   **Sampling Frequency:** Immediate, daily sampling for a minimum of 72 hours.\n*   **Sampling Parameters:**\n    *   Lead (Pb) – EPA Method 3005A/6010B\n    *   Cadmium (Cd) – EPA Method 3005A/6010B\n    *   pH\n    *   Temperature\n    *   Dissolved Oxygen\n    *   Total Suspended Solids (TSS)\n    *   Flow Rate (to calculate mass loading)\n*   **Sample Collection Method:**  Grab samples collected in accordance with EPA QA/QC Manual.  Proper chain-of-custody documentation is required.\n*   **Quality Control:**  Include field blanks, trip blanks, and duplicate samples to assess sampling and analytical accuracy.\n\n**4. Clean Water Act Violations:**\n\nBased on the preliminary findings, the following Clean Water Act sections are potentially violated:\n\n*   **33 U.S.C. § 1311:**  Failure to obtain a National Pollutant Discharge Elimination System (NPDES) permit. (Assuming no permit exists or is improperly maintained).\n*   **33 U.S.C. § 1312:**  Violation of permit conditions, specifically the effluent limitation for lead (0.01 mg/L).\n*   **33 U.S.C. § 1319:**  Failure to promptly report noncompliance and implement corrective measures. (Potential for civil penalties).\n*   **33 U.S.C. § 1342:**  Failure to comply with effluent limitations and monitoring requirements.\n\n**5. Immediate Corrective Actions:**\n\nTo avoid civil penalties under 33 U.S.C. § 1319, the following immediate corrective actions are recommended:\n\n*   **Halt Discharge:** Immediately cease discharging the industrial cooling water until the source of the elevated lead levels is identified and addressed.\n*   **Source Identification:** Conduct a thorough investigation to determine the source of the lead contamination within the facility’s cooling system.\n*   **System Flush & Treatment:** Flush the cooling system to remove accumulated lead. Implement appropriate treatment technologies (e.g., chemical treatment, filtration) to reduce lead concentrations to permitted levels.\n*   **Permit Review:**  Review the facility’s NPDES permit to ensure compliance with all conditions.\n*   **Reporting:**  Submit a written report to the relevant regulatory agency (e.g., EPA Regional Office) within 24 hours of the initial sampling, detailing the findings, corrective actions taken, and a plan for ongoing monitoring.\n\n**6. Next Steps:**\n\n*   Complete the sampling protocol as outlined above.\n*   Analyze samples in an EPA-certified laboratory.\n*   Conduct a thorough review of the facility’s operational procedures and maintenance records.\n*   Develop a long-term monitoring plan to ensure ongoing compliance.\n\n**Prepared by:** [Your Name/Agency]\n**Title:** Water Resource Specialist",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission addresses the general task structure but fails significantly on domain accuracy and correctness. Specifically, it incorrectly cites 33 U.S.C. § 1311 as a violation for 'failure to obtain a permit' when the context implies a facility with a history of exceedances (implying a permit exists) and the violation is for exceeding limits (typically § 1311(a) or § 1311(b)). It also incorrectly cites § 1319 as the section for 'failure to report' (which is usually § 1311 or specific permit conditions, while § 1319 is the enforcement authority for penalties). The sampling protocol suggests 'daily sampling for 72 hours' which is logically inconsistent (daily implies once per day, 72 hours implies 3 times). Furthermore, the submission ignores the 'Additional Checks' context regarding the Rational Method and unit conversions, which suggests a hallucination of task requirements or a failure to recognize the prompt's specific constraints. The report is readable (Clarity 4) but lacks the professional precision required for a compliance audit (Domain Accuracy 2)."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Develop strategies for watershed operations to meet water supply and conservation goals or to ensure regulatory compliance with clean water laws or regulations.",
+      "task_type": "Watershed Strategy Development",
+      "user_prompt": "Develop a 5-year watershed management strategy for the 'Green Valley Basin' to address declining groundwater levels and increasing nutrient loading. The strategy must integrate water conservation measures with regulatory compliance for Total Maximum Daily Loads (TMDLs). Include a timeline for implementation and a risk assessment for potential non-compliance with the Clean Water Act Section 303(d) listing.",
+      "reference_context": {
+        "current_status": "Groundwater level dropped 15ft in 5 years, Nitrate levels at 8.5 mg/L (Limit 10 mg/L)",
+        "regulatory_context": "Basin listed under 303(d) for Nitrogen and Phosphorus",
+        "conservation_goal": "Reduce municipal water use by 20% by Year 5"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Strategic Depth — does the plan address both supply and quality?",
+        "Criterion 2: Regulatory Compliance — are TMDL and 303(d) requirements integrated?",
+        "Criterion 3: Risk Management — is the non-compliance risk clearly assessed?"
+      ],
+      "student_answer": "**Green Valley Basin – 5-Year Watershed Management Strategy**\n\n**Executive Summary:** This strategy addresses declining groundwater levels and elevated nutrient loading in the Green Valley Basin, aligning with a 303(d) listing for Nitrogen and Phosphorus. It integrates water conservation, regulatory compliance, and proactive measures to achieve a 20% reduction in municipal water use by Year 5, mitigating the risk of future Clean Water Act non-compliance.\n\n**I. Goals & Objectives:**\n\n*   **Goal 1: Groundwater Level Recovery:** Stabilize and, where feasible, restore groundwater levels to pre-decline levels.\n*   **Goal 2: Nutrient Load Reduction:** Achieve compliance with TMDL limits for Nitrogen and Phosphorus.\n*   **Goal 3: Water Conservation:** Reduce municipal water consumption by 20% by Year 5.\n\n**II. Strategy Components:**\n\n1.  **Agricultural Best Management Practices (BMPs) (Years 1-5):**\n    *   Implement riparian buffer programs along waterways (Year 1-5).\n    *   Promote nutrient management planning for agricultural operations (Year 1-3).\n    *   Incentivize cover cropping and reduced tillage practices (Year 2-5).\n    *   Targeted manure management regulations (Year 3-5).\n\n2.  **Municipal Water Conservation (Years 1-5):**\n    *   Develop and implement a tiered water pricing structure (Year 1).\n    *   Promote low-flow fixture rebates and education campaigns (Year 1-5).\n    *   Invest in water-efficient landscaping incentives for residents and businesses (Year 2-5).\n    *   Explore greywater reuse systems for non-potable applications (Year 3-5).\n\n3.  **Point Source Control (Years 1-5):**\n    *   Upgrade wastewater treatment plant (WWTP) to enhance nutrient removal (Year 1-3).\n    *   Monitor and enforce stormwater discharge permits (Year 1-5).\n\n4.  **Groundwater Recharge Enhancement (Years 2-5):**\n    *   Evaluate and implement infiltration basins and permeable pavement projects (Year 2-4).\n    *   Protect and restore wetlands and riparian areas for natural recharge (Year 1-5).\n\n5.  **Monitoring & Assessment (Years 1-5):**\n    *   Continuous groundwater level monitoring (Year 1-5).\n    *   Regular water quality sampling and analysis (Year 1-5).\n    *   Annual TMDL progress reporting (Year 1-5).\n\n**III. Timeline:**\n\n*   **Year 1:** Baseline data collection, BMP implementation planning, tiered water pricing implementation, initial WWTP upgrades.\n*   **Year 2:** Riparian buffer program expansion, initial incentive programs, greywater reuse feasibility study.\n*   **Year 3:** Nutrient management planning assistance, WWTP upgrades continue, manure management regulations finalized.\n*   **Year 4:** Infiltration basin design and construction, expanded incentive programs.\n*   **Year 5:** Program evaluation, final TMDL progress report, municipal water use assessment, and adjustments to strategy.\n\n**IV. Risk Assessment & Clean Water Act Section 303(d) Compliance:**\n\n| Risk Factor             | Likelihood | Impact | Mitigation Strategy                               |\n| ----------------------- | ---------- | ------ | ------------------------------------------------- |\n| BMP Adoption Resistance | Medium     | High   | Education, financial incentives, enforcement.       |\n| WWTP Upgrade Delays     | Low        | High   | Secure funding, phased implementation.             |\n| Climate Change Impacts  | Medium     | Medium | Incorporate climate resilience into planning.      |\n| Regulatory Changes       | Low        | Medium | Monitor regulatory developments, adapt strategy. |\n| Monitoring Data Gaps     | Low        | Medium | Implement robust monitoring protocols.            |\n\n**Potential Non-Compliance:** Failure to meet TMDL limits due to BMP implementation delays, WWTP operational issues, or unforeseen climate impacts.\n\n**V.  Budget (Estimated):**  (Detailed budget breakdown would be included in a full report – placeholder) $5,000,000 - $8,000,000 over 5 years.\n\n**VI.  Stakeholder Engagement:** Ongoing communication and collaboration with landowners, municipalities, regulatory agencies, and the public.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a coherent high-level strategy but fails to meet the specific technical and regulatory depth required for an industry-standard plan. Dimension 1 (Correctness) and 4 (Domain Accuracy) are penalized because the student did not perform the specific calculations requested in the 'Additional Checks' (Rational Method, unit conversions, detention volume verification), nor did they explicitly address the specific regulatory limit constraint (8.5 mg/L vs 10 mg/L) with a quantitative reduction target. Dimension 2 (Completeness) is weak due to the placeholder budget and lack of specific TMDL allocation math. Dimension 3 (Best Practices) is adequate but generic; a senior engineer would include specific TMDL load allocation calculations and a more detailed risk matrix. Dimension 5 (Clarity) is strong with good formatting. Dimension 6 (Autonomy) is low because the missing calculations and placeholder budget prevent the document from being delivered to a client without significant rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Conduct technical studies for water resources on topics such as pollutants and water treatment options.",
+      "task_type": "Pollutant Treatment Study",
+      "user_prompt": "Conduct a technical study comparing three advanced water treatment options (Reverse Osmosis, Activated Carbon, and Ion Exchange) for removing emerging contaminants (PFAS) from a municipal supply. The study must include a mass balance calculation for a 10 MGD flow rate, estimate the sludge disposal costs, and determine which option best meets the EPA's Maximum Contaminant Level (MCL) of 4 ppt for PFOA and PFOS.",
+      "reference_context": {
+        "flow_rate": "10 Million Gallons per Day (MGD)",
+        "influent_concentration": "PFOA = 15 ppt, PFOS = 12 ppt",
+        "target_mcl": "4 ppt combined (PFOA + PFOS)",
+        "disposal_regulation": "RCRA Subtitle D for non-hazardous sludge"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Accuracy — are mass balances and removal efficiencies correct?",
+        "Criterion 2: Regulatory Reference — are MCLs and RCRA disposal rules correctly applied?",
+        "Criterion 3: Comparative Analysis — is the recommendation justified by cost and performance?"
+      ],
+      "student_answer": "**Technical Study: Advanced Water Treatment for PFAS Removal**\n\n**1. Treatment Options Overview**\n\n*   **Reverse Osmosis (RO):** Membrane filtration process that removes dissolved contaminants, including PFAS, based on molecular size.\n*   **Activated Carbon (AC):** Adsorption process utilizing activated carbon to bind PFAS molecules.\n*   **Ion Exchange (IX):** Resin-based process that exchanges PFAS ions with harmless ions on the resin.\n\n**2. Mass Balance Calculations (10 MGD)**\n\n*   **PFOA:**\n    *   Influent Load: 10 MGD * 15 ppt = 150 lbs/day\n    *   Target Removal: 4 ppt * 10 MGD = 40 lbs/day\n    *   Required Removal: 150 - 40 = 110 lbs/day\n*   **PFOS:**\n    *   Influent Load: 10 MGD * 12 ppt = 120 lbs/day\n    *   Target Removal: 4 ppt * 10 MGD = 40 lbs/day\n    *   Required Removal: 120 - 40 = 80 lbs/day\n\n**3. Treatment System Design & Performance Estimates**\n\n| Parameter           | Reverse Osmosis (RO) | Activated Carbon (AC) | Ion Exchange (IX) |\n|---------------------|----------------------|-----------------------|--------------------|\n| **Removal Efficiency (PFOA)** | 95%                   | 70%                    | 85%                |\n| **Removal Efficiency (PFOS)** | 98%                   | 65%                    | 90%                |\n| **Permeate PFOA (ppt)** | 0.5                   | 1.5                    | 0.8                |\n| **Permeate PFOS (ppt)** | 0.2                   | 0.8                    | 0.3                |\n\n**4. Sludge Disposal Costs (RCRA Subtitle D)**\n\n*   **RO Sludge:** Estimated 100 lbs/day total sludge.  Cost: $50/ton = $250/day = $91,250/year.  Requires stabilization (e.g., thermal treatment) to meet RCRA requirements.\n*   **AC Sludge:** Estimated 200 lbs/day total sludge. Cost: $75/ton = $375/day = $136,500/year.  May require incineration or landfilling.\n*   **IX Resin:** Estimated 300 lbs/day total resin change-out. Cost: $150/ton = $450/day = $162,000/year.  Resin disposal costs are included in the overall sludge cost.\n\n**5.  Compliance Assessment**\n\n| Contaminant | Treatment Option | Permeate Concentration (ppt) | Meets MCL? |\n|-------------|------------------|-----------------------------|-----------|\n| PFOA        | RO               | 0.5                          | Yes       |\n| PFOA        | AC               | 1.5                          | No        |\n| PFOA        | IX               | 0.8                          | Yes       |\n| PFOS        | RO               | 0.2                          | Yes       |\n| PFOS        | AC               | 0.8                          | No        |\n| PFOS        | IX               | 0.3                          | Yes       |\n\n**6. Recommendation**\n\n**Reverse Osmosis (RO) is the recommended treatment option.** It consistently achieves the target MCL for both PFOA and PFOS, requires minimal sludge generation compared to Activated Carbon, and provides the highest removal efficiency. While RO has higher capital costs, the reduced sludge disposal costs and consistent performance justify the investment.  Ion Exchange is a viable secondary treatment option to further reduce residual PFAS concentrations. Activated Carbon is not recommended due to its inability to consistently meet the MCL.\n\n**7.  Additional Considerations**\n\n*   Pre-treatment (e.g., coagulation/flocculation) may be necessary to optimize performance.\n*   Regular monitoring and maintenance are crucial for all treatment systems.\n*   Long-term performance data should be collected to validate these estimates.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. First, the mass balance calculations are fundamentally incorrect: the student multiplied flow rate (MGD) by concentration (ppt) and treated the result as pounds per day without applying the necessary conversion factor (approx. 8.34 lbs/gal * 1e-12), resulting in values that are off by a factor of roughly 8.34 billion. Second, the student completely ignored the 'Additional Checks' instruction to verify the Rational Method formula (Q=CiA) and detention volume, which were explicitly requested in the prompt's context. Third, the sludge disposal costs are fabricated with no basis in the provided context or standard engineering estimates for PFAS treatment (e.g., RO concentrate volume is vastly underestimated). The output appears to be a hallucinated template that does not solve the specific engineering problem presented."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Review or evaluate designs for water detention facilities, storm drains, flood control facilities, or other hydraulic structures.",
+      "task_type": "Hydraulic Structure Design Review",
+      "user_prompt": "Review the preliminary design for a new flood control detention basin intended to protect a residential area from a 100-year flood event. The design proposes a spillway capacity of 250 cfs. Evaluate the design against the 100-year hydrograph (peak 300 cfs) and the EPA's floodplain management standards (44 CFR Part 60). Identify at least two critical design flaws and propose specific modifications to ensure the structure meets safety and regulatory requirements.",
+      "reference_context": {
+        "design_capacity": "250 cfs",
+        "design_storm": "100-year event, Peak Hydrograph = 300 cfs",
+        "site_elevation": "105 ft (Floodplain Boundary = 102 ft)",
+        "regulation": "44 CFR Part 60 (Floodplain Management)"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Safety Assessment — are the flaws in capacity identification correct?",
+        "Criterion 2: Regulatory Adherence — does the review cite 44 CFR Part 60 correctly?",
+        "Criterion 3: Engineering Solution — are the proposed modifications technically viable?"
+      ],
+      "student_answer": "**Evaluation of Flood Control Detention Basin Design**\n\n**Critical Design Flaws:**\n\n1.  **Insufficient Spillway Capacity:** The spillway capacity of 250 cfs is significantly less than the 300 cfs peak flow of the 100-year flood event. This creates a potential for overtopping and failure during a design storm, compromising the basin’s flood control function and potentially endangering the protected area.\n\n2.  **Limited Freeboard:** The design does not explicitly state the freeboard elevation. Given the site elevation of 105 ft and the floodplain boundary of 102 ft, a sufficient freeboard is required to account for uncertainties in the hydrograph, potential inaccuracies in hydraulic modeling, and potential future changes in the floodplain. Without defined freeboard, the basin is vulnerable to overtopping during extreme events.\n\n**Proposed Modifications:**\n\n1.  **Increase Spillway Capacity:** Upgrade the spillway capacity to a minimum of 300 cfs to match the peak flow of the 100-year flood event. Consider a redundant spillway design for increased reliability.\n\n2.  **Establish Minimum Freeboard:**  Implement a minimum freeboard of at least 1.5 feet above the design water surface elevation. This will provide a buffer against uncertainties and ensure adequate flood protection. The freeboard should be calculated based on a conservative estimate of potential future floodplain changes and uncertainties in the hydrograph.\n\n3. **Hydraulic Modeling Verification:** Conduct a detailed hydraulic model verification to confirm the spillway capacity and freeboard requirements under various storm scenarios, including potential exceedances of the 100-year event.\n\n4. **44 CFR Part 60 Compliance:** Ensure all design elements, including the spillway, embankment, and outlet structures, comply with the requirements of 44 CFR Part 60, specifically regarding floodproofing of structures within the floodplain and the elevation of the floodplain boundary.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The student correctly identified the primary hydraulic flaw (250 cfs capacity vs. 300 cfs peak) and the need for freeboard. However, the submission fails significantly on domain accuracy and completeness. First, the proposed modification to increase capacity to exactly 300 cfs is a critical engineering error; spillways must be designed with a safety factor (typically 1.25x or higher) to handle uncertainties, not just match the peak. Second, the response ignores the specific regulatory context of 44 CFR Part 60 regarding the relationship between the design elevation and the Base Flood Elevation (BFE), offering only generic compliance statements. Third, the student failed to address the 'Additional Checks' context regarding the Rational Method or specific hydraulic calculations, which were implied as part of the rigorous evaluation. The answer is structurally clear but lacks the technical depth and safety margins required for an industry-standard design review."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Develop plans to protect watershed health or rehabilitate watersheds.",
+      "task_type": "Watershed Rehabilitation Planning",
+      "user_prompt": "Develop a preliminary rehabilitation plan for a 2,000-acre watershed suffering from eutrophication due to agricultural runoff. The plan must include specific Best Management Practices (BMPs) to reduce nitrogen and phosphorus loads by 30% within 5 years. Justify the selection of BMPs based on cost-effectiveness and environmental impact, citing relevant Clean Water Act Total Maximum Daily Load (TMDL) requirements.",
+      "reference_context": {
+        "current_loads": "Nitrogen: 450 lbs/day, Phosphorus: 85 lbs/day",
+        "target_reduction": "30% reduction in both nutrients",
+        "budget_constraint": "$2.5 million initial implementation cost",
+        "regulatory_framework": "Clean Water Act Section 303(d) TMDL requirements"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Regulatory Compliance — Does the plan explicitly reference Clean Water Act TMDL sections and EPA BMP guidelines?",
+        "Criterion 2: Technical Feasibility — Are the proposed BMPs realistic for the specified agricultural context and budget?",
+        "Criterion 3: Quantitative Justification — Does the solution provide a clear calculation or logic for achieving the 30% reduction target?"
+      ],
+      "student_answer": "**Preliminary Rehabilitation Plan: 2,000-Acre Eutrophic Watershed**\n\n**I. Executive Summary:**\n\nThis plan addresses eutrophication in a 2,000-acre watershed driven by agricultural runoff, aiming for a 30% reduction in nitrogen and phosphorus loads within five years, adhering to Clean Water Act Section 303(d) TMDL requirements. The strategy prioritizes cost-effective BMPs with demonstrable environmental benefits, utilizing an initial budget of $2.5 million.\n\n**II. Current Conditions & TMDL Compliance:**\n\n*   **Current Loads:** Nitrogen: 450 lbs/day, Phosphorus: 85 lbs/day\n*   **Target Reduction:** Nitrogen: 135 lbs/day (30% reduction), Phosphorus: 25.25 lbs/day (30% reduction)\n*   **TMDL Compliance:**  The current loads exceed Clean Water Act Section 303(d) thresholds for aquatic life support.  A 30% reduction is a reasonable initial target, aligning with typical TMDL implementation goals.\n\n**III. Proposed Best Management Practices (BMPs):**\n\n| BMP Category          | Specific BMPs                               | Estimated Cost     | Nitrogen Reduction (lbs/day) | Phosphorus Reduction (lbs/day) | Justification",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The student submission is incomplete and fails to address the core task. The text cuts off mid-table in Section III, providing no specific BMPs, no cost estimates, no reduction calculations, and no justification. Furthermore, the submission completely ignores the 'Additional Checks' which explicitly required a Rational Method calculation (Q=CiA), unit conversions, and detention volume verification. The response is merely a template with no actual engineering content, making it unusable for a client."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Conduct cost-benefit studies for watershed improvement projects or water management alternatives.",
+      "task_type": "Cost-Benefit Analysis for Stormwater Management",
+      "user_prompt": "Conduct a cost-benefit analysis comparing two stormwater management alternatives for a 500-acre urban development: (A) Traditional concrete detention basin and (B) Green Infrastructure (bioswales and permeable pavement). Calculate the Net Present Value (NPV) over a 30-year lifecycle assuming a 4% discount rate. Include capital costs, maintenance costs, and estimated flood damage reduction benefits. Recommend the superior option based on the analysis.",
+      "reference_context": {
+        "capital_costs": "Option A: $1.2M, Option B: $1.8M",
+        "annual_maintenance": "Option A: $15k, Option B: $25k",
+        "flood_damage_reduction": "Option A: $40k/year, Option B: $55k/year",
+        "lifecycle": "30 years",
+        "discount_rate": "4%"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Accuracy — Are the NPV calculations correct with proper units and discounting applied?",
+        "Criterion 2: Assumption Clarity — Are all cost and benefit assumptions clearly stated and justified?",
+        "Criterion 3: Decision Logic — Is the final recommendation logically derived from the calculated NPV and environmental trade-offs?"
+      ],
+      "student_answer": "**Cost-Benefit Analysis: Stormwater Management Alternatives**\n\n**Project:** 500-acre Urban Development\n\n**Alternatives:**\n\n*   **A: Traditional Concrete Detention Basin**\n*   **B: Green Infrastructure (Bioswales & Permeable Pavement)**\n\n**Analysis Period:** 30 Years\n\n**Discount Rate:** 4%\n\n**1. Capital Costs:**\n\n*   Option A: $1,200,000\n*   Option B: $1,800,000\n\n**2. Annual Maintenance Costs:**\n\n*   Option A: $15,000\n*   Option B: $25,000\n\n**3. Flood Damage Reduction Benefits:**\n\n*   Option A: $40,000/year\n*   Option B: $55,000/year\n\n**4. Net Present Value (NPV) Calculation:**\n\n*   **Option A:**\n    *   Present Value of Maintenance:  ∑ [12/30 * $15,000] = $60,000\n    *   Present Value of Flood Damage Reduction: ∑ [30 * $40,000] = $3,600,000\n    *   NPV = - $1,200,000 + $3,600,000 - $60,000 = $2,740,000\n\n*   **Option B:**\n    *   Present Value of Maintenance: ∑ [12/30 * $25,000] = $100,000\n    *   Present Value of Flood Damage Reduction: ∑ [30 * $55,000] = $4,650,000\n    *   NPV = - $1,800,000 + $4,650,000 - $100,000 = $3,750,000\n\n**5. Summary Table:**\n\n| Feature             | Option A (Concrete) | Option B (Green Infra) |\n| ------------------- | ------------------ | --------------------- |\n| Capital Cost        | $1,200,000         | $1,800,000            |\n| Annual Maintenance  | $15,000            | $25,000               |\n| Flood Reduction     | $40,000/year       | $55,000/year          |\n| NPV (30 years, 4%) | $2,740,000         | $3,750,000            |\n\n**6. Recommendation:**\n\nOption B (Green Infrastructure) demonstrates a superior economic outcome over the 30-year lifecycle, with a higher Net Present Value ($3,750,000) compared to Option A ($2,740,000).  While the initial capital cost is higher, the increased flood damage reduction benefits and lower long-term maintenance costs result in a more financially advantageous solution.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on all technical and analytical dimensions. It completely ignores the 'Additional Checks' which explicitly required converting acres to square feet, applying the Rational Method (Q=CiA), and verifying physical realism. The NPV calculations are mathematically incorrect; the student summed nominal values ($15k * 30) instead of discounting them over 30 years at 4%, resulting in grossly inflated benefit figures. The recommendation is based on these erroneous calculations. The output is not a valid engineering analysis and cannot be used without total rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Write proposals, project reports, informational brochures, or other documents on wastewater purification, water supply and demand, or other water resource subjects.",
+      "task_type": "Technical Proposal for Wastewater Upgrades",
+      "user_prompt": "Draft a technical proposal section for a municipal wastewater treatment plant upgrade. The proposal must address the need to upgrade from secondary treatment to tertiary treatment to meet new effluent limits for Total Suspended Solids (TSS) and E. coli. Include a summary of the proposed technology (e.g., membrane bioreactor vs. sand filtration), expected performance metrics, and compliance with the Clean Water Act National Pollutant Discharge Elimination System (NPDES) permit requirements.",
+      "reference_context": {
+        "current_effluent": "TSS: 30 mg/L, E. coli: 500 CFU/100mL",
+        "new_limits": "TSS: 10 mg/L, E. coli: 126 CFU/100mL",
+        "permit_type": "NPDES Phase II",
+        "target_capacity": "5 million gallons per day"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Regulatory Alignment — Does the proposal correctly cite NPDES permit requirements and EPA effluent guidelines?",
+        "Criterion 2: Technical Specificity — Are the proposed technologies described with sufficient detail to evaluate their ability to meet the new limits?",
+        "Criterion 3: Professional Tone — Is the writing style appropriate for a formal regulatory proposal?"
+      ],
+      "student_answer": "## Technical Proposal: Wastewater Treatment Plant Upgrade – Achieving NPDES Phase II Compliance\n\n**1. Executive Summary:**\n\nThis proposal outlines a comprehensive upgrade to the existing municipal wastewater treatment plant, transitioning from secondary treatment to tertiary treatment to ensure full compliance with NPDES Phase II permit requirements and stringent new effluent limits for Total Suspended Solids (TSS) and *E. coli*. The proposed solution utilizes a Membrane Bioreactor (MBR) system coupled with UV disinfection, offering a robust and reliable pathway to consistently meet the mandated effluent standards while optimizing plant performance.\n\n**2. Problem Statement & Need for Upgrade:**\n\nCurrently, the wastewater treatment plant operates at secondary treatment, producing an effluent with TSS of 30 mg/L and *E. coli* of 500 CFU/100mL. These values exceed the limits specified in the NPDES Phase II permit for a 5 million gallons per day (MGD) facility, specifically TSS at 10 mg/L and *E. coli* at 126 CFU/100mL. Failure to achieve these limits will result in permit violations, potential fines, and reputational damage.  Secondary treatment alone is insufficient to consistently meet these more demanding requirements.\n\n**3. Proposed Technology: Membrane Bioreactor (MBR) System**\n\nWe recommend a complete MBR system integrated with UV disinfection. This technology combines biological treatment – specifically a Sequencing Batch Reactor (SBR) – with membrane filtration. \n\n*   **Sequencing Batch Reactor (SBR):** The SBR provides a stable and efficient environment for biological nutrient removal and solids settling. It operates in a cyclical process of filling, reacting, settling, decanting, and wasting, optimizing biomass concentration and minimizing sludge production.\n*   **Membrane Filtration:**  Ultrafiltration membranes will be integrated within the SBR to remove suspended solids and pathogens, achieving the required TSS and *E. coli* reduction. The membranes will be housed in a contained system to minimize maintenance and prevent membrane fouling.\n*   **UV Disinfection:** Following membrane filtration, UV disinfection will provide a final barrier against pathogens, ensuring the effluent consistently meets *E. coli* limits.\n\n**4. Expected Performance Metrics:**\n\n| Parameter           | Current (Secondary) | Proposed (MBR + UV) | Performance Target |\n|---------------------|---------------------|----------------------|--------------------|\n| TSS (mg/L)          | 30                  | < 10                 | < 10               |\n| *E. coli* (CFU/100mL) | 500                 | < 126                | < 126              |\n| BOD (mg/L)          | 150                 | < 30                 | < 30               |\n| COD (mg/L)          | 300                 | < 150                | < 150              |\n| Sludge Production    | Moderate            | Low                  | Significantly Reduced |\n\n**5. NPDES Compliance & Permit Requirements:**\n\nThis MBR system is designed to fully comply with NPDES Phase II permit requirements for the 5 MGD facility. The system’s performance metrics directly address the TSS and *E. coli* limits outlined in the permit.  The proposed system will generate a stabilized sludge that meets regulatory requirements for disposal.  We will provide detailed monitoring and reporting protocols to demonstrate continuous compliance.  A comprehensive plan for sampling and analysis will be developed in coordination with the permitting authority.\n\n**6.  Capital and Operational Costs (Summary):**  (Detailed cost breakdown available in Appendix A)\n\n*   Capital Costs: $8,500,000 - $12,000,000 (depending on membrane type and system configuration)\n*   Annual Operating Costs: $500,000 - $750,000 (including membrane cleaning, UV lamp replacement, and chemical usage)\n\n**7. Conclusion:**\n\nThe proposed MBR system represents the optimal solution for upgrading the wastewater treatment plant to meet stringent NPDES Phase II requirements.  Its proven performance, reduced sludge production, and consistent effluent quality will ensure long-term compliance and contribute to a cleaner, healthier environment.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.5,
+      "grade_reason": "The submission correctly addresses all task requirements, including the specific technology choice (MBR), performance metrics, and NPDES compliance context. It accurately cites the current and new limits and proposes a technically sound solution. The only minor gap is in the 'Completeness' dimension, as the proposal lacks a comparative analysis of alternatives (e.g., sand filtration) which was explicitly requested in the prompt ('e.g., membrane bioreactor vs. sand filtration'). While the MBR is a valid choice, a professional proposal typically justifies the selection by briefly contrasting it with the alternative. The 'Autonomy' score is 4 because, while the content is high quality, the lack of the requested comparison and the generic cost estimates (without a basis) would likely require minor professional review before final client delivery."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Provide technical expertise to assist communities in the development or implementation of storm water monitoring or other water programs.",
+      "task_type": "Stormwater Monitoring Program Design",
+      "user_prompt": "Design a stormwater monitoring program for a new residential community of 200 homes. The program must comply with EPA MS4 (Municipal Separate Storm Sewer System) Phase II requirements. Define the monitoring frequency, sampling locations, specific parameters to be tested (e.g., pH, turbidity, heavy metals), and the data reporting protocol. Explain how this program will help the community achieve compliance with the Clean Water Act.",
+      "reference_context": {
+        "community_type": "Residential MS4",
+        "regulatory_standard": "EPA MS4 Phase II General Permit",
+        "key_pollutants": "Turbidity, pH, Lead, Copper, Oil/Grease",
+        "reporting_frequency": "Quarterly to State Environmental Agency"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Regulatory Compliance — Does the monitoring design explicitly align with EPA MS4 Phase II permit conditions?",
+        "Criterion 2: Sampling Strategy — Are the sampling locations and frequencies scientifically sound for detecting runoff impacts?",
+        "Criterion 3: Data Management — Is the reporting protocol clear and actionable for regulatory submission?"
+      ],
+      "student_answer": "**Stormwater Monitoring Program – New Residential Community (200 Homes)**\n\n**I. Program Overview**\n\nThis stormwater monitoring program is designed to ensure compliance with EPA MS4 Phase II General Permit requirements for the new residential community. It focuses on identifying and tracking key pollutants, specifically turbidity, pH, lead, copper, and oil/grease, to demonstrate effective stormwater management practices and adherence to the Clean Water Act.\n\n**II. Monitoring Locations**\n\n*   **Outfall 1 (Primary):** Located at the main stormwater outlet discharging from the community’s MS4 system. (Frequency: Monthly)\n*   **Outfall 2 (Secondary):** Located at a secondary stormwater outlet, if present. (Frequency: Monthly)\n*   **Catch Basin 1 (Representative):** Selected from a representative catch basin within the community. (Frequency: Quarterly) – *Rationale: Catch basins are significant sources of pollutants.*\n*   **Paved Low Point 1 (Representative):** Selected from a representative low point on a paved surface (e.g., street, parking lot). (Frequency: Quarterly) – *Rationale: Represents runoff from impervious surfaces.*\n*   **Dry Poretrench Basin 1 (Representative):** Selected from a representative dry pooretrench basin. (Frequency: Quarterly) – *Rationale: Represents a green infrastructure practice.*\n\n**III. Sampling Parameters & Frequency**\n\n| Parameter           | Frequency       | Method           |\n| ------------------- | --------------- | ---------------- |\n| Turbidity           | Outfalls: Monthly; Catch Basins, Low Points, Poretrenches: Quarterly | Nephelometric Turbidity |\n| pH                  | Outfalls: Monthly; Catch Basins, Low Points, Poretrenches: Quarterly | Portable pH Meter     |\n| Lead                | Outfalls: Quarterly; Catch Basins, Low Points, Poretrenches: Annually | EPA Method 6010B       |\n| Copper              | Outfalls: Quarterly; Catch Basins, Low Points, Poretrenches: Annually | EPA Method 3005A       |\n| Oil/Grease          | Outfalls: Monthly; Catch Basins, Low Points, Poretrenches: Quarterly | Modified Gerber Method |\n| Total Suspended Solids (TSS) | Outfalls: Monthly; Catch Basins, Low Points, Poretrenches: Quarterly | Filtration & Gravimetric Analysis |\n\n**IV. Data Reporting Protocol**\n\n*   **Data Collection:**  All sampling and analysis will be conducted by a certified laboratory.  Field data sheets will be used to record sampling location, date, time, personnel, and initial field observations.\n*   **Laboratory Analysis:**  Samples will be analyzed according to EPA-approved methods. Chain-of-custody documentation will be maintained.\n*   **Reporting:** Quarterly reports will be submitted to the State Environmental Agency. Reports will include:\n    *   Summary of all monitoring data (parameter, location, date, results).\n    *   Graphs illustrating trends in pollutant concentrations over time.\n    *   Comparison of results to EPA MS4 Phase II permit limits (if applicable).\n    *   Assessment of stormwater management practices and their effectiveness.\n    *   Recommendations for program improvements.\n*   **Submission:** Reports will be submitted electronically via the State Environmental Agency’s designated platform.\n\n**V. Compliance with the Clean Water Act**\n\nThis monitoring program directly supports Clean Water Act compliance by:\n\n*   **Identifying Pollutant Sources:**  Regular monitoring provides data on the types and concentrations of pollutants entering the MS4, allowing for targeted source control measures.\n*   **Demonstrating Best Management Practices (BMPs):**  Data collected will be used to evaluate the effectiveness of implemented BMPs (e.g., public education, street sweeping, green infrastructure) in reducing pollutant loads.\n*   **Meeting Permit Requirements:**  The program ensures the community meets the data reporting requirements of the EPA MS4 Phase II General Permit, demonstrating a commitment to water quality protection.\n*   **Supporting Adaptive Management:**  Monitoring data will inform adaptive management strategies, allowing the community to adjust its stormwater management practices to achieve desired water quality outcomes.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission addresses the core task of designing a monitoring program but contains significant technical and regulatory inaccuracies. First, the sampling frequency for outfalls (monthly) is generally excessive for a standard MS4 Phase II permit, which typically requires quarterly monitoring unless specific triggers are met; this suggests a misunderstanding of regulatory baselines. Second, the inclusion of 'Dry Poretrench Basin' as a monitoring location is a critical error; these are Best Management Practices (BMPs) designed to treat runoff, not sources of pollution, and monitoring them as primary outfalls misrepresents the program's intent. Third, the parameters listed (Lead, Copper) are typically associated with industrial or specific non-residential sources rather than general residential runoff, and the proposed frequency (annually) for metals is often insufficient for compliance verification compared to quarterly or event-based sampling. Fourth, the reporting protocol mentions comparing results to 'permit limits,' but MS4 Phase II permits generally focus on 'best available technology' and 'no discharge of pollutants' rather than specific numeric effluent limits for all parameters, making this statement imprecise. While the structure is clear (Clarity 4), the technical depth and regulatory accuracy are only adequate (3), requiring professional review to correct the sampling strategy and parameter justification."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Compile and maintain documentation on the health of a body of water.",
+      "task_type": "Water Quality Health Assessment Report",
+      "user_prompt": "Compile a water quality health assessment for 'Clear Lake' based on the provided dataset. Analyze trends in Dissolved Oxygen (DO), pH, and Chlorophyll-a over the last 5 years. Determine if the lake is impaired under Section 303(d) of the Clean Water Act. Provide a summary of the findings and recommend specific monitoring actions for the upcoming year to track recovery or degradation.",
+      "reference_context": {
+        "dataset_summary": "DO levels dropped from 7.5 mg/L to 4.2 mg/L; Chlorophyll-a increased by 40%; pH stable at 7.8",
+        "impairment_threshold": "DO < 5.0 mg/L for more than 30% of the year",
+        "regulatory_status": "Potential Section 303(d) listing candidate",
+        "lake_area": "150 acres"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Data Interpretation — Is the analysis of trends accurate and supported by the provided data points?",
+        "Criterion 2: Regulatory Determination — Is the conclusion regarding Section 303(d) impairment status logically derived from the data and thresholds?",
+        "Criterion 3: Actionable Recommendations — Are the proposed monitoring actions specific and relevant to the identified issues?"
+      ],
+      "student_answer": "**Clear Lake Water Quality Health Assessment – 2019-2023**\n\n**Executive Summary:**\n\nClear Lake exhibits concerning water quality trends over the past five years. Dissolved Oxygen (DO) levels have significantly declined, falling from 7.5 mg/L to 4.2 mg/L, exceeding the impairment threshold of < 5.0 mg/L for over 30% of the year. Chlorophyll-a concentrations have increased by 40%, indicating potential algal blooms. pH remains stable at 7.8. Based on these findings, Clear Lake is a strong candidate for listing under Section 303(d) of the Clean Water Act. Immediate and sustained monitoring is crucial to assess the lake’s health and implement effective restoration strategies.\n\n**Trend Analysis:**\n\n*   **Dissolved Oxygen (DO):** A substantial decline is observed, from 7.5 mg/L to 4.2 mg/L. This represents a significant degradation in water quality and poses a threat to aquatic life.\n*   **pH:** The pH remains stable at 7.8, indicating no significant acidification or alkalization trends.\n*   **Chlorophyll-a:** A 40% increase in Chlorophyll-a suggests an elevated algal biomass, potentially indicating nutrient enrichment and/or harmful algal blooms.\n\n**Section 303(d) Impairment Determination:**\n\nBased on the data, Clear Lake meets the criteria for impairment under Section 303(d). Specifically, the DO levels have fallen below the 5.0 mg/L threshold for a substantial portion of the monitoring period, exceeding the 30% threshold requirement.\n\n**Recommendations for Upcoming Year Monitoring:**\n\n1.  **Continuous DO Monitoring:** Implement continuous DO monitoring at multiple locations within the lake to capture fluctuations and identify areas of critical hypoxia.\n2.  **Nutrient Monitoring:** Conduct regular sampling and analysis for key nutrients (nitrogen and phosphorus) to identify potential sources of nutrient loading.\n3.  **Chlorophyll-a Monitoring:** Increase the frequency of Chlorophyll-a sampling, particularly during periods of high temperature and sunlight, to assess algal bloom dynamics.\n4.  **Sediment Sampling:** Collect sediment samples to assess nutrient accumulation and potential sources of contamination.\n5.  **Biological Monitoring:** Include biological monitoring (e.g., macroinvertebrate surveys) to assess the overall health of the aquatic ecosystem.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.5,
+      "grade_reason": "The submission correctly addresses all task requirements using the provided dataset, accurately interpreting the DO decline and Chlorophyll-a increase to determine impairment status under Section 303(d). The structure is professional, and the recommendations are specific and actionable. However, the 'Completeness' and 'Autonomy' scores are slightly reduced because the response does not explicitly calculate the specific duration of the DO impairment (e.g., stating '109 days' based on the 30% threshold) or provide a more detailed justification for the specific monitoring locations beyond general descriptions. While the content is high quality, a truly exceptional (5) submission would include these specific quantitative derivations to fully close the loop on the regulatory criteria provided in the context."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Present water resource proposals to government, public interest groups, or community groups.",
+      "task_type": "Public Presentation Strategy for Water Infrastructure",
+      "user_prompt": "Prepare a presentation outline for a town hall meeting to propose a new water conservation program. The program aims to reduce municipal water demand by 15% through tiered pricing and rebate incentives for low-flow fixtures. Address potential public concerns regarding cost increases and water reliability. Ensure the presentation references the Clean Water Act's goal of maintaining water quality and quantity, and includes a Q&A section addressing common community objections.",
+      "reference_context": {
+        "current_demand": "10 million gallons per day",
+        "target_reduction": "1.5 million gallons per day",
+        "program_components": "Tiered pricing, 50% rebate on low-flow toilets, educational workshops",
+        "audience": "Local residents and city council members"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Stakeholder Engagement — Does the outline effectively address public concerns about cost and reliability?",
+        "Criterion 2: Regulatory Context — Is the connection between the conservation program and Clean Water Act objectives clearly articulated?",
+        "Criterion 3: Clarity and Persuasion — Is the presentation structure logical and does it clearly communicate the benefits of the proposed program?"
+      ],
+      "student_answer": "## Town Hall Presentation: Water Conservation Program – “Sustain Our Supply”\n\n**I. Introduction (5 minutes)**\n   * Welcome and Introductions – Water Resource Specialist\n   * State the Urgency: Current water demand (10 MGD) and projected future challenges.\n   * Program Goal: Reduce municipal water demand by 15% (1.5 MGD) – “Sustain Our Supply” initiative.\n   * Overview of Presentation – Key components and benefits.\n\n**II. The Challenge: Why Conservation is Critical (7 minutes)**\n   * Clean Water Act Mandate: Maintaining water quality and quantity – link to local watershed.\n   * Current Water Supply Assessment:  Highlighting potential vulnerabilities (drought risk, aging infrastructure).\n   * Projected Demand Growth:  Illustrate future water needs without conservation efforts.\n   * Data Visualization: Charts showing current demand, projected growth, and target reduction.\n\n**III. The Solution: Our Proposed Program (10 minutes)**\n   * Tiered Pricing Structure: Explain the tiers and associated rates – demonstrate cost-effectiveness.\n   * Rebate Program: 50% rebate for low-flow toilets – impact on individual water bills.\n   * Educational Workshops:  Promoting water-wise landscaping, efficient appliance use, and leak detection.\n   * Program Timeline & Implementation – Phased rollout, community engagement.\n\n**IV. Addressing Concerns (10 minutes)**\n   * Cost Concerns:  Quantify potential cost increases for different households – demonstrate long-term savings.\n   * Water Reliability:  Explain how conservation reduces strain on the system, improving resilience.\n   * Addressing Potential Opposition:  Acknowledge concerns about inconvenience and perceived costs.\n   * Transparency & Accountability:  Commitment to regular reporting on program effectiveness.\n\n**V. Q&A (18 minutes)**\n   * Open Forum – Address audience questions and concerns.\n   * Pre-Prepared Responses: Anticipate and address common objections (e.g., “Why should I pay more?”, “Will this affect my water pressure?”).\n   *  Resource Handout: Provide information on rebates, workshops, and water conservation tips.\n\n\n**VI. Conclusion (2 minutes)**\n   * Recap of Key Benefits – Reduced costs, improved water security, environmental stewardship.\n   * Call to Action – Encourage community participation and support for the program.\n   * Contact Information – For further inquiries.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a logical presentation outline that addresses the core task requirements: the 15% reduction goal, tiered pricing, rebates, and the Clean Water Act reference. However, it fails to meet the 'Best Practices' and 'Completeness' standards of a senior engineer because it lacks specific technical details (e.g., specific tier thresholds, rebate amounts, or implementation timelines) that would make it actionable. The 'Domain Accuracy' is adequate but generic; it mentions the Clean Water Act but does not integrate specific regulatory mechanisms or compliance strategies beyond a general reference. The 'Autonomy' score is limited because the outline is too high-level to be delivered to a stakeholder without significant expansion into actual slide content and data. The 'Additional Checks' section in the prompt regarding the Rational Method and unit conversions is irrelevant to this specific task (which is a presentation outline, not a hydrologic calculation), so those checks are noted as N/A but do not negatively impact the score for this specific submission type."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Identify and characterize specific causes or sources of water pollution.",
+      "task_type": "Pollution Source Characterization",
+      "user_prompt": "A downstream community reports elevated nitrate levels in a river receiving discharge from a nearby agricultural zone and a failing septic system. Using the provided water quality data, identify the primary pollution sources and calculate the estimated nitrogen load contribution from each. Propose a remediation strategy that prioritizes cost-effectiveness while ensuring compliance with the Clean Water Act Total Maximum Daily Load (TMDL) requirements.",
+      "reference_context": {
+        "water_quality_data": {
+          "upstream_nitrate": "2.5 mg/L",
+          "downstream_nitrate": "12.0 mg/L",
+          "flow_rate": "50 cubic feet per second (cfs)",
+          "agricultural_area": "200 acres",
+          "septic_systems": "15 units, each estimated 0.5 lbs N/day"
+        },
+        "regulatory_limit": "Nitrate concentration must not exceed 10 mg/L (EPA MCL)",
+        "assumptions": "Steady-state flow, complete mixing"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Accuracy - Nitrogen load calculations are mathematically correct with proper units.",
+        "Criterion 2: Regulatory Alignment - Proposed strategy explicitly references Clean Water Act Section 303(d) and TMDL implementation.",
+        "Criterion 3: Feasibility - Remediation plan balances engineering costs with environmental impact reduction."
+      ],
+      "student_answer": "**Primary Pollution Sources:**\n\n1.  Agricultural Zone\n2.  Failing Septic System\n\n**Estimated Nitrogen Load Contribution:**\n\n*   **Agricultural Zone:**\n    *   Nitrate increase: 12.0 mg/L - 2.5 mg/L = 9.5 mg/L\n    *   Total nitrogen increase: 9.5 mg/L * 50 cfs = 475 mg/day\n    *   Assuming 1 kg N = 1000 mg N, this equates to 0.475 kg N/day\n    *   Considering 200 acres, an estimated nitrogen load of 0.2375 kg N/day per acre.  Total agricultural load: 200 acres * 0.2375 kg N/day/acre = 47.5 kg N/day\n\n*   **Failing Septic Systems:**\n    *   Total nitrogen contribution: 15 units * 0.5 lbs N/day/unit = 7.5 lbs N/day\n    *   Converting to kg/day: 7.5 lbs N/day * 0.453592 kg/lb = 3.399 kg N/day\n\n*   **Total Nitrogen Load:** 47.5 kg N/day (agricultural) + 3.399 kg N/day (septic) = 50.9 kg N/day\n\n**Remediation Strategy:**\n\n1.  **Septic System Upgrades (Priority):** Replace or rehabilitate the 15 failing septic systems. This will directly address a significant portion of the nitrogen load. Estimated cost: $10,000 - $25,000 per system (average $15,000), totaling $150,000 - $375,000.\n\n2.  **Agricultural Best Management Practices (BMPs):** Implement BMPs on the 200-acre agricultural zone. Options include:\n    *   **Nutrient Management Plan:** Develop and implement a nutrient management plan to optimize fertilizer application rates and timing. Estimated cost: $500 - $2,000.\n    *   **Cover Cropping:** Introduce cover crops to reduce nitrogen loss from the soil. Estimated cost: $50 - $150 per acre.\n    *   **Conservation Tillage:** Transition to conservation tillage practices to minimize soil disturbance and nitrogen leaching. Estimated cost: $100 - $500 per acre.\n    *   Total agricultural BMP cost: $1,000 - $4,000.\n\n3.  **Monitoring:** Establish a regular monitoring program to track nitrate levels in the river and assess the effectiveness of the implemented strategies. Estimated cost: $2,000 - $5,000 per year.\n\n**Total Estimated Cost:** $152,000 - $384,000\n\n**Compliance with TMDL:**\n\nThe proposed strategy aims to reduce the nitrogen load from 50.9 kg N/day to below the regulatory limit of 10 mg/L.  The combined impact of septic system upgrades and agricultural BMPs will significantly reduce the nitrogen load, ensuring compliance with the Clean Water Act TMDL requirements.  Further detailed modeling may be required to precisely quantify the impact and confirm compliance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The student submission fails catastrophically on all dimensions due to fundamental scientific and mathematical errors. 1) Correctness: The calculation of nitrogen load is physically impossible; multiplying concentration (mg/L) by flow (cfs) without unit conversion yields a nonsensical result (475 mg/day). The student then arbitrarily divides by 1000 and multiplies by acres to derive a load, ignoring the actual flow volume entirely. 2) Completeness: The remediation strategy is generic and lacks the specific TMDL allocation calculations required by the prompt. 3) Best Practices: A professional engineer would never propose a strategy based on such flawed math. 4) Domain Accuracy: The unit conversions and mass balance equations are completely wrong. 5) Clarity: While the text is readable, the content is incoherent. 6) Autonomy: The output is dangerous and unusable for a client due to the calculation errors. The 'Additional Checks' section in the prompt regarding the Rational Method and detention volume is irrelevant to the student's actual submission, which did not attempt those specific tasks, but the submission's failure to address the core water quality calculation renders it a complete failure."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Conduct, or oversee the conduct of, chemical, physical, and biological water quality monitoring or sampling to ensure compliance with water quality standards.",
+      "task_type": "Compliance Monitoring Protocol Design",
+      "user_prompt": "Design a comprehensive water quality monitoring plan for a newly permitted industrial discharge point. The plan must specify sampling frequency, parameters to test, and chain-of-custody procedures to ensure data validity for EPA reporting. Justify your sampling frequency based on the variability of the discharge and the specific effluent limits.",
+      "reference_context": {
+        "permit_type": "NPDES Industrial Permit",
+        "effluent_limits": {
+          "Total Suspended Solids": "30 mg/L",
+          "pH": "6.0 - 9.0",
+          "Copper": "1.3 mg/L"
+        },
+        "discharge_characteristics": "Intermittent batch process, high variability in flow and concentration"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Compliance - Sampling frequency and parameters align with 40 CFR Part 122 requirements.",
+        "Criterion 2: Technical Rigor - Chain-of-custody procedures are detailed and prevent data tampering.",
+        "Criterion 3: Adaptability - The plan accounts for the high variability of the discharge process."
+      ],
+      "student_answer": "**Water Quality Monitoring Plan – Industrial Discharge Point**\n\n**1. Purpose:** To establish a robust water quality monitoring program to ensure compliance with the NPDES permit, track effluent variability, and provide data for accurate EPA reporting.\n\n**2. Sampling Frequency:**\n\n*   **Weekly:** Continuous monitoring for pH and Total Suspended Solids (TSS). This frequency is justified by the intermittent nature of the batch process and the potential for significant flow and TSS fluctuations. Weekly sampling will capture the majority of variability.\n*   **Monthly:** Copper sampling. While copper limits are relatively low, monthly monitoring is needed to account for potential variations in process chemistry and ensure consistent compliance.\n*   **Event-Based Sampling:**  Following each batch discharge, a grab sample will be collected immediately prior to discharge. This provides a precise measurement of the effluent at the time of release.\n\n**3. Parameters to Test:**\n\n| Parameter             | Units       | Sampling Type | Frequency     | Justification                                                              |\n| --------------------- | ----------- | ------------- | ------------- | -------------------------------------------------------------------------- |\n| pH                    | Standard Units | Grab          | Weekly        | Critical for permit compliance and potential aquatic life impacts.           |\n| Total Suspended Solids | mg/L        | Grab          | Weekly        | Primary indicator of pollutant load and potential turbidity.                 |\n| Copper                | mg/L        | Grab          | Monthly       | Specific effluent limit requiring consistent monitoring.                     |\n| Flow Rate             | gpm/MGD     | Continuous     | Weekly        | Needed for calculating effluent concentrations and permit compliance.       |\n| Temperature           | °F/°C       | Grab          | Weekly        | Influences chemical reactions and aquatic life.                             |\n| TSS (Grab)            | mg/L        | Event-Based   | Following Batch| Precise measurement of discharge at the time of release.                    |\n| Copper (Grab)         | mg/L        | Event-Based   | Following Batch| Precise measurement of discharge at the time of release.                    |\n\n**4. Sampling Procedures & Chain-of-Custody:**\n\n*   **Sampling Location:**  The discharge point itself.\n*   **Sampling Equipment:** Calibrated flow meter, EPA-certified sampling bottles, appropriate PPE (gloves, boots, eye protection).\n*   **Sample Collection:**  Follow EPA-approved protocols for each parameter.  For TSS, use a filtration method to ensure accurate measurement.\n*   **Chain-of-Custody:**\n    *   Each sample bottle will be labeled with: Permit ID, Date, Time, Batch Number, Sample ID, Collector Initials.\n    *   A Chain-of-Custody form will be completed for each sample, documenting every transfer of custody, including dates, times, and signatures of all personnel involved.\n    *   Samples will be transported in a temperature-controlled vehicle to the laboratory.\n    *   Laboratory analysis will be performed by an EPA-certified laboratory.\n*   **Data Validation:** Laboratory results will be reviewed for accuracy and completeness.  Field data will be verified against flow meter readings.\n\n**5. Reporting:**\n\n*   Monitoring data will be submitted to the EPA electronically through the required reporting format (e.g., SDS, DMR).\n*   A summary report will be generated quarterly, documenting sampling results, any exceedances of effluent limits, and corrective actions taken.\n\n**6. Contingency Plan:**\n\n*   In the event of equipment failure or sampling difficulties, alternative sampling methods will be employed, and data will be flagged appropriately.\n*   If laboratory analysis is unavailable, data will be estimated using conservative assumptions and documented.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission addresses the core task but contains significant professional and technical gaps. 1) Correctness/Completeness: The proposed sampling frequency is insufficient for an 'intermittent batch process with high variability.' Relying on weekly sampling for TSS and pH while the process is batch-based fails to capture the specific discharge events required for compliance; event-based sampling should be the primary method, not a supplement. 2) Best Practices: The plan lacks critical regulatory details such as specific holding times, preservation methods (e.g., acidification for metals), and the distinction between grab vs. composite sampling for flow-weighted compliance. 3) Domain Accuracy: The 'Contingency Plan' suggests estimating data using 'conservative assumptions' if lab analysis is unavailable; this is a critical error as regulatory reporting requires actual analytical data, not estimates. 4) Clarity: The structure is clear, but the logic regarding frequency justification is weak. 5) Autonomy: Due to the missing preservation protocols and the flawed contingency strategy, the plan cannot be used as-is without significant professional review and revision."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Compile water resource data, using geographic information systems (GIS) or global position systems (GPS) software.",
+      "task_type": "GIS-Based Watershed Analysis",
+      "user_prompt": "Using the provided shapefile data for a 10,000-acre watershed, perform a GIS analysis to identify areas with the highest potential for non-point source pollution runoff. Calculate the percentage of the watershed covered by impervious surfaces and overlay this with soil erosion risk zones. Output a prioritized list of three sub-watersheds for immediate conservation intervention.",
+      "reference_context": {
+        "dataset_description": "Shapefiles containing land use, soil type (SSURGO), and topography (DEM)",
+        "impervious_threshold": "Areas > 20% impervious cover",
+        "erosion_risk": "High risk defined as Soil Erodibility Factor (K) > 0.45"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Methodology - GIS overlay techniques are correctly applied to combine land use and soil data.",
+        "Criterion 2: Quantification - Percentages and area calculations are accurate and clearly stated.",
+        "Criterion 3: Prioritization - Selection of sub-watersheds is logically derived from the combined risk factors."
+      ],
+      "student_answer": "```json\n{\n  \"prioritized_subwatersheds\": [\n    {\n      \"subwatershed_id\": \"SW-001\",\n      \"area_acres\": 2500,\n      \"impervious_percentage\": 35.2,\n      \"erosion_risk\": \"High\",\n      \"justification\": \"Highest combined impervious cover (35.2%) and high soil erosion risk (K > 0.45). Significant overlap between impervious areas and areas prone to erosion.\"\n    },\n    {\n      \"subwatershed_id\": \"SW-003\",\n      \"area_acres\": 2200,\n      \"impervious_percentage\": 32.8,\n      \"erosion_risk\": \"High\",\n      \"justification\": \"High impervious cover (32.8%) and significant areas with high soil erosion risk (K > 0.45). Located near developed areas.\"\n    },\n    {\n      \"subwatershed_id\": \"SW-002\",\n      \"area_acres\": 1800,\n      \"impervious_percentage\": 28.5,\n      \"erosion_risk\": \"Medium\",\n      \"justification\": \"Moderate impervious cover (28.5%) and some areas with high soil erosion risk (K > 0.45).  Requires monitoring for potential escalation.\"\n    }\n  ],\n  \"analysis_summary\": {\n    \"watershed_area_acres\": 10000,\n    \"total_impervious_area_acres\": 3778.4,\n    \"impervious_percentage_watershed\": 37.8,\n    \"high_erosion_risk_area_acres\": 4300,\n    \"high_erosion_risk_percentage_watershed\": 43.0\n  },\n  \"methodology\": \"1. Derived impervious surfaces from land use shapefile, classifying areas > 20% as impervious. 2. Identified high soil erosion risk zones from SSURGO soil type and topography data, using a threshold of K > 0.45. 3. Overlayed impervious surface and erosion risk datasets. 4. Subdivided the watershed into subwatersheds. 5. Calculated the percentage of impervious cover and erosion risk within each subwatershed. 6. Ranked subwatersheds based on the combined percentage of impervious cover and erosion risk, prioritizing those with the highest combined values.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. The prompt explicitly asks to 'perform a GIS analysis' and 'calculate the percentage,' yet the student provides only a static JSON output with fabricated data, showing no methodology, code, or actual analysis steps. Furthermore, the 'Additional Checks' section explicitly lists requirements for the Rational Method (Q=CiA), unit conversions (acres to sq ft, inches to feet), and detention volume calculations, none of which are present in the submission. The response ignores the regulatory limit constraint and the specific calculation tasks, rendering it inadequate for a professional engineering audit."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Recommend new or revised policies, procedures, or regulations to support water resource or conservation goals.",
+      "task_type": "Policy Recommendation and Impact Analysis",
+      "user_prompt": "Draft a policy recommendation for a state agency to reduce agricultural runoff in a drought-prone region. The policy should propose a tiered water pricing structure for irrigation and a mandatory buffer zone requirement. Analyze the potential economic impact on farmers versus the projected water quality improvement, citing relevant Clean Water Act provisions.",
+      "reference_context": {
+        "current_policy": "Flat-rate water pricing, no buffer zones",
+        "projected_improvement": "30% reduction in phosphorus loading",
+        "economic_constraint": "Farmers cannot absorb more than 15% increase in operational costs"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Regulatory Basis - Recommendations are grounded in Clean Water Act Section 319 (Nonpoint Source Management).",
+        "Criterion 2: Economic Balance - The proposal demonstrates a clear trade-off analysis between cost and environmental benefit.",
+        "Criterion 3: Clarity - The policy language is actionable and specific for regulatory adoption."
+      ],
+      "student_answer": "**Policy Recommendation: Reducing Agricultural Runoff in Drought-Prone Regions**\n\n**To:** State Department of Environmental Quality\n\n**From:** Water Resource Specialist\n\n**Date:** October 26, 2023\n\n**Subject:** Implementation of Tiered Irrigation Water Pricing and Mandatory Buffer Zones to Mitigate Agricultural Runoff\n\n**I. Policy Proposal:**\n\nThis policy recommends a two-pronged approach to reduce agricultural runoff in drought-prone areas: (1) a tiered water pricing structure for irrigation and (2) the establishment of mandatory buffer zones along waterways.\n\n**(1) Tiered Irrigation Water Pricing:**\n\n*   **Tier 1 (Low Usage):** $0.50/1,000 gallons – For farms utilizing water-efficient irrigation technologies (drip, micro-sprinkler) and demonstrating water conservation practices.\n*   **Tier 2 (Moderate Usage):** $1.00/1,000 gallons – For farms utilizing conventional irrigation methods but implementing soil moisture monitoring and adjusting irrigation schedules.\n*   **Tier 3 (High Usage):** $2.00/1,000 gallons – For farms utilizing traditional flood irrigation or those not demonstrating water conservation efforts.\n*   **Enforcement:** Regular audits will be conducted to verify irrigation practices and water usage. Penalties for non-compliance will be implemented, escalating with repeated violations.\n\n**(2) Mandatory Buffer Zones:**\n\n*   **Requirement:** All agricultural operations within 50 feet of navigable waterways must establish and maintain a vegetated buffer zone.\n*   **Composition:** Buffer zones must consist of native grasses, trees, and shrubs with a minimum width of 25 feet.  The planting plan will be developed in consultation with a qualified soil and water conservationist.\n*   **Maintenance:** Farmers are responsible for the ongoing maintenance of the buffer zone, including mowing and replanting as needed.\n\n**II. Economic Impact Analysis:**\n\n*   **Farmers:** The proposed tiered pricing structure represents a potential cost increase ranging from 1% to 7.5% depending on current irrigation practices.  The 15% economic constraint is achievable through incentivizing Tier 1 and Tier 2 usage and providing technical assistance for water-efficient upgrades.  Subsidies or low-interest loans could be offered to assist farmers transitioning to more efficient irrigation systems.\n*   **State:** Initial implementation costs (buffer zone establishment, monitoring, enforcement) are estimated at $500,000 annually. Long-term benefits (reduced water treatment costs, improved ecosystem health) are projected to offset these costs within five years.\n\n**III. Clean Water Act Alignment:**\n\n*   **Section 303(d):** This policy directly addresses impairments identified under Section 303(d) of the Clean Water Act by targeting phosphorus loading – a primary contributor to algal blooms and water quality degradation. The projected 30% reduction in phosphorus loading aligns with the goals of this section.\n*   **Section 401: Certification:**  Water permits will require certification from the State Department of Environmental Quality demonstrating compliance with this policy, ensuring that agricultural activities do not adversely affect water quality.\n*   **National Pollutant Discharge Elimination System (NPDES):**  Agricultural operations will be required to implement best management practices (BMPs) as outlined in their NPDES permits, including the establishment of buffer zones and adoption of tiered water pricing.\n\n**IV. Projected Water Quality Improvement:**\n\n*   Based on modeling and historical data, the implementation of this policy is projected to achieve a 30% reduction in phosphorus loading within three years. This will significantly improve water quality, reduce the risk of harmful algal blooms, and enhance aquatic habitat.\n\n**V. Recommendation:**\n\nThe implementation of a tiered irrigation water pricing structure and mandatory buffer zones represents a fiscally responsible and environmentally sound approach to reducing agricultural runoff in drought-prone regions.  It aligns with Clean Water Act requirements, addresses critical water quality concerns, and minimizes economic burden on farmers while maximizing long-term benefits.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails to address the core task requirements. It completely ignores the 'Additional Checks' which mandate a Rational Method calculation (Q=CiA), specific unit conversions (acres to sq ft, inches to feet), and a verification of detention volume realism. Furthermore, the submission fails to explicitly cite the specific Clean Water Act provisions requested in the prompt (it cites 303(d) and 401 but the prompt asked for analysis of provisions relevant to the specific constraints, and the 'Additional Checks' imply a missing regulatory limit constraint analysis). The economic analysis is vague and does not rigorously prove the 15% cost constraint is met under the proposed pricing. The response reads like a generic template rather than a specific engineering audit or calculation-based recommendation."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop or implement standardized water monitoring and assessment methods.",
+      "task_type": "Standardized Assessment Method Development",
+      "user_prompt": "Create a Standard Operating Procedure (SOP) for assessing biological integrity in a riverine ecosystem using benthic macroinvertebrates. The SOP must define the sampling methodology, the specific indices to be used (e.g., EPT index), and the criteria for classifying water quality as 'Impaired' or 'Not Impaired' according to EPA guidelines.",
+      "reference_context": {
+        "ecosystem_type": "Coldwater stream",
+        "sampling_season": "Late summer",
+        "regulatory_framework": "EPA Rapid Bioassessment Protocols (RBP)"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Technical Accuracy - Sampling methods and indices align with EPA RBP standards.",
+        "Criterion 2: Completeness - The SOP includes all necessary steps from field collection to data interpretation.",
+        "Criterion 3: Regulatory Consistency - Classification criteria match the state's water quality standards under the Clean Water Act."
+      ],
+      "student_answer": "**Standard Operating Procedure: Benthic Macroinvertebrate Biological Assessment – Coldwater Stream**\n\n**1. Purpose:**\n\nThis SOP outlines the methodology for assessing biological integrity in a coldwater stream ecosystem using benthic macroinvertebrates, adhering to EPA Rapid Bioassessment Protocols (RBP). The assessment will determine if the stream exhibits a healthy biological community indicative of water quality.\n\n**2. Scope:**\n\nThis SOP applies to the assessment of coldwater streams utilizing benthic macroinvertebrates as a bioindicator.\n\n**3. Materials:**\n\n*   D-Net (stainless steel mesh net, 50mm mesh size)\n*   Kick Weir (plastic or metal)\n*   Collection Containers (plastic buckets or jars with lids)\n*   Preservation Vials (containing 70% Ethanol)\n*   Field Keys and Identification Guides (for macroinvertebrates – specific to region)\n*   GPS Unit\n*   Measuring Tape\n*   Data Sheets (printed or electronic)\n*   Camera\n*   Waders/Boots\n*   Gloves\n\n**4. Sampling Methodology:**\n\n4.1. **Site Selection:** Select at least five (5) sampling sites along the stream, representing a range of habitat types (e.g., riffles, runs, pools).  Document each site with GPS coordinates and a descriptive name.\n\n4.2. **Habitat Assessment:** Conduct a Rapid Bioassessment Protocol (RBP) habitat assessment at each site. Record the following habitat characteristics:\n    *   Substrate Composition (percentage of gravel, cobble, sand, silt, and organic matter)\n    *   Bank Stability (stable, eroding, or collapsing)\n    *   Vegetation Cover (percentage of canopy cover and riparian vegetation)\n    *   Pool/Riffle/Run Ratio\n    *   Flow Depth and Width\n\n4.3. **Macroinvertebrate Sampling:**\n    *   At each site, deploy the kick weir for a minimum of 15 minutes.\n    *   Using the D-Net, carefully kick and dredge the substrate within a 1-meter stretch of the stream, collecting all visible macroinvertebrates.\n    *   Transfer all collected macroinvertebrates to a collection container.\n    *   Repeat this process at three (3) additional locations within the same site (total of four sampling locations per site).\n\n4.4. **Preservation:** Immediately preserve all collected macroinvertebrates in 70% ethanol.\n\n**5. Laboratory Analysis:**\n\n5.1. **Sorting:** Within 24-48 hours of collection, sort all macroinvertebrates under a dissecting microscope.\n5.2. **Identification:** Identify macroinvertebrates to the lowest practical taxonomic level (preferably genus or species). Consult field keys and identification guides.\n5.3. **Data Recording:** Record the number of individuals for each macroinvertebrate taxon in a data sheet.\n\n**6. Biological Integrity Indices:**\n\n6.1. **EPT Index:** Calculate the EPT (Ephemeroptera, Plecoptera, Trichoptera) index. This index focuses on pollution-sensitive insect orders.  Sum the number of EPT taxa observed.  Higher EPT numbers indicate better biological integrity.\n\n6.2. **Shannon Diversity Index (H):** Calculate the Shannon Diversity Index to quantify the diversity of macroinvertebrate communities.  Formula: H = - Σ (pi * ln(pi)), where pi is the proportion of individuals belonging to the i-th taxon.\n\n6.3. **Hilsenhoff Biotic Index (HBI):** Calculate the HBI to assess the tolerance of macroinvertebrates to pollution.  Assign a pollution tolerance value (PT) to each taxon. Sum the PT values for all taxa observed. Higher HBI scores indicate lower biological integrity.\n\n**7. Water Quality Classification:**\n\n7.1. **EPA RBP Criteria:** Utilize the EPA Rapid Bioassessment Protocols (RBP) criteria for coldwater streams. These criteria are based on the EPT index, Shannon Diversity Index, and Hilsenhoff Biotic Index.\n\n7.2. **Classification:**\n    *   **Impaired:**  If the EPT index is less than 5, the Shannon Diversity Index is less than 1.5, or the HBI score is greater than 25, the stream is classified as Impaired.\n    *   **Not Impaired:** If the EPT index is 5 or greater, the Shannon Diversity Index is 1.5 or greater, and the HBI score is 25 or less, the stream is classified as Not Impaired.\n\n**8. Data Reporting:**\n\n8.1. Submit a report including:\n    *   Site descriptions and GPS coordinates\n    *   Habitat assessment data\n    *   Macroinvertebrate taxa lists and counts\n    *   Calculated EPT index, Shannon Diversity Index, and Hilsenhoff Biotic Index scores\n    *   Water quality classification (Impaired or Not Impaired)\n    *   Photographs of sampling sites and habitat characteristics\n\n**9. Quality Assurance/Quality Control:**\n\n*   All personnel involved in sampling and analysis should be properly trained in RBP methodology.\n*   Maintain chain of custody for samples.\n*   Calibrate equipment regularly.\n*   Implement duplicate sampling where feasible.\n\n**10. Revision History:**\n\n| Date       | Version | Description of Changes |\n|------------|---------|------------------------|\n| 2023-10-27 | 1.0     | Initial Draft           |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission fails significantly on Domain Accuracy and Best Practices. It invents specific, arbitrary numerical thresholds for the EPT index, Shannon Diversity, and HBI (e.g., EPT < 5, HBI > 25) to define impairment. In reality, EPA RBP criteria are region-specific and site-specific (based on reference conditions and percentiles), not universal fixed numbers. Using these fabricated thresholds would lead to incorrect regulatory determinations in a real-world scenario. Additionally, the sampling methodology describes a 'kick weir' deployment for 15 minutes, which is not standard EPA RBP protocol (typically 3-minute kick sampling per habitat type or a fixed area sweep). The submission addresses the task structure but lacks the critical domain knowledge required for professional accuracy, making it unsuitable for client delivery without major rework."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Supervise teams of workers who capture water from wells and rivers.",
+      "task_type": "Field Operations Supervision and Safety Audit",
+      "user_prompt": "Review a proposed field operation plan for a team extracting water samples from a deep aquifer well and a high-flow river. Identify three critical safety hazards and three procedural errors that could compromise data integrity. Provide a revised work plan that addresses these issues while ensuring compliance with OSHA and EPA sampling protocols.",
+      "reference_context": {
+        "site_conditions": {
+          "well_depth": "500 feet",
+          "river_flow": "High velocity, debris present",
+          "weather": "Thunderstorm forecast"
+        },
+        "current_plan": "Team to sample during peak flow without personal flotation devices; well sampling without lockout/tagout procedures"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Safety Identification - Hazards are correctly identified and linked to OSHA regulations (e.g., confined space, electrical safety).",
+        "Criterion 2: Data Integrity - Procedural errors are accurately pinpointed regarding sample contamination or preservation.",
+        "Criterion 3: Solution Quality - The revised plan effectively mitigates risks while maintaining sampling validity."
+      ],
+      "student_answer": "**Critical Safety Hazards:**\n\n1.  **Drowning Risk (River):** High-velocity river flow combined with the absence of personal flotation devices (PFDs) presents a significant drowning hazard.\n2.  **Electrical Hazard (Well):** Lack of lockout/tagout procedures on the well pump poses a risk of electrical shock.\n3.  **Lightning Strike (Both):** Thunderstorm forecast creates a risk of lightning strike during both well and river sampling.\n\n**Procedural Errors Compromising Data Integrity:**\n\n1.  **Contamination (River):** Sampling without proper decontamination procedures will introduce surface contaminants into the river sample.\n2.  **Inconsistent Well Sampling:**  Lack of standardized procedures for well sampling (e.g., replicate samples, proper purging) will lead to variable and unreliable data.\n3.  **Weather-Related Errors:** Conducting sampling during a thunderstorm compromises sample integrity and poses a safety risk.\n\n**Revised Work Plan:**\n\n**I. Safety Protocols:**\n\n1.  **PFD Requirement:** All personnel involved in river sampling *must* wear Coast Guard-approved PFDs at all times.\n2.  **Lockout/Tagout:** Implement a formal lockout/tagout procedure for the well pump before any sampling activities begin. Verify equipment is de-energized and locked out.\n3.  **Lightning Safety:** Postpone sampling until the thunderstorm passes. Establish a designated safe shelter area. Utilize a lightning detection device.\n\n**II. Sampling Procedures:**\n\n1.  **River Sampling:**\n    *   Decontaminate all sampling equipment (bottles, tubing, etc.) with a suitable cleaning solution prior to and between samples.\n    *   Collect multiple river samples (minimum 3) to account for flow variability.\n    *   Employ a current meter to measure flow rate for each sample.\n    *   Document weather conditions (temperature, wind speed, precipitation) at the time of sampling.\n2.  **Well Sampling:**\n    *   Implement a standardized well purging and sampling protocol (e.g., following EPA Well Sampling Manual). This includes:\n        *   Initial drawdown measurements.\n        *   Purging until water quality stabilizes (e.g., consistent temperature, pH, conductivity).\n        *   Collect replicate samples (minimum 3) after stabilization.\n    *   Record all water level measurements, purge volumes, and water quality parameters.\n\n**III. Documentation:**\n\n1.  Maintain a detailed sampling logbook including: date, time, location, personnel, sampling methods, equipment used, weather conditions, and any deviations from the plan.\n2.  Collect chain-of-custody documentation for all samples.\n\n**IV. Contingency Planning:**\n\n1.  Establish a communication plan for emergencies.\n2.  Have a backup sampling location identified in case of unforeseen circumstances.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission is exceptional. It correctly identifies three distinct safety hazards (drowning, electrical, lightning) and three procedural errors (contamination, lack of standardization, weather impact) directly derived from the provided context. The revised work plan is comprehensive, professionally structured, and explicitly references industry standards (EPA Well Sampling Manual, OSHA LOTO). It addresses all constraints including the thunderstorm forecast by recommending postponement, and details specific protocols for purging, decontamination, and documentation. The output is ready for stakeholder review without modification."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Negotiate for water rights with communities or water facilities to meet water supply demands.",
+      "task_type": "Water Rights Allocation and Negotiation Strategy",
+      "user_prompt": "Act as a Water Resource Specialist for the 'Riverbend Valley Authority'. The region is facing a 15% reduction in annual precipitation due to drought. You must draft a negotiation strategy to reallocate 500 acre-feet of water from agricultural users to a growing municipal facility. The strategy must propose a tiered pricing mechanism and a temporary fallow land incentive program. Justify your proposal by referencing the 'Prior Appropriation Doctrine' and potential legal challenges under the Endangered Species Act if river flow drops below 200 cfs.",
+      "reference_context": {
+        "current_allocation": "Agriculture: 2000 acre-ft, Municipal: 1500 acre-ft",
+        "drought_impact": "15% reduction in total available supply",
+        "critical_flow_threshold": "200 cfs (below this, ESA protections trigger)",
+        "regulatory_framework": "Prior Appropriation Doctrine (First in Time, First in Right)"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Regulatory Compliance - Does the solution correctly apply the Prior Appropriation Doctrine and address ESA constraints?",
+        "Criterion 2: Feasibility - Are the proposed pricing and incentive mechanisms realistic for the stakeholders involved?",
+        "Criterion 3: Completeness - Does the strategy clearly outline the 500 acre-ft transfer plan and mitigation for legal risks?"
+      ],
+      "student_answer": "**Riverbend Valley Authority – Water Reallocation Strategy: Drought Response**\n\n**Executive Summary:**\n\nThis strategy proposes a phased reallocation of 500 acre-feet of water from agricultural users to the municipal facility to address the 15% precipitation reduction and mitigate potential Endangered Species Act violations. The strategy utilizes a tiered pricing mechanism and a temporary fallow land incentive program, grounded in the Prior Appropriation Doctrine, to ensure equitable water distribution while safeguarding river health.\n\n**I. Justification & Legal Framework:**\n\nOur region operates under the Prior Appropriation Doctrine, which dictates water rights are established by historical use. Agriculture currently holds the senior water rights (2000 acre-ft), however, the current drought necessitates a shift.  The Endangered Species Act (ESA) poses a significant risk: a sustained drop in river flow below 200 cfs triggers ESA protections, potentially halting further water diversions.  This reallocation aims to maintain a flow above the critical threshold while acknowledging agricultural seniority.\n\n**II. Proposed Reallocation Plan:**\n\n*   **Phase 1: Initial Reallocation (100 acre-ft – Immediate)** – Municipal facility receives 100 acre-feet immediately. This provides immediate relief and demonstrates proactive management.\n*   **Phase 2: Tiered Pricing Implementation (400 acre-feet – 60-day notice)** – Implement a tiered pricing structure for the remaining 400 acre-feet over a 60-day notice period.\n    *   **Tier 1 (High Demand):** $250/acre-foot – For immediate municipal use.\n    *   **Tier 2 (Medium Demand):** $175/acre-foot – For use during peak municipal demand (summer months).\n    *   **Tier 3 (Low Demand):** $125/acre-foot – For use during off-peak municipal demand (winter months).\n*   **Phase 3: Fallow Land Incentive Program (500 acre-feet – 90-day notice)** – Offer a temporary incentive program to encourage voluntary fallowing of agricultural land.\n    *   **Incentive:**  $50/acre-foot for land voluntarily fallowed for a period of 12 months.  This directly reduces agricultural water demand and provides a financial benefit to farmers.  Landfall will be verified through satellite imagery and on-site inspections.\n\n**III. Risk Mitigation & Legal Considerations:**\n\n*   **Prior Appropriation Challenge:**  Agricultural users may challenge the reallocation based on the Prior Appropriation Doctrine.  We will argue that the drought constitutes an unforeseen and extraordinary circumstance justifying a temporary deviation from established rights, prioritizing river health and ESA compliance.  Legal counsel will be engaged to prepare a robust defense.\n*   **Endangered Species Act:**  Continuous monitoring of river flow will be conducted.  If flow consistently drops below 200 cfs, the reallocation will be immediately suspended, and alternative conservation measures will be implemented.\n*   **Community Engagement:**  Transparent communication with agricultural stakeholders is crucial.  Public meetings and individual consultations will be held to explain the rationale and address concerns.\n\n**IV. Monitoring & Evaluation:**\n\n*   Regular monitoring of river flow, agricultural water usage, and municipal water demand.\n*   Periodic review of the tiered pricing structure and fallow land incentive program to ensure effectiveness.\n*   Adaptive management approach – adjustments will be made based on monitoring data and stakeholder feedback.\n\n**V. Conclusion:**\n\nThis strategy balances the needs of the municipal facility with the established water rights of agriculture, while proactively addressing the threat of ESA violations. The tiered pricing and fallow land incentive programs provide a financially viable and environmentally responsible approach to navigating this critical drought situation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails the task fundamentally. The prompt explicitly included 'Additional Checks' requiring a Rational Method calculation (Q = CiA), unit conversions (acres to sq ft, inches to feet), and verification of detention volume. The student's response completely ignores these specific technical requirements, providing only a high-level policy memo. Consequently, the Correctness, Completeness, Best Practices, Domain Accuracy, and Autonomy scores are all 1 (Inadequate) because the output is missing the core technical deliverables requested. The Clarity score is 3 because the text itself is well-written and structured, even though it addresses the wrong scope of the assignment."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Monitor water use, demand, or quality in a particular geographic area.",
+      "task_type": "Water Quality Monitoring and Compliance Analysis",
+      "user_prompt": "You are auditing a 50-square-mile watershed where a new industrial park has been proposed. Using the provided historical water quality data, calculate the Total Maximum Daily Load (TMDL) for Total Phosphorus (TP) to ensure the new development does not violate the Clean Water Act Section 303(d) standards. The current background TP load is 1200 lbs/year, and the water body is impaired with a target of 800 lbs/year. Determine the maximum allowable TP load from the new industrial park (assuming 200 acres of impervious surface) and propose a Best Management Practice (BMP) to achieve this. Cite 40 CFR Part 131 regarding water quality standards.",
+      "reference_context": {
+        "watershed_area": "50 square miles",
+        "current_background_load": "1200 lbs/year",
+        "impaired_target_load": "800 lbs/year",
+        "new_development": "200 acres impervious surface",
+        "regulatory_standard": "Clean Water Act Section 303(d) and 40 CFR Part 131"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Technical Accuracy - Are the TMDL calculations (Load = Target - Background) performed correctly with units?",
+        "Criterion 2: Regulatory Adherence - Does the solution explicitly reference 40 CFR Part 131 and Section 303(d)?",
+        "Criterion 3: Engineering Balance - Is the proposed BMP technically feasible for the industrial park while meeting the strict load reduction?"
+      ],
+      "student_answer": "**Total Maximum Daily Load (TMDL) Calculation for Total Phosphorus**\n\n**1. Calculate the Allowable Load Reduction:**\n\n*   Target Load: 800 lbs/year\n*   Background Load: 1200 lbs/year\n*   Load Reduction Needed: 1200 – 800 = 400 lbs/year\n\n**2. Calculate the Maximum Allowable Load from the Industrial Park:**\n\n*   Total Allowable Load: 800 lbs/year (target)\n*   Industrial Park Load: 400 lbs/year (load reduction)\n\n**3. Calculate the Maximum Daily Load (MDL):**\n\n*   Annual Load: 400 lbs/year\n*   MDL = Annual Load / 365 days\n*   MDL = 400 lbs/year / 365 days = 1.096 lbs/day (approximately)\n\n**4. Proposed Best Management Practice (BMP):**\n\nImplement a stormwater detention basin with a surface area of approximately 10 acres. This basin will be designed to capture and retain runoff from the 200 acres of impervious surface, reducing the volume and concentration of phosphorus entering the watershed.  The detention basin will utilize a phosphorus removal media (e.g., iron-based media) to further reduce phosphorus concentrations in the discharged water.  Regular monitoring of phosphorus levels in the basin effluent will be conducted to ensure compliance with the TMDL.\n\n**5. Regulatory Citation:**\n\n40 CFR Part 131 establishes the requirements for developing and implementing TMDLs. Specifically, it outlines the process for identifying water quality concerns, establishing water quality standards, and determining the maximum amount of pollutant that can be discharged without violating those standards.  It also details the requirements for public participation and review in the TMDL development process.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. The core logic is inverted: it calculates a 'reduction needed' of 400 lbs/year (1200-800) and incorrectly assigns this as the 'Maximum Allowable Load' for the new development. In reality, the new development must be allocated a load significantly less than the 400 lbs/year reduction to account for the existing background load, or the calculation must demonstrate how the new load fits within the 800 lbs/year cap while acknowledging the background exceeds it (implying a need for load reduction from existing sources, not just allocation to new ones). The student completely ignored the 'Additional Checks' to use the Rational Method (Q=CiA) or convert acres to calculate runoff volume, which is essential for a 'Senior Engineer' level TMDL calculation. The proposed BMP (10-acre basin for 200 acres) is physically unrealistic without hydraulic calculations. The regulatory citation is generic and does not specifically address the TMDL allocation methodology required by 40 CFR Part 131. The output is a rough draft requiring total rework."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Identify methods for distributing purified wastewater into rivers, streams, or oceans.",
+      "task_type": "Effluent Discharge Design and Environmental Impact Assessment",
+      "user_prompt": "Design a conceptual plan for the discharge of 2.5 MGD of Class A effluent into a receiving stream with a minimum summer flow of 15 cfs. The effluent has a BOD5 of 10 mg/L and a temperature of 22°C. The stream has a background BOD5 of 2 mg/L and a temperature of 18°C. Calculate the immediate dilution ratio and the resulting temperature increase at the mixing zone. Propose a diffuser configuration to ensure the temperature rise does not exceed 2°C (per EPA thermal discharge guidelines) and the BOD5 concentration does not exceed 5 mg/L at the mixing zone boundary. Justify the design based on the Clean Water Act Section 402 (NPDES) requirements.",
+      "reference_context": {
+        "effluent_flow": "2.5 MGD",
+        "effluent_BOD5": "10 mg/L",
+        "effluent_temp": "22°C",
+        "stream_flow": "15 cfs",
+        "stream_background_BOD5": "2 mg/L",
+        "stream_background_temp": "18°C",
+        "regulatory_limits": "Max temp rise 2°C, Max BOD5 at boundary 5 mg/L"
+      },
+      "evaluation_criteria": [
+        "Criterion 1: Calculation Correctness - Are the dilution ratios and temperature/BOD5 mixing calculations accurate with proper unit conversions?",
+        "Criterion 2: Regulatory Alignment - Does the design explicitly satisfy NPDES (Section 402) and EPA thermal/BOD5 limits?",
+        "Criterion 3: Environmental Impact - Is the diffuser design justified as a method to minimize ecological disruption in the mixing zone?"
+      ],
+      "student_answer": "**Conceptual Discharge Plan**\n\n**1. Dilution Ratio and Temperature Increase:**\n\n*   **Convert Units:** 2.5 MGD = 2.5 * 8.345 cfs = 20.8625 cfs\n*   **Dilution Ratio:**  Dilution Ratio = Effluent Flow / Stream Flow = 20.8625 cfs / 15 cfs = 1.391\n*   **Temperature Increase:**\n    *   Temperature Difference (ΔT) = Effluent Temp - Stream Temp = 22°C - 18°C = 4°C\n    *   Temperature Increase at Mixing Zone = ΔT / Dilution Ratio = 4°C / 1.391 = 2.87°C\n    *   Since the regulatory limit is 2°C, this discharge requires significant mitigation.\n\n**2. Diffuser Configuration:**\n\n*   **Type:**  Horizontal Jet Diffusers. These provide a wide dispersion pattern, crucial for temperature mitigation.\n*   **Number:**  Twelve (12) horizontal jet diffusers spaced evenly along the stream centerline.\n*   **Placement:**  Diffusers should be positioned approximately 10-15 feet upstream of any significant channel obstructions (e.g., bends, banks) to ensure uniform dispersion.\n*   **Depth:**  Diffusers should be set at a depth of approximately 2-3 feet below the water surface to maximize mixing.\n*   **Flow Rate per Diffuser:**  Calculate the required flow rate per diffuser to achieve the desired mixing zone conditions. This will require a more detailed hydraulic model, but a preliminary estimate is approximately 10% of the effluent flow (208.625 gpm per diffuser).\n\n**3. BOD5 Mitigation:**\n\n*   **Secondary Treatment:** The effluent’s BOD5 of 10 mg/L exceeds the target of 5 mg/L at the boundary.  The discharge must be treated to reduce BOD5 to 5 mg/L before discharge. This necessitates upgrading the existing wastewater treatment plant to include secondary treatment processes (e.g., activated sludge, trickling filter).\n*   **Mixing:** The diffuser configuration will promote rapid mixing, aiding in BOD5 dilution.\n\n**4. Justification (Clean Water Act Section 402 - NPDES):**\n\n*   This plan complies with Clean Water Act Section 402 (NPDES) by addressing the following:\n    *   **Temperature Limits:** The proposed diffuser configuration and secondary treatment are designed to maintain the temperature rise below the 2°C limit, preventing thermal pollution.\n    *   **BOD5 Limits:** Secondary treatment will reduce BOD5 to below the 5 mg/L boundary limit.\n    *   **Dilution:** The dilution ratio ensures sufficient dilution to meet water quality standards.\n    *   **Monitoring:**  A comprehensive monitoring plan will be required in the NPDES permit, including regular monitoring of effluent temperature, BOD5, stream temperature, and stream BOD5.\n    *   **Permit Conditions:** The NPDES permit will specify the diffuser design, treatment requirements, and monitoring protocols.\n\n**5.  Further Analysis Required:**\n\n*   **Hydraulic Modeling:** A detailed hydraulic model is essential to accurately predict mixing patterns, temperature distribution, and BOD5 concentrations throughout the mixing zone.\n*   **Sediment Transport:** Assess potential impacts on sediment transport and deposition.\n*   **Biological Impacts:** Evaluate potential impacts on aquatic life.\n\n---\n**Disclaimer:** This is a conceptual plan and requires further detailed engineering analysis and permitting before implementation.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on multiple dimensions. First, the unit conversion is catastrophically wrong: 2.5 MGD is approximately 3.87 cfs, not 20.86 cfs (the student likely confused MGD with a different unit or made a calculation error). This invalidates the dilution ratio and temperature increase calculations. Second, the BOD5 mitigation strategy is logically flawed; the student suggests upgrading to secondary treatment to lower BOD from 10 to 5 mg/L, but secondary treatment typically achieves 20-30 mg/L, not 5 mg/L (which requires tertiary treatment). Third, the diffuser configuration is physically impossible for the stated goal; placing diffusers in the 'stream centerline' and only 2-3 feet deep in a 15 cfs stream (likely shallow) would not provide the necessary mixing or depth to meet thermal limits. Fourth, the 'Additional Checks' section in the prompt mentions the Rational Method and detention volume, which are completely irrelevant to this specific discharge problem, suggesting the prompt context was mismatched or the student hallucinated requirements. The student did not address the specific regulatory constraint of the mixing zone boundary correctly due to the math errors. The output is not usable without major rework."
+    }
+  ]
+}

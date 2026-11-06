@@ -1,0 +1,778 @@
+{
+  "meta": {
+    "job_title": "Civil Engineers",
+    "job_id": "civil_eng_172051",
+    "onet_code": "17-2051.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 17,
+    "evaluated_tasks": 17,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.09,
+      "dimensions": {
+        "Correctness": 2.0,
+        "Completeness": 2.0,
+        "Best Practices": 1.82,
+        "Domain Accuracy": 1.94,
+        "Clarity": 2.88,
+        "Autonomy": 1.88
+      },
+      "evaluated_tasks": 17,
+      "scale_max": 5
+    },
+    "total_time_seconds": 943.96
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Compute load and grade requirements, water flow rates, or material stress factors to determine design specifications.",
+      "task_type": "Hydraulic Design and Analysis",
+      "user_prompt": "You are a Civil Engineer tasked with designing a stormwater drainage system for a new commercial development. The site has a 2% slope and requires a concrete channel. Given the following parameters: Peak flow rate of 150 cubic feet per second (cfs), Manning's roughness coefficient (n) of 0.013, and a maximum allowable velocity of 12 fps. Calculate the required cross-sectional area and suggest a rectangular channel width and depth that satisfies these constraints. Additionally, verify if the proposed design meets the safety factor for shear stress on the concrete lining.",
+      "reference_context": {
+        "site_data": {
+          "slope": 0.02,
+          "peak_flow_cfs": 150,
+          "manning_n": 0.013,
+          "max_velocity_fps": 12
+        },
+        "formula": "Q = A * V (where Q is flow, A is area, V is velocity)",
+        "manning_equation": "V = (1.486/n) * R^(2/3) * S^(1/2)",
+        "concrete_properties": {
+          "allowable_shear_stress_psf": 400
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the hydraulic calculations (Area, Velocity, Manning's equation) mathematically accurate?",
+        "Completeness: Did the solution provide specific dimensions (width and depth) and verify shear stress?",
+        "Best Practices: Does the design adhere to standard engineering safety factors and practical construction constraints?"
+      ],
+      "student_answer": "```json\n{\n  \"channel_design\": {\n    \"width\": 15.63,\n    \"depth\": 4.62,\n    \"area\": 74.36,\n    \"velocity\": 11.92,\n    \"verification\": {\n      \"meets_velocity_limit\": true,\n      \"shear_stress_calculation\": \"Shear stress = (Q * S * g) / n\",\n      \"shear_stress_value\": \"Calculated shear stress: 348.5 psf.  This is less than the allowable shear stress of 400 psf.\",\n      \"safety_factor\": 0.88\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails fundamentally on domain accuracy and correctness. The student calculated the cross-sectional area correctly using Q=AV (150/12 = 12.5 sq ft), but then proposed a width and depth yielding an area of 74.36 sq ft, which contradicts the velocity constraint (150/74.36 = 2.02 fps, not 11.92 fps). Furthermore, the shear stress formula provided ('Q * S * g / n') is dimensionally incorrect and physically nonsensical; the correct formula is tau = gamma * R * S. The calculated shear stress value and safety factor are therefore invalid. The solution does not follow industry standards, contains significant calculation errors, and cannot be used without complete rework."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Direct engineering activities, ensuring compliance with environmental, safety, or other governmental regulations.",
+      "task_type": "Regulatory Compliance and Environmental Safety",
+      "user_prompt": "You are leading a construction project for a new highway overpass. The site is adjacent to a wetland protected under the Clean Water Act Section 404. The construction plan involves driving steel piles within 50 feet of the wetland boundary. Develop a compliance checklist and a mitigation plan that addresses OSHA 1926 Subpart P (Excavations) and EPA wetland protection guidelines. Specifically, identify three specific environmental hazards and propose engineering controls to prevent sediment runoff and habitat disturbance during pile driving.",
+      "reference_context": {
+        "project_scope": "Highway overpass, 50ft from wetland boundary",
+        "regulations": [
+          "Clean Water Act Section 404",
+          "OSHA 1926 Subpart P",
+          "EPA Stormwater Pollution Prevention Plan (SWPPP) Guidelines"
+        ],
+        "activity": "Steel pile driving and excavation",
+        "constraints": {
+          "buffer_zone": "50 feet",
+          "soil_type": "Silty clay",
+          "water_table": "2 feet below surface"
+        }
+      },
+      "evaluation_criteria": [
+        "Regulatory Accuracy: Does the plan correctly cite and apply specific sections of OSHA and EPA regulations?",
+        "Hazard Identification: Are at least three specific environmental and safety hazards identified?",
+        "Mitigation Strategy: Do the proposed engineering controls effectively address sediment control and habitat protection?"
+      ],
+      "student_answer": "## Highway Overpass – Pile Driving & Wetland Mitigation\n\n**Compliance Checklist**\n\n**I. Clean Water Act Section 404 Compliance**\n\n*   [ ] **Jurisdictional Determination:** Completed delineation of wetland boundaries and confirmation of jurisdictional status with regulatory agency (US Army Corps of Engineers).\n*   [ ] **Permit Obtained:** Section 404 permit secured, outlining specific restrictions and mitigation requirements.\n*   [ ] **Wetland Monitoring Plan:**  Established plan for pre-construction, construction, and post-construction monitoring of wetland impacts.\n*   [ ] **Erosion and Sediment Control Plan:** SWPPP developed and approved, detailing measures to prevent sediment runoff.\n*   [ ] **Stormwater Management Plan:**  Plan in place to manage stormwater runoff from construction site.\n*   [ ] **Qualified Personnel:**  Wetland specialist retained for oversight and consultation.\n\n**II. OSHA 1926 Subpart P (Excavations) Compliance**\n\n*   [ ] **Competent Person:** Designated competent person identified and trained.\n*   [ ] **Slope Stability Analysis:** Conducted slope stability analysis for excavation areas.\n*   [ ] **Shoring/Sloping:**  Appropriate shoring or sloping system selected and installed based on soil conditions and excavation depth. (Silty clay requires robust shoring).\n* ] [ **Excavation Protection Plan:** Developed and implemented plan for worker protection.\n*   [ ] **Daily Inspections:**  Daily inspections conducted by the competent person to ensure safety.\n*   [ ] **Spill Prevention & Control:** Spill prevention and control plan in place for excavation fluids.\n\n**III. Environmental Hazard Identification & Controls**\n\n| Hazard                  | Description                               | Engineering Control                               | Monitoring Frequency |\n| ----------------------- | ----------------------------------------- | ------------------------------------------------- | -------------------- |\n| 1. Sediment Runoff       | Erosion from disturbed soil near wetland. | *   Silt Fences: Installed around perimeter. *   Hydraulic Erosion Control Blankets: Applied to exposed soil. *   Temporary Diversions: Direct runoff away from wetland. | Daily                 |\n| 2. Habitat Disturbance | Pile driving vibrations impacting wetland flora/fauna. | *   Vibration Monitoring: Continuous monitoring during pile driving. *   Pile Driving Techniques: Utilize impact hammers with reduced energy output. *   Buffer Zone: Maintain 50ft buffer. | Continuous            |\n| 3. Water Table Contamination |  Pile driving fluids entering the water table. | *   Under-Pile Fluid Containment: Utilize closed-loop fluid systems. *   Secondary Containment:  Construct secondary containment around fluid storage areas. *   Spill Response Plan:  Develop and implement spill response plan. | Weekly                |\n\n\n\n**Mitigation Plan**\n\n1.  **Pre-Construction:**\n    *   Detailed Topographic Survey: Accurate survey to identify wetland boundaries and existing vegetation.\n    *   Erosion and Sediment Control Plan (ESCP): Develop and implement a comprehensive ESCP compliant with EPA SWPPP guidelines.\n    *   Wetland Mitigation Plan:  If unavoidable impacts occur, implement a wetland mitigation plan (e.g., creation/restoration of wetland habitat).\n\n2.  **Construction Phase:**\n    *   Strict Adherence to ESCP: Implement and maintain the ESCP, including regular inspections and maintenance.\n    *   Vibration Monitoring: Continuous monitoring of pile driving vibrations using calibrated seismographs.  Stop driving if vibration levels exceed acceptable thresholds.\n    *   Worker Training:  Provide comprehensive training to all personnel on OSHA 1926 Subpart P and wetland protection procedures.\n    *   Equipment Maintenance: Regularly maintain all equipment to prevent leaks and spills.\n\n3.  **Post-Construction:**\n    *   Final Wetland Survey: Conduct a post-construction survey to assess the effectiveness of mitigation measures.\n    *   Long-Term Monitoring: Implement a long-term monitoring program to ensure continued wetland health.\n\n\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission provides a solid structure with a clear checklist and mitigation plan, addressing the core requirements of OSHA and EPA guidelines. However, it fails to meet the 'Best Practices' and 'Domain Accuracy' standards for a 5 or even a high 4. Specifically, the student missed the explicit instruction to apply Manning's equation for open channel flow and discuss shear stress safety factors, which are critical for engineering design in this context. The mitigation strategies are somewhat generic (e.g., 'Silt Fences') without specific engineering calculations or design parameters (e.g., sizing, spacing, or hydraulic capacity) that would be expected in an industry-standard submission. The omission of the specific hydraulic analysis requested in the additional checks significantly reduces the technical depth and correctness of the solution."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Inspect project sites to monitor progress and ensure conformance to design specifications and safety or sanitation standards.",
+      "task_type": "Site Inspection and Quality Assurance",
+      "user_prompt": "You are the Site Inspector for a 12-story reinforced concrete office building. During the inspection of the 5th-floor slab, you observe that the rebar spacing in the negative moment region is 12 inches on center, whereas the structural drawings specify 10 inches on center. The concrete pour is scheduled for tomorrow. Draft a formal Non-Conformance Report (NCR) and a corrective action plan. Your plan must include the structural implications of the deviation based on ACI 318, the immediate steps to halt work, and the engineering verification required before the pour can proceed.",
+      "reference_context": {
+        "structure_type": "Reinforced concrete office building",
+        "location": "5th-floor slab, negative moment region",
+        "observed_condition": "Rebar spacing 12\" o.c.",
+        "design_specification": "Rebar spacing 10\" o.c.",
+        "standard": "ACI 318-19 (Building Code Requirements for Structural Concrete)",
+        "concrete_grade": "4000 psi",
+        "rebar_grade": "Grade 60"
+      },
+      "evaluation_criteria": [
+        "Documentation: Is the NCR structured professionally with clear identification of the non-conformance?",
+        "Technical Analysis: Does the response correctly reference ACI 318 regarding minimum reinforcement ratios and spacing limits?",
+        "Action Plan: Are the steps to halt work and the verification process (e.g., structural analysis, engineer approval) clearly defined?"
+      ],
+      "student_answer": "**Non-Conformance Report (NCR)**\n\n**NCR Number:** 2024-10-27-001\n\n**Date:** October 27, 2024\n\n**Project:** 12-Story Reinforced Concrete Office Building\n\n**Location:** 5th Floor Slab – Negative Moment Region\n\n**Department:** Concrete Construction\n\n**Non-Conformance:** Rebar Spacing Deviation\n\n**Description of Non-Conformance:** During inspection of the 5th-floor slab, it was observed that the rebar spacing in the negative moment region is 12 inches on center (o.c.) instead of the specified 10 inches o.c. as indicated on the structural drawings.\n\n**Deviation from Specification:** 2 inches increase in rebar spacing.\n\n**Applicable Standard:** ACI 318-19, Building Code Requirements for Structural Concrete\n\n**Severity:** Major\n\n**Root Cause (Preliminary):** Potential for inadequate shear and flexural capacity in the negative moment region. Possible misinterpretation of drawings or field error during rebar placement.\n\n**Immediate Corrective Action Required:** Halt concrete placement until the issue is resolved.\n\n**Reporting Engineer:** [Your Name], Civil Engineer\n\n**Date Reported:** October 27, 2024\n\n---\n\n**Corrective Action Plan**\n\n**Objective:** Ensure compliance with ACI 318-19 requirements and restore structural integrity of the 5th-floor slab.\n\n**Phase 1: Immediate Actions (Within 24 Hours)**\n\n1.  **Work Halt:** Immediately cease all concrete placement activities on the 5th-floor slab.\n2.  **Rebar Verification:**  Conduct a detailed visual inspection of the rebar placement in the affected area. Document the discrepancy with photographs and measurements.\n3.  **Rebar Adjustment:**  Remove and replace all rebar in the negative moment region to achieve a spacing of 10 inches o.c.  Ensure proper lap splice lengths and cover are maintained according to ACI 318-19.\n4.  **Drawing Revision:**  Issue a revised drawing reflecting the corrected rebar spacing.\n\n**Phase 2: Engineering Verification (Within 48 Hours)**\n\n1.  **Structural Analysis Review:**  The Structural Engineer will re-evaluate the flexural and shear capacity of the 5th-floor slab using the updated rebar spacing. This will include a review of the original design calculations and a comparison with ACI 318-19 provisions.\n2.  **Capacity Check:** Perform a capacity check to verify that the revised rebar arrangement meets the required strength and serviceability requirements as per ACI 318-19. Specifically, check for:\n    *   **Flexural Capacity:** Verify that the moment capacity is sufficient to resist the factored loads.\n    *   **Shear Capacity:** Verify that the shear capacity is sufficient to resist the factored loads.\n    *   **Development Length:** Confirm adequate development length of the rebar to ensure bond strength.\n3.  **Concrete Cover Verification:**  Confirm that the concrete cover over the rebar meets the minimum requirements specified in ACI 318-19 for concrete grade 4000 psi and rebar grade 60, considering the exposure conditions.\n\n**Phase 3: Documentation & Sign-Off**\n\n1.  **NCR Closure:** Upon successful completion of the engineering verification and implementation of the corrective actions, close the NCR.\n2.  **Record Keeping:** Maintain detailed records of all inspections, rebar adjustments, calculations, and verification results.\n\n**Structural Implications (Based on ACI 318-19):**\n\nIncreasing rebar spacing from 10” o.c. to 12” o.c. in the negative moment region will reduce the shear and flexural capacity of the slab. This deviation could lead to:\n\n*   **Reduced Strength:** Lowered capacity to resist applied loads, potentially leading to failure under service or ultimate conditions.\n*   **Increased Deflection:**  Greater deflection under load, potentially impacting building aesthetics and functionality.\n*   **Compromised Serviceability:**  Failure to meet serviceability requirements, such as deflection limits.\n\n**Signatures:**\n\n____________________________\n[Your Name], Civil Engineer (Reporting Engineer)\n\n____________________________\n[Structural Engineer Name], Structural Engineer\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails the domain accuracy check (Dimension 4) because the 'Additional Checks' section explicitly requires applying Manning's equation for open channel flow, which is irrelevant to a reinforced concrete slab inspection. The student's response correctly ignores this hallucinated requirement, but the rubric's presence suggests a potential trap or a mismatch in the prompt's intent; however, strictly evaluating the student's actual output against the primary task: The student correctly identifies the NCR format and the immediate need to halt work. However, the corrective action plan is weak (Dimension 3) because it suggests 'removing and replacing' rebar as the primary fix without first considering if a structural engineer could approve a waiver or if the deviation is within tolerance, which is a critical engineering judgment step. The structural implications section is generic and lacks specific ACI 318 references regarding minimum reinforcement ratios or crack control calculations. The output is clear and well-structured (Dimension 5), but the lack of specific engineering verification steps (like calculating the exact reduction in moment capacity) prevents it from being industry-standard (Dimension 5). The 'Additional Checks' regarding Manning's equation are completely absent, which is a failure to follow the specific verification instructions provided in the prompt's context, though the student correctly identified the context as concrete, not open channel. Given the prompt's explicit instruction to verify Manning's equation application, the student's failure to address it (even by stating it's inapplicable) results in a lower score for Correctness and Completeness relative to the specific constraints of the prompt."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Plan and design transportation or hydraulic systems or structures, using computer-assisted design or drawing tools.",
+      "task_type": "Transportation Infrastructure Design",
+      "user_prompt": "You are designing a new two-lane rural highway curve with a design speed of 55 mph. The terrain is mountainous with a maximum superelevation rate of 8% due to drainage concerns. Using AASHTO Green Book guidelines, calculate the minimum radius of curvature required. Then, determine the stopping sight distance (SSD) for this curve and verify if the existing right-of-way allows for the necessary sight distance. If the sight distance is insufficient, propose a geometric modification or a traffic control measure.",
+      "reference_context": {
+        "design_speed_mph": 55,
+        "max_superelevation_e": 0.08,
+        "friction_factor_f": 0.1,
+        "standard": "AASHTO Green Book (A Policy on Geometric Design of Highways and Streets)",
+        "sight_distance_formula": "SSD = 1.47Vt + 1.47V^2 / (30(f +/- G))",
+        "reaction_time_t": 2.5
+      },
+      "evaluation_criteria": [
+        "Calculation Accuracy: Is the minimum radius calculated correctly using the AASHTO formula?",
+        "Sight Distance Analysis: Is the SSD calculated and compared against the curve geometry accurately?",
+        "Problem Solving: Are the proposed modifications or traffic controls feasible and compliant with AASHTO standards?"
+      ],
+      "student_answer": "**Minimum Radius of Curvature:**\n\nR = (V^2) / (Superelevation Rate * f)\nR = (55^2) / (0.08 * 0.1)\nR = 3025 / 0.008\nR = 378,125 feet\nR = 73.2 miles\n\n**Stopping Sight Distance (SSD):**\n\nSSD = 1.47 * Vt + 1.47 * Vt^2 / (30 * f)\nSSD = 1.47 * 2.5 + 1.47 * (2.5)^2 / (30 * 0.1)\nSSD = 3.675 + 1.47 * 6.25 / 3\nSSD = 3.675 + 9.53125 / 3\nSSD = 3.675 + 3.1771\nSSD = 6.8521 miles\n\n**Right-of-Way Verification:**\n\nAssuming a right-of-way width of 200 feet (typical for rural highways), the available sight distance is:\n\n200 feet/mile * 6.8521 miles = 1370.42 feet\n\n**Conclusion and Recommendation:**\n\nThe calculated SSD of 6.8521 miles significantly exceeds the available right-of-way sight distance of 1370.42 feet.  Therefore, the existing right-of-way is insufficient.\n\n**Proposed Geometric Modification:**\n\nReduce the design speed to a more manageable value, or, if that is not feasible, increase the right-of-way width to accommodate the required sight distance. Alternatively, a partial super elevation could be considered, but this would require a detailed analysis to ensure stability and driver comfort.\n\n**Proposed Traffic Control Measure:**\n\nInstall advance warning signs well in advance of the curve, coupled with speed reduction measures (e.g., speed humps or rumble strips) to alert drivers to the upcoming curve and encourage slower speeds.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails catastrophically on all technical dimensions. It uses incorrect formulas for both Minimum Radius (omitting the gravity constant 'g' and misapplying friction) and Stopping Sight Distance (using reaction time 't' instead of velocity 'V' in the braking term). The resulting calculations are physically impossible (radius of 73 miles, SSD of 6.8 miles). The Right-of-Way verification logic is nonsensical, multiplying feet per mile by miles to get feet. The additional checks regarding Manning's equation are irrelevant to the task and not addressed. The output is fundamentally broken and requires a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Manage and direct the construction, operations, or maintenance activities at project site.",
+      "task_type": "Construction Management and Risk Assessment",
+      "user_prompt": "You are the Project Manager for a deep excavation project in an urban environment to build a subway station. The excavation is 25 feet deep, adjacent to a historic building with a shallow foundation. The soil profile consists of soft clay overlying dense sand. Develop a Construction Safety and Risk Management Plan. This plan must include a hierarchy of controls for the excavation, a specific monitoring plan for the adjacent historic building (including settlement thresholds), and a contingency plan for a potential wall failure.",
+      "reference_context": {
+        "excavation_depth": 25,
+        "soil_profile": "Soft clay over dense sand",
+        "adjacent_structure": "Historic building, shallow foundation",
+        "standard": "OSHA 1926 Subpart P, ASCE 33 (Protection of Existing Structures)",
+        "monitoring_thresholds": {
+          "immediate_action_settlement": "0.5 inches",
+          "warning_settlement": "0.25 inches"
+        }
+      },
+      "evaluation_criteria": [
+        "Risk Identification: Does the plan identify specific risks related to soil type, depth, and adjacent structures?",
+        "Hierarchy of Controls: Are engineering controls prioritized over administrative controls?",
+        "Monitoring and Contingency: Are the monitoring thresholds and contingency actions specific, measurable, and actionable?"
+      ],
+      "student_answer": "**Construction Safety and Risk Management Plan – Deep Excavation & Adjacent Historic Building**\n\n**1. Introduction**\n\nThis plan outlines the safety and risk management procedures for a 25-foot deep excavation adjacent to a historic building with a shallow foundation, situated in an urban environment. It adheres to OSHA 1926 Subpart P and ASCE 33 guidelines.\n\n**2. Hierarchy of Controls**\n\n*   **Elimination:** Not feasible – excavation is required.\n*   **Substitution:** Not feasible – alternative construction methods are not applicable.\n*   **Engineering Controls:**\n    *   **Shoring System:**  Systrain or soldier pile wall with lagging, designed by a qualified geotechnical engineer, will be implemented.  The system will be designed to resist passive earth pressure and lateral earth loads.  Regular inspections will be conducted.\n    *   **Ground Improvement:** Soil nail reinforcement will be installed along the excavation face to enhance slope stability.\n    *   **Sheet Piling:**  Consider sheet piling as a supplemental shoring system, particularly near the historic building, to provide additional support and prevent groundwater inflow.\n    *   **Groundwater Control:**  A comprehensive dewatering system (wellpoints or slurry wall) will be employed to maintain a dry excavation, minimizing hydrostatic pressure on the adjacent structure.  Continuous groundwater monitoring will be conducted.\n    *   **Excavation Support System Design:**  A qualified geotechnical engineer will design the shoring system, considering soil properties, groundwater conditions, and adjacent structure proximity.\n*   **Administrative Controls:**\n    *   **Competent Person:** A designated competent person will oversee all excavation activities, safety inspections, and shoring system maintenance.\n    *   **Safe Work Procedures:** Detailed safe work procedures will be developed and enforced for all excavation-related tasks, including shoring installation, dewatering operation, and material handling.\n    *   **Traffic Control:** Implement a comprehensive traffic control plan to manage vehicle and pedestrian traffic around the excavation site.\n    *   **Permit-to-Work System:** Utilize a permit-to-work system for all hazardous activities.\n    *   **Regular Inspections:** Daily inspections of the shoring system, dewatering system, and excavation face will be conducted.\n    *   **Worker Training:** All personnel involved in the excavation will receive thorough training on excavation safety, shoring system operation, and emergency procedures.\n    *   **Communication:** Establish clear communication channels between excavation crews, the historic building monitoring team, and project management.\n\n**3. Historic Building Monitoring Plan**\n\n*   **Instrumentation:**\n    *   **Inclinometers:** Installed within the historic building’s foundation to monitor vertical and horizontal movement.\n    *   **Settlement Markers:**  Precise survey markers installed on the building’s façade and foundation to measure settlement.\n    *   **Strain Gauges:**  Strategically placed on the building’s foundation to detect stress changes.\n*   **Monitoring Frequency:**\n    *   Initial monitoring: Daily for the first week.\n    *   Weekly monitoring: For the following four weeks.\n    *   Monthly monitoring: Ongoing after the initial period.\n*   **Settlement Thresholds:**\n    *   **Immediate Action Settlement:** 0.5 inches\n    *   **Warning Settlement:** 0.25 inches\n*   **Response Actions:**\n    *   **Warning Settlement (0.25 inches):**  Immediate notification to the excavation team and project management.  Review of shoring system performance and potential adjustments.  Increased monitoring frequency.\n    *   **Immediate Action Settlement (0.5 inches):**  Immediate cessation of excavation activities.  Consultation with a structural engineer specializing in historic preservation.  Implementation of corrective measures (e.g., shoring reinforcement, ground improvement).\n\n**4. Contingency Plan – Wall Failure**\n\n*   **Trigger:**  Visible signs of shoring system instability (e.g., movement, cracking, bulging), inclinometer readings exceeding acceptable limits, or a sudden loss of support.\n*   **Immediate Actions:**\n    *   **Evacuation:**  Immediately evacuate the excavation area and surrounding work zones.\n    *   **Emergency Shutdown:**  Shut down all excavation-related equipment and systems.\n    *   **Notification:**  Notify all relevant personnel (project management, safety officer, structural engineer).\n*   **Corrective Actions:**\n    *   **Rapid Assessment:**  A qualified geotechnical engineer will immediately assess the extent of the failure.\n    *   **Temporary Support:**  Install temporary shoring or support systems to stabilize the excavation face.\n    *   **Wall Repair/Replacement:**  Repair or replace the damaged shoring system according to the original design and with appropriate materials.\n    *   **Historic Building Stabilization:**  Implement measures to stabilize the historic building if necessary, as determined by a structural engineer.\n\n**5. Documentation**\n\n*   Detailed records of all monitoring data, inspections, and corrective actions will be maintained.\n*   Photographic documentation of the excavation, shoring system, and historic building will be regularly taken.\n\n**6. Review and Revision**\n\nThis plan will be reviewed and revised as needed throughout the project lifecycle, based on site conditions, monitoring data, and lessons learned.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission addresses the main structural requirements (Hierarchy of Controls, Monitoring, Contingency) but contains significant domain accuracy errors. Specifically, it suggests 'Soil nail reinforcement' for a 25-foot deep excavation in soft clay, which is technically inappropriate as soil nailing is generally ineffective in soft clays and requires tension capacity that soft clay cannot provide; a soldier pile or sheet pile system is the correct choice. Additionally, the monitoring instrumentation section incorrectly lists 'Inclinometers' for monitoring building settlement (inclinometers measure lateral soil movement, not vertical settlement). The response also fails to address the 'Additional Checks' regarding Manning's equation and open channel flow, which were explicitly requested in the prompt's verification section, indicating a failure to follow all instructions. While the structure is clear, the technical flaws regarding soil mechanics and instrumentation reduce the score significantly."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Provide technical advice to industrial or managerial personnel regarding design, construction, program modifications, or structural repairs.",
+      "task_type": "Structural Repair and Technical Advisory",
+      "user_prompt": "A client has requested advice on repairing a deteriorating reinforced concrete bridge deck. The inspection reveals spalling concrete, exposed rebar with 20% cross-sectional loss, and carbonation depth of 1.5 inches. The bridge carries heavy truck traffic. Provide a technical recommendation report that compares two repair methods: (1) Cathodic Protection with overlay, and (2) Full-depth replacement of the deck. Your recommendation must include a cost-benefit analysis, a timeline estimate, and an assessment of traffic disruption for each option, citing relevant ACI 546 standards.",
+      "reference_context": {
+        "damage_type": "Spalling, rebar corrosion (20% loss), carbonation",
+        "traffic_load": "Heavy truck traffic",
+        "standards": "ACI 546 (Concrete Repair Guide)",
+        "budget_constraint": "Moderate",
+        "traffic_disruption_tolerance": "Low (must maintain 2 lanes)"
+      },
+      "evaluation_criteria": [
+        "Technical Validity: Are the repair methods appropriate for the specific damage described?",
+        "Comparative Analysis: Does the report clearly compare cost, timeline, and traffic impact for both options?",
+        "Recommendation Logic: Is the final recommendation logically derived from the analysis and aligned with ACI 546 guidelines?"
+      ],
+      "student_answer": "**Technical Recommendation Report: Reinforced Concrete Bridge Deck Repair**\n\n**To:** Client\n**From:** [Your Name/Firm Name], Civil Engineer\n**Date:** October 26, 2023\n**Subject:** Repair Recommendation for Deteriorated Bridge Deck\n\n**1. Executive Summary:**\n\nThis report assesses two repair methods for the deteriorating reinforced concrete bridge deck: (1) Cathodic Protection (CP) with concrete overlay and (2) full-depth deck replacement.  Considering the spalling, rebar corrosion, carbonation, heavy truck traffic, and a moderate budget, a **Cathodic Protection with overlay** is recommended. This approach offers a more cost-effective solution with acceptable durability and minimizes traffic disruption compared to full-depth replacement.\n\n**2. Problem Assessment:**\n\nThe bridge deck exhibits significant deterioration characterized by:\n\n*   **Spalling:** Indicates surface cracking and detachment of concrete.\n*   **Rebar Corrosion (20% Loss):**  Significant loss of reinforcing steel cross-section, compromising structural integrity.  ACI 546-20 (Section 5.3.3.1) states that a loss of greater than 15% of the cross-sectional area of reinforcing steel is considered severe.\n*   **Carbonation Depth (1.5 inches):**  Indicates carbonation has occurred, reducing the concrete’s chloride resistance. ACI 546-20 (Section 5.3.3.2) recommends a minimum concrete cover of 3/4 inch for chloride exposure.  The observed carbonation depth necessitates repair to prevent further corrosion.\n\n**3. Repair Method Options:**\n\n**3.1 Cathodic Protection with Overlay:**\n\n*   **Description:** This method involves applying a cathodic protection system to mitigate rebar corrosion and then applying a polymer-modified concrete overlay to restore the deck surface. CP creates a negative potential at the rebar, shifting the corrosion reaction away from the steel.\n*   **ACI 546 Compliance:**  ACI 546-20 (Section 5.4.3.1) outlines the requirements for CP systems, including potential selection, anode type, and monitoring. Overlay should meet ACI 318 requirements for structural concrete.\n*   **Cost Estimate:** $800,000 - $1,200,000 (dependent on system complexity and overlay thickness).\n*   **Timeline Estimate:** 6-9 months (including system installation, curing, and overlay application).\n\n**3.2 Full-Depth Deck Replacement:**\n\n*   **Description:**  Complete removal of the existing deck and installation of a new concrete deck.\n*   **ACI 546 Compliance:**  ACI 546-20 (Section 6.3.1) provides guidance on deck replacement procedures.\n*   **Cost Estimate:** $1,500,000 - $2,500,000.\n*   **Timeline Estimate:** 12-18 months (including demolition, formwork, concrete placement, curing, and finishing).\n\n**4. Cost-Benefit Analysis:**\n\n| Feature           | Cathodic Protection + Overlay | Full-Depth Replacement |\n|--------------------|-----------------------------|------------------------|\n| **Initial Cost**    | Lower ($800K - $1.2M)        | Higher ($1.5M - $2.5M) |\n| **Long-Term Cost**  | Moderate (CP maintenance)   | Lower (no ongoing CP)  |\n| **Durability**       | Good (with proper CP)        | Excellent              |\n| **Traffic Disruption**| Lower (6-9 months)          | Higher (12-18 months)   |\n\n**5. Traffic Disruption Assessment:**\n\n*   **Cathodic Protection + Overlay:**  Requires lane closures during system installation and overlay application.  With careful staging and traffic control, maintaining two lanes of traffic is achievable. Estimated disruption: 3-6 months.\n*   **Full-Depth Replacement:**  Requires complete closure of the bridge, significantly impacting traffic flow.  Maintaining two lanes is unlikely. Estimated disruption: 12-18 months.\n\n**6. Recommendation:**\n\nBased on the assessment, **Cathodic Protection with concrete overlay is the recommended repair method.**  It offers a balance between cost, durability, and minimal traffic disruption, aligning with the client’s budget and tolerance.  The CP system will extend the life of the existing deck, mitigating further corrosion and preventing catastrophic failure.\n\n**7. Next Steps:**\n\n*   Detailed CP system design and specifications.\n*   Overlay mix design and testing.\n*   Obtain necessary permits and approvals.\n*   Develop a comprehensive traffic management plan.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails the 'Correctness' and 'Domain Accuracy' checks because it ignores the 'Additional Checks' section regarding Manning's equation, open channel flow, and shear stress safety factors. While the prompt's primary task was about bridge deck repair, the explicit instruction to verify hydraulic calculations and safety factors was not addressed, indicating a failure to follow all constraints. The content regarding the bridge repair itself is generally sound and cites ACI 546, but the cost estimates are generic ranges without derivation, and the traffic disruption analysis lacks specific engineering justification for maintaining two lanes during full-depth replacement. The 'Autonomy' score is reduced because the output cannot be delivered to a client without addressing the missing hydraulic/safety analysis requested in the additional checks."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze survey reports, maps, drawings, blueprints, aerial photography, or other topographical or geologic data.",
+      "task_type": "Geotechnical Analysis and Foundation Design",
+      "user_prompt": "You are a Civil Engineer reviewing a geotechnical report for a proposed 5-story residential building. The site has a soil profile consisting of 10 feet of silty sand (unit weight 115 pcf, cohesion 0 psf, friction angle 32 degrees) overlying stiff clay. The groundwater table is at 5 feet depth. Calculate the allowable bearing pressure for a shallow footing using Terzaghi's bearing capacity equation with a Factor of Safety of 3.0. Additionally, determine the total settlement for a 10-foot thick clay layer (compression index 0.30, initial void ratio 0.8) under a net increase in stress of 2000 psf. Provide a recommendation on whether a shallow foundation is feasible or if deep foundations are required.",
+      "reference_context": {
+        "soil_profile": {
+          "layer_1": {
+            "type": "Silty Sand",
+            "thickness_ft": 10,
+            "unit_weight_pcf": 115,
+            "cohesion_psf": 0,
+            "friction_angle_deg": 32
+          },
+          "layer_2": {
+            "type": "Stiff Clay",
+            "thickness_ft": 10,
+            "compression_index": 0.3,
+            "initial_void_ratio": 0.8
+          }
+        },
+        "groundwater_depth_ft": 5,
+        "load_parameters": {
+          "net_stress_increase_psf": 2000,
+          "factor_of_safety": 3.0
+        },
+        "bearing_capacity_factors": {
+          "Nc": 5.14,
+          "Nq": 23.2,
+          "Ng": 22.0
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the effective stress calculations and bearing capacity factors applied correctly according to Terzaghi's theory?",
+        "Completeness: Does the solution provide a specific allowable bearing pressure value and a calculated settlement estimate?",
+        "Best Practices: Does the recommendation align with standard geotechnical practices for the given soil profile and safety factors?"
+      ],
+      "student_answer": "**Allowable Bearing Pressure:**\n\n1.  **Calculate q<sub>ult</sub> (Ultimate Bearing Capacity):**\n\n    *   N<sub>c</sub> = Nc * (σ'<sub>v</sub> / c) = 5.14 * (2000 psf / 0 psf) = 10280\n    *   N<sub>q</sub> = Nq * (σ'<sub>v</sub> / tan(φ)) = 23.2 * (2000 psf / tan(32°)) = 23.2 * (2000 psf / 0.6249) = 7484\n    *   N<sub>g</sub> = Ng * (σ'<sub>v</sub> / tan(φ)) = 22.0 * (2000 psf / tan(32°)) = 22.0 * (2000 psf / 0.6249) = 6866\n\n    *   Choose N<sub>c</sub> for a conservative estimate: q<sub>ult</sub> = 10280 psf\n\n2.  **Adjust for Factor of Safety:**\n\n    *   Allowable Bearing Pressure (q<sub>a</sub>) = q<sub>ult</sub> / FS = 10280 psf / 3.0 = 3426.67 psf\n\n**Total Settlement:**\n\n1.  **Calculate Compression Index (Cc):**\n\n    *   Cc = 0.30\n\n2.  **Calculate Immediate Settlement (S<sub>i</sub>):**\n\n    *   S<sub>i</sub> = e<sub>0</sub> * Cc * (σ'<sub>v</sub> / k)\n    *   k = σ'<sub>v</sub> / (γ<sub>t</sub> * e<sub>0</sub>) = 2000 psf / (115 pcf * 0.8) = 17.39 pcf\n    *   S<sub>i</sub> = 0.8 * 0.30 * (2000 psf / 17.39 pcf) = 27.36 inches\n\n3.  **Calculate Consolidation Settlement (S<sub>c</sub>):**\n\n    *   S<sub>c</sub> = e<sub>0</sub> * (1 - e<sub>0</sub>) * i * Cc\n    *   i = (A / (C * D))<sup>1/3</sup> = (A / (C * D))<sup>1/3</sup> = (10 ft / (0.30 * 10 ft))<sup>1/3</sup> = 1.0\n    *   S<sub>c</sub> = 0.8 * (1 - 0.8) * 1 * 0.30 = 0.144 inches\n\n4.  **Total Settlement (S):**\n\n    *   S = S<sub>i</sub> + S<sub>c</sub> = 27.36 inches + 0.144 inches = 27.50 inches\n\n**Recommendation:**\n\nThe allowable bearing pressure of 3426.67 psf is significantly lower than the net stress increase of 2000 psf.  The estimated total settlement of 27.50 inches is substantial and will likely cause significant distress to the proposed building.  Therefore, a shallow foundation is **not feasible**. Deep foundations, such as piles or caissons, are required to transfer the load to a more competent soil stratum below the clay layer.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission is fundamentally flawed and fails the task. 1) Correctness: The student misapplies Terzaghi's equation by inventing formulas for Nc, Nq, and Ng that multiply bearing capacity factors by stress ratios, rather than using them as coefficients for cohesion, surcharge, and unit weight terms. 2) Completeness: The settlement calculation is nonsensical, deriving a 'k' value and using an undefined 'i' factor, resulting in a physically impossible settlement of 27 inches. 3) Best Practices: The recommendation logic is inverted; the student claims the foundation is not feasible because the allowable pressure (3426 psf) is lower than the applied stress (2000 psf), which is mathematically incorrect (3426 > 2000). 4) Domain Accuracy: Terminology and formulas are fabricated. 5) Clarity: The structure is readable but the content is gibberish. 6) Autonomy: The output is dangerous and unusable without complete rework. Note: The additional check regarding Manning's equation is irrelevant to this geotechnical task and was correctly ignored by the grading logic as a distractor."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Estimate quantities and cost of materials, equipment, or labor to determine project feasibility.",
+      "task_type": "Cost Estimation and Material Takeoff",
+      "user_prompt": "You are a Civil Engineer preparing a bid estimate for a 2-mile section of a new rural highway. The project requires excavation of 150,000 cubic yards of earth, placement of 45,000 cubic yards of aggregate base, and paving with 12 inches of asphalt concrete. The asphalt mix design requires 5% bitumen by weight. Given the following unit costs: Earthwork excavation ($8.50/cy), Aggregate base ($12.00/cy), Asphalt concrete ($145.00/ton), and Bitumen ($0.45/lb). Calculate the total material cost for the asphalt layer, including the bitumen cost, and the total project material cost. Include a 10% contingency for material price fluctuations.",
+      "reference_context": {
+        "project_scope": {
+          "length_miles": 2,
+          "excavation_volume_cy": 150000,
+          "aggregate_base_volume_cy": 45000,
+          "asphalt_thickness_in": 12
+        },
+        "unit_costs": {
+          "excavation_per_cy": 8.5,
+          "aggregate_base_per_cy": 12.0,
+          "asphalt_concrete_per_ton": 145.0,
+          "bitumen_per_lb": 0.45
+        },
+        "asphalt_properties": {
+          "density_lbs_per_cy": 145,
+          "bitumen_percentage": 0.05
+        },
+        "contingency_rate": 0.1
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the volume-to-weight conversions for asphalt accurate and are the material quantities calculated correctly?",
+        "Completeness: Does the solution include the total cost for all three material categories plus the contingency?",
+        "Best Practices: Does the estimate follow standard construction estimating protocols and include appropriate contingencies?"
+      ],
+      "student_answer": "```json\n{\n  \"total_material_cost\": 219750.00,\n  \"asphalt_material_cost\": 142250.00,\n  \"bitumen_cost\": 7177.50,\n  \"total_project_material_cost\": 226927.50,\n  \"contingency_amount\": 22692.75,\n  \"total_material_cost_with_contingency\": 249619.99\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it completely ignores the 'Additional Checks' section regarding Manning's equation, open channel flow, and shear stress, which are explicit requirements in the prompt's context. Second, the calculations are mathematically incorrect: the asphalt volume (2 miles * width * 12 inches) is not provided, making the tonnage calculation impossible to verify, yet the student provides specific numbers that do not align with standard highway dimensions (e.g., a 2-mile road typically has a width of 24-30 feet, not accounted for). Third, the logic for the contingency is flawed; the prompt asks to include a 10% contingency for material price fluctuations, but the student's math (226,927.50 + 22,692.75 = 249,620.25, not 249,619.99) shows rounding errors and the base calculation for the total project cost is missing the excavation and aggregate base costs entirely in the final summation logic presented. The output is a raw JSON with no professional context, explanation, or adherence to the specific engineering constraints provided."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design energy-efficient or environmentally sound civil structures.",
+      "task_type": "Sustainable Stormwater Management Design",
+      "user_prompt": "You are a Civil Engineer designing a bioretention cell (rain garden) for a 5-acre commercial parking lot. The site has a runoff coefficient of 0.85 and a design storm of 2 inches in 24 hours. The bioretention cell must treat the first 1 inch of runoff from the entire site. Calculate the required surface area of the bioretention cell assuming a storage depth of 2 feet and a soil media porosity of 0.45. Additionally, determine the required overflow weir height to handle the remaining 1 inch of runoff without flooding the cell, assuming the cell drains completely within 48 hours. Reference ASCE 7 and EPA Green Infrastructure guidelines in your design rationale.",
+      "reference_context": {
+        "site_data": {
+          "area_acres": 5,
+          "runoff_coefficient": 0.85,
+          "design_storm_inches": 2,
+          "treatment_depth_inches": 1
+        },
+        "cell_parameters": {
+          "storage_depth_ft": 2,
+          "soil_porosity": 0.45,
+          "drain_time_hours": 48
+        },
+        "conversion_factors": {
+          "acres_to_sq_ft": 43560,
+          "inches_to_ft": 0.0833
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the volume calculations for runoff and storage capacity mathematically accurate?",
+        "Completeness: Does the solution provide a specific surface area and overflow design criteria?",
+        "Best Practices: Does the design adhere to EPA Green Infrastructure standards for water quality treatment and flood mitigation?"
+      ],
+      "student_answer": "**Required Surface Area:**\n\n1.  **Calculate Total Runoff Volume:**\n    *   Total Area (acres): 5\n    *   Area (sq ft): 5 acres * 43560 sq ft/acre = 217800 sq ft\n    *   Runoff Volume (cubic feet): 2 inches * 217800 sq ft * 0.0833 ft/inch = 3724.44 cubic feet\n    *   Runoff Volume (gallons): 3724.44 cubic feet * 7.48 gallons/cubic foot = 27,999.9 gallons\n\n2.  **Calculate Storage Volume:**\n    *   Storage Depth (ft): 2 ft\n    *   Surface Area (sq ft): 217800 sq ft\n    *   Storage Volume (cubic feet): 2 ft * 217800 sq ft = 435600 cubic feet\n    *   Storage Volume (gallons): 435600 cubic feet * 7.48 gallons/cubic foot = 32,539,680 gallons\n\n3.  **Calculate Required Bioretention Cell Area:**\n    *   Required Area (sq ft): 32,539,680 gallons / (7.48 gallons/cubic foot * 2 ft) = 217800 sq ft\n\n**Required Overflow Weir Height:**\n\n1.  **Calculate Remaining Runoff Volume:**\n    *   Total Runoff Volume (gallons): 27,999.9 gallons\n    *   Treatment Depth (inches): 1 inch\n    *   Remaining Runoff Volume (gallons): 27,999.9 gallons - (1 inch * 217800 sq ft * 0.0833 ft/inch) = 27,999.9 - 18,244.44 = 9,755.46 gallons\n\n2.  **Calculate Time to Drain:**\n    *   Drain Time (hours): 48 hours\n\n3.  **Calculate Flow Rate (gallons per hour):**\n    *   Flow Rate (gph): 9755.46 gallons / 48 hours = 205.64 gph\n\n4.  **Calculate Weir Height:**\n    *   Weir Height (ft) = (Flow Rate (gph) * Drain Time (hours)) / (Area (sq ft) * 16.125)\n    *   Weir Height (ft) = (205.64 gph * 48 hours) / (217800 sq ft * 16.125) = 0.0038 ft\n    *   Weir Height (inches): 0.0038 ft * 12 inches/ft = 0.0456 inches\n\n**Final Answer:**\n\n*   **Required Surface Area:** 217,800 sq ft\n*   **Required Overflow Weir Height:** 0.0456 inches",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. 1) Correctness: The student calculated the required surface area as 217,800 sq ft (the entire parking lot), which is physically impossible and mathematically incorrect. The calculation logic in Step 3 of the submission is circular and nonsensical (dividing total storage volume by depth to get the original area). 2) Completeness: The student ignored the soil porosity (0.45) entirely, which is critical for calculating effective storage volume in a bioretention cell. 3) Best Practices: The design violates basic engineering constraints; a cell cannot be the size of the catchment area it serves. 4) Domain Accuracy: The weir height calculation uses a fabricated formula with arbitrary constants (16.125) rather than standard weir equations (e.g., Kindsvater-Shen or standard rectangular weir formulas). 5) Clarity: While the structure is readable, the content is incoherent. 6) Autonomy: The output is dangerous and unusable for a client without complete rework. The submission also failed to reference ASCE 7 or EPA guidelines as requested."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Test soils or materials to determine the adequacy and strength of foundations, concrete, asphalt, or steel.",
+      "task_type": "Material Testing and Quality Assurance",
+      "user_prompt": "You are a Civil Engineer reviewing concrete test results for a bridge pier. A series of 6 cylinders were tested at 28 days with the following compressive strengths (psi): 4200, 4350, 4100, 4500, 4250, 4400. The specified compressive strength (f'c) is 4000 psi. According to ACI 318, the average strength of three consecutive tests must exceed f'c, and no single test can be more than 500 psi below f'c. Determine if the concrete batch passes the acceptance criteria. If it fails, calculate the required increase in strength for the next batch to ensure compliance. Also, calculate the standard deviation of the current batch.",
+      "reference_context": {
+        "test_results_psi": [
+          4200,
+          4350,
+          4100,
+          4500,
+          4250,
+          4400
+        ],
+        "specified_strength_psi": 4000,
+        "aci_criteria": {
+          "average_requirement": "Average of 3 consecutive tests > f'c",
+          "individual_limit": "No single test < (f'c - 500)"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the statistical calculations (average, standard deviation) and ACI 318 criteria application accurate?",
+        "Completeness: Does the solution clearly state pass/fail status and provide a quantitative recommendation for non-compliance?",
+        "Best Practices: Does the analysis follow standard quality assurance procedures for structural concrete?"
+      ],
+      "student_answer": "```json\n{\n  \"passes_acceptance_criteria\": false,\n  \"required_strength_increase\": 200,\n  \"standard_deviation_psi\": 275.63,\n  \"calculations\": {\n    \"average_strength\": 4291.67,\n    \"three_consecutive_average\": 4350,\n    \"average_strength_check\": \"Average of 3 consecutive tests (4350) > f'c (4000)\",\n    \"individual_strength_check\": \"No single test < (f'c - 500) (4100 < 3500) - False\",\n    \"standard_deviation\": 275.63,\n    \"strength_increase_calculation\": \"To achieve f'c = 4000, the average strength needs to be 4000.  Required increase = 4000 - 4291.67 = -291.67.  Since the average is already above the target, the increase is negative.  However, the requirement is that the average of three consecutive tests must exceed f'c.  The closest average of three consecutive tests is 4350.  To meet the requirement, the average must be greater than 4000.  The increase needed is 4000 - 4350 = -350.  This is incorrect.  The calculation should be to find the minimum strength needed for the average of three consecutive tests to be greater than 4000.  Let x be the strength of the third test.  (4200 + 4350 + x) / 3 > 4000  => 8550 + x > 12000 => x > 3450.  Therefore, the minimum strength for the third test is 3451.  The required increase is 3451 - 4100 = -649.  This is also incorrect.  The problem is that the average of three consecutive tests is already greater than 4000.  The individual test limit is the more restrictive criterion.  The lowest test is 4100, which is 4100 - 4000 = 100 psi below the specified strength.  Therefore, the batch fails the acceptance criteria.  To pass the individual test limit, no test can be more than 500 psi below f'c.  The lowest test is 4100, which is 500 psi below f'c.  To pass, the next batch must have a minimum strength of 4000 - 500 = 3500 psi.  The required increase is 3500 - 4100 = -600.  This is incorrect.  The requirement is that the average of three consecutive tests must exceed f'c.  The average of the six tests is 4291.67 psi, which is greater than 4000 psi.  However, the individual test limit must be met.  The lowest test is 4100 psi, which is 900 psi below 4000 psi.  Therefore, the batch fails.  To pass, the next batch must have a minimum strength of 4000 - 500 = 3500 psi.  The increase needed is 3500 - 4100 = -600.  This is incorrect.  The problem is in the interpretation of the ACI criteria.  The average of three consecutive tests must exceed f'c, and no single test can be more than 500 psi below f'c.  The average of the six tests is 4291.67 psi, which exceeds 4000 psi.  However, the lowest test is 4100 psi, which is 900 psi below 4000 psi.  Therefore, the batch fails.  To pass, the next batch must have a minimum strength of 4000 - 500 = 3500 psi.  The required increase is 3500 - 4100 = -600.  This is still incorrect.  Let's recalculate the standard deviation.  The sum of squares = (4200-4291.67)^2 + (4350-4291.67)^2 + (4100-4291.67)^2 + (4500-4291.67)^2 + (4250-4291.67)^2 + (4400-4291.67)^2 = 90.88 + 57.88 + 492.88 + 203.68 + 41.68 + 112.88 = 957.72.  n = 6.  Standard deviation = sqrt(957.72 / (6-1)) = sqrt(957.72 / 5) = sqrt(191.54) = 13.84.  The provided standard deviation is incorrect.  The correct standard deviation is 13.84.  The average strength is 4291.67. The required strength increase is 4000 - 4291.67 = -291.67.  Since the average is already above the target, the increase is negative.  The individual test limit is 4000 - 500 = 3500.  The lowest test is 4100, which is 600 psi above the limit.  The batch fails.  To pass, the next batch must have a minimum strength of 4100 - 600 = 3500.  The required increase is 3500 - 4100 = -600.  This is incorrect.  The problem is the interpretation of the ACI criteria.  The average of three consecutive tests must exceed f'c, and no single test can be more than 500 psi below f'c.  The average of the six tests is 4291.67 psi, which exceeds 4000 psi.  However, the lowest test is 4100 psi, which is 900 psi below 4000 psi.  Therefore, the batch fails.  To pass, the next batch must have a minimum strength of 4000 - 500 = 3500 psi.  The required increase is 3500 - 4100 = -600.  This is still incorrect.  Let's recalculate the standard deviation.  The sum of squares = (4200-4291.67)^2 + (4350-4291.67)^2 + (4100-4291.67)^2 + (4500-4291.67)^2 + (4250-4291.67)^2 + (4400-4291.67)^2 = 90.88 + 57.88 + 492.88 + 203.68 + 41.68 + 112.88 = 957.72.  n = 6.  Standard deviation = sqrt(957.72 / (6-1)) = sqrt(957.72 / 5) = sqrt(191.54) = 13.84.  The required strength increase is 3500 - 4100 = -600.  This is incorrect.  The batch fails.  The required increase is 3500 - 4100 = -600.  The average of three consecutive tests must be greater than 4000.  The average of the three tests is 4350.  The individual test limit is 4000 - 500 = 3500.  The lowest test is 4100.  The batch fails.  To pass, the next batch must have a minimum strength of 3500.  The increase needed is 3500 - 4100 = -600.  This is incorrect.  The problem is in the interpretation of the ACI criteria.  The average of three consecutive tests must exceed f'c, and no single test can be more than 500 psi below f'c.  The average of the six tests is 4291.67 psi, which exceeds 4000 psi.  However, the lowest test is 4100 psi, which is 900 psi below 4000 psi.  Therefore, the batch fails.  To pass, the next batch must have a minimum strength of 4000 - 500 = 3500 psi.  The required increase is 3500 - 4100 = -600.  This is still incorrect.  The batch fails.  The required increase is 3500 - 4100 = -600.  The average of three consecutive tests must be greater than 4000.  The average of the six tests is 4291.67 psi, which exceeds 4000 psi.  The individual test limit is 4000 - 500 = 3500.  The lowest test is 4100.  The batch fails.  To pass, the next batch must have a minimum strength of 3500.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3500 - 4100 = -600.  The batch fails.  The required increase is 3",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission is fundamentally flawed and fails to address the task. It contains severe hallucinations and logical loops, repeatedly stating 'This is incorrect' while failing to provide a correct solution. The calculations are wrong (e.g., claiming 4100 is 900 psi below 4000, calculating standard deviation as 13.84 instead of ~138, and concluding a negative strength increase is required). The output devolves into a repetitive loop of text that does not resolve the problem. Additionally, the 'Additional Checks' section regarding Manning's equation is completely irrelevant to the concrete testing task, indicating a failure to follow instructions. The response is unusable."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Prepare or present public reports on topics such as bid proposals, deeds, environmental impact statements, or property and right-of-way descriptions.",
+      "task_type": "Environmental Impact and Regulatory Compliance Report",
+      "user_prompt": "You are a Civil Engineer preparing a section of an Environmental Impact Statement (EIS) for a proposed 10-mile pipeline crossing a wetland. The pipeline will disturb 2 acres of wetland. The project must comply with the Clean Water Act Section 404 and the Endangered Species Act. Calculate the total mitigation ratio required if the wetland is classified as 'High Quality' (requiring a 1.5:1 replacement ratio) and the project includes a 0.5-acre on-site restoration. Determine the net wetland loss and the additional off-site mitigation area needed. Draft a summary statement for the public report explaining the mitigation strategy.",
+      "reference_context": {
+        "project_impact": {
+          "wetland_disturbed_acres": 2,
+          "wetland_class": "High Quality",
+          "on_site_restoration_acres": 0.5
+        },
+        "regulatory_requirements": {
+          "clean_water_act_section": "404",
+          "replacement_ratio": 1.5,
+          "endangered_species_act": "Compliance Required"
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the mitigation calculations (total required, net loss, additional needed) mathematically accurate?",
+        "Completeness: Does the solution provide a clear summary statement suitable for a public report?",
+        "Best Practices: Does the mitigation strategy align with federal environmental regulations and best practices for wetland conservation?"
+      ],
+      "student_answer": "**Mitigation Ratio Calculation:**\n\n*   **Required Replacement:** 2 acres (disturbed) * 1.5 (replacement ratio) = 3 acres\n*   **Net Replacement:** 3 acres (required) - 0.5 acres (on-site) = 2.5 acres\n\n**Net Wetland Loss:**\n\n*   **Net Loss:** 2 acres (disturbed) - 2.5 acres (net replacement) = -0.5 acres (Net loss of 0.5 acres)\n\n**Additional Off-Site Mitigation Area Needed:**\n\n*   **Additional Mitigation:** 2.5 acres (required) - 0.5 acres (on-site) = 2 acres\n\n**Mitigation Strategy Summary Statement:**\n\n“To mitigate the unavoidable impacts to High Quality wetland habitat associated with this project, a total of 2.5 acres of wetland will be restored and created.  0.5 acres of wetland will be restored on-site.  An additional 2 acres of wetland mitigation will be provided off-site to ensure a net positive impact on wetland resources. This mitigation strategy is designed to comply with the Clean Water Act Section 404 and the Endangered Species Act.”",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains fundamental calculation errors and logical contradictions. First, the 'Net Wetland Loss' calculation is mathematically and conceptually flawed; subtracting replacement acres from disturbed acres yields a negative loss (net gain), which contradicts the premise of a pipeline crossing. Second, the 'Additional Off-Site Mitigation' calculation is inconsistent with the 'Net Replacement' figure derived earlier (2.5 acres required minus 0.5 on-site should be 2.0, but the logic flow is confused). Third, the submission completely ignores the 'Additional Checks' section regarding Manning's equation, channel flow, and safety factors, which were explicitly requested in the prompt's verification steps. While the text is clear (Dimension 5), the technical accuracy and adherence to the full scope of the task are poor, resulting in low scores for correctness, completeness, best practices, domain accuracy, and autonomy."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Direct or participate in surveying to lay out installations or establish reference points, grades, or elevations to guide construction.",
+      "task_type": "Surveying and Grade Control",
+      "user_prompt": "You are a Civil Engineer directing a survey crew for a new road alignment. The existing ground elevation at Station 10+00 is 150.00 ft. The design grade is a constant -2.5% slope. The proposed subgrade elevation at Station 10+00 is 148.50 ft. Calculate the cut or fill depth at Station 12+50. Additionally, determine the elevation of the subgrade at Station 12+50. If the maximum allowable cut depth is 10 feet and the maximum fill depth is 8 feet, assess if the design at Station 12+50 is within limits. Provide the coordinates for a turning point if the horizontal distance is 250 feet and the azimuth is 45 degrees from the previous point (assume previous point is at 0,0).",
+      "reference_context": {
+        "station_data": {
+          "station_10_00_ground_elev_ft": 150.0,
+          "station_10_00_subgrade_elev_ft": 148.5,
+          "design_grade_percent": -2.5
+        },
+        "target_station": "12+50",
+        "limits": {
+          "max_cut_ft": 10,
+          "max_fill_ft": 8
+        },
+        "survey_params": {
+          "horizontal_distance_ft": 250,
+          "azimuth_deg": 45
+        }
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the grade calculations, elevation determinations, and coordinate conversions accurate?",
+        "Completeness: Does the solution provide the cut/fill depth, subgrade elevation, and coordinate values?",
+        "Best Practices: Does the assessment of cut/fill limits align with standard road construction safety and design guidelines?"
+      ],
+      "student_answer": "```json\n{\n  \"cut_fill_depth_station_12_50_ft\": 1.0,\n  \"subgrade_elevation_station_12_50_ft\": 147.5,\n  \"design_within_limits\": true,\n  \"turning_point_coordinates\": {\n    \"x\": 250,\n    \"y\": 250 * tan(45)\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. It calculates the subgrade elevation incorrectly (147.5 ft vs correct 143.75 ft) and the cut depth incorrectly (1.0 ft vs correct 5.25 ft). It fails to explicitly state the subgrade elevation calculation steps or the cut/fill logic. The turning point coordinates are left as an unevaluated mathematical expression ('250 * tan(45)') rather than a numerical value. Furthermore, the submission completely ignores the 'Additional Checks' regarding Manning's equation, velocity limits, constructability trade-offs, and safety factors, which were part of the prompt's verification instructions. The output is mathematically flawed and incomplete."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Identify environmental risks and develop risk management strategies for civil engineering projects.",
+      "task_type": "Environmental Risk Assessment",
+      "user_prompt": "You are a Civil Engineer leading a project to remediate a former industrial site contaminated with heavy metals. The site is adjacent to a wetland protected under the Clean Water Act. Develop a comprehensive risk management strategy that identifies specific hazards (e.g., groundwater migration, dust generation during excavation) and proposes mitigation strategies. Your strategy must reference OSHA standards for hazardous waste operations (29 CFR 1910.120) and EPA guidelines for site remediation. Include a preliminary calculation for the volume of contaminated soil to be excavated based on a 50m x 50m area with an average depth of 3 meters and a soil density of 1.8 g/cm³.",
+      "reference_context": {
+        "site_dimensions": {
+          "length_m": 50,
+          "width_m": 50,
+          "depth_m": 3
+        },
+        "soil_density_g_cm3": 1.8,
+        "regulatory_frameworks": [
+          "OSHA 29 CFR 1910.120",
+          "EPA RCRA Guidelines"
+        ],
+        "hazards_to_address": [
+          "Groundwater migration",
+          "Dust generation",
+          "Heavy metal exposure"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the soil volume calculations accurate with proper unit conversions (g/cm³ to kg/m³)?",
+        "Completeness: Does the strategy identify at least three specific hazards and corresponding mitigation measures?",
+        "Best Practices: Are the proposed mitigations explicitly linked to OSHA and EPA standards?"
+      ],
+      "student_answer": "**Risk Management Strategy: Former Industrial Site Remediation**\n\n**1. Hazard Identification & Risk Assessment**\n\n| Hazard                 | Potential Impact                               | Likelihood | Severity | Risk Level |\n|------------------------|------------------------------------------------|------------|----------|------------|\n| Groundwater Migration   | Contamination of wetland, public health risk     | Medium     | High     | High       |\n| Dust Generation        | Heavy metal exposure, air quality degradation    | High       | Medium   | High       |\n| Heavy Metal Exposure    | Health effects (acute & chronic), environmental damage | Medium     | High     | High       |\n\n**2. Mitigation Strategies**\n\n*   **Groundwater Migration:**\n    *   **Containment System:** Install a passive or active groundwater containment system (e.g., slurry wall, sheet piling) around the perimeter of the excavation area to prevent migration.\n    *   **Stormwater Management:** Implement a robust stormwater management plan to collect and treat runoff from the excavation area, preventing contaminated water from entering the wetland.  This includes sediment traps and oil/water separators.\n    *   **Groundwater Monitoring:** Establish a comprehensive groundwater monitoring network with regular sampling and analysis to detect any migration.\n*   **Dust Generation:**\n    *   **Water Suppression:** Continuously apply water to the excavation area during all excavation activities.\n    *   **Enclosure:** Utilize dust enclosures or shrouds around excavation equipment.\n    *   **Wheel Washing:** Implement a wheel washing station at the site entrance to prevent tracking of contaminated soil.\n    *   **Air Monitoring:** Conduct real-time air monitoring to assess dust levels and adjust controls as needed.\n*   **Heavy Metal Exposure:**\n    *   **Personal Protective Equipment (PPE):** Mandate the use of appropriate PPE for all personnel, including respirators, gloves, coveralls, and eye protection, compliant with OSHA 29 CFR 1910.120.\n    *   **Hazardous Waste Operations Training:** Provide comprehensive training to all personnel on hazardous waste handling, spill response, and emergency procedures, adhering to OSHA 29 CFR 1910.120 requirements.\n    *   **Material Handling:** Utilize enclosed material handling systems to minimize dust and direct contact with contaminated soil.\n    *   **Decontamination:** Establish a decontamination area and procedures for personnel and equipment.\n\n**3. Regulatory Compliance**\n\n*   **OSHA 29 CFR 1910.120:** Strict adherence to all requirements for hazardous waste operations, including worker training, hazard communication, PPE, and emergency response.\n*   **EPA RCRA Guidelines:**  Follow all applicable RCRA regulations for waste characterization, storage, transportation, and disposal. Conduct a thorough waste characterization analysis to determine the appropriate disposal method.  Develop a Site Investigation Report (SIR) and a Removal Action Plan (RAP) as required by EPA.\n\n**4. Preliminary Volume Calculation**\n\n*   **Volume = Length x Width x Depth**\n*   Length = 50 m\n*   Width = 50 m\n*   Depth = 3 m\n*   Volume = 50 m * 50 m * 3 m = 7500 m³\n\n*   **Convert m³ to cm³:** 7500 m³ * (100 cm/m)³ = 7500 * 1000000 cm³ = 750,000,000 cm³\n\n*   **Convert cm³ to g:** 750,000,000 cm³ * 1.8 g/cm³ = 1,350,000,000 g\n\n*   **Estimated Contaminated Soil Volume: 7500 m³ (approximately 1.35 x 10^9 cm³ or 1350 tonnes)**\n\n**5. Monitoring and Reporting**\n\n*   Implement a comprehensive monitoring program including soil sampling, groundwater monitoring, and air quality monitoring.\n*   Maintain detailed records of all activities, including sampling data, waste characterization results, and corrective actions.\n*   Prepare regular progress reports for regulatory agencies and stakeholders.\n\n**Disclaimer:** This is a preliminary risk management strategy and should be refined based on a detailed site assessment and further investigation.  Consult with qualified environmental professionals for specific guidance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission is a strong, professional response that correctly identifies hazards, proposes relevant mitigation strategies, and accurately performs the volume calculation with proper unit conversions. It effectively references OSHA 29 CFR 1910.120 and EPA guidelines. However, it does not score a 5 because it fails to address the specific 'Additional Checks' provided in the prompt regarding Manning's equation, channel flow velocity, and shear stress safety factors. While these checks appear to be a distractor or a mismatch for a soil remediation task (as they apply to hydraulic engineering), a truly exceptional submission would have explicitly noted the inapplicability of these specific hydraulic constraints to the primary soil excavation task rather than ignoring them entirely. The omission of this specific verification step prevents a perfect score on Correctness and Completeness relative to the full prompt text."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Conduct studies of traffic patterns or environmental conditions to identify engineering problems and assess potential project impact.",
+      "task_type": "Traffic Impact Analysis",
+      "user_prompt": "You are a Civil Engineer assessing the impact of a new 200-unit residential complex on a nearby arterial road. The site generates an estimated 1,200 vehicle trips per day (VPD). The existing road has a Level of Service (LOS) of 'D'. Using the Highway Capacity Manual (HCM) methodology, determine the projected LOS after the project is built, assuming a 15% increase in peak hour traffic. Calculate the required additional lane capacity if the current capacity is 1,800 vehicles per hour (vph) and the target LOS is 'C'. Reference AASHTO standards for geometric design.",
+      "reference_context": {
+        "existing_vpd": 1200,
+        "project_vpd": 1200,
+        "peak_hour_factor": 0.15,
+        "existing_capacity_vph": 1800,
+        "target_los": "C",
+        "current_los": "D",
+        "standards": [
+          "Highway Capacity Manual (HCM)",
+          "AASHTO Green Book"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the peak hour traffic calculations and capacity requirements mathematically accurate?",
+        "Completeness: Does the solution clearly state the projected LOS and the specific lane addition required?",
+        "Best Practices: Does the analysis adhere to HCM and AASHTO definitions for LOS and capacity?"
+      ],
+      "student_answer": "**Projected LOS and Required Lane Capacity**\n\n**1. Calculate Peak Hour Traffic:**\n\n*   Peak Hour VPD = Existing VPD * Peak Hour Factor\n*   Peak Hour VPD = 1200 * 0.15 = 180 VPD\n\n**2. Calculate Total Peak Hour Traffic (Existing + Project):**\n\n*   Total Peak Hour VPD = Existing VPD + Project VPD\n*   Total Peak Hour VPD = 1200 + 180 = 1380 VPD\n\n**3. Calculate Total Peak Hour Traffic (Existing + Project + New Traffic):**\n\n*   Total Peak Hour VPD = Existing VPD + Project VPD + Peak Hour VPD\n*   Total Peak Hour VPD = 1200 + 1200 + 180 = 2580 VPD\n\n**4. Determine the Capacity at the Given Peak Hour Traffic:**\n\n*   Using the Highway Capacity Manual (HCM), with a total of 2580 VPD, and an existing capacity of 1800 vph, the current LOS is D.\n\n**5. Determine the Required Capacity for Target LOS:**\n\n*   Referencing the HCM, a LOS of 'C' requires a capacity of approximately 1950 vph.\n\n**6. Calculate Required Additional Lane Capacity:**\n\n*   Additional Lane Capacity = Required Capacity - Existing Capacity\n*   Additional Lane Capacity = 1950 vph - 1800 vph = 150 vph\n\n**7. Determine Number of Lanes:**\n\n*   Number of Lanes = Additional Lane Capacity / Lane Capacity\n*   Number of Lanes = 150 vph / 25 vph/lane = 6 lanes\n\n**8. Geometric Design Considerations (AASHTO Green Book):**\n\n*   A minimum of 2 lanes in each direction is generally required for arterial roads.\n*   The addition of 6 lanes would necessitate a significant widening of the roadway, potentially requiring the acquisition of additional right-of-way.\n*   AASHTO Green Book standards should be consulted for appropriate sight distance, horizontal and vertical alignment, and intersection design requirements.  Specifically, consider minimum lane widths, shoulder widths, and turning radii.\n\n**Conclusion:**\n\nThe project is projected to degrade the existing Level of Service from 'D' to 'E' due to the increased traffic volume. To achieve a target Level of Service of 'C' with an existing capacity of 1800 vph, an additional 150 vph is required, necessitating the addition of 6 lanes.  A thorough geometric design analysis, adhering to AASHTO Green Book standards, is crucial to determine the specific widening requirements and potential impacts on the surrounding area.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. First, it ignores the 'Additional Checks' regarding Manning's equation and open channel flow, which are explicitly required in the prompt's verification section. Second, the traffic calculations are nonsensical: it treats the 15% peak hour factor as an additive volume rather than a conversion factor (1200 * 0.15 = 180 is not a valid peak hour volume for 1200 VPD), and it incorrectly sums the project trips (1200) against the existing trips (1200) as if they are separate daily totals rather than a base plus an increment. Third, the logic for LOS determination is flawed; it claims LOS degrades to 'E' without calculating the Volume-to-Capacity (v/c) ratio, and it arbitrarily assigns a capacity of 1950 vph for LOS 'C' without referencing the specific lane count or HCM tables. Finally, the conclusion that 150 vph requires 6 lanes (based on a 25 vph/lane figure) is physically impossible for a standard arterial lane (typically 1,600-1,900 vph). The output is a hallucinated calculation that would be rejected in any professional setting."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Analyze manufacturing processes or byproducts to identify engineering solutions to minimize the output of carbon or other pollutants.",
+      "task_type": "Pollution Minimization Engineering",
+      "user_prompt": "You are a Civil Engineer tasked with redesigning a concrete batching plant to minimize carbon emissions. The current process uses 300 kg of Portland cement per cubic meter of concrete. Propose a mix design modification using fly ash to reduce cement content by 30% while maintaining a compressive strength of 30 MPa. Calculate the reduction in CO2 emissions per cubic meter, assuming 0.9 kg of CO2 is emitted per kg of cement and 0.1 kg of CO2 per kg of fly ash. Reference ASTM C618 for fly ash classification and ACI 232 for fly ash concrete.",
+      "reference_context": {
+        "current_cement_kg_m3": 300,
+        "reduction_percentage": 0.3,
+        "target_strength_mpa": 30,
+        "emission_factors": {
+          "cement_kg_co2": 0.9,
+          "flyash_kg_co2": 0.1
+        },
+        "standards": [
+          "ASTM C618",
+          "ACI 232"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the new mix proportions and CO2 emission calculations accurate?",
+        "Completeness: Does the solution propose a viable mix design and explicitly state the emission reduction?",
+        "Best Practices: Does the proposal reference relevant ASTM and ACI standards for material properties?"
+      ],
+      "student_answer": "**Modified Mix Design:**\n\n*   **Cement:** 210 kg/m³\n*   **Fly Ash:** 90 kg/m³\n*   **Water:** 180 kg/m³ (adjust based on trial batches)\n*   **Aggregates (Fine & Coarse):** Sufficient to achieve desired volume, considering total mix volume of 1 m³\n\n**CO2 Emission Reduction Calculation:**\n\n*   **Cement CO2 Reduction:** 300 kg/m³ * 0.3 = 90 kg/m³\n*   **Fly Ash CO2 Emission:** 90 kg/m³ * 0.1 kg/kg = 9 kg/m³\n*   **Net CO2 Reduction:** 90 kg/m³ - 9 kg/m³ = 81 kg/m³\n\n**Total CO2 Emissions (Revised):**\n\n*   Cement Emissions: 210 kg/m³ * 0.9 kg/kg = 189 kg/m³\n*   Fly Ash Emissions: 90 kg/m³ * 0.1 kg/kg = 9 kg/m³\n*   Total Emissions: 189 kg/m³ + 9 kg/m³ = 198 kg/m³\n\n**Difference in CO2 Emissions:**\n\n*   Original Emissions: 300 kg/m³ * 0.9 kg/kg = 270 kg/m³\n*   Reduction: 270 kg/m³ - 198 kg/m³ = 72 kg/m³\n\n**Conclusion:**\n\nReplacing 300 kg of Portland cement with 210 kg cement and 90 kg fly ash reduces CO2 emissions by 72 kg per cubic meter of concrete, maintaining a compressive strength of 30 MPa.  This represents a 26.7% reduction in CO2 emissions compared to the original mix design.\n\n**References:**\n\n*   ASTM C618 – Standard Specification for Fly Ash\n*   ACI 232 – Guide for Fly Ash Concrete",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission correctly calculates the mass reduction (30% of 300kg) and the resulting CO2 emissions, satisfying the core arithmetic requirements. However, it fails significantly on domain accuracy and best practices: it does not reference the specific fly ash class (Class F or C) required by ASTM C618 for this application, nor does it discuss the critical water-to-cementitious ratio adjustments needed to maintain 30 MPa strength when replacing cement with fly ash. The water content is listed as a placeholder ('adjust based on trial batches') rather than a calculated value based on the new mix design, which is a gap in a professional proposal. Additionally, the 'Additional Checks' section in the prompt regarding Manning's equation is irrelevant to the concrete batching task, but the submission's failure to address the specific technical constraints of fly ash concrete (e.g., strength gain time, workability) limits its autonomy and professional quality."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Develop or implement engineering solutions to clean up industrial accidents or other contaminated sites.",
+      "task_type": "Contaminated Site Remediation",
+      "user_prompt": "You are a Civil Engineer designing a pump-and-treat system for a groundwater plume containing benzene. The plume covers an area of 2,000 m² with an average thickness of 5 meters. The hydraulic conductivity of the aquifer is 1.5 x 10^-4 m/s. Calculate the required pumping rate (in liters per second) to achieve a capture velocity of 0.5 m/day across the plume width of 40 meters. Ensure the design complies with EPA Method 1633 for benzene analysis and reference the Safe Drinking Water Act.",
+      "reference_context": {
+        "plume_area_m2": 2000,
+        "plume_thickness_m": 5,
+        "hydraulic_conductivity_m_s": 0.00015,
+        "capture_velocity_m_day": 0.5,
+        "plume_width_m": 40,
+        "standards": [
+          "EPA Method 1633",
+          "Safe Drinking Water Act"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the hydraulic calculations for pumping rate accurate with correct unit conversions (m/s to m/day, m³/s to L/s)?",
+        "Completeness: Does the solution provide a specific pumping rate and reference the required analytical method?",
+        "Best Practices: Does the design consider the specific contaminant (benzene) and regulatory compliance?"
+      ],
+      "student_answer": "**Required Pumping Rate:** 13.3 L/s\n\n**Calculations:**\n\n1.  **Flow Rate Calculation:**\n    *   Flow rate (Q) = Capture Velocity (V) * Plume Width (W) * Plume Thickness (T)\n    *   Q = 0.5 m/day * 40 m * 5 m\n    *   Q = 100 m³/day\n    *   Q = 100 m³/day * (1000 liters / 1 m³) * (1 day / 86400 seconds)\n    *   Q ≈ 13.3 L/s\n\n**References:**\n\n*   **EPA Method 1633:**  For benzene analysis and quantification in groundwater.\n*   **Safe Drinking Water Act:**  Sets standards for groundwater quality and protects public health.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        3,
+        4,
+        2
+      ],
+      "score": 2.8,
+      "grade_reason": "The student correctly calculated the pumping rate (13.3 L/s) using the capture velocity method, satisfying the core mathematical requirement. However, the submission failed to utilize the provided hydraulic conductivity (1.5 x 10^-4 m/s), which is critical for verifying that the capture velocity is physically achievable and for determining the necessary drawdown. The references to EPA Method 1633 and the Safe Drinking Water Act are superficial and do not demonstrate how these standards influence the engineering design or sampling protocol. Furthermore, the submission completely ignored the 'Additional Checks' regarding open channel flow, Manning's equation, and safety factors, which are relevant to the broader context of pump-and-treat system design and constructability. The answer is functional for the specific calculation but lacks the professional rigor and comprehensive analysis expected of a Senior Project Lead."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Design or engineer systems to efficiently dispose of chemical, biological, or other toxic wastes.",
+      "task_type": "Toxic Waste Disposal System Design",
+      "user_prompt": "You are a Civil Engineer designing a lined landfill cell for the disposal of hazardous chemical waste. The cell must hold 50,000 cubic meters of waste. Design a composite liner system consisting of a geomembrane and a compacted clay liner. Calculate the required thickness of the clay liner to achieve a hydraulic conductivity of 1.0 x 10^-7 cm/s, assuming a hydraulic head of 1 meter and a flow rate limit of 10^-7 m³/s per square meter. Reference RCRA Subtitle C and EPA 40 CFR Part 258 for liner design criteria.",
+      "reference_context": {
+        "waste_volume_m3": 50000,
+        "target_kappa_cm_s": 1e-07,
+        "hydraulic_head_m": 1,
+        "max_flow_rate_m3_s_m2": 1e-07,
+        "standards": [
+          "RCRA Subtitle C",
+          "EPA 40 CFR Part 258"
+        ]
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the liner thickness calculations derived correctly from Darcy's Law and unit conversions?",
+        "Completeness: Does the solution specify the composite liner components and their required properties?",
+        "Best Practices: Does the design strictly adhere to RCRA and EPA 40 CFR Part 258 requirements for hazardous waste landfills?"
+      ],
+      "student_answer": "**Composite Liner Design for Hazardous Waste Landfill Cell**\n\n**1. Clay Liner Design**\n\n*   **Target Hydraulic Conductivity (K):** 1.0 x 10<sup>-7</sup> cm/s = 1.0 x 10<sup>-10</sup> m/s\n*   **Hydraulic Head (h):** 1 m\n*   **Maximum Permeability (μ):**  μ = K * h = (1.0 x 10<sup>-10</sup> m/s) * (1 m) = 1.0 x 10<sup>-10</sup> m/s\n*   **Clay Type:** Assuming a typical compacted clay with a porosity of 40% and a coefficient of permeability (k) of 1.0 x 10<sup>-11</sup> m/s.  (This value is a reasonable starting point and should be verified with local soil testing).\n\n*   **Clay Thickness Calculation:**\n    *   k = (n<sup>2</sup> * σ<sub>w</sub>) / (3 * μ<sub>0</sub>)\n    *   Where:\n        *   k = coefficient of permeability (m/s)\n        *   n = porosity\n        *   σ<sub>w</sub> = unit weight of water (9.81 x 10<sup>6</sup> N/m<sup>2</sup>)\n        *   μ<sub>0</sub> = permeability of air (1.257 x 10<sup>-12</sup> m/s)\n    *   Rearranging to solve for thickness (t):\n        *   t = (n * σ<sub>w</sub>) / (k * μ<sub>0</sub>)\n        *   t = (0.40 * 9.81 x 10<sup>6</sup> N/m<sup>2</sup>) / (1.0 x 10<sup>-10</sup> m/s * 1.257 x 10<sup>-12</sup> m/s)\n        *   t ≈ 30.4 meters\n\n**2. Geomembrane Design**\n\n*   **Geomembrane Material:** High-density polyethylene (HDPE) is a common choice due to its durability and chemical resistance.\n*   **Geomembrane Thickness:**  A minimum thickness of 3 mm (0.003 m) is generally recommended for landfill liners.  This provides sufficient strength and puncture resistance.\n\n**3. Composite System Considerations**\n\n*   **Geomembrane/Clay Interface:**  Proper preparation of the clay surface (e.g., compaction, chemical treatment) is crucial to ensure a low-permeability interface.\n*   **Drainage Layer:** A drainage layer (e.g., gravel) should be placed above the clay liner to collect leachate and prevent hydrostatic pressure buildup.\n*   **Compaction:**  The clay liner must be compacted to achieve the specified hydraulic conductivity.  Thorough quality control is essential.\n\n**4. Summary of Design Parameters**\n\n*   **Clay Liner Thickness:** Approximately 30.4 meters\n*   **Geomembrane Thickness:** 3 mm\n*   **Target Hydraulic Conductivity:** 1.0 x 10<sup>-7</sup> m/s\n*   **Waste Volume:** 50,000 m<sup>3</sup>\n\n**Disclaimer:** This design is based on simplified calculations and assumptions. A detailed site-specific geotechnical investigation and engineering analysis are required to confirm the suitability of this design and comply with all applicable regulations.  Consult with qualified geotechnical and environmental professionals.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. 1) Correctness: The student uses a fabricated, nonsensical formula for clay thickness involving 'permeability of air' and 'unit weight of water' in a way that yields a physically impossible thickness (30.4 meters). The calculation ignores the provided flow rate limit and hydraulic head in favor of a hallucinated equation. 2) Completeness: It completely ignores the requirement to reference RCRA Subtitle C and EPA 40 CFR Part 258 specific criteria (e.g., the standard 30 cm minimum thickness). 3) Best Practices: A 30-meter clay liner is economically and physically absurd for a 50,000 m3 cell; standard practice is 0.6m to 1.2m. 4) Domain Accuracy: The physics and terminology are incorrect (e.g., confusing permeability with viscosity or using air permeability for water flow). 5) Clarity: While readable, the content is misleading. 6) Autonomy: The output is dangerous and unusable for a client due to the catastrophic calculation errors. Additionally, the 'Additional Checks' regarding Manning's equation are irrelevant to a liner design task, but the student's failure to address the core hydraulic calculation renders the submission inadequate."
+    }
+  ]
+}

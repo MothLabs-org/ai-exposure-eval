@@ -1,0 +1,1115 @@
+{
+  "meta": {
+    "job_title": "Tax Examiners and Collectors, and Revenue Agents",
+    "job_id": "tax_agent_132081",
+    "onet_code": "13-2081.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 25,
+    "evaluated_tasks": 25,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.73,
+      "dimensions": {
+        "Correctness": 2.6,
+        "Completeness": 2.56,
+        "Best Practices": 2.48,
+        "Domain Accuracy": 2.68,
+        "Clarity": 3.56,
+        "Autonomy": 2.48
+      },
+      "evaluated_tasks": 25,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1011.76
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Send notices to taxpayers when accounts are delinquent.",
+      "task_type": "Delinquency Notice Generation",
+      "user_prompt": "Draft a formal CP501 notice for a taxpayer who is 90 days delinquent on their 2023 Form 1120 corporate tax return. The taxpayer, 'Apex Logistics LLC' (EIN: 83-1234567), owes $45,200 in unpaid tax plus $12,500 in penalties and interest. The notice must explicitly state the total amount due, the deadline for payment to avoid further enforcement action, and the specific IRC section regarding the failure to file and pay. Ensure the tone is professional yet firm, adhering to IRS Publication 1 guidelines.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Corporation",
+          "ein": "83-1234567",
+          "tax_year": 2023,
+          "form_type": "1120",
+          "unpaid_tax": 45200,
+          "penalties_interest": 12500,
+          "days_delinquent": 90
+        },
+        "applicable_law_snippet": "IRC Section 6151(a) requires payment of tax at the time the return is due. IRC Section 6651(a)(1) and (2) impose penalties for failure to file and failure to pay."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Does the notice correctly calculate the total liability and cite the correct tax year and form?",
+        "Compliance: Does the notice strictly follow the language and structure required by IRS Publication 1 and CP501 templates?",
+        "Clarity: Is the deadline and consequence of non-payment clearly communicated?"
+      ],
+      "student_answer": "**INTERNAL REVENUE SERVICE**\n\n**CP501 Notice**\n\n**Date:** October 26, 2023\n\n**To:** Apex Logistics LLC\n     83-1234567\n     [Address on Record]\n\n**From:** Tax Examiners and Collectors\n         Internal Revenue Service\n\n**Subject: Failure to File and Pay – 2023 Form 1120**\n\nThis notice concerns your 2023 Form 1120 corporate income tax return. Our records indicate that your return was due on April 15, 2023, and remains unpaid. As of today’s date, Apex Logistics LLC is 90 days delinquent.\n\nThe amount of tax, penalties, and interest currently due is **$57,700** ($45,200 in unpaid tax plus $12,500 in penalties and interest).\n\n**You are hereby notified that you must pay the full amount of $57,700 by January 26, 2024, to avoid further enforcement action, including the possibility of a Notice of Intent to Levy.**\n\nFailure to remit the full amount due by the specified date will result in continued accrual of penalties and interest, as well as potential legal action.\n\nThis action is taken pursuant to Internal Revenue Code Section 6151(a), which requires payment of tax at the time the return is due, and Internal Revenue Code Sections 6651(a)(1) and (2), which impose penalties for failure to file and failure to pay.\n\nPayment can be made via:\n\n*   **Online:** IRS.gov/payments\n*   **Mail:** U.S. Mail to the address listed above.\n*   **Phone:** 1-800-829-1040\n\nFor further information or to discuss payment arrangements, please contact us at [Phone Number on Record].\n\nSincerely,\n\nTax Examiners and Collectors\nInternal Revenue Service\n\n**Note:** This notice is for informational purposes only and does not constitute legal advice.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        3,
+        5,
+        4,
+        3
+      ],
+      "score": 3.8,
+      "grade_reason": "The submission correctly identifies the taxpayer, amounts, and relevant IRC sections (6151(a), 6651(a)(1)-(2)), and performs the addition accurately. However, it fails to meet industry standards for a formal CP501 notice in several ways: 1) It lacks the specific CP501 notice number and reference code required for IRS correspondence. 2) The payment deadline logic is flawed; setting a deadline of January 26, 2024 (3 months out) for a 90-day delinquent notice is inconsistent with standard IRS enforcement timelines, which typically provide 10-30 days for immediate payment to avoid levy. 3) The formatting is too generic, missing the standard IRS header layout and specific account reference numbers. 4) The 'Note' at the bottom regarding legal advice is unnecessary for an internal IRS notice. While the core data is correct (Domain Accuracy: 5), the professional execution and adherence to specific IRS communication protocols (Best Practices: 3) prevent a top score, and the lack of specific notice identifiers reduces its autonomy for immediate use."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Confer with taxpayers or their representatives to discuss the issues, laws, and regulations involved in returns, and to resolve problems with returns.",
+      "task_type": "Complex Return Dispute Resolution",
+      "user_prompt": "Simulate a resolution strategy for a taxpayer, 'Sarah Jenkins' (SSN: 123-45-6789), who disputes a $15,000 adjustment regarding the deductibility of home office expenses on her Schedule C. She claims 20% of her 2,000 sq. ft. home is used exclusively for business. The IRS disallowed the deduction based on a lack of 'regular and exclusive use' evidence. Analyze the facts against IRC Section 280A and Treasury Regulation 1.280A-3. Provide a step-by-step argument to present to the taxpayer's representative to either sustain the adjustment or negotiate a partial allowance based on the 'simplified method' alternative.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Individual",
+          "ssn": "123-45-6789",
+          "filing_status": "Single",
+          "disputed_amount": 15000,
+          "home_size": 2000,
+          "business_area": 400,
+          "usage_type": "Exclusive"
+        },
+        "applicable_law_snippet": "IRC Section 280A(c)(1) allows deductions for business use of a home if used exclusively and regularly. Treasury Regulation 1.280A-3 outlines the requirements for exclusive and regular use."
+      },
+      "evaluation_criteria": [
+        "Legal Analysis: Does the response correctly apply the 'exclusive and regular use' test from IRC 280A?",
+        "Strategy: Does the response offer a viable path to resolution, including the simplified method calculation?",
+        "Evidence: Does the response identify specific documentation the taxpayer must provide to support their claim?"
+      ],
+      "student_answer": "**Subject: Regarding Schedule C Home Office Deduction – Sarah Jenkins (SSN: 123-45-6789)**\n\n**To:** Taxpayer Representative\n\n**Date:** October 26, 2023\n\n**Resolution Strategy:**\n\nThe IRS disallowed the home office deduction for Sarah Jenkins based on the lack of sufficient evidence demonstrating “regular and exclusive use,” as required by IRC Section 280A(c)(1) and Treasury Regulation 1.280A-3. While Ms. Jenkins asserts 20% of her 2,000 sq. ft. home is used exclusively for business (400 sq. ft.), the current documentation does not meet the stringent requirements for establishing this claim.\n\n**Analysis:**\n\n*   **Exclusive Use:**  Treasury Regulation 1.280A-3(b)(1) states that a portion of a home qualifies for the deduction only if it is used “solely” for business.  Ms. Jenkins’ claim of “exclusive use” is problematic.  The IRS requires more than simply stating the space is used only for business.  Evidence must demonstrate that the business activities are *confined* to that space.  The presence of personal activities within the 400 sq. ft. area, even infrequent ones, undermines the claim of exclusive use.\n\n*   **Regular Use:**  Treasury Regulation 1.280A-3(b)(2) requires “regular” use, meaning the space is used consistently for business purposes.  The provided documentation lacks specific details regarding the frequency and duration of business activities within the home office.  A simple statement of use is insufficient.\n\n*   **Applying the Facts:**  Ms. Jenkins’ assertion of 20% business use based on 400 sq. ft. is mathematically sound. However, without corroborating evidence of consistent and exclusive use, the deduction cannot be granted.\n\n**Proposed Resolution Options:**\n\n1.  **Sustain Adjustment:** We can maintain the $15,000 adjustment.  To do so, we require compelling evidence demonstrating consistent and exclusive business use within the 400 sq. ft. area. This could include:\n    *   Detailed logs of business activities performed in the home office, including dates, times, and specific tasks.\n    *   Photographs clearly showing the business area and the absence of personal use.\n    *   A written statement from Ms. Jenkins detailing the exclusive nature of the space and the business activities conducted there.\n\n2.  **Negotiated Partial Allowance – Simplified Method (Treasury Regulation 1.280A-3(d)(4)):**  Given the lack of robust evidence, we propose a partial allowance under the simplified method. This method allows a deduction of $5 per square foot, up to a maximum of 300 square feet.  Applying this to Ms. Jenkins’ 400 sq. ft. space, a maximum deduction of $1500 could be considered. This acknowledges the business use while recognizing the evidentiary shortcomings.  We would require Ms. Jenkins to provide documentation supporting a *consistent* business activity within the 300 sq. ft. limit.\n\n**Recommendation:**\n\nWe recommend initiating a dialogue with Ms. Jenkins’ representative to request supplemental documentation supporting exclusive and regular use. If compelling evidence is not provided, we will sustain the adjustment.  If the provided documentation meets the criteria for the simplified method, we can negotiate a partial allowance of $1500.\n\n**Disclaimer:** This resolution strategy is based on the information provided and current IRS regulations. Further investigation and review of Ms. Jenkins’ complete tax return and supporting documentation may necessitate adjustments to this strategy.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on domain accuracy and correctness. It incorrectly cites Treasury Regulation 1.280A-3(d)(4) for the simplified method; the simplified method is actually found in IRC Section 280A(c)(1)(B) and Treas. Reg. 1.280A-3(e). Furthermore, the proposed resolution strategy is legally flawed: the simplified method is an alternative calculation for the deduction amount, not a 'negotiated partial allowance' based on evidentiary shortcomings. The student suggests a $1,500 allowance (300 sq ft * $5) as a compromise, but the simplified method is a statutory right if the taxpayer qualifies, not a discretionary negotiation point for partial evidence. Additionally, the student fails to mention the 'principal place of business' requirement (IRC 280A(c)(1)(A)), which is a critical threshold often missed in home office cases. The tone is professional, but the legal substance contains fundamental errors that would lead to incorrect advice."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Notify taxpayers of any overpayment or underpayment, and either issue a refund or request further payment.",
+      "task_type": "Refund Calculation and Issuance Verification",
+      "user_prompt": "Calculate the final refund amount for taxpayer 'Michael Chen' (SSN: 987-65-4321) who filed Form 1040 for 2023. The return shows a total tax liability of $22,000, but the taxpayer made estimated payments of $24,500 and had $1,200 withheld. However, the system flags a $500 offset for a past-due child support obligation under IRC Section 6402. Determine the net refund amount to be issued, identify the specific IRC section governing the offset, and draft the notification text explaining the reduction to the taxpayer.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Individual",
+          "ssn": "987-65-4321",
+          "filing_status": "Married Filing Jointly",
+          "total_liability": 22000,
+          "estimated_payments": 24500,
+          "withholding": 1200,
+          "offset_reason": "Child Support",
+          "offset_amount": 500
+        },
+        "applicable_law_snippet": "IRC Section 6402(a) authorizes the Secretary to credit overpayments against any liability. IRC Section 6402(d) mandates offsets for past-due child support."
+      },
+      "evaluation_criteria": [
+        "Mathematical Accuracy: Is the net refund calculated correctly (Total Payments - Liability - Offset)?",
+        "Legal Citation: Is IRC 6402 correctly cited for both the credit and the offset?",
+        "Communication: Is the notification clear about why the refund was reduced?"
+      ],
+      "student_answer": "**Net Refund Amount:** $1300\n\n**IRC Section:** 6402(d)\n\n**Notification Text:**\n\nDear Michael Chen,\n\nThis letter concerns your 2023 tax return. Your total tax liability was $22,000. However, due to estimated payments of $24,500 and $1,200 in withholding, you are due a refund.\n\nWe have identified a $500 offset for a past-due child support obligation, as authorized under IRC Section 6402(d). This offset reduces your refund amount to $1300.\n\nSincerely,\n\nTax Examiners and Collectors",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.5,
+      "grade_reason": "The submission correctly calculates the net refund ($25,700 total payments - $22,000 liability - $500 offset = $1300) and cites the correct IRC section (6402(d)). However, the notification text is weak; it fails to explicitly state the total payments made ($25,700) before the offset, making the math opaque to the taxpayer. It also lacks professional formatting elements like a reference number or specific contact details, and the tone is slightly informal for a formal IRS notice. The calculation is correct, but the communication lacks the completeness and polish expected of an industry-standard document."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Maintain records for each case, including contacts, telephone numbers, and actions taken.",
+      "task_type": "Case File Documentation and Audit Trail",
+      "user_prompt": "Create a comprehensive case log entry for a follow-up call with taxpayer 'Global Tech Inc.' (EIN: 99-8877665) regarding their 2022 Form 1120. The call occurred on October 15, 2023, at 10:00 AM with the CFO, 'John Doe'. The taxpayer agreed to a partial payment plan of $5,000/month starting November 1st. The call lasted 15 minutes. Document the interaction in a format suitable for an IRS audit trail, including the specific IRC section regarding the installment agreement authority (IRC 6159) and the next action date.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Corporation",
+          "ein": "99-8877665",
+          "tax_year": 2022,
+          "contact_person": "John Doe",
+          "contact_title": "CFO",
+          "call_date": "2023-10-15",
+          "call_duration_minutes": 15,
+          "agreement_type": "Installment Agreement",
+          "monthly_payment": 5000,
+          "start_date": "2023-11-01"
+        },
+        "applicable_law_snippet": "IRC Section 6159 authorizes the Commissioner to enter into installment agreements with taxpayers."
+      },
+      "evaluation_criteria": [
+        "Completeness: Does the log include all required fields (date, time, participant, outcome, next steps)?",
+        "Accuracy: Is the installment agreement start date and amount correctly recorded?",
+        "Compliance: Is the correct IRC section cited for the agreement authority?"
+      ],
+      "student_answer": "**Case Log Entry**\n\n**Case Number:** 20231015-GTInc-001\n**Taxpayer:** Global Tech Inc.\n**EIN:** 99-8877665\n**Tax Year:** 2022\n**Date of Contact:** 2023-10-15\n**Time of Contact:** 10:00 AM\n**Contacted:** John Doe, CFO\n**Call Duration:** 15 minutes\n**Agent:** [Your Name/Agent ID]\n\n**Subject:** Follow-up – 2022 Form 1120 – Installment Agreement Discussion\n\n**Summary of Interaction:**\n\nOn October 15, 2023, a follow-up call was conducted with John Doe, CFO of Global Tech Inc., regarding outstanding tax liability for the 2022 tax year.  The initial notice indicated a balance of [Insert Amount – *This needs to be populated based on the underlying data*].  Mr. Doe acknowledged the outstanding balance and expressed willingness to establish an installment agreement.  After discussing the taxpayer’s financial situation, an agreement was reached for Global Tech Inc. to make monthly payments of $5,000, commencing November 1, 2023.\n\n**Terms of Installment Agreement:**\n\n*   **Taxpayer:** Global Tech Inc.\n*   **Balance Due:** [Insert Amount – *This needs to be populated based on the underlying data*]\n*   **Monthly Payment:** $5,000\n*   **Start Date:** 2023-11-01\n*   **Payment Frequency:** Monthly\n\n**Legal Authority:**\n\nThis installment agreement is authorized under IRC Section 6159, which provides the Commissioner with the authority to enter into installment agreements with taxpayers.\n\n**Next Action:**\n\n*   Prepare and transmit Installment Agreement Form 9465-A to the taxpayer for signature.\n*   Schedule a follow-up call in 30 days (2024-01-15) to confirm receipt and signature of Form 9465-A and to review the payment schedule.\n\n**Status:** Pending Agreement Execution\n\n**Notes:**  Taxpayer cooperative.  Further investigation into financial records may be required if payments are not received as scheduled.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the taxpayer details, date, and IRC 6159 authority. However, it fails to address the specific task requirement to document the interaction in a format suitable for an IRS audit trail by including placeholders like '[Insert Amount]' and '[Your Name/Agent ID]' instead of handling the missing data logically or noting it as unknown. The 'Next Action' date of 2024-01-15 is arbitrary and not derived from the prompt's context, reducing its utility as a specific case log. While the domain accuracy regarding IRC 6159 is correct, the reliance on placeholders and lack of a definitive next action date based on the prompt's constraints prevents a score of 5. The output requires human review to fill in missing critical data points, lowering the Autonomy score."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Contact taxpayers by mail or telephone to address discrepancies and to request supporting documentation.",
+      "task_type": "Documentation Request and Discrepancy Resolution",
+      "user_prompt": "Draft a formal letter (Letter 226J equivalent) to taxpayer 'Elena Rodriguez' (SSN: 456-78-9012) requesting documentation to substantiate a $3,500 charitable contribution deduction claimed on her 2023 Form 1040. The IRS has no record of the contribution. The letter must cite IRC Section 170 and Treasury Regulation 1.170A-1, specify the exact documents required (e.g., bank record, receipt, or written acknowledgment), and set a deadline of 30 days from the date of the letter. The tone must be inquisitive but firm.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Individual",
+          "ssn": "456-78-9012",
+          "filing_status": "Head of Household",
+          "disputed_item": "Charitable Contribution",
+          "disputed_amount": 3500,
+          "tax_year": 2023
+        },
+        "applicable_law_snippet": "IRC Section 170 allows a deduction for charitable contributions. Treasury Regulation 1.170A-1 requires substantiation for contributions of $250 or more."
+      },
+      "evaluation_criteria": [
+        "Legal Basis: Does the letter correctly reference IRC 170 and the relevant Treasury Regulation?",
+        "Specificity: Does the letter clearly list the required documentation for a $3,500 contribution?",
+        "Procedural Correctness: Is the 30-day deadline clearly stated and is the consequence of non-response mentioned?"
+      ],
+      "student_answer": "**Internal Revenue Service**\n**[IRS Address]**\n\n**Date:** October 26, 2023\n\n**Elena Rodriguez**\n**[Taxpayer Address]**\n\n**Subject: Request for Documentation – Charitable Contribution Deduction – 2023 Tax Year**\n\nDear Ms. Rodriguez,\n\nThis letter concerns a charitable contribution deduction of $3,500 claimed on your 2023 Form 1040. Our records indicate no corresponding documentation to support this deduction.\n\nPursuant to IRC Section 170, which allows for deductions of qualified charitable contributions, and Treasury Regulation 1.170A-1, which requires substantiation for contributions of $250 or more, we require documentation to verify the validity of this deduction.\n\nTo assist us in reviewing your claim, please provide the following documentation:\n\n*   A bank record showing the transfer of funds to the charitable organization.\n*   A written acknowledgment from the charitable organization, including the name of the organization, the date of the contribution, the amount of the contribution, and a statement that the contribution was made in reliance on IRS determination under IRC Section 170.\n*   A receipt from the charitable organization, if one was provided.\n\nPlease submit the requested documentation within thirty (30) days of the date of this letter, i.e., by November 25, 2023.  You may submit the documentation by mail to the address above or electronically through the IRS website at [Insert IRS e-file link here].\n\nFailure to provide the requested documentation within the specified timeframe may result in the disallowance of the charitable contribution deduction.\n\nThank you for your prompt attention to this matter.\n\nSincerely,\n\n[Your Name]\nTax Examiner\nInternal Revenue Service",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly addresses the core task requirements, including the specific taxpayer details, the disputed amount, the relevant IRC and Treasury Regulation citations, and the 30-day deadline. The tone is appropriately firm yet inquisitive. However, the document is not quite 'exceptional' (5) for two reasons: 1) It uses placeholders like '[IRS Address]' and '[Insert IRS e-file link here]' which, while standard for a template, prevent it from being a fully polished, ready-to-send document without minor human intervention (affecting Autonomy and Completeness). 2) The list of required documents includes 'A receipt... if one was provided' as a separate bullet point alongside 'A written acknowledgment,' which is slightly redundant since a written acknowledgment often serves as the receipt for cash contributions over $250, though not a critical error. The domain accuracy regarding the law is perfect."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Answer questions from taxpayers and assist them in completing tax forms.",
+      "task_type": "Tax Form Assistance and Code Interpretation",
+      "user_prompt": "Provide a detailed explanation and calculation guide for a taxpayer, 'David Miller' (SSN: 234-56-7890), who is confused about the 'Earned Income Credit' (EIC) on his 2023 Form 1040. He has one qualifying child, a modified AGI of $21,000, and earned income of $20,500. Explain the eligibility criteria under IRC Section 32, determine if he qualifies based on the 2023 income limits, and calculate the approximate credit amount using the standard EIC table logic. The response must be written in plain language suitable for a non-expert.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Individual",
+          "ssn": "234-56-7890",
+          "filing_status": "Single",
+          "qualifying_children": 1,
+          "earned_income": 20500,
+          "agi": 21000,
+          "tax_year": 2023
+        },
+        "applicable_law_snippet": "IRC Section 32 defines the Earned Income Credit. The credit is subject to income phase-out limits which vary by filing status and number of children."
+      },
+      "evaluation_criteria": [
+        "Eligibility Analysis: Does the response correctly determine eligibility based on income and filing status?",
+        "Calculation: Is the credit amount accurately estimated based on 2023 EIC parameters?",
+        "Clarity: Is the explanation of IRC Section 32 and the phase-out rules accessible to a layperson?"
+      ],
+      "student_answer": "**Earned Income Credit (EIC) Explanation for David Miller**\n\nThe Earned Income Credit (EIC) is a tax refund for low-to-moderate income working families and individuals. It’s designed to help people who are working but still need a little extra assistance.\n\n**Eligibility – IRC Section 32**\n\nTo qualify for the EIC, you must meet several requirements outlined in IRC Section 32. Here’s a breakdown:\n\n1.  **Earned Income:** You must have earned income from wages, salaries, tips, self-employment, or other sources. Your earned income must be at least $100.\n2.  **Qualifying Child:** You must have a qualifying child. A qualifying child is generally a son, daughter, stepchild, adopted child, stepchild, sibling, half-sibling, or unremarried child-in-law. They must be under age 19 (or under age 24 if a full-time student), or permanently and totally disabled.\n3.  **Income Limits:** Your adjusted gross income (AGI) must be below a certain limit, which depends on your filing status and the number of qualifying children you have.\n4.  **Filing Status:** You must be filing as single, head of household, or qualifying widow(er).\n\n**Does David Miller Qualify?**\n\nLet’s see if David Miller meets the requirements based on the information you provided:\n\n*   **Earned Income:** David has earned income of $20,500, which meets the minimum requirement of $100.\n*   **Qualifying Child:** David has one qualifying child.\n*   **Adjusted Gross Income (AGI):** David’s AGI is $21,000.\n*   **Income Limits (2023):**  Here’s how the income limits work for the EIC in 2023, based on single filing status and one qualifying child:\n\n    *   **Maximum AGI:** $43,951\n    *   **Phase-Out Range:**  Between $43,951 and $49,275, the EIC begins to phase out.\n\nDavid’s AGI of $21,000 is *below* the maximum AGI limit of $43,951. Therefore, he is eligible for the EIC. Because his AGI is below the phase-out range, he will not have his credit reduced.\n\n**Calculating the Approximate EIC Credit**\n\nThe EIC is calculated using a table based on your earned income and AGI. Here’s how it works for David:\n\n1.  **Find the Correct Row:** Look at the EIC table (available on the IRS website – search for “EIC table 2023”) and find the row that corresponds to your earned income ($20,500).\n2.  **Find the Correct Column:** Find the column that corresponds to your AGI ($21,000).\n3.  **Read the Credit Amount:** The intersection of that row and column will tell you the maximum EIC amount you can claim.\n\nUsing the 2023 EIC table, with an earned income of $20,500 and an AGI of $21,000, David Miller is eligible for an EIC of **$6,690**.\n\n**Important Note:** This is an *approximate* calculation. The actual EIC amount you receive may vary depending on other factors, such as household size, refundable tax credits, and other adjustments. It is crucial to complete Form 1040 and schedule EIC to determine the exact amount of the credit.\n\n**Disclaimer:** *I am an AI Chatbot and not a tax professional. This information is for general guidance only. Consult with a qualified tax advisor for personalized advice.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        3,
+        5,
+        4
+      ],
+      "score": 4.0,
+      "grade_reason": "The submission is well-structured and clear (Clarity 5) and addresses the task requirements (Correctness 4). However, it contains a significant Domain Accuracy error (3): it incorrectly states the 2023 phase-out range for a single filer with one child as $43,951 to $49,275. The actual phase-out for 2023 begins at $24,930 and ends at $49,390. Consequently, the calculated credit amount of $6,690 is incorrect; at an income of $20,500, the credit should be in the phase-out range (approx. $5,600-$5,800), not the maximum. The explanation of the calculation method is also slightly vague by suggesting a table lookup rather than explaining the phase-out mechanics, though the disclaimer is appropriate."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Determine appropriate methods of debt settlement, such as offers of compromise, wage garnishment, or seizure and sale of property.",
+      "task_type": "Debt Resolution Strategy",
+      "user_prompt": "Analyze the attached taxpayer profile and determine the most appropriate debt settlement method. The taxpayer owes $125,000 in back taxes, has no liquid assets, but owns a commercial property valued at $200,000 with a $150,000 mortgage. They have a history of partial payments. Provide a recommendation on whether to pursue an Offer in Compromise, wage garnishment, or lien filing, citing the specific IRC section that supports your choice.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Corporation",
+          "total_liability": 125000,
+          "liquid_assets": 5000,
+          "real_estate": {
+            "value": 200000,
+            "mortgage": 150000,
+            "equity": 50000
+          },
+          "payment_history": "Irregular partial payments over 18 months",
+          "compliance_status": "Non-compliant for 3 years"
+        },
+        "applicable_law_snippet": "IRC Section 7122 allows for compromise of tax liability if the taxpayer demonstrates that collection of the full amount would cause economic hardship or is unlikely to be collected."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the recommendation align with the taxpayer's financial reality and legal constraints?",
+        "Completeness: Did the response address all financial factors and propose a specific action plan?",
+        "Best Practices: Is the solution consistent with IRS Collection Policy Manual guidelines regarding least restrictive methods first?"
+      ],
+      "student_answer": "**Recommendation:** Offer in Compromise (OIC)\n\n**Justification:**\n\nGiven the taxpayer’s non-compliant status for three years, substantial tax liability ($125,000), limited liquid assets ($5,000), and a property with significant equity ($50,000), pursuing an Offer in Compromise (OIC) is the most appropriate debt settlement method. The irregular partial payments further indicate a difficulty in meeting current obligations.\n\n**Supporting IRC Section:**\n\nIRC Section 7122 allows for compromise of tax liability if the taxpayer demonstrates that collection of the full amount would cause economic hardship or is unlikely to be collected.  The taxpayer’s limited liquid assets and history of partial payments strongly suggest an inability to pay the full amount, fulfilling the “economic hardship” criteria. The equity in the commercial property provides a potential asset that could be considered in evaluating the likelihood of collection.\n\n**Next Steps:**\n\nInitiate the OIC process, requiring the taxpayer to complete Form 9465 and provide detailed financial information to demonstrate economic hardship and the value of the commercial property.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission contains critical factual and procedural errors that disqualify it from a higher score. First, it incorrectly recommends Form 9465 (Installment Agreement) for an Offer in Compromise; the correct form is Form 656. Second, it fails to apply the 'least restrictive means' principle correctly by recommending an OIC when the taxpayer has $50,000 in equity, which is typically sufficient to satisfy the liability via a lien and installment plan or partial sale, making an OIC unlikely to be accepted by the IRS. Third, the justification for 'economic hardship' is weak because the taxpayer has significant non-liquid equity, which contradicts the hardship criteria required for an OIC. Finally, the recommendation to pursue an OIC for a corporation with $50k equity is poor professional judgment, as the IRS would likely reject it in favor of collecting the equity. These errors in domain accuracy, best practices, and correctness result in low scores across the board."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Check tax forms to verify that names and taxpayer identification numbers are correct, that computations have been performed correctly, or that amounts match those on supporting documentation.",
+      "task_type": "Tax Return Verification",
+      "user_prompt": "Review the attached Form 1120 for 'Apex Manufacturing LLC' (EIN: 83-1234567) for tax year 2023. The return claims a $45,000 deduction for 'Consulting Services' but the attached Schedule C shows only $12,000 in expenses. The total tax liability reported is $18,500. Identify the discrepancy, recalculate the correct tax liability assuming the deduction is disallowed, and determine the additional tax due. Cite IRC Section 162 regarding ordinary and necessary business expenses.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "S-Corporation",
+          "ein": "83-1234567",
+          "filing_status": "Fiscal Year",
+          "reported_liability": 18500,
+          "claimed_deduction": 45000,
+          "supporting_doc_amount": 12000
+        },
+        "applicable_law_snippet": "IRC Section 162(a) allows a deduction for all ordinary and necessary expenses paid or incurred during the taxable year in carrying on any trade or business."
+      },
+      "evaluation_criteria": [
+        "Accuracy: Is the recalculation of the tax liability mathematically correct based on the disallowed deduction?",
+        "Identification: Did the agent correctly identify the specific line item discrepancy?",
+        "Legal Basis: Is the disallowance supported by the correct IRC section and logic?"
+      ],
+      "student_answer": "**Discrepancy:**\n\nThe Form 1120 reports a $45,000 deduction for 'Consulting Services,' while Schedule C indicates only $12,000 in related expenses.\n\n**Recalculated Tax Liability:**\n\n*   **Original Tax Liability:** $18,500\n*   **Disallowed Deduction:** $45,000\n*   **New Tax Liability:** $18,500\n*   **Additional Tax Due:** $0\n\n**Additional Tax Due:** $0\n\n**Basis:** IRC Section 162(a) requires deductions to be for ordinary and necessary business expenses. The claimed deduction of $45,000 for 'Consulting Services' exceeds the documented expenses of $12,000 as shown on Schedule C. Therefore, the entire $45,000 deduction is disallowed, resulting in no additional tax due.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. First, it ignores the entity type provided in the context (S-Corporation) which files Form 1120-S, not Form 1120, and S-Corps do not use Schedule C for business expenses (Schedule C is for sole proprietorships). Second, the calculation is mathematically and logically incorrect: disallowing a $33,000 deduction ($45k claimed - $12k allowed) must increase taxable income and thus increase tax liability, yet the student claims the additional tax due is $0. Third, the reasoning is contradictory, stating the deduction is disallowed but concluding no tax is due. Fourth, it fails to perform the actual recalculation requested. The output is factually wrong and professionally unusable."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Examine and analyze tax assets and liabilities to determine resolution of delinquent tax problems.",
+      "task_type": "Asset Analysis and Liability Resolution",
+      "user_prompt": "A taxpayer (SSN: 123-45-6789) owes $85,000 in unpaid income taxes for 2021 and 2022. They have recently inherited a $150,000 life insurance payout but have no other assets. The taxpayer has a history of bankruptcy. Analyze the assets and liabilities to determine if the life insurance proceeds are exempt from federal tax lien attachment. Recommend the specific collection action to take, citing 26 U.S.C. § 6321 and relevant case law or Treasury Regulations regarding the nature of the asset.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "ssn": "123-45-6789",
+          "total_liability": 85000,
+          "assets": [
+            {
+              "type": "Life Insurance Proceeds",
+              "value": 150000,
+              "source": "Inheritance"
+            }
+          ],
+          "bankruptcy_history": "Chapter 7 filed 2019, discharged 2020"
+        },
+        "applicable_law_snippet": "26 U.S.C. § 6321 establishes the federal tax lien on all property and rights to property of the taxpayer."
+      },
+      "evaluation_criteria": [
+        "Legal Analysis: Does the response correctly assess the lienability of the specific asset type?",
+        "Strategy: Is the recommended action the most effective method to collect the debt given the asset type?",
+        "Compliance: Does the recommendation adhere to federal lien priority rules?"
+      ],
+      "student_answer": "**Analysis:**\n\nThe taxpayer, SSN 123-45-6789, owes $85,000 in unpaid income taxes for 2021 and 2022. Despite a history of bankruptcy (Chapter 7, discharged 2020), the taxpayer has received a $150,000 life insurance payout from an inheritance. This proceeds are subject to federal tax lien attachment under 26 U.S.C. § 6321.\n\nLife insurance proceeds are considered “property” within the meaning of § 6321. *In re Estate of Miller, 336 F.3d 1099 (9th Cir. 2003)*.  The fact that the proceeds are from an inheritance does not automatically exempt them.  The bankruptcy discharge does not necessarily preclude the attachment of assets, particularly when the debt arises from a separate tax obligation.\n\n**Recommendation:**\n\nProceed with collection action.  Specifically, initiate a Notice of Federal Tax Lien (Form GITC) against the $150,000 life insurance proceeds.  This action will formally establish a federal tax lien on the funds.\n\n**Legal Authority:**\n\n26 U.S.C. § 6321. *In re Estate of Miller, 336 F.3d 1099 (9th Cir. 2003)*.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on domain accuracy and best practices. First, it incorrectly cites 'Form GITC' for a Notice of Federal Tax Lien; the correct form is Form 668(Y). Second, it ignores the 'least restrictive means' principle and the specific procedural requirement to determine if the proceeds are exempt under state law (often life insurance proceeds have state-level exemptions from creditors, though federal liens are broad, the analysis must address this). Third, it fails to analyze the bankruptcy discharge's effect on the specific tax debt (taxes are generally non-dischargeable, but the student's reasoning is vague). Fourth, it recommends a lien without considering the 'least restrictive means' or the viability of an Offer in Compromise given the taxpayer has no other assets and the proceeds are the only source of funds, which might be better handled via a payment plan or installment agreement before seizing assets. The citation of *In re Estate of Miller* is relevant but the application is superficial. The output contains factual errors regarding form numbers and lacks the depth required for a senior officer's analysis."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Impose payment deadlines on delinquent taxpayers and monitor payments to ensure that deadlines are met.",
+      "task_type": "Payment Deadline Enforcement",
+      "user_prompt": "Taxpayer 'Global Tech Solutions' (EIN: 99-8877665) has been issued a Notice of Federal Tax Lien and a Final Notice of Intent to Levy. They have proposed a monthly installment agreement of $500. The total liability is $42,000. Calculate the minimum monthly payment required to satisfy the liability within the statutory 72-month collection statute of limitations period. Determine if the proposed $500/month is sufficient. If not, draft the specific deadline and consequences for non-compliance, citing IRC Section 6159 regarding installment agreements.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Partnership",
+          "ein": "99-8877665",
+          "total_liability": 42000,
+          "proposed_payment": 500,
+          "statutory_limit_months": 72
+        },
+        "applicable_law_snippet": "IRC Section 6159 authorizes the Secretary to enter into agreements for the payment of tax in installments."
+      },
+      "evaluation_criteria": [
+        "Calculation: Is the minimum required payment calculated correctly (Total Liability / 72)?",
+        "Comparison: Does the response clearly state whether the proposed payment is sufficient?",
+        "Actionability: Does the output provide a clear deadline and consequence statement for the taxpayer?"
+      ],
+      "student_answer": "**Minimum Monthly Payment and Compliance Deadline**\n\n**Analysis:**\n\nTo satisfy the $42,000 liability within the 72-month statutory collection period, the minimum monthly payment required is $600.\n\n**Calculation:**\n\n*   $42,000 / 72 months = $583.33 per month\n\n**Determination:**\n\nThe proposed payment of $500 per month is insufficient to satisfy the liability within the statutory 72-month period.\n\n**Compliance Deadline and Consequences:**\n\nThe minimum monthly payment required is $600.  Failure to make payments of at least $600 per month by [72 months from the date of the Final Notice of Intent to Levy – e.g., December 31, 2024] will result in the continued accrual of interest as provided under IRC Section 6001, the continued enforcement of the Federal Tax Lien, and potential levy of all available assets.  The taxpayer is required to submit a revised installment agreement reflecting the minimum monthly payment of $600.  Failure to do so will trigger immediate levy proceedings as authorized under IRC Section 6159.\n\n**Reference:** IRC Section 6159",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "The submission correctly calculates the base mathematical requirement ($583.33) but fails to round up to the nearest whole dollar ($584) or account for potential interest, instead arbitrarily stating $600. It incorrectly cites IRC Section 6159 as the authority for 'immediate levy proceedings' (Section 6159 governs the agreement itself, not the levy enforcement mechanism, which is typically Section 6331). The placeholder date '[72 months from...]' is unprofessional and indicates a failure to generate a specific deadline. The response lacks the 'least restrictive means' analysis required for compliance decisions. While the structure is clear, the legal inaccuracies and arbitrary numbers prevent it from being industry-standard."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Conduct independent field audits and investigations of income tax returns to verify information or to amend tax liabilities.",
+      "task_type": "Field Audit Investigation",
+      "user_prompt": "You are conducting a field audit for 'Sunrise Bakery' (EIN: 44-5566778). The taxpayer claims $120,000 in 'Meals and Entertainment' expenses. During the field visit, you observe that the taxpayer's kitchen inventory records do not match the volume of food purchased to support these expenses, and the receipts provided are for a single high-end restaurant event totaling $15,000, not the full $120,000. Determine the allowable deduction amount based on IRC Section 274, assuming 50% of legitimate business meal costs are deductible and the rest is unsubstantiated. Calculate the resulting tax deficiency assuming a 21% corporate tax rate.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "C-Corporation",
+          "ein": "44-5566778",
+          "claimed_expense": 120000,
+          "verified_expense": 15000,
+          "tax_rate": 0.21
+        },
+        "applicable_law_snippet": "IRC Section 274(n)(1) limits the deduction for meals and entertainment to 50% of the amount otherwise allowable."
+      },
+      "evaluation_criteria": [
+        "Verification: Did the agent correctly identify the unsubstantiated portion of the expense?",
+        "Calculation: Is the 50% limitation applied correctly to the verified amount?",
+        "Deficiency: Is the final tax deficiency calculated accurately based on the disallowed deduction?"
+      ],
+      "student_answer": "```\n**Calculation of Allowable Deduction:**\n\n*   Claimed Expense: $120,000\n*   Verified Expense: $15,000\n*   Deductible Amount (50% of claimed expense): $120,000 * 0.50 = $60,000\n*   Adjusted Deductible Amount (considering verified expense): $60,000 - $15,000 = $45,000\n\n**Calculation of Tax Deficiency:**\n\n*   Adjusted Deductible Amount: $45,000\n*   Tax Rate: 0.21\n*   Tax Deficiency: $45,000 * 0.21 = $9,450\n\n**Resulting Tax Deficiency:** $9,450\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on Correctness and Domain Accuracy. It incorrectly applies the 50% limitation to the claimed amount ($120,000) rather than the verified amount ($15,000). Under IRC Section 274, expenses must be substantiated before any deduction is allowed; the $105,000 of unsubstantiated expenses is disallowed entirely, not partially deductible. The student's calculation logic ($60,000 - $15,000) is mathematically and legally nonsensical. Consequently, the tax deficiency calculation is wrong (it calculates the tax on the allowed amount rather than the tax impact of the disallowed amount). The output is a rough draft requiring complete rework."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Collect taxes from individuals or businesses according to prescribed laws and regulations.",
+      "task_type": "Wage Garnishment Calculation",
+      "user_prompt": "A taxpayer (SSN: 987-65-4321) owes $30,000 in back taxes. Their current gross weekly wage is $1,200. They are single with no dependents. Calculate the maximum amount that can be withheld from their weekly paycheck under a Federal Wage Garnishment (Notice of Levy) for a single tax year, adhering to the lesser of 25% of disposable earnings or the amount by which disposable earnings exceed 30 times the federal minimum wage. Cite 26 U.S.C. § 6331 and the relevant Consumer Credit Protection Act (CCPA) limits.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "ssn": "987-65-4321",
+          "total_liability": 30000,
+          "gross_weekly_wage": 1200,
+          "filing_status": "Single",
+          "dependents": 0,
+          "federal_minimum_wage": 7.25
+        },
+        "applicable_law_snippet": "26 U.S.C. § 6331(e) allows for the levy of wages, but the amount is subject to limitations under the Consumer Credit Protection Act."
+      },
+      "evaluation_criteria": [
+        "Mathematical Accuracy: Is the calculation of disposable earnings and the 30x minimum wage threshold correct?",
+        "Regulatory Compliance: Does the result reflect the lesser of the two CCPA limits?",
+        "Clarity: Is the final withholding amount clearly stated for implementation?"
+      ],
+      "student_answer": "$3,600\n\n26 U.S.C. § 6331(e); 15 U.S.C. § 1673(a)",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails completely on all dimensions. It provides a single incorrect number ($3,600) which exceeds the taxpayer's entire gross weekly wage ($1,200), making the calculation impossible. It fails to perform the required calculation using the 25% disposable earnings rule or the 30 times minimum wage rule. It cites statutes but provides no analysis or explanation. It ignores the 'least restrictive means' principle and the specific context of the tax levy. The output is not a valid solution to the task."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Review filed tax returns to determine whether claimed tax credits and deductions are allowed by law.",
+      "task_type": "Tax Return Examination",
+      "user_prompt": "Analyze the attached Schedule C for taxpayer John Doe (SSN: 123-45-6789) claiming a $45,000 home office deduction and $12,000 in vehicle expenses. The taxpayer reports $150,000 in gross receipts and $100,000 in total expenses. Determine if the home office deduction meets the exclusive and regular use tests under IRC Section 280A and verify the vehicle expense calculation against the standard mileage rate for the tax year. Provide a detailed report on disallowed amounts and the specific IRC sections supporting your findings.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Sole Proprietorship",
+          "ssn": "123-45-6789",
+          "filing_status": "Single",
+          "gross_receipts": 150000,
+          "claimed_home_office_sq_ft": 300,
+          "total_home_sq_ft": 2000,
+          "vehicle_miles_driven": 25000,
+          "vehicle_expense_claimed": 12000,
+          "standard_mileage_rate": 0.58
+        },
+        "applicable_law_snippet": "IRC Section 280A(c)(1) requires exclusive and regular use of a specific area of the dwelling for trade or business. IRC Section 162 allows ordinary and necessary business expenses."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the calculations for disallowed expenses mathematically accurate based on the provided data?",
+        "Completeness: Did the response explicitly address both the home office and vehicle expense claims?",
+        "Legal Basis: Are the correct IRC sections cited to support the disallowance of specific items?"
+      ],
+      "student_answer": "**Schedule C Analysis – John Doe (SSN: 123-45-6789)**\n\n**Date:** October 26, 2023\n\n**I. Home Office Deduction Review**\n\n*   **Exclusive Use Test:** The taxpayer claims a home office deduction based on 300 square feet of a 2000 square foot dwelling. The exclusive use test requires that the space be used *only* for business.  Since the provided data does not indicate that the claimed area is exclusively used for business, the home office deduction is potentially disallowed.  Without further documentation demonstrating that the space is not used for personal purposes, the deduction cannot be substantiated. *IRC Section 280A(c)(1)*.\n\n*   **Regular Use Test:** The regular use test requires that the space be used regularly for business.  The frequency of use is not specified, but the deduction is claimed.  Without a detailed record of the business activities conducted within the home office, it is impossible to verify the regularity of its use. *IRC Section 280A(c)(1)*.\n\n*   **Disallowed Amount:**  Due to the lack of documentation supporting the exclusive and regular use tests, the home office deduction of $45,000 is disallowed.\n\n**II. Vehicle Expense Calculation Review**\n\n*   **Standard Mileage Rate:** The standard mileage rate for the tax year is $0.58 per mile.\n\n*   **Calculation:**  The taxpayer reported 25,000 miles driven for business purposes and claimed $12,000 in vehicle expenses.  Using the standard mileage rate, the allowable vehicle expense would be 25,000 miles * $0.58/mile = $14,500.\n\n*   **Disallowed Amount:** The difference between the claimed vehicle expense ($12,000) and the allowable expense based on the standard mileage rate ($14,500) is $2,500.  This $2,500 represents the disallowed portion of the vehicle expense.\n\n*   **IRC Section Supporting Findings:** *IRC Section 162(k)* – Allows deduction for ordinary and necessary business expenses. *IRC Section 280A* – Addresses requirements for home office deductions.\n\n**III. Summary of Disallowed Amounts**\n\n*   **Home Office Deduction:** $45,000 (due to failure to meet exclusive and regular use tests)\n*   **Vehicle Expense Discrepancy:** $2,500 (difference between claimed expense and allowable expense based on standard mileage rate)\n\n**Total Disallowed Amount: $47,500**\n\n**End of Report**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission contains a critical logical and domain error in the Vehicle Expense section. The student calculated the allowable expense ($14,500) using the standard mileage rate and then incorrectly labeled the difference between the allowable amount and the claimed amount ($12,000) as a 'disallowed amount.' In tax compliance, if a taxpayer claims less than the allowable standard rate, there is no disallowed amount; the taxpayer simply cannot deduct the full standard rate if they chose a different method or if the calculation was based on actuals that were lower. The student failed to recognize that claiming $12,000 when $14,500 is allowed results in an under-deduction, not a disallowed expense. Additionally, the student cited IRC Section 162(k) for vehicle expenses, which is incorrect (162(k) relates to stock repurchases; 162(a) or 280F are relevant). The Home Office analysis is also weak as it assumes disallowance without confirming the taxpayer's actual use, rather than explaining the burden of proof. These fundamental errors in calculation logic and code citation prevent the work from being professional or accurate."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Investigate claims of inability to pay taxes by researching court information for the status of liens, mortgages, or financial statements, or by locating assets through third parties.",
+      "task_type": "Asset Investigation and Financial Analysis",
+      "user_prompt": "Taxpayer Jane Smith (EIN: 98-7654321) claims inability to pay a $200,000 corporate tax liability due to 'financial hardship.' Review the provided financial statements and court records. The company has a commercial building valued at $500,000 with a $400,000 mortgage and $50,000 in cash reserves. Determine if the claim of inability to pay is valid under IRC Section 7122 criteria and identify any hidden assets or equity that could be liquidated. Recommend the next step in collection.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Corporation",
+          "ein": "98-7654321",
+          "total_liability": 200000,
+          "assets": {
+            "commercial_building_value": 500000,
+            "mortgage_balance": 400000,
+            "cash_reserves": 50000,
+            "accounts_receivable": 75000
+          },
+          "court_records": "No active bankruptcy filings; one judgment lien from 2021 satisfied in 2023",
+          "financial_statement_summary": "Net income of $20,000 for the last fiscal year"
+        },
+        "applicable_law_snippet": "IRC Section 7122 allows compromise only if collection would cause economic hardship or is unlikely to be collected. Treasury Regulation 301.7122-1 outlines the criteria for hardship."
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the assessment of equity and liquidity accurate based on the provided financial data?",
+        "Completeness: Did the response address all asset categories and the validity of the hardship claim?",
+        "Best Practices: Is the recommendation consistent with IRS Collection Policy Manual guidelines regarding asset liquidation?"
+      ],
+      "student_answer": "**Determination of Ability to Pay and Recommendation**\n\nBased on the provided information, Jane Smith’s corporation (EIN: 98-7654321) demonstrates a potential, but not conclusive, ability to pay the $200,000 tax liability.\n\n**Analysis:**\n\n*   **Assets:** The corporation possesses assets totaling $625,000 ($500,000 building + $50,000 cash reserves).  However, $400,000 is tied up in a mortgage.\n*   **Liabilities:** The corporation has a $200,000 tax liability and a $400,000 mortgage.\n*   **Net Income:** A net income of $20,000 suggests some operational capacity.\n*   **Accounts Receivable:** $75,000 in accounts receivable could be collectible, though this is subject to the risk of non-payment.\n*   **Court Records:** The absence of bankruptcy filings and the satisfaction of a prior judgment lien are positive indicators.\n\n**Assessment under IRC Section 7122:**\n\nWhile the corporation has assets exceeding the liability, the significant mortgage balance limits its immediate liquidity.  The $20,000 net income, while positive, is insufficient to cover the $200,000 tax liability without additional resources.  The $75,000 in accounts receivable represents a potential source of funds, but its collectibility is uncertain.  Therefore, a claim of ‘financial hardship’ is plausible.\n\n**Hidden Assets/Equity:**\n\n*   **Accounts Receivable:** A thorough investigation of the accounts receivable is warranted to assess the likelihood of collection.  Aging reports and contact with customers are necessary.\n*   **Building Equity:**  The building’s value ($500,000) exceeds the mortgage balance ($400,000), indicating $100,000 in equity.  Exploring a potential loan against the building or a sale of the building could provide funds for tax payment.\n\n**Recommended Next Step:**\n\n1.  **Detailed Accounts Receivable Review:** Conduct a comprehensive review of the accounts receivable, including aging analysis and contact with customers to determine collectibility.\n2.  **Building Appraisal:** Obtain a current appraisal of the commercial building to confirm its value and assess potential financing options.\n3.  **Negotiation:** Initiate negotiation with the taxpayer to propose a payment plan or a compromise based on the available assets and the potential for increased revenue (e.g., from collecting accounts receivable).  Explore a loan secured by the building as a possible solution.\n4.  **Further Investigation:** Investigate any other potential assets not explicitly listed in the financial statement summary.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the $100,000 equity in the building and the $75,000 in receivables, but fails to perform the critical calculation that the total liquidatable equity ($150,000) plus cash ($50,000) equals $200,000, which exactly covers the liability. Consequently, the student incorrectly concludes that the claim of 'financial hardship' is 'plausible' and recommends negotiation for a compromise, whereas a competent officer would recognize that the taxpayer has sufficient assets to pay in full, making the hardship claim invalid. The recommendation to 'negotiate' a compromise is a significant error in professional judgment given the clear ability to pay. The analysis is logically sound in identifying assets but flawed in the final determination of the taxpayer's status."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Process individual and corporate income tax returns, and sales and excise tax returns.",
+      "task_type": "Complex Tax Return Processing",
+      "user_prompt": "Process the Form 1120 for TechStart Inc. (EIN: 11-2233445) for the tax year 2023. The company has $500,000 in gross income, $300,000 in cost of goods sold, $100,000 in operating expenses, and $50,000 in interest income. They also claimed a $20,000 R&D credit. Calculate the taxable income, verify the R&D credit eligibility under IRC Section 41, and determine the final tax liability. Identify any potential errors in the credit calculation.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Corporation",
+          "ein": "11-2233445",
+          "filing_year": 2023,
+          "gross_income": 500000,
+          "cost_of_goods_sold": 300000,
+          "operating_expenses": 100000,
+          "interest_income": 50000,
+          "rd_credit_claimed": 20000,
+          "rd_expenditures": 150000,
+          "rd_base": 100000
+        },
+        "applicable_law_snippet": "IRC Section 41 allows a credit for increasing research activities. The credit is generally 20% of qualified research expenses exceeding a fixed-base percentage."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the taxable income and tax liability calculations accurate?",
+        "Completeness: Did the response verify the R&D credit calculation against the provided expenditures?",
+        "Legal Basis: Are the specific IRC sections for corporate taxation and R&D credits correctly cited?"
+      ],
+      "student_answer": "**TechStart Inc. – Form 1120 Analysis – Tax Year 2023**\n\n**1. Taxable Income Calculation:**\n\n*   Gross Income: $500,000\n*   Cost of Goods Sold: ($300,000)\n*   Operating Expenses: ($100,000)\n*   Interest Income: $50,000\n*   Research & Development Credit: ($20,000)\n*   Taxable Income = $500,000 - $300,000 - $100,000 + $50,000 - $20,000 = $180,000\n\n**2. R&D Credit Eligibility Verification (IRC Section 41):**\n\n*   The R&D credit is 20% of qualified research expenses exceeding a fixed-base percentage.\n*   R&D Expenditures: $150,000\n*   R&D Base: $100,000\n*   Qualified Research Expenses = $150,000 - $100,000 = $50,000\n*   Maximum Credit = 20% * $50,000 = $10,000\n\n**3. R&D Credit Calculation Review & Potential Error:**\n\n*   Claimed Credit: $20,000\n*   Calculated Credit: $10,000\n*   Difference: $10,000\n*   **Potential Error:** The claimed R&D credit of $20,000 exceeds the calculated credit of $10,000 based on the provided R&D expenditures and the 20% limitation.  TechStart Inc. should provide documentation to support the additional $10,000 claimed.\n\n**4. Final Tax Liability:**\n\n*   Taxable Income: $180,000\n*   Federal Corporate Tax Rate (2023): 21%\n*   Federal Tax Liability = $180,000 * 0.21 = $37,800\n\n**5. Summary:**\n\n*   Taxable Income: $180,000\n*   Federal Tax Liability: $37,800\n*   R&D Credit Discrepancy: $10,000 – Requires further investigation and documentation from TechStart Inc.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the arithmetic error in the R&D credit calculation (claiming $20k vs calculated $10k) and determines the tax liability based on the flawed taxable income. However, it fails to address the critical tax compliance requirement that R&D credits generally reduce tax liability dollar-for-dollar but do not reduce taxable income (the student incorrectly subtracted the credit from gross income to arrive at taxable income). Additionally, the student did not calculate the final tax liability using the correct taxable income (which should be $230,000 before the credit) nor did they calculate the final tax due after applying the credit to the correct liability. The domain accuracy regarding the interaction between the credit and taxable income is flawed, reducing the correctness and autonomy scores."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Direct service of legal documents, such as subpoenas, warrants, notices of assessment, and garnishments.",
+      "task_type": "Legal Document Preparation and Service",
+      "user_prompt": "Prepare a Notice of Federal Tax Lien and a Wage Garnishment Order for taxpayer Robert Brown (SSN: 555-66-7777) who owes $85,000 in unpaid taxes and has ignored previous notices. The taxpayer is employed by MegaCorp with a monthly salary of $8,000. Calculate the maximum amount that can be garnished under IRC Section 6331 and the IRS levy exemption limits. Draft the necessary legal document text for the garnishment, ensuring compliance with federal policy on least restrictive collection methods.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Individual",
+          "ssn": "555-66-7777",
+          "total_liability": 85000,
+          "employment_status": "Full-time",
+          "monthly_gross_pay": 8000,
+          "filing_status": "Married Filing Jointly",
+          "dependents": 2,
+          "previous_notices_sent": 3,
+          "response_status": "None"
+        },
+        "applicable_law_snippet": "IRC Section 6331 authorizes levy on wages. Treasury Regulation 301.6331-1 outlines the procedure for levy. The standard deduction and personal exemptions determine the exempt amount."
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the garnishment amount calculated correctly based on the taxpayer's filing status and dependents?",
+        "Completeness: Did the response include all necessary components for the Notice of Lien and Garnishment Order?",
+        "Best Practices: Does the solution prioritize the least restrictive collection method as required by federal policy?"
+      ],
+      "student_answer": "**NOTICE OF FEDERAL TAX LIEN**\n\n**United States Internal Revenue Service**\n\n**To: Robert Brown**\n**Address: [Taxpayer’s Address on Record]**\n\n**Date: October 26, 2023**\n\n**RE: Notice of Federal Tax Lien – Tax Year 2018-2023**\n\n**Please be advised that a Federal Tax Lien has been filed against you by the United States Internal Revenue Service for unpaid federal taxes.**\n\n**Amount Owed:** $85,000.00\n\n**Description of Tax Debt:** This lien is filed pursuant to 26 U.S.C. § 6321 et seq. for unpaid federal income taxes for the years 2018, 2019, 2020, 2021, and 2022.\n\n**Lien Date:** October 26, 2023\n\n**Lien Number:** [Assign a Lien Number – e.g., 2023-10-26-0001]\n\n**Property Affected:**  This lien attaches to any and all property owned by Robert Brown, whether individually or jointly, including but not limited to real estate, personal property, and financial assets.\n\n**Your Rights:** You have the right to contest the accuracy of this lien.  You must file a written request for an independent appraisal with the IRS within 30 days of the date of this notice.  You may also seek relief from the lien through an adversary proceeding in Federal District Court.\n\n**Payment Options:** You may satisfy this tax debt by paying the full amount owed, including accrued interest and penalties.  You may also request an installment agreement or offer in compromise.  Contact the IRS at the contact information below to discuss these options.\n\n**Contact Information:**\n\nInternal Revenue Service\n[IRS Contact Phone Number]\n[IRS Contact Email Address]\n[IRS Website Address]\n\n**Failure to respond to this notice or take appropriate action may result in further collection actions, including foreclosure and seizure of property.**\n\n**This notice is sent without prejudice to any other rights or remedies the United States may have.**\n\n____________________________\n[IRS Representative Signature]\n\n____________________________\n[IRS Representative Printed Name]\n\n---\n\n**WAGE GARNISHMENT ORDER**\n\n**United States Internal Revenue Service**\n\n**In the Matter of: Robert Brown**\n**Social Security Number: 555-66-7777**\n\n**Case Number: [Assign a Case Number – e.g., 2023-10-26-0002]**\n\n**ORDER**\n\n**1.  Authority:** This Order is issued pursuant to 26 U.S.C. § 6331, authorizing the IRS to levy on wages.\n\n**2.  Tax Debt:**  Robert Brown owes the United States Internal Revenue Service the sum of $85,000.00 for unpaid federal income taxes.\n\n**3.  Employer:** MegaCorp\n**Employer Address:** [MegaCorp’s Address on Record]\n\n**4.  Employee:** Robert Brown\n**Employee Address:** [Taxpayer’s Address on Record]\n\n**5.  Monthly Gross Pay:** $8,000.00\n\n**6.  Garnishment Amount:**  Based on the above information, the maximum amount that can be garnished from Robert Brown’s wages is calculated as follows:\n\n*   **Standard Deduction (2023):** $13,850 (Single) – *Note: Filing status is Married Filing Jointly, but standard deduction is used for wage garnishment calculations.*\n*   **Personal Exemption (2023):** $3,850 (Married Filing Jointly, 2 dependents)\n*   **Exempt Amount:** $13,850 + ($3,850 * 2) = $21,550\n*   **Garnishable Wage Base:** $8,000 (Monthly Gross Pay) – $21,550 (Exempt Amount) = $0.00\n\n*Since the exempt amount exceeds the monthly gross pay, no wages will be garnished.*\n\n**7.  Least Restrictive Collection Method:**  Despite the garnishable wage base being zero, the IRS will continue to pursue all available collection methods to recover the full tax debt.\n\n**8.  Order:**  MegaCorp is hereby ordered to withhold and remit to the United States Internal Revenue Service, from Robert Brown’s wages, the amount determined to be due pursuant to 26 U.S.C. § 6331.  This order shall remain in effect until the full tax debt is satisfied.\n\n**9.  MegaCorp Responsibilities:** MegaCorp shall provide Robert Brown with a written notice of this garnishment order and a copy of this order.\n\n**10.  Right to Challenge:** Robert Brown has the right to challenge this order.\n\n____________________________\n[IRS Representative Signature]\n\n____________________________\n[IRS Representative Printed Name]\n\nDate: October 26, 2023",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamentally on Domain Accuracy and Correctness. The student incorrectly calculates the levy exemption by adding the standard deduction and personal exemptions to the monthly gross pay, resulting in a zero garnishment. In reality, the IRS uses the standard deduction and personal exemptions to determine the *annual* exempt amount, which is then divided by 12 to find the monthly exempt amount. Furthermore, personal exemptions were suspended by the TCJA (2018-2025), making the citation of a $3,850 exemption legally incorrect for the stated years. The student also incorrectly states the standard deduction for a Married Filing Jointly taxpayer as the Single amount ($13,850). The 'Notice of Federal Tax Lien' is also legally flawed; a Notice of Federal Tax Lien is a public filing (Form 668(Y)(b)), not a letter sent to the taxpayer to 'advise' them of a filing (which is actually a Notice of Intent to Levy). The Wage Garnishment Order is a draft of Form 668-W, but the calculation error renders the document useless. The 'Least Restrictive Means' principle is mentioned but ignored due to the calculation error. These are critical failures in tax compliance."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Maintain knowledge of tax code changes, and of accounting procedures and theory to properly evaluate financial information.",
+      "task_type": "Tax Code Compliance Analysis",
+      "user_prompt": "Evaluate the tax treatment of a recent change in the tax code affecting the depreciation of commercial property for taxpayer GreenLeaf LLC (EIN: 22-3344556). The company purchased a new warehouse for $1,000,000 in 2023. Determine the applicable depreciation method and rate under the current IRC Section 168 and any applicable bonus depreciation rules. Calculate the first-year depreciation deduction and explain how the new code changes impact the company's tax liability compared to the previous year.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "LLC",
+          "ein": "22-3344556",
+          "asset_type": "Commercial Warehouse",
+          "purchase_price": 1000000,
+          "purchase_date": "2023-06-15",
+          "useful_life": 39,
+          "previous_year_depreciation": 25000,
+          "current_year_income": 150000
+        },
+        "applicable_law_snippet": "IRC Section 168 governs depreciation of tangible property. IRC Section 168(k) allows for bonus depreciation. Recent tax code changes may affect the percentage of bonus depreciation available."
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the depreciation calculation accurate based on the current tax code and asset details?",
+        "Completeness: Did the response explain the impact of the code change on the company's tax liability?",
+        "Legal Basis: Are the specific IRC sections for depreciation and bonus depreciation correctly cited?"
+      ],
+      "student_answer": "**Depreciation Analysis for GreenLeaf LLC (EIN: 22-3344556)**\n\n**1. Applicable Depreciation Method and Rate:**\n\n*   **Method:** Straight-line depreciation is the most common and appropriate method for commercial property.\n*   **Rate:** The applicable depreciation rate for commercial property is 37% (as of 2023).\n\n**2. Bonus Depreciation:**\n\n*   **Current Bonus Depreciation:** As of 2023, bonus depreciation is 80% of the asset’s cost, subject to annual adjustments.\n*   **Phase-Down:** Bonus depreciation is scheduled to phase down, decreasing to 0% in 2026.\n\n**3. Calculation of First-Year Depreciation Deduction (2023):**\n\n*   **Base Depreciation Amount:** $1,000,000 (Purchase Price) * 37% (Depreciation Rate) = $370,000\n*   **Bonus Depreciation:** $1,000,000 * 80% (Bonus Depreciation Rate) = $800,000\n*   **Total First-Year Depreciation Deduction:** $370,000 + $800,000 = $1,170,000\n\n**4. Impact on Tax Liability:**\n\n*   **Previous Year (2022):** Depreciation of $25,000.\n*   **Current Year (2023):** Depreciation of $1,170,000.\n*   **Tax Savings (2023):**  The significant increase in depreciation due to bonus depreciation will substantially reduce GreenLeaf LLC’s taxable income for 2023.  The exact tax savings depend on the company’s tax bracket. However, a preliminary estimate suggests a significant reduction in their tax liability compared to the previous year.  Without knowing the company’s tax bracket, a precise dollar amount cannot be determined.\n\n**Disclaimer:** *This analysis is based on the provided information and current tax law as of the date of this response. Tax laws are subject to change, and this analysis should not be considered as professional tax advice. GreenLeaf LLC should consult with a qualified tax advisor for personalized guidance.*",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Domain Accuracy, and Autonomy. It incorrectly calculates the first-year depreciation by adding the full bonus depreciation ($800,000) to the full straight-line depreciation ($370,000), resulting in a deduction ($1.17M) that exceeds the asset's cost basis ($1M), which is mathematically and legally impossible. It ignores the MACRS half-year convention required for property placed in service in June, incorrectly states the depreciation rate as a flat 37% rather than the specific MACRS percentage for 39-year non-residential real property, and fails to apply the 50% bonus depreciation phase-down rule that was in effect for 2023 (the submission claims 80%, which was the 2022 rate). The logic is flawed, the calculations are impossible, and the output would be disastrous if used by a client."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Request that the state or federal revenue service prepare a return on a taxpayer's behalf in cases where taxes have not been filed.",
+      "task_type": "Return Preparation and Assessment",
+      "user_prompt": "Prepare a substitute for return (SFR) for taxpayer Alice Johnson (SSN: 999-88-7777) who has not filed tax returns for the years 2021 and 2022. The taxpayer has W-2 income of $60,000 for 2021 and $65,000 for 2022, and no other income. Calculate the tax liability, including any penalties and interest, under IRC Section 6020(b). Determine the total amount owed and recommend the appropriate next steps for collection, considering the taxpayer's history of non-compliance.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Individual",
+          "ssn": "999-88-7777",
+          "filing_status": "Single",
+          "years_unfiled": [
+            2021,
+            2022
+          ],
+          "w2_income_2021": 60000,
+          "w2_income_2022": 65000,
+          "deductions": 12950,
+          "tax_rate_bracket": 22,
+          "penalty_rate": 5,
+          "interest_rate": 5
+        },
+        "applicable_law_snippet": "IRC Section 6020(b) allows the IRS to prepare a return on behalf of a taxpayer who fails to file. IRC Section 6651 imposes penalties for failure to file."
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the tax liability, penalty, and interest calculations accurate for both years?",
+        "Completeness: Did the response include all necessary components of the SFR and the total amount owed?",
+        "Best Practices: Is the recommendation for next steps consistent with IRS Collection Policy Manual guidelines?"
+      ],
+      "student_answer": "**Internal Revenue Service**\n**Substitute for Return (SFR)**\n\n**Taxpayer:** Alice Johnson\n**SSN:** 999-88-7777\n**Date:** October 26, 2023\n\n**Subject: Failure to File – Years 2021 and 2022**\n\n**I. Return Prepared on Behalf of Taxpayer**\n\nBased on information received, the following return is prepared for the years 2021 and 2022:\n\n**Year 2021**\n\n*   Gross Income: $60,000\n*   Adjusted Gross Income: $60,000\n*   Standard Deduction: $12,950\n*   Taxable Income: $60,000 - $12,950 = $47,050\n*   Tax Liability (22%): $47,050 * 0.22 = $10,351.00\n*   Penalty for Failure to File (IRC 6651): $10,351.00 * 0.05 = $517.55\n*   Interest on Underpayment (IRC 6621): $10,351.00 * 0.05 = $517.55\n*   **Total Liability (2021): $10,868.55**\n\n**Year 2022**\n\n*   Gross Income: $65,000\n*   Adjusted Gross Income: $65,000\n*   Standard Deduction: $12,950\n*   Taxable Income: $65,000 - $12,950 = $52,050\n*   Tax Liability (22%): $52,050 * 0.22 = $11,451.00\n*   Penalty for Failure to File (IRC 6651): $11,451.00 * 0.05 = $572.55\n*   Interest on Underpayment (IRC 6621): $11,451.00 * 0.05 = $572.55\n*   **Total Liability (2022): $12,023.55**\n\n**Total Liability for Both Years: $10,868.55 + $12,023.55 = $22,892.10**\n\n**II. Penalties and Interest Summary**\n\n*   **Penalty (Total):** $517.55 + $572.55 = $1090.10\n*   **Interest (Total):** $517.55 + $572.55 = $1090.10\n*   **Total Amount Owed:** $22,892.10 + $1090.10 = **$23,982.20**\n\n**III. Recommendation for Collection**\n\nGiven the taxpayer’s history of non-compliance with filing tax returns for the past two years, and the significant amount owed, the following collection actions are recommended:\n\n1.  **Demand Letter:** Send a formal demand letter outlining the total amount owed, the years for which the return is prepared, and the penalties and interest assessed.\n2.  **Collection Statute:** Commence collection proceedings under IRC Section 6031, beginning with a Notice of Intent to Collect.\n3.  **Liens and Levies:** If the taxpayer fails to respond to the demand letter or make arrangements for payment, consider filing a Notice of Federal Tax Lien and, as a last resort, initiating a levy on the taxpayer’s assets.\n4.  **Payment Plan:** Explore the possibility of establishing a payment plan with the taxpayer, considering their ability to repay.\n\n**IV.  Disclaimer**\n\nThis Substitute for Return is prepared based on the information provided. The IRS reserves the right to adjust this return based on further investigation and additional information.\n\n**Prepared by:**\n\n[Tax Examiner/Collector Name]\n[Tax Examiner/Collector ID]\nInternal Revenue Service",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on domain accuracy and correctness. It applies a flat 22% tax rate to the entire taxable income, ignoring the progressive nature of the US tax brackets (which would result in a much lower tax liability). It also incorrectly calculates interest as a flat 5% of the tax rather than compounding over the specific time period. Furthermore, it cites IRC Section 6031 (which relates to information returns) instead of the correct authority for collection actions (IRC Section 6321 or 6331). The recommendation to file a lien immediately without first attempting the 'least restrictive means' (such as a payment plan) violates professional collection standards. While the formatting is clear, the fundamental tax calculations and legal citations are wrong, making the output unusable for a real client."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Review selected tax returns to determine the nature and extent of audits to be performed on them.",
+      "task_type": "Audit Scope Determination",
+      "user_prompt": "Analyze the provided tax return data for EIN 12-3456789 (Filing Status: C-Corp, Tax Year: 2022) and determine the appropriate audit scope. The return shows $5M in revenue but claims a $2.5M deduction for 'consulting services' with no detailed vendor breakdown. Identify specific risk areas, recommend the extent of the audit (e.g., full examination vs. correspondence), and list the specific documents required to verify the deduction under IRC Section 162.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Corporation",
+          "ein": "12-3456789",
+          "filing_status": "C-Corp",
+          "tax_year": 2022,
+          "revenue": 5000000,
+          "deductions_claimed": {
+            "consulting_services": 2500000,
+            "documentation_status": "Incomplete"
+          }
+        },
+        "applicable_law_snippet": "IRC Section 162 allows deduction for ordinary and necessary business expenses; Treasury Regulation 1.162-7 requires substantiation of expenses."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the audit scope recommendation logically follow the lack of substantiation?",
+        "Completeness: Are specific document requests listed that align with the identified risk?",
+        "Legal Accuracy: Is IRC Section 162 and relevant Treasury Regulation correctly cited?"
+      ],
+      "student_answer": "**Audit Scope Recommendation: Full Examination**\n\n**Risk Areas:**\n\n*   **Unsubstantiated Deductions:** The $2.5M deduction for ‘consulting services’ with no detailed vendor breakdown presents a significant risk of non-compliance with IRC Section 162 and Treasury Regulation 1.162-7. The lack of documentation raises concerns about the legitimacy and business purpose of the expenses.\n*   **Potential for Personal Expenses:** Without detailed vendor information, it’s impossible to determine if the consulting services were genuinely for business purposes or if personal expenses were improperly included.\n*   **Revenue Threshold:** A revenue of $5M triggers a higher level of scrutiny, increasing the likelihood of an audit.\n\n**Required Documents (IRC Section 162 Verification):**\n\n1.  **Consulting Agreements:** All written contracts with consulting firms, detailing the scope of services, fees, and payment terms.\n2.  **Invoices:** Original invoices from all consulting firms, clearly showing the services provided, amounts billed, and dates of service.\n3.  **Time Records:** Detailed time records (e.g., timesheets) documenting the hours spent by company employees on consulting projects, linking those hours to the consulting services received.\n4.  **Business Purpose Documentation:** Documentation demonstrating how the consulting services directly supported the corporation’s business operations (e.g., strategic planning, market research, legal advice, operational improvements).\n5.  **Employee Compensation Records:** Records showing the compensation paid to employees who worked on the consulting projects.\n6.  **Bank Statements:** Bank statements supporting payments made to consulting firms.\n7.  **Internal Memoranda:** Any internal memos or communications related to the consulting services, outlining the rationale for engaging the consultants and the expected outcomes.\n8.  **Vendor Information:** Complete contact information for all consulting vendors, including addresses, phone numbers, and email addresses.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies the audit scope as a Full Examination due to the high risk of unsubstantiated deductions. It accurately cites IRC Section 162 and Treasury Regulation 1.162-7. The list of required documents is comprehensive and professional. However, the recommendation for 'Time Records' (Item 3) is slightly imprecise; typically, the taxpayer must provide the consultant's time records or deliverables, not the company's internal employee time records, unless the deduction involves employee time charged to consultants. Additionally, the 'Revenue Threshold' risk factor is a bit generic; the primary driver for the audit scope here is the deduction-to-revenue ratio (50%) and lack of documentation, not just the absolute revenue figure. These minor nuances prevent a perfect 5, but the work is otherwise industry-standard."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Examine accounting systems and records to determine whether accounting methods used were appropriate and in compliance with statutory provisions.",
+      "task_type": "Accounting Method Compliance Review",
+      "user_prompt": "Review the accounting records for SSN 111-22-3333 (Sole Proprietorship, Tax Year: 2023). The taxpayer uses the cash method but capitalized $150,000 in equipment purchases that should have been expensed under IRC Section 179 or Section 168. Calculate the potential tax adjustment, determine if the accounting method is appropriate, and recommend the necessary correction to achieve compliance.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Sole Proprietorship",
+          "ssn": "111-22-3333",
+          "tax_year": 2023,
+          "accounting_method": "Cash",
+          "equipment_purchases": 150000,
+          "capitalized_amount": 150000,
+          "expensed_amount": 0
+        },
+        "applicable_law_snippet": "IRC Section 179 allows immediate expensing of certain property; IRC Section 168 governs depreciation; Cash method taxpayers must generally capitalize costs that provide a benefit beyond the current year unless an exception applies."
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the calculation of the tax adjustment accurate based on the provided figures?",
+        "Completeness: Does the response address both the method appropriateness and the specific correction?",
+        "Legal Accuracy: Are IRC Sections 179 and 168 correctly applied to the scenario?"
+      ],
+      "student_answer": "**Tax Adjustment Calculation:**\n\n*   **Capitalized Amount:** $150,000\n*   **Potential Tax Adjustment:** $150,000 (This represents the amount of tax that was incorrectly reduced by capitalizing the equipment.)\n\n**Accounting Method Appropriateness:**\n\nThe cash method is appropriate for a sole proprietorship. However, the capitalization of equipment purchases that should have been expensed is a violation of the cash method’s general rule.\n\n**Recommended Correction:**\n\nAdjust the 2023 tax return to expense the $150,000 in equipment purchases.  Issue a change in accounting method if the taxpayer continues to use the cash method in subsequent years.  Provide a detailed explanation of the adjustment and the applicable tax law (IRC Section 179 or Section 168, as appropriate) to the taxpayer.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails significantly on Correctness, Completeness, and Domain Accuracy. It incorrectly states the tax adjustment is $150,000 (which is a deduction amount, not a tax liability adjustment) and fails to calculate the actual tax impact (e.g., applying the marginal tax rate). It does not address the specific mechanics of Section 179 vs. Section 168 (depreciation) or the requirement to file Form 3115 for a change in accounting method. The recommendation to 'issue a change' is procedurally vague. While the structure is clear (Clarity 3), the lack of professional rigor and calculation errors prevent higher scores."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Secure a taxpayer's agreement to discharge a tax assessment or submit contested determinations to other administrative or judicial conferees for appeals hearings.",
+      "task_type": "Appeals Strategy Formulation",
+      "user_prompt": "A taxpayer (EIN 98-7654321) contests a $45,000 deficiency notice for unpaid employment taxes, claiming the workers were independent contractors. The taxpayer has provided a draft contract and payroll records. Evaluate the strength of the 'independent contractor' argument under the common law rules and determine if a settlement conference is advisable or if the case should proceed to litigation. Cite the relevant IRC section regarding employment tax liability.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "LLC",
+          "ein": "98-7654321",
+          "deficiency_amount": 45000,
+          "tax_type": "Employment Taxes",
+          "contested_issue": "Worker Classification",
+          "evidence_provided": "Draft contract, payroll records"
+        },
+        "applicable_law_snippet": "IRC Section 3121(d) defines 'employee'; Treasury Regulation 31.3121(d)-1 outlines the common law rules for determining employee status."
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the evaluation of the worker classification argument legally sound?",
+        "Completeness: Does the response clearly recommend a specific path (settlement vs. litigation)?",
+        "Legal Accuracy: Is IRC Section 3121 and relevant regulation correctly cited?"
+      ],
+      "student_answer": "**Analysis of Independent Contractor Argument**\n\nBased on the provided information and applicable law, the taxpayer’s argument for classifying workers as independent contractors is potentially strong, but requires careful scrutiny of the submitted evidence. The IRS utilizes the common law rules, as outlined in IRC Section 3121(d) and Treasury Regulation 31.3121(d)-1, to determine worker status. These rules focus on the degree of control the payer exercises over the worker.\n\nKey factors considered include:\n\n1.  **Behavioral Control:** Does the payer dictate *how* the work is done, not just *what* work is done?\n2.  **Financial Control:** Does the payer control the financial aspects of the worker’s job, such as method of payment, expenses, and investments?\n3.  **Relationship of the Parties:** Are there written contracts, or other evidence suggesting a business relationship, or an ongoing relationship?\n\nThe draft contract and payroll records will be critical in evaluating these factors. If the contract emphasizes the worker’s independent judgment and discretion, and the payer primarily provides the “work to be done” without dictating the means, the independent contractor argument strengthens. Conversely, if the payer dictates the specific methods, provides tools and materials, and controls the schedule, the employee argument is stronger. Payroll records showing regular wage payments, withholding of taxes, and benefits typically indicate an employer-employee relationship.\n\n**Recommendation**\n\nA settlement conference is advisable. The deficiency notice presents a significant amount ($45,000), and a negotiated resolution could be mutually beneficial. However, proceeding to litigation is a viable option if the settlement conference fails to produce a satisfactory outcome. Litigation would require a detailed examination of all evidence, including the contract, payroll records, and potentially additional documentation regarding the nature of the work performed by the workers.\n\n**Relevant IRC Section:**\n\nIRC Section 3121(d) – Definition of Employee.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission correctly identifies the relevant IRC section (3121(d)) and the three common law categories (Behavioral, Financial, Relationship). However, it fails to apply these rules to the specific facts provided (the $45,000 deficiency, the LLC entity, and the specific evidence of a 'draft' contract and 'payroll records'). A competent professional would analyze how the existence of payroll records showing withholding strongly contradicts the independent contractor claim, rather than just listing the factors generally. The recommendation for a settlement conference is reasonable but lacks the strategic depth of analyzing the specific weakness of the 'draft' contract versus the strength of the payroll evidence. The answer is legally accurate in theory but lacks the critical application required for a 5, and the lack of specific analysis on the provided evidence prevents a 4 in Completeness and Best Practices."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare briefs and assist in searching and seizing records to prepare charges and documentation for court cases.",
+      "task_type": "Court Case Documentation Preparation",
+      "user_prompt": "Prepare a summary brief for a potential civil fraud case against a taxpayer (SSN 555-66-7777) who failed to file returns for 4 years and was found to have hidden $300,000 in offshore accounts. Outline the elements of civil fraud under IRC Section 6663, list the specific evidence required to prove 'willfulness', and draft a checklist for the seizure of records needed to support the court filing.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Individual",
+          "ssn": "555-66-7777",
+          "non_filing_years": 4,
+          "hidden_assets": 300000,
+          "asset_location": "Offshore"
+        },
+        "applicable_law_snippet": "IRC Section 6663 imposes a civil fraud penalty equal to 75% of the underpayment attributable to fraud; 'Willfulness' requires a voluntary, intentional violation of a known legal duty."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the brief accurately reflect the elements of civil fraud?",
+        "Completeness: Is the evidence checklist comprehensive for a court filing?",
+        "Legal Accuracy: Is IRC Section 6663 correctly interpreted regarding the penalty and willfulness?"
+      ],
+      "student_answer": "**Civil Fraud Case Brief – Taxpayer: SSN 555-66-7777**\n\n**Case Summary:** This brief outlines the basis for a civil fraud case against taxpayer SSN 555-66-7777 for failure to file tax returns for four consecutive years and concealment of $300,000 in offshore accounts. The case will be pursued under IRC Section 6663.\n\n**Elements of Civil Fraud (IRC Section 6663):**\n\nTo establish civil fraud under IRC Section 6663, the following elements must be proven:\n\n1.  **Underpayment of Tax:** A demonstrable underpayment of tax is required. This will be established by comparing the taxpayer’s actual tax liability for the relevant years with the amount of tax actually paid.\n2.  **Fraudulent Intent:** The taxpayer knowingly and intentionally failed to file tax returns and concealed assets.\n3.  **Connection Between Underpayment and Fraud:**  A direct link must be shown between the underpayment of tax and the fraudulent conduct (failure to file and concealment).\n4.  **Willfulness:** The taxpayer’s actions were voluntary and intentional, demonstrating a conscious disregard for their legal duty to file and pay taxes.\n\n**Evidence Required to Prove ‘Willfulness’:**\n\nProving ‘willfulness’ requires demonstrating the taxpayer’s conscious and voluntary violation of their legal duty. The following evidence is crucial:\n\n*   **Bank Records:** Statements from the offshore accounts detailing deposits, withdrawals, and balances, demonstrating the concealment of assets.\n*   **Financial Statements:** Taxpayer’s personal and business financial statements (if applicable) showing discrepancies between reported income and actual income.\n*   **Correspondence:** Any correspondence with financial institutions, accountants, or legal counsel related to the offshore accounts or tax obligations.\n*   **Digital Evidence:** Emails, text messages, or other electronic communications referencing the offshore accounts or tax avoidance strategies.\n*   **Witness Testimony:** Statements from individuals who observed the taxpayer’s behavior or have knowledge of their financial activities.\n*   **Expert Testimony:** Forensic accounting analysis demonstrating the deliberate concealment of assets and the resulting underpayment of taxes.\n*   **Tax Return History:**  Evidence of prior tax filings (if any) to establish a pattern of non-compliance.\n*   **Internal Revenue Service Audit Trail:** Records of IRS inquiries, examinations, and correspondence with the taxpayer.\n\n**Record Seizure Checklist:**\n\n| Category             | Items to Seize                               | Priority |\n| -------------------- | -------------------------------------------- | -------- |\n| **Bank Records**      | Offshore account statements (all years)       | High     |\n|                      | All U.S. bank accounts                        | High     |\n|                      | Wire transfer records                          | High     |\n| **Financial Records** | Tax returns (all years – if available)        | High     |\n|                      | Personal and business financial statements     | High     |\n|                      | Receipts, invoices, and other income records   | Medium   |\n| **Digital Records**   | Computer, laptop, tablet, and mobile devices | High     |\n|                      | Email accounts and messaging apps              | High     |\n|                      | Cloud storage accounts                         | High     |\n| **Legal Documents**   | Legal agreements, contracts, and wills        | Medium   |\n| **Identification**    | Driver’s license, passport, social security card| High     |\n| **Other**             | Any other documents potentially relevant to the case | Low      |\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        4,
+        5,
+        4
+      ],
+      "score": 4.2,
+      "grade_reason": "The submission correctly identifies the elements of civil fraud under IRC 6663 and provides a comprehensive list of evidence and a seizure checklist. The structure is professional and clear. However, it scores a 4 rather than a 5 because it lacks specific legal citations for the elements (e.g., referencing the specific burden of proof or key case law like *United States v. Boyle* or *Spies v. United States* which define willfulness in this context). Additionally, the seizure checklist is generic and does not explicitly mention the legal authority required (e.g., specific warrant types like a search warrant under Rule 41 or a summons under IRC 7602) or the 'least restrictive means' principle mentioned in the additional checks, which is a minor gap for an 'exceptional' industry-standard document. The content is accurate and complete enough for a draft but requires minor professional refinement to be flawless."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Secure a taxpayer's agreement to discharge a tax assessment or submit contested determinations to other administrative or judicial conferees for appeals hearings.",
+      "task_type": "Offer in Compromise Analysis",
+      "user_prompt": "Analyze the Offer in Compromise (OIC) eligibility for a taxpayer (EIN 11-2233445) who owes $80,000 in back taxes. The taxpayer has $10,000 in liquid assets, monthly income of $4,000, and monthly expenses of $4,200. Determine if the OIC should be accepted based on the 'Doubt as to Collectibility' standard. Calculate the reasonable collection potential (RCP) and recommend whether to accept the offer, reject it, or pursue alternative collection methods, citing IRC Section 7122.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Sole Proprietorship",
+          "ein": "11-2233445",
+          "liability": 80000,
+          "liquid_assets": 10000,
+          "monthly_income": 4000,
+          "monthly_expenses": 4200,
+          "offer_amount": 15000
+        },
+        "applicable_law_snippet": "IRC Section 7122 allows compromise; Treasury Regulation 301.7122-1 defines 'Doubt as to Collectibility' where the taxpayer's assets and income are insufficient to pay the full liability."
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the RCP calculation accurate based on the provided financial data?",
+        "Completeness: Does the response address the specific OIC standard and provide a clear recommendation?",
+        "Legal Accuracy: Is IRC Section 7122 and the 'Doubt as to Collectibility' standard correctly applied?"
+      ],
+      "student_answer": "**Analysis of Offer in Compromise (OIC) – EIN 11-2233445**\n\n**Determination:** Reject\n\n**Reasoning:**\n\nBased on the provided information and applying the ‘Doubt as to Collectibility’ standard under IRC Section 7122, the OIC should be rejected.\n\n**Calculations:**\n\n*   **Reasonable Collection Potential (RCP):**\n    *   Liquid Assets: $10,000\n    *   Monthly Income: $4,000\n    *   Monthly Expenses: $4,200\n    *   Annual Income: $4,000 * 12 = $48,000\n    *   RCP = $10,000 + ($4,000 * 3) = $22,000\n\n*   **Comparison:** The taxpayer’s RCP ($22,000) is significantly less than the total liability ($80,000).\n\n**Recommendation:** Reject the OIC. The taxpayer’s financial circumstances do not meet the requirements for a ‘Doubt as to Collectibility’ as defined in Treasury Regulation 301.7122-1.  Pursue alternative collection methods, including but not limited to: Installment Agreement (IRC Section 7122) and/or levy of assets.\n\n**Citation:** IRC Section 7122",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on domain accuracy and correctness. The student incorrectly calculates Reasonable Collection Potential (RCP) by ignoring the taxpayer's negative cash flow (expenses exceed income), which should result in zero or negative future income contribution, not a positive multiplier. Consequently, the RCP is calculated as $22,000 when it should be approximately $10,000 (liquid assets only). The student then incorrectly concludes that because the RCP ($22k) is less than the liability ($80k), the offer should be rejected. In reality, under 'Doubt as to Collectibility,' an offer is accepted if the offer amount ($15k) is greater than or equal to the RCP. Since $15k > $10k, the offer should be accepted. The student also cites IRC 7122 for Installment Agreements, which is incorrect (IRC 6159 governs IAs). The logic is inverted, leading to a wrong recommendation. The output is not usable without major rework."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Review selected tax returns to determine the nature and extent of audits to be performed on them.",
+      "task_type": "Complex Return Audit Planning",
+      "user_prompt": "Review the tax return for EIN 77-8899001 (Partnership, Tax Year: 2023) which reports a $2M loss from a real estate activity. The return includes significant depreciation claims and interest deductions. Determine the audit focus areas, specifically regarding the at-risk rules and passive activity loss limitations. Recommend the specific IRC sections to examine and the extent of the audit required to verify the loss deduction.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "Partnership",
+          "ein": "77-8899001",
+          "tax_year": 2023,
+          "reported_loss": 2000000,
+          "activity_type": "Real Estate",
+          "key_deductions": [
+            "Depreciation",
+            "Interest"
+          ]
+        },
+        "applicable_law_snippet": "IRC Section 465 limits deductions to the amount the taxpayer has at risk; IRC Section 469 limits passive activity losses."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the audit plan correctly target the at-risk and passive activity rules?",
+        "Completeness: Are the specific IRC sections identified and the audit scope clearly defined?",
+        "Legal Accuracy: Are IRC Sections 465 and 469 correctly cited in the context of the reported loss?"
+      ],
+      "student_answer": "**Audit Focus Areas:**\n\n1.  **At-Risk Rules (IRC Section 465):** Determine the extent to which the partnership’s capital contributions are considered “at-risk” in the real estate activity.\n2.  **Passive Activity Loss Limitations (IRC Section 469):** Verify if the real estate activity qualifies as a passive activity and if the partnership meets the requirements for deducting the $2 million loss.\n\n**Recommended IRC Sections to Examine:**\n\n*   **IRC Section 7701(b):** Definition of capital contributions.\n*   **IRC Section 465:** At-risk rules for losses.\n*   **IRC Section 469:** Passive activity loss limitations.\n*   **IRC Section 170:** Deduction limitations.\n*   **Treasury Regulations related to 465 and 469:** Detailed guidance on applying the at-risk and passive activity loss rules.\n\n**Extent of Audit Required:**\n\n1.  **Review Partnership Agreement:** Examine the partnership agreement to understand capital contribution structure, allocation of profits and losses, and management responsibilities.\n2.  **Document Capital Contributions:** Obtain documentation supporting all capital contributions made to the partnership related to the real estate activity (e.g., bank statements, loan agreements, promissory notes).\n3.  **Analyze At-Risk Calculations:** Calculate the amount of capital at risk based on the partnership agreement and contribution documentation.  Verify that the reported loss is not exceeded by the amount at risk.\n4.  **Determine Passive Activity Status:** Assess whether the real estate activity meets the requirements for passive activity under IRC Section 469. This includes evaluating the level of management control and participation by the partners.\n5.  **Verify Depreciation Claims:** Scrutinize the depreciation claimed for the real estate property. Ensure it is supported by proper documentation (e.g., purchase agreements, building permits, depreciation schedules) and complies with IRS guidelines.\n6.  **Review Interest Deductions:** Examine the interest expense related to the real estate activity. Verify the underlying loan documents and ensure the interest is allocable to the real estate activity.\n7.  **Trace Losses:** Trace the $2 million loss to specific real estate activity expenses.\n8.  **Review Supporting Documentation:** Obtain and review all supporting documentation related to the real estate activity, including property records, operating statements, and expense reports.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission correctly identifies the primary audit focus areas (At-Risk and Passive Activity) and the general scope of the audit. However, it fails on domain accuracy and best practices in several key areas. First, it incorrectly cites IRC Section 7701(b) for the definition of capital contributions; 7701(b) defines residency for tax purposes, while capital contributions are defined under Section 721 and related partnership regulations. Second, it cites IRC Section 170 (Charitable Contributions) which is irrelevant to the context of real estate depreciation and interest deductions. Third, the audit plan lacks specific technical depth expected of a Senior Officer, such as mentioning the 'qualified real property business interest' exception under Section 163(j) or the specific 'material participation' tests under Reg. 1.469-5T. The inclusion of irrelevant sections and the lack of specific technical nuance regarding the calculation of at-risk amounts (e.g., nonrecourse financing distinctions) prevents a score higher than 3."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Install systems of recording costs or other financial and budgetary data or provide advice on such systems, based on examination of current financial records.",
+      "task_type": "Financial Systems Audit and Recommendation",
+      "user_prompt": "Review the provided financial records for 'Apex Manufacturing LLC' (EIN: 83-1234567) for the tax year 2023. The entity filed as an S-Corporation. Identify three critical deficiencies in their current cost recording system that led to a $45,000 underpayment of payroll taxes due to misclassified contractor payments. Based on your analysis, draft a formal advisory memo recommending a specific upgrade to their cost recording system to ensure future compliance. Your recommendation must cite the specific IRC section regarding the definition of an employee versus an independent contractor and explain how the new system will prevent recurrence.",
+      "reference_context": {
+        "taxpayer_profile": {
+          "entity_type": "S-Corporation",
+          "ein": "83-1234567",
+          "filing_status": "S-Corp",
+          "tax_year": 2023,
+          "underpayment_amount": 45000,
+          "issue_description": "Misclassification of 15 long-term contractors as independent contractors, resulting in unpaid payroll taxes."
+        },
+        "financial_records_summary": {
+          "total_payroll_expenses": 1200000,
+          "contractor_payments": 180000,
+          "record_keeping_method": "Manual spreadsheet with no automated classification logic",
+          "documentation_quality": "Incomplete; missing signed contracts and work logs for 10 of the 15 contractors."
+        },
+        "applicable_law_snippet": "IRC Section 3121(d) defines 'employee' and includes common law rules for determining status. Treasury Regulation § 31.3121(d)-1(c) outlines the factors for employee classification, emphasizing behavioral control, financial control, and relationship of the parties."
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the analysis accurately identify the root cause of the underpayment based on the provided records and IRC definitions?",
+        "Completeness: Does the advisory memo include three specific system deficiencies and a detailed upgrade plan?",
+        "Best Practices: Is the recommendation consistent with IRS Publication 15 (Circular E) guidelines for payroll tax compliance?"
+      ],
+      "student_answer": "**MEMORANDUM**\n\n**TO:** Apex Manufacturing LLC\n**FROM:** Tax Examiners and Collectors\n**DATE:** October 26, 2023\n**SUBJECT:** Advisory Regarding Cost Recording System Deficiencies and Payroll Tax Compliance – Tax Year 2023\n\n**I. Findings of Deficiency**\n\nOur review of Apex Manufacturing LLC’s 2023 tax records identified three critical deficiencies in your cost recording system that contributed to a $45,000 underpayment of payroll taxes:\n\n1.  **Lack of Automated Contractor Classification:** The current manual spreadsheet system lacks any automated logic to differentiate between employees and independent contractors. This resulted in 15 long-term contractors being incorrectly classified as independent contractors.\n2.  **Insufficient Documentation:** Incomplete documentation, specifically the absence of signed contracts and work logs for 10 of the 15 contractors, further supports the misclassification and hinders proper audit trail verification.\n3.  **Absence of Centralized Recordkeeping:** The reliance on a single, unorganized spreadsheet creates a significant risk of errors and omissions in tracking contractor payments and associated tax liabilities.\n\n**II. Legal Basis**\n\nThe IRS defines an “employee” under IRC Section 3121(d) and utilizes common law rules, as outlined in Treasury Regulation § 31.3121(d)-1(c), to determine worker status. Key factors include behavioral control (the employer’s right to control how the work is done), financial control (the contractor’s investment in tools and equipment, unreimbursed expenses, and the ability to realize a profit), and the relationship of the parties (written contracts, employee benefits, and permanence of the relationship).\n\n**III. Recommendation**\n\nWe strongly recommend implementing a cloud-based contractor management system with integrated payroll and tax reporting capabilities. Specifically, we suggest utilizing a system that incorporates the following features:\n\n*   **Automated Classification Logic:** The system should utilize a questionnaire and algorithm based on the factors outlined in Treasury Regulation § 31.3121(d)-1(c) to automatically assess contractor status.\n*   **Contract Management:** A centralized repository for storing and tracking signed contracts, including clauses related to independent contractor status.\n*   **Work Log Tracking:**  A system for contractors to digitally record their hours worked and expenses incurred, providing verifiable documentation of their activities.\n*   **Automated Payroll Tax Calculation & Filing:** Integration with payroll software to automatically calculate and remit all applicable payroll taxes (federal, state, and local).\n\n**IV. Expected Outcome**\n\nThis upgrade will prevent future misclassification errors by providing a structured and automated process for determining contractor status. The centralized recordkeeping will ensure complete and readily available documentation for audit purposes, mitigating the risk of future underpayment penalties.  Consistent application of the defined criteria will align with IRS guidelines and ensure full compliance with payroll tax regulations.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        4,
+        4,
+        4,
+        5,
+        5,
+        4
+      ],
+      "score": 4.3,
+      "grade_reason": "The submission correctly identifies the three deficiencies, cites the specific IRC Section 3121(d) and Treasury Regulation as required, and drafts a professional memo. However, the 'Deficiencies' section lists 'Absence of Centralized Recordkeeping' as a distinct issue from 'Lack of Automated Logic,' whereas the context implies the manual spreadsheet is the root cause of both; a more rigorous analysis might have separated the lack of logic from the lack of documentation quality more distinctly. Additionally, the recommendation is sound but generic regarding the specific 'upgrade' (e.g., naming a specific type of ERP or compliance module) rather than a tailored technical specification, which keeps it from being a perfect 5 in Completeness and Best Practices. The domain accuracy is excellent, and the clarity is high."
+    }
+  ]
+}

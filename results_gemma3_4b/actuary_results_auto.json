@@ -1,0 +1,489 @@
+{
+  "meta": {
+    "job_title": "Actuaries",
+    "job_id": "actuary",
+    "onet_code": "15-2011.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 15,
+    "evaluated_tasks": 15,
+    "batches": 3,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 2.36,
+      "dimensions": {
+        "Correctness": 1.92,
+        "Completeness": 2.77,
+        "Best Practices": 1.92,
+        "Domain Accuracy": 1.85,
+        "Clarity": 3.92,
+        "Autonomy": 1.77
+      },
+      "evaluated_tasks": 15,
+      "scale_max": 5
+    },
+    "total_time_seconds": 2699.92
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Ascertain premium rates required and cash reserves and liabilities necessary to ensure payment of future benefits.",
+      "task_type": "Premium and Reserve Calculation",
+      "user_prompt": "Calculate the Net Level Premium and the Initial Reserve for a 20-year endowment insurance policy issued to a 40-year-old male. Use the provided mortality table and interest rate assumptions. Explicitly document the assumptions regarding expense loading and profit margin. Provide the final premium rate per $1,000 of sum assured and the reserve at the end of year 10.",
+      "reference_context": "{\n  \"policy_type\": \"20-year Endowment\",\n  \"issue_age\": 40,\n  \"sum_assured\": 1000,\n  \"mortality_table\": \"ILTM_2020\",\n  \"interest_rate\": 0.045,\n  \"expense_loading\": 0.05,\n  \"profit_margin\": 0.02\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Premium and reserve calculations match standard actuarial formulas (e.g., prospective method) within 0.01% tolerance.",
+        "Criterion 2: Completeness — All requested outputs (premium per 1k, year 10 reserve) are provided with explicit assumption documentation.",
+        "Criterion 3: Best practices — Calculations adhere to GAAP/IFRS 17 principles for liability recognition and expense allocation."
+      ],
+      "student_answer": "**Net Level Premium & Initial Reserve – 20-Year Endowment Policy**\n\n**Assumptions:**\n\n*   **Mortality Table:** ILTM_2020\n*   **Interest Rate:** 4.5% (0.045) – Used for discounting future liabilities.\n*   **Expense Loading:** 5% (0.05) – Applied to the premium to cover operating expenses.\n*   **Profit Margin:** 2% (0.02) – Added to the premium after expenses to provide a profit.\n*   **Currency:** USD (Assumed for consistency)\n*   **Premium Payment Frequency:** Annually (Assumed)\n\n**Calculations:**\n\n1.  **Mortality Rate (Year 1):**\n    *   From ILTM_2020 at age 40 for males: 0.01637\n\n2.  **Initial Reserve (Year 0):**\n    *   Reserve = Sum Assured * Mortality Rate * (1 + Interest Rate)\n    *   Reserve = $1000 * 0.01637 * (1 + 0.045)\n    *   Reserve = $1000 * 0.01637 * 1.045\n    *   Reserve = $16.88\n\n3.  **Premium Rate per $1,000:**\n    *   Premium = Reserve * (1 + Expense Loading + Profit Margin)\n    *   Premium = $16.88 * (1 + 0.05 + 0.02)\n    *   Premium = $16.88 * 1.07\n    *   Premium = $18.24\n\n4.  **Reserve at the End of Year 10:**\n    *   Reserve (Year 10) = Initial Reserve * (1 + Interest Rate)^10\n    *   Reserve (Year 10) = $16.88 * (1 + 0.045)^10\n    *   Reserve (Year 10) = $16.88 * (1.045)^10\n    *   Reserve (Year 10) = $16.88 * 1.556325\n    *   Reserve (Year 10) = $26.56\n\n**Results:**\n\n*   **Premium Rate per $1,000:** $18.24\n*   **Reserve at the End of Year 10:** $26.56",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        4,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission fails on fundamental actuarial principles. The Net Level Premium calculation ignores the Equivalence Principle and annuity factors required for a 20-year endowment, treating it instead as a single-year cost markup. The reserve calculations are actuarially invalid, compounding a mortality cost rather than accumulating premiums and interest net of claims. While the document is well-structured and readable (Clarity 4), the technical errors render it unusable for professional purposes (Autonomy 1, Correctness 1)."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Analyze statistical information to estimate mortality, accident, sickness, disability, and retirement rates.",
+      "task_type": "Mortality Rate Analysis",
+      "user_prompt": "Using the provided raw claims data for a group life insurance portfolio, estimate the mortality rate for the 50-54 age group for the current year. Adjust for exposure time and calculate the 95% confidence interval for the estimated rate. Compare this to the prior year's rate and identify if the deviation is statistically significant at the 5% level.",
+      "reference_context": "{\n  \"claims_data\": [\n    {\"age\": 52, \"status\": \"death\", \"exposure_days\": 365},\n    {\"age\": 51, \"status\": \"active\", \"exposure_days\": 365},\n    {\"age\": 53, \"status\": \"death\", \"exposure_days\": 180},\n    {\"age\": 50, \"status\": \"active\", \"exposure_days\": 365}\n  ],\n  \"prior_year_rate\": 0.0012,\n  \"total_exposure_50_54\": 150000\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Mortality rate and confidence interval calculations are mathematically accurate using Poisson or Binomial distributions.",
+        "Criterion 2: Completeness — Statistical significance test (p-value) is performed and interpreted correctly.",
+        "Criterion 3: Best practices — Exposure adjustments are handled correctly, and the analysis includes a clear statement on data limitations."
+      ],
+      "student_answer": "```json\n{\n  \"estimated_mortality_rate_50_54\": 0.0013,\n  \"95_confidence_interval\": [0.0010, 0.0016],\n  \"comparison_to_prior_year\": 0.0001,\n  \"statistical_significance\": true,\n  \"explanation\": \"The estimated mortality rate for the 50-54 age group is 0.0013. The 95% confidence interval for this rate is 0.0010 to 0.0016.  This is a deviation of 0.0001 from the prior year's rate of 0.0012.  A t-test comparing the two rates yields a p-value of 0.04, which is less than the significance level of 0.05, indicating statistical significance.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission fails to derive the mortality rate from the provided raw claims data (2 deaths vs 150k exposure discrepancy). Statistical methodology is flawed (t-test for rates is inappropriate; Poisson/Z-test required). The confidence interval width contradicts the implied sample size. While the JSON structure is clear, the actuarial assumptions and calculations are fundamentally flawed, requiring significant rework before client delivery."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Design, review, and help administer insurance, annuity and pension plans, determining financial soundness and calculating premiums.",
+      "task_type": "Pension Plan Soundness Review",
+      "user_prompt": "Review the provided pension plan funding status. Determine if the plan is underfunded based on the Actuarial Present Value of Benefits (APVB) versus the Market Value of Assets (MVA). Calculate the Required Contribution for the next year to achieve a 90% funding ratio within 5 years, assuming a 6% investment return and 3% salary growth. Document the sensitivity of the required contribution to a 1% decrease in investment return.",
+      "reference_context": "{\n  \"plan_type\": \"Defined Benefit\",\n  \"current_mva\": 50000000,\n  \"apvb\": 65000000,\n  \"salary_growth_rate\": 0.03,\n  \"investment_return_assumption\": 0.06,\n  \"target_funding_ratio\": 0.90,\n  \"time_horizon_years\": 5\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Funding ratio and required contribution calculations are accurate based on standard pension actuarial methods.",
+        "Criterion 2: Completeness — Sensitivity analysis for the 1% return decrease is included and quantified.",
+        "Criterion 3: Best practices — Assumptions regarding salary growth and investment returns are explicitly justified and consistent with the plan document."
+      ],
+      "student_answer": "```json\n{\n  \"funding_status\": \"Underfunded\",\n  \"apvb_mva_difference\": 15000000,\n  \"required_contribution_year_1\": 850000,\n  \"required_contribution_sensitivity\": {\n    \"investment_return_decrease\": 0.01,\n    \"adjusted_investment_return\": 0.05,\n    \"adjusted_required_contribution\": 920000\n  },\n  \"funding_ratio_projection\": {\n    \"year_1\": 0.82,\n    \"year_2\": 0.86,\n    \"year_3\": 0.89,\n    \"year_4\": 0.91,\n    \"year_5\": 0.92\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        2,
+        4,
+        4,
+        2
+      ],
+      "score": 3.0,
+      "grade_reason": "Correctness (3): Calculations provided but methodology is opaque, making verification of the 850k contribution impossible. Completeness (3): Missing explicit assumption statements and calculation logic required for a complete submission. Best Practices (2): Fails to meet actuarial documentation standards (ASOP) regarding assumption disclosure and justification. Domain Accuracy (4): Terminology (APVB, MVA, Funding Ratio) used correctly. Clarity (4): JSON structure is clean and readable. Autonomy (2): Requires significant rework to add justification and narrative for client delivery."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Construct probability tables for events such as fires, natural disasters, and unemployment, based on analysis of statistical data and other pertinent information.",
+      "task_type": "Catastrophe Probability Modeling",
+      "user_prompt": "Construct a probability table for a 1-in-100-year flood event for a specific commercial property portfolio. Use the provided historical loss data and a Generalized Pareto Distribution (GPD) to model the tail risk. Calculate the Expected Loss (EL) and the Value at Risk (VaR) at the 99.5% confidence level. Justify the choice of threshold for the GPD.",
+      "reference_context": "{\n  \"historical_losses\": [10000, 15000, 25000, 50000, 120000, 200000, 500000],\n  \"portfolio_exposure\": 10000000,\n  \"distribution_model\": \"GPD\",\n  \"confidence_level_var\": 0.995\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — GPD parameter estimation and resulting EL/VaR calculations are mathematically sound.",
+        "Criterion 2: Completeness — Probability table is constructed, and the threshold justification is clearly explained.",
+        "Criterion 3: Best practices — The model accounts for tail risk appropriately, and the output includes a discussion on model uncertainty."
+      ],
+      "student_answer": "```json\n{\n  \"probability_table\": {\n    \"Loss Level\": [\n      10000,\n      15000,\n      25000,\n      50000,\n      120000,\n      200000,\n      500000\n    ],\n    \"Probability\": [\n      0.01,\n      0.03,\n      0.06,\n      0.12,\n      0.24,\n      0.36,\n      0.64\n    ]\n  },\n  \"GPD_Parameters\": {\n    \"scale\": 250000,\n    \"shape\": 2.5\n  },\n  \"Justification_GPD_Threshold\": \"The Generalized Pareto Distribution (GPD) is chosen to model the tail risk due to its ability to capture extreme, heavy-tailed distributions commonly observed in flood events. The historical data exhibits a decreasing frequency of smaller losses and an increasing frequency of larger losses, characteristic of a heavy-tailed distribution.  The threshold of 250000 is selected based on the 95th percentile of the historical losses, providing a reasonable balance between capturing tail risk and avoiding overfitting to the observed data.  A higher threshold would overly constrain the model, while a lower threshold would not adequately capture the potential for extreme losses.\",\n  \"Expected Loss (EL)\": 1875000,\n  \"Value at Risk (VaR) (99.5%)\": 1425000\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.5,
+      "grade_reason": "The submission contains fundamental mathematical errors: the probability values sum to 1.46 (invalid for a distribution), VaR (1.425M) is lower than EL (1.875M) which is impossible for loss distributions, and the GPD shape parameter of 2.5 implies an infinite mean while a finite EL is reported. The threshold justification is factually incorrect regarding the data percentile. While the JSON structure is clean and readable (Clarity 3) and all requested sections are present (Completeness 2), the technical content is invalid for professional use (Correctness 1, Domain Accuracy 1, Best Practices 1, Autonomy 1)."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Determine, or help determine, company policy, and explain complex technical matters to company executives, government officials, shareholders, policyholders, or the public.",
+      "task_type": "Executive Policy Briefing",
+      "user_prompt": "Draft a 300-word executive summary explaining the impact of the new IFRS 17 standard on the company's reported equity and profit volatility. Specifically address how the Contractual Service Margin (CSM) amortization will differ from the previous GAAP approach. Include a recommendation on whether to adjust the current dividend policy based on this volatility.",
+      "reference_context": "{\n  \"current_standard\": \"US GAAP\",\n  \"new_standard\": \"IFRS 17\",\n  \"key_changes\": [\"CSM Amortization\", \"Discount Rate Updates\", \"Risk Adjustment\"],\n  \"current_dividend_payout_ratio\": 0.40,\n  \"volatility_increase_estimate\": 0.15\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Technical explanation of IFRS 17 mechanics (CSM, discounting) is accurate and distinct from GAAP.",
+        "Criterion 2: Completeness — The summary covers equity impact, volatility, and provides a clear dividend policy recommendation.",
+        "Criterion 3: Best practices — The language is accessible to non-actuarial executives while maintaining technical precision."
+      ],
+      "student_answer": "**Executive Summary: Impact of IFRS 17 on Equity and Profit Volatility**\n\nThe implementation of IFRS 17 represents a significant shift in insurance accounting, impacting reported equity and profit volatility. Currently operating under US GAAP, our company’s financial statements exhibit a degree of stability. IFRS 17’s core changes – particularly Contractual Service Margin (CSM) amortization and risk adjustments – are projected to substantially increase this volatility.\n\nUnder US GAAP, insurance contracts were accounted for using the completed-contract method, resulting in immediate recognition of revenue. IFRS 17 introduces a more complex, relative approach. The CSM, representing the unearned profit from a policy, is now systematically amortized over the policy’s duration, creating a significant non-cash charge impacting profit. This amortization process will inherently lead to greater fluctuations in reported earnings, especially during periods of premium growth or adverse claims experience.\n\nFurthermore, IFRS 17 mandates the use of a more sophisticated discount rate, incorporating an entity’s own incremental borrowing rate, which is expected to further impact reported profits. The introduction of a risk adjustment, reflecting the uncertainty of future cash flows, adds another layer of complexity and potential volatility.\n\nPreliminary modeling suggests a volatility increase of approximately 15% in reported profit. This heightened volatility could impact equity valuation and investor confidence.\n\n**Recommendation:** Given the projected volatility, we recommend a cautious approach to the current dividend policy. Maintaining the existing payout ratio of 40% is deemed too aggressive. We propose a temporary adjustment to the dividend payout ratio to 30% for the next two fiscal years to provide a buffer against earnings fluctuations and ensure continued financial stability. A review of the dividend policy should occur annually, contingent on the observed impact of IFRS 17 on reported financial performance.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission follows a professional"
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Collaborate with programmers, underwriters, accounts, claims experts, and senior management to help companies develop plans for new lines of business or improvements to existing business.",
+      "task_type": "New Product Feasibility Analysis",
+      "user_prompt": "Develop a preliminary pricing model for a new 'Micro-Health' insurance product targeting gig workers. Define the key risk factors (e.g., claim frequency, severity, lapse rate) and propose a data-driven approach to validate these assumptions using the provided historical dataset. Calculate the break-even premium rate assuming a 10% target profit margin and 5% acquisition cost.",
+      "reference_context": "{\n  \"target_demographic\": \"Gig Workers\",\n  \"product_type\": \"Micro-Health\",\n  \"historical_data_sample\": {\n    \"claim_frequency\": 0.08,\n    \"avg_severity\": 1200,\n    \"lapse_rate\": 0.15\n  },\n  \"target_profit_margin\": 0.10,\n  \"acquisition_cost_ratio\": 0.05\n}",
+      "evaluation_criteria": [
+        "Criterion 1: Correctness — Break-even premium calculation correctly incorporates frequency, severity, lapse, and cost ratios.",
+        "Criterion 2: Completeness — Key risk factors are identified, and a validation strategy for assumptions is proposed.",
+        "Criterion 3: Best practices — The model addresses the specific volatility of the gig worker demographic and suggests appropriate data validation techniques."
+      ],
+      "student_answer": "```json\n{\n  \"pricing_model\": {\n    \"product\": \"Micro-Health Insurance for Gig Workers\",\n    \"key_risk_factors\": [\n      {\n        \"factor\": \"Claim Frequency\",\n        \"current_estimate\": 0.08,\n        \"validation_method\": \"Cohort Analysis – Compare claim frequency of gig workers to a broader population (e.g., full-time employees) using historical claims data.  Segment by gig type (e.g., delivery, rideshare, freelance) to identify variations.\",\n        \"data_source\": \"Historical Claims Data, External Labor Market Data\"\n      },\n      {\n        \"factor\": \"Average Severity\",\n        \"current_estimate\": 1200,\n        \"validation_method\": \"Analyze claims data by diagnosis category.  Compare severity of claims among gig workers to a broader population.  Investigate potential differences in healthcare utilization patterns.\",\n        \"data_source\": \"Historical Claims Data\"\n      },\n      {\n        \"factor\": \"Lapse Rate\",\n        \"current_estimate\": 0.15,\n        \"validation_method\": \"Track policy renewals.  Analyze reasons for lapse (e.g., policy cost, lack of need, administrative issues).  Segment by gig type and policy duration.\",\n        \"data_source\": \"Policy Administration Data\"\n      }\n    ],\n    \"break-even_premium_rate\": {\n      \"calculation\": \"Let P = Premium Rate, Profit = P * (1 - Acquisition Cost Ratio) * (1 - Target Profit Margin).  Break-even occurs when Profit = 0.  Therefore, P = Acquisition Cost Ratio / (1 - Target Profit Margin).\",\n      \"break_even_rate\": 0.16,\n      \"units\": \"%\"\n    },\n    \"assumptions\": {\n      \"operating_expenses\": \"Assume annual operating expenses of $500 per policy (including claims administration, marketing, and overhead).\",\n      \"discount_rate\": \"Assume a discount rate of 5% for present value calculations.\",\n      \"policy_duration\": \"Assume an average policy duration of 12 months.\"\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        2,
+        1,
+        1,
+        4,
+        1
+      ],
+      "score": 1.7,
+      "grade_reason": "The submission correctly structures risk factors and validation methods, but fails the core pricing task by ignoring expected claim costs (Frequency * Severity) in the premium calculation. The formula provided is fundamentally incorrect for insurance pricing, conflating break-even with target profit and omitting loss ratios. While the JSON structure is clear, the output is not usable without complete rework of the pricing logic."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Determine equitable basis for distributing surplus earnings under participating insurance and annuity contracts in mutual companies.",
+      "task_type": "Surplus Distribution Analysis",
+      "user_prompt": "Analyze the provided financial data for a mutual life insurance company's participating block. Calculate the equitable surplus distribution for the current fiscal year using the 'Contribution to Surplus' method. You must explicitly document assumptions regarding lapse rates, mortality experience, and expense variances. Quantify the risk factors associated with these assumptions using a 95% confidence interval. Output a summary report detailing the proposed dividend scale and the sensitivity of the surplus to a 10% adverse shift in mortality.",
+      "reference_context": "{\n  \"company_type\": \"Mutual Life Insurance\",\n  \"fiscal_year\": 2023,\n  \"participating_premium\": 50000000,\n  \"actual_mortality_cost\": 1200000,\n  \"expected_mortality_cost\": 1150000,\n  \"actual_expenses\": 4500000,\n  \"expected_expenses\": 4800000,\n  \"investment_income\": 6200000,\n  \"required_capital\": 15000000,\n  \"assumptions\": {\n    \"lapse_rate\": 0.05,\n    \"mortality_improvement\": 0.01,\n    \"expense_inflation\": 0.02\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: The surplus calculation accurately reflects the difference between actual and expected experience adjusted for required capital.",
+        "Completeness: The response includes the dividend scale proposal, documented assumptions, and a 95% confidence interval for risk factors.",
+        "Best practices: The solution adheres to standard actuarial practices for mutual companies and clearly distinguishes between participating and non-participating elements."
+      ],
+      "student_answer": "**Participating Block Equitable Surplus Distribution – 2023**\n\n**1. Surplus Calculation:**\n\n*   **Total Premiums:** $50,000,000\n*   **Investment Income:** $6,200,000\n*   **Total Available:** $56,200,000\n*   **Mortality Cost (Actual):** $1,200,000\n*   **Expense Variance (Actual):** $300,000 (Actual - Expected)\n*   **Surplus Before Capital:** $56,200,000 - $1,200,000 - $300,000 = $54,700,000\n*   **Required Capital:** $15,000,000\n*   **Equitable Surplus:** $54,700,000 - $15,000,000 = $39,700,000\n\n**2. Dividend Scale Proposal:**\n\n*   **Dividend Rate:** $39,700,000 / $50,000,000 = 0.794 or 79.4%\n*   **Proposed Dividend Scale:** 79.4% of Participating Premiums\n\n**3. Sensitivity Analysis – 10% Adverse Mortality Shift:**\n\n*   **Base Mortality Cost:** $1,200,000\n*   **Adverse Shift:** 10% * $1,200,000 = $120,000\n*   **New Mortality Cost:** $1,200,000 + $120,000 = $1,320,000\n*   **Revised Surplus Before Capital:** $56,200,000 - $1,320,000 - $300,000 = $54,580,000\n*   **Revised Equitable Surplus:** $54,580,000 - $15,000,000 = $39,580,000\n*   **Surplus Reduction:** $39,700,000 - $39,580,000 = $120,000\n\n**4. Risk Factor Quantification (95% Confidence Intervals):**\n\n*   **Lapse Rate:** 5% (0.05)\n    *   95% Confidence Interval: [3.8%, 6.2%]\n*   **Mortality Improvement:** 1% (0.01)\n    *   95% Confidence Interval: [0.8%, 1.2%]\n*   **Expense Inflation:** 2% (0.02)\n    *   95% Confidence Interval: [1.5%, 2.5%]\n\n**Summary Report:**\n\n| Metric                     | Value        |\n| -------------------------- | ------------ |\n| Equitable Surplus           | $39,700,000  |\n| Proposed Dividend Scale     | 79.4%        |\n| Surplus Reduction (10% Mortality Adverse Shift) | $120,000     |\n| Lapse Rate (95% CI)        | 3.8-6.2%     |\n| Mortality Improvement (95% CI) | 0.8-1.2%     |\n| Expense Inflation (95% CI) | 1.5-2.5%     |",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Negotiate terms and conditions of reinsurance with other companies.",
+      "task_type": "Reinsurance Strategy Simulation",
+      "user_prompt": "Simulate a negotiation scenario for a 20-year term life insurance portfolio. Propose a reinsurance treaty structure (quota share vs. excess of loss) that minimizes the volatility of the ceding company's net income while maintaining a target combined ratio of 95%. Provide a comparative analysis of the two structures under three scenarios: base case, 20% increase in claims frequency, and 15% increase in severity. Justify your recommendation with a quantified risk assessment including Value at Risk (VaR) at the 99.5% confidence level.",
+      "reference_context": "{\n  \"portfolio_size\": 100000,\n  \"average_face_amount\": 250000,\n  \"current_combined_ratio\": 92,\n  \"target_combined_ratio\": 95,\n  \"reinsurance_options\": {\n    \"quota_share\": {\n      \"commission\": 0.35,\n      \"profit_commission\": 0.10\n    },\n    \"excess_of_loss\": {\n      \"retention\": 50000,\n      \"limit\": 200000,\n      \"rate\": 0.045\n    }\n  },\n  \"historical_claims_data\": {\n    \"frequency_mean\": 0.002,\n    \"severity_mean\": 150000,\n    \"frequency_std_dev\": 0.0005,\n    \"severity_std_dev\": 50000\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: The simulation correctly calculates the impact of reinsurance structures on the combined ratio and net income volatility.",
+        "Completeness: The response includes a comparative analysis of both structures across all three scenarios and a specific recommendation.",
+        "Best practices: The solution uses appropriate statistical methods for VaR calculation and clearly articulates the trade-offs between cost and risk reduction."
+      ],
+      "student_answer": "```json\n{\n  \"reinsurance_recommendation\": \"Excess of Loss Treaty\",\n  \"treaty_details\": {\n    \"retention\": 75000,\n    \"limit\": 125000,\n    \"rate\": 0.042\n  },\n  \"comparative_analysis\": {\n    \"base_case\": {\n      \"quota_share\": {\n        \"commission_cost\": 3500,\n        \"profit_commission_cost\": 1000,\n        \"total_cost\": 4500,\n        \"net_income\": 5500,\n        \"combined_ratio\": 92.8\n      },\n      \"excess_of_loss\": {\n        \"commission_cost\": 3187.5,\n        \"total_cost\": 3187.5,\n        \"net_income\": 6812.5,\n        \"combined_ratio\": 92.8\n      }\n    },\n    \"20%_claims_frequency_increase\": {\n      \"quota_share\": {\n        \"commission_cost\": 3700,\n        \"profit_commission_cost\": 1100,\n        \"total_cost\": 4800,\n        \"net_income\": 5200,\n        \"combined_ratio\": 93.8\n      },\n      \"excess_of_loss\": {\n        \"commission_cost\": 3427.5,\n        \"total_cost\": 3427.5,\n        \"net_income\": 6572.5,\n        \"combined_ratio\": 93.8\n      }\n    },\n    \"15%_claims_severity_increase\": {\n      \"quota_share\": {\n        \"commission_cost\": 3850,\n        \"profit_commission_cost\": 1150,\n        \"total_cost\": 5000,\n        \"net_income\": 4750,\n        \"combined_ratio\": 94.3\n      },\n      \"excess_of_loss\": {\n        \"commission_cost\": 3622.5,\n        \"total_cost\": 3622.5,\n        \"net_income\": 6377.5,\n        \"combined_ratio\": 94.3\n      }\n    }\n  },\n  \"risk_assessment\": {\n    \"portfolio_size\": 100000,\n    \"average_face_amount\": 250000,\n    \"total_exposure\": 2500000,\n    \"historical_claims_frequency_mean\": 0.002,\n    \"historical_claims_frequency_std_dev\": 0.0005,\n    \"historical_claims_severity_mean\": 150000,\n    \"historical_claims_severity_std_dev\": 50000,\n    \"va_r_99_5\": 1275000\n  },\n  \"justification\": \"The excess of loss treaty offers greater stability in net income compared to quota share, particularly under adverse scenarios.  The lower commission rate and reduced exposure to large claims contribute to a more predictable profit margin.  The adjusted retention and limit provide sufficient protection while minimizing the reinsurance cost.  VaR at 99.5% confidence level is $1,275,000, representing the potential loss over a one-year period.  This demonstrates the effectiveness of the chosen reinsurance structure in mitigating significant downside risk.\"\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        1
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on fundamental actuarial calculations. Total exposure is calculated as 2.5M instead of 25B (100000 * 250000), a 10000x error. Consequently, the VaR 1.275M is negligible compared to expected annual losses 30M, rendering the risk assessment meaningless. Premium rates are not provided, making Combined Ratio calculations unverifiable. While the JSON structure is valid and sections are present, the financial logic is flawed to the point of unusability for a client."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Provide expertise to help financial institutions manage risks and maximize returns associated with investment products or credit offerings.",
+      "task_type": "Investment Product Risk Assessment",
+      "user_prompt": "Evaluate a proposed structured credit product designed for a bank's investment portfolio. The product consists of a portfolio of corporate bonds with a 5-year maturity. Perform a credit risk analysis to determine the probability of default (PD) and loss given default (LGD) under stressed economic conditions. Calculate the expected loss and unexpected loss, and propose a hedging strategy using credit default swaps (CDS) to reduce the unexpected loss by at least 20%. Document all assumptions regarding correlation between defaults and the economic stress scenario.",
+      "reference_context": "{\n  \"product_type\": \"Structured Credit Note\",\n  \"underlying_assets\": [\n    {\"issuer\": \"Corp A\", \"rating\": \"BBB\", \"exposure\": 10000000},\n    {\"issuer\": \"Corp B\", \"rating\": \"BB\", \"exposure\": 8000000},\n    {\"issuer\": \"Corp C\", \"rating\": \"A\", \"exposure\": 12000000}\n  ],\n  \"maturity\": 5,\n  \"current_spread\": 0.035,\n  \"stress_scenario\": {\n    \"gdp_growth\": -2.0,\n    \"unemployment_rate\": 8.5,\n    \"correlation_factor\": 0.6\n  },\n  \"historical_pd\": {\n    \"BBB\": 0.005,\n    \"BB\": 0.02,\n    \"A\": 0.001\n  },\n  \"historical_lgd\": 0.45\n}",
+      "evaluation_criteria": [
+        "Correctness: The PD and LGD calculations are consistent with the provided stress scenario and historical data.",
+        "Completeness: The response includes expected loss, unexpected loss, and a specific hedging strategy that meets the 20% reduction target.",
+        "Best practices: The solution explicitly documents correlation assumptions and justifies the hedging instrument selection based on cost-benefit analysis."
+      ],
+      "student_answer": "```json\n{\n  \"credit_risk_analysis\": {\n    \"portfolio_value\": 30000000,\n    \"PD_estimation\": {\n      \"Corp A\": 0.006,\n      \"Corp B\": 0.025,\n      \"Corp C\": 0.002\n    },\n    \"LGD_estimation\": 0.45,\n    \"stressed_PD\": {\n      \"Corp A\": 0.008,\n      \"Corp B\": 0.035,\n      \"Corp C\": 0.003\n    },\n    \"stressed_LGD\": 0.50,\n    \"expected_loss\": 30000000 * (0.006 * 0.45) + 8000000 * (0.025 * 0.45) + 12000000 * (0.003 * 0.45) ,\n    \"expected_loss\": 810000,\n    \"unexpected_loss\": 30000000 * (0.006 - 0.001) * 0.45 + 8000000 * (0.025 - 0.001) * 0.45 + 12000000 * (0.003 - 0.001) * 0.45,\n    \"unexpected_loss\": 1590000,\n    \"total_loss\": 2400000\n  },\n  \"hedging_strategy\": {\n    \"instrument\": \"Credit Default Swaps (CDS)\",\n    \"objective\": \"Reduce unexpected loss by at least 20%\",\n    \"CDS_protection_level\": 0.8,\n    \"CDS_premium\": 0.002,\n    \"hedged_loss\": 2400000 * (1 - 0.2) ,\n    \"hedged_loss\": 1920000,\n    \"net_loss\": 480000\n  },\n  \"assumptions\": {\n    \"correlation_factor\": 0.6,\n    \"economic_stress_impact\": \"A GDP growth of -2.0% and an unemployment rate of 8.5% will significantly increase default probabilities, particularly for lower-rated issuers. The correlation factor of 0.6 assumes that defaults are positively correlated, meaning that a default by one issuer increases the probability of default by other issuers in the portfolio.\",\n    \"LGD_increase\": \"LGD will increase to 50% due to asset liquidation under stressed conditions.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission addresses all required sections but contains critical calculation errors. Expected Loss incorrectly applies the total portfolio value to individual issuers (Corp A) rather than specific exposures, and the Unexpected Loss formula is conceptually flawed (using delta PD instead of statistical variance/correlation). The provided correlation factor is stated in assumptions but not utilized in the UL calculation, violating industry standards for portfolio risk. While the JSON structure is clear (Clarity 4), the fundamental methodological flaws prevent client-ready use (Autonomy 2) and indicate weak domain accuracy (Domain Accuracy 2). Completeness is adequate (3) but lacks required sensitivity analysis."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Determine policy contract provisions for each type of insurance.",
+      "task_type": "Policy Provision Design",
+      "user_prompt": "Design a set of policy contract provisions for a new long-term care insurance product targeting individuals aged 65-75. The provisions must address inflation protection, benefit elimination periods, and non-forfeiture options. Calculate the impact of a 3% annual inflation assumption on the present value of future benefits compared to a 2% assumption. Provide a sensitivity analysis showing how changes in the elimination period (30, 60, 90 days) affect the premium rate. Ensure all provisions comply with standard regulatory requirements for solvency and consumer protection.",
+      "reference_context": "{\n  \"target_age_range\": [65, 75],\n  \"base_daily_benefit\": 150,\n  \"base_annual_benefit\": 54750,\n  \"inflation_options\": [0.02, 0.03, 0.04],\n  \"elimination_periods\": [30, 60, 90],\n  \"mortality_table\": \"2012 Individual Annuity Mortality Table\",\n  \"interest_rate\": 0.04,\n  \"regulatory_requirements\": {\n    \"min_solvency_ratio\": 1.2,\n    \"max_lapse_rate\": 0.15\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: The present value calculations accurately reflect the impact of inflation and interest rate assumptions.",
+        "Completeness: The response includes specific provisions for all three areas (inflation, elimination period, non-forfeiture) and the required sensitivity analysis.",
+        "Best practices: The proposed provisions are logically structured, compliant with regulatory standards, and clearly explain the trade-offs for the consumer."
+      ],
+      "student_answer": "```json\n{\n  \"policy_provisions\": {\n    \"inflation_protection\": \"Daily benefit will be adjusted annually for inflation, using the Consumer Price Index for Urban Wage Earners and Clerical Workers (CPI-W). The inflation adjustment will be applied prospectively, starting after the first year of coverage.\",\n    \"benefit_elimination_periods\": {\n      \"30_days\": \"Benefits will be suspended for 30 days following the start of care.\",\n      \"60_days\": \"Benefits will be suspended for 60 days following the start of care.\",\n      \"90_days\": \"Benefits will be suspended for 90 days following the start of care.\"\n    },\n    \"non_forfeiture_options\": [\n      {\n        \"type\": \"Reduced Benefit Option\",\n        \"description\": \"If the policy lapses, the insured may elect to reinstate coverage with a reduced benefit equal to the original benefit amount, less any unpaid premiums.\"\n      },\n      {\n        \"type\": \"Return of Premium Option\",\n        \"description\": \"If the policy lapses, the insured may elect to receive a refund of all premiums paid, less any benefits paid.\"\n      }\n    ],\n    \"waiting_period\": \"A 60-day waiting period will apply before benefits begin.\",\n    \"coverage_details\": \"Coverage will extend to eligible long-term care services, as defined by the policy, including skilled nursing care, assisted living, and home health care.\",\n    \"policy_exclusions\": \"Policy will exclude coverage for custodial care (assistance with activities of daily living without medical necessity) and pre-existing conditions, as defined in the policy document.\"\n  },\n  \"inflation_impact_analysis\": {\n    \"3_percent_inflation\": 0.975,\n    \"2_percent_inflation\": 1.000,\n    \"explanation\": \"A 3% annual inflation assumption results in a present value of future benefits that is approximately 2.5% lower than a 2% inflation assumption over a 20-year period. This difference is due to the accelerated growth of future costs under the higher inflation rate.\"\n  },\n  \"premium_sensitivity_analysis\": {\n    \"elimination_period_30_days\": 0.085,\n    \"elimination_period_60_days\": 0.078,\n    \"elimination_period_90_days\": 0.072,\n    \"explanation\": \"Increasing the benefit elimination period from 30 to 60 to 90 days results in a decrease in the premium rate. This is because a longer elimination period reduces the expected claim frequency and severity.\"\n  },\n  \"regulatory_compliance\": {\n    \"solvency_ratio\": 1.3,\n    \"lapse_rate\": 0.12,\n    \"notes\": \"These figures are estimates and will be adjusted based on detailed actuarial modeling and ongoing monitoring to ensure compliance with all applicable regulations.\"\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        3,
+        2,
+        4,
+        2
+      ],
+      "score": 2.7,
+      "grade_reason": "Critical actuarial error in inflation logic: higher inflation increases the present value of future liabilities, yet the submission claims 3% inflation results in a lower PV than 2%. Non-forfeiture descriptions lack standard terminology and the elimination period/waiting period are conflated. While the JSON structure is clear, the fundamental math errors and lack of methodological transparency prevent client delivery without major rework."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Testify before public agencies on proposed legislation affecting businesses.",
+      "task_type": "Legislative Impact Analysis",
+      "user_prompt": "Prepare a technical briefing for a public agency regarding the potential impact of a proposed 'Universal Health Coverage Act' on the private insurance market. Analyze the projected increase in claims costs due to the inclusion of pre-existing conditions and the removal of age rating restrictions. Estimate the required premium increase for a standard individual policy to maintain a 90% combined ratio. Provide a risk assessment of the legislative change, quantifying the probability of market exit for smaller insurers if the premium increase exceeds 15%. Cite relevant actuarial principles and data sources.",
+      "reference_context": "{\n  \"current_market_size\": 50000000000,\n  \"current_average_premium\": 4500,\n  \"current_combined_ratio\": 85,\n  \"proposed_changes\": {\n    \"pre_existing_conditions\": true,\n    \"age_rating_restriction\": \"no\",\n    \"coverage_expansion\": \"full\"\n  },\n  \"claims_cost_increase_estimate\": 0.25,\n  \"small_insurer_threshold\": 500000000,\n  \"market_exit_probability_model\": {\n    \"threshold_premium_increase\": 0.15,\n    \"base_exit_rate\": 0.05\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: The premium increase calculation correctly accounts for the 25% claims cost increase and the target combined ratio.",
+        "Completeness: The response includes a clear estimate of the premium impact, a market exit risk assessment, and a justification of the methodology.",
+        "Best practices: The briefing is structured for a non-technical audience while maintaining actuarial rigor, and clearly distinguishes between assumptions and facts."
+      ],
+      "student_answer": "**Technical Briefing: Impact of Universal Health Coverage Act on Private Insurance Market**\n\n**Date:** October 26, 2023\n\n**To:** Public Agency Stakeholders\n\n**From:** Actuarial Analysis Unit\n\n**Executive Summary:**\n\nThe proposed Universal Health Coverage Act (UHCA) will significantly impact the private health insurance market. Inclusion of pre-existing conditions and removal of age rating restrictions will drive a projected 25% increase in claims costs. To maintain a 90% combined ratio, a standard individual policy premium will need to increase by approximately $1,125 (25% of $4,500).  A premium increase exceeding 15% presents a substantial risk of market exit for smaller insurers, with an estimated 5% probability of exit.\n\n**1. Projected Claims Cost Increase:**\n\n*   **Pre-Existing Conditions:** The UHCA’s inclusion of pre-existing conditions will necessitate a significant increase in claims costs. Historical data indicates a 25% increase in claims costs associated with individuals with pre-existing conditions.\n*   **Age Rating Restriction:** Eliminating age rating restrictions will result in a higher proportion of older, sicker individuals entering the private market, further exacerbating claims cost increases.\n*   **Coverage Expansion:** Full coverage expansion will increase the overall volume of claims.\n\n**2. Required Premium Increase:**\n\n*   **Current Combined Ratio:** 85\n*   **Projected Claims Cost Increase:** 25%\n*   **Target Combined Ratio:** 90\n*   **Required Premium Increase:**  To achieve a 90% combined ratio with a 25% increase in claims, the premium must increase by 25% (calculated as 90% of (1 + 0.25) = 1.125, or $1,125).\n\n**3. Risk Assessment – Market Exit Probability:**\n\n*   **Threshold Premium Increase:** 15%\n*   **Base Exit Rate:** 5%\n*   **Model Application:**  If the premium increase exceeds 15%, the probability of insurer market exit increases linearly.  A 15% premium increase results in a 5% exit probability.  Each additional 1% premium increase beyond 15% further increases the exit probability by 1%.\n*   **Scenario Analysis:**\n    *   **16% Premium Increase:** Exit Probability = 6%\n    *   **17% Premium Increase:** Exit Probability = 7%\n    *   **18% Premium Increase:** Exit Probability = 8%\n    *   **20% Premium Increase:** Exit Probability = 10%\n\n**4. Actuarial Principles & Data Sources:**\n\n*   **Combined Ratio:** A key performance indicator for insurers, representing the ratio of incurred claims and expenses to premium revenue. A combined ratio of 100% indicates break-even; below 100% is profitable; above 100% is unprofitable.\n*   **Loss Ratio:** The ratio of incurred claims to premium revenue.\n*   **Mortality Tables:** Used to project future mortality rates and associated claims costs.\n*   **Morbidity Tables:** Used to project future illness rates and associated claims costs.\n*   **Data Sources:**  National Health Expenditure Accounts, Centers for Medicare & Medicaid Services (CMS) data, proprietary insurer data (aggregated and anonymized).\n\n**5. Conclusion:**\n\nThe UHCA presents a significant challenge to the private health insurance market.  A substantial premium increase is required to maintain profitability.  The risk of market exit for smaller insurers is substantial, particularly if premium increases exceed 15%.  Ongoing monitoring and potential mitigation strategies (e.g., risk-based pricing adjustments, reinsurance programs) are recommended.\n\n**Disclaimer:** This analysis is based on the provided data and assumptions. Actual outcomes may vary.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission covers all required sections but contains significant actuarial errors. The premium calculation logic is flawed (a 25% premium increase with a 25% claims increase would likely maintain the 85% CR, not reach the 90% target). The risk assessment invents a linear probability slope not supported by the provided context data. Domain accuracy is weakened by citing Mortality Tables for health claims instead of Morbidity. While well-structured and clear, these substantive errors require significant rework before client delivery."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Provide advice to clients on a contract basis, working as a consultant.",
+      "task_type": "Client Advisory Report",
+      "user_prompt": "Act as a consultant for a mid-sized pension fund considering a shift from a defined benefit plan to a defined contribution plan. Prepare a comprehensive advisory report analyzing the financial implications of this transition. Calculate the present value of the unfunded liability under the current plan and estimate the cost of the transition (including buy-in options). Compare the long-term risk profile of the fund under both scenarios, focusing on investment risk, longevity risk, and administrative costs. Provide a recommendation on the optimal transition strategy with a 95% confidence interval for the projected 10-year fund performance.",
+      "reference_context": "{\n  \"current_plan_type\": \"Defined Benefit\",\n  \"current_fund_value\": 2000000000,\n  \"projected_liabilities\": 2500000000,\n  \"unfunded_liability\": 500000000,\n  \"transition_costs\": {\n    \"buy_in_option\": 600000000,\n    \"administrative_fees\": 5000000\n  },\n  \"investment_return_assumptions\": {\n    \"expected_return\": 0.06,\n    \"volatility\": 0.12\n  },\n  \"participant_demographics\": {\n    \"average_age\": 52,\n    \"average_salary\": 75000\n  }\n}",
+      "evaluation_criteria": [
+        "Correctness: The present value calculations for liabilities and transition costs are accurate based on the provided assumptions.",
+        "Completeness: The report covers all required risk factors (investment, longevity, administrative) and provides a specific recommendation with a confidence interval.",
+        "Best practices: The advice is tailored to the client's specific situation, clearly explains the trade-offs, and adheres to professional consulting standards."
+      ],
+      "student_answer": "**Advisory Report: Transition from Defined Benefit to Defined Contribution Plan**\n\n**Executive Summary:**\n\nThis report analyzes the financial implications of transitioning from a defined benefit (DB) plan to a defined contribution (DC) plan for a mid-sized pension fund. The current DB plan has an unfunded liability of $500 million. A transition utilizing a buy-in of $600 million, coupled with administrative fees, presents significant upfront costs. While the DC plan eliminates the fund’s long-term liability, it shifts investment risk to participants and introduces longevity risk.  A 10-year projection indicates a potential range of fund performance between -$200 million and $150 million, with 95% confidence.\n\n**1. Current Defined Benefit Plan Analysis:**\n\n*   **Unfunded Liability:** $500,000,000\n*   **Present Value of Unfunded Liability:** $500,000,000 / (1 + 0.06)^10 = $306,735,345 (using a 6% discount rate)\n*   **Fund Value:** $200,000,000\n\n**2. Defined Contribution Plan Transition Costs:**\n\n*   **Buy-In Cost:** $600,000,000\n*   **Administrative Fees (1% annually):** $5,000,000 (annual) – factored into long-term projections.\n\n**3. Long-Term Risk Profile Comparison:**\n\n| Risk Factor        | Defined Benefit (Current) | Defined Contribution (Projected) |\n|--------------------|---------------------------|---------------------------------|\n| **Investment Risk** | Low – Fund manages risk    | High – Participants manage risk   |\n| **Longevity Risk**  | Low – Fund bears risk      | High – Participants bear risk      |\n| **Administrative Costs**| Moderate – Primarily actuarial| High – Ongoing management fees |\n\n**4. 10-Year Projected Fund Performance (DC Plan):**\n\n*   **Assumptions:**\n    *   Expected Return: 6%\n    *   Volatility: 12%\n    *   Inflation: 2.5%\n    *   Administrative Fees: 1% annually\n*   **Scenario Analysis:**  Using Monte Carlo simulation with 10,000 iterations, the projected fund value after 10 years ranges from -$200,000,000 to $150,000,000, with a 95% confidence interval.  This wide range reflects the inherent uncertainty of investment returns.\n\n**5. Recommendation:**\n\nGiven the substantial unfunded liability and the significant upfront cost of the buy-in, a phased transition to a DC plan is recommended.  A full immediate transition is financially risky.  A phased approach, potentially involving a portion of the workforce each year, could mitigate some of the immediate financial strain.  However, participants must be fully informed about the risks and responsibilities associated with managing their own retirement savings.\n\n**6. Confidence Interval:**\n\n95% Confidence Interval for 10-year fund performance:  [$ -200,000,000, $150,000,000]\n\n**Disclaimer:** This report is based on the provided data and assumptions. Actual outcomes may vary significantly due to unforeseen market conditions and changes in participant demographics. Further detailed analysis and actuarial modeling are recommended before making a final decision.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission is well-structured and readable (Clarity 4), but contains critical actuarial and financial errors. The Present Value calculation incorrectly discounts the unfunded liability which is already a present value metric (Correctness 2, Domain Accuracy 2). The risk profile mischaracterizes Defined Benefit investment risk as 'Low' for the sponsor, which is a fundamental professional error (Best Practices 2). The 10-year projection figures are mathematically inconsistent with the starting fund value and return assumptions (e.g., negative fund value is impossible for a pension plan). While all sections are addressed (Completeness 3), the substantive errors mean the report cannot be delivered to a client without significant rework (Autonomy 2)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Testify in court as expert witness or to provide legal evidence on matters such as the value of potential lifetime earnings of a person disabled or killed in an accident.",
+      "task_type": "Legal Evidence Calculation",
+      "user_prompt": "Calculate the present value of lost future earnings for a 35-year-old male plaintiff who was killed in an accident. Assume a pre-injury annual salary of $85,000 growing at 2.5% annually, a retirement age of 65, a discount rate of 4.5%, and a mortality probability of 100% at the time of death. Provide a detailed actuarial memorandum justifying the assumptions, calculating the lump sum value, and formatting the output for potential court submission.",
+      "reference_context": "Salary: 85000, Growth Rate: 0.025, Discount Rate: 0.045, Retirement Age: 65, Current Age: 35, Mortality Probability: 1.0",
+      "evaluation_criteria": [
+        "Correctness: The present value calculation must accurately sum the discounted future cash flows from age 35 to 65.",
+        "Completeness: The response must include a written memorandum explaining the methodology, assumptions, and final result.",
+        "Best practices: The solution must explicitly state the discounting formula used and justify the growth and discount rates based on standard actuarial practices."
+      ],
+      "student_answer": "**Actuarial Memorandum – Lost Future Earnings**\n\n**To:** [Recipient Name/Court]\n**From:** [Your Name/Actuarial Firm]\n**Date:** October 26, 2023\n**Subject:** Calculation of Present Value of Lost Future Earnings – Plaintiff [Plaintiff Name]\n\n**1. Introduction**\n\nThis memorandum calculates the present value of the lost future earnings of the Plaintiff, [Plaintiff Name], resulting from his death in an accident. The calculation is based on his pre-injury annual salary, projected growth, and a discount rate reflecting the time value of money.\n\n**2. Assumptions**\n\n*   **Pre-Injury Annual Salary:** $85,000\n*   **Salary Growth Rate:** 2.5% per annum\n*   **Discount Rate:** 4.5% per annum (reflecting the risk-free rate and Plaintiff’s marginal rate)\n*   **Retirement Age:** 65 years\n*   **Current Age:** 35 years\n*   **Years of Future Earnings:** 30 years (65 – 35 = 30)\n*   **Mortality Probability:** 100% (due to death at the time of the accident)\n\n**3. Calculation**\n\nThe calculation involves projecting the future salary earnings and discounting them back to the present value.  We will use the following formula for each year:\n\nPresent Value = Future Salary / (1 + Discount Rate)^Year\n\nWe will sum the present values for each year from year 1 to year 30.\n\n| Year | Future Salary | Discount Factor | Present Value |\n|------|---------------|-----------------|---------------|\n| 1    | $85,000       | 0.9559          | $81,667.50    |\n| 2    | $89,275       | 0.9110          | $80,443.38    |\n| 3    | $93,707       | 0.8675          | $79,334.38    |\n| 4    | $98,309       | 0.8257          | $80,889.97    |\n| 5    | $103,146       | 0.7865          | $81,898.34    |\n| 6    | $108,297       | 0.7495          | $82,997.93    |\n| 7    | $113,659       | 0.7157          | $83,996.89    |\n| 8    | $119,288       | 0.6836          | $84,996.44    |\n| 9    | $125,148       | 0.6538          | $85,999.83    |\n| 10   | $131,286       | 0.6261          | $86,999.77    |\n| 11   | $137,675       | 0.5996          | $87,999.48    |\n| 12   | $144,321       | 0.5745          | $88,999.22    |\n| 13   | $151,262       | 0.5507          | $89,999.00    |\n| 14   | $158,506       | 0.5282          | $90,999.00    |\n| 15   | $166,035       | 0.5067          | $91,999.00    |\n| 16   | $173,888       | 0.4867          | $92,999.00    |\n| 17   | $182,073       | 0.4677          | $93,999.00    |\n| 18   | $190,577       | 0.4504          | $94,999.00    |\n| 19   | $200,393       | 0.4346          | $95,999.00    |\n| 20   | $210,648       | 0.4194          | $96,999.00    |\n| 21   | $221,284       | 0.4046          | $97,999.00    |\n| 22   | $232,384       | 0.3905          | $98,999.00    |\n| 23   | $244,037       | 0.3773          | $99,999.00    |\n| 24   | $256,404       | 0.3650          | $100,999.00   |\n| 25   | $269,527       | 0.3534          | $101,999.00   |\n| 26   | $283,428       | 0.3427          | $102,999.00   |\n| 27   | $298,123       | 0.3328          | $103,999.00   |\n| 28   | $313,587       | 0.3240          | $104,999.00   |\n| 29   | $329,735       | 0.3157          | $105,999.00   |\n| 30   | $346,668       | 0.3079          | $106,999.00   |\n| **Total**|              |                  | **$1,367,939.38** |\n\n**4. Conclusion**\n\nThe present value of the Plaintiff’s lost future earnings, based on the stated assumptions, is approximately **$1,367,939.38**.  This figure represents the estimated financial loss resulting from his untimely death.\n\n**5. Disclaimer**\n\nThis memorandum is based on the assumptions outlined above.  Actual outcomes may vary due to unforeseen circumstances and changes in economic conditions. This calculation is for illustrative purposes only and should not be considered a definitive valuation.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.5,
+      "grade_reason": "The submission is well-structured and clear (Clarity 4), but contains significant calculation errors that undermine its utility. The salary growth in the table (~5%) does not match the prompt (2.5%), and discount factors are inaccurate, leading to a fundamentally incorrect result (Correctness 2, Domain Accuracy 2). Consequently, the output cannot be used without major rework (Autonomy 2). Completeness (3) is moderate as it lacks sensitivity analysis and tax considerations standard for court submissions. Best Practices (2) are compromised by the mathematical inaccuracies and lack of professional rigor in assumptions."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Explain changes in contract provisions to customers.",
+      "task_type": "Contract Provision Analysis",
+      "user_prompt": "Analyze the impact of a proposed change to a life insurance contract that reduces the death benefit payout period from 20 years to 10 years for policyholders aged 60-70. Using the provided mortality table data, calculate the reduction in the Actuarial Present Value (APV) of benefits for a cohort of 1,000 policies. Draft a customer-facing explanation that translates these technical changes into clear language regarding premium adjustments and coverage limits.",
+      "reference_context": "Mortality Table Data: Age 60 (q=0.01), Age 61 (q=0.011), Age 62 (q=0.012), Age 63 (q=0.013), Age 64 (q=0.014), Age 65 (q=0.015), Age 66 (q=0.016), Age 67 (q=0.017), Age 68 (q=0.018), Age 69 (q=0.019), Age 70 (q=0.020). Interest Rate: 3.0%. Original Benefit: $100,000.",
+      "evaluation_criteria": [
+        "Correctness: The APV reduction calculation must be mathematically accurate based on the provided mortality table and interest rate.",
+        "Completeness: The output must include both the quantitative analysis and the qualitative customer explanation.",
+        "Best practices: The customer explanation must avoid jargon while accurately reflecting the financial impact of the provision change."
+      ],
+      "student_answer": "**Actuarial Analysis: Reduced Benefit Payout Period**\n\n**Calculation of APV Reduction**\n\n*   **Original APV (20-year payout):**\n\n    *   Discount Factor (Age 60): 1 / (1 + 0.03)^60 = 0.5546\n    *   Discount Factor (Age 61): 1 / (1 + 0.03)^61 = 0.5401\n    *   Discount Factor (Age 62): 1 / (1 + 0.03)^62 = 0.5260\n    *   Discount Factor (Age 63): 1 / (1 + 0.03)^63 = 0.5121\n    *   Discount Factor (Age 64): 1 / (1 + 0.03)^64 = 0.4990\n    *   Discount Factor (Age 65): 1 / (1 + 0.03)^65 = 0.4858\n    *   Discount Factor (Age 66): 1 / (1 + 0.03)^66 = 0.4731\n    *   Discount Factor (Age 67): 1 / (1 + 0.03)^67 = 0.4611\n    *   Discount Factor (Age 68): 1 / (1 + 0.03)^68 = 0.4502\n    *   Discount Factor (Age 69): 1 / (1 + 0.03)^69 = 0.4398\n    *   Discount Factor (Age 70): 1 / (1 + 0.03)^70 = 0.4299\n\n    Total APV (20 years) = $100,000 * (0.5546 + 0.5401 + 0.5260 + 0.5121 + 0.4990 + 0.4858 + 0.4731 + 0.4611 + 0.4502 + 0.4398 + 0.4299) = $100,000 * 4.8456 = $484,560\n\n*   **Reduced APV (10-year payout):**\n\n    *   Discount Factor (Age 60): 1 / (1 + 0.03)^60 = 0.5546\n    *   Discount Factor (Age 61): 1 / (1 + 0.03)^61 = 0.5401\n    *   Discount Factor (Age 62): 1 / (1 + 0.03)^62 = 0.5260\n    *   Discount Factor (Age 63): 1 / (1 + 0.03)^63 = 0.5121\n    *   Discount Factor (Age 64): 1 / (1 + 0.03)^64 = 0.4990\n    *   Discount Factor (Age 65): 1 / (1 + 0.03)^65 = 0.4858\n    *   Discount Factor (Age 66): 1 / (1 + 0.03)^66 = 0.4731\n    *   Discount Factor (Age 67): 1 / (1 + 0.03)^67 = 0.4611\n    *   Discount Factor (Age 68): 1 / (1 + 0.03)^68 = 0.4502\n    *   Discount Factor (Age 69): 1 / (1 + 0.03)^69 = 0.4398\n    *   Discount Factor (Age 70): 1 / (1 + 0.03)^70 = 0.4299\n\n    Total APV (10 years) = $100,000 * (0.5546 + 0.5401 + 0.5260 + 0.5121 + 0.4990 + 0.4858 + 0.4731 + 0.4611 + 0.4502 + 0.4398 + 0.4299) = $100,000 * 4.3956 = $439,560\n\n*   **APV Reduction:** $484,560 - $439,560 = $45,000\n\n**Reduction in APV for 1,000 Policies:** $45,000 * 1,000 = $45,000,000\n\n**Customer-Facing Explanation**\n\n**Subject: Important Update Regarding Your Life Insurance Policy**\n\nDear [Policyholder Name],\n\nWe are writing to inform you about an upcoming adjustment to your life insurance policy designed to provide greater value and flexibility.  Effective [Date], we will be modifying the payout period for policies aged 60-70.\n\n**Changes to Benefit Payout:**\n\nCurrently, your policy provides a death benefit payout for 20 years.  We are transitioning to a 10-year payout period for policyholders in this age range.\n\n**Impact on Your Premium and Coverage:**\n\n*   **Premium Adjustment:** To reflect this change, your annual premium will be adjusted.  The specific amount of the adjustment will be communicated to you separately. This adjustment is necessary to maintain the long-term sustainability of the policy and ensure we can continue to offer competitive rates.\n*   **Coverage Limits:**  The death benefit amount will be reduced to $100,000. This reduction is directly linked to the shorter payout period, resulting in a lower overall value.\n\n**Why This Change?**\n\nThis adjustment allows us to offer more competitive premiums to policyholders in this age group while still providing valuable life insurance protection.  The 10-year payout period aligns with typical financial needs and estate planning considerations for individuals in this age range.\n\nWe understand that changes to your policy can raise questions.  Please contact us at [Phone Number] or [Email Address] if you would like to discuss this update further.  We are committed to ensuring you have the information you need to make informed decisions about your coverage.\n\nSincerely,\n\n[Insurance Company Name]\n\n---",
+      "score": 0,
+      "dimension_scores": [],
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "grade_reason": "Parse error: Could not repair JSON: line 1 column 1 (char 0)"
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Manage credit and help price corporate security offerings.",
+      "task_type": "Corporate Security Pricing",
+      "user_prompt": "Develop a pricing model for a new corporate bond offering with a 5-year maturity, a 4% coupon rate, and a face value of $1,000. Incorporate a credit spread of 150 basis points over the risk-free rate (2.5%) to account for default risk. Calculate the fair issue price, determine the yield to maturity (YTM), and quantify the credit risk exposure using a 95% confidence interval for potential default losses assuming a 2% annual default probability and 40% recovery rate.",
+      "reference_context": "Face Value: 1000, Coupon Rate: 0.04, Maturity: 5 years, Risk-Free Rate: 0.025, Credit Spread: 0.015, Default Probability: 0.02, Recovery Rate: 0.40",
+      "evaluation_criteria": [
+        "Correctness: The bond pricing and YTM calculations must be precise, and the credit risk quantification must use appropriate statistical methods.",
+        "Completeness: The solution must provide the issue price, YTM, and the 95% confidence interval for losses.",
+        "Best practices: The response must explicitly document the assumptions regarding the credit spread and default probability distribution."
+      ],
+      "student_answer": "**Pricing Model Output**\n\n**1. Fair Issue Price:**\n\n*   Coupon Payment = Face Value * Coupon Rate = $1,000 * 0.04 = $40\n*   Present Value of Coupon Payments:\n    *   Year 1: $40 / (1.025)^1 = $38.86\n    *   Year 2: $40 / (1.025)^2 = $37.78\n    *   Year 3: $40 / (1.025)^3 = $36.76\n    *   Year 4: $40 / (1.025)^4 = $35.80\n    *   Year 5: $40 / (1.025)^5 = $34.92\n    *   Total PV of Coupons = $38.86 + $37.78 + $36.76 + $35.80 + $34.92 = $183.12\n*   Present Value of Face Value: $1,000 / (1.025)^5 = $819.39\n*   Fair Issue Price = Total PV of Coupons + PV of Face Value = $183.12 + $819.39 = $1002.51\n\n**2. Yield to Maturity (YTM):**\n\n*   YTM = (Coupon Payment + (Face Value - Fair Issue Price) / Maturity) / ((Face Value + Fair Issue Price) / 2)\n*   YTM = ($40 + ($1,000 - $1,002.51) / 5) / (($1,000 + $1,002.51) / 2)\n*   YTM = (40 - $2.51 / 5) / ($2,002.51 / 2)\n*   YTM = (40 - 0.502) / 1001.255\n*   YTM = 39.498 / 1001.255 = 0.03947 or 3.95%\n\n**3. Credit Risk Exposure (95% Confidence Interval for Default Losses):**\n\n*   Number of Bonds = 1,000\n*   Annual Default Loss per Bond = Face Value * Default Probability = $1,000 * 0.02 = $20\n*   Total Potential Default Loss = Number of Bonds * Annual Default Loss per Bond = 1,000 * $20 = $20,000\n*   Expected Default Loss = Total Potential Default Loss * Default Probability = $20,000 * 0.02 = $400\n*   Loss Given Default (LGD) = 1 - Recovery Rate = 1 - 0.40 = 0.60\n*   Potential Default Loss = Expected Default Loss * LGD = $400 * 0.60 = $240\n*   Standard Deviation of Potential Default Loss = LGD * sqrt(Default Probability) = 0.60 * sqrt(0.02) = 0.06\n*   95% Confidence Interval:  Expected Default Loss ± (1.96 * Standard Deviation)\n*   Lower Bound: $400 - (1.96 * 0.06) = $400 - 0.1176 = $399.88\n*   Upper Bound: $400 + (1.96 * 0.06) = $400 + 0.1176 = $400.12\n\n**Summary Table:**\n\n| Metric                  | Value       |\n| ----------------------- | ----------- |\n| Fair Issue Price        | $1,002.51   |\n| Yield to Maturity (YTM) | 3.95%       |\n| 95% Confidence Interval for Default Losses | $399.88 - $400.12 |",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        3,
+        2,
+        1,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to incorporate the required credit spread into the discount rate, resulting in an incorrect fair issue price. Credit risk calculations contain fundamental conceptual errors, including double-counting default probability and using an invalid standard deviation formula. While the structure is clear, the financial logic is unsound and requires significant rework."
+    }
+  ]
+}

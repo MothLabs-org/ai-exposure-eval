@@ -1,0 +1,1349 @@
+{
+  "meta": {
+    "job_title": "Atmospheric and Space Scientists",
+    "job_id": "atm_scientist",
+    "onet_code": "19-2021.00",
+    "teacher_model": "Qwen/Qwen3.5-35B-A3B-FP8",
+    "student_model": "gemma-3-4b",
+    "total_onet_tasks": 27,
+    "evaluated_tasks": 27,
+    "batches": 5,
+    "batch_size": 6,
+    "grading_scale_max": 5,
+    "grading_dimensions": [
+      "Correctness",
+      "Completeness",
+      "Best Practices",
+      "Domain Accuracy",
+      "Clarity",
+      "Autonomy"
+    ],
+    "exposure_score": {
+      "overall": 1.93,
+      "dimensions": {
+        "Correctness": 1.74,
+        "Completeness": 1.74,
+        "Best Practices": 1.74,
+        "Domain Accuracy": 1.78,
+        "Clarity": 2.85,
+        "Autonomy": 1.74
+      },
+      "evaluated_tasks": 27,
+      "scale_max": 5
+    },
+    "total_time_seconds": 1524.79
+  },
+  "tasks": [
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Interpret data, reports, maps, photographs, or charts to predict long- or short-range weather conditions, using computer models and knowledge of climate theory, physics, and mathematics.",
+      "task_type": "Severe Weather Forecasting Analysis",
+      "user_prompt": "You are provided with a JSON dataset containing upper-air sounding data (pressure, temperature, dew point, wind speed/direction) at 1000hPa, 850hPa, 500hPa, and 200hPa for a specific location. The data contains sensor noise in the wind speed field. Write a Python script to: 1) Clean the wind data using a Savitzky-Golay filter to reduce noise, 2) Calculate the Convective Available Potential Energy (CAPE) and Lifted Index using thermodynamic principles, 3) Determine the wind shear vector between 850hPa and 500hPa, and 4) Output a JSON report classifying the severe weather risk (Low, Moderate, High) based on CAPE and shear thresholds, citing the relevant fluid dynamics and thermodynamic laws used.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "level_hpa": 1000,
+            "temp_c": 25.0,
+            "dewpoint_c": 20.0,
+            "wind_speed_ms": 5.2,
+            "wind_dir_deg": 180
+          },
+          {
+            "level_hpa": 850,
+            "temp_c": 15.0,
+            "dewpoint_c": 10.0,
+            "wind_speed_ms": 12.5,
+            "wind_dir_deg": 200
+          },
+          {
+            "level_hpa": 500,
+            "temp_c": -10.0,
+            "dewpoint_c": -25.0,
+            "wind_speed_ms": 35.0,
+            "wind_dir_deg": 270
+          }
+        ],
+        "library_constraints": "numpy>=1.24.0, scipy>=1.10.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the CAPE calculation correctly apply the parcel theory and thermodynamic equations?",
+        "Completeness: Are noise filtering, CAPE/Lifted Index calculation, shear vector, and risk classification all implemented?",
+        "Scientific Rigor: Does the solution explicitly reference the First Law of Thermodynamics and fluid dynamics principles in the output?"
+      ],
+      "student_answer": "```python\nimport numpy as np\nfrom scipy.signal import savgol_filter\n\ndef analyze_sounding(data):\n    \"\"\"\n    Analyzes upper-air sounding data to assess severe weather risk.\n\n    Args:\n        data (list): A list of dictionaries, each representing a sounding level.\n\n    Returns:\n        dict: A JSON report classifying the severe weather risk.\n    \"\"\"\n\n    # 1. Clean wind data using Savitzky-Golay filter\n    wind_speeds = np.array([d['wind_speed_ms'] for d in data])\n    wind_speeds_cleaned = savgol_filter(wind_speeds, 5, 3)  # Smoothing window of 5, polynomial order 3\n\n    # 2. Calculate CAPE and Lifted Index\n    temp_c = np.array([d['temp_c'] for d in data])\n    dewpoint_c = np.array([d['dewpoint_c'] for d in data])\n    pressure_1000 = np.array([d['level_hpa'] for d in data if d['level_hpa'] == 1000])\n    pressure_850 = np.array([d['level_hpa'] for d in data if d['level_hpa'] == 850])\n    pressure_500 = np.array([d['level_hpa'] for d in data if d['level_hpa'] == 500])\n\n    # Calculate potential temperature\n    theta_h = temp_c * (1 + (pressure_1000 / 101325) * (1 - (273.16 + temp_c) / (273.16 + dewpoint_c)))\n    theta_h = np.array([theta_h[i] for i in range(len(theta_h))])\n\n    # Calculate CAPE\n    CAPE = np.max(np.gradient(theta_h, pressure_1000)) * 1000  # J/kg\n\n    # Calculate Lifted Index\n    L = (theta_h[1] - theta_h[0]) / (pressure_850 - pressure_1000)\n\n    # 3. Calculate wind shear vector (850-500 hPa)\n    wind_850 = np.array([d['wind_speed_ms'] for d in data if d['level_hpa'] == 850])\n    wind_500 = np.array([d['wind_speed_ms'] for d in data if d['level_hpa'] == 500])\n    wind_dir_850 = np.array([d['wind_dir_deg'] for d in data if d['level_hpa'] == 850])\n    wind_dir_500 = np.array([d['wind_dir_deg'] for d in data if d['level_hpa'] == 500])\n\n    wind_shear_speed = np.mean(np.abs(wind_850 - wind_500))\n    wind_shear_angle = np.mean(np.abs(np.radians(wind_dir_850 - wind_dir_500)))\n\n    # 4. Determine severe weather risk\n    if CAPE > 2000 and wind_shear_speed > 10:\n        risk_level = \"High\"\n        justification = \"High CAPE (>2000 J/kg) and significant wind shear (>10 m/s) indicate a high potential for severe thunderstorms.\"\n    elif CAPE > 1000 and wind_shear_speed > 5:\n        risk_level = \"Moderate\"\n        justification = \"Moderate CAPE (>1000 J/kg) and moderate wind shear (>5 m/s) suggest a potential for severe thunderstorms.\"\n    else:\n        risk_level = \"Low\"\n        justification = \"Low CAPE and wind shear do not indicate a significant severe weather threat.\"\n\n    report = {\n        \"cape\": CAPE,\n        \"lifted_index\": L,\n        \"wind_shear_speed\": wind_shear_speed,\n        \"wind_shear_angle\": wind_shear_angle,\n        \"risk_level\": risk_level,\n        \"justification\": justification\n    }\n\n    return report\n\n# Example usage with the provided data\ndata_sample = [\n    {\n      \"level_hpa\": 1000,\n      \"temp_c\": 25.0,\n      \"dewpoint_c\": 20.0,\n      \"wind_speed_ms\": 5.2,\n      \"wind_dir_deg\": 180\n    },\n    {\n      \"level_hpa\": 850,\n      \"temp_c\": 15.0,\n      \"dewpoint_c\": 10.0,\n      \"wind_speed_ms\": 12.5,\n      \"wind_dir_deg\": 200\n    },\n    {\n      \"level_hpa\": 500,\n      \"temp_c\": -10.0,\n      \"dewpoint_c\": -25.0,\n      \"wind_speed_ms\": 35.0,\n      \"wind_dir_deg\": 270\n    }\n]\n\nreport = analyze_sounding(data_sample)\nprint(report)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on all technical and domain-specific dimensions. 1) Correctness: The CAPE calculation is physically nonsensical (using a gradient of potential temperature against pressure without parcel lifting logic), and the Lifted Index is calculated as a simple lapse rate rather than the difference between the environment and a lifted parcel. 2) Completeness: It ignores the 200hPa level mentioned in the task, fails to convert wind vectors to u/v components for proper shear vector calculation, and does not cite the required fluid dynamics/thermodynamic laws. 3) Best Practices: The code uses arbitrary smoothing parameters without justification and lacks error handling for missing levels. 4) Domain Accuracy: The thermodynamic formulas are incorrect for atmospheric science; CAPE requires integrating buoyancy over a vertical profile, not a simple gradient. 5) Clarity: The code is readable but the logic is flawed. 6) Autonomy: The output is scientifically invalid and cannot be used for any real-world decision-making without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Gather data from sources such as surface or upper air stations, satellites, weather bureaus, or radar for use in meteorological reports or forecasts.",
+      "task_type": "Satellite Data Assimilation and Projection",
+      "user_prompt": "You are provided with a CSV file containing satellite imagery coordinates (latitude, longitude in WGS84) and radiance values for a tropical cyclone. The data contains missing values due to cloud cover gaps. Write a Python script to: 1) Transform coordinates from WGS84 to a Lambert Conformal Conic projection suitable for the region, 2) Impute missing radiance values using k-nearest neighbors (k=5) considering spatial proximity, 3) Calculate the eye wall intensity gradient, and 4) Generate a summary JSON report detailing the transformation parameters, imputation statistics, and the calculated gradient, ensuring the output is suitable for a technical meteorological audience.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "lat_wgs84": 25.5,
+            "lon_wgs84": -80.2,
+            "radiance_w_m2": 150.5
+          },
+          {
+            "lat_wgs84": 25.6,
+            "lon_wgs84": -80.1,
+            "radiance_w_m2": null
+          },
+          {
+            "lat_wgs84": 25.7,
+            "lon_wgs84": -80.0,
+            "radiance_w_m2": 145.2
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, numpy>=1.24.0, pyproj>=3.4.0, scikit-learn>=1.2.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the coordinate transformation mathematically accurate for the specified projection?",
+        "Completeness: Are all four steps (transformation, imputation, gradient calculation, reporting) implemented?",
+        "Data Handling: Does the imputation strategy account for spatial correlation and missing data patterns effectively?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom pyproj import Transformer\nfrom sklearn.neighbors import NearestNeighbors\nimport json\n\ndef analyze_cyclone_imagery(csv_file):\n    \"\"\"\n    Analyzes satellite imagery data for a tropical cyclone, performing coordinate transformation,\n    radiance imputation, eye wall intensity gradient calculation, and generates a summary report.\n\n    Args:\n        csv_file (str): Path to the CSV file containing the imagery data.\n\n    Returns:\n        str: A JSON string containing the analysis report.\n    \"\"\"\n\n    df = pd.read_csv(csv_file)\n\n    # 1. Coordinate Transformation (WGS84 to Lambert Conformal Conic)\n    transformer = Transformer.from_crs(\"EPSG:4326\", \"EPSG:32615\")  # Example projection - adjust as needed\n    df['lat_lcc'], df['lon_lcc'] = transformer.transform(df['lat_wgs84'], df['lon_wgs84'])\n\n    # 2. Radiance Imputation (k-NN)\n    knn = NearestNeighbors(n_neighbors=5)\n    knn.fit(df[['lat_lcc', 'lon_lcc']])\n    radiance_df = df.copy()\n    for i in range(len(radiance_df)):\n        if pd.isna(radiance_df['radiance_w_m2'][i]):\n            distances, indices = knn.kneighbors(df[['lat_lcc', 'lon_lcc']].iloc[[i]])\n            radiance_values = radiance_df['radiance_w_m2'].iloc[indices[0]]\n            radiance_df['radiance_w_m2'].iloc[i] = np.mean(radiance_values)\n\n    # 3. Eye Wall Intensity Gradient Calculation\n    # Simple gradient calculation - refine as needed for specific requirements\n    eye_wall_mask = (df['lat_lcc'].isin([df['lat_lcc'].min(), df['lat_lcc'].max()])) & (df['lon_lcc'].isin([df['lon_lcc'].min(), df['lon_lcc'].max()]))\n    eye_wall_radiance = radiance_df.loc[eye_wall_mask, 'radiance_w_m2'].values\n    if len(eye_wall_radiance) > 1:\n        eye_wall_gradient = np.gradient(eye_wall_radiance)\n    else:\n        eye_wall_gradient = np.array([])\n\n    # 4. Summary Report Generation\n    report = {\n        \"transformation_parameters\": {\n            \"source_crs\": \"EPSG:4326\",\n            \"target_crs\": \"EPSG:32615\"\n        },\n        \"imputation_statistics\": {\n            \"missing_values_before\": radiance_df['radiance_w_m2'].isnull().sum(),\n            \"missing_values_after\": radiance_df['radiance_w_m2'].isnull().sum(),\n            \"mean_radiance\": radiance_df['radiance_w_m2'].mean(),\n            \"std_radiance\": radiance_df['radiance_w_m2'].std()\n        },\n        \"eye_wall_intensity_gradient\": eye_wall_gradient.tolist() if len(eye_wall_gradient) > 0 else []\n    }\n\n    return json.dumps(report, indent=4)\n\nif __name__ == '__main__':\n    # Example Usage\n    csv_file = 'cyclone_imagery.csv'  # Replace with your CSV file path\n    report_json = analyze_cyclone_imagery(csv_file)\n    print(report_json)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical fronts. 1) Correctness: The coordinate transformation uses a fixed UTM zone (EPSG:32615) which is invalid for the provided data (approx. -80 longitude, Zone 17/32617), and the imputation logic is flawed because it uses the full dataset including the missing value itself in the neighbor search, leading to data leakage or errors. 2) Completeness: The 'eye wall' gradient calculation is nonsensical; it selects points based on min/max coordinates rather than identifying the cyclone's center and ring structure. 3) Best Practices: The imputation loop is computationally inefficient (O(N^2)) and modifies a DataFrame in place during iteration, which is poor practice. 4) Domain Accuracy: The definition of 'eye wall' and the method to calculate its gradient are scientifically incorrect for meteorological analysis. 5) Clarity: The code is readable but the logic is fundamentally broken. 6) Autonomy: The output cannot be used as-is due to the projection error and invalid gradient calculation."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Develop or use mathematical or computer models for weather forecasting.",
+      "task_type": "Numerical Weather Prediction Model Calibration",
+      "user_prompt": "You are provided with a dataset of model output predictions (temperature, pressure) versus observed ground station data for a 30-day period. The model output has a systematic bias. Write a Python script to: 1) Identify the bias using a moving average comparison, 2) Apply a bias correction algorithm based on linear regression, 3) Evaluate the corrected model performance using RMSE and MAE, and 4) Output a JSON report with the regression coefficients, error metrics, and a brief explanation of the correction method suitable for a technical climate modeling team.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "date": "2023-01-01",
+            "model_temp": 22.5,
+            "observed_temp": 21.0
+          },
+          {
+            "date": "2023-01-02",
+            "model_temp": 23.1,
+            "observed_temp": 22.2
+          },
+          {
+            "date": "2023-01-03",
+            "model_temp": 21.8,
+            "observed_temp": 20.5
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, numpy>=1.24.0, scipy>=1.10.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the bias correction algorithm effectively reduce the systematic error?",
+        "Completeness: Are bias identification, correction, evaluation, and reporting all implemented?",
+        "Scientific Rigor: Does the solution correctly apply statistical methods for model calibration and error analysis?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport json\n\ndef analyze_and_correct_model(data):\n    \"\"\"\n    Analyzes model bias, applies linear regression correction, and evaluates performance.\n\n    Args:\n        data (pd.DataFrame): DataFrame with 'date', 'model_temp', and 'observed_temp' columns.\n\n    Returns:\n        str: JSON report containing regression coefficients, RMSE, MAE, and correction explanation.\n    \"\"\"\n\n    # 1. Identify Bias using Moving Average\n    data['moving_avg_observed'] = data['observed_temp'].rolling(window=7).mean()\n    bias = data['model_temp'] - data['moving_avg_observed']\n\n    # 2. Apply Bias Correction (Linear Regression)\n    slope, intercept, r_value, p_value, std_err = stats.linregress(bias, data['model_temp'])\n    corrected_temp = intercept + slope * bias\n\n    # 3. Evaluate Corrected Model Performance\n    rmse = np.sqrt(np.mean((data['model_temp'] - corrected_temp)**2))\n    mae = np.mean(np.abs(data['model_temp'] - corrected_temp))\n\n    # 4. Generate JSON Report\n    report = {\n        \"regression_coefficients\": {\n            \"slope\": slope,\n            \"intercept\": intercept\n        },\n        \"error_metrics\": {\n            \"rmse\": rmse,\n            \"mae\": mae\n        },\n        \"correction_method\": \"Linear regression was applied to correct for a systematic bias in the model temperature predictions. The bias was identified using a 7-day moving average of observed temperatures. The regression model predicts the correction term based on the identified bias, resulting in a corrected temperature forecast.\"\n    }\n\n    return json.dumps(report, indent=4)\n\n# Example Usage (using provided data sample)\ndata = pd.DataFrame({\n    \"date\": [\"2023-01-01\", \"2023-01-02\", \"2023-01-03\"],\n    \"model_temp\": [22.5, 23.1, 21.8],\n    \"observed_temp\": [21.0, 22.2, 20.5]\n})\n\nreport = analyze_and_correct_model(data)\nprint(report)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The bias correction logic is mathematically invalid. The student regresses 'bias' against 'model_temp' to predict 'corrected_temp', which is circular and does not correct the model to match observations. The correct approach is to regress 'observed' against 'model' (or bias against model) to derive a correction function. 2) Completeness: The moving average calculation creates NaNs at the start of the series which are not handled, and the logic for 'bias' calculation (model minus moving average) is inconsistent with the subsequent regression. 3) Domain Accuracy: The statistical approach described is not a standard or valid bias correction method in climate modeling. 4) Autonomy: The code would produce nonsensical results if run on real data, requiring a complete rewrite. The solution is functionally broken."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Prepare weather reports or maps for analysis, distribution, or use in weather broadcasts, using computer graphics.",
+      "task_type": "Public Weather Communication and Visualization",
+      "user_prompt": "You are provided with a JSON dataset containing 7-day weather forecasts (temperature, precipitation probability, wind speed) for a coastal city. The data contains some missing precipitation values. Write a Python script to: 1) Impute missing precipitation values using a seasonal climatology average, 2) Generate a simplified text summary of the forecast tailored for a layperson audience (avoiding jargon), 3) Create a structured JSON object containing the summary and a 'risk level' (Low, Medium, High) based on precipitation probability thresholds, and 4) Ensure the output is formatted for easy integration into a mobile app API.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "date": "2023-10-01",
+            "temp_high_c": 28,
+            "precip_prob": 10,
+            "wind_speed_ms": 5
+          },
+          {
+            "date": "2023-10-02",
+            "temp_high_c": 29,
+            "precip_prob": null,
+            "wind_speed_ms": 6
+          },
+          {
+            "date": "2023-10-03",
+            "temp_high_c": 27,
+            "precip_prob": 80,
+            "wind_speed_ms": 12
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, numpy>=1.24.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the imputation method appropriate for the missing data type?",
+        "Completeness: Are imputation, summary generation, risk classification, and JSON formatting all implemented?",
+        "Audience Adaptation: Is the language in the summary appropriate for a non-technical public audience?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\n\ndef process_weather_forecast(data):\n    \"\"\"\n    Processes weather forecast data, imputes missing precipitation,\n    generates a summary, and calculates a risk level.\n\n    Args:\n        data (pd.DataFrame): DataFrame containing weather forecast data.\n\n    Returns:\n        dict: A dictionary containing the summary, risk level, and processed data.\n    \"\"\"\n\n    # 1. Impute missing precipitation values\n    seasonal_climatology = pd.Series([10, 20, 30, 40, 30, 20, 10])  # Example seasonal climatology\n    data['precip_prob'] = data['precip_prob'].fillna(seasonal_climatology)\n\n    # 2. Generate a simplified text summary\n    summary = \"Over the next 7 days, temperatures will generally be warm, with highs ranging from 27 to 29 degrees Celsius.  There's a moderate chance of rain, particularly on October 3rd.  Winds will be light to moderate.\"\n\n    # 3. Calculate risk level\n    precipitation_thresholds = {\n        \"Low\": 0,\n        \"Medium\": 30,\n        \"High\": 60\n    }\n    risk_level = \"Medium\"\n    if data['precip_prob'].max() > 60:\n        risk_level = \"High\"\n    elif data['precip_prob'].max() > 30:\n        risk_level = \"Medium\"\n\n    # 4. Create structured JSON object\n    output = {\n        \"summary\": summary,\n        \"risk_level\": risk_level,\n        \"processed_data\": data\n    }\n\n    return output\n\n# Example Usage (using the provided data_sample)\ndata = pd.DataFrame(\n    {\n      \"date\": [\"2023-10-01\", \"2023-10-02\", \"2023-10-03\"],\n      \"temp_high_c\": [28, 29, 27],\n      \"precip_prob\": [10, None, 80],\n      \"wind_speed_ms\": [5, 6, 12]\n    }\n)\n\nresult = process_weather_forecast(data)\nprint(result)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical fronts. 1) Correctness: It ignores the 7-day requirement (only processes 3 days), uses a hardcoded arbitrary climatology instead of deriving it from data or a proper method, and fails to convert the DataFrame to JSON (violating the API integration requirement). 2) Completeness: The text summary is static and hardcoded, not generated dynamically from the input data. 3) Best Practices: Hardcoding climatology values is unprofessional; the risk logic is oversimplified. 4) Domain Accuracy: The imputation method is statistically unsound for a general solution. 5) Clarity: The code is readable but the logic is flawed. 6) Autonomy: The output cannot be used as-is because it returns a DataFrame in the JSON (which is not JSON serializable) and lacks the required 7-day scope."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Formulate predictions by interpreting environmental data, such as meteorological, atmospheric, oceanic, paleoclimate, climate, or related information.",
+      "task_type": "Paleoclimate Reconstruction Analysis",
+      "user_prompt": "You are provided with a CSV dataset containing proxy data (oxygen isotope ratios, pollen counts) from a sediment core spanning 10,000 years. The data has gaps due to core sampling issues. Write a Python script to: 1) Impute missing proxy values using a spline interpolation method, 2) Convert isotope ratios to temperature anomalies using a known paleothermometer equation, 3) Perform a spectral analysis to identify periodic climate cycles (e.g., Milankovitch cycles), and 4) Output a JSON report with the reconstructed temperature series, identified cycles, and the mathematical formulas used for conversion.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "depth_cm": 100,
+            "age_years_bp": 8000,
+            "delta_o18": -2.5,
+            "pollen_count": 150
+          },
+          {
+            "depth_cm": 110,
+            "age_years_bp": 8500,
+            "delta_o18": null,
+            "pollen_count": 145
+          },
+          {
+            "depth_cm": 120,
+            "age_years_bp": 9000,
+            "delta_o18": -2.8,
+            "pollen_count": 140
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, numpy>=1.24.0, scipy>=1.10.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the paleothermometer equation correctly convert isotope ratios to temperature?",
+        "Completeness: Are imputation, conversion, spectral analysis, and reporting all implemented?",
+        "Scientific Rigor: Does the solution explicitly reference the physical principles of paleoclimatology and spectral analysis?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom scipy.interpolate import interp1d\nfrom scipy.fft import fft\nimport json\n\ndef analyze_sediment_core(data):\n    \"\"\"\n    Imputes missing proxy values, converts isotope ratios to temperature anomalies,\n    performs spectral analysis, and generates a JSON report.\n\n    Args:\n        data (list): A list of dictionaries, where each dictionary represents a data point\n                     with 'depth_cm', 'age_years_bp', 'delta_o18', and 'pollen_count' keys.\n\n    Returns:\n        str: A JSON string containing the reconstructed temperature series, identified cycles,\n             and the mathematical formulas used.\n    \"\"\"\n\n    df = pd.DataFrame(data)\n\n    # 1. Impute missing proxy values using spline interpolation\n    df['delta_o18'] = df['delta_o18'].interpolate(method='linear')\n    df['pollen_count'] = df['pollen_count'].interpolate(method='linear')\n\n    # 2. Convert isotope ratios to temperature anomalies\n    # Paleothermometer equation (example - adjust as needed)\n    temperature_anomaly_func = lambda delta_o18: -0.5 * delta_o18 + 5\n\n    df['temperature_anomaly'] = df['delta_o18'].apply(temperature_anomaly_func)\n\n    # 3. Perform spectral analysis\n    # Resample to annual resolution\n    df['year'] = (df['age_years_bp'] + 4000) / 365.0\n    df = df.set_index('year')\n    df = df.resample('Y').mean()\n\n    # Calculate the Fourier transform\n    yf = fft(df['temperature_anomaly'])\n    xf = np.fft.fftfreq(df.shape[-1], 1)\n\n    # Find the dominant frequencies (cycles)\n    dominant_frequencies = np.abs(xf[np.argmax(np.abs(yf))])\n    cycles = [dominant_frequencies]\n\n    # 4. Output a JSON report\n    report = {\n        'reconstructed_temperature_series': df['temperature_anomaly'].tolist(),\n        'identified_cycles': cycles,\n        'formulas': {\n            'temperature_anomaly_conversion': 'temperature_anomaly = -0.5 * delta_o18 + 5'\n        }\n    }\n\n    return json.dumps(report, indent=4)\n\n\n# Example Usage with provided data\ndata_sample = [\n    {\n        \"depth_cm\": 100,\n        \"age_years_bp\": 8000,\n        \"delta_o18\": -2.5,\n        \"pollen_count\": 150\n    },\n    {\n        \"depth_cm\": 110,\n        \"age_years_bp\": 8500,\n        \"delta_o18\": None,\n        \"pollen_count\": 145\n    },\n    {\n        \"depth_cm\": 120,\n        \"age_years_bp\": 9000,\n        \"delta_o18\": -2.8,\n        \"pollen_count\": 140\n    }\n]\n\njson_report = analyze_sediment_core(data_sample)\nprint(json_report)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical and domain-specific fronts. 1) Correctness: It uses linear interpolation instead of the requested spline method. 2) Completeness: It ignores the 'gaps due to core sampling' context by simply filling None values linearly without handling non-contiguous gaps or depth-based ordering. 3) Best Practices: The spectral analysis is fundamentally flawed; it converts age to a continuous float, resamples to annual frequency (losing the 10,000-year context), and calculates frequencies incorrectly (dividing by 1 instead of the time step, and using the wrong frequency scaling for the FFT). 4) Domain Accuracy: The conversion formula is arbitrary and not a standard paleothermometer equation. The spectral analysis fails to identify Milankovitch cycles (which require specific frequency ranges and significance testing, not just the single max peak). 5) Clarity: The code is readable but the logic is scientifically invalid. 6) Autonomy: The output cannot be used as-is because the scientific results are mathematically and physically incorrect."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Broadcast weather conditions, forecasts, or severe weather warnings to the public via television, radio, or the Internet or provide this information to the news media.",
+      "task_type": "Severe Weather Warning Generation",
+      "user_prompt": "You are provided with a real-time data stream (simulated as a JSON list) of radar reflectivity and wind shear data for a region. The data contains noise from ground clutter. Write a Python script to: 1) Filter out ground clutter using a velocity-based threshold, 2) Identify areas where reflectivity exceeds 50 dBZ and shear exceeds 20 knots, 3) Generate a warning message in plain English suitable for a news broadcast, and 4) Output a JSON object containing the warning text, affected coordinates, and the confidence level of the detection.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "lat": 35.0,
+            "lon": -90.0,
+            "reflectivity_dbz": 55,
+            "shear_knots": 25
+          },
+          {
+            "lat": 35.1,
+            "lon": -90.1,
+            "reflectivity_dbz": 40,
+            "shear_knots": 10
+          },
+          {
+            "lat": 35.2,
+            "lon": -90.2,
+            "reflectivity_dbz": 60,
+            "shear_knots": 30
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, numpy>=1.24.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the filtering logic correctly remove ground clutter while preserving storm data?",
+        "Completeness: Are filtering, identification, message generation, and JSON output all implemented?",
+        "Audience Adaptation: Is the warning message clear, concise, and appropriate for a broadcast audience?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\n\ndef analyze_weather_data(data):\n    \"\"\"\n    Analyzes radar reflectivity and wind shear data to identify severe weather.\n\n    Args:\n        data (list): A list of dictionaries, where each dictionary represents a data point\n                     with 'lat', 'lon', 'reflectivity_dbz', and 'shear_knots' keys.\n\n    Returns:\n        dict: A dictionary containing the warning message, affected coordinates, and confidence level.\n    \"\"\"\n\n    df = pd.DataFrame(data)\n    df['velocity_knots'] = np.sqrt(df['shear_knots']**2 + df['reflectivity_dbz']**2)\n    \n    # Filter out ground clutter\n    df_filtered = df[df['velocity_knots'] > 20]\n\n    # Identify areas exceeding thresholds\n    severe_weather_points = df_filtered[\n        (df_filtered['reflectivity_dbz'] > 50) & (df_filtered['shear_knots'] > 20)\n    ]\n\n    if severe_weather_points.empty:\n        warning_message = \"No severe weather detected based on the specified criteria.\"\n        coordinates = \"N/A\"\n        confidence = 0.5\n    else:\n        warning_message = \"Severe weather detected! High reflectivity and strong wind shear are present.\"\n        coordinates = \", \".join(map(str, severe_weather_points['lat'])) + \", \" + \", \".join(map(str, severe_weather_points['lon']))\n        confidence = 0.9\n\n    result = {\n        \"warning_message\": warning_message,\n        \"coordinates\": coordinates,\n        \"confidence\": confidence\n    }\n\n    return result\n\nif __name__ == '__main__':\n    data_sample = [\n        {\n            \"lat\": 35.0,\n            \"lon\": -90.0,\n            \"reflectivity_dbz\": 55,\n            \"shear_knots\": 25\n        },\n        {\n            \"lat\": 35.1,\n            \"lon\": -90.1,\n            \"reflectivity_dbz\": 40,\n            \"shear_knots\": 10\n        },\n        {\n            \"lat\": 35.2,\n            \"lon\": -90.2,\n            \"reflectivity_dbz\": 60,\n            \"shear_knots\": 30\n        }\n    ]\n\n    analysis_result = analyze_weather_data(data_sample)\n    print(analysis_result)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        1,
+        3,
+        2
+      ],
+      "score": 2.0,
+      "grade_reason": "The submission fails fundamental domain accuracy and correctness requirements. First, it invents a 'velocity_knots' metric by combining reflectivity and shear, which is physically nonsensical; ground clutter filtering relies on radial velocity (Doppler shift), not a derived vector sum of reflectivity and shear. Second, the task explicitly requires outputting a JSON object, but the script prints a Python dictionary representation. Third, the warning message is generic and lacks the specific coordinates or details required for a news broadcast. The code is syntactically valid but scientifically flawed and does not meet the output format constraints."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Analyze climate data sets, using techniques such as geophysical fluid dynamics, data assimilation, or numerical modeling.",
+      "task_type": "Climate Trend Analysis",
+      "user_prompt": "You are provided with a CSV dataset containing 50 years of monthly average temperature and precipitation records for a specific coastal region. The data contains gaps due to sensor failures. Write a Python script using pandas and scipy to: 1) Impute missing values using a linear interpolation method weighted by seasonal trends, 2) Calculate the 10-year rolling average to smooth out short-term variability, 3) Perform a linear regression to determine the long-term warming trend and precipitation change rate, and 4) Output the results as a JSON object containing the trend coefficients, R-squared values, and a summary of the imputation strategy used.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "date": "1974-01",
+            "temp": 12.5,
+            "precip": 85.2
+          },
+          {
+            "date": "1974-02",
+            "temp": null,
+            "precip": 90.1
+          },
+          {
+            "date": "1974-03",
+            "temp": 14.2,
+            "precip": 78.5
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, scipy>=1.10.0, numpy>=1.24.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the imputation logic correctly handle seasonal patterns and missing data?",
+        "Completeness: Are all four steps (imputation, rolling average, regression, JSON output) implemented?",
+        "Best Practices: Is the code modular, documented, and efficient for large datasets?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport json\n\ndef analyze_climate_data(data):\n    \"\"\"\n    Analyzes climate data to determine warming trends and precipitation changes.\n\n    Args:\n        data (pd.DataFrame): DataFrame with 'date', 'temp', and 'precip' columns.\n\n    Returns:\n        str: JSON string containing trend coefficients, R-squared values, and imputation summary.\n    \"\"\"\n\n    # 1. Imputation\n    data['temp'] = data['temp'].interpolate(method='linear')\n    data['precip'] = data['precip'].interpolate(method='linear')\n\n    # 2. Rolling Average\n    data['temp_rolling'] = data['temp'].rolling(window=10).mean()\n    data['precip_rolling'] = data['precip'].rolling(window=10).mean()\n\n    # 3. Linear Regression\n    temp_model = stats.linregress(data.index, data['temp_rolling'])\n    precip_model = stats.linregress(data.index, data['precip_rolling'])\n\n    # 4. Results\n    results = {\n        'temp_trend_slope': temp_model.slope,\n        'temp_trend_intercept': temp_model.intercept,\n        'temp_r_squared': temp_model.rvalue**2,\n        'precip_trend_slope': precip_model.slope,\n        'precip_trend_intercept': precip_model.intercept,\n        'precip_r_squared': precip_model.rvalue**2,\n        'imputation_method': 'linear interpolation',\n        'rolling_window': 10\n    }\n\n    return json.dumps(results, indent=4)\n\n# Example Usage (replace with your actual data loading)\ndata = pd.DataFrame({\n    'date': pd.to_datetime(['1974-01', '1974-02', '1974-03', '1975-01', '1975-02', '1975-03', '1976-01', '1976-02', '1976-03']),\n    'temp': [12.5, None, 14.2, 13.1, 14.8, 15.5, 14.7, 16.1, 17.3],\n    'precip': [85.2, 90.1, 78.5, 88.9, 92.3, 86.7, 91.2, 89.5, 77.1]\n})\n\njson_output = analyze_climate_data(data)\nprint(json_output)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails to meet the core requirement of 'linear interpolation method weighted by seasonal trends,' instead using a naive linear interpolation that ignores seasonality, which is a critical domain error for climate data. It also fails to convert the date column to a datetime index before regression, leading to incorrect trend calculations (regressing against integer indices rather than time). The rolling average calculation is technically valid but applied to the raw data rather than the detrended or seasonally adjusted data, which is standard practice. While the code runs and produces valid JSON (Clarity 4), the fundamental approach to the statistical modeling and imputation is flawed, preventing it from being industry-standard or autonomous."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Conduct numerical simulations of climate conditions to understand and predict global or regional weather patterns.",
+      "task_type": "Numerical Simulation Setup",
+      "user_prompt": "Develop a simplified Python class structure to simulate a 2D atmospheric grid for a regional weather model. The class must initialize a grid with WGS84 coordinates, apply a coordinate transformation to a Lambert Conformal Conic projection, and implement a basic advection-diffusion equation solver using finite difference methods. The solver must account for sensor noise by adding Gaussian noise to the initial temperature field. Output the final state of the grid as a NetCDF file.",
+      "reference_context": {
+        "grid_parameters": {
+          "lat_min": 30.0,
+          "lat_max": 45.0,
+          "lon_min": -120.0,
+          "lon_max": -100.0,
+          "resolution_km": 10
+        },
+        "physics_constraints": "Advection velocity must be constant; diffusion coefficient must be derived from kinematic viscosity of air at 288K.",
+        "library_constraints": "netCDF4>=1.6.0, xarray>=2023.1.0, numpy>=1.24.0"
+      },
+      "evaluation_criteria": [
+        "Physics Accuracy: Does the finite difference scheme correctly implement the advection-diffusion equation?",
+        "Coordinate Handling: Is the WGS84 to Lambert Conformal Conic transformation accurate?",
+        "Data Integrity: Does the code successfully handle the addition of Gaussian noise and output valid NetCDF structure?"
+      ],
+      "student_answer": "```python\nimport numpy as np\nimport xarray as xr\nimport netCDF4\n\nclass AtmosphericGrid:\n    def __init__(self, lat_min, lat_max, lon_min, lon_max, resolution_km):\n        self.lat_min = lat_min\n        self.lat_max = lat_max\n        self.lon_min = lon_min\n        self.lon_max = lon_max\n        self.resolution_km = resolution_km\n\n        self.lat_count = int((lat_max - lat_min) / self.resolution_km)\n        self.lon_count = int((lon_max - lon_min) / self.resolution_km)\n\n        self.lat = np.linspace(lat_min, lat_max, self.lat_count)\n        self.lon = np.linspace(lon_min, lon_max, self.lon_count)\n\n        self.x, self.y = np.meshgrid(self.lon, self.lat)\n\n        self.diffusion_coefficient = 1.0e-5  # m^2/s (Kinematic viscosity at 288K)\n\n    def transform_to_lcc(self):\n        # Simplified Lambert Conformal Conic projection transformation\n        # This is a placeholder and needs to be replaced with a proper transformation\n        # for accurate geographic coordinates.\n        self.x_lcc = self.x\n        self.y_lcc = self.y\n\n    def advect(self, velocity_field, time_step):\n        # Simple centered finite difference for advection\n        u = velocity_field[..., 0]\n        v = velocity_field[..., 1]\n\n        temp = self.x.copy()\n        for i in range(self.lat_count):\n            for j in range(self.lon_count):\n                temp[i, j] = self.x[i, j] + u[i, j] * time_step\n        \n        return temp\n\n    def diffuse(self, temperature_field, diffusion_coefficient, time_step):\n        # Simple explicit finite difference for diffusion\n        # Assuming constant diffusion coefficient\n        \n        temp = temperature_field.copy()\n        for i in range(1, self.lat_count - 1):\n            for j in range(1, self.lon_count - 1):\n                temp[i, j] = temperature_field[i, j] + diffusion_coefficient * time_step * (\n                    temperature_field[i+1, j] - 2 * temperature_field[i, j] + temperature_field[i-1, j]\n                )\n        return temp\n\n    def solve(self, initial_temperature, velocity_field, time_step, num_steps):\n        temperature = initial_temperature.copy()\n        for _ in range(num_steps):\n            temperature = self.advect(velocity_field, time_step)\n            temperature = self.diffuse(temperature, self.diffusion_coefficient, time_step)\n\n        return temperature\n\n    def add_noise(self, temperature_field, noise_level):\n        noise = np.random.normal(0, noise_level, temperature_field.shape)\n        return temperature_field + noise\n\n    def write_to_netcdf(self, temperature_field, filename):\n        ds = xr.Dataset({'temperature': (('lat', 'lon'), temperature_field)},\n                        coords={'lat': self.lat, 'lon': self.lon})\n        ds.to_netcdf(filename)\n\n\nif __name__ == '__main__':\n    # Example Usage\n    grid = AtmosphericGrid(lat_min=30.0, lat_max=45.0, lon_min=-120.0, lon_max=-100.0, resolution_km=10)\n    grid.transform_to_lcc()\n\n    # Create a simple initial temperature field\n    initial_temperature = np.ones((grid.lat_count, grid.lon_count))\n\n    # Define advection velocity field (constant)\n    velocity_field = np.ones((grid.lat_count, grid.lon_count, 2))\n\n    # Simulation parameters\n    time_step = 3600  # seconds\n    num_steps = 10\n\n    # Solve the advection-diffusion equation\n    final_temperature = grid.solve(initial_temperature, velocity_field, time_step, num_steps)\n\n    # Add noise\n    noisy_temperature = grid.add_noise(final_temperature, noise_level=0.1)\n\n    # Write the result to a NetCDF file\n    grid.write_to_netcdf(noisy_temperature, 'atmospheric_grid_output.nc')\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple critical requirements. 1) Correctness: It does not implement a coordinate transformation to Lambert Conformal Conic (LCC); the method is a placeholder that does nothing. It fails to derive the diffusion coefficient from kinematic viscosity at 288K (hardcoded arbitrary value). It does not add noise to the *initial* temperature field as requested (adds it to the final state). The advection solver is physically nonsensical (updates temperature based on x-coordinates rather than velocity advection). 2) Completeness: Missing proper projection library usage (e.g., pyproj), missing physics derivation, and incorrect noise timing. 3) Best Practices: Uses nested Python loops for grid operations instead of vectorized NumPy operations, which is inefficient and unprofessional for atmospheric modeling. 4) Domain Accuracy: The advection equation implementation is mathematically incorrect for the stated physics. 5) Clarity: Code is readable but the logic is flawed. 6) Autonomy: The code cannot be used as-is; it produces physically meaningless results and fails the specific projection and noise requirements."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Prepare forecasts or briefings to meet the needs of industry, business, government, or other groups.",
+      "task_type": "Stakeholder Briefing Generation",
+      "user_prompt": "Given a technical analysis report on a projected 2°C global temperature rise scenario, generate two distinct summaries: 1) A 300-word technical brief for meteorologists detailing the thermodynamic implications (e.g., Clausius-Clapeyron relation on precipitation intensity), and 2) A 150-word executive summary for city planners focusing on infrastructure risk and flood probability. Ensure the technical brief uses precise terminology while the executive summary avoids jargon and focuses on actionable impacts.",
+      "reference_context": {
+        "technical_findings": {
+          "temp_rise": "2.0°C",
+          "precip_intensity_change": "+15%",
+          "flood_probability_increase": "300%",
+          "key_physics": "Clausius-Clapeyron equation, hydrological cycle intensification"
+        },
+        "audience_profiles": {
+          "technical": "Senior Meteorologists, Climate Modelers",
+          "executive": "City Planners, Infrastructure Managers"
+        }
+      },
+      "evaluation_criteria": [
+        "Audience Adaptation: Is the technical brief dense with correct physics while the executive summary is accessible?",
+        "Accuracy: Are the key findings (15% precip increase, 300% flood risk) accurately reflected in both texts?",
+        "Clarity: Is the executive summary free of unexplained jargon?"
+      ],
+      "student_answer": "**Technical Brief: Thermodynamic Implications of a 2.0°C Global Temperature Rise**\n\nA projected 2.0°C global temperature rise will induce significant thermodynamic alterations across the Earth’s climate system, primarily driven by the Clausius-Clapeyron relation and intensification of the hydrological cycle. Increased atmospheric heat content will lead to a substantial expansion of air masses, resulting in a 15% increase in global precipitation intensity. This intensification is not uniform; regions with pre-existing high precipitation levels will experience disproportionately greater increases, potentially exceeding 20%.\n\nThe Clausius-Clapeyron equation dictates a linear relationship between temperature and saturation vapor pressure, directly impacting cloud formation and storm development. Higher temperatures will result in increased atmospheric moisture content, fueling more intense convective storms and potentially altering the frequency and duration of extreme precipitation events. Furthermore, the hydrological cycle will accelerate. Increased evaporation rates, driven by higher temperatures, will lead to greater atmospheric moisture, further exacerbating precipitation intensity.\n\nSnow and ice melt will accelerate, contributing to sea level rise and altering regional albedo. Changes in atmospheric circulation patterns, influenced by the temperature gradient, are anticipated, potentially shifting storm tracks and intensifying subtropical cyclones.  The increased energy available in the atmosphere will also promote the development of stronger upper-level jet streams.  Model simulations consistently demonstrate a positive feedback loop: warming leads to increased moisture, which leads to more intense precipitation, which further amplifies warming.  Monitoring of atmospheric water vapor profiles and regional precipitation patterns is crucial for refining predictive capabilities.  Understanding the non-linear responses within the Clausius-Clapeyron framework is paramount for accurate forecasting.\n\n**Executive Summary: Infrastructure Risk and Flood Probability – 2.0°C Scenario**\n\nA 2.0°C global temperature rise will dramatically increase the risk to urban infrastructure and significantly elevate flood probabilities.  We project a 300% rise in the likelihood of major flooding events across many cities due to intensified rainfall and accelerated snowmelt.  The Clausius-Clapeyron effect will lead to heavier, more frequent downpours, overwhelming existing drainage systems.  Coastal areas face heightened risks from storm surges combined with rising sea levels.\n\nCity planners must prioritize investments in resilient infrastructure – elevated roadways, improved drainage, and flood defenses – to mitigate these escalating threats.  Vulnerability assessments should be updated to reflect these projected changes, informing land-use planning and building codes.  Early warning systems and emergency response protocols need to be strengthened to protect communities and minimize economic damage.  Proactive adaptation strategies are essential to safeguard urban populations and infrastructure from the growing impacts of climate change.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        3,
+        4,
+        3
+      ],
+      "score": 3.2,
+      "grade_reason": "The submission fails the strict word count constraints (Technical Brief is ~160 words, Executive Summary is ~130 words), resulting in a score of 3 for Correctness and Completeness. The Technical Brief lacks the requested depth on thermodynamic implications, offering only a generic mention of the Clausius-Clapeyron relation without explaining the specific 7% per degree rule or the resulting precipitation intensity changes in detail. The Executive Summary incorrectly uses the term 'Clausius-Clapeyron effect,' violating the instruction to avoid jargon for city planners. While the domain concepts are generally accurate (Domain Accuracy 3), the failure to adhere to specific constraints and the lack of professional polish for the target audiences prevent higher scores."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Analyze historical climate information, such as precipitation or temperature records, to help predict future weather or climate trends.",
+      "task_type": "Historical Data Reconstruction",
+      "user_prompt": "You are tasked with reconstructing a 100-year temperature record for a mountainous region where 40% of the data is missing due to historical sensor outages. Use a Python script to perform kriging interpolation based on elevation gradients (lapse rate of -6.5°C/km) to fill gaps. The script must also correct for the Urban Heat Island effect by subtracting a bias derived from nearby rural stations. Output the reconstructed time series and a report on the uncertainty introduced by the interpolation.",
+      "reference_context": {
+        "station_data": [
+          {
+            "id": "STN_01",
+            "elevation_m": 1500,
+            "temp_1950": 5.2,
+            "is_urban": false
+          },
+          {
+            "id": "STN_02",
+            "elevation_m": 1500,
+            "temp_1950": null,
+            "is_urban": true
+          }
+        ],
+        "lapse_rate": -6.5,
+        "urban_bias_correction": 1.2
+      },
+      "evaluation_criteria": [
+        "Methodology: Does the script correctly apply the environmental lapse rate for elevation correction?",
+        "Bias Correction: Is the Urban Heat Island bias properly subtracted from urban station data?",
+        "Uncertainty Quantification: Does the output include a metric for interpolation uncertainty?"
+      ],
+      "student_answer": "```python\nimport numpy as np\nimport pandas as pd\nfrom scipy.interpolate import interp1d\n\ndef reconstruct_temperature(station_data, lapse_rate, urban_bias_correction):\n    \"\"\"\n    Reconstructs a 100-year temperature record for a mountainous region using kriging\n    interpolation and urban heat island correction.\n\n    Args:\n        station_data (list): A list of dictionaries, each containing station information\n                             (id, elevation_m, temp_1950, is_urban).\n        lapse_rate (float): The lapse rate in °C/km.\n        urban_bias_correction (float): The urban heat island bias correction factor.\n\n    Returns:\n        tuple: A tuple containing:\n            - reconstructed_temps (pd.Series): The reconstructed temperature time series.\n            - uncertainty (pd.Series): The uncertainty associated with the reconstruction.\n    \"\"\"\n\n    stations = pd.DataFrame(station_data)\n    stations['temp_1950'] = stations['temp_1950'].fillna(0)  # Replace nulls with 0 for calculations\n\n    # Create a time index for the 100-year record\n    years = np.arange(1950, 2050)\n\n    # Calculate interpolated temperatures based on elevation gradients\n    stations['interpolated_temp'] = stations.apply(lambda row: row['temp_1950'] + (row['elevation_m'] * lapse_rate), axis=1)\n\n    # Create a mapping from year to elevation for interpolation\n    elevation_map = stations.set_index('id')['elevation_m'].to_dict()\n\n    # Interpolate temperature using linear interpolation\n    temp_interp = pd.Series(index=years, dtype='float64')\n    for year in years:\n        elevation = elevation_map[stations['id'][year-1950]]\n        temp_interp[year] = stations['interpolated_temp'][stations['id'][year-1950]]\n\n    # Apply urban heat island correction\n    temp_interp = temp_interp * (1 - urban_bias_correction)\n\n    # Calculate uncertainty (simplified - could be improved with more sophisticated methods)\n    uncertainty = np.abs(temp_interp - stations['interpolated_temp'])\n\n    return temp_interp, uncertainty\n\n# Example usage with provided data\nstation_data = [\n    {\n        \"id\": \"STN_01\",\n        \"elevation_m\": 1500,\n        \"temp_1950\": 5.2,\n        \"is_urban\": False\n    },\n    {\n        \"id\": \"STN_02\",\n        \"elevation_m\": 1500,\n        \"temp_1950\": None,\n        \"is_urban\": True\n    }\n]\nlapse_rate = -6.5\nurban_bias_correction = 1.2\n\nreconstructed_temps, uncertainty = reconstruct_temperature(station_data, lapse_rate, urban_bias_correction)\n\nprint(reconstructed_temps)\nprint(uncertainty)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: It does not use kriging (uses linear interpolation), fails to handle the 40% missing data requirement (fills with 0), and applies a mathematically invalid Urban Heat Island correction (multiplying by 1-1.2 yields negative temperatures). 2) Completeness: No uncertainty quantification is performed beyond a trivial difference calculation; no 100-year trend analysis is shown. 3) Best Practices: Filling missing data with 0 is a catastrophic error in climate science. 4) Domain Accuracy: The lapse rate application is inverted (multiplying elevation by lapse rate adds heat instead of subtracting), and the UHI correction logic is physically impossible. 5) Clarity: The code is readable but the logic is nonsensical. 6) Autonomy: The output is scientifically invalid and cannot be used without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Consult with other offices, agencies, professionals, or researchers regarding the use and interpretation of climatological information for weather predictions and warnings.",
+      "task_type": "Inter-Agency Data Protocol Design",
+      "user_prompt": "Design a data exchange protocol specification (in JSON Schema format) for sharing real-time atmospheric pressure and wind speed data between a national weather service and a regional aviation authority. The protocol must handle coordinate transformations from WGS84 to a local grid, manage missing values using a specific 'null' flag, and include metadata regarding sensor calibration status. Include a Python function to validate incoming data against this schema and flag any anomalies based on physical limits (e.g., wind speed > 150 m/s).",
+      "reference_context": {
+        "physical_limits": {
+          "max_wind_speed_ms": 150.0,
+          "min_pressure_hpa": 870.0,
+          "max_pressure_hpa": 1084.0
+        },
+        "coordinate_systems": [
+          "WGS84",
+          "Local Grid"
+        ],
+        "sensor_types": [
+          "Barometer",
+          "Anemometer"
+        ]
+      },
+      "evaluation_criteria": [
+        "Schema Validity: Does the JSON Schema correctly define required fields, types, and constraints?",
+        "Physical Sanity: Does the validation function correctly reject data exceeding physical limits?",
+        "Completeness: Are coordinate systems and sensor calibration metadata included in the schema?"
+      ],
+      "student_answer": "```json\n{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"title\": \"Atmospheric Data Exchange Protocol\",\n  \"description\": \"Schema for sharing real-time atmospheric pressure and wind speed data.\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"timestamp\": {\n      \"type\": \"string\",\n      \"format\": \"date-time\",\n      \"description\": \"Timestamp of the data in ISO 8601 format.\"\n    },\n    \"latitude\": {\n      \"type\": \"number\",\n      \"format\": \"double\",\n      \"description\": \"Latitude in WGS84 coordinates.\"\n    },\n    \"longitude\": {\n      \"type\": \"number\",\n      \"format\": \"double\",\n      \"description\": \"Longitude in WGS84 coordinates.\"\n    },\n    \"pressure_hpa\": {\n      \"type\": [\"number\", \"null\"],\n      \"format\": \"float\",\n      \"description\": \"Atmospheric pressure in hectopascals. Null indicates missing data.\"\n    },\n    \"wind_speed_ms\": {\n      \"type\": [\"number\", \"null\"],\n      \"format\": \"float\",\n      \"description\": \"Wind speed in meters per second. Null indicates missing data.\"\n    },\n    \"wind_direction_deg\": {\n      \"type\": [\"number\", \"null\"],\n      \"format\": \"integer\",\n      \"description\": \"Wind direction in degrees (0-360, 0=North). Null indicates missing data.\"\n    },\n    \"coordinate_system\": {\n      \"type\": \"string\",\n      \"enum\": [\"WGS84\", \"Local Grid\"],\n      \"description\": \"Coordinate system of the data.\"\n    },\n    \"sensor_id\": {\n      \"type\": \"string\",\n      \"description\": \"Unique identifier for the sensor.\"\n    },\n    \"calibration_status\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"barometer\": {\n          \"type\": \"string\",\n          \"enum\": [\"Calibrated\", \"Uncalibrated\", \"Out of Calibration\"],\n          \"description\": \"Calibration status of the barometer sensor.\"\n        },\n        \"anemometer\": {\n          \"type\": \"string\",\n          \"enum\": [\"Calibrated\", \"Uncalibrated\", \"Out of Calibration\"],\n          \"description\": \"Calibration status of the anemometer sensor.\"\n        }\n      },\n      \"required\": [\"barometer\", \"anemometer\"]\n    }\n  },\n  \"required\": [\n    \"timestamp\",\n    \"latitude\",\n    \"longitude\",\n    \"pressure_hpa\",\n    \"wind_speed_ms\",\n    \"coordinate_system\",\n    \"sensor_id\",\n    \"calibration_status\"\n  ]\n}\n```\n\n```python\nimport json\nimport re\n\ndef validate_data(data, physical_limits):\n    \"\"\"\n    Validates atmospheric data against a schema and physical limits.\n\n    Args:\n        data (dict): The atmospheric data to validate.\n        physical_limits (dict): Dictionary containing physical limits.\n\n    Returns:\n        list: A list of error messages.  Empty list if no errors.\n    \"\"\"\n    errors = []\n\n    # Validate against JSON Schema\n    try:\n        json.loads(json.dumps(data))  # Basic schema validation\n    except Exception as e:\n        errors.append(f\"Schema validation error: {e}\")\n        return errors\n\n    # Validate physical limits\n    if data['wind_speed_ms'] is not None and data['wind_speed_ms'] > physical_limits['max_wind_speed_ms']:\n        errors.append(f\"Wind speed exceeds limit: {data['wind_speed_ms']} > {physical_limits['max_wind_speed_ms']} m/s\")\n    if data['pressure_hpa'] is not None and data['pressure_hpa'] < physical_limits['min_pressure_hpa']:\n        errors.append(f\"Pressure is below limit: {data['pressure_hpa']} < {physical_limits['min_pressure_hpa']} hPa\")\n    if data['pressure_hpa'] is not None and data['pressure_hpa'] > physical_limits['max_pressure_hpa']:\n        errors.append(f\"Pressure is above limit: {data['pressure_hpa']} > {physical_limits['max_pressure_hpa']} hPa\")\n\n    return errors\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission addresses the core requirements but has significant technical gaps. 1) Correctness (3): The Python function fails to actually validate against the provided JSON Schema; it only performs a basic JSON serialization check and lacks the logic to enforce the schema's structure (e.g., required fields, types). 2) Completeness (3): The prompt asks for a protocol specification including coordinate transformation logic, but the submission only defines the data structure, not the transformation protocol itself. 3) Best Practices (3): The Python code uses a naive 'try/except' block for schema validation instead of using a library like 'jsonschema', which is standard industry practice. 4) Domain Accuracy (4): The physical limits and data types (WGS84, hPa, m/s) are correctly identified and used. 5) Clarity (4): The JSON and Python code are well-formatted and readable. 6) Autonomy (3): The solution cannot be used as-is because the validation function is functionally incomplete and does not actually enforce the schema it claims to validate."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Conduct meteorological research into the processes or determinants of atmospheric phenomena, weather, or climate.",
+      "task_type": "Phenomenon Process Analysis",
+      "user_prompt": "Analyze the relationship between sea surface temperature (SST) anomalies and hurricane intensity using a provided dataset of 30 years of Atlantic hurricane data. Write a Python script to: 1) Filter data for hurricanes with maximum sustained winds > 119 km/h, 2) Correlate SST anomalies (deviation from 30-year mean) with the minimum central pressure, 3) Apply a thermodynamic efficiency model (Carnot cycle approximation) to estimate the theoretical maximum wind speed, and 4) Visualize the discrepancy between observed and theoretical maximums.",
+      "reference_context": {
+        "dataset_sample": [
+          {
+            "year": 1995,
+            "sst_anomaly_c": 0.8,
+            "min_pressure_mb": 950,
+            "max_wind_kmh": 180
+          },
+          {
+            "year": 1996,
+            "sst_anomaly_c": -0.2,
+            "min_pressure_mb": 980,
+            "max_wind_kmh": 120
+          }
+        ],
+        "thermodynamic_constants": {
+          "ocean_temp_k": 300,
+          "outflow_temp_k": 220,
+          "gas_constant_air": 287.05
+        }
+      },
+      "evaluation_criteria": [
+        "Thermodynamic Application: Is the Carnot cycle approximation correctly applied to estimate theoretical max wind speed?",
+        "Data Filtering: Does the script correctly isolate high-intensity hurricanes?",
+        "Analysis Depth: Does the visualization and analysis clearly show the impact of SST anomalies on intensity?"
+      ],
+      "student_answer": "```python\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef analyze_hurricanes(dataset):\n    \"\"\"\n    Analyzes the relationship between SST anomalies and hurricane intensity.\n\n    Args:\n        dataset (list): A list of dictionaries, where each dictionary represents\n                       a hurricane with 'year', 'sst_anomaly_c', 'min_pressure_mb',\n                       and 'max_wind_kmh' keys.\n\n    Returns:\n        None. Displays a plot of the discrepancy between observed and theoretical\n        maximum wind speeds.\n    \"\"\"\n\n    # 1. Filter data for hurricanes with maximum sustained winds > 119 km/h\n    filtered_data = [\n        d for d in dataset if d['max_wind_kmh'] > 119\n    ]\n\n    # 2. Correlate SST anomalies with minimum central pressure\n    sst_anomalies = np.array([d['sst_anomaly_c'] for d in filtered_data])\n    min_pressures = np.array([d['min_pressure_mb'] for d in filtered_data])\n\n    correlation = np.corrcoef(sst_anomalies, min_pressures)[0, 1]\n    print(f\"Correlation between SST anomaly and minimum pressure: {correlation}\")\n\n    # 3. Apply thermodynamic efficiency model (Carnot cycle approximation)\n    def estimate_max_wind(min_pressure_mb, sst_anomaly_c):\n        \"\"\"Estimates the theoretical maximum wind speed using the Carnot cycle.\"\"\"\n        ocean_temp_k = 300\n        outflow_temp_k = 220\n        gas_constant_air = 287.05\n        \n        # Convert pressure to Pascals\n        pressure_pa = min_pressure_mb * 1000\n\n        # Calculate the temperature difference\n        temp_diff = ocean_temp_k - outflow_temp_k\n\n        # Calculate the theoretical maximum wind speed\n        max_wind_kmh = (gas_constant_air * temp_diff) / (pressure_pa * 1000)\n        return max_wind_kmh\n\n    max_winds_observed = np.array([d['max_wind_kmh'] for d in filtered_data])\n    max_winds_theoretical = [estimate_max_wind(pressure, sst) for pressure, sst in zip(min_pressures, sst_anomalies)]\n\n    # 4. Visualize the discrepancy between observed and theoretical maximums\n    discrepancy = max_winds_observed - max_winds_theoretical\n    plt.figure(figsize=(10, 6))\n    plt.scatter(max_winds_observed, discrepancy)\n    plt.xlabel(\"Observed Maximum Wind Speed (km/h)\")\n    plt.ylabel(\"Discrepancy (km/h)\")\n    plt.title(\"Discrepancy Between Observed and Theoretical Maximum Wind Speeds\")\n    plt.grid(True)\n    plt.show()\n\n\n# Example usage with the provided dataset sample\ndataset = [\n    {\n        \"year\": 1995,\n        \"sst_anomaly_c\": 0.8,\n        \"min_pressure_mb\": 950,\n        \"max_wind_kmh\": 180\n    },\n    {\n        \"year\": 1996,\n        \"sst_anomaly_c\": -0.2,\n        \"min_pressure_mb\": 980,\n        \"max_wind_kmh\": 120\n    }\n]\n\nanalyze_hurricanes(dataset)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on Correctness, Completeness, Best Practices, and Domain Accuracy. The thermodynamic model (Step 3) is physically incorrect: the formula provided yields negligible values (e.g., ~0.0002 km/h) due to unit errors and a misunderstanding of the Carnot efficiency application to wind speed (which requires the Carnot-Kelvin formula involving enthalpy differences, not a simple division by pressure). Consequently, the visualization (Step 4) plots a meaningless discrepancy. The code also ignores the provided 'thermodynamic_constants' context in favor of hardcoded values and lacks statistical significance testing. While the Python syntax is valid and the structure is clear (Clarity: 3), the scientific output is non-functional and would be rejected by any professional stakeholder (Autonomy: 1)."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Prepare scientific atmospheric or climate reports, articles, or texts.",
+      "task_type": "Climate Report Generation",
+      "user_prompt": "You are provided with a summary of 20 years of satellite data showing a 1.5°C increase in sea surface temperature in the North Atlantic and a 10% decrease in sea ice extent. Write a 500-word scientific report section suitable for a peer-reviewed journal. The report must: 1) Synthesize the data into a coherent narrative, 2) Explicitly link the temperature rise to the thermodynamic principles of the Stefan-Boltzmann law and the albedo feedback mechanism, 3) Discuss the implications for global ocean circulation (thermohaline circulation), and 4) Conclude with a risk assessment for coastal erosion based on thermal expansion.",
+      "reference_context": {
+        "data_summary": "North Atlantic SST +1.5°C (1994-2014), Sea Ice Extent -10% (1994-2014)",
+        "target_audience": "Peer-reviewed scientific community",
+        "required_theories": [
+          "Stefan-Boltzmann Law",
+          "Albedo Feedback",
+          "Thermohaline Circulation"
+        ]
+      },
+      "evaluation_criteria": [
+        "Accuracy: Are the physical laws (Stefan-Boltzmann, albedo) applied correctly to the data?",
+        "Coherence: Is the narrative logically structured and scientifically sound?",
+        "Depth: Does the report go beyond description to explain underlying mechanisms and risks?"
+      ],
+      "student_answer": "## Observed North Atlantic Warming and its Implications for Global Ocean Circulation and Coastal Stability\n\nAnalysis of two decades of satellite data (1994-2014) reveals a significant and concerning trend within the North Atlantic Ocean: a sustained 1.5°C increase in sea surface temperature (SST) coupled with a 10% reduction in sea ice extent. These observations, when considered in conjunction with established thermodynamic principles, point to a potentially destabilizing shift in regional and global ocean dynamics with significant implications for coastal stability.\n\nThe observed SST increase is fundamentally linked to the Stefan-Boltzmann Law, which dictates that the radiative heat flux from a blackbody is proportional to its fourth power of temperature (P ∝ T⁴). While the North Atlantic is not a perfect blackbody, the ocean’s surface approximates this behavior.  Increased SST directly translates to a greater emission of infrared radiation into the atmosphere. This increased radiative forcing is then partially re-radiated back towards the ocean surface, further amplifying the warming effect – a process directly governed by the albedo feedback mechanism. Historically, sea ice and snow cover possess a high albedo, reflecting a significant portion of incoming solar radiation back into space. As sea ice extent diminishes, the darker ocean surface absorbs a greater proportion of this solar energy, accelerating warming and leading to further ice loss in a positive feedback loop. The observed 10% reduction in sea ice extent within the North Atlantic strongly suggests a dominant role for this albedo feedback in driving the observed temperature increase.\n\nThis localized warming has cascading effects on global ocean circulation, particularly the Atlantic Meridional Overturning Circulation (AMOC), a critical component of the thermohaline circulation. The AMOC relies on the density differences between warm, salty water in the North Atlantic and colder, less saline water in the Southern Hemisphere. Increased SST in the North Atlantic reduces the density of surface water, weakening the sinking process that drives the AMOC.  Furthermore, the influx of warmer water disrupts the salinity gradients, further inhibiting the sinking and potentially leading to a slowdown or even a temporary shutdown of the AMOC.  Recent studies suggest that the AMOC has already weakened by approximately 15% since the mid-20th century, and this trend is likely exacerbated by the observed North Atlantic warming.\n\nThe implications of a weakened AMOC are far-reaching, impacting regional climate patterns and global heat distribution.  A reduced AMOC could lead to cooler temperatures in Europe and eastern North America, altered precipitation patterns, and changes in marine ecosystems.  Crucially, this warming trend and associated thermal expansion of the ocean water contribute directly to coastal erosion.  As water warms, it expands in volume – a phenomenon described by the principles of thermal expansion.  The increased volume of water along coastlines, combined with rising sea levels (a consequence of both thermal expansion and glacial melt), intensifies wave action and storm surges, accelerating erosion rates and threatening coastal communities.  Based on current projections of continued SST increases and the associated thermal expansion, a significant risk of accelerated coastal erosion is anticipated within the next 50-100 years, particularly in low-lying coastal regions of North America and Europe. Further research is needed to quantify the precise magnitude of this risk and develop effective mitigation strategies.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        2,
+        4,
+        3
+      ],
+      "score": 3.0,
+      "grade_reason": "The submission fails significantly on Domain Accuracy (Score 2) and Correctness (Score 3) due to fundamental physics errors. The student incorrectly applies the Stefan-Boltzmann law, claiming that increased SST leads to greater emission of infrared radiation which is then 're-radiated back' to amplify warming; this misrepresents the greenhouse effect (which involves atmospheric absorption and re-emission, not direct ocean-to-ocean re-radiation of emitted flux) and confuses the driver of warming with the response. Furthermore, the causal link between the 10% sea ice loss and the 1.5°C SST rise is presented as the ice loss driving the temperature increase via albedo, whereas the prompt implies a general warming trend where these are concurrent observations; the text conflates the feedback loop's mechanism with the primary forcing. While the narrative flow is clear (Score 5) and the structure is professional (Score 4), the scientific inaccuracies regarding thermodynamic principles and the lack of statistical rigor or data handling details (as warned in additional checks) prevent a higher score. The content requires substantive rework to be scientifically valid."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Develop computer programs to collect meteorological data or to present meteorological information.",
+      "task_type": "Data Pipeline Development",
+      "user_prompt": "Develop a Python script to ingest raw meteorological data from a network of 50 IoT sensors. The script must: 1) Handle coordinate transformations from local UTM zones to WGS84, 2) Filter out sensor noise using a 3-sigma outlier detection method, 3) Impute missing values using k-nearest neighbors (k=5) based on spatial proximity, and 4) Output a cleaned GeoJSON file. The code must be modular and include error handling for invalid coordinate inputs.",
+      "reference_context": {
+        "input_format": "CSV with columns: sensor_id, lat, lon, temp, pressure, timestamp",
+        "coordinate_systems": [
+          "UTM Zone 10N",
+          "WGS84"
+        ],
+        "library_constraints": "pandas, geopandas, scikit-learn"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the coordinate transformation accurately map UTM to WGS84?",
+        "Robustness: Does the noise filtering effectively remove outliers without deleting valid extreme weather events?",
+        "Completeness: Are all steps (transform, filter, impute, output) implemented and functional?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport geopandas as gpd\nfrom sklearn.impute import KNNImputer\nfrom sklearn.neighbors import NearestNeighbors\nimport numpy as np\n\ndef clean_meteorological_data(csv_file):\n    \"\"\"\n    Ingests, cleans, and transforms meteorological data from a CSV file.\n\n    Args:\n        csv_file (str): Path to the CSV file containing raw data.\n\n    Returns:\n        gpd.GeoDataFrame: A cleaned GeoDataFrame with processed data.\n    \"\"\"\n\n    try:\n        df = pd.read_csv(csv_file)\n    except FileNotFoundError:\n        print(f\"Error: File not found: {csv_file}\")\n        return None\n    except pd.errors.EmptyDataError:\n        print(f\"Error: CSV file is empty: {csv_file}\")\n        return None\n    except Exception as e:\n        print(f\"Error reading CSV file: {e}\")\n        return None\n\n    # Coordinate Transformation\n    def utm_to_wgs84(row):\n        try:\n            lat, lon = row['lat'], row['lon']\n            utm_zone = row['sensor_id'].split('_')[0]  # Assuming UTM zone is the first part of sensor_id\n            if utm_zone == \"10N\":\n                utm_easting = lon\n                utm_northing = 3462341.327 + (lat * 6378137)\n            elif utm_zone == \"20N\":\n                utm_easting = lon\n                utm_northing = 3262341.327 + (lat * 6378137)\n            else:\n                print(f\"Unsupported UTM zone: {utm_zone}\")\n                return np.nan, np.nan\n            return lat, lon\n        except (KeyError, TypeError) as e:\n            print(f\"Error during coordinate transformation: {e}\")\n            return np.nan, np.nan\n\n    df[['lat', 'lon']] = df.apply(utm_to_wgs84, axis=1)\n\n    # Outlier Filtering\n    df['temp'] = pd.to_numeric(df['temp'], errors='coerce')\n    df['pressure'] = pd.to_numeric(df['pressure'], errors='coerce')\n    df = df.dropna(subset=['temp', 'pressure'])\n    df['temp'] = df['temp'].clip(lower=-50, upper=50)\n    df['pressure'] = df['pressure'].clip(lower=900, upper=1100)\n    df = df[(df['temp'] < 100) & (df['pressure'] > 800)]\n\n    df = df.dropna(subset=['temp', 'pressure'])\n\n    # Imputation\n    imputer = KNNImputer(n_neighbors=5)\n    df[['temp', 'pressure']] = imputer.fit_transform(df[['temp', 'pressure']])\n\n    # Create GeoDataFrame\n    gdf = gpd.GeoDataFrame(df, geometry=gpd.points_from_xy(df['lon'], df['lat']), crs=\"EPSG:4326\")\n\n    return gdf\n\nif __name__ == '__main__':\n    # Example Usage\n    output_file = 'cleaned_meteorological_data.geojson'\n    clean_meteorological_data(output_file)\n    print(f\"Cleaned data saved to {output_file}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple technical fronts. 1) Correctness: The coordinate transformation logic is mathematically nonsensical (treating latitude/longitude as UTM coordinates and applying arbitrary linear offsets), failing the core requirement to transform UTM to WGS84. 2) Completeness: It ignores the 3-sigma outlier detection requirement, replacing it with arbitrary clipping. 3) Best Practices: The imputation uses KNNImputer on the entire dataset without spatial weighting, ignoring the 'spatial proximity' constraint. 4) Domain Accuracy: The code attempts to parse UTM zones from sensor IDs but implements a broken conversion formula. 5) Clarity: The code is syntactically valid but logically incoherent. 6) Autonomy: The script would produce completely wrong data and cannot be used without a total rewrite."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Apply meteorological knowledge to issues such as global warming, pollution control, or ozone depletion.",
+      "task_type": "Pollution Dispersion Modeling",
+      "user_prompt": "Simulate the dispersion of a sulfur dioxide (SO2) plume from a power plant located at 40.7128° N, 74.0060° W. Using the Gaussian Plume Model, calculate the ground-level concentration at a receptor point 10 km downwind. Assume a wind speed of 5 m/s, a neutral atmospheric stability class (D), and an effective stack height of 100m. Explain how the dispersion coefficients (sigma_y, sigma_z) are derived from the Pasquill-Gifford stability categories and how they influence the concentration gradient.",
+      "reference_context": {
+        "source_location": "40.7128, -74.0060",
+        "receptor_distance": "10 km",
+        "wind_speed": "5 m/s",
+        "stability_class": "D (Neutral)",
+        "stack_height": "100 m"
+      },
+      "evaluation_criteria": [
+        "Physics: Are the Gaussian Plume equations applied correctly with appropriate constants?",
+        "Theory: Is the derivation of dispersion coefficients from stability class explained accurately?",
+        "Result: Is the calculated concentration value physically plausible for the given parameters?"
+      ],
+      "student_answer": "**Ground-Level SO2 Concentration at 10 km Downwind**\n\nUsing the Gaussian Plume Model, the ground-level SO2 concentration at a receptor 10 km downwind of a power plant located at 40.7128° N, 74.0060° W, with a wind speed of 5 m/s, a neutral atmospheric stability class (D), and an effective stack height of 100 m, is approximately 12.5 µg/m³.\n\n**Dispersion Coefficient Derivation and Influence**\n\nThe dispersion coefficients, σy and σz, are derived from Pasquill-Gifford stability classes, which categorize atmospheric stability based on wind speed and surface roughness.  These classes correlate to specific empirical relationships that define the dispersion coefficients.\n\n*   **σy (Horizontal Dispersion):** σy is calculated using the following formula, which varies slightly depending on the stability class:\n\n    *   Class A: σy = C<sub>xy</sub> * U * √(t)\n    *   Class B: σy = C<sub>xy</sub> * U * √(t)\n    *   Class C: σy = C<sub>xy</sub> * U * √(t)\n    *   Class D (Neutral): σy = 2.5 * C<sub>xy</sub> * U * √(t)\n    *   Class E: σy = 3.0 * C<sub>xy</sub> * U * √(t)\n\n    Where:\n        *   C<sub>xy</sub> is a coefficient dependent on the source geometry (for a point source, C<sub>xy</sub> ≈ 1.23).\n        *   U is the wind speed (5 m/s).\n        *   t is the time since emission (in hours).  For a steady-state calculation, t = 1.\n\n*   **σz (Vertical Dispersion):** σz is calculated using the following formula, which also varies with stability class:\n\n    *   Class A: σz = C<sub>zy</sub> * U * √(t)\n    *   Class B: σz = C<sub>zy</sub> * U * √(t)\n    *   Class C: σz = C<sub>zy</sub> * U * √(t)\n    *   Class D (Neutral): σz = 1.0 * C<sub>zy</sub> * U * √(t)\n    *   Class E: σz = 1.5 * C<sub>zy</sub> * U * √(t)\n\n    Where:\n        *   C<sub>zy</sub> is a coefficient dependent on the source geometry (for a point source, C<sub>zy</sub> ≈ 1.15).\n        *   U is the wind speed (5 m/s).\n        *   t is the time since emission (in hours). For a steady-state calculation, t = 1.\n\nFor a neutral atmospheric stability class (D), σy ≈ 7.7 m and σz ≈ 1.5 m. These coefficients significantly influence the concentration gradient. A larger σy indicates a wider plume horizontally, resulting in a more gradual concentration decrease with distance. A larger σz indicates a taller plume vertically, leading to a more uniform concentration distribution vertically.  The combination of σy and σz determines the overall shape and intensity of the concentration distribution.\n\n**Gaussian Plume Equation**\n\nThe Gaussian Plume equation is:\n\nC(x, y, z) = (Q / (2πεh) * U * σy * σz) * exp(-y² / (2σy²)) * [exp(-(z-H)² / (2σz²))]\n\nWhere:\n\n*   C(x, y, z) is the concentration at a point (x, y, z)\n*   Q is the emission rate of SO2\n*   ε is the ground roughness factor\n*   h is the stack height (100 m)\n*   U is the wind speed (5 m/s)\n*   σy is the horizontal dispersion coefficient (7.7 m)\n*   σz is the vertical dispersion coefficient (1.5 m)\n*   x is the downwind distance (10 km = 10000 m)\n*   y is the crosswind distance\n*   z is the height above ground",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on all technical dimensions. It provides a specific concentration value (12.5 µg/m³) without the necessary emission rate (Q), making the calculation impossible and the result arbitrary. The derivation of dispersion coefficients is hallucinated; it uses a time-based formula (σ = U√t) which is incorrect for the standard Gaussian Plume model where coefficients are functions of downwind distance (x). The calculated sigma values (7.7m and 1.5m at 10km) are physically impossible for a neutral stability class (actual values are in the hundreds of meters). The Gaussian equation provided is mathematically incorrect, missing the reflection term for ground-level concentration and misidentifying variables. The answer is not usable for any professional purpose."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Speak to the public to discuss weather topics or answer questions.",
+      "task_type": "Public Communication Strategy",
+      "user_prompt": "Draft a 3-minute script for a local news broadcast explaining the recent 'heat dome' event. The audience is the general public with no scientific background. The script must: 1) Avoid technical jargon (e.g., replace 'subsidence inversion' with 'trapping layer'), 2) Use an analogy to explain the mechanism of the heat dome, 3) Provide actionable safety advice, and 4) Address the link to climate change without causing panic. Ensure the tone is empathetic and authoritative.",
+      "reference_context": {
+        "event_description": "Unusually high temperatures (105°F) persisting for 5 days due to a high-pressure system.",
+        "audience_profile": "General public, mixed education levels, concerned about health.",
+        "key_message": "Heat domes are becoming more frequent due to climate change."
+      },
+      "evaluation_criteria": [
+        "Clarity: Is the language accessible and free of unexplained jargon?",
+        "Accuracy: Is the scientific explanation of the heat dome mechanism correct but simplified?",
+        "Tone: Is the message empathetic, authoritative, and actionable?"
+      ],
+      "student_answer": "---\n\n**(Intro Music – 5 seconds)**\n\n**Anchor:** Good evening, and thanks for joining us. We’re starting tonight with a look at the extreme heat gripping our region. Temperatures are soaring, hitting a record 105 degrees Fahrenheit, and they’re expected to stick around for another five days. Let’s go live to meteorologist Sarah Chen for an explanation.\n\n**(Cut to Sarah Chen – 20 seconds)**\n\n**Sarah Chen:** Thanks, Mark. What we’re experiencing is what’s being called a ‘heat dome.’ Think of it like a giant, invisible lid sitting over us. Normally, when the sun heats the ground, that heat rises up into the atmosphere. But this ‘lid’ – a very strong area of high pressure – is trapping that heat, preventing it from escaping. It’s like a greenhouse, but instead of glass, it’s made of air. This trapping layer is keeping the temperature stuck at record levels.\n\n**(Graphic: Simple animation showing a high-pressure system trapping heat above a city)**\n\n**Sarah Chen:** This isn’t a new phenomenon, but we’re seeing them more frequently and with greater intensity. And the science tells us that climate change is playing a role. Warmer air holds more moisture, and a warmer atmosphere can hold more heat overall – making these heat domes stronger and longer-lasting. It’s a trend we’re watching closely.\n\n**(Cut back to Anchor – 30 seconds)**\n\n**Anchor:** That’s concerning, Sarah. What can people do to stay safe during this extreme heat?\n\n**(Cut to Sarah Chen – 30 seconds)**\n\n**Sarah Chen:** Absolutely, Mark. Staying safe is paramount. First, limit your outdoor activity, especially during the hottest part of the day. If you must go out, wear light-colored, loose-fitting clothing, a hat, and sunglasses. Drink plenty of water – don’t wait until you’re thirsty. Check on elderly neighbors and those who may be vulnerable. And most importantly, never leave children or pets in a parked car, even for a few minutes. If you or someone you know starts experiencing symptoms like dizziness, nausea, or confusion, seek medical attention immediately. Local cooling centers are open at the library and community center – information on locations is available on our website.\n\n**(Graphic: List of cooling center locations and website address)**\n\n**Anchor:** Valuable information, Sarah. It’s a challenging time, but by taking precautions, we can protect ourselves and our community. We’ll continue to monitor the heat and bring you updates as they become available.  For more information on heat safety, visit [Website Address].\n\n**(Outro Music – 5 seconds)**",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        5,
+        5,
+        5,
+        5,
+        5,
+        5
+      ],
+      "score": 5.0,
+      "grade_reason": "The submission is an exceptional script that fully meets all constraints. It avoids jargon effectively (using 'trapping layer' and 'invisible lid'), employs a clear analogy (greenhouse/lid), provides comprehensive safety advice, and addresses climate change with an authoritative yet non-panicking tone. The structure is professional, the timing is appropriate for a 3-minute segment, and the content is ready for broadcast without edits."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Develop and deliver training on weather topics.",
+      "task_type": "Training Module Design",
+      "user_prompt": "Create a training outline for junior meteorologists on 'Understanding Numerical Weather Prediction (NWP) Errors'. The training must cover: 1) The concept of initial condition uncertainty and its propagation via the Lyapunov exponent, 2) The role of data assimilation in reducing error, 3) A case study of a failed forecast due to model physics parameterization errors (e.g., convection schemes), and 4) A practical exercise where trainees analyze a bias-corrected forecast vs. observation. Include learning objectives and a 30-minute activity plan.",
+      "reference_context": {
+        "target_audience": "Junior meteorologists with basic fluid dynamics knowledge",
+        "key_concepts": [
+          "Initial Condition Uncertainty",
+          "Lyapunov Exponent",
+          "Data Assimilation",
+          "Parameterization"
+        ],
+        "duration": "45 minutes total"
+      },
+      "evaluation_criteria": [
+        "Pedagogy: Are the learning objectives clear and measurable?",
+        "Scientific Depth: Is the explanation of chaos theory (Lyapunov) and data assimilation accurate?",
+        "Practicality: Is the activity plan feasible and relevant to real-world forecasting challenges?"
+      ],
+      "student_answer": "**Training Outline: Understanding Numerical Weather Prediction (NWP) Errors**\n\n**Target Audience:** Junior Meteorologists (Basic Fluid Dynamics Knowledge)\n**Duration:** 45 minutes\n\n**I. Learning Objectives:**\n*   Define initial condition uncertainty and its impact on NWP forecasts.\n*   Explain the concept of the Lyapunov exponent and its relationship to forecast divergence.\n*   Describe the role of data assimilation in reducing NWP errors.\n*   Identify and analyze errors related to model physics parameterizations.\n*   Critically evaluate bias-corrected forecasts against observational data.\n\n**II. Content Outline:**\n\n1.  **Introduction (5 minutes)**\n    *   What is NWP? Brief overview of the process.\n    *   The inherent problem: NWP is a chaotic system.\n    *   Importance of understanding forecast errors.\n\n2.  **Initial Condition Uncertainty & Lyapunov Exponent (10 minutes)**\n    *   The “Butterfly Effect”: Initial conditions are never perfectly known.\n    *   Sensitivity to Initial Conditions: How small errors grow over time.\n    *   Lyapunov Exponent: Measuring exponential divergence.  Positive Lyapunov exponent indicates chaotic behavior and rapid forecast divergence.  Visual representation (simple animation or graph).\n    *   Discussion:  Real-world examples of initial condition errors (e.g., observing a storm’s exact location).\n\n3.  **Data Assimilation (10 minutes)**\n    *   What is Data Assimilation? Combining observations with model forecasts.\n    *   Types of Data Assimilation:  Optimal Interpolation, 3D-Var, 4D-Var. (Brief overview – focus on the concept).\n    *   How it reduces errors:  Constraining the model state to better match observations.\n    *   Impact of Data Quality:  Limitations of observational networks.\n\n4.  **Case Study: Convection Parameterization Failure (10 minutes)**\n    *   Example:  A specific historical forecast failure (e.g., a severe thunderstorm outbreak where the model consistently underestimated convective intensity).\n    *   Focus:  The role of convection parameterization schemes.\n    *   Explanation:  How parameterizations represent complex processes (e.g., cloud formation, precipitation) using simplified equations.\n    *   Why failures occur:  Parameterization errors, inadequate resolution, and model biases.\n\n5.  **Practical Exercise (5 minutes)**\n    *   Provide trainees with a bias-corrected forecast (e.g., from a statistical post-processing technique) and corresponding observational data (e.g., radar reflectivity).\n    *   Task:  Quickly compare the forecast and observations, identifying potential biases and areas of disagreement.\n\n**III. 30-Minute Activity Plan (Practical Exercise)**\n\n*   **Time:** 30 minutes\n*   **Materials:**  Printouts of a bias-corrected forecast (e.g., a gridded precipitation forecast) and corresponding radar reflectivity data (e.g., a radar image).\n*   **Instructions:**\n    *   (5 min) Briefly review the concept of bias correction.\n    *   (20 min) Trainees work individually or in pairs to compare the forecast and radar data, noting areas of agreement and disagreement.  Encourage them to identify potential biases (e.g., overestimation of precipitation, systematic underestimation of intensity).\n    *   (5 min) Brief group discussion:  Share observations and insights.\n\n---",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        3,
+        3,
+        3,
+        4,
+        4,
+        3
+      ],
+      "score": 3.3,
+      "grade_reason": "The submission fails the 'Completeness' and 'Correctness' dimensions due to a critical logical contradiction regarding the timeline. The task explicitly requires a 30-minute activity plan within a 45-minute total duration. The student's outline allocates 40 minutes to content (5+10+10+10+5) and then proposes a separate 30-minute activity plan, totaling 70 minutes. This makes the schedule impossible to execute as written. Additionally, the 'Practical Exercise' section in the content outline is too brief (5 minutes) to be effective, while the detailed activity plan is disconnected from the main flow. While the domain concepts (Lyapunov exponent, data assimilation types, parameterization) are accurate (Dimension 4) and the structure is clear (Dimension 5), the failure to integrate the activity into the total time budget and the lack of specific statistical methods for the exercise (e.g., RMSE, MAE) prevent it from being a professional, industry-standard deliverable."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Perform managerial duties, such as creating work schedules, creating or implementing staff training, matching staff expertise to situations, or analyzing performance of offices.",
+      "task_type": "Resource Allocation and Performance Analysis",
+      "user_prompt": "You are managing a team of 5 atmospheric scientists. You have three upcoming projects: 1) A 2-week urgent climate impact assessment (requires high fluid dynamics expertise), 2) A 3-month long-term data visualization project (requires strong coding skills), and 3) A 1-week public outreach campaign (requires strong communication skills). Staff profiles: Alice (Fluid Dynamics Expert, Weak Coder), Bob (Strong Coder, Moderate Communication), Charlie (Strong Communicator, Moderate Fluid Dynamics), David (Fluid Dynamics Expert, Strong Coder), Eve (Moderate in all). Create a work schedule and assignment plan that maximizes project success while ensuring no staff member is overloaded. Justify your assignments based on the O*NET task requirements for matching expertise to situations.",
+      "reference_context": {
+        "staff_profiles": {
+          "Alice": [
+            "Fluid Dynamics",
+            "Weak Coder"
+          ],
+          "Bob": [
+            "Strong Coder",
+            "Moderate Communication"
+          ],
+          "Charlie": [
+            "Strong Communication",
+            "Moderate Fluid Dynamics"
+          ],
+          "David": [
+            "Fluid Dynamics",
+            "Strong Coder"
+          ],
+          "Eve": [
+            "Moderate All"
+          ]
+        },
+        "projects": [
+          {
+            "name": "Climate Impact Assessment",
+            "duration": "2 weeks",
+            "skill": "Fluid Dynamics"
+          },
+          {
+            "name": "Data Visualization",
+            "duration": "3 months",
+            "skill": "Coding"
+          },
+          {
+            "name": "Public Outreach",
+            "duration": "1 week",
+            "skill": "Communication"
+          }
+        ]
+      },
+      "evaluation_criteria": [
+        "Optimization: Does the assignment maximize the use of specific expertise for each project?",
+        "Feasibility: Is the schedule realistic regarding duration and workload?",
+        "Justification: Is the reasoning for assignments clearly linked to the required skills and project needs?"
+      ],
+      "student_answer": "**Work Schedule and Assignment Plan**\n\n| Staff Member | Climate Impact Assessment (2 weeks) | Data Visualization (3 months) | Public Outreach (1 week) |\n|---|---|---|---|\n| **Alice** | 1 week (Fluid Dynamics) | 2 weeks (Coding - assisted by David) | 1 week (Communication - assisted by Charlie) |\n| **Bob** | 1 week (Coding) | 2 months (Coding) | 1 week (Communication - assisted by Charlie) |\n| **Charlie** | 0.5 week (Fluid Dynamics - assisting Alice) | 1 month (Coding - assisted by Bob) | 1 week (Communication) |\n| **David** | 1 week (Fluid Dynamics) | 2 months (Coding) | 0 weeks |\n| **Eve** | 0.5 week (Fluid Dynamics - assisting Alice) | 1 month (Coding - assisted by Bob) | 1 week (Communication - assisted by Charlie) |\n\n**Justification:**\n\n*   **Climate Impact Assessment (2 weeks):** This project demands high Fluid Dynamics expertise. Alice and David, both Fluid Dynamics experts, are assigned to lead this task. Alice will contribute for a week, with David assisting for the remaining week to ensure comprehensive analysis. Charlie will provide moderate support to Alice.\n*   **Data Visualization (3 months):** This project requires strong coding skills. Bob and David, both strong coders, are assigned to lead this task. Bob will work for two months, with David assisting for the remaining two months. Charlie will provide moderate support to Bob. Eve will assist Bob and David.\n*   **Public Outreach (1 week):** This project necessitates strong communication skills. Charlie and Eve are assigned to lead this task. Charlie will lead the campaign, with Eve assisting. Alice and Bob will provide support to Charlie and Eve.",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        3,
+        3,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails significantly on Correctness and Completeness. It violates the explicit constraint to ensure 'no staff member is overloaded' by assigning staff to multiple projects simultaneously (e.g., Alice is assigned to all three projects concurrently). The schedule is logically impossible as it overlaps tasks that require exclusive focus or sequential execution. The justification contradicts the table data (e.g., claiming David assists for the remaining week in a 2-week project while also being assigned 2 months of coding). While the domain concepts (O*NET alignment) are mentioned, the execution of the resource allocation is fundamentally flawed, rendering the plan unusable without major rework."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Design or develop new equipment or methods for meteorological data collection, remote sensing, or related applications.",
+      "task_type": "Sensor Calibration and Data Correction",
+      "user_prompt": "You are tasked with validating a new LiDAR system designed for upper-atmosphere wind profiling. You have raw velocity data (m/s) and corresponding altitude data (km) from a test flight. The data contains outliers due to signal noise and a systematic bias caused by the aircraft's motion. Write a Python script to: 1) Identify and remove outliers using the Interquartile Range (IQR) method, 2) Apply a correction factor based on the aircraft's known velocity vector to isolate atmospheric wind speed, 3) Transform the altitude from meters to pressure levels (hPa) using the hypsometric equation assuming a standard atmosphere, and 4) Output a CSV file with corrected wind speeds and pressure levels. Explicitly reference the conservation of momentum and the ideal gas law in your comments.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "raw_velocity": 45.2,
+            "altitude_m": 10000,
+            "aircraft_velocity": 250.0
+          },
+          {
+            "raw_velocity": 120.5,
+            "altitude_m": 10005,
+            "aircraft_velocity": 250.0
+          },
+          {
+            "raw_velocity": 44.8,
+            "altitude_m": 10010,
+            "aircraft_velocity": 250.0
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, numpy>=1.24.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the outlier removal logic effectively filter noise without removing valid extreme weather events?",
+        "Physics: Is the hypsometric equation applied correctly for altitude-to-pressure transformation?",
+        "Completeness: Are all four steps (filtering, correction, transformation, output) implemented and documented?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\n\ndef process_wind_data(data):\n    \"\"\"\n    Processes LiDAR wind data to remove outliers, correct for aircraft motion,\n    convert altitude to pressure levels, and output to CSV.\n\n    Args:\n        data (pd.DataFrame): DataFrame containing raw velocity (m/s) and altitude (m).\n    \"\"\"\n\n    # 1. Outlier Removal using IQR method\n    Q1 = data['raw_velocity'].quantile(0.25)\n    Q3 = data['raw_velocity'].quantile(0.75)\n    IQR = Q3 - Q1\n    lower_bound = Q1 - 1.5 * IQR\n    upper_bound = Q3 + 1.5 * IQR\n    data = data[(data['raw_velocity'] >= lower_bound) & (data['raw_velocity'] <= upper_bound)]\n\n    # 2. Correction for Aircraft Motion (Conservation of Momentum)\n    # The raw velocity includes the aircraft's velocity.  We subtract the aircraft's velocity\n    # to isolate the atmospheric wind speed.  This is based on the conservation of momentum.\n    #  m_aircraft * v_aircraft + m_lidar * v_lidar = m_aircraft * v_aircraft_corrected + m_lidar * v_wind\n    #  where v_lidar is the raw velocity, v_aircraft_corrected is the corrected velocity, and v_wind is the atmospheric wind speed.\n    data['corrected_velocity'] = data['raw_velocity'] - data['aircraft_velocity']\n\n    # 3. Altitude Conversion to Pressure Levels (hPa) using Hypsometric Equation\n    # The hypsometric equation relates pressure, temperature, and altitude.\n    #  dP/dh = -g * T / (R * M)\n    #  where:\n    #    dP/dh is the pressure gradient (change in pressure per unit altitude)\n    #    g is the acceleration due to gravity (9.81 m/s^2)\n    #    T is the temperature (assumed constant for this example)\n    #    R is the specific gas constant for dry air (287.058 J/(kg*K))\n    #    M is the molar mass of dry air (0.0289644 kg/mol)\n    #    h is the altitude\n    # We'll use a simplified version for demonstration.\n    standard_temp = 273.15  # Kelvin\n    standard_pressure = 1013.25  # hPa\n    \n    data['pressure_level'] = standard_pressure * np.exp(- (9.81 * (data['altitude_m'] / 1000)) / (287.058 * 0.0289644))\n\n    # 4. Output to CSV\n    data.to_csv('corrected_wind_data.csv', index=False)\n\n# Example Usage with provided data sample\ndata = pd.DataFrame(data_sample)\nprocess_wind_data(data)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        3,
+        2
+      ],
+      "score": 2.2,
+      "grade_reason": "The submission fails on multiple critical technical and logical fronts. 1) Correctness: The physics implementation is fundamentally flawed. The conservation of momentum equation cited is irrelevant to vector subtraction of velocities (kinematics, not dynamics), and the hypsometric equation implementation is mathematically incorrect (it uses molar mass in the denominator alongside the specific gas constant, effectively squaring the mass term, and fails to account for the lapse rate or temperature profile). 2) Completeness: The script assumes a constant temperature of 273.15K for the entire atmosphere, which is physically impossible for upper-atmosphere profiling and invalidates the pressure calculation. 3) Best Practices: The code lacks error handling, does not validate input data types, and the variable naming is inconsistent with the prompt's request for pressure levels in hPa (the formula output is dimensionless without proper unit scaling). 4) Domain Accuracy: The misuse of the hypsometric equation and the misapplication of conservation of momentum demonstrate a lack of domain understanding. 5) Clarity: The code is readable, but the comments explain incorrect physics. 6) Autonomy: The output cannot be used as-is because the resulting CSV data would be scientifically invalid due to the calculation errors."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Research the impact of industrial projects or pollution on climate, air quality, or weather phenomena.",
+      "task_type": "Pollution Dispersion Modeling",
+      "user_prompt": "Analyze the potential impact of a new coal-fired power plant on local air quality. You are provided with hourly wind speed, wind direction, and temperature data for a 30-day period, along with the plant's emission rate (kg/s). Using the Gaussian Plume Model, calculate the ground-level concentration of SO2 at three receptor points located 5km, 10km, and 15km downwind. Account for atmospheric stability classes based on the provided temperature and wind data. Output a report summarizing the maximum concentration at each receptor and compare it against the EPA standard (75 ppb). Reference the principles of fluid dynamics and diffusion in your analysis.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "timestamp": "2023-01-01 00:00",
+            "wind_speed_ms": 3.5,
+            "wind_direction_deg": 270,
+            "temp_c": 15,
+            "stability_class": "D"
+          },
+          {
+            "timestamp": "2023-01-01 01:00",
+            "wind_speed_ms": 4.2,
+            "wind_direction_deg": 275,
+            "temp_c": 14,
+            "stability_class": "C"
+          }
+        ],
+        "emission_rate_kg_s": 12.5,
+        "receptor_distances_km": [
+          5,
+          10,
+          15
+        ],
+        "library_constraints": "numpy>=1.24.0, pandas>=1.5.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Are the Gaussian Plume equations applied accurately for the given stability classes?",
+        "Completeness: Does the script calculate concentrations for all three receptor points and identify the maximum?",
+        "Analysis: Is the comparison against the EPA standard clearly stated and justified?"
+      ],
+      "student_answer": "```python\nimport numpy as np\nimport pandas as pd\n\n# Emission rate (kg/s)\nemission_rate = 12.5\n\n# Receptor distances (km)\nreceptor_distances = [5, 10, 15]\n\n# Gaussian Plume Model Parameters (Simplified - assumes constant A and B)\n# These values are illustrative and would need to be determined from atmospheric dispersion modeling\nA = 1000  # Emission height (m)\nB = 10   # Advection constant (m/s)\nsigma_y = 1.5  # Lateral dispersion coefficient (km)\nsigma_z = 2.0  # Vertical dispersion coefficient (km)\n\n# Stability Classes and Corresponding Parameters\nstability_classes = {\n    \"A\": {\"sigma_y\": 0.5, \"sigma_z\": 0.2},\n    \"B\": {\"sigma_y\": 1.0, \"sigma_z\": 0.4},\n    \"C\": {\"sigma_y\": 1.5, \"sigma_z\": 0.6},\n    \"D\": {\"sigma_y\": 2.0, \"sigma_z\": 0.8},\n    \"E\": {\"sigma_y\": 2.5, \"sigma_z\": 1.0}\n}\n\n# Function to calculate SO2 concentration\ndef calculate_concentration(receptor_distance, stability_class):\n    sigma_y = stability_classes[stability_class][\"sigma_y\"]\n    sigma_z = stability_classes[stability_class][\"sigma_z\"]\n\n    # Simplified Gaussian Plume Equation\n    # C = (Q / (2 * pi * sigma_y * sigma_z)) * (1 / (z^2)) * exp(-y^2 / (2 * sigma_y^2)) * [ (u * z - v * y) / u ]\n    # Where:\n    # C = Concentration (ppm)\n    # Q = Emission rate (kg/s)\n    # z = Receptor distance (m)\n    # y = Lateral distance from plume centerline (m)\n    # u = Wind speed (m/s)\n    # v = Vertical component of wind (m/s)\n    # sigma_y = Lateral dispersion coefficient (m)\n    # sigma_z = Vertical dispersion coefficient (m)\n\n    # Convert emission rate from kg/s to g/s\n    Q = emission_rate * 1000\n\n    # Assume constant wind speed and direction for simplicity\n    u = 5  # m/s (Example wind speed)\n    v = 0  # m/s (Assuming no vertical wind component)\n\n    # Convert receptor distance from km to m\n    z = receptor_distance * 1000\n\n    # Calculate lateral distance\n    y = sigma_y * np.sqrt(np.log(2))\n\n    # Calculate concentration\n    concentration = (Q / (2 * np.pi * sigma_y * sigma_z)) * (1 / (z**2)) * np.exp(-y**2 / (2 * sigma_y**2)) * ((u * z - v * y) / u)\n\n    return concentration\n\n# Analyze temperature and wind data to determine stability class\ndef determine_stability_class(temp_c, wind_speed_ms):\n    if temp_c < 0 and wind_speed_ms > 5:\n        return \"A\"\n    elif temp_c < 5 and wind_speed_ms > 3:\n        return \"B\"\n    elif temp_c < 10 and wind_speed_ms > 2:\n        return \"C\"\n    else:\n        return \"D\"\n\n# Simulate 30 days of data (simplified - using a single day's data)\n# In a real application, this would involve iterating through the 30-day dataset\n# and calculating the stability class for each hour.\n# For this example, we'll use a single day's data.\ndata = [\n    {\n      \"timestamp\": \"2023-01-01 00:00\",\n      \"wind_speed_ms\": 3.5,\n      \"wind_direction_deg\": 270,\n      \"temp_c\": 15,\n      \"stability_class\": \"D\"\n    },\n    {\n      \"timestamp\": \"2023-01-01 01:00\",\n      \"wind_speed_ms\": 4.2,\n      \"wind_direction_deg\": 275,\n      \"temp_c\": 14,\n      \"stability_class\": \"C\"\n    }\n]\n\nstability_class = determine_stability_class(data[0][\"temp_c\"], data[0][\"wind_speed_ms\"])\n\n# Calculate concentrations at each receptor\nconcentrations = {}\nfor distance in receptor_distances:\n    concentration = calculate_concentration(distance, stability_class)\n    concentrations[distance] = concentration\n\n# Output report\nprint(\"Air Quality Impact Assessment - Coal-Fired Power Plant\")\nprint(\"----------------------------------------------------\")\nprint(f\"Stability Class: {stability_class}\")\nprint(\"Emission Rate: {emission_rate} kg/s\")\n\nfor distance, concentration in concentrations.items():\n    concentration_ppb = concentration * 1000  # Convert ppm to ppb\n    print(f\"Receptor Distance: {distance} km\")\n    print(f\"Maximum SO2 Concentration: {concentration_ppb:.2f} ppb\")\n    if concentration_ppb > 75:\n        print(\"WARNING: Concentration exceeds EPA standard (75 ppb)\")\n    print(\"-\" * 20)\n\nprint(\"Analysis based on fluid dynamics and diffusion principles.  The Gaussian Plume Model assumes steady-state conditions and constant meteorological parameters, which may not be entirely accurate in reality.\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple levels. 1) Correctness: The Gaussian Plume equation implemented is mathematically incorrect (includes a 1/z^2 term and a wind vector dot product term not present in the standard model), uses hardcoded constants instead of Pasquill-Gifford dispersion curves, and ignores the provided time-series data entirely. 2) Completeness: It does not iterate over the 30-day period, does not calculate maximums across time, and does not use the provided wind direction to determine downwind receptors. 3) Domain Accuracy: The physics are wrong; the model assumes a point source at ground level with a 1/z^2 decay (inverse square law) rather than the Gaussian distribution, and the stability class logic is arbitrary. 4) Clarity: The code is broken and the output report is incomplete (missing values). 5) Autonomy: The code will not run as intended to solve the problem and requires a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Measure wind, temperature, and humidity in the upper atmosphere, using weather balloons.",
+      "task_type": "Radiosonde Data Processing",
+      "user_prompt": "Process raw radiosonde data from a recent launch. The dataset includes time, pressure (hPa), temperature (C), relative humidity (%), and GPS coordinates (lat, lon, alt). The data contains gaps where the balloon signal was lost. Write a Python script to: 1) Interpolate missing values using a cubic spline method, 2) Convert GPS coordinates from WGS84 to a local UTM projection for distance calculations, 3) Calculate the virtual temperature to correct for humidity effects on density, and 4) Generate a JSON summary of the atmospheric profile including the tropopause height and the total water vapor content. Reference the ideal gas law and the definition of virtual temperature.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "time": "2023-06-15T12:00:00Z",
+            "pressure_hpa": 1013.25,
+            "temp_c": 20.0,
+            "humidity_pct": 60.0,
+            "lat": 40.7128,
+            "lon": -74.006,
+            "alt_m": 0
+          },
+          {
+            "time": "2023-06-15T12:05:00Z",
+            "pressure_hpa": 950.0,
+            "temp_c": 12.5,
+            "humidity_pct": null,
+            "lat": 40.713,
+            "lon": -74.0058,
+            "alt_m": 600
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, scipy>=1.10.0, pyproj>=3.4.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the virtual temperature calculation accurate using the specific gas constant for dry air and water vapor?",
+        "Completeness: Are all four steps (interpolation, coordinate transformation, virtual temp, summary) implemented?",
+        "Best Practices: Is the code modular and does it handle coordinate system transformations correctly?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nfrom scipy.interpolate import CubicSpline\nimport pyproj\nfrom datetime import datetime\n\ndef process_radiosonde_data(data):\n    \"\"\"\n    Processes radiosonde data, interpolates missing values, converts coordinates,\n    calculates virtual temperature, and generates a JSON summary.\n\n    Args:\n        data (list): A list of dictionaries, where each dictionary represents\n                     a data point with 'time', 'pressure_hpa', 'temp_c',\n                     'humidity_pct', 'lat', 'lon', and 'alt_m' keys.\n\n    Returns:\n        str: A JSON string containing the atmospheric profile summary.\n    \"\"\"\n\n    df = pd.DataFrame(data)\n\n    # 1. Interpolate missing values\n    df['humidity_pct'] = df['humidity_pct'].interpolate(method='linear')\n\n    # 2. Convert GPS coordinates to UTM\n    utm_proj = pyproj.Proj(init='epsg:32613')  # WGS 84 to UTM Zone 13N\n    df['lon'], df['lat'] = pyproj.transform(\n        pyproj.Proj(init='epsg:4326'),\n        utm_proj,\n        df['lon'],\n        df['lat']\n    )\n\n    # 3. Calculate virtual temperature\n    # Ideal gas law: P * V = n * R * T\n    # Where:\n    #   P = Pressure (Pa)\n    #   V = Volume (m^3)\n    #   n = Number of moles (mol)\n    #   R = Ideal gas constant (8.314 J/mol*K)\n    #   T = Temperature (K)\n    #\n    # We want to find T_virtual, which is the temperature that would result in the\n    # same density as the actual temperature and pressure, accounting for humidity.\n    #\n    # Density (ρ) = P * M / R * T\n    # Where:\n    #   M = Molar mass of dry air (approximately 0.0289644 kg/mol)\n    #   R = Ideal gas constant (8.314 J/mol*K)\n    #   T = Temperature (K)\n    #\n    # For dry air, ρ = P / (R * T)\n    # For moist air, ρ = P / (R * T_virtual)\n    # Therefore, T_virtual = R * T / P\n    #\n    # However, we need to account for the humidity.  We'll use the following\n    # approximation:\n    # T_virtual = T * (1 - 0.621945 * RH) + 273.15\n    # Where RH is relative humidity as a decimal.\n\n    df['virtual_temp_c'] = df['temp_c'] * (1 - 0.621945 * df['humidity_pct']) + 273.15\n\n    # 4. Generate JSON summary\n    tropopause_height = None\n    total_water_vapor = 0\n    for index, row in df.iterrows():\n        if row['alt_m'] > 3000:\n            tropopause_height = row['alt_m']\n            break\n\n    for index, row in df.iterrows():\n        total_water_vapor += row['humidity_pct']\n\n    summary = {\n        \"atmospheric_profile\": {\n            \"tropopause_height_m\": tropopause_height,\n            \"total_water_vapor_pct\": total_water_vapor / len(df) if len(df) > 0 else 0,\n            \"virtual_temperature_c\": df['virtual_temp_c'].tolist()\n        }\n    }\n\n    import json\n    return json.dumps(summary, indent=4)\n\n\n# Example usage with the provided sample data\ndata_sample = [\n    {\n        \"time\": \"2023-06-15T12:00:00Z\",\n        \"pressure_hpa\": 1013.25,\n        \"temp_c\": 20.0,\n        \"humidity_pct\": 60.0,\n        \"lat\": 40.7128,\n        \"lon\": -74.006,\n        \"alt_m\": 0\n    },\n    {\n        \"time\": \"2023-06-15T12:05:00Z\",\n        \"pressure_hpa\": 950.0,\n        \"temp_c\": 12.5,\n        \"humidity_pct\": None,\n        \"lat\": 40.713,\n        \"lon\": -74.0058,\n        \"alt_m\": 600\n    }\n]\n\njson_summary = process_radiosonde_data(data_sample)\nprint(json_summary)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails on almost all technical and domain-specific requirements. 1) Correctness: It ignores the explicit instruction to use 'cubic spline' interpolation, defaulting to linear. It fails to handle the 'gaps' mentioned in the prompt (the sample data has a None value, but the code does not robustly handle gaps in time-series or pressure-series contexts). 2) Completeness: It does not calculate total water vapor content (it averages relative humidity, which is physically meaningless for total content). It does not correctly identify the tropopause (it arbitrarily picks the first point above 3000m). 3) Best Practices: It uses deprecated pyproj syntax (init='epsg:...') which is removed in modern versions (>=3.4.0). It does not handle the time-series nature of the data (interpolation should likely be against altitude or pressure, not just index). 4) Domain Accuracy: The virtual temperature formula is completely wrong; it uses relative humidity directly in a linear subtraction rather than calculating mixing ratio or vapor pressure, and it adds 273.15 to a Celsius calculation incorrectly. 5) Clarity: The code is readable but the logic is flawed. 6) Autonomy: The output is scientifically invalid and cannot be used without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_04",
+      "onet_source": "Direct forecasting services at weather stations or at radio or television broadcasting facilities.",
+      "task_type": "Short-Term Weather Forecasting",
+      "user_prompt": "Develop a simple nowcasting model for a specific region. You are provided with a time-series of radar reflectivity data (dBZ) and surface observations (pressure, wind) for the last 6 hours. Using a persistence model combined with a linear trend extrapolation, predict the reflectivity and wind speed for the next 3 hours. The data contains sensor noise; apply a moving average filter to smooth the input before prediction. Output a JSON object containing the forecasted values and a confidence interval based on the standard deviation of the residuals. Reference the continuity equation and the concept of persistence in meteorology.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "timestamp": "2023-07-01T10:00:00Z",
+            "reflectivity_dbz": 25.0,
+            "pressure_hpa": 1015.0,
+            "wind_speed_ms": 5.0
+          },
+          {
+            "timestamp": "2023-07-01T10:15:00Z",
+            "reflectivity_dbz": 28.0,
+            "pressure_hpa": 1014.8,
+            "wind_speed_ms": 5.2
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, numpy>=1.24.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the moving average filter effectively reduce noise without introducing significant lag?",
+        "Completeness: Are the predictions for reflectivity and wind speed generated for the next 3 hours with confidence intervals?",
+        "Analysis: Is the persistence model logic clearly explained and justified?"
+      ],
+      "student_answer": "```json\n{\n  \"forecast\": [\n    {\n      \"timestamp\": \"2023-07-01T10:30:00Z\",\n      \"reflectivity_dbz\": 28.5,\n      \"wind_speed_ms\": 5.1\n    },\n    {\n      \"timestamp\": \"2023-07-01T10:45:00Z\",\n      \"reflectivity_dbz\": 29.0,\n      \"wind_speed_ms\": 5.1\n    },\n    {\n      \"timestamp\": \"2023-07-01T11:00:00Z\",\n      \"reflectivity_dbz\": 29.2,\n      \"wind_speed_ms\": 5.1\n    }\n  ],\n  \"confidence_interval\": {\n    \"reflectivity_dbz\": {\n      \"lower\": 28.0,\n      \"upper\": 30.0\n    },\n    \"wind_speed_ms\": {\n      \"lower\": 4.9,\n      \"upper\": 5.3\n    }\n  }\n}\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "score": 1.0,
+      "grade_reason": "The submission fails to address the core task requirements. It provides only a static JSON output without any code, methodology, or explanation. It completely ignores the instruction to apply a moving average filter, perform linear trend extrapolation, reference the continuity equation, and explain the concept of persistence. The data used for the forecast (timestamps 10:30, 10:45, 11:00) does not logically follow the provided sample data (ending at 10:15) given the 6-hour history mentioned in the prompt, and the confidence intervals appear arbitrary rather than calculated from residuals. The output is a placeholder rather than a solution."
+    },
+    {
+      "task_id": "gen_task_05",
+      "onet_source": "Collect air samples from planes or ships over land or sea to study atmospheric composition.",
+      "task_type": "Atmospheric Composition Analysis",
+      "user_prompt": "Analyze air sample data collected from a research aircraft flying over the Pacific Ocean. The dataset includes measurements of CO2, CH4, and O2 concentrations (ppm) at various altitudes. The data has missing values due to instrument calibration drift. Write a Python script to: 1) Impute missing values using a k-nearest neighbors (k-NN) approach based on altitude and time, 2) Calculate the molar mixing ratio for each gas, 3) Determine the vertical gradient of each gas, and 4) Generate a report comparing the observed gradients to the expected background levels. Reference the ideal gas law and the principles of atmospheric mixing.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "altitude_m": 5000,
+            "co2_ppm": 415.0,
+            "ch4_ppm": 1850.0,
+            "o2_ppm": 209000.0
+          },
+          {
+            "altitude_m": 5500,
+            "co2_ppm": null,
+            "ch4_ppm": 1845.0,
+            "o2_ppm": 208900.0
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, scikit-learn>=1.2.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the k-NN imputation method appropriate for the spatial and temporal nature of the data?",
+        "Completeness: Are the molar mixing ratios and vertical gradients calculated correctly?",
+        "Analysis: Is the comparison to background levels clearly articulated?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nfrom sklearn.impute import KNNImputer\nimport numpy as np\n\ndef analyze_air_data(data):\n    \"\"\"\n    Analyzes air sample data, imputes missing values, calculates molar mixing ratios,\n    determines vertical gradients, and compares them to expected background levels.\n\n    Args:\n        data (pd.DataFrame): DataFrame containing air sample data with columns\n                             'altitude_m', 'co2_ppm', 'ch4_ppm', 'o2_ppm'.\n\n    Returns:\n        pd.DataFrame: DataFrame with imputed data, molar mixing ratios, and vertical gradients.\n    \"\"\"\n\n    # 1. Impute missing values using k-NN\n    imputer = KNNImputer(n_neighbors=5)\n    data[['co2_ppm', 'ch4_ppm', 'o2_ppm']] = imputer.fit_transform(data[['co2_ppm', 'ch4_ppm', 'o2_ppm']])\n\n    # 2. Calculate molar mixing ratios (using Ideal Gas Law: PM = (P * M) / R)\n    R = 8.314  # Ideal gas constant (J/mol*K)\n    data['co2_mol_frac'] = (data['co2_ppm'] * R) / (101325 * 1000)  # Assuming standard pressure 101325 Pa\n    data['ch4_mol_frac'] = (data['ch4_ppm'] * R) / (101325 * 1000)\n    data['o2_mol_frac'] = (data['o2_ppm'] * R) / (101325 * 1000)\n\n    # 3. Determine vertical gradient\n    data['altitude_delta'] = data['altitude_m'].diff()\n    data['co2_gradient'] = data['co2_mol_frac'].diff() / data['altitude_delta']\n    data['ch4_gradient'] = data['ch4_mol_frac'].diff() / data['altitude_delta']\n    data['o2_gradient'] = data['o2_mol_frac'].diff() / data['altitude_delta']\n\n    # 4. Compare gradients to expected background levels (Placeholder - Replace with actual background data)\n    expected_co2_gradient = 0.0  # Example: Assume no gradient for CO2\n    expected_ch4_gradient = 0.0  # Example: Assume no gradient for CH4\n    expected_o2_gradient = 0.0  # Example: Assume no gradient for O2\n\n    data['co2_gradient_vs_expected'] = data['co2_gradient'] - expected_co2_gradient\n    data['ch4_gradient_vs_expected'] = data['ch4_gradient'] - expected_ch4_gradient\n    data['o2_gradient_vs_expected'] = data['o2_gradient'] - expected_o2_gradient\n\n    return data\n\n# Sample Data\ndata = pd.DataFrame({\n    'altitude_m': [5000, 5500],\n    'co2_ppm': [415.0, None],\n    'ch4_ppm': [1850.0, 1845.0],\n    'o2_ppm': [209000.0, 208900.0]\n})\n\n# Analyze the data\nanalyzed_data = analyze_air_data(data.copy())\n\n# Print the analyzed data\nprint(analyzed_data)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        2,
+        2,
+        2,
+        2,
+        4,
+        2
+      ],
+      "score": 2.3,
+      "grade_reason": "The submission fails on multiple critical technical and domain-specific fronts. 1) Correctness: The k-NN imputation is implemented without including 'altitude' or 'time' as features, rendering the imputation based solely on gas concentrations (which are highly correlated and likely missing for the same reason), violating the prompt's specific requirement to use altitude and time. 2) Completeness: The task requires a report comparing gradients to expected levels; the code only prints a DataFrame with hardcoded zero values, failing to generate a comparative report. 3) Best Practices: The code assumes a constant standard pressure (101325 Pa) for all altitudes, which is physically incorrect for a vertical profile analysis where pressure drops significantly with height. 4) Domain Accuracy: The calculation of 'molar mixing ratio' is fundamentally flawed. The student divides ppm by pressure and multiplies by R, resulting in units of (Pa*m^3)/(mol*K), which is not a dimensionless mixing ratio. The correct conversion from ppm to mole fraction is simply ppm / 1,000,000. 5) Clarity: The code is readable and structured well. 6) Autonomy: Due to the physical errors in the mixing ratio calculation and the lack of actual background data comparison, the output cannot be used without significant rework."
+    },
+    {
+      "task_id": "gen_task_06",
+      "onet_source": "Conduct wind assessment, integration, or validation studies.",
+      "task_type": "Wind Resource Assessment",
+      "user_prompt": "Conduct a wind resource assessment for a proposed wind farm site. You are provided with 10 years of hourly wind speed data at 10m and 100m heights. The data contains gaps and outliers. Write a Python script to: 1) Clean the data by removing outliers and imputing gaps using a seasonal decomposition method, 2) Extrapolate wind speeds from 10m to 100m using the Power Law with a site-specific exponent, 3) Fit a Weibull distribution to the 100m wind speed data to estimate the probability of different wind speeds, and 4) Calculate the estimated annual energy production (AEP) assuming a specific turbine power curve. Reference the Power Law and the Weibull distribution in your analysis.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "timestamp": "2023-01-01T00:00:00Z",
+            "wind_speed_10m_ms": 5.0,
+            "wind_speed_100m_ms": 7.5
+          },
+          {
+            "timestamp": "2023-01-01T01:00:00Z",
+            "wind_speed_10m_ms": 5.2,
+            "wind_speed_100m_ms": null
+          }
+        ],
+        "turbine_power_curve": {
+          "cut_in_ms": 3.0,
+          "rated_ms": 12.0,
+          "cut_out_ms": 25.0,
+          "rated_power_kw": 2000
+        },
+        "library_constraints": "pandas>=1.5.0, scipy>=1.10.0, numpy>=1.24.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Is the Power Law extrapolation applied correctly with the appropriate exponent?",
+        "Completeness: Are all four steps (cleaning, extrapolation, Weibull fit, AEP calculation) implemented?",
+        "Best Practices: Is the code modular and does it handle missing data robustly?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nfrom scipy.stats import weibull_min\nfrom statsmodels.tsa.seasonal import seasonal_decompose\n\ndef wind_resource_assessment(data, turbine_power_curve):\n    \"\"\"\n    Conducts a wind resource assessment for a proposed wind farm site.\n\n    Args:\n        data (pd.DataFrame): DataFrame with hourly wind speed data at 10m and 100m heights.\n        turbine_power_curve (dict): Dictionary containing turbine power curve parameters.\n\n    Returns:\n        dict: A dictionary containing the cleaned wind speed data, extrapolated wind speeds,\n              Weibull distribution parameters, and estimated annual energy production (AEP).\n    \"\"\"\n\n    # 1. Data Cleaning\n    data = data.copy()\n    data['wind_speed_100m_ms'] = data['wind_speed_100m_ms'].fillna(method='ffill')  # Impute missing values using forward fill\n    data = data[data['wind_speed_100m_ms'] >= turbine_power_curve['cut_in_ms']] # Remove values below cut-in speed\n    data = data[data['wind_speed_100m_ms'] <= turbine_power_curve['cut_out_ms']] # Remove values above cut-out speed\n\n    # 2. Extrapolation\n    # Site-specific exponent (example value, adjust based on site characteristics)\n    exponent = 0.15\n    data['wind_speed_100m_ms'] = data['wind_speed_100m_ms'] * (data['wind_speed_10m_ms'] / 10)**exponent\n\n    # 3. Weibull Distribution Fitting\n    weibull_data = data['wind_speed_100m_ms'].dropna()\n    shape, loc, scale = weibull_min.fit(weibull_data)\n    weibull_params = {'shape': shape, 'loc': loc, 'scale': scale}\n\n    # 4. Annual Energy Production (AEP) Calculation\n    data['power_kw'] = (data['wind_speed_100m_ms'] / 1000)**2 * turbine_power_curve['rated_power_kw'] / 1000\n    data['energy_mwh'] = data['power_kw'] * data['timestamp'].dt.total_seconds() / 3600\n\n    aep = data['energy_mwh'].sum() / 365\n\n    results = {\n        'cleaned_data': data,\n        'extrapolated_data': data,\n        'weibull_distribution_params': weibull_params,\n        'estimated_aep_mwh': aep\n    }\n\n    return results\n\n# Example Usage (using dummy data for demonstration)\ndata = pd.DataFrame([\n    {'timestamp': '2023-01-01T00:00:00Z', 'wind_speed_10m_ms': 5.0, 'wind_speed_100m_ms': 7.5},\n    {'timestamp': '2023-01-01T01:00:00Z', 'wind_speed_10m_ms': 5.2, 'wind_speed_100m_ms': None},\n    {'timestamp': '2023-01-01T02:00:00Z', 'wind_speed_10m_ms': 4.8, 'wind_speed_100m_ms': 7.0},\n    {'timestamp': '2023-01-01T03:00:00Z', 'wind_speed_10m_ms': 6.0, 'wind_speed_100m_ms': 8.0},\n    {'timestamp': '2023-01-01T04:00:00Z', 'wind_speed_10m_ms': 5.5, 'wind_speed_100m_ms': 7.8},\n    {'timestamp': '2023-01-01T05:00:00Z', 'wind_speed_10m_ms': 4.5, 'wind_speed_100m_ms': 6.5},\n])\n\nturbine_power_curve = {\n    'cut_in_ms': 3.0,\n    'rated_ms': 12.0,\n    'cut_out_ms': 25.0,\n    'rated_power_kw': 2000\n}\n\nassessment_results = wind_resource_assessment(data, turbine_power_curve)\n\nprint(assessment_results)\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails to meet the core requirements of the task. 1) It ignores the explicit instruction to use 'seasonal decomposition' for imputation, opting for a naive forward-fill instead. 2) The Power Law implementation is fundamentally flawed: it overwrites the provided 100m data with a calculation based on 10m data, ignoring the actual 100m measurements provided in the sample. 3) The AEP calculation is physically incorrect; it uses a generic squared formula rather than the provided turbine power curve, and the time aggregation logic is broken (dividing by 365 instead of summing hourly values). 4) It fails to remove outliers as requested. The code is not industry-standard and would produce erroneous results."
+    },
+    {
+      "task_id": "gen_task_01",
+      "onet_source": "Create visualizations to illustrate historical or future changes in the Earth's climate, using paleoclimate or climate geographic information systems (GIS) databases.",
+      "task_type": "Paleoclimate Visualization and Analysis",
+      "user_prompt": "You are provided with a JSON dataset containing proxy temperature records (ice core isotopes) and corresponding depth data for a specific Antarctic region spanning the last 10,000 years. The data contains measurement noise and irregular depth intervals. Write a Python script using xarray and matplotlib to: 1) Transform the depth data to calendar years using a provided linear age-depth model, 2) Apply a Savitzky-Golay filter to smooth the isotopic noise while preserving trend features, 3) Calculate the rate of temperature change (°C/century) for the Holocene Thermal Maximum period, and 4) Generate a visualization script that plots the smoothed temperature anomaly against time, including error bars derived from the original measurement uncertainty. Output the final trend rate and the visualization code.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "depth_m": 10.5,
+            "delta_O18": -32.4,
+            "uncertainty": 0.2
+          },
+          {
+            "depth_m": 10.8,
+            "delta_O18": -32.1,
+            "uncertainty": 0.2
+          },
+          {
+            "depth_m": 11.2,
+            "delta_O18": null,
+            "uncertainty": 0.2
+          }
+        ],
+        "age_depth_model": "t = 500 * depth + 1000",
+        "library_constraints": "xarray>=2023.1.0, matplotlib>=3.7.0, numpy>=1.24.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the age-depth transformation correctly map depth to time using the provided linear model?",
+        "Completeness: Are all four steps (transformation, smoothing, rate calculation, visualization) implemented?",
+        "Best Practices: Is the code modular, documented, and efficient for large datasets?",
+        "Physical Theory: Does the solution acknowledge the relationship between delta O18 and temperature anomalies?"
+      ],
+      "student_answer": "```python\nimport xarray as xr\nimport numpy as np\nimport matplotlib.pyplot as plt\n\ndef analyze_ice_core_data(data, age_depth_model, library_constraints):\n    \"\"\"\n    Analyzes ice core isotope data to calculate temperature change rate and generate a visualization.\n\n    Args:\n        data (pd.DataFrame): DataFrame containing depth and delta_O18 data.\n        age_depth_model (str): Linear age-depth model string.\n        library_constraints (str): List of required library versions.\n\n    Returns:\n        tuple: A tuple containing the temperature change rate (°C/century) and the matplotlib plotting code.\n    \"\"\"\n\n    # Convert data to xarray Dataset\n    ds = xr.Dataset(data=data)\n    ds = ds.assign(depth=ds['depth_m'])\n    ds = ds.assign(delta_O18=ds['delta_O18'])\n\n    # 1. Transform depth to calendar years\n    t = np.linspace(0, ds['depth'].max(), ds['depth'].max())\n    age_depth_func = lambda depth: 500 * depth + 1000\n    ds['time'] = xr.Expression(f\"age_depth_func(depth)\", module=\"numpy\")\n\n    # 2. Apply Savitzky-Golay filter\n    window_length = 11\n    polyorder = 3\n    ds['smoothed_delta_O18'] = ds['delta_O18'].apply(lambda x: np.savitzky_golay(x, window_length, polyorder), casting='no')\n\n    # 3. Calculate temperature change rate (Holocene Thermal Maximum)\n    # Assuming delta_O18 is correlated with temperature\n    # This is a simplified approach and may need refinement based on the specific data\n    # Here, we'll use a simple linear regression to estimate the rate\n    temp_anomaly = ds['smoothed_delta_O18']\n    time_years = ds['time']\n    slope, intercept = np.polyfit(time_years, temp_anomaly, 1)\n    temp_change_rate = slope / 100  # Convert to °C/century\n\n    # 4. Generate visualization code\n    plot_code = f\"\"\"\nimport matplotlib.pyplot as plt\n\n# Plot smoothed temperature anomaly against time\nplt.figure(figsize=(12, 6))\nplt.errorbar(ds['time'], ds['smoothed_delta_O18'], yerr=ds['uncertainty'], fmt='.', capsize=5)\nplt.xlabel('Time (years)')\nplt.ylabel('Temperature Anomaly (°)')\nplt.title('Smoothed Temperature Anomaly vs. Time')\nplt.grid(True)\nplt.show()\n\"\"\"\n\n    return temp_change_rate, plot_code\n\n# Example Usage (using dummy data)\ndata = [\n    {'depth_m': 10.5, 'delta_O18': -32.4, 'uncertainty': 0.2},\n    {'depth_m': 10.8, 'delta_O18': -32.1, 'uncertainty': 0.2},\n    {'depth_m': 11.2, 'delta_O18': None, 'uncertainty': 0.2},\n    {'depth_m': 11.7, 'delta_O18': -31.8, 'uncertainty': 0.2},\n    {'depth_m': 12.2, 'delta_O18': -32.0, 'uncertainty': 0.2}\n]\n\nage_depth_model = \"t = 500 * depth + 1000\"\nlibrary_constraints = \"xarray>=2023.1.0, matplotlib>=3.7.0, numpy>=1.24.0\"\n\ntemp_rate, plot_code = analyze_ice_core_data(data, age_depth_model, library_constraints)\n\nprint(f\"Temperature Change Rate (°C/century): {temp_rate}\")\nprint(f\"Visualization Code:\\n{plot_code}\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        2,
+        1
+      ],
+      "score": 1.2,
+      "grade_reason": "The submission fails fundamentally on multiple technical fronts. 1) Correctness: The code uses non-existent xarray methods (xr.Expression with a module argument, apply with a lambda returning an array instead of a scalar, casting='no'). The age-depth transformation logic is nonsensical (np.linspace with max as steps). 2) Completeness: It does not handle the irregular depth intervals or missing data (None) correctly. 3) Best Practices: The code will not run; it relies on incorrect API usage. 4) Domain Accuracy: The Savitzky-Golay filter is applied incorrectly to a scalar value rather than the time series. 5) Clarity: The code is confusing and broken. 6) Autonomy: The code is unusable without a complete rewrite."
+    },
+    {
+      "task_id": "gen_task_02",
+      "onet_source": "Estimate or predict the effects of global warming over time for specific geographic regions.",
+      "task_type": "Regional Climate Impact Modeling",
+      "user_prompt": "You are tasked with estimating the impact of a 2°C global temperature rise on a specific coastal city's sea level and storm surge frequency. You are provided with a CSV file containing historical sea level data, local bathymetry profiles, and projected storm intensity distributions. Write a Python script using scipy and numpy to: 1) Re-project the bathymetry coordinates from a local projection to WGS84, 2) Impute missing bathymetry values using a cubic spline interpolation based on neighboring points, 3) Apply the Sverdrup balance concept to estimate the change in coastal current velocity due to thermal expansion, and 4) Calculate the projected increase in storm surge height for a 100-year return period event. Output a JSON summary of the projected surge height increase and the velocity change.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "lat": 40.7128,
+            "lon": -74.006,
+            "depth_m": -15.0,
+            "storm_intensity": 45.0
+          },
+          {
+            "lat": 40.713,
+            "lon": -74.0062,
+            "depth_m": null,
+            "storm_intensity": 46.0
+          },
+          {
+            "lat": 40.7132,
+            "lon": -74.0064,
+            "depth_m": -18.5,
+            "storm_intensity": 44.5
+          }
+        ],
+        "library_constraints": "scipy>=1.10.0, numpy>=1.24.0, pyproj>=3.4.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the coordinate transformation correctly handle WGS84 conversion?",
+        "Completeness: Are all four steps (re-projection, imputation, velocity estimation, surge calculation) implemented?",
+        "Best Practices: Is the code modular, documented, and efficient for large datasets?",
+        "Physical Theory: Does the solution explicitly reference the Sverdrup balance or thermal expansion principles?"
+      ],
+      "student_answer": "```python\nimport numpy as np\nfrom scipy.interpolate import CubicSpline\nfrom pyproj import Transformer\n\ndef analyze_sea_level_impact(data):\n    \"\"\"\n    Estimates the impact of a 2°C global temperature rise on a coastal city's\n    sea level and storm surge frequency.\n\n    Args:\n        data (list): A list of dictionaries containing historical sea level data,\n                     local bathymetry profiles, and projected storm intensity\n                     distributions.\n\n    Returns:\n        dict: A JSON summary of the projected surge height increase and the\n              velocity change.\n    \"\"\"\n\n    # 1. Re-project bathymetry to WGS84\n    transformer = Transformer.from_crs(\"epsg:4326\", \"epsg:4326\")  # Assuming local projection is WGS84\n    wgs84_data = []\n    for item in data:\n        wgs84_data.append({\n            \"lat\": item[\"lat\"],\n            \"lon\": item[\"lon\"],\n            \"depth_m\": item[\"depth_m\"]\n        })\n\n    # 2. Impute missing bathymetry values\n    lat = np.array([item[\"lat\"] for item in wgs84_data])\n    lon = np.array([item[\"lon\"] for item in wgs84_data])\n    depth = np.array([item[\"depth_m\"] for item in wgs84_data if item[\"depth_m\"] is not None])\n    \n    cs = CubicSpline(lon, depth)\n    interpolated_depth = cs(lon)\n    \n    imputed_data = []\n    for i in range(len(wgs84_data)):\n        if wgs84_data[i][\"depth_m\"] is None:\n            imputed_data.append({\n                \"lat\": wgs84_data[i][\"lat\"],\n                \"lon\": wgs84_data[i][\"lon\"],\n                \"depth_m\": interpolated_depth[i]\n            })\n        else:\n            imputed_data.append(wgs84_data[i])\n\n    # 3. Apply Sverdrup balance (simplified)\n    thermal_expansion_factor = 0.003  # Approximate thermal expansion coefficient\n    velocity_change = 1.0  # m/s (example value - needs to be derived from actual data)\n    \n    # 4. Calculate projected surge height increase\n    storm_intensities = np.array([item[\"storm_intensity\"] for item in data])\n    surge_height_increase = 0.3  # m (example value - needs to be derived from actual data)\n\n    summary = {\n        \"projected_surge_height_increase\": surge_height_increase,\n        \"coastal_current_velocity_change\": velocity_change\n    }\n\n    return summary\n\n# Example Usage (with dummy data)\ndata = [\n    {\n        \"lat\": 40.7128,\n        \"lon\": -74.006,\n        \"depth_m\": -15.0,\n        \"storm_intensity\": 45.0\n    },\n    {\n        \"lat\": 40.713,\n        \"lon\": -74.0062,\n        \"depth_m\": None,\n        \"storm_intensity\": 46.0\n    },\n    {\n        \"lat\": 40.7132,\n        \"lon\": -74.0064,\n        \"depth_m\": -18.5,\n        \"storm_intensity\": 44.5\n    }\n]\n\nresult = analyze_sea_level_impact(data)\nimport json\nprint(json.dumps(result, indent=4))\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on all technical and domain-specific requirements. 1) Correctness: It does not re-project from a local projection to WGS84 (it assumes the input is already WGS84 and uses a dummy transformer), fails to impute missing values correctly (the CubicSpline is created on a subset of data while the input array contains None values, causing a crash or logic error), and does not calculate Sverdrup balance or storm surge (it uses hardcoded placeholder values). 2) Completeness: The core calculations requested are entirely missing. 3) Best Practices: Hardcoding values like 'velocity_change = 1.0' is unprofessional. 4) Domain Accuracy: The Sverdrup balance relates wind stress to meridional transport, not thermal expansion to velocity directly in the manner implied, and the code does not implement the physics. 5) Clarity: The code is readable but the logic is flawed. 6) Autonomy: The output is a draft with no scientific validity and cannot be used."
+    },
+    {
+      "task_id": "gen_task_03",
+      "onet_source": "Teach college-level courses on topics such as atmospheric and space science, meteorology, or global climate change.",
+      "task_type": "Educational Content Generation and Simulation",
+      "user_prompt": "You are developing a lecture module on the thermodynamics of the atmosphere for undergraduate students. You are provided with a dataset of atmospheric pressure and temperature profiles at different altitudes. Write a Python script using pandas and matplotlib to: 1) Calculate the dry adiabatic lapse rate for a parcel of air rising from sea level to 10km, 2) Identify the level of free convection (LFC) where the parcel becomes warmer than the environment, 3) Simulate the temperature profile of a rising air parcel assuming a moist adiabatic lapse rate above the LFC, and 4) Generate a Tephigram-style plot (simplified) showing the environmental profile and the parcel path. Output the LFC altitude and the code for the plot.",
+      "reference_context": {
+        "data_sample": [
+          {
+            "altitude_m": 0,
+            "temp_K": 288.15,
+            "pressure_hPa": 1013.25
+          },
+          {
+            "altitude_m": 1000,
+            "temp_K": 281.0,
+            "pressure_hPa": 900.0
+          },
+          {
+            "altitude_m": 2000,
+            "temp_K": 274.0,
+            "pressure_hPa": 800.0
+          }
+        ],
+        "library_constraints": "pandas>=1.5.0, matplotlib>=3.7.0, numpy>=1.24.0"
+      },
+      "evaluation_criteria": [
+        "Correctness: Does the calculation of the dry adiabatic lapse rate use the correct physical constant (g/cp)?",
+        "Completeness: Are all four steps (lapse rate calculation, LFC identification, moist adiabatic simulation, plotting) implemented?",
+        "Best Practices: Is the code modular, documented, and efficient for large datasets?",
+        "Physical Theory: Does the solution explicitly reference the first law of thermodynamics and adiabatic processes?"
+      ],
+      "student_answer": "```python\nimport pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# Sample Data (Replace with your actual dataset)\ndata = [\n    {'altitude_m': 0, 'temp_K': 288.15, 'pressure_hPa': 1013.25},\n    {'altitude_m': 1000, 'temp_K': 281.0, 'pressure_hPa': 900.0},\n    {'altitude_m': 2000, 'temp_K': 274.0, 'pressure_hPa': 800.0}\n]\ndf = pd.DataFrame(data)\n\n# 1. Calculate Dry Adiabatic Lapse Rate\n# Assuming dry air, the dry adiabatic lapse rate is approximately 9.8 K/km\ndry_adiabatic_lapse_rate = 9.8\n\n# 2. Identify Level of Free Convection (LFC)\n# LFC is the altitude where the rising parcel reaches the same temperature as the environment\ndf['parcel_temp_K'] = df['temp_K'] - dry_adiabatic_lapse_rate * (df['altitude_m'] / 1000)\nlfc_altitude_m = df.loc[df['parcel_temp_K'].idxmin()]['altitude_m']\nlfc_altitude_km = lfc_altitude_m / 1000\n\n# 3. Simulate Temperature Profile Above LFC (Moist Adiabatic)\n# Assuming a moist adiabatic lapse rate of 6.5 K/km\nmoist_adiabatic_lapse_rate = 6.5\nlfc_index = df[df['parcel_temp_K'] == df['temp_K'].min()]['altitude_m'].index[0]\n\n# Create a new dataframe for the parcel path\nparcel_data = []\nfor i in range(lfc_index, len(df)):\n    parcel_temp_K = df['temp_K'][i] - moist_adiabatic_lapse_rate * (df['altitude_m'][i] - lfc_altitude_m) / 1000\n    parcel_data.append({'altitude_m': df['altitude_m'][i], 'temp_K': parcel_temp_K})\nparcel_df = pd.DataFrame(parcel_data)\n\n# 4. Generate Tephigram-style Plot (Simplified)\nplt.figure(figsize=(10, 6))\n\n# Plot Environmental Profile\nplt.plot(df['altitude_m'], df['temp_K'], label='Environmental Profile', color='blue')\n\n# Plot Parcel Path\nplt.plot(parcel_df['altitude_m'], parcel_df['temp_K'], label='Parcel Path', color='red')\n\nplt.xlabel('Altitude (m)')\nplt.ylabel('Temperature (K)')\nplt.title('Tephigram-Style Plot')\nplt.legend()\nplt.grid(True)\nplt.show()\n\nprint(f\"LFC Altitude: {lfc_altitude_m:.2f} m\")\n```",
+      "dimension_labels": [
+        "Correctness",
+        "Completeness",
+        "Best Practices",
+        "Domain Accuracy",
+        "Clarity",
+        "Autonomy"
+      ],
+      "dimension_scores": [
+        1,
+        1,
+        1,
+        1,
+        3,
+        1
+      ],
+      "score": 1.3,
+      "grade_reason": "The submission fails fundamentally on all technical and domain-specific dimensions. 1) Correctness: The code calculates the parcel temperature by subtracting the lapse rate from the environmental temperature, which is physically incorrect; it must integrate the lapse rate from the surface temperature. 2) Completeness: It does not calculate the LFC by finding the intersection of the parcel and environment curves, but rather finds the minimum of the incorrectly calculated parcel column. 3) Best Practices: The logic for the moist adiabatic section is broken, starting from the wrong temperature and using the wrong reference point. 4) Domain Accuracy: The concept of LFC is misunderstood; the code does not identify where the parcel becomes warmer than the environment (positive buoyancy). 5) Clarity: The code runs but produces a nonsensical plot. 6) Autonomy: The output is scientifically invalid and cannot be used without a complete rewrite."
+    }
+  ]
+}
